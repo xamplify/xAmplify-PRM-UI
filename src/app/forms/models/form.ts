@@ -33,10 +33,14 @@ export class Form {
     titleColor="";
     borderColor="";
 
-    userName:String = "";
+    userName:string = "";
     createdByAdmin = false;    
     pageBackgroundColor="";
     showBackgroundImage=false;
     showCaptcha=false;
+
+    openLinkInNewTab = false;
+    formSubmissionUrl = "";
+    isValidFormSubmissionUrl = false;
 	
 }

@@ -42,7 +42,9 @@ export class ManageMdfDetailsComponent implements OnInit {
   expirationDateError = false;
   mdfAmountError = false;
   MdfAmountType = MdfAmountType;
-
+  errorFieldNames:Array<string> = new Array<string>();
+  showMdfAmountPopup = false;
+  partnershipId:number = 0;
   constructor(private utilService: UtilService, public sortOption: SortOption, public partnerListLoader: HttpRequestLoader, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -153,90 +155,36 @@ export class ManageMdfDetailsComponent implements OnInit {
   /********************Pagaination&Search Code*****************/
 
   openMdfAmountPopup(partner: MdfPartnerDto) {
-    this.mdfPartnerDto = partner;
-    this.mdfDetails = new MdfDetails();
-    this.mdfDetails.partnershipId = this.mdfPartnerDto.partnershipId;
-    this.mdfDetails.mdfAmountTypeInString = MdfAmountType[MdfAmountType.FUND_ADDED];
-    this.mdfDetails.calculatedAvailableBalance = this.mdfPartnerDto.availableBalance;
-    $('#mdfAmountPopup').modal('show');
+    this.showMdfAmountPopup = true;
+    this.partnershipId = partner.partnershipId;
   }
-
-  updateFieldsStatus() {
-    this.expirationDateError = false;
-    this.calculateTotalAvailableBalance();
-  }
-
-  calculateTotalAvailableBalance() {
-    let mdfAmount = 0;
-    if (this.mdfDetails.mdfAmount != undefined) {
-      mdfAmount = this.mdfDetails.mdfAmount;
-    }
-    if ((this.mdfDetails.mdfAmountTypeInString==MdfAmountType[MdfAmountType.FUND_ADDED])) {
-      this.mdfDetails.calculatedAvailableBalance = this.mdfPartnerDto.availableBalance + mdfAmount;
-    } else {
-      this.mdfDetails.calculatedAvailableBalance = this.mdfPartnerDto.availableBalance - mdfAmount;
-      this.mdfDetails.allocationDateInString = "";
-      this.mdfDetails.expirationDateInString = "";
-    }
-  }
-
-  updateMdfAmount() {
-    this.modalPopupLoader = true;
-    this.resetErrors();
-    this.mdfDetails.createdBy = this.loggedInUserId;
-    this.mdfService.updateMdfAmount(this.mdfDetails).subscribe(
-      (result: any) => {
-        if (result.statusCode == 200) {
-          this.pagination.pageIndex = 1;
-          this.getTilesInfo();
-          this.listPartners(this.pagination);
-          if(this.mdfDetails.mdfAmountTypeInString==MdfAmountType[MdfAmountType.FUND_ADDED]){
-            this.referenceService.showSweetAlertSuccessMessage("Fund Added Successfully");
-          }else{
-            this.referenceService.showSweetAlertSuccessMessage("Fund Removed Successfully");
-          }
-        this.closeMdfAmountPopup();
-        } else {
-          this.errorResponses = result.errorResponses;
-          let self = this;
-          $.each(this.errorResponses, function (_index: number, errorResponse: ErrorResponse) {
-            if (errorResponse['field'] == "expirationDate") {
-              self.expirationDateError = true;
-            } else if (errorResponse['field'] == "mdfAmount") {
-              self.mdfAmountError = true;
-            }
-          });
-        }
-        this.modalPopupLoader = false;
-      }, error => {
-        this.modalPopupLoader = false;
-        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-        this.xtremandLogger.log(error);
-      });
-  }
-
-  closeMdfAmountPopup() {
-    $('#mdfAmountPopup').modal('hide');
-    this.mdfDetails = new MdfDetails();
-    this.mdfPartnerDto = new MdfPartnerDto();
-    this.resetErrors();
-  }
-
-  resetErrors() {
-    this.mdfAmountError = false;
-    this.expirationDateError = false;
-    this.errorResponses = new Array<ErrorResponse>();
-    this.customResponse = new CustomResponse();
-  }
-
 
   viewMdfAmountHistory(partner: MdfPartnerDto) {
-    this.referenceService.showSweetAlertInfoMessage();
+    if(partner.mdfDetailsId>0){
+      this.loading = true;
+      this.referenceService.goToRouter("/home/mdf/timeline/"+partner.mdfDetailsId);
+    }else{
+      this.referenceService.showSweetAlertErrorMessage("No History Found");
+    }
+   
   }
+ 
 
   editMdfForm(){
     this.loading = true;
     this.referenceService.goToRouter("/home/mdf/form");
+  }
+
+  resetValues(){
+    this.showMdfAmountPopup = false;
+    this.partnershipId = 0;
+  }
+
+  updateListAfterAddingAmount(){
+    this.resetValues();
+    this.pagination.pageIndex = 1;
+    this.getTilesInfo();
+    this.listPartners(this.pagination);
   }
 
 }

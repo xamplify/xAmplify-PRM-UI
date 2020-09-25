@@ -38,6 +38,8 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
     @Input() isPartner: any;
     @Input() isCampaignByLeads: boolean;
     @Input() loggedInUserId: number;
+    @Input() syncSalesForce: boolean;
+    
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     pagination: Pagination = new Pagination();
     selectedDealId: any;
@@ -57,7 +59,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
     isDealSection = false;
     loggedInUser: User;
     ownCampaignLeadAndDeal = false;
-	syncSalesForce = false;
+	//syncSalesForce = false;
 
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
         public utilService: UtilService, public referenceService: ReferenceService,
@@ -68,7 +70,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
         this.changePointerStyle(true);
         this.loggedInUser = this.authenticationService.user;
         if (!this.isPartner) {
-        	this.checkSalesforceIntegration();
+        	//this.checkSalesforceIntegration();
         	this.listLeadsBasedOnFilters();
         }
         else {

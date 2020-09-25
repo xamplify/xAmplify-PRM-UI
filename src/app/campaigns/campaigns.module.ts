@@ -34,6 +34,8 @@ import { EventCheckInComponent } from './event-check-in/event-check-in.component
 import { CampaignWorkFlowsModalPopupComponent } from './campaign-work-flows-modal-popup/campaign-work-flows-modal-popup.component';
 import { CampaignWorkFlowsUtilComponent } from './campaign-work-flows-util/campaign-work-flows-util.component';
 import { ClickedUrlsVendorAnalyticsComponent } from './clicked-urls-vendor-analytics/clicked-urls-vendor-analytics.component';
+import { UserLevelTimelineComponent } from './user-level-timeline/user-level-timeline.component';
+import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
 
 
 @NgModule({
@@ -68,9 +70,11 @@ import { ClickedUrlsVendorAnalyticsComponent } from './clicked-urls-vendor-analy
     EventCheckInComponent,
     CampaignWorkFlowsModalPopupComponent,
     CampaignWorkFlowsUtilComponent,
-    ClickedUrlsVendorAnalyticsComponent
+    ClickedUrlsVendorAnalyticsComponent,
+    UserLevelTimelineComponent,
+    UserCampaignsListUtilComponent
   ],
-  exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent
+  exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService]
 })

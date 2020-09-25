@@ -3662,5 +3662,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $( '#zohoShowAuthorisedPopup' ).modal( 'show' );
     }
     
+    goToCampaigns(contact: any) {
+        this.loading = true;
+        let self = this;
+        setTimeout(function () {
+            self.router.navigate(["/home/campaigns/user-campaigns/pa/" + contact.id]);
+        }, 250);
+    }
    
 }

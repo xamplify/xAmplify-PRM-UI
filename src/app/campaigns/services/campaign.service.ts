@@ -967,6 +967,27 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+ analyticsByUserId(pagination: Pagination) {
+        let url = this.URL + "campaign/analyticsByUserId?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getUserLevelTimeLineSeriesData(campaignId:number,userId:number,userType:string){
+        let url = this.URL + "campaign/userLevelCampaignTimeLineData/"+campaignId+"/"+userId+"/"+userType+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getUserDetailsFromUserList(companyId:number,userId:number,userType:string){
+        let url = this.URL + "campaign/getUserDetailsFromUserList/"+companyId+"/"+userId+"/"+userType+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         return body || {};

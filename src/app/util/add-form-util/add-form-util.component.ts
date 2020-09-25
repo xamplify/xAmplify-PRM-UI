@@ -26,6 +26,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ContentManagement } from 'app/videos/models/content-management';
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { EnvService } from 'app/env.service'
+import { RegularExpressions } from 'app/common/models/regular-expressions';
 
 declare var $: any, swal: any, CKEDITOR: any;
 
@@ -34,7 +35,7 @@ declare var $: any, swal: any, CKEDITOR: any;
   selector: 'app-add-form-util',
   templateUrl: './add-form-util.component.html',
   styleUrls: ['./add-form-util.component.css','../../dashboard/company-profile/edit-company-profile/edit-company-profile.component.css', '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'],
-  providers: [FormService,CallActionSwitch, HttpRequestLoader, SocialPagerService, Pagination, ActionsDescription, ContentManagement]
+  providers: [RegularExpressions,FormService,CallActionSwitch, HttpRequestLoader, SocialPagerService, Pagination, ActionsDescription, ContentManagement]
 
 })
 export class AddFormUtilComponent implements OnInit, OnDestroy {
@@ -148,7 +149,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   @Input() selectedForm:any;
   formHeader = "CREATE FORM";
   siteKey = "";
-  constructor(public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
+  formSubmissionUrlErrorMessage = "";
+  constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -222,6 +224,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         }
         this.form.isValid = true;
         this.form.isFormButtonValueValid = true;
+        this.form.isValidFormSubmissionUrl = true;
         this.listExistingColumns(this.form.formLabelDTOs);
         this.characterSize();
     } else {
@@ -1168,27 +1171,6 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       this.removeBlurClass()
   }
 
-  validateFormButtonValue(buttonValue: string) {
-      if (!($.trim(buttonValue).length > 0)) {
-          this.form.isFormButtonValueValid = false;
-          this.addFormButtonValueErrorMessage(this.requiredMessage);
-      } else {
-          this.form.isFormButtonValueValid = true;
-          this.removeFormButtoValueErrorClass();
-      }
-  }
-
-  removeFormButtoValueErrorClass() {
-      $('#formButtonValueDiv').removeClass(this.formErrorClass);
-      $('#formButtonValueDiv').addClass(this.defaultFormClass);
-      this.form.isValid = true;
-  }
-
-  private addFormButtonValueErrorMessage(errorMessage: string) {
-      this.form.isValid = false;
-      $('#formButtonValueDiv').addClass(this.formErrorClass);
-      this.formButtonValueErrorMessage = errorMessage;
-  }
 
   addImage(filePath: any) {
       const parts = filePath.split('.');
@@ -1315,4 +1297,59 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 resolved(captchaResponse: string) {
           console.log(captchaResponse);
 }
+
+validateFormButtonValue(buttonValue: string) {
+    if (!($.trim(buttonValue).length > 0)) {
+        this.form.isFormButtonValueValid = false;
+        this.addFormButtonValueErrorMessage(this.requiredMessage);
+    } else {
+        this.form.isFormButtonValueValid = true;
+        this.removeFormButtoValueErrorClass();
+    }
+}
+
+removeFormButtoValueErrorClass() {
+    $('#formButtonValueDiv').removeClass(this.formErrorClass);
+    $('#formButtonValueDiv').addClass(this.defaultFormClass);
+    this.checkValidForm();
+}
+
+private addFormButtonValueErrorMessage(errorMessage: string) {
+    this.form.isValid = false;
+    $('#formButtonValueDiv').addClass(this.formErrorClass);
+    this.formButtonValueErrorMessage = errorMessage;
+}
+
+
+validateFormSubmissionUrl(formSubmissionUrl:string){
+    if ($.trim(formSubmissionUrl).length > 0) {
+        if (!this.regularExpressions.URL_PATTERN.test(formSubmissionUrl)) {
+            this.addFormSubmissionUrlErrorMessage();
+        } else {
+            this.removeFormSubmissionUrlErrorMessage();
+        }
+    } else{
+        this.removeFormSubmissionUrlErrorMessage();
+    }
+}
+
+removeFormSubmissionUrlErrorMessage() {
+    $('#formSubmissionUrlDiv').removeClass(this.formErrorClass);
+    $('#formSubmissionUrlDiv').addClass(this.defaultFormClass);
+    this.form.isValidFormSubmissionUrl = true;
+    this.checkValidForm();
+}
+
+private addFormSubmissionUrlErrorMessage() {
+    this.form.isValid = false;
+    this.form.isValidFormSubmissionUrl = false;
+    $('#formSubmissionUrlDiv').addClass(this.formErrorClass);
+    this.formSubmissionUrlErrorMessage = 'Please enter a valid url';
+}
+
+checkValidForm(){
+    this.form.isValid = this.form.isValidFormSubmissionUrl && this.form.isFormButtonValueValid;
+}
+
+
 }

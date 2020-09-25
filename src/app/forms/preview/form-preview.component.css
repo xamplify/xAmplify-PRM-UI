@@ -111,3 +111,6 @@ body {
 .panel-info {
     border-color: #bce8f1;
 }
+.swal-wide{
+    width:850px !important;
+}

@@ -49,6 +49,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   mdfRequestVendorDto: MdfRequestVendorDto = new MdfRequestVendorDto();
   showMdfFormAnalyticsForVendorView = false;
   vanityLogin = false;
+  countLoader = 3;
   constructor(private utilService: UtilService, public sortOption: SortOption, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,private route:ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
      this.vanityLoginDto.userId = this.loggedInUserId; 
@@ -65,16 +66,18 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.loading  = true;
-    this.tilesLoader = true;
     this.referenceService.loading(this.listLoader, true);
     this.role = this.route.snapshot.params['role'];
     if(this.role!=undefined && this.role=="p"){
       this.isPartnerView = true;
       this.tileClass = this.partnerTilesClass;
+      this.countLoader = 3;
     }else{
       this.isPartnerView = false;
       this.tileClass = this.vendorTilesClass;
+      this.countLoader = 4;
     }
+    this.tilesLoader = true;
     this.getCompanyId();
   }
 

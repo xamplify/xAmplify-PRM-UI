@@ -109,6 +109,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
     @ViewChild(SfDealComponent)
     sfDealComponent: SfDealComponent;
     showSfDealFields: boolean = false;
+    showLoadingButton:boolean;
 
     // isMarketoLead=false;
     // showMarketoForm: boolean;
@@ -530,6 +531,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
         let answers: DealAnswer[] = [];
 
         if (this.showSfDealFields) {
+            this.showLoadingButton = true;
             this.setSfFormFieldValues();
         }
 
@@ -591,9 +593,11 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
                 this.isLoading = false;
                 this.referenceService.goToTop();
                 this.submitButtonText = "Update Deal";
+                this.showLoadingButton = false;
                 this.dealRegistration.properties.forEach(p => p.isSaved = true);
             }, error => {
                     this.ngxloading = false;
+                    this.showLoadingButton = false;
                     this.logger.errorPage(error)
                 })
         } else {
@@ -606,9 +610,11 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
                     this.dealRegistration.properties.forEach(p => p.isSaved = true);
                     this.submitButtonText = "Update Deal";
                 }
+                this.showLoadingButton = false;
                 this.referenceService.goToTop();
             }, error => {
                     this.ngxloading = false;
+                    this.showLoadingButton = false;
                     this.logger.errorPage(error)
                 })
         }

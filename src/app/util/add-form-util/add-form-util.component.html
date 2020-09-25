@@ -97,8 +97,8 @@
                                                                             </ng-container>
                                                                             <!-- ---------------------------Date----------------------------- -->
                                                                             <ng-container *ngIf="columnInfo.labelType=='date'">
-                                                                                <app-flatpickr [isFromForm]='true'>
-                                                                                </app-flatpickr>
+                                                                                <app-date-picker [isFromForm]='true'>
+                                                                                </app-date-picker>
                                                                             </ng-container>
                                                                             <!-- ---------------------------Price----------------------------- -->
                                                                             <ng-container *ngIf="columnInfo.labelType=='price'">
@@ -413,7 +413,7 @@
         <div class="modal-content">
             <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
-                <button type="button" *ngIf="form.isFormButtonValueValid" class="close-circle" (click)="closeFormDesignModal()">
+                <button type="button" *ngIf="form.isFormButtonValueValid&&form.isValidFormSubmissionUrl" class="close-circle" (click)="closeFormDesignModal()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
                 <h4 class="modal-title text-left">Design Your Form</h4>
@@ -501,7 +501,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-12" style="padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;">
+                        <div class="col-md-12 col-lg-12" style="border: 1px solid #eaeaea;padding-top: 5px;">
+                            <div class="form-group" id="formSubmissionUrlDiv">
+                                <label>Redirect Url After Form Submission :</label><br>
+                                <input class="form-control" placeholder="Enter Url" [(ngModel)]="form.formSubmissionUrl"  (input)="validateFormSubmissionUrl(form.formSubmissionUrl)" />
+                                <span *ngIf="!form.isValidFormSubmissionUrl" class="required">{{formSubmissionUrlErrorMessage}}</span>
+                                <br> 
+                                <label>Open in new tab</label>
+                                 <input type="checkbox" [(ngModel)]="form.openLinkInNewTab"> 
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12 col-lg-12" style="padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;margin-top: 10px;">
                             <div class="form-group">
                                 <label>Form Submit Message:</label>
                                 <textarea class="form-control" placeholder="Form Submit Message" [(ngModel)]="form.formSubmitMessage" maxlength="1000" rows="5" (input)="characterSize()"></textarea>
@@ -682,7 +693,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!form.isFormButtonValueValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                <button type="submit" [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
             </div>
         </div>
     </div>

@@ -16,7 +16,7 @@
             <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
                <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
                    <a class="close-circle" (click)="goToManageMdfRequests()"  title="Close">
-						<i class="fa fa-times-circle" aria-hidden="true"></i>
+						<i class="fa fa-times" aria-hidden="true"></i>
 					</a> 
                </div>
             </div>
@@ -121,8 +121,8 @@
                                 </ng-container>
                                  <!-- ---------------------------Date----------------------------- -->
                                  <ng-container *ngIf="columnInfo.labelType=='date'">
-                                    <app-flatpickr [(dataField)]="columnInfo.value" [isFromMdfCredit]='true'>>
-                                    </app-flatpickr>
+                                    <app-date-picker [(dataField)]="columnInfo.value" [isFromMdfCredit]='true'>>
+                                    </app-date-picker>
                                 </ng-container>
                                  <!-- ---------------------------Price----------------------------- -->
                                  <ng-container *ngIf="columnInfo.labelType=='price'">

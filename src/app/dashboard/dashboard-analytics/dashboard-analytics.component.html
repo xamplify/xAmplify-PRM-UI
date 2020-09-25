@@ -36,7 +36,7 @@
     <div class="col-xs-12 col-sm-6 p0">
         <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
     </div>
-    <div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage">
+    <div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
         <div style="display: flex;float: right;">
             <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
             <div style="margin: 3px 0 3px 20px;">
@@ -58,7 +58,7 @@
 <!------------Vendor Activity---------------------->
 <app-vendor-activity-analytics></app-vendor-activity-analytics>
 <!---Top 4 Campaigns--------->
-<div class="row">
+<div class="row" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
     <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
        <div class="portlet-title">

@@ -193,6 +193,21 @@ export class SortOption {
       { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
 
+  userLevelCampaignAnalyticsSortDropDownOptions = [
+      { 'name': 'Campaign Name (A-Z)', 'value': 'campaignName-ASC' },
+      { 'name': 'Campaign Name (Z-A)', 'value': 'campaignName-DESC' },
+	  { 'name': 'Latest View (ASC)', 'value': 'latestView-ASC' },
+      { 'name': 'Latest View (DESC)', 'value': 'latestView-DESC' },
+ 	  { 'name': 'Email Opened (ASC)', 'value': 'emailOpenedCount-ASC' },
+      { 'name': 'Email Opened (DESC)', 'value': 'emailOpenedCount-DESC' },
+ 	  { 'name': 'Clicked Urls (ASC)', 'value': 'clickedUrlsCount-ASC' },
+      { 'name': 'Clicked Urls (DESC)', 'value': 'clickedUrlsCount-DESC' },
+	  { 'name': 'Auto Responses (ASC)', 'value': 'autoResponsesCount-ASC' },
+      { 'name': 'Auto Responses (DESC)', 'value': 'autoResponsesCount-DESC' },
+      { 'name': 'Launched On (ASC)', 'value': 'launchTime-ASC' },
+      { 'name': 'Launched On (DESC)', 'value': 'launchTime-DESC' }
+    ];
+
 
 
     numberOfItemsPerPage = [
@@ -217,6 +232,7 @@ export class SortOption {
     public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];
     public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
     public mdfVendorsSortOption:any = this.mdfVendorsSortDropDownOptions[5];
+	public userLevelCampaignAnalyticsSortOption:any = this.userLevelCampaignAnalyticsSortDropDownOptions[this.userLevelCampaignAnalyticsSortDropDownOptions.length-1];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

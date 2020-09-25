@@ -71,6 +71,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 
 
 
@@ -85,7 +86,7 @@ import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.compo
 		 LandingPageLoaderComponent, DashboardLoaderComponent,ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, 
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
-		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent],
+		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, DatePickerComponent],
 
 
     exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,TagInputModule,
@@ -97,7 +98,7 @@ import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.compo
 		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent, 
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
-		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent]
+		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent,DatePickerComponent]
 
 })
 export class CommonComponentModule { }

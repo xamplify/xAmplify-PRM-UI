@@ -41,9 +41,9 @@ export class SfDealComponent implements OnInit {
 
     this.contactService.displaySfForm(this.dealId).subscribe(result => {
       this.form = result.data;
-      if (this.campaign.campaignName !== undefined || this.campaign.campaignName !== '') {
+      /*if (this.campaign.campaignName !== undefined || this.campaign.campaignName !== '') {
         this.form.formLabelDTOs.find(field => field.labelId === 'Name').value = this.campaign.campaignName;
-      }
+      }*/
 
       let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
       for (let multiSelectObj of allMultiSelects) {
@@ -111,6 +111,11 @@ export class SfDealComponent implements OnInit {
       for (let percentObj of allPercentages) {
         this.validatePercentageValue(percentObj);
       }
+
+      let allGeoLocations = this.form.formLabelDTOs.filter(column => column.labelType === "geolocation");
+      for (let geoObj of allGeoLocations) {
+        this.validateGeoLocation(geoObj);
+      }      
     }
   }
 
@@ -178,5 +183,22 @@ export class SfDealComponent implements OnInit {
 
   onDeSelectAll(items: any) {
     this.validateAllFields();
+  }
+
+  validateGeoLocation(columnInfo: ColumnInfo){    
+    if (columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
+      var x = parseFloat($.trim(columnInfo.value));      
+      if ((columnInfo.labelName.includes('Latitude')) && (isNaN(x) || x < -90 || x > 90)) {
+        columnInfo.errorMessage = "Please enter a value from -90 to 90";
+        columnInfo.divClass = "error";
+        this.isDealRegistrationFormValid = true;
+      }else if ((columnInfo.labelName.includes('Longitude')) && (isNaN(x) || x < -180 || x > 180)) {
+        columnInfo.errorMessage = "Please enter a value from -180 to 180";
+        columnInfo.divClass = "error";
+        this.isDealRegistrationFormValid = true;
+      } else {
+        columnInfo.divClass = "success";
+      }
+    }
   }
 }

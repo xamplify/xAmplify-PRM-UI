@@ -221,11 +221,11 @@
                             <span class="arrow"></span>
                             <span class="selected"></span>
                         </a>
-                        <ul class="sub-menu" [ngStyle]="{'display': mdf? 'block': 'none' }" >
+                        <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': mdf? 'block': 'none' }" >
                             <li>
                                 <a [routerLink]="['/home/mdf/']">
                                     <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="title" translate>Manage MDF Funds</span>
+                                    <span class="title" translate>Manage MDF Details</span>
                                 </a>
                             </li>
                             <li>

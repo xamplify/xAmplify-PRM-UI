@@ -254,8 +254,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.mdfAccess = data.mdf;
             this.mdfAccessAsPartner = data.mdfAccessAsPartner;
             this.authService.contactsCount = data.contactsCount;
+            this.authService.module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
           },
-          error => {
+          _error => {
             this.loading = false;
             this.rssFeedAccess = false;
             this.mdfAccess = false;

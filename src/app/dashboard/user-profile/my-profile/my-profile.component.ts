@@ -181,6 +181,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedCfIds = [];
     paginatedSelectedIds = [];
     isHeaderCheckBoxChecked: boolean = false;
+    requiredCfIds = [];
     
     constructor(public videoFileService: VideoFileService,  public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -2012,13 +2013,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.ngxloading = false;
                 if(data.statusCode==200){
                     this.sfCustomFieldsResponse = data.data;
-                    this.setSfCfPage(1);
                     this.sfcfMasterCBClicked = false;
                     $.each(this.sfCustomFieldsResponse, function (_index:number, customField) {
                         if (customField.selected) {
                         	self.selectedCfIds.push(customField.name);
                         }
+                        
+                        if (customField.required) {
+                        	self.requiredCfIds.push(customField.name);
+                        	if (!customField.selected) {
+                        		self.selectedCfIds.push(customField.name);
+                      		}
+                        }
                     });
+                    this.setSfCfPage(1);
                 }
             },
             error => {
@@ -2137,14 +2145,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.paginatedSelectedIds = this.referenceService.removeDuplicates( this.paginatedSelectedIds );
                 console.log( self.selectedCfIds );
             } else {
-                $( '[name="sfcf[]"]' ).prop( 'checked', false );
+            	let self = this;
+                //$( '[name="sfcf[]"]' ).prop( 'checked', false );
+                
+                $( '[name="sfcf[]"]' ).each( function() {
+                    var id = $( this ).val();
+                    if(self.requiredCfIds.indexOf(id) == -1) {
+                    	 $( this ).prop( 'checked', false );
+                    	 self.paginatedSelectedIds.splice( $.inArray( id, self.paginatedSelectedIds ), 1 );
+                    } 
+                    
+                });
+                
                 if ( this.sfcfPager.maxResults == this.sfcfPager.totalItems ) {
                     this.selectedCfIds = [];
                     this.paginatedSelectedIds = [];
                     //this.allselectedUsers.length = 0;
                 } else {
-                    this.paginatedSelectedIds = [];
+                    //this.paginatedSelectedIds = [];
                     let currentPageCfIds = this.sfcfPagedItems.map( function( a ) { return a.name; });
+                     this.paginatedSelectedIds = this.referenceService.removeDuplicates( this.paginatedSelectedIds );
                     this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays( this.selectedCfIds, currentPageCfIds );
                 }
             }
@@ -2155,16 +2175,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         let isChecked = $( '#' + cfName ).is( ':checked' );
         console.log( this.selectedCfIds )
         if ( isChecked ) {
-           // $( '#row_' + contactId ).addClass( 'contact-list-selected' );
-            this.selectedCfIds.push( cfName );
-            this.paginatedSelectedIds.push( cfName );
-            //this.allselectedUsers.push( object );
+            if(this.selectedCfIds.indexOf(cfName) == -1) {
+                 this.selectedCfIds.push( cfName );   	
+             }
+             if(this.paginatedSelectedIds.indexOf(cfName) == -1) {
+                 this.paginatedSelectedIds.push( cfName );   	
+             }
+            
             console.log( this.selectedCfIds );
         } else {
-           // $( '#row_' + cfName ).removeClass( 'contact-list-selected' );
             this.selectedCfIds.splice( $.inArray( cfName, this.selectedCfIds ), 1 );
             this.paginatedSelectedIds.splice( $.inArray( cfName, this.paginatedSelectedIds ), 1 );
-            //this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,email);
 
         }
         if ( this.paginatedSelectedIds.length == this.sfcfPagedItems.length ) {

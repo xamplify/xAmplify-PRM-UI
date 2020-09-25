@@ -17,7 +17,7 @@
 						<div style="float: left;">
 							<button class="btn btn-primary register_deal" data-toggle="tooltip" 
 								data-placement="top" title="Synchronize with Salesforce"
-								(click)="syncLeadsWithSalesforce()" *ngIf="syncSalesForce"
+								(click)="syncLeadsWithSalesforce()" *ngIf="!isPartner && syncSalesForce"
 								style="margin-right: 4px; margin-top: 0px !important;" translate>
 								<i class="fa fa-refresh"></i> Salesforce
 							</button>

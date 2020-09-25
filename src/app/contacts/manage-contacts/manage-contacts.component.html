@@ -1,3 +1,5 @@
+<ngx-loading [show]="campaignLoader"
+							[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content"
 	[class.ml0]="authenticationService.isSuperAdmin()">
 	<!-- page-breadcrumb -->
@@ -732,7 +734,10 @@
 														<th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
 														<th class="text-center" *ngIf="isPartner"></th>
 														<th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs" translate>Reason</th>
-														<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" translate>ACTIONS</th>
+														<th class="text-center" *ngIf="(contactsByType.selectedCategory == 'non-active' && isPartner) || contactsByType.selectedCategory == 'unsubscribe'" translate>ACTIONS</th>
+														<th></th>
+														<th *ngIf="authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid'"></th>
+														<th *ngIf="contactsByType.selectedCategory == 'non-active'"></th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -840,22 +845,24 @@
 																	data-placement="bottom"
 																	title="{{actionsDescription.partner_reSendMail}}"
 																	(click)="sendMail(contact.id)"> <i
-																	class="fa fa-envelope"></i>
+																	class="fa fa-envelope" aria-hidden="true"></i>
 																</a>
 															</div>
 														</td>
-														<!-- <td>
-															<button id='more_less_button_{{i}}'
-																(click)="contact.isShowDetails = ! contact.isShowDetails">
-																<span *ngIf="!contact.isShowDetails">More</span> <span
-																	*ngIf="contact.isShowDetails">Less</span>
-															</button>
-														</td> -->
+														<td *ngIf="authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid'">
+															<div class="actions-block override-actions" >
+																<a 	title="Campaign Analytics" (click)="showCampaigns(contact.id)">
+																	 <i	class="fa fa-line-chart" aria-hidden="true"></i>
+																</a>
+															</div>
+														</td>
+														<td></td>
+														<td *ngIf="contactsByType.selectedCategory == 'non-active' && isPartner"></td>
 														<ng-template #NA>N/A</ng-template>
 													</tr>
 													<tr
 												[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
-												<td colspan="8">
+												<td colspan="9">
 													<table cellpadding="5" cellspacing="0"
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>

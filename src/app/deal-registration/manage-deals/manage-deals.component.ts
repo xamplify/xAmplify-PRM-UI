@@ -101,7 +101,7 @@ export class ManageDealsComponent implements OnInit {
 
     customResponse: CustomResponse;
     superiorId: number = 0;
-	//syncSalesForce = false;
+	syncSalesForce = false;
 
     @ViewChild(ManagePartnersComponent)
     set leadId(partner: ManagePartnersComponent) {
@@ -144,6 +144,7 @@ export class ManageDealsComponent implements OnInit {
         this.opportunitiesAnalyticsLoader = true;
         this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.startOrStopAllCountsLoader(true);
+        this.checkSalesforceIntegration();
     }
     init() {
         this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
@@ -1208,5 +1209,29 @@ export class ManageDealsComponent implements OnInit {
         this.campaignsPagination = new Pagination();
         this.campaignsPaginationByDeals = new Pagination();
     }
-	
+    
+	checkSalesforceIntegration(): any {
+	  this.referenceService.loading(this.httpRequestLoader, true);
+      this.integrationService.checkConfigurationByTypeAndUserId("isalesforce", this.loggedInUserId).subscribe(data =>{
+           let response = data;
+           if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+               this.integrationService.checkSfCustomFields(this.loggedInUserId).subscribe(cfData =>{
+           			let cfResponse = cfData;
+           			if (cfResponse.statusCode === 400) {
+           				this.syncSalesForce = false;
+           			} else {
+           				this.syncSalesForce = true;
+           			}
+       			},error =>{
+           			console.log("Error in salesforce checkSalesforceIntegration()");
+       			}, () => console.log("Error in salesforce checkSalesforceIntegration()"));
+              	console.log("Error in salesforce checkSalesforceIntegration()");
+           } else{
+                 this.syncSalesForce = false;             
+              }
+       },error =>{
+       		console.log("Error in salesforce checkSalesforceIntegration()");
+       }, () => console.log("Error in checkSalesforceIntegration()"));
+       this.referenceService.loading(this.httpRequestLoader, false);
+   }
 }

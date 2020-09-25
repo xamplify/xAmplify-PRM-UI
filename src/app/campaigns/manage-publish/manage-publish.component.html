@@ -63,7 +63,7 @@
                                                     title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
                                                     <i class="fa fa-th-large p10"  aria-hidden="true"></i>
                                                 </span>
-                                                <ng-container *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')">
+                                                <ng-container *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
                                                     <span  class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
                                                     title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView"
                                                      (click)="setViewType('Folder-Grid')">
@@ -196,7 +196,7 @@
                                                             </b>
                                                     </ng-container>
                                                 </span>
-                                                <span align="right" title="Upload Date">
+                                                <span align="right" title="Launch Time">
                                                     <b
                                                         *ngIf="campaign.scheduleType=='NOW'">
                                                         <app-timestamp *ngIf="!refService.isSafariBrowser()"
@@ -537,7 +537,7 @@
                                                                 </b>
                                                     </ng-container>
                                                     </span>
-                                                    <span title="Upload date"><b>
+                                                    <span title="Launch Time"><b>
                                                        <ng-container *ngIf="campaign.scheduleType!=='SCHEDULE'">
                                                         <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
                                                         <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>

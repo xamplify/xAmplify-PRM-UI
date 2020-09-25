@@ -11,6 +11,7 @@ import {MdfDetails} from '../models/mdf-details';
 import {VanityLoginDto} from '../../util/models/vanity-login-dto';
 import {SaveMdfRequest} from '../models/save-mdf-request';
 import {MdfRequestDto} from "../models/mdf-request-dto";
+import {MdfRequestCommentDto} from '../models/mdf-request-comment-dto';
 
 
 @Injectable()
@@ -165,11 +166,52 @@ getMdfRequestForm(companyId: number) {
       .catch(this.handleError);
 }
 
-getRequestDetailsByIdForTimeLine(requestId:number,loggedInUserCompanyId:number){
-  return this.http.get(this.URL + "getRequestDetailsByIdForTimeLine/" + requestId+"/"+loggedInUserCompanyId+"?access_token=" + this.authenticationService.access_token)
+getRequestDetailsAndTimeLineHistory(requestId:number,loggedInUserCompanyId:number){
+  return this.http.get(this.URL + "getRequestDetailsAndTimeLineHistory/" + requestId+"/"+loggedInUserCompanyId+"?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
 }
+
+getPartnerAndMdfAmountDetails(partnershipId:number){
+  return this.http.get(this.URL + "getPartnerAndMdfAmountDetails/" + partnershipId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
+getMdfDetailsTimeLineHistory(mdfDetailsId:number,loggedInUserCompanyId:number){
+  return this.http.get(this.URL + "getMdfDetailsTimeLineHistory/" + mdfDetailsId+"/"+loggedInUserCompanyId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
+  uploadFile(formData: FormData, mdfRequestUploadDto: any) {
+    formData.append('mdfRequestUploadDto', new Blob([JSON.stringify(mdfRequestUploadDto)],
+      {
+        type: "application/json"
+      }));
+    return this.http.post(this.URL + "uploadDocuments?access_token=" + this.authenticationService.access_token, formData)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+listMdfRequestDocuments(pagination:Pagination){
+  return this.http.post(this.URL + "listMdfRequestDocuments?access_token=" + this.authenticationService.access_token,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+
+saveComment(mdfRequestCommentDto:MdfRequestCommentDto){
+  return this.http.post(this.URL + "saveComment?access_token=" + this.authenticationService.access_token,mdfRequestCommentDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+
+listComments(requestId:number){
+  return this.http.get(this.URL + "listComments/"+requestId+"?access_token=" + this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+
 
 
   extractData(res: Response) {
