@@ -98,7 +98,7 @@ export class VanityURLService {
    // let url = "vendor.xamplify.com";
      let url =window.location.hostname;
 
-    if (!url.includes("release")) {
+    if (!url.includes("release") && !url.includes("192.168")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
         this.authenticationService.vanityURLEnabled = true;
