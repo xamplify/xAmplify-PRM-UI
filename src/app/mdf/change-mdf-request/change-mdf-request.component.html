@@ -186,25 +186,25 @@
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="mdfRequestOwner?.fullName!=null">
                                     <label title="{{mdfRequestOwner?.fullName}}" style="font-size: 15px;font-weight: 600;" *ngIf="mdfRequestOwner?.fullName!=null">
-                                       {{mdfRequestOwner?.fullName | slice:0:20}}
-                                       <span *ngIf="mdfRequestOwner?.fullName?.length>20">..</span>
+                                       {{mdfRequestOwner?.fullName | slice:0:15}}
+                                       <span *ngIf="mdfRequestOwner?.fullName?.length>15">..</span>
                                     </label>
                                  </ng-container>
                                  <label title="{{mdfRequestOwner?.emailId}}" style="font-size: 15px;font-weight: 600;">
-                                    {{mdfRequestOwner?.emailId | slice:0:20}}
-                                    <span *ngIf="mdfRequestOwner?.emailId?.length>20">..</span>
+                                    {{mdfRequestOwner?.emailId | slice:0:15}}
+                                    <span *ngIf="mdfRequestOwner?.emailId?.length>15">..</span>
                                  </label>
                                  <label *ngIf="mdfRequestOwner?.title!=null"  title="{{mdfRequestOwner?.title}}" style="font-size: 15px;font-weight: 600;">
-                                    {{mdfRequestOwner?.title | slice:0:20}}
-                                    <span *ngIf="mdfRequestOwner?.title?.length>20">..</span>
+                                    {{mdfRequestOwner?.title | slice:0:15}}
+                                    <span *ngIf="mdfRequestOwner?.title?.length>15">..</span>
                                  </label>
                                  <label *ngIf="mdfRequestOwner?.companyName!=null" title="{{mdfRequestOwner?.companyName}}" style="font-size: 14px;color: #65b6e4;">
-                                    {{mdfRequestOwner?.companyName | slice:0:20}}
-                                    <span *ngIf="mdfRequestOwner?.companyName?.length>20">..</span>
+                                    {{mdfRequestOwner?.companyName | slice:0:15}}
+                                    <span *ngIf="mdfRequestOwner?.companyName?.length>15">..</span>
                                  </label>
                                  <label *ngIf="mdfRequestOwner?.companyPhoneNumber!=null" title="{{mdfRequestOwner?.companyPhoneNumber}}" style="font-size: 15px;font-weight: 600;">
-                                    Phone: {{mdfRequestOwner?.companyPhoneNumber | slice:0:20}}
-                                    <span *ngIf="mdfRequestOwner?.companyPhoneNumber?.length>20">..</span></label>
+                                    Phone: {{mdfRequestOwner?.companyPhoneNumber | slice:0:15}}
+                                    <span *ngIf="mdfRequestOwner?.companyPhoneNumber?.length>15">..</span></label>
                               </div>
                            </div>
                         </div>
@@ -218,25 +218,25 @@
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="vendorContact?.fullName!=null">
                                     <label title="{{vendorContact?.fullName}}" style="font-size: 15px;font-weight: 600;">
-                                       {{vendorContact?.fullName | slice:0:20}}
-                                       <span *ngIf="vendorContact?.fullName?.length>20">..</span>
+                                       {{vendorContact?.fullName | slice:0:15}}
+                                       <span *ngIf="vendorContact?.fullName?.length>15">..</span>
                                     </label>
                                  </ng-container>
                                  <label title="{{vendorContact?.emailId}}" style="font-size: 15px;font-weight: 600;">
-                                    {{vendorContact?.emailId | slice:0:18}}
-                                    <span *ngIf="vendorContact?.emailId?.length>18">..</span>
+                                    {{vendorContact?.emailId | slice:0:15}}
+                                    <span *ngIf="vendorContact?.emailId?.length>15">..</span>
                                  </label>
                                  <label *ngIf="vendorContact?.companyName!=null"  title="{{vendorContact?.companyName}}" style="font-size: 15px;font-weight: 600;">
-                                    {{vendorContact?.companyName | slice:0:20}}
-                                    <span *ngIf="vendorContact?.companyName?.length>20">..</span>
+                                    {{vendorContact?.companyName | slice:0:15}}
+                                    <span *ngIf="vendorContact?.companyName?.length>15">..</span>
                                  </label>
                                  <label *ngIf="vendorContact?.website!=null"  title="{{vendorContact?.website}}" style="font-size: 15px;font-weight: 600;">
-                                    {{vendorContact?.website | slice:0:20}}
-                                    <span *ngIf="vendorContact?.website?.length>20">..</span>
+                                    {{vendorContact?.website | slice:0:15}}
+                                    <span *ngIf="vendorContact?.website?.length>15">..</span>
                                  </label>
                                  <label *ngIf="vendorContact?.phoneNumber!=null && vendorContact?.phoneNumber?.length>0" title="{{vendorContact?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
-                                    Phone: {{vendorContact?.phoneNumber | slice:0:20}}
-                                    <span *ngIf="vendorContact?.phoneNumber?.length>20">..</span></label>
+                                    Phone: {{vendorContact?.phoneNumber | slice:0:15}}
+                                    <span *ngIf="vendorContact?.phoneNumber?.length>15">..</span></label>
                               </div>
                            </div>
                         </div>
@@ -250,25 +250,25 @@
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="partnerManager?.fullName!=null">
                                     <label title="{{partnerManager?.fullName}}" style="font-size: 15px;font-weight: 600;">
-                                       {{partnerManager?.fullName | slice:0:20}}
-                                       <span *ngIf="partnerManager?.fullName?.length>20">..</span>
+                                       {{partnerManager?.fullName | slice:0:15}}
+                                       <span *ngIf="partnerManager?.fullName?.length>15">..</span>
                                     </label>
                                  </ng-container>
                                  <label title="{{partnerManager?.emailId}}" style="font-size: 15px;font-weight: 600;">
-                                    {{partnerManager?.emailId | slice:0:20}}
-                                    <span *ngIf="partnerManager?.emailId?.length>20">..</span>
+                                    {{partnerManager?.emailId | slice:0:15}}
+                                    <span *ngIf="partnerManager?.emailId?.length>15">..</span>
                                  </label>
                                  <label *ngIf="partnerManager?.title!=null"  title="{{partnerManager?.title}}" style="font-size: 15px;font-weight: 600;">
-                                    {{partnerManager?.title | slice:0:20}}
-                                    <span *ngIf="partnerManager?.title?.length>20">..</span>
+                                    {{partnerManager?.title | slice:0:15}}
+                                    <span *ngIf="partnerManager?.title?.length>15">..</span>
                                  </label>
                                  <label *ngIf="partnerManager?.companyName!=null" title="{{partnerManager?.companyName}}" style="font-size: 14px;color: #65b6e4;">
-                                    {{partnerManager?.companyName | slice:0:20}}
-                                    <span *ngIf="partnerManager?.companyName?.length>20">..</span>
+                                    {{partnerManager?.companyName | slice:0:15}}
+                                    <span *ngIf="partnerManager?.companyName?.length>15">..</span>
                                  </label>
                                  <label *ngIf="partnerManager?.phoneNumber!=null && partnerManager?.phoneNumber?.length>0" title="{{partnerManager?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
-                                    Phone: {{partnerManager?.phoneNumber | slice:0:20}}
-                                    <span *ngIf="partnerManager?.phoneNumber?.length>20">..</span></label>
+                                    Phone: {{partnerManager?.phoneNumber | slice:0:15}}
+                                    <span *ngIf="partnerManager?.phoneNumber?.length>15">..</span></label>
                               </div>
                            </div>
                         </div>
@@ -344,9 +344,11 @@
                                     [(ngModel)]="selectedMdfRequest.requestAmount"  [ngModelOptions]="{standalone: true}" 
                                     placeholder="Requested Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                                     <ng-container *ngFor="let errorResponse of errorResponses">
-                                       <span class="required" *ngIf="errorResponse.field=='requestAmount'">{{errorResponse.message}}</span>
+                                       <ng-container *ngIf="errorResponse.field=='requestAmount'">
+                                       <span class="required" >{{errorResponse.message}}</span>
                                        <ng-container *ngIf="errorResponse.message.indexOf('MDF')>-1">
                                           <a (click)="openMdfAmountPopup()">Click here to add MDF Amount</a>
+                                       </ng-container>
                                        </ng-container>
                                     </ng-container>
                                    </div>
