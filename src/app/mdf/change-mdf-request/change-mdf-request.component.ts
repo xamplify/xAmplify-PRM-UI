@@ -132,7 +132,6 @@ export class ChangeMdfRequestComponent implements OnInit {
   }
 
   updateMdfRequest(){
-    this.referenceService.goToTop();
     this.resetErrors();
     this.modalPopupLoader = true;
     this.selectedMdfRequest.loggedInUserId = this.loggedInUserId;
