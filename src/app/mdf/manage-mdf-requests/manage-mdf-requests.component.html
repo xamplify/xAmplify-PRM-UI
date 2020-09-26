@@ -133,7 +133,7 @@
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                         Manage Vendors
                      </div>
-                     <div class="inputs" align="right" style="float: right; padding: 4px">
+                     <div class="inputs"  style="float: right; padding: 4px">
                         <div style="float: left; margin: 0 10px;">
                           <select class="form-control" [(ngModel)]="sortOption.mdfVendorsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                             <option *ngFor="let option of sortOption.mdfVendorsSortDropDownOptions"
@@ -153,7 +153,7 @@
                   <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
                   <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!listLoader.isLoading">
                      <div class="btn-group pull-right" style="margin-bottom: 10px; left: -16px;">
-                        <div class="inputs" align="right" style="float: right"></div>
+                        <div class="inputs"  style="float: right"></div>
                      </div>
                      <div class="clearfix">
                         <div class="col-xs-12" style="padding: 10px 0;">

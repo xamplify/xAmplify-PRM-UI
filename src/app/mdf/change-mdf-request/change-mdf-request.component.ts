@@ -157,7 +157,7 @@ export class ChangeMdfRequestComponent implements OnInit {
 
   viewTimeLine(){
     this.loading = true;
-    this.referenceService.goToRouter('/home/mdf/timeline/v/'+this.mdfRequest.id);
+    this.referenceService.goToRouter('/home/mdf/timeline/v/c/'+this.mdfRequest.id);
   }
 
   openMdfAmountPopup(){

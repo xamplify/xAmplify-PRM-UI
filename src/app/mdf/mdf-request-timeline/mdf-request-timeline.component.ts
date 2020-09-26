@@ -37,6 +37,7 @@ export class MdfRequestTimelineComponent implements OnInit {
   modalPopupLoader: boolean;
   customResponse:CustomResponse = new CustomResponse();
   pagination:Pagination = new Pagination();
+  changeRequest:string = "";
   constructor(public documentListLoader: HttpRequestLoader,private pagerService:PagerService,private mdfService: MdfService,private route: ActivatedRoute,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) { 
 	    this.loggedInUserId = this.authenticationService.getUserId();
 }
@@ -45,6 +46,7 @@ export class MdfRequestTimelineComponent implements OnInit {
     this.startLoaders();
     this.requestId = parseInt(this.route.snapshot.params['requestId']);
     this.role = this.route.snapshot.params['role'];
+    this.changeRequest = this.route.snapshot.params['changeRequest'];
     this.partnerView = "p"==this.role;
     if("v"==this.role || "p"==this.role){
       if(this.partnerView){
@@ -109,7 +111,11 @@ export class MdfRequestTimelineComponent implements OnInit {
   goBack(){
     this.startLoaders();
     if("v"==this.role){
-     this.referenceService.goToRouter("/home/mdf/requests");
+      if(this.changeRequest=="c"){
+        this.referenceService.goToRouter("/home/mdf/change-request/"+this.requestId);
+      }else{
+        this.referenceService.goToRouter("/home/mdf/requests");
+      }
     }else if("p"==this.role){
       this.referenceService.goToRouter("/home/mdf/requests/p");
     }
