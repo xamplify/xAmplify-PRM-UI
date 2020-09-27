@@ -2801,6 +2801,17 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     
   }
 
+goToCampaignAnaltyics(item:any){
+  this.loading = true;
+  let prefixUrl = "/home/campaigns/user-campaigns/";
+  let suffixUrl =  item.userId+"/b"+"/"+item.campaignId;
+  if(item.channelCampaign){
+    this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
+  }else{
+    this.referenceService.goToRouter(prefixUrl + "/c/" + suffixUrl);
+  }
+}
+
     
 
 }

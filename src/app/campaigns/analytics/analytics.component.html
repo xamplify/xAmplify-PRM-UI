@@ -880,8 +880,8 @@
                           </thead>
                           <tbody>
                             <ng-container *ngFor="let item of campaignViewsPagination.pagedItems;let i=index">
-                              <tr (click)="userTimeline(item);">
-                                <td>
+                              <tr (click)="userTimeline(item);" title="Click here to see all campaigns analytics">
+                                <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)">
                                    <i title="This user is unsubscribed"  *ngIf="item?.unsubscribedUser" class="fa fa-flag" id="unsubscribed-flag" aria-hidden="true"></i>
                                   <app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
                                   <!-- here emailId coming as userMail -->

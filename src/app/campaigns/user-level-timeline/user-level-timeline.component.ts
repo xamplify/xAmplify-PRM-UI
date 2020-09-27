@@ -39,6 +39,8 @@ export class UserLevelTimelineComponent implements OnInit {
   leadData: any;
   selectedRow={};
   previousRouterAlias: string;
+  navigatedFrom:string;
+  analyticsCampaignId:number;
   constructor(private dealRegistrationService:DealRegistrationService,private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
 	}
 
@@ -46,12 +48,14 @@ export class UserLevelTimelineComponent implements OnInit {
     this.loading = true;
     this.dataLoader = true;
     this.userType = this.route.snapshot.params['type'];
+    this.navigatedFrom = this.route.snapshot.params['navigatedFrom'];
     this.previousRouterAlias = this.userType;
 		if(this.userType=="pa" || this.userType=="pm"){
 			this.userType = "p";
 		}
     this.selectedUserId = parseInt(this.route.snapshot.params['userId']);
     this.campaignId = parseInt(this.route.snapshot.params['campaignId']);
+    this.analyticsCampaignId = parseInt(this.route.snapshot.params['analyticsCampaignId']);
     this.getUserLevelTimeLineSeriesData();
   }
 
@@ -113,7 +117,15 @@ export class UserLevelTimelineComponent implements OnInit {
 
   goBack(){
     this.loading = true;
-    this.referenceService.goToRouter("/home/campaigns/user-campaigns/"+this.previousRouterAlias+"/"+this.selectedUserId);
+    let url = "/home/campaigns/user-campaigns/"+this.previousRouterAlias+"/"+this.selectedUserId;
+    if(this.navigatedFrom!=undefined && this.analyticsCampaignId==undefined){
+      this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
+    }else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined ){
+      this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.analyticsCampaignId);
+    }
+    else{
+      this.referenceService.goToRouter(url);
+    }
   }
 
   /****************Deal Registration***************************/
