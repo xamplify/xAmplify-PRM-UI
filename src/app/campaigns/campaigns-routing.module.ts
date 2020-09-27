@@ -55,7 +55,9 @@ export const campaignRoutes: Routes = [
   { path: "calendar/:teamMemberId/:categoryId", component: CalendarComponent },
   { path: "sms", component: CreateSmsCampaignComponent },
   { path: "timeline/:type/:campaignId/:userId", component: UserLevelTimelineComponent },
-  { path: 'user-campaigns/:type/:userId',component:UserCampaignsListUtilComponent}
+  { path: 'user-campaigns/:type/:userId',component:UserCampaignsListUtilComponent},
+  { path: 'user-campaigns/:type/:userId/:navigatedFrom',component:UserCampaignsListUtilComponent}
+
 
 
 ];

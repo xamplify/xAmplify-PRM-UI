@@ -41,6 +41,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	colspanValue: number = 7;
 	selectedCampaignTypeIndex = 0;
 	previousRouterAlias = "";
+	navigatedFrom = "";
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -50,6 +51,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.startLoaders();
 		this.pagination.userId = parseInt(this.route.snapshot.params['userId']);
 		this.userType = this.route.snapshot.params['type'];
+		this.navigatedFrom = this.route.snapshot.params['navigatedFrom'];
 		this.previousRouterAlias = this.userType;
 		if(this.userType=="pa" || this.userType=="pm"){
 			this.userType = "p";
@@ -144,6 +146,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 			this.circleAlphabet = emailId.slice(0,1);
 		  }
 		}, error => {
+		  this.stopLoaders();
 		  this.xtremandLogger.log(error);
 		  this.xtremandLogger.errorPage(error);
 		});
@@ -239,15 +242,32 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	goBack(){
 		this.loading = true;
 		let url = "/home/";
+		let manageCampaignsUrl = url+"campaigns/manage";
 		if(this.previousRouterAlias=="pa"){
 			url = url+"partners/add";
 			this.referenceService.goToRouter(url);
 		}else if(this.previousRouterAlias=="pm"){
 			url = url+"partners/";
 			this.referenceService.goToRouter(url+"manage");
-		}else{
-			url = url+"contacts/";
-			this.referenceService.goToRouter(url+"manage");
-		}
+		}else if(this.previousRouterAlias=="p"){
+			if(this.navigatedFrom=="a"){
+				this.referenceService.goToRouter(manageCampaignsUrl);
+			}else if(this.navigatedFrom=="b"){
+
+			}
+			
+		}else if(this.previousRouterAlias=="c"){
+			if(this.navigatedFrom=="a"){
+				this.referenceService.goToRouter(manageCampaignsUrl);
+			}else if(this.navigatedFrom=="b"){
+
+			}else{
+				url = url+"contacts/";
+				this.referenceService.goToRouter(url+"manage");
+			}
+			
+	   }
 	}
+	
 }
+
