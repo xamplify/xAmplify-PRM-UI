@@ -114,6 +114,9 @@
                                     <span class="required" *ngIf="columnInfo.divClass=='error'">
                                        Please enter a valid email address
                                     </span>
+                                    <span class="required" *ngIf="duplicateTitle && columnInfo.defaultColumn && columnInfo.labelType=='text'">
+                                       Already exists
+                                    </span>
                                  </ng-container>
                               <!-- ---------------------------Text Area----------------------------- -->
                                  <ng-container *ngIf="columnInfo.labelType=='textarea'">
