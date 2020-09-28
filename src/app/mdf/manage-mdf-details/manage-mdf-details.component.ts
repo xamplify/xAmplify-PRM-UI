@@ -103,6 +103,7 @@ export class ManageMdfDetailsComponent implements OnInit {
   }
 
   listPartners(pagination: Pagination) {
+    this.referenceService.goToTop();
     this.loading = true;
     this.referenceService.loading(this.partnerListLoader, true);
     this.mdfService.listPartners(pagination).subscribe((result: any) => {
