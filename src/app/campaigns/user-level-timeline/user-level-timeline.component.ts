@@ -55,7 +55,10 @@ export class UserLevelTimelineComponent implements OnInit {
 		}
     this.selectedUserId = parseInt(this.route.snapshot.params['userId']);
     this.campaignId = parseInt(this.route.snapshot.params['campaignId']);
-    this.analyticsCampaignId = parseInt(this.route.snapshot.params['analyticsCampaignId']);
+	let analyticsCampaignIdParam = this.route.snapshot.params['analyticsCampaignId'];
+	if(analyticsCampaignIdParam!=undefined){
+		this.analyticsCampaignId = parseInt(analyticsCampaignIdParam);
+	}
     this.getUserLevelTimeLineSeriesData();
   }
 

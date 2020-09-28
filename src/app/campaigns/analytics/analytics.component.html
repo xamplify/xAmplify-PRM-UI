@@ -866,6 +866,7 @@
                               </th>
                               <th id="table-header" *ngIf="campaignType === 'VIDEO'">Email Opened</th>
                               <th id="table-header" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">URLs Clicked Count</th>
+                              <th id="table-header" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">User Level Campaign Anlaytics</th>
                               <th id="table-header" *ngIf="campaign.dipCampaign">
                                 Auto Responses
                               </th>
@@ -881,7 +882,7 @@
                           <tbody>
                             <ng-container *ngFor="let item of campaignViewsPagination.pagedItems;let i=index">
                               <tr (click)="userTimeline(item);" title="Click here to see all campaigns analytics">
-                                <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)">
+                                <td>
                                    <i title="This user is unsubscribed"  *ngIf="item?.unsubscribedUser" class="fa fa-flag" id="unsubscribed-flag" aria-hidden="true"></i>
                                   <app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
                                   <!-- here emailId coming as userMail -->
@@ -985,7 +986,15 @@
                                   </ng-container>
                                 </td>
                                  <td class="text-center" *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
-                                  {{item.urlsClickedCount}}</td>
+                                  {{item.urlsClickedCount}}
+                                 </td>
+                                 <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)" class="text-center" *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
+	                                <div class="actions-block override-actions" style="margin-right:100px;">
+	                                <a data-rel="fancybox-button" title="User Level Campaign Analytics">
+	                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+	                                   </a>
+	                                </div>
+                                 </td>
                                 <td *ngIf="campaign.dipCampaign">
                                   <!-- removed id="align-center" code -->
                                   <div class="actions-block" (click)="$event.stopPropagation()">

@@ -51,7 +51,10 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.tilesLoader = true;
 		this.startLoaders();
 		this.pagination.userId = parseInt(this.route.snapshot.params['userId']);
-		this.analyticsCampaignId = parseInt(this.route.snapshot.params['analyticsCampaignId']);
+		let analyticsCampaignIdParam = this.route.snapshot.params['analyticsCampaignId'];
+		if(analyticsCampaignIdParam!=undefined){
+			this.analyticsCampaignId = parseInt(analyticsCampaignIdParam);
+		}
 		this.userType = this.route.snapshot.params['type'];
 		this.navigatedFrom = this.route.snapshot.params['navigatedFrom'];
 		this.previousRouterAlias = this.userType;
