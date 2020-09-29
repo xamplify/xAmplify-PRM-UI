@@ -1,4 +1,10 @@
 li .disabled{
     pointer-events: none;opacity: 0.6;
 }
+.cw{
+    width: 65% !important;
+}
+.pt{
+   margin-top: 36px;
+}
 

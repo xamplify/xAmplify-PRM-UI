@@ -95,6 +95,7 @@ export class ManageMdfRequestFormComponent implements OnInit {
   }
 
   listSubmittedData( pagination: Pagination ) {
+	this.referenceService.goToTop();
     pagination.searchKey = this.searchKey;
     this.loading = true;
     this.referenceService.loading( this.httpRequestLoader, true );

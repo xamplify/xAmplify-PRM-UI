@@ -65,6 +65,7 @@ export class AddMdfFundsModalPopupComponent implements OnInit {
 			this.mdfDetails.mdfAmountTypeInString = MdfAmountType[MdfAmountType.FUND_ADDED];
 			this.mdfDetails.calculatedAvailableBalance = this.mdfPartnerDto.availableBalance;
 			this.modalPopupLoader = false;
+			this.referenceService.goToTop();
 		}, error => {
 		  this.xtremandLogger.log(error);
 		  $('#'+this.modalPopupId).modal('hide');

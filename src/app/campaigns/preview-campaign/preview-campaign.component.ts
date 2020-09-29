@@ -1468,4 +1468,16 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
         },
       () => this.xtremandLogger.info( "Finished changeUserWorkFlowStatus()" ) );
   }
+
+  viewCampaigns(user:any,campaign:any){
+    $('#myModal').modal('hide');
+    this.ngxloading = true;
+    let prefixUrl = "/home/campaigns/user-campaigns/";
+    let suffixUrl =  user.userId+"/a";
+    if(campaign.channelCampaign){
+      this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
+    }else{
+      this.referenceService.goToRouter(prefixUrl + "/c/" + suffixUrl);
+    }
+  }
 }

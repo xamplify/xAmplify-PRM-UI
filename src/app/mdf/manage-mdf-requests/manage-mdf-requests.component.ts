@@ -138,6 +138,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
     });
   }
   listVendors(pagination:Pagination) {
+	this.referenceService.goToTop();
     this.loading = true;
     this.referenceService.loading(this.listLoader, true);
     this.mdfService.listMdfAccessVendors(this.pagination).subscribe((result: any) => {

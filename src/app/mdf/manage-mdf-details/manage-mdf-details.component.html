@@ -96,7 +96,7 @@
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                         Manage MDF Details
                      </div>
-                     <div class="inputs" align="right" style="float: right; padding: 4px">
+                     <div class="inputs"  style="float: right; padding: 4px">
                         <div style="float: left; margin: 0 10px;">
                           <select class="form-control" [(ngModel)]="sortOption.mdfPartnersSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                             <option *ngFor="let option of sortOption.mdfPartnersSortDropDownOptions"
@@ -113,12 +113,9 @@
                         </div>
                      </div>
                   </div>
-                  <app-list-loader *ngIf="partnerListLoader.isLoading"></app-list-loader>
-                  <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!partnerListLoader.isLoading">
-                     <div class="btn-group pull-right" style="margin-bottom: 10px; left: -16px;">
-                        <div class="inputs" align="right" style="float: right"></div>
-                     </div>
-                     <div class="clearfix">
+                  <div class="portlet-body table-responsive" style="overflow: hidden;">
+                     <app-list-loader *ngIf="partnerListLoader.isLoading"></app-list-loader>
+                     <div class="clearfix" *ngIf="!partnerListLoader.isLoading">
                         <div class="col-xs-12" style="padding: 10px 0;">
                            <div class="table-responsive">
                               <table class='table tgrid' aria-describedby="manage-mdf-fund-table">
@@ -162,16 +159,16 @@
                                     </ng-container>
                                  </tbody>
                               </table>
-                              <div *ngIf="pagination.pagedItems.length !== 0">
-                                <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)" [hidden]="partnerListLoader.isLoading">
-                                </app-pagination>
-                            </div>
                             <div *ngIf="pagination.totalRecords==0 && !partnerListLoader.isLoading" class="alert alert-info">
                                 <strong>No Data Found.</strong>
                             </div>
                            </div>
                         </div>
                      </div>
+                     <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="partnerListLoader.isLoading">
+                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)" [hidden]="partnerListLoader.isLoading">
+                        </app-pagination>
+                    </div>
                   </div>
                </div>
                <!-- END EXAMPLE TABLE PORTLET-->

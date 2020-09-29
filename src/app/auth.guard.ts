@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     formBaseUrl = 'forms';
     landingPagesUrl = 'pages';
     mdfUrl = 'mdf';
+    damUrl = 'dam';
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -137,6 +138,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
          if(url.indexOf(this.mdfUrl)>-1){
             return this.authorizeUrl(roles, url, this.mdfUrl);
          }
+         if(url.indexOf(this.damUrl)>-1){
+            return this.authorizeUrl(roles, url, this.damUrl);
+         }
       }catch(error){ console.log('error'+error);}
     }
 
@@ -213,6 +217,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 return this.goToAccessDenied(url);
             }
         }else if(urlType==this.mdfUrl){
+            return true;
+        }else if(urlType==this.damUrl){
             return true;
         }
         else if(urlType==this.landingPagesUrl){

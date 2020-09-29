@@ -9,11 +9,11 @@
          <li><a translate>Change Request</a></li>
       </ul>
       <a class="close-circle xamp-margin-left-icon" (click)="goToManageMdfRequests()" aria-hidden="true">
-         <i class="fa fa-times" aria-hidden="true"></i>
-     </a>
-     <a class="close-circle xamp-margin-left-icon" (click)="loadData()" aria-hidden="true">
+      <i class="fa fa-times" aria-hidden="true"></i>
+      </a>
+      <a class="close-circle xamp-margin-left-icon" (click)="loadData()" aria-hidden="true">
       <i class="fa fa-refresh" aria-hidden="true"></i>
-  </a>
+      </a>
    </div>
    <app-modal-popup-loader *ngIf="pageLoader"></app-modal-popup-loader>
    <div class="row" *ngIf="!pageLoader">
@@ -25,8 +25,8 @@
                      <div class="row">
                         <div class="col-md-10 col-lg-10">
                            <h2 style="font-weight: 500; color: #867c7c;">
-                                 {{mdfRequest?.title | slice:0:40}}
-                               <span *ngIf="mdfRequest?.title?.length>40">..</span>
+                              {{mdfRequest?.title | slice:0:40}}
+                              <span *ngIf="mdfRequest?.title?.length>40">..</span>
                            </h2>
                         </div>
                         <div class="col-md-2 col-lg-2 pl0" style="padding-top:15px;">
@@ -37,7 +37,7 @@
                                     <span class="caret"></span></button>
                                     <ul class="dropdown-menu">
                                        <li><a (click)="openForm()">Change MDF Request Status & Assignment</a></li>
-                                       <!-- <li><a (click)="viewTimeLine()">View Timeline </a></li> -->
+                                       <li><a (click)="viewTimeLine()">View Timeline </a></li>
                                        <li class="disabled"><a href="javascript:void(0)">Change MDF Request Owner</a></li>
                                        <li class="disabled"><a href="javascript:void(0)">Archive </a></li>
                                        <li class="disabled"><a href="javascript:void(0)">Delete </a></li>
@@ -68,11 +68,11 @@
                                           <label style="font-size: 15px;font-weight: 600;">MDF Request Owner:</label><br>
                                           <label title="{{mdfRequestOwner?.displayName}} ({{mdfRequestOwner?.companyName}})" style="font-size: 14px;color: #65b6e4;">
                                              {{mdfRequestOwner?.displayName | slice:0:18}}
-                                               <span *ngIf="mdfRequestOwner?.displayName?.length>18">..</span>
-                                               <ng-container *ngIf="mdfRequestOwner?.companyName!=null && mdfRequestOwner?.companyName.length>0">
+                                             <span *ngIf="mdfRequestOwner?.displayName?.length>18">..</span>
+                                             <ng-container *ngIf="mdfRequestOwner?.companyName!=null && mdfRequestOwner?.companyName.length>0">
                                                 ( {{mdfRequestOwner?.companyName | slice:0:18}}
                                                 <span *ngIf="mdfRequestOwner?.companyName?.length>18">..</span> )
-                                               </ng-container>
+                                             </ng-container>
                                           </label>
                                        </div>
                                     </div>
@@ -181,30 +181,30 @@
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
+                                 <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
                               </div>
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="mdfRequestOwner?.fullName!=null">
                                     <label title="{{mdfRequestOwner?.fullName}}" style="font-size: 15px;font-weight: 600;" *ngIf="mdfRequestOwner?.fullName!=null">
-                                       {{mdfRequestOwner?.fullName | slice:0:20}}
-                                       <span *ngIf="mdfRequestOwner?.fullName?.length>20">..</span>
+                                    {{mdfRequestOwner?.fullName | slice:0:15}}
+                                    <span *ngIf="mdfRequestOwner?.fullName?.length>15">..</span>
                                     </label>
                                  </ng-container>
                                  <label title="{{mdfRequestOwner?.emailId}}" style="font-size: 15px;font-weight: 600;">
-                                    {{mdfRequestOwner?.emailId | slice:0:20}}
-                                    <span *ngIf="mdfRequestOwner?.emailId?.length>20">..</span>
+                                 {{mdfRequestOwner?.emailId | slice:0:15}}
+                                 <span *ngIf="mdfRequestOwner?.emailId?.length>15">..</span>
                                  </label>
                                  <label *ngIf="mdfRequestOwner?.title!=null"  title="{{mdfRequestOwner?.title}}" style="font-size: 15px;font-weight: 600;">
-                                    {{mdfRequestOwner?.title | slice:0:20}}
-                                    <span *ngIf="mdfRequestOwner?.title?.length>20">..</span>
+                                 {{mdfRequestOwner?.title | slice:0:15}}
+                                 <span *ngIf="mdfRequestOwner?.title?.length>15">..</span>
                                  </label>
                                  <label *ngIf="mdfRequestOwner?.companyName!=null" title="{{mdfRequestOwner?.companyName}}" style="font-size: 14px;color: #65b6e4;">
-                                    {{mdfRequestOwner?.companyName | slice:0:20}}
-                                    <span *ngIf="mdfRequestOwner?.companyName?.length>20">..</span>
+                                 {{mdfRequestOwner?.companyName | slice:0:15}}
+                                 <span *ngIf="mdfRequestOwner?.companyName?.length>15">..</span>
                                  </label>
                                  <label *ngIf="mdfRequestOwner?.companyPhoneNumber!=null" title="{{mdfRequestOwner?.companyPhoneNumber}}" style="font-size: 15px;font-weight: 600;">
-                                    Phone: {{mdfRequestOwner?.companyPhoneNumber | slice:0:20}}
-                                    <span *ngIf="mdfRequestOwner?.companyPhoneNumber?.length>20">..</span></label>
+                                 Phone: {{mdfRequestOwner?.companyPhoneNumber | slice:0:15}}
+                                 <span *ngIf="mdfRequestOwner?.companyPhoneNumber?.length>15">..</span></label>
                               </div>
                            </div>
                         </div>
@@ -213,30 +213,30 @@
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                <img class="img-circle" src="{{vendorContact?.profilePicturePath}}" alt="">
+                                 <img class="img-circle" src="{{vendorContact?.profilePicturePath}}" alt="">
                               </div>
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="vendorContact?.fullName!=null">
                                     <label title="{{vendorContact?.fullName}}" style="font-size: 15px;font-weight: 600;">
-                                       {{vendorContact?.fullName | slice:0:20}}
-                                       <span *ngIf="vendorContact?.fullName?.length>20">..</span>
+                                    {{vendorContact?.fullName | slice:0:15}}
+                                    <span *ngIf="vendorContact?.fullName?.length>15">..</span>
                                     </label>
                                  </ng-container>
                                  <label title="{{vendorContact?.emailId}}" style="font-size: 15px;font-weight: 600;">
-                                    {{vendorContact?.emailId | slice:0:18}}
-                                    <span *ngIf="vendorContact?.emailId?.length>18">..</span>
+                                 {{vendorContact?.emailId | slice:0:15}}
+                                 <span *ngIf="vendorContact?.emailId?.length>15">..</span>
                                  </label>
                                  <label *ngIf="vendorContact?.companyName!=null"  title="{{vendorContact?.companyName}}" style="font-size: 15px;font-weight: 600;">
-                                    {{vendorContact?.companyName | slice:0:20}}
-                                    <span *ngIf="vendorContact?.companyName?.length>20">..</span>
+                                 {{vendorContact?.companyName | slice:0:15}}
+                                 <span *ngIf="vendorContact?.companyName?.length>15">..</span>
                                  </label>
                                  <label *ngIf="vendorContact?.website!=null"  title="{{vendorContact?.website}}" style="font-size: 15px;font-weight: 600;">
-                                    {{vendorContact?.website | slice:0:20}}
-                                    <span *ngIf="vendorContact?.website?.length>20">..</span>
+                                 {{vendorContact?.website | slice:0:15}}
+                                 <span *ngIf="vendorContact?.website?.length>15">..</span>
                                  </label>
                                  <label *ngIf="vendorContact?.phoneNumber!=null && vendorContact?.phoneNumber?.length>0" title="{{vendorContact?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
-                                    Phone: {{vendorContact?.phoneNumber | slice:0:20}}
-                                    <span *ngIf="vendorContact?.phoneNumber?.length>20">..</span></label>
+                                 Phone: {{vendorContact?.phoneNumber | slice:0:15}}
+                                 <span *ngIf="vendorContact?.phoneNumber?.length>15">..</span></label>
                               </div>
                            </div>
                         </div>
@@ -245,30 +245,30 @@
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                <img class="img-circle" src="{{partnerManager?.profilePicturePath}}" alt="">
+                                 <img class="img-circle" src="{{partnerManager?.profilePicturePath}}" alt="">
                               </div>
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="partnerManager?.fullName!=null">
                                     <label title="{{partnerManager?.fullName}}" style="font-size: 15px;font-weight: 600;">
-                                       {{partnerManager?.fullName | slice:0:20}}
-                                       <span *ngIf="partnerManager?.fullName?.length>20">..</span>
+                                    {{partnerManager?.fullName | slice:0:15}}
+                                    <span *ngIf="partnerManager?.fullName?.length>15">..</span>
                                     </label>
                                  </ng-container>
                                  <label title="{{partnerManager?.emailId}}" style="font-size: 15px;font-weight: 600;">
-                                    {{partnerManager?.emailId | slice:0:20}}
-                                    <span *ngIf="partnerManager?.emailId?.length>20">..</span>
+                                 {{partnerManager?.emailId | slice:0:15}}
+                                 <span *ngIf="partnerManager?.emailId?.length>15">..</span>
                                  </label>
                                  <label *ngIf="partnerManager?.title!=null"  title="{{partnerManager?.title}}" style="font-size: 15px;font-weight: 600;">
-                                    {{partnerManager?.title | slice:0:20}}
-                                    <span *ngIf="partnerManager?.title?.length>20">..</span>
+                                 {{partnerManager?.title | slice:0:15}}
+                                 <span *ngIf="partnerManager?.title?.length>15">..</span>
                                  </label>
                                  <label *ngIf="partnerManager?.companyName!=null" title="{{partnerManager?.companyName}}" style="font-size: 14px;color: #65b6e4;">
-                                    {{partnerManager?.companyName | slice:0:20}}
-                                    <span *ngIf="partnerManager?.companyName?.length>20">..</span>
+                                 {{partnerManager?.companyName | slice:0:15}}
+                                 <span *ngIf="partnerManager?.companyName?.length>15">..</span>
                                  </label>
                                  <label *ngIf="partnerManager?.phoneNumber!=null && partnerManager?.phoneNumber?.length>0" title="{{partnerManager?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
-                                    Phone: {{partnerManager?.phoneNumber | slice:0:20}}
-                                    <span *ngIf="partnerManager?.phoneNumber?.length>20">..</span></label>
+                                 Phone: {{partnerManager?.phoneNumber | slice:0:15}}
+                                 <span *ngIf="partnerManager?.phoneNumber?.length>15">..</span></label>
                               </div>
                            </div>
                         </div>
@@ -280,193 +280,159 @@
       </div>
    </div>
 </div>
-
 <!--Change Request Modal Pop Up------->
 <div id="changeRequestModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-   <div class="modal-dialog modal-css" role="document">
-     <div class="modal-content">
-      <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+   <div class="modal-dialog modal-css cw" role="document">
+      <div class="modal-content">
+         <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
          <div class="modal-header">
-             <a class="close-circle fa-margin" (click)="closeChangeRequestPopup()">
-               <i class="fa fa-times" aria-hidden="true"></i>
+            <a class="close-circle fa-margin" (click)="closeChangeRequestPopup()">
+            <i class="fa fa-times" aria-hidden="true"></i>
             </a>
             <a title="Refresh" class="close-circle" (click)="refreshData()">
-               <i class="fa fa-refresh" aria-hidden="true"></i>
+            <i class="fa fa-refresh" aria-hidden="true"></i>
             </a>
-             <h4 class="modal-title header-fw" translate>Change MDF Request Status & Assignment</h4>
+            <h4 class="modal-title header-fw" translate>Change MDF Request Status & Assignment</h4>
          </div>
          <div class="modal-body">
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-            <div class="row" style="margin-top: 20px;" *ngIf="!modalPopupLoader">
-               <form role="form" class="form-horizontal form-bordered form-label-stripped">
-                   <div class="portlet box">
-                       <div class="">
-                        <div class="col-md-12 col-lg-12 ">
+            <div class="portlet-body clearfix" *ngIf="!modalPopupLoader">
+               <div>
+                  <form role="form">
+                     <div class="row">
+                        <div class="col-sm-6 col-xs-12">
                            <div [attr.class]="errorFieldNames.indexOf('status')>-1 ? 'form-group has-error':'form-group'">
-                               <label class="control-label col-sm-3" translate>Status
-                                       <span style="color: red">*</span>
-                                   </label>
-                               <div class="col-sm-8"> 
-                                   <select class="form-control" name="" style="width: 100%" [(ngModel)]="selectedMdfRequest.statusInInteger" [ngModelOptions]="{standalone: true}" (ngModelChange)="resetValues($event)">
-                                           <option [value]="1"  [selected]="selectedMdfRequest.statusInInteger ==1">New Request (Open)</option>
-                                           <option [value]="2" [selected]="selectedMdfRequest.statusInInteger ==2">In Progress,assigned to manager (Open)</option>
-                                           <option [value]="3" [selected]="selectedMdfRequest.statusInInteger ==3">Pre-Approved for 90 days (Closed)</option>
-                                           <option [value]="4" [selected]="selectedMdfRequest.statusInInteger ==4">Reimbursement Issued (Closed)</option>
-                                           <option [value]="5" [selected]="selectedMdfRequest.statusInInteger ==5">Reimbursement Declined (Closed)</option>
-                                           <option [value]="6" [selected]="selectedMdfRequest.statusInInteger ==6">Request Expired (Closed)</option>
-                                           <option [value]="7" [selected]="selectedMdfRequest.statusInInteger ==7">Request Declined (Closed)</option>
-                                          </select>
-                                          <ng-container *ngFor="let errorResponse of errorResponses">
-                                             <span class="required" *ngIf="errorResponse.field=='status'">{{errorResponse.message}}</span>
-                                          </ng-container>
-                               </div>
+                              <label class="control-label" translate>Status
+                              <span style="color: red">*</span>
+                              </label>
+                              <select class="form-control" name="" style="width: 100%" [(ngModel)]="selectedMdfRequest.statusInInteger" [ngModelOptions]="{standalone: true}" (ngModelChange)="resetValues($event)">
+                              <option [value]="1"  [selected]="selectedMdfRequest.statusInInteger ==1">New Request (Open)</option>
+                              <option [value]="2" [selected]="selectedMdfRequest.statusInInteger ==2">In Progress,assigned to manager (Open)</option>
+                              <option [value]="3" [selected]="selectedMdfRequest.statusInInteger ==3">Pre-Approved for 90 days (Closed)</option>
+                              <option [value]="4" [selected]="selectedMdfRequest.statusInInteger ==4">Reimbursement Issued (Closed)</option>
+                              <option [value]="5" [selected]="selectedMdfRequest.statusInInteger ==5">Reimbursement Declined (Closed)</option>
+                              <option [value]="6" [selected]="selectedMdfRequest.statusInInteger ==6">Request Expired (Closed)</option>
+                              <option [value]="7" [selected]="selectedMdfRequest.statusInInteger ==7">Request Declined (Closed)</option>
+                              </select>
+                              <ng-container *ngFor="let errorResponse of errorResponses">
+                                 <span class="required" *ngIf="errorResponse.field=='status'">{{errorResponse.message}}</span>
+                              </ng-container>
                            </div>
-                       </div>
-                       <div class="col-md-12 col-lg-12 ">
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" translate>Total MDF Balance
-                                </label>
-                            <div class="col-sm-8">
-                             <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                             [(ngModel)]="mdfAmountTiles.totalBalance"  [ngModelOptions]="{standalone: true}" 
-                             placeholder="Total MDF Balance" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
-                            </div>
-                        </div>
-                      </div>
-                           <div class="col-md-12 col-lg-12 ">
-                               <div [attr.class]="errorFieldNames.indexOf('requestAmount')>-1 ? 'form-group has-error':'form-group'">
-                                   <label class="control-label col-sm-3" translate>Requested Amount
-                                       </label>
-                                   <div class="col-sm-8">
-                                    <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                                    [(ngModel)]="selectedMdfRequest.requestAmount"  [ngModelOptions]="{standalone: true}" 
-                                    placeholder="Requested Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
-                                    <ng-container *ngFor="let errorResponse of errorResponses">
-                                       <span class="required" *ngIf="errorResponse.field=='requestAmount'">{{errorResponse.message}}</span>
+                           <div class="form-group">
+                              <label class="control-label" translate>Total MDF Balance
+                              </label>
+                              <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                              [(ngModel)]="mdfAmountTiles.totalBalance"  [ngModelOptions]="{standalone: true}" 
+                              placeholder="Total MDF Balance" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                           </div>
+                           <div [attr.class]="errorFieldNames.indexOf('allocationAmount')>-1 ? 'form-group has-error':'form-group'">
+                              <label class="control-label" translate>Allocated Amount
+                              <span *ngIf="selectedMdfRequest?.statusInInteger<=3" style="color: red">*</span>
+                              </label>
+                              <div *ngIf="selectedMdfRequest?.statusInInteger<=3">
+                                 <input type="name" class="form-control padding-mobile currency" 
+                                 [(ngModel)]="selectedMdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
+                                 placeholder="Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                 <ng-container *ngFor="let errorResponse of errorResponses">
+                                    <ng-container *ngIf="errorResponse.field=='allocationAmount'">
+                                       <span class="required">{{errorResponse.message}}</span>
                                        <ng-container *ngIf="errorResponse.message.indexOf('MDF')>-1">
                                           <a (click)="openMdfAmountPopup()">Click here to add MDF Amount</a>
                                        </ng-container>
                                     </ng-container>
-                                   </div>
-                               </div>
-                           </div>
-                           <div class="col-md-12 col-lg-12 ">
-                              <div class="form-group">
-                                  <label class="control-label col-sm-3" translate>Total Allocated Amount
-                                      </label>
-                                  <div class="col-sm-8">
-                                   <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                                   [(ngModel)]="selectedMdfRequest.sumOfAllocationAmount"  [ngModelOptions]="{standalone: true}" 
-                                   placeholder="Total Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
-                                  </div>
-                              </div>
-                            </div>
-                           <div class="col-md-12 col-lg-12 ">
-                              <div [attr.class]="errorFieldNames.indexOf('allocationAmount')>-1 ? 'form-group has-error':'form-group'">
-                                  <label class="control-label col-sm-3" translate>Allocated Amount
-                                    <span *ngIf="selectedMdfRequest?.statusInInteger<=3" style="color: red">*</span>
-                                      </label>
-                                       <div class="col-sm-8" *ngIf="selectedMdfRequest?.statusInInteger<=3">
-                                          <input type="name" class="form-control padding-mobile currency" 
-                                          [(ngModel)]="selectedMdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
-                                          placeholder="Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
-                                          <ng-container *ngFor="let errorResponse of errorResponses">
-                                                <ng-container *ngIf="errorResponse.field=='allocationAmount'">
-                                                   <span class="required">{{errorResponse.message}}</span>
-                                                   <ng-container *ngIf="errorResponse.message.indexOf('MDF')>-1">
-                                                      <a (click)="openMdfAmountPopup()">Click here to add MDF Amount</a>
-                                                   </ng-container>
-                                                </ng-container>
-                                          </ng-container>
-                                         </div>
-                                  <div class="col-sm-8" *ngIf="selectedMdfRequest?.statusInInteger>3">
-                                    <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                                    [(ngModel)]="selectedMdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
-                                    placeholder="Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
-                                   </div>
-                              </div>
-                          </div>
-
-                          <div class="col-md-12 col-lg-12 ">
-                           <div [attr.class]="errorFieldNames.indexOf('allocationDateInString')>-1 ? 'form-group has-error':'form-group'">
-                               <label class="control-label col-sm-3" translate>Allocation Date
-                                       <span *ngIf="selectedMdfRequest?.statusInInteger<=3" style="color: red">*</span>
-                                   </label>
-                               <div class="col-sm-8">
-                                 <app-date-picker [(dataField)]="selectedMdfRequest.allocationDateInString" [isFromMdfCredit]='true'>
-                                 </app-date-picker>
-                                 <ng-container *ngFor="let errorResponse of errorResponses">
-                                    <span class="required" *ngIf="errorResponse.field=='allocationDateInString'">{{errorResponse.message}}</span>
                                  </ng-container>
-                               </div>
+                              </div>
+                              <div *ngIf="selectedMdfRequest?.statusInInteger>3">
+                                 <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                                 [(ngModel)]="selectedMdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
+                                 placeholder="Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                              </div>
                            </div>
-                       </div>
-                          
-                       <div class="col-md-12 col-lg-12 ">
-                        <div [attr.class]="errorFieldNames.indexOf('allocationExpirationDateInString')>-1 ? 'form-group has-error':'form-group'">
-                            <label class="control-label col-sm-3" translate>Allocation Expiration Date
+                           <ng-container *ngIf="selectedMdfRequest?.statusInInteger==4">
+                              <div [attr.class]="errorFieldNames.indexOf('reimbursementAmount')>-1 ? 'form-group has-error':'form-group'">
+                                 <label class="control-label" translate>Reimbursement Amount
+                                 <span style="color: red">*</span>
+                                 </label>
+                                 <input type="name"  class="form-control padding-mobile currency"
+                                 [(ngModel)]="selectedMdfRequest.reimbursementAmount"  [ngModelOptions]="{standalone: true}" 
+                                 placeholder="Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                 <ng-container *ngFor="let errorResponse of errorResponses">
+                                    <span class="required" *ngIf="errorResponse.field=='reimbursementAmount'">{{errorResponse.message}}</span>
+                                 </ng-container>
+                              </div>
+                           </ng-container>
+                           <div [attr.class]="errorFieldNames.indexOf('allocationDateInString')>-1 ? 'form-group has-error':'form-group'">
+                              <label class="control-label" translate>Allocation Date
+                              <span *ngIf="selectedMdfRequest?.statusInInteger<=3" style="color: red">*</span>
                               </label>
-                            <div class="col-sm-8">
+                              <app-date-picker [(dataField)]="selectedMdfRequest.allocationDateInString" [isFromMdfCredit]='true'>
+                              </app-date-picker>
+                              <ng-container *ngFor="let errorResponse of errorResponses">
+                                 <span class="required" *ngIf="errorResponse.field=='allocationDateInString'">{{errorResponse.message}}</span>
+                              </ng-container>
+                           </div>
+                        </div>
+                        <!---Right Side---->
+                        <div class="col-sm-6 col-xs-12">
+                           <div class="form-group">
+                              <label class="control-label" translate>Description
+                              </label>
+                              <textarea class="form-control"  [(ngModel)]="selectedMdfRequest.description"  [ngModelOptions]="{standalone: true}" 
+                              placeholder="Description"></textarea>
+                           </div>
+                           <div [attr.class]="errorFieldNames.indexOf('requestAmount')>-1 ? 'form-group has-error':'form-group'">
+                              <label class="control-label" translate>Requested Amount
+                              </label>
+                              <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                              [(ngModel)]="selectedMdfRequest.requestAmount"  [ngModelOptions]="{standalone: true}" 
+                              placeholder="Requested Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                              <ng-container *ngFor="let errorResponse of errorResponses">
+                                 <ng-container *ngIf="errorResponse.field=='requestAmount'">
+                                    <span class="required" >{{errorResponse.message}}</span>
+                                    <ng-container *ngIf="errorResponse.message.indexOf('MDF')>-1">
+                                       <a (click)="openMdfAmountPopup()">Click here to add MDF Amount</a>
+                                    </ng-container>
+                                 </ng-container>
+                              </ng-container>
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label" translate>Total Allocated Amount
+                              </label>
+                              <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                              [(ngModel)]="selectedMdfRequest.sumOfAllocationAmount"  [ngModelOptions]="{standalone: true}" 
+                              placeholder="Total Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                           </div>
+                           <ng-container *ngIf="selectedMdfRequest?.statusInInteger==4">
+                              <div class="form-group">
+                                 <label class="control-label" translate>Total Reimbursement Amount
+                                 </label>
+                                 <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                                 [(ngModel)]="selectedMdfRequest.sumOfReimbursementAmount"  [ngModelOptions]="{standalone: true}" 
+                                 placeholder="Total Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                              </div>
+                           </ng-container>
+                           <div [attr.class]="errorFieldNames.indexOf('allocationExpirationDateInString')>-1 ? 'form-group has-error':'form-group'">
+                              <label class="control-label" translate>Allocation Expiration Date
+                              </label>
                               <app-date-picker [(dataField)]="selectedMdfRequest.allocationExpirationDateInString" [isFromMdfCredit]='true'>
                               </app-date-picker>
                               <ng-container *ngFor="let errorResponse of errorResponses">
                                  <span class="required" *ngIf="errorResponse.field=='allocationExpirationDateInString'">{{errorResponse.message}}</span>
                               </ng-container>
-                            </div>
+                           </div>
                         </div>
-                    </div>
-                    <ng-container *ngIf="selectedMdfRequest?.statusInInteger==4">
-                     <div class="col-md-12 col-lg-12">
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" translate>Total Reimbursement Amount
-                                </label>
-                            <div class="col-sm-8">
-                             <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                             [(ngModel)]="selectedMdfRequest.sumOfReimbursementAmount"  [ngModelOptions]="{standalone: true}" 
-                             placeholder="Total Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
-                            </div>
-                        </div>
-                      </div>
-   
-                    <div class="col-md-12 col-lg-12">
-                     <div [attr.class]="errorFieldNames.indexOf('reimbursementAmount')>-1 ? 'form-group has-error':'form-group'">
-                         <label class="control-label col-sm-3" translate>Reimbursement Amount
-                           <span style="color: red">*</span>
-                             </label>
-                         <div class="col-sm-8">
-                          <input type="name"  class="form-control padding-mobile currency"
-                          [(ngModel)]="selectedMdfRequest.reimbursementAmount"  [ngModelOptions]="{standalone: true}" 
-                          placeholder="Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
-                          <ng-container *ngFor="let errorResponse of errorResponses">
-                           <span class="required" *ngIf="errorResponse.field=='reimbursementAmount'">{{errorResponse.message}}</span>
-                        </ng-container>
-                         </div>
                      </div>
-                 </div>
-                  </ng-container>
-                 <div class="col-md-12 col-lg-12 ">
-                  <div class="form-group">
-                      <label class="control-label col-sm-3" translate>Description
-                          </label>
-                      <div class="col-sm-8">
-                         <textarea class="form-control"  [(ngModel)]="selectedMdfRequest.description"  [ngModelOptions]="{standalone: true}" 
-                         placeholder="Description"></textarea>
-                      
-                      </div>
-                  </div>
-              </div>
-                </div>
-                   </div>
-               </form>
-           </div>
+                  </form>
+               </div>
+            </div>
          </div>
          <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
-             <button class="btn btn-default" type="button" (click)="closeChangeRequestPopup();" translate>Cancel</button>
-             <button type="button" class="btn btn-primary"  (click)="updateMdfRequest()" translate>Update</button>
+            <button class="btn btn-default" type="button" (click)="closeChangeRequestPopup();" translate>Cancel</button>
+            <button type="button" class="btn btn-primary"  (click)="updateMdfRequest()" translate>Update</button>
          </div>
-     </div>
- </div>
+      </div>
+   </div>
 </div>
 <app-add-mdf-funds-modal-popup *ngIf="showMdfAmountPopup" [partnershipId]="mdfRequest?.partnershipId" [onlyAddMdfAmount]="true" (notifyParentComponent)="hideMdfAmountPopup()" (updateList)="updateDetails()"></app-add-mdf-funds-modal-popup>

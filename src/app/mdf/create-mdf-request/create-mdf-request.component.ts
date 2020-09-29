@@ -46,6 +46,7 @@ export class CreateMdfRequestComponent implements OnInit {
   isValidEmailIds: boolean;
   mdfAmountTiles:MdfAmountTiles = new MdfAmountTiles();
   saveMdfRequestDto:SaveMdfRequest = new SaveMdfRequest();
+  duplicateTitle = false;
   constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties,private formService:FormService) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -122,6 +123,7 @@ export class CreateMdfRequestComponent implements OnInit {
   submitRequest(){
     this.referenceService.goToTop();
     this.customResponse = new CustomResponse();
+    this.duplicateTitle = false;
     this.loading = true;
     const formLabelDtos = this.form.formLabelDTOs;
     const requiredFormLabels = formLabelDtos.filter((item) =>
@@ -233,7 +235,15 @@ export class CreateMdfRequestComponent implements OnInit {
       }
     }, error => {
       this.xtremandLogger.log(error);
-      this.xtremandLogger.errorPage(error);
+      this.loading = false;
+      let jsonParsedBody = JSON.parse(error['_body']);
+      let message  = jsonParsedBody['message'];
+      if(message.includes('Duplicate title')){
+        this.customResponse = new CustomResponse('ERROR','There is a problem with your submission.Please check the error below',true);
+        this.duplicateTitle = true;
+      }else{
+        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+      }
     });
   }
 

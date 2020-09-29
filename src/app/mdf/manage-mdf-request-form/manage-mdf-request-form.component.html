@@ -20,12 +20,12 @@
                      </div>
                   </div>
                </div>
-               <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-               <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!httpRequestLoader.isLoading">
+               <div class="portlet-body table-responsive" style="overflow: hidden;" >
                   <div class="btn-group pull-right" style="margin-bottom: 10px; left: -16px;">
                      <div class="inputs" align="right" style="float: right"></div>
                   </div>
-                  <div class="clearfix">
+                 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                  <div class="clearfix" *ngIf="!httpRequestLoader.isLoading">
                      <div class="col-xs-12" style="padding: 10px 0;">
                         <div class="table-responsive">
                            <table class="table tgrid" aria-describedby="form-analytics-table">
@@ -135,16 +135,17 @@
                                  </ng-container>
                               </tbody>
                            </table>
-                           <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-                              <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-                              (notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-                           </div>
+                           
                            <!-- End of 24 -->
                            <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
                               <strong>No Data Found.</strong>
                            </div>
                         </div>
                      </div>
+                  </div>
+                  <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                     <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                              (notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
                   </div>
                </div>
             </div>

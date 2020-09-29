@@ -132,7 +132,6 @@ export class ChangeMdfRequestComponent implements OnInit {
   }
 
   updateMdfRequest(){
-    this.referenceService.goToTop();
     this.resetErrors();
     this.modalPopupLoader = true;
     this.selectedMdfRequest.loggedInUserId = this.loggedInUserId;
@@ -145,7 +144,7 @@ export class ChangeMdfRequestComponent implements OnInit {
         this.referenceService.goToTop();
         this.modalPopupLoader = false;
         this.errorResponses = result.errorResponses;
-        this.customResponse = new CustomResponse('ERROR','There was a problem with your submission.Please check highlighted errors below.',true);
+        this.customResponse = new CustomResponse('ERROR','There is a problem with your submission.Please check highlighted errors below.',true);
         this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');
       } else{
         this.modalPopupLoader = false;
@@ -158,7 +157,7 @@ export class ChangeMdfRequestComponent implements OnInit {
 
   viewTimeLine(){
     this.loading = true;
-    this.referenceService.goToRouter('/home/mdf/timeline/v/'+this.mdfRequest.id);
+    this.referenceService.goToRouter('/home/mdf/timeline/v/c/'+this.mdfRequest.id);
   }
 
   openMdfAmountPopup(){
