@@ -116,7 +116,7 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
       }
       if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
         this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-        this. pagination.vanityUrlFilter = true;
+        this.pagination.vanityUrlFilter = true;
     }
       this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)
         .subscribe(

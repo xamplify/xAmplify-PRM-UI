@@ -80,7 +80,7 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
       this.referenceService.loading(this.httpRequestLoader, true);
       if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
         this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-        this. pagination.vanityUrlFilter = true;
+        this.pagination.vanityUrlFilter = true;
         }
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
           (response: any) => {
