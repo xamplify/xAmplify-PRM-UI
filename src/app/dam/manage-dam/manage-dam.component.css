@@ -1,0 +1,14 @@
+.thumbnail-wrapper{
+    float: left;
+    width: 144px;
+    height: 81px;
+    background-color: #f1f1f1;
+    text-align: center;
+    position: relative;
+}
+
+.title-div {
+    margin-left: 10px;
+    float: left;
+    text-align: left !important;
+}

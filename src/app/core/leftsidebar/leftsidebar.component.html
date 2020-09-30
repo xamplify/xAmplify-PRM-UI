@@ -244,29 +244,14 @@
                     </li>
                  </ng-container>
          <!------DAM----------->
-       <!--   <li [ngClass]="{'active': location.path().includes('dam')}">
-            <a href="javascript:;" (click)="openOrCloseTabs('dam')">
+         <li [ngClass]="{'active': location.path().includes('dam')}">
+            <a [routerLink]="['./dam']">
                 <i class="fa fa-file" aria-hidden="true"></i>
                 <span class="title" translate>DAM</span>
                 <span class="arrow"></span>
                 <span class="selected"></span>
             </a>
-            <ul class="sub-menu" [ngStyle]="{'display': dam? 'block': 'none' }" >
-                <li>
-                    <a [routerLink]="['/home/dam/add']">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                        <span class="title" translate>Create</span>
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="['/home/dam/']">
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                        <span class="title" translate>Manage</span>
-                    </a>
-                </li>
-            </ul>
-         </li> -->
-
+            </li>
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>
