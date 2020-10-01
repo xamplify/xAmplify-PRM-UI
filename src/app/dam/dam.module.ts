@@ -5,13 +5,12 @@ import { ErrorPagesModule } from "../error-pages/error-pages.module";
 import { CommonComponentModule } from "../common/common.module";
 import { DamRoutingModule } from './dam-routing.module';
 import { ManageDamComponent } from './manage-dam/manage-dam.component';
-import { AddDamComponent } from './add-dam/add-dam.component';
 import {DamService} from './services/dam.service';
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule
   ],
-  declarations: [ManageDamComponent, AddDamComponent],
+  declarations: [ManageDamComponent],
 providers: [DamService]
 })
 export class DamModule { }

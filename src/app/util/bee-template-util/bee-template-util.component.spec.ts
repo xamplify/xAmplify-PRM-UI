@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddDamComponent } from './add-dam.component';
+import { BeeTemplateUtilComponent } from './bee-template-util.component';
 
-describe('AddDamComponent', () => {
-  let component: AddDamComponent;
-  let fixture: ComponentFixture<AddDamComponent>;
+describe('BeeTemplateUtilComponent', () => {
+  let component: BeeTemplateUtilComponent;
+  let fixture: ComponentFixture<BeeTemplateUtilComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddDamComponent ]
+      declarations: [ BeeTemplateUtilComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddDamComponent);
+    fixture = TestBed.createComponent(BeeTemplateUtilComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -15,5 +15,7 @@ export class CampaignAccess {
   vanityUrlDomain = false;
   mdf = false;
   loginAsTeamMember = false;
+  rssFeeds = false;
+  dam = false;
   roleId:number = 0;
 }
