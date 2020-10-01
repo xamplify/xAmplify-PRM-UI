@@ -89,7 +89,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         /**********Vanity Url Filter**************** */
         if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
             this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-            this. pagination.vanityUrlFilter = true;
+            this.pagination.vanityUrlFilter = true;
         }
         this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
             (response: any) => {

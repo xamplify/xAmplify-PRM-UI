@@ -111,3 +111,6 @@ cursor: default;
 	padding: 2px !important;
 	margin: 4px 4px !important;
 }
+.custom-width-icon{
+	min-width: 130px;
+}

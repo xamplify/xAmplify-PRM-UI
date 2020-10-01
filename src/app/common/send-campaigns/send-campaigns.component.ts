@@ -62,7 +62,7 @@ export class SendCampaignsComponent implements OnInit {
   openPopUp(partnerListId: number, contact:any,type:string) {
     if(type=="Contact" &&this.isLoggedInThroughVanityUrl){
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-      this. pagination.vanityUrlFilter = true;
+      this.pagination.vanityUrlFilter = true;
     }
       $('#sendCampaignsPopup').modal('show');
       this.pagination.partnerOrContactEmailId = contact.emailId;
@@ -79,7 +79,7 @@ export class SendCampaignsComponent implements OnInit {
   openPopUpForNewlyAddedPartnersOrContacts(partnerOrContactListId:number,users:any,type:string){
     if(type=="Contact" && this.isLoggedInThroughVanityUrl){
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-      this. pagination.vanityUrlFilter = true;
+      this.pagination.vanityUrlFilter = true;
     }
     $('#sendCampaignsPopup').modal('show');
       this.pagination.partnerId = 0;

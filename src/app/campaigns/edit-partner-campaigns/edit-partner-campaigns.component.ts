@@ -205,7 +205,13 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
              CKEDITOR.config.height = '100';
             if(this.campaignService.reDistributeCampaign!=undefined){
                 this.loadCampaignNames(this.loggedInUserId);
-                this.setCampaignData(this.campaignService.reDistributeCampaign);
+				if(this.campaignService.reDistributeCampaign.emailTemplate!=undefined){
+					this.setCampaignData(this.campaignService.reDistributeCampaign);
+				}else{
+					this.referenceService.showSweetAlertErrorMessage("This campaign cannot be redistributed as the email template is not available");
+					this.router.navigate(['/home/campaigns/partner/all']);
+				}
+                
             }else{
                 this.router.navigate(['/home/campaigns/partner/all']);
             }

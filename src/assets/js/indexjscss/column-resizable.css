@@ -207,3 +207,12 @@ span.ui-column-resizer {
 .header-fw{
 	font-weight: 600;
 }
+.edit-mdf-form-margin{
+    margin-top: 5px;
+    margin-right: 5px
+}
+.action-btn-dam {
+    border: 1px solid #4c98dd;
+    padding: 7px;
+    border-radius: 50%;
+}

@@ -56,7 +56,6 @@ export class PagerService {
            let endIndex = pager.endIndex + 1;
            pagination.pagedItems = list.slice(startIndex, endIndex);
            pagination.pager = pager;
-           console.log(pagination);
            return pagination;
 
         }catch(error){

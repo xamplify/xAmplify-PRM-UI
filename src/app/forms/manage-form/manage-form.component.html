@@ -43,7 +43,7 @@
                                     <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
                                         <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                     </span>
-                                <ng-container *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined') && showFolderView">
+                                <ng-container *ngIf="(pagination.categoryId==0 || pagination.categoryId=='undefined') && showFolderView">
                                          <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('Folder-Grid')">
                                                 <i  class="fa fa-folder p10" aria-hidden="true"></i>
                                         </span>
@@ -122,7 +122,7 @@
                                             </app-timestamp>
                                         </td>
                                         <td id="actions-row">
-                                            <div class="actions-block override-actions">
+                                            <div class="actions-block override-actions custom-width-icon">
                                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
                                                     (click)="edit(form.id)">
                                                     <i class="fa fa-pencil-square-o"></i>
@@ -130,7 +130,7 @@
                                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
+                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
                                                     <i class="fa fa-clipboard"></i>
                                                 </a>
                                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
@@ -138,9 +138,6 @@
                                                         <i class="fa fa-line-chart"></i>
                                                         <span class="badge" id="notification">{{form.count}}</span>
                                                     </a>
-                                                    <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
-                                                        <img src="../assets/images/disabled-icon.png">
-                                                    </a> -->
                                                 </ng-container>
                                                 <ng-container *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
                                                     <!-------------Disable onclick if count==0   ----->
@@ -203,7 +200,7 @@
                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
+                                <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
                                     <i class="fa fa-clipboard"></i>
                                 </a>
                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
