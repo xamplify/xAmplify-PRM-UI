@@ -1,5 +1,5 @@
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <div class="page-bar">
       <ul class="page-breadcrumb">
          <li><i class="fa fa-home" aria-hidden="true"></i> 
@@ -10,7 +10,7 @@
       </ul>
       <div class="edit-mdf-form-margin" id="right">
          <button class="add-button-xamplify"  translate>Upload</button>
-         <button class="add-button-xamplify"  translate>Create Template</button>
+         <button class="add-button-xamplify" (click)="addAsset()" translate>Create Template</button>
          <button class="add-button-xamplify" translate>Partner</button>
      </div>
    </div>
