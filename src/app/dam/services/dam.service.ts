@@ -4,6 +4,7 @@ import { Http, Response, RequestOptions, Headers } from "@angular/http";
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs";
 import { Pagination } from "app/core/models/pagination";
+import {DamPostDto} from '../models/dam-post-dto';
 
 @Injectable()
 export class DamService {
@@ -14,6 +15,12 @@ export class DamService {
     return this.http.post(this.URL + "list?access_token=" + this.authenticationService.access_token,pagination)
         .map(this.extractData)
         .catch(this.handleError);
+  }
+
+  save(damPostDto:DamPostDto){
+    return this.http.post(this.URL + "save?access_token=" + this.authenticationService.access_token,damPostDto)
+    .map(this.extractData)
+    .catch(this.handleError);
   }
 
 
