@@ -23,7 +23,8 @@ declare var $: any;
 export class ManageDamComponent implements OnInit {
 	loading = false;
 	loggedInUserId: number = 0;
-	constructor(private utilService: UtilService, public sortOption: SortOption, public partnerListLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+	pagination:Pagination = new Pagination();
+	constructor(private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
@@ -34,5 +35,7 @@ export class ManageDamComponent implements OnInit {
 		this.loading = true;
 		this.referenceService.goToRouter("/home/dam/add");
 	}
+
+	
 
 }

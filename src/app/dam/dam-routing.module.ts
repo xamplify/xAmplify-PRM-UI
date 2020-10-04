@@ -6,6 +6,7 @@ import { AddDamComponent } from './add-dam/add-dam.component';
 export const routes: Routes = [
 	{ path: "", redirectTo: "manage", pathMatch: "full" },
 	{ path: "manage", component: ManageDamComponent },
+	{ path: "manage/:viewType", component: ManageDamComponent },
 	{ path: "add", component: AddDamComponent },
 ];
 
