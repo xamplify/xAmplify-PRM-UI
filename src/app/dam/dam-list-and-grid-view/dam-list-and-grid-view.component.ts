@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { DamService } from '../services/dam.service';
+import { ActivatedRoute } from '@angular/router';
+
 /*****Common Imports**********************/
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
@@ -13,6 +15,8 @@ import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { ErrorResponse } from 'app/util/models/error-response';
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+
 declare var $: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -27,13 +31,25 @@ export class DamListAndGridViewComponent implements OnInit {
 	pagination: Pagination = new Pagination();
 	customResponse: CustomResponse = new CustomResponse();
 	loggedInUserCompanyId: any;
-	constructor(private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+	viewType: string;
+	modulesDisplayType = new ModulesDisplayType();
+	constructor(private route: ActivatedRoute,private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 	ngOnInit() {
 		this.loading = true;
 		this.getCompanyId();
+		this.viewType = this.route.snapshot.params['viewType'];
+		if(this.viewType!=undefined){
+			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType,this.viewType);
+		}else{
+			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+		}
+	}
+
+	setViewType(viewType:string){
+		this.referenceService.goToRouter("/home/dam/manage/"+viewType);
 	}
 
 	getCompanyId() {

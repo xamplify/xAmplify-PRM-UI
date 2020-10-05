@@ -2046,6 +2046,22 @@ export class ReferenceService {
 		return modulesDisplayType;
 	}
 
+	setDisplayType(modulesDisplayType:ModulesDisplayType,viewType:string){
+		if("l"==viewType){
+			modulesDisplayType.isListView = true;
+			modulesDisplayType.isGridView = false;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = false;
+		}else if("g"==viewType){
+			modulesDisplayType.isListView = false;
+			modulesDisplayType.isGridView = true;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = false;
+		}
+		return modulesDisplayType;
+
+	}
+
 	showSweetAlertProceesor(title:string){
 		swal({ title: title, text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 	}

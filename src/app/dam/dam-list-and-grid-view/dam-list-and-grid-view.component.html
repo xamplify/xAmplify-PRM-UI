@@ -7,9 +7,9 @@
                <div class="page-toolbar col-xs-12">
                   <div class="btn-group pull-right">
                      <ng-container class='m10'>
-                        <span class="btn btn-xs  l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('List')">
+                        <span class="btn btn-xs l-g-view" [class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')">
                         <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
-                        <span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('Grid')">
+                        <span class="btn btn-xs l-g-view margin-space" [class.disabled]="modulesDisplayType.isGridView" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('g')">
                         <i class="fa fa-th-large p10" aria-hidden="true"></i>
                         </span>
                         <ng-container>
