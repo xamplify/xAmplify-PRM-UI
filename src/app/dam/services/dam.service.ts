@@ -12,9 +12,17 @@ export class DamService {
   constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
  
   list(pagination: Pagination) {
-    return this.http.post(this.URL + "list?access_token=" + this.authenticationService.access_token,pagination)
-        .map(this.extractData)
-        .catch(this.handleError);
+    return this.utilPostListMethod("list",pagination);
+  }
+
+  listHistory(pagination: Pagination) {
+   return this.utilPostListMethod("listHistory",pagination);
+  }
+
+  utilPostListMethod(url:string,pagination:Pagination){
+    return this.http.post(this.URL +url+"?access_token=" + this.authenticationService.access_token,pagination)
+    .map(this.extractData)
+    .catch(this.handleError);
   }
 
   save(damPostDto:DamPostDto){

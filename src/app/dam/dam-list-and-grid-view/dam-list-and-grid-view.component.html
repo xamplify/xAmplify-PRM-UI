@@ -62,7 +62,8 @@
                      </tr>
                   </thead>
                   <tbody>
-                     <tr *ngFor="let asset of pagination.pagedItems ;let i =index">
+                     <ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
+                     <tr>
                         <td style="width: 10%;">
                            <div class="thumbnail-wrapper">
                               <img class="custom-image-css" src="{{asset?.assetPath}}" alt="Image Not Found">
@@ -85,25 +86,98 @@
                            </app-timestamp>
                         </td>
                         <td id="actions-row">
-                           <div class="actions-block override-actions custom-width-icon">
-                              <a *ngIf="asset?.history"  title="History" (click)="edit(asset)">
-                              <i class="fa fa-plus" aria-hidden="true"></i>
+                           <div [className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon'">
+                              <a *ngIf="asset?.history"  title="History" (click)="expandHistory(asset,i)">
+                              <i class="fa"
+                                  [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                               </a>
-                              <a  title="Edit" (click)="edit(asset.id)">
-                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                              </a>
-                              <a  title="Publish" (click)="edit(asset)">
-                              <i class="fa fa-upload" aria-hidden="true"></i>
-                              </a>
-                              <a  title="Download" (click)="edit(asset)">
-                                <i class="fa fa-download" aria-hidden="true"></i>
-                                </a>
-                              <a  title="Delete" (click)="edit(asset)">
-                              <i class="fa fa-trash-o" aria-hidden="true"></i>
-                              </a>
+                              <ng-container *ngIf="!asset?.history">
+                                 <a  title="Edit" (click)="edit(asset.id)">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a>
+                                    <a  title="Publish" (click)="edit(asset)">
+                                    <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </a>
+                                    <a  title="Download" (click)="edit(asset)">
+                                      <i class="fa fa-download" aria-hidden="true"></i>
+                                      </a>
+                                    <a  title="Delete" (click)="edit(asset)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                              </ng-container>
                            </div>
                         </td>
                      </tr>
+                     <tr [ngClass]="{'hidden': !asset?.expand}">
+                        <td [attr.colspan]="colspanValue">
+                           <div class="table-responsive">
+                              <table class="table tgrid table-condensed" aria-describedby="asset-history" id="asset-history">
+                                 <thead>
+                                    <tr>
+                                       <th colspan="2" style="width: 35%" id="border-bottom">
+                                          <span class="gridHeader" translate>Asset Details</span>
+                                       </th>
+                                       <th class="text-center" scope="row" translate>Created On</th>
+                                       <th class="text-center" id="min-width" translate>Actions</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <app-auto-response-loader *ngIf="historyLoader.isLoading"> </app-auto-response-loader>
+                                    <ng-container *ngIf="!historyLoader.isLoading">
+                                       <tr *ngFor="let asset of historyPagination.pagedItems ;let i =index" id="history-tr">
+                                          <td style="width: 10%;">
+                                             <div class="thumbnail-wrapper">
+                                                <img class="custom-image-css" src="{{asset?.assetPath}}" alt="Image Not Found">
+                                             </div>
+                                          </td>
+                                          <td>
+                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
+                                                <span><strong>{{asset?.assetName}}</strong></span>
+                                             </h4>
+                                             <h6 class="moreipsis" title="{{asset?.categoryName}}">
+                                                <span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+                                             </h6>
+                                             <h6 class="moreipsis" title="{{asset?.displayName}}">
+                                                <span translate> Created By <strong>{{asset?.displayName}}</strong></span>
+                                             </h6>
+                                             <h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
+                                          </td>
+                                          <td class="text-center">
+                                             <app-timestamp  [dateAndTime]="asset?.displayTime">
+                                             </app-timestamp>
+                                          </td>
+                                          <td id="actions-row">
+                                             <div class="actions-block override-actions custom-width-icon">
+                                                   <a  title="Edit" (click)="edit(asset.id)">
+                                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                      </a>
+                                                      <a  title="Publish" (click)="edit(asset)">
+                                                      <i class="fa fa-upload" aria-hidden="true"></i>
+                                                      </a>
+                                                      <a  title="Download" (click)="edit(asset)">
+                                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                                        </a>
+                                                      <a  title="Delete" (click)="edit(asset)">
+                                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                      </a>
+                                             </div>
+                                          </td>
+                                       </tr>
+                                    </ng-container>
+                                 </tbody>
+                              </table>
+                               <!---Pagination-->
+                               <div *ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading" class="alert alert-info">
+                                 <strong>No Data Found.</strong>
+                              </div>
+                              <div *ngIf="historyPagination.pagedItems.length !== 0" [hidden]="historyLoader.isLoading">
+                                 <app-pagination [pagination]="historyPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAssetsHistory($event)">
+                                 </app-pagination>
+                              </div>
+                              </div>
+                           </td>
+                     </tr>
+                     </ng-container>
                   </tbody>
                </table>
             </div>
@@ -167,11 +241,11 @@
          <!---Pagination-->
          <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info">
           <strong>No Data Found.</strong>
-      </div>
+         </div>
          <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
           <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAssets($event)">
           </app-pagination>
-      </div>
+         </div>
       </div>
    </div>
 </div>

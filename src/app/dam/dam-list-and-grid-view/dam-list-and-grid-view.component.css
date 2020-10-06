@@ -424,3 +424,10 @@ label {
 .mcss{  padding-right: 0;}
 @media only screen and (max-width:600px) { .mcss{  padding: 0;} }
 .override-actions{ margin: 0 auto; display: table;float: none !important; }
+
+#asset-history{
+  background-color: #f1f1f1;
+}
+#history-tr{
+  background-color: #d3d3d317;
+}

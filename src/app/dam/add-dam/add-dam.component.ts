@@ -42,8 +42,7 @@ export class AddDamComponent implements OnInit {
         this.saveOrUpdateButtonText = "Update";
         this.getById();
       }else{
-        this.referenceService.showSweetAlertErrorMessage("Invalid Id");
-        this.referenceService.goToRouter("/home/dam");
+        this.goToManageSectionWithError();
       }
     }else{
       this.isAdd = true;
@@ -56,13 +55,23 @@ export class AddDamComponent implements OnInit {
     }
   }
 
+  goToManageSectionWithError(){
+    this.referenceService.showSweetAlertErrorMessage("Invalid Id");
+        this.referenceService.goToRouter("/home/dam");
+  }
+
   getById(){
     this.damService.getById(this.assetId).subscribe((result: any) => {
       if (result.statusCode === 200) {
         let dam = result.data;
-        this.jsonBody = dam.jsonBody;
-        this.damPostDto.name = dam.assetName;
-        this.damPostDto.description = dam.description;
+        if(dam!=undefined){
+          this.jsonBody = dam.jsonBody;
+          this.damPostDto.name = dam.assetName;
+          this.damPostDto.description = dam.description;
+        }else{
+          this.goToManageSectionWithError();
+        }
+        
         this.ngxloading = false;
       }
     }, _error => {

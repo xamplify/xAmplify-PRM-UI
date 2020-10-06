@@ -33,6 +33,10 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 	loggedInUserCompanyId: any;
 	viewType: string;
 	modulesDisplayType = new ModulesDisplayType();
+	colspanValue = 4;
+	historyLoader:HttpRequestLoader = new HttpRequestLoader();
+	assets: Array<any> = new Array<any>();
+	historyPagination:Pagination = new Pagination();
 	constructor(private route: ActivatedRoute,private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -81,6 +85,7 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 				() => {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
 						this.pagination.companyId = this.loggedInUserCompanyId;
+						this.historyPagination.companyId = this.loggedInUserCompanyId;
 						this.listAssets(this.pagination);
 					}
 				}
@@ -104,6 +109,7 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 			if (result.statusCode === 200) {
 				let data = result.data;
 				pagination.totalRecords = data.totalRecords;
+				this.assets = data.assets;
 				$.each(data.assets, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.createdDateInUTCString);
 				});
@@ -132,4 +138,40 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 		this.referenceService.goToRouter("/home/dam/edit/"+id);
 	  }
 
+	  expandHistory(asset:any,selectedIndex:number){
+		$.each(this.assets, function (index:number, row:any) {
+		  if (selectedIndex != index) {
+			row.expand = false;
+		  }
+		});
+		asset.expand = !asset.expand;
+		if (asset.expand) {
+			this.historyPagination.campaignId = asset.id;
+			this.listAssetsHistory(this.historyPagination);
+		}else{
+			this.historyPagination.campaignId = 0;
+		}
+	  }
+
+
+	  listAssetsHistory(pagination: Pagination) {
+		this.loading = true;
+		this.referenceService.loading(this.historyLoader, true);
+		this.damService.listHistory(pagination).subscribe((result: any) => {
+			if (result.statusCode === 200) {
+				let data = result.data;
+				pagination.totalRecords = data.totalRecords;
+				$.each(data.assets, function (_index: number, asset: any) {
+					asset.displayTime = new Date(asset.createdDateInUTCString);
+				});
+				pagination = this.pagerService.getPagedItems(pagination, data.assets);
+			}
+			this.loading = false;
+			this.referenceService.loading(this.historyLoader, false);
+		}, error => {
+			this.loading = false;
+			this.xtremandLogger.log(error);
+			this.xtremandLogger.errorPage(error);
+		});
+	}
 }
