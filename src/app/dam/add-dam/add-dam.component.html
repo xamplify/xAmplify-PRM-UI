@@ -11,7 +11,7 @@
                               <i class="fa fa-angle-right" aria-hidden="true"></i>
                           </li>
                           <li>
-                              <a>Add Asset</a>
+                              <a>Design Template</a>
                           </li>
                       </ul>
                       <a class="close-circle xamp-margin-left-icon" (click)="goToManageDam()" aria-hidden="true">
@@ -35,7 +35,7 @@
           <div class="modal-header">
               <a class="close-circle" (click)="hidePopup()">
                 <i class="fa fa-times" aria-hidden="true"></i></a>
-              <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
+              <h4 class="modal-title" style="font-weight: 600;" translate>{{modalTitle}}</h4>
           </div>
           <div class="modal-body">
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
@@ -67,7 +67,7 @@
           </div>
           <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
               <button class="btn btn-info" type="reset" (click)="hidePopup();" translate>Cancel</button>
-              <button type="button" class="btn btn-primary"  (click)="save()" translate>Save</button>
+              <button type="button" class="btn btn-primary"  (click)="saveOrUpdate()" translate>{{saveOrUpdateButtonText}}</button>
           </div>
       </div>
   </div>

@@ -8,6 +8,7 @@ export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
 	{ path: "manage/:viewType", component: ManageDamComponent },
 	{ path: "add", component: AddDamComponent },
+	{ path: "edit/:id", component: AddDamComponent },
 ];
 
 @NgModule({

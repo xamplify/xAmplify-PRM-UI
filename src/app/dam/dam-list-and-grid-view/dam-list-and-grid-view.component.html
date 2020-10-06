@@ -43,6 +43,9 @@
                </div>
             </div>
          </div>
+         <div style="position: relative; top:-10px;">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        </div>
          <app-list-loader *ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
          <app-grid-loader *ngIf="listLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
          <!---List View----->
@@ -75,7 +78,7 @@
                            <h6 class="moreipsis" title="{{asset?.displayName}}">
                               <span translate> Created By <strong>{{asset?.displayName}}</strong></span>
                            </h6>
-                           <h6 class="view-banner published" translate>Published</h6>
+                           <h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
                         </td>
                         <td class="text-center">
                            <app-timestamp  [dateAndTime]="asset?.displayTime">
@@ -83,10 +86,10 @@
                         </td>
                         <td id="actions-row">
                            <div class="actions-block override-actions custom-width-icon">
-                              <a  title="History" (click)="edit(asset)">
+                              <a *ngIf="asset?.history"  title="History" (click)="edit(asset)">
                               <i class="fa fa-plus" aria-hidden="true"></i>
                               </a>
-                              <a  title="Edit" (click)="edit(asset)">
+                              <a  title="Edit" (click)="edit(asset.id)">
                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                               </a>
                               <a  title="Publish" (click)="edit(asset)">
@@ -133,7 +136,7 @@
                               <span>pdf</span>
                            </div>
                            <div class="top10">
-                              <span class="view-banner published" translate>Published</span>
+                              <span *ngIf="asset?.published" class="view-banner published" translate>Published</span>
                            </div>
                            <div class="item__actions">
                               <span> 

@@ -1,4 +1,5 @@
 export class DamPostDto {
+	id:number;
 	name:string = "";
 	description:string = "";
 	beeTemplate: boolean=false;
@@ -6,4 +7,5 @@ export class DamPostDto {
 	htmlBody:string = "";
 	jsonBody:string = "";
 	createdBy:number = 0;
+
 }

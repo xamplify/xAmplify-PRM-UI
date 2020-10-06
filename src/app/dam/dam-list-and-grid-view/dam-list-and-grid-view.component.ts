@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input,OnDestroy } from '@angular/core';
 import { DamService } from '../services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -24,7 +24,7 @@ declare var $: any;
 	styleUrls: ['./dam-list-and-grid-view.component.css'],
 	providers: [HttpRequestLoader, SortOption, Properties]
 })
-export class DamListAndGridViewComponent implements OnInit {
+export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 
 	loading = false;
 	loggedInUserId: number = 0;
@@ -46,7 +46,17 @@ export class DamListAndGridViewComponent implements OnInit {
 		}else{
 			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 		}
-	}
+		if (this.referenceService.isCreated) {
+			this.customResponse = new CustomResponse('SUCCESS', 'Template Added Successfully', true);
+		}else if(this.referenceService.isUpdated){
+			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
+		}
+	}   
+	
+	ngOnDestroy() {
+		this.referenceService.isCreated = false;
+		this.referenceService.isUpdated = false;
+    }
 
 	setViewType(viewType:string){
 		this.referenceService.goToRouter("/home/dam/manage/"+viewType);
@@ -116,4 +126,10 @@ export class DamListAndGridViewComponent implements OnInit {
 		this.pagination.pageIndex = event.page;
 		this.listAssets(this.pagination);
 	  }
+
+	  /********Edit***************** */
+	  edit(id:number){
+		this.referenceService.goToRouter("/home/dam/edit/"+id);
+	  }
+
 }

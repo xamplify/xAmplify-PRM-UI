@@ -23,6 +23,12 @@ export class DamService {
     .catch(this.handleError);
   }
 
+  getById(id:number){
+    return this.http.get(this.URL + "getById/"+id+"?access_token=" + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
 
   
   extractData(res: Response) {
