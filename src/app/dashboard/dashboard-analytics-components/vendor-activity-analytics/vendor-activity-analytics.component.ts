@@ -30,13 +30,8 @@ export class VendorActivityAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-    if(this.authenticationService.module.isReDistribution || this.authenticationService.isShowRedistribution){
-      this.showVendorActivity = true;
-      this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-      this.getVendorActivityAnalytics();
-    }else{
-      this.showVendorActivity = false;
-    }
+     this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+     this.getVendorActivityAnalytics();
     
   }
 
