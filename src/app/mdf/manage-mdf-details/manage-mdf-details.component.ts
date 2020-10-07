@@ -126,19 +126,15 @@ export class ManageMdfDetailsComponent implements OnInit {
   /*************************Sort********************** */
   sortBy(text: any) {
     this.sortOption.mdfPartnersSortOption = text;
-    this.getAllFilteredResults(this.pagination);
+    this.getAllFilteredResults();
   }
 
 
   /*************************Search********************** */
   searchPartners() {
-    this.getAllFilteredResults(this.pagination);
+    this.getAllFilteredResults();
   }
 
-  paginationDropdown(items: any) {
-    this.sortOption.itemsSize = items;
-    this.getAllFilteredResults(this.pagination);
-  }
 
   /************Page************** */
   setPage(event: any) {
@@ -146,7 +142,7 @@ export class ManageMdfDetailsComponent implements OnInit {
     this.listPartners(this.pagination);
   }
 
-  getAllFilteredResults(pagination: Pagination) {
+  getAllFilteredResults() {
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = this.sortOption.searchKey;
     this.pagination = this.utilService.sortOptionValues(this.sortOption.mdfPartnersSortOption, this.pagination);

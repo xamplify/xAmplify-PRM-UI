@@ -1,4 +1,4 @@
-<div class="row" *ngIf="showVendorActivity">
+<div class="row" *ngIf="authenticationService.module.isReDistribution || authenticationService.isShowRedistribution">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
       <div class="portlet-title">

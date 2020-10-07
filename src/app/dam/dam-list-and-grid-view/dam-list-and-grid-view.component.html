@@ -1,0 +1,251 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="row">
+   <div class="col-md-12">
+      <div class="portlet light clearfix" style="min-height: 644px;">
+         <div class="portlet-title" style="border-bottom: none">
+            <div class="row">
+               <div class="page-toolbar col-xs-12">
+                  <div class="btn-group pull-right">
+                     <ng-container class='m10'>
+                        <span class="btn btn-xs l-g-view" [class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')">
+                        <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
+                        <span class="btn btn-xs l-g-view margin-space" [class.disabled]="modulesDisplayType.isGridView" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('g')">
+                        <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                        </span>
+                        <ng-container>
+                           <span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder Grid View"  (click)="setViewType('Folder-Grid')">
+                           <i  class="fa fa-folder p10" aria-hidden="true"></i>
+                           </span>
+                           <span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" title="Folder List View"  (click)="setViewType('Folder-List')">
+                           <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/>
+                           </span>
+                        </ng-container>
+                        <span  class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
+                        <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
+                     </ng-container>
+                     <div class="inputs" style="float: right">
+                        <div style="float: left;">
+                           <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                           <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
+                           {{option.name}}</option>
+                           </select>
+                        </div>
+                        <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
+                           <div class="input-icon right" style="position: relative;right: -11px;">
+                              <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchForms();"></button>
+                              <button type="submit" class="search-box-item-click" (click)="searchAssets()">
+                              <i  class="fa fa-search" aria-hidden="true"></i></button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div style="position: relative; top:-10px;">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        </div>
+         <app-list-loader *ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
+         <app-grid-loader *ngIf="listLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
+         <!---List View----->
+         <section *ngIf="modulesDisplayType.isListView">
+            <div class="table-responsive">
+               <table class='table tgrid table-hover table-sm' id="manage-assets-table" *ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
+                  <thead>
+                     <tr>
+                        <th colspan="2" style="width: 35%" id="border-bottom">
+                           <span class="gridHeader" translate>Asset Details</span>
+                        </th>
+                        <th class="text-center" scope="row" translate>Created On</th>
+                        <th class="text-center" id="min-width" translate>Actions</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
+                     <tr>
+                        <td style="width: 10%;">
+                           <div class="thumbnail-wrapper">
+                              <img class="custom-image-css" src="{{asset?.assetPath}}" alt="Image Not Found">
+                           </div>
+                        </td>
+                        <td>
+                           <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
+                              <span><strong>{{asset?.assetName}}</strong></span>
+                           </h4>
+                           <h6 class="moreipsis" title="{{asset?.categoryName}}">
+                              <span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+                           </h6>
+                           <h6 class="moreipsis" title="{{asset?.displayName}}">
+                              <span translate> Created By <strong>{{asset?.displayName}}</strong></span>
+                           </h6>
+                           <h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
+                        </td>
+                        <td class="text-center">
+                           <app-timestamp  [dateAndTime]="asset?.displayTime">
+                           </app-timestamp>
+                        </td>
+                        <td id="actions-row">
+                           <div [className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon'">
+                              <a *ngIf="asset?.history"  title="History" (click)="expandHistory(asset,i)">
+                              <i class="fa"
+                                  [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
+                              </a>
+                              <ng-container *ngIf="!asset?.history">
+                                 <a  title="Edit" (click)="edit(asset.id)">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a>
+                                    <a  title="Publish" (click)="edit(asset)">
+                                    <i class="fa fa-upload" aria-hidden="true"></i>
+                                    </a>
+                                    <a  title="Download" (click)="edit(asset)">
+                                      <i class="fa fa-download" aria-hidden="true"></i>
+                                      </a>
+                                    <a  title="Delete" (click)="edit(asset)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                              </ng-container>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr [ngClass]="{'hidden': !asset?.expand}">
+                        <td [attr.colspan]="colspanValue">
+                           <div class="table-responsive">
+                              <table class="table tgrid table-condensed" aria-describedby="asset-history" id="asset-history">
+                                 <thead>
+                                    <tr>
+                                       <th colspan="2" style="width: 35%" id="border-bottom">
+                                          <span class="gridHeader" translate>Asset Details</span>
+                                       </th>
+                                       <th class="text-center" scope="row" translate>Created On</th>
+                                       <th class="text-center" id="min-width" translate>Actions</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <app-auto-response-loader *ngIf="historyLoader.isLoading"> </app-auto-response-loader>
+                                    <ng-container *ngIf="!historyLoader.isLoading">
+                                       <tr *ngFor="let asset of historyPagination.pagedItems ;let i =index" id="history-tr">
+                                          <td style="width: 10%;">
+                                             <div class="thumbnail-wrapper">
+                                                <img class="custom-image-css" src="{{asset?.assetPath}}" alt="Image Not Found">
+                                             </div>
+                                          </td>
+                                          <td>
+                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
+                                                <span><strong>{{asset?.assetName}}</strong></span>
+                                             </h4>
+                                             <h6 class="moreipsis" title="{{asset?.categoryName}}">
+                                                <span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+                                             </h6>
+                                             <h6 class="moreipsis" title="{{asset?.displayName}}">
+                                                <span translate> Created By <strong>{{asset?.displayName}}</strong></span>
+                                             </h6>
+                                             <h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
+                                          </td>
+                                          <td class="text-center">
+                                             <app-timestamp  [dateAndTime]="asset?.displayTime">
+                                             </app-timestamp>
+                                          </td>
+                                          <td id="actions-row">
+                                             <div class="actions-block override-actions custom-width-icon">
+                                                   <a  title="Edit" (click)="edit(asset.id)">
+                                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                      </a>
+                                                      <a  title="Publish" (click)="edit(asset)">
+                                                      <i class="fa fa-upload" aria-hidden="true"></i>
+                                                      </a>
+                                                      <a  title="Download" (click)="edit(asset)">
+                                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                                        </a>
+                                                      <a  title="Delete" (click)="edit(asset)">
+                                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                      </a>
+                                             </div>
+                                          </td>
+                                       </tr>
+                                    </ng-container>
+                                 </tbody>
+                              </table>
+                               <!---Pagination-->
+                               <div *ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading" class="alert alert-info">
+                                 <strong>No Data Found.</strong>
+                              </div>
+                              <div *ngIf="historyPagination.pagedItems.length !== 0" [hidden]="historyLoader.isLoading">
+                                 <app-pagination [pagination]="historyPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAssetsHistory($event)">
+                                 </app-pagination>
+                              </div>
+                              </div>
+                           </td>
+                     </tr>
+                     </ng-container>
+                  </tbody>
+               </table>
+            </div>
+         </section>
+         <!----Grid View------->
+         <section *ngIf="modulesDisplayType.isGridView">
+            <ul class="content__list" *ngFor="let asset of pagination.pagedItems; let i =index;">
+               <li class="list__item">
+                  <div class="flex-row pointer">
+                     <div class="item__select-box-wrapper">
+                        <span> 
+                           <a style="cursor: default;" class="item__preview item__preview--image img-container custom"
+                              target="_BLANK">
+                              <img  class="thumb ng-scope custom-image-css-grid" src="{{asset?.assetPath}}" alt="">
+                           </a> <a href="javascript:void(0);"></a>
+                        </span>
+                     </div>
+                     <div class="item__content">
+                        <div class="flex-row">
+                           <div class="item__last-modified">
+                              <span><app-timestamp [showInLine]="'true'"  [dateAndTime]="asset?.displayTime"></app-timestamp></span>
+                           </div>
+                           <span class="item__name"  [title]="asset?.assetName"> <strong>{{asset?.assetName	| slice: 0: 15}} <span *ngIf="asset?.assetName?.length>15">...</span>
+                           </strong>
+                           </span>
+                           <div class="item__size">
+                              <span>{{asset?.displayName}}</span>
+                           </div>
+                           <div class="item__type">
+                              <span>pdf</span>
+                           </div>
+                           <div class="top10">
+                              <span *ngIf="asset?.published" class="view-banner published" translate>Published</span>
+                           </div>
+                           <div class="item__actions">
+                              <span> 
+                                 <a class="fm external-link" title="History"	(click)="$event.stopPropagation();">
+                                    <i class="fa fa-plus icon-grid-xcss" aria-hidden="true"></i>
+                                </a> 
+                                <a class="fm external-link" title="Edit"	(click)="$event.stopPropagation();">
+                                 <i class="fa fa-edit icon-grid-xcss" aria-hidden="true"></i>
+                               </a>
+                                <a class="fm external-link" title="Publish"	(click)="$event.stopPropagation();">
+                                 <i class="fa fa-upload icon-grid-xcss" aria-hidden="true"></i>
+                               </a> 
+                               <a class="fm external-link" title="Download"	(click)="$event.stopPropagation();">
+                                 <i class="fa fa-download icon-grid-xcss" aria-hidden="true"></i>
+                               </a> 
+                               <a class="fm external-link"  title="Delete"(click)="$event.stopPropagation();">
+                                  <i class="fa fa-trash-o icon-grid-xcss" aria-hidden="true"></i>
+                              </a>
+                              </span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="clearfix"></div>
+                  </div>
+               </li>
+            </ul>
+         </section>
+         <!---Pagination-->
+         <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info">
+          <strong>No Data Found.</strong>
+         </div>
+         <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
+          <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAssets($event)">
+          </app-pagination>
+         </div>
+      </div>
+   </div>
+</div>

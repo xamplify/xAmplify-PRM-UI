@@ -1,0 +1,173 @@
+import { Component, OnInit,Input,EventEmitter,Output } from '@angular/core';
+import { ReferenceService } from '../../core/services/reference.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+import { Router } from '@angular/router';
+
+declare var BeePlugin,swal,$:any;
+
+@Component({
+	selector: 'app-bee-template-util',
+	templateUrl: './bee-template-util.component.html',
+	styleUrls: ['./bee-template-util.component.css']
+})
+export class BeeTemplateUtilComponent implements OnInit {
+
+	loading = false;
+	@Input() defaultJsonBody: any;
+	@Input() isPartner:boolean;
+	loggedInUserId: number;
+	loggedInUserCompanyId: any;
+	@Output() notifyParentComponent = new EventEmitter();
+	constructor(private referenceService:ReferenceService,private authenticationService:AuthenticationService,private router:Router,private xtremandLogger:XtremandLogger) {
+		this.loggedInUserId = this.authenticationService.getUserId();
+	 }
+
+	ngOnInit() {
+		this.loading =  true;
+		this.getCompanyId();
+	}
+
+	getCompanyId() {
+		this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+		  (result: any) => {
+			if (result !== "") { 
+			  this.loggedInUserCompanyId = result;
+			}else{
+			  this.loading = false;
+			  this.referenceService.showSweetAlertErrorMessage('Company Id Not Found');
+			  this.router.navigate(["/home/dashboard"]);
+			}
+		  }, (error: any) => {
+			 this.xtremandLogger.log(error);
+			 this.xtremandLogger.errorPage(error);
+			 },
+		  () => {
+			if(this.loggedInUserCompanyId!=undefined && this.loggedInUserCompanyId>0){
+				this.loading = false;
+				this.loadContainer();
+			}
+		  }
+		);
+	  }
+	
+	
+	loadContainer(){
+		let defaultJsonBody =this.defaultJsonBody;
+		let self = this;
+		if(defaultJsonBody!=undefined){
+			var request = function (method, url, data, type, callback) {
+				var req = new XMLHttpRequest();
+				req.onreadystatechange = function () {
+				  if (req.readyState === 4 && req.status === 200) {
+					var response = JSON.parse(req.responseText);
+					callback(response);
+				  } else if (req.readyState === 4 && req.status !== 200) {
+					console.error('Access denied, invalid credentials. Please check you entered a valid client_id and client_secret.');
+					self.referenceService.showSweetAlertErrorMessage("Please check your internet connection");
+					self.referenceService.goToRouter("/home/dam");
+				}
+				};
+				req.open(method, url, true);
+				if (data && type) {
+				  if (type === 'multipart/form-data') {
+					var formData = new FormData();
+					for (var key in data) {
+					  formData.append(key, data[key]);
+					}
+					data = formData;
+				  }
+				  else {
+					req.setRequestHeader('Content-type', type);
+				  }
+				}
+			
+				req.send(data);
+			  };
+		
+			  var save = function (jsonContent: string, htmlContent: string) {
+				let input = {};
+				input['jsonContent'] = jsonContent;
+				input['htmlContent'] = htmlContent;
+				self.notifyParentComponent.emit(input);
+			  };
+		
+			  var mergeTags = [{ name: 'First Name', value: '{{firstName}}' },
+				{ name: 'Last Name', value: '{{lastName}}' },
+				{ name: 'Full Name', value: '{{fullName}}' },
+				{ name: 'Email Id', value: '{{emailId}}' },
+				];
+		
+			  var beeUserId = "bee-"+self.loggedInUserCompanyId;
+			  var roleHash = self.authenticationService.vendorRoleHash;
+			  var beeConfig = {
+				  uid: beeUserId,
+				  container: 'xamplify-bee-template-container',
+				  autosave: 15,
+				  //language: 'en-US',
+				  language:this.authenticationService.beeLanguageCode,
+				 // mergeTags: mergeTags,
+				  preventClose: true,
+				  roleHash: roleHash,
+				  onSave: function( jsonFile, htmlFile ) {
+					  save( jsonFile, htmlFile );
+				  },
+				  onSaveAsTemplate: function( jsonFile ) { // + thumbnail?
+					  //save('newsletter-template.json', jsonFile);
+				  },
+				  onAutoSave: function( jsonFile ) { // + thumbnail?
+					  console.log( new Date().toISOString() + ' autosaving...' );
+					  window.localStorage.setItem( 'newsletter.autosave', jsonFile );
+					  
+				  },
+				  onSend: function( htmlFile ) {
+					  //write your send test function here
+					  console.log( htmlFile );
+				  },
+				  onError: function( errorMessage ) {
+				  }
+			  };
+		
+			  var bee = null;
+			  request(
+				  'POST',
+				  'https://auth.getbee.io/apiauth',
+				  'grant_type=password&client_id=' + this.authenticationService.clientId + '&client_secret=' + this.authenticationService.clientSecret + '',
+				  'application/x-www-form-urlencoded',
+				  function( token: any ) {
+					  BeePlugin.create( token, beeConfig, function( beePluginInstance: any ) {
+						  bee = beePluginInstance;
+						  request(
+							  'GET',
+							  'https://rsrc.getbee.io/api/templates/m-bee',
+							  null,
+							  null,
+							  function( template: any ) {
+								  if(defaultJsonBody!=undefined){
+									var body = defaultJsonBody;
+									body = body.replace( "https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage );
+									defaultJsonBody = body;
+									var jsonBody = JSON.parse( body );
+									bee.load( jsonBody );
+									bee.start( jsonBody );
+								  }else{
+									this.referenceService.showSweetAlert( "", "Unable to load the template", "error" );
+									self.loading = false;
+								  }
+							  } );
+					  } );
+				  } );
+			
+		}else{
+			this.loading =false;
+			this.referenceService.showSweetAlertErrorMessage("Input data not found for loading container.Please try aftersometime");
+			this.referenceService.goToRouter("/home/dashboard");
+		}
+	}
+	
+
+	
+	
+
+}

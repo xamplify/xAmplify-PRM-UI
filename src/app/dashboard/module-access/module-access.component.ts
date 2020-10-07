@@ -57,7 +57,7 @@ export class ModuleAccessComponent implements OnInit {
       this.dashboardService.getAccess(this.companyId).subscribe(result => {
         this.campaignAccess = result;
         this.moduleLoader = false;
-      }, error => {
+      }, _error => {
         this.moduleLoader = false;
         this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
       });
@@ -73,7 +73,7 @@ export class ModuleAccessComponent implements OnInit {
     this.campaignAccess.userId = this.companyAndUserDetails.id;
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
 
-    }, error => {
+    }, _error => {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('Error', "Something went wrong.", true);
     },
@@ -102,7 +102,7 @@ export class ModuleAccessComponent implements OnInit {
           this.referenceService.showSweetAlertSuccessMessage("Default Mdf Form Is Created");
         }
         this.showSuccessMessage();
-    }, error => {
+    }, _error => {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('Error', "Something went wrong while adding default mdf form.", true);
     });

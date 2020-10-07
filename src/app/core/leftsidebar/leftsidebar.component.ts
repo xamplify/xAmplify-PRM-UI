@@ -46,6 +46,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     mdfAccessAsPartner: boolean;
     mdf: boolean;
     dam:boolean;
+    damAccess = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -260,6 +261,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.mdfAccess = data.mdf;
             this.mdfAccessAsPartner = data.mdfAccessAsPartner;
             this.authService.contactsCount = data.contactsCount;
+            this.damAccess = data.dam || data.damAccessAsPartner;
             this.authService.module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
           },
           _error => {

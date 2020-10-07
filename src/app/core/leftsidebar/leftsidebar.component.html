@@ -244,7 +244,7 @@
                     </li>
                  </ng-container>
          <!------DAM----------->
-         <!-- <li [ngClass]="{'active': location.path().includes('dam')}">
+        <!--  <li *ngIf="damAccess" [ngClass]="{'active': location.path().includes('dam')}">
             <a [routerLink]="['./dam']">
                 <i class="fa fa-file" aria-hidden="true"></i>
                 <span class="title" translate>DAM</span>
