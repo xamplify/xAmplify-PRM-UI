@@ -28,6 +28,9 @@ export class AddDamComponent implements OnInit {
   isAdd = false;
   modalTitle = "";
   saveOrUpdateButtonText  = "";
+  name = "";
+  description = "";
+  validForm = false;
   constructor(public router: Router,private route:ActivatedRoute,public properties: Properties,private damService:DamService,private authenticationService:AuthenticationService,public referenceService:ReferenceService,private httpClient:HttpClient) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -68,6 +71,9 @@ export class AddDamComponent implements OnInit {
           this.jsonBody = dam.jsonBody;
           this.damPostDto.name = dam.assetName;
           this.damPostDto.description = dam.description;
+          this.name = dam.assetName;
+          this.validForm = true;
+          this.description = dam.description;
         }else{
           this.goToManageSectionWithError();
         }
@@ -93,7 +99,20 @@ readBeeTemplateData(event:any){
 
 hidePopup(){
   $('#addAssetDetailsPopup').modal('hide');
+  if(!this.isAdd){
+    if($.trim(this.damPostDto.name).length==0){
+      this.damPostDto.name = this.name;
+    }
+    if($.trim(this.damPostDto.description).length==0){
+      this.damPostDto.description = this.description;
+    }
+  }
 }
+
+validateName(name:string){
+  this.validForm = (name!=undefined && $.trim(name).length>0);
+}
+
 
 saveOrUpdate(){
   this.customResponse = new CustomResponse();
@@ -105,8 +124,13 @@ saveOrUpdate(){
   this.damService.save(this.damPostDto).subscribe((result: any) => {
     if (result.statusCode === 200) {
       this.hidePopup();
-      this.referenceService.isCreated = true;
       this.referenceService.goToRouter("/home/dam/manage");
+      if(this.isAdd){
+        this.referenceService.isCreated = true;
+      }else{
+        this.referenceService.isUpdated = true;
+      }
+      
     }
     this.modalPopupLoader = false;
   }, _error => {
