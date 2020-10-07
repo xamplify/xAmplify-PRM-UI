@@ -42,7 +42,7 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 	}
 
 	ngOnInit() {
-		this.loading = true;
+		this.startLoaders();
 		this.getCompanyId();
 		this.viewType = this.route.snapshot.params['viewType'];
 		if(this.viewType!=undefined){
@@ -64,6 +64,11 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 
 	setViewType(viewType:string){
 		this.referenceService.goToRouter("/home/dam/manage/"+viewType);
+	}
+
+	startLoaders(){
+		this.loading = true;
+		this.referenceService.loading(this.listLoader, true);
 	}
 
 	getCompanyId() {
@@ -103,8 +108,7 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 	}
 	listAssets(pagination: Pagination) {
 		this.referenceService.goToTop();
-		this.loading = true;
-		this.referenceService.loading(this.listLoader, true);
+		this.startLoaders();
 		this.damService.list(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
@@ -115,10 +119,9 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 				});
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
-			this.loading = false;
-			this.referenceService.loading(this.listLoader, false);
+			this.stopLoaders();
 		}, error => {
-			this.loading = false;
+			this.stopLoaders();
 			this.xtremandLogger.log(error);
 			this.xtremandLogger.errorPage(error);
 		});

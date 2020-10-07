@@ -105,13 +105,8 @@ saveOrUpdate(){
   this.damService.save(this.damPostDto).subscribe((result: any) => {
     if (result.statusCode === 200) {
       this.hidePopup();
+      this.referenceService.isCreated = true;
       this.referenceService.goToRouter("/home/dam/manage");
-      if(this.isAdd){
-        this.referenceService.isCreated = true;
-      }else{
-        this.referenceService.isUpdated = true;
-      }
-      
     }
     this.modalPopupLoader = false;
   }, _error => {

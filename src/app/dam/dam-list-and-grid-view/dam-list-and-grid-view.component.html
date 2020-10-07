@@ -49,7 +49,7 @@
          <app-list-loader *ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
          <app-grid-loader *ngIf="listLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
          <!---List View----->
-         <section *ngIf="modulesDisplayType.isListView">
+         <section *ngIf="modulesDisplayType.isListView && !listLoader.isLoading">
             <div class="table-responsive">
                <table class='table tgrid table-hover table-sm' id="manage-assets-table" *ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
                   <thead>
@@ -91,20 +91,18 @@
                               <i class="fa"
                                   [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                               </a>
-                              <ng-container *ngIf="!asset?.history">
-                                 <a  title="Edit" (click)="edit(asset.id)">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                    </a>
-                                    <a  title="Publish" (click)="edit(asset)">
-                                    <i class="fa fa-upload" aria-hidden="true"></i>
-                                    </a>
-                                    <a  title="Download" (click)="edit(asset)">
-                                      <i class="fa fa-download" aria-hidden="true"></i>
-                                      </a>
-                                    <a  title="Delete" (click)="edit(asset)">
-                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                    </a>
-                              </ng-container>
+                              <a  title="Edit" (click)="edit(asset.id)">
+                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                 </a>
+                                 <a  title="Publish" (click)="edit(asset)">
+                                 <i class="fa fa-upload" aria-hidden="true"></i>
+                                 </a>
+                                 <a  title="Download" (click)="edit(asset)">
+                                   <i class="fa fa-download" aria-hidden="true"></i>
+                                   </a>
+                                 <a  title="Delete" (click)="edit(asset)">
+                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                 </a>
                            </div>
                         </td>
                      </tr>
@@ -183,7 +181,7 @@
             </div>
          </section>
          <!----Grid View------->
-         <section *ngIf="modulesDisplayType.isGridView">
+         <section *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading">
             <ul class="content__list" *ngFor="let asset of pagination.pagedItems; let i =index;">
                <li class="list__item">
                   <div class="flex-row pointer">
