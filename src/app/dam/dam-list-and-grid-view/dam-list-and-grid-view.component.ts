@@ -174,4 +174,7 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 			this.xtremandLogger.errorPage(error);
 		});
 	}
+	
+	sortBy(event:any){}
+	eventHandler(event:any){}
 }
