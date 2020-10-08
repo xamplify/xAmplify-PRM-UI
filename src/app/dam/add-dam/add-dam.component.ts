@@ -31,6 +31,7 @@ export class AddDamComponent implements OnInit {
   name = "";
   description = "";
   validForm = false;
+  nameErrorMessage = "";
   constructor(public router: Router,private route:ActivatedRoute,public properties: Properties,private damService:DamService,private authenticationService:AuthenticationService,public referenceService:ReferenceService,private httpClient:HttpClient) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -73,6 +74,7 @@ export class AddDamComponent implements OnInit {
           this.damPostDto.description = dam.description;
           this.name = dam.assetName;
           this.validForm = true;
+          this.nameErrorMessage = "";
           this.description = dam.description;
         }else{
           this.goToManageSectionWithError();
@@ -115,6 +117,7 @@ validateName(name:string){
 
 
 saveOrUpdate(){
+  this.nameErrorMessage = "";
   this.customResponse = new CustomResponse();
   this.modalPopupLoader = true;
   this.damPostDto.createdBy = this.loggedInUserId;
@@ -126,9 +129,16 @@ saveOrUpdate(){
     this.referenceService.isCreated = true;
     this.referenceService.goToRouter("/home/dam/manage");
     this.modalPopupLoader = false;
-  }, _error => {
+  }, error => {
     this.modalPopupLoader = false;
-    this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    let statusCode = JSON.parse(error['status']);
+    if (statusCode == 409) {
+        this.validForm = false;
+        this.nameErrorMessage = "Already exists";
+    } else {
+      this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    }
+    
   });
 }
 
