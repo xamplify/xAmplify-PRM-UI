@@ -182,59 +182,49 @@
          </section>
          <!----Grid View------->
          <section *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading">
-            <ul class="content__list" *ngFor="let asset of pagination.pagedItems; let i =index;">
-               <li class="list__item">
-                  <div class="flex-row pointer">
-                     <div class="item__select-box-wrapper">
-                        <span> 
-                           <a style="cursor: default;" class="item__preview item__preview--image img-container custom"
-                              target="_BLANK">
-                              <img  class="thumb ng-scope custom-image-css-grid" src="{{asset?.assetPath}}" alt="">
-                           </a> <a href="javascript:void(0);"></a>
-                        </span>
-                     </div>
-                     <div class="item__content">
-                        <div class="flex-row">
-                           <div class="item__last-modified">
-                              <span><app-timestamp [showInLine]="'true'"  [dateAndTime]="asset?.displayTime"></app-timestamp></span>
-                           </div>
-                           <span class="item__name"  [title]="asset?.assetName"> <strong>{{asset?.assetName	| slice: 0: 15}} <span *ngIf="asset?.assetName?.length>15">...</span>
-                           </strong>
-                           </span>
-                           <div class="item__size">
-                              <span>{{asset?.displayName}}</span>
-                           </div>
-                           <div class="item__type">
-                              <span>pdf</span>
-                           </div>
-                           <div class="top10">
-                              <span *ngIf="asset?.published" class="view-banner published" translate>Published</span>
-                           </div>
-                           <div class="item__actions">
-                              <span> 
-                                 <a class="fm external-link" title="History"	(click)="$event.stopPropagation();">
-                                    <i class="fa fa-plus icon-grid-xcss" aria-hidden="true"></i>
-                                </a> 
-                                <a class="fm external-link" title="Edit"	(click)="$event.stopPropagation();">
-                                 <i class="fa fa-edit icon-grid-xcss" aria-hidden="true"></i>
-                               </a>
-                                <a class="fm external-link" title="Publish"	(click)="$event.stopPropagation();">
-                                 <i class="fa fa-upload icon-grid-xcss" aria-hidden="true"></i>
-                               </a> 
-                               <a class="fm external-link" title="Download"	(click)="$event.stopPropagation();">
-                                 <i class="fa fa-download icon-grid-xcss" aria-hidden="true"></i>
-                               </a> 
-                               <a class="fm external-link"  title="Delete"(click)="$event.stopPropagation();">
-                                  <i class="fa fa-trash-o icon-grid-xcss" aria-hidden="true"></i>
-                              </a>
-                              </span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="clearfix"></div>
-                  </div>
-               </li>
-            </ul>
+            <div class="row" *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
+               <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index" id="assetList_{{asset.id}}">
+                   <div class="grid-box">
+                       <img class="img-class" src="{{asset?.assetPath}}" alt="{{asset?.assetName}}">
+                       <h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
+                           {{asset?.assetName | slice:0:25}} <span *ngIf="asset?.assetName?.length>25">...</span><br><br>
+                       </h4>
+                       <div>
+                           <h6 title="Folder" translate>
+                               Folder <strong>Category Name</strong>
+                               <!-- <span *ngIf="form.categoryName?.length>17">..</span> -->
+                           </h6>
+                           <h6 translate>
+                               Created On <strong>
+                                 <app-timestamp [showInLine]="'true'"  [dateAndTime]="asset?.displayTime">
+                                 </app-timestamp>
+                               </strong>
+                           </h6>
+                           <h6 title="{{asset?.displayName}}" translate>
+                               By <strong>{{asset?.displayName | slice:0:17}}</strong>
+                               <span *ngIf="asset?.displayName?.length>17">..</span>
+                           </h6>
+                       </div>
+                       <div class="ribbon">
+                           <span translate>png</span>
+                       </div>
+                       <div class="bar">
+                           <a  title="Edit"  (click)="asset(asset.id)">
+                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                           </a>
+                           <a  title="Publish" (click)="asset(asset.id)">
+                               <i class="fa fa-upload" aria-hidden="true"></i>
+                           </a>
+                           <a  title="Download" (click)="asset(asset.id)">
+                              <i class="fa fa-download" aria-hidden="true"></i>
+                          </a>
+                           <a  title="Delete" class="delete">
+                               <i class="fa fa-trash-o" aria-hidden="true"></i>
+                           </a>
+                       </div>
+                   </div>
+               </div>
+           </div>
          </section>
          <!---Pagination-->
          <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info">
