@@ -37,6 +37,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	historyLoader: HttpRequestLoader = new HttpRequestLoader();
 	assets: Array<any> = new Array<any>();
 	historyPagination: Pagination = new Pagination();
+	modalPopupLoader = false;
+	selectedPdfAlias = "";
 	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -194,6 +196,25 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	edit(id: number) {
 		this.referenceService.goToRouter("/home/dam/edit/" + id);
+	}
+
+	openPopup(alias){
+		$('#selectedSize').val('A0');
+		this.selectedPdfAlias = alias;
+		$('#downloadPdfModalPopup').modal('show');
+	}
+	
+	downloadAsPdf(){
+		this.modalPopupLoader = true;
+		let selectedSize = $('#selectedSize option:selected').val();
+		window.location.href = this.authenticationService.REST_URL+"dam/download/"+this.selectedPdfAlias+"/"+selectedSize+"?access_token="+this.authenticationService.access_token;
+		this.hidePopup();
+	}
+
+	hidePopup(){
+		$('#downloadPdfModalPopup').modal('hide');
+		this.selectedPdfAlias = "";
+		this.modalPopupLoader = false;
 	}
 
 
