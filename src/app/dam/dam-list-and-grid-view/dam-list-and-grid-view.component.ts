@@ -17,7 +17,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
-declare var $: any;
+declare var $,swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
 	templateUrl: './dam-list-and-grid-view.component.html',
@@ -198,7 +198,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.goToRouter("/home/dam/edit/" + id);
 	}
 
-	openPopup(alias){
+	openPopup(alias:string){
 		$('#selectedSize').val('A0');
 		this.selectedPdfAlias = alias;
 		$('#downloadPdfModalPopup').modal('show');
@@ -207,14 +207,25 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	downloadAsPdf(){
 		this.modalPopupLoader = true;
 		let selectedSize = $('#selectedSize option:selected').val();
-		window.location.href = this.authenticationService.REST_URL+"dam/download/"+this.selectedPdfAlias+"/"+selectedSize+"?access_token="+this.authenticationService.access_token;
-		this.hidePopup();
+		let self = this;
+		swal( {
+			title:'Please Wait',
+			allowOutsideClick: false, 
+			showConfirmButton: false, 
+			imageUrl: 'assets/images/loader.gif',
+		});
+		setTimeout(function() {
+			window.open(self.authenticationService.REST_URL+"dam/download/"+self.selectedPdfAlias+"/"+selectedSize+"?access_token="+self.authenticationService.access_token);
+			$('#downloadPdfModalPopup').modal('hide');
+			self.modalPopupLoader = false;
+			swal.close();
+		}, 1500);
 	}
 
 	hidePopup(){
 		$('#downloadPdfModalPopup').modal('hide');
-		this.selectedPdfAlias = "";
 		this.modalPopupLoader = false;
+		this.selectedPdfAlias = "";
 	}
 
 
