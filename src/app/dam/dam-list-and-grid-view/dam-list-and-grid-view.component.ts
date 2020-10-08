@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { DamService } from '../services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -15,7 +15,7 @@ import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { ErrorResponse } from 'app/util/models/error-response';
-import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 declare var $: any;
 @Component({
@@ -24,7 +24,7 @@ declare var $: any;
 	styleUrls: ['./dam-list-and-grid-view.component.css'],
 	providers: [HttpRequestLoader, SortOption, Properties]
 })
-export class DamListAndGridViewComponent implements OnInit,OnDestroy {
+export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	loading = false;
 	loggedInUserId: number = 0;
@@ -34,10 +34,10 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 	viewType: string;
 	modulesDisplayType = new ModulesDisplayType();
 	colspanValue = 4;
-	historyLoader:HttpRequestLoader = new HttpRequestLoader();
+	historyLoader: HttpRequestLoader = new HttpRequestLoader();
 	assets: Array<any> = new Array<any>();
-	historyPagination:Pagination = new Pagination();
-	constructor(private route: ActivatedRoute,private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+	historyPagination: Pagination = new Pagination();
+	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
@@ -45,28 +45,28 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 		this.startLoaders();
 		this.getCompanyId();
 		this.viewType = this.route.snapshot.params['viewType'];
-		if(this.viewType!=undefined){
-			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType,this.viewType);
-		}else{
+		if (this.viewType != undefined) {
+			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
+		} else {
 			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 		}
 		if (this.referenceService.isCreated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Added Successfully', true);
-		}else if(this.referenceService.isUpdated){
+		} else if (this.referenceService.isUpdated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
 		}
-	}   
-	
+	}
+
 	ngOnDestroy() {
 		this.referenceService.isCreated = false;
 		this.referenceService.isUpdated = false;
-    }
-
-	setViewType(viewType:string){
-		this.referenceService.goToRouter("/home/dam/manage/"+viewType);
 	}
 
-	startLoaders(){
+	setViewType(viewType: string) {
+		this.referenceService.goToRouter("/home/dam/manage/" + viewType);
+	}
+
+	startLoaders() {
 		this.loading = true;
 		this.referenceService.loading(this.listLoader, true);
 	}
@@ -127,37 +127,46 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 		});
 	}
 
-	searchAssets() {
-		this.listAssets(this.pagination);
-	}
+	/********************Pagaination&Search Code*****************/
 
+	/*************************Sort********************** */
+	sortAssets(text: any) {
+		this.sortOption.damSortOption = text;
+		this.getAllFilteredResults();
+	}
+	/*************************Search********************** */
+	searchAssets() {
+		this.getAllFilteredResults();
+	}
+	/************Page************** */
 	setPage(event: any) {
 		this.pagination.pageIndex = event.page;
 		this.listAssets(this.pagination);
-	  }
-
-	  /********Edit***************** */
-	  edit(id:number){
-		this.referenceService.goToRouter("/home/dam/edit/"+id);
-	  }
-
-	  expandHistory(asset:any,selectedIndex:number){
-		$.each(this.assets, function (index:number, row:any) {
-		  if (selectedIndex != index) {
-			row.expand = false;
-		  }
+	}
+	getAllFilteredResults() {
+		this.pagination.pageIndex = 1;
+		this.pagination.searchKey = this.sortOption.searchKey;
+		this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
+		this.listAssets(this.pagination);
+	}
+	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchAssets(); } }
+	/********************Pagaination&Search Code*****************/
+	expandHistory(asset: any, selectedIndex: number) {
+		$.each(this.assets, function (index: number, row: any) {
+			if (selectedIndex != index) {
+				row.expand = false;
+			}
 		});
 		asset.expand = !asset.expand;
 		if (asset.expand) {
 			this.historyPagination.campaignId = asset.id;
 			this.listAssetsHistory(this.historyPagination);
-		}else{
+		} else {
 			this.historyPagination.campaignId = 0;
 		}
-	  }
+	}
 
-
-	  listAssetsHistory(pagination: Pagination) {
+	listAssetsHistory(pagination: Pagination) {
 		this.loading = true;
 		this.referenceService.loading(this.historyLoader, true);
 		this.damService.listHistory(pagination).subscribe((result: any) => {
@@ -177,7 +186,15 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 			this.xtremandLogger.errorPage(error);
 		});
 	}
-	
-	sortBy(event:any){}
-	eventHandler(event:any){}
+	/************Page************** */
+	setHistoryPage(event: any) {
+		this.historyPagination.pageIndex = event.page;
+		this.listAssetsHistory(this.historyPagination);
+	}
+
+	edit(id: number) {
+		this.referenceService.goToRouter("/home/dam/edit/" + id);
+	}
+
+
 }
