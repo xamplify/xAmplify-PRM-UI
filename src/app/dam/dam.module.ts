@@ -8,11 +8,12 @@ import { ManageDamComponent } from './manage-dam/manage-dam.component';
 import {DamService} from './services/dam.service';
 import { AddDamComponent } from './add-dam/add-dam.component';
 import { DamListAndGridViewComponent } from './dam-list-and-grid-view/dam-list-and-grid-view.component';
+import { PublishToPartnersComponent } from './publish-to-partners/publish-to-partners.component';
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule
   ],
-  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent],
+  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishToPartnersComponent],
 providers: [DamService]
 })
 export class DamModule { }

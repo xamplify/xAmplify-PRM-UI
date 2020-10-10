@@ -39,6 +39,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	historyPagination: Pagination = new Pagination();
 	modalPopupLoader = false;
 	selectedPdfAlias = "";
+	showPublishPopup = false;
+	selectedAssetId:number = 0;
 	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -228,5 +230,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.selectedPdfAlias = "";
 	}
 
+	openPublishPopup(assetId:number){
+		this.showPublishPopup = true;
+		this.selectedAssetId = assetId;
+	}
 
+	notificationFromPublishToPartnersComponent(){
+		this.showPublishPopup = false;
+		this.selectedAssetId = 0;
+	}
 }

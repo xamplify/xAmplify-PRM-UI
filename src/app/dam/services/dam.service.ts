@@ -15,6 +15,10 @@ export class DamService {
     return this.utilPostListMethod("list",pagination);
   }
 
+  listPartners(pagination: Pagination) {
+    return this.utilPostListMethod("listPartners",pagination);
+  }
+
   listHistory(pagination: Pagination) {
    return this.utilPostListMethod("listHistory",pagination);
   }

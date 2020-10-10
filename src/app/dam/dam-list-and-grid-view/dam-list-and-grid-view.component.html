@@ -94,7 +94,7 @@
                               <a  title="Edit" (click)="edit(asset.id)">
                                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                  </a>
-                                 <a  title="Publish" (click)="edit(asset)">
+                                 <a  title="Publish" (click)="openPublishPopup(asset.id)">
                                  <i class="fa fa-share" aria-hidden="true"></i>
                                  </a>
                                  <a  title="Download" (click)="openPopup(asset.alias)">
@@ -299,3 +299,8 @@
      </div>
  </div>
 </div>
+<!---Publish Pop Up-->
+<ng-container *ngIf="showPublishPopup">
+   <app-publish-to-partners [companyId]="loggedInUserCompanyId" [assetId]="selectedAssetId" (notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-publish-to-partners>
+</ng-container>
+
