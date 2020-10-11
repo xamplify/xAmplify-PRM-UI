@@ -155,7 +155,7 @@
                                                       <a  title="Download" (click)="openPopup(asset.alias)">
                                                         <i class="fa fa-download" aria-hidden="true"></i>
                                                         </a>
-                                                      <a  title="Delete" (click)="delete(asset)">
+                                                      <a  title="Delete" (click)="referenceService.showSweetAlertInfoMessage()">
                                                       <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                       </a>
                                              </div>
@@ -209,19 +209,19 @@
                            <span translate>{{asset?.assetType}}</span>
                        </div>
                        <div class="bar">
-                        <a *ngIf="asset?.history"  title="History" (click)="expandHistory(asset,i)">
+                        <a *ngIf="asset?.history"  title="History" (click)="referenceService.showSweetAlertInfoMessage()">
                            <i class="fa" [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                            </a>
                            <a  title="Edit"  (click)="asset(asset.id)">
                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                            </a>
-                           <a  title="Publish" (click)="asset(asset.id)">
+                           <a  title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>
                            </a>
-                           <a  title="Download" (click)="asset(asset.id)">
+                           <a  title="Download" (click)="openPopup(asset.alias)">
                               <i class="fa fa-download" aria-hidden="true"></i>
                           </a>
-                           <a  title="Delete" class="delete">
+                           <a  title="Delete" class="delete" (click)="referenceService.showSweetAlertInfoMessage()">
                                <i class="fa fa-trash-o" aria-hidden="true"></i>
                            </a>
                        </div>
