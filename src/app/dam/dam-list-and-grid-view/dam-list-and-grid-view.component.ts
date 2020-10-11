@@ -87,9 +87,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 						this.router.navigate(["/home/dashboard"]);
 					}
 				}, (error: any) => {
-					this.stopLoaders();
-					this.xtremandLogger.log(error);
-					this.xtremandLogger.errorPage(error);
+					this.stopLoadersAndShowError(error);
 				},
 				() => {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
@@ -104,6 +102,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.referenceService.showSweetAlertErrorMessage('UserId Not Found.Please try aftersometime');
 			this.router.navigate(["/home/dashboard"]);
 		}
+	}
+
+	stopLoadersAndShowError(error:any){
+		this.stopLoaders();
+		this.xtremandLogger.log(error);
+		this.xtremandLogger.errorPage(error);
 	}
 
 	stopLoaders() {
@@ -125,9 +129,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			}
 			this.stopLoaders();
 		}, error => {
-			this.stopLoaders();
-			this.xtremandLogger.log(error);
-			this.xtremandLogger.errorPage(error);
+			this.stopLoadersAndShowError(error);
 		});
 	}
 
@@ -185,9 +187,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.loading = false;
 			this.referenceService.loading(this.historyLoader, false);
 		}, error => {
-			this.loading = false;
-			this.xtremandLogger.log(error);
-			this.xtremandLogger.errorPage(error);
+			this.stopLoadersAndShowError(error);
 		});
 	}
 	/************Page************** */

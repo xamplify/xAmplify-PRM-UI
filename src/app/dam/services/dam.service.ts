@@ -5,6 +5,7 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs";
 import { Pagination } from "app/core/models/pagination";
 import {DamPostDto} from '../models/dam-post-dto';
+import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 
 @Injectable()
 export class DamService {
@@ -17,6 +18,11 @@ export class DamService {
 
   listPartners(pagination: Pagination) {
     return this.utilPostListMethod("listPartners",pagination);
+  }
+  publish(damPostDto:DamPublishPostDto){
+    return this.http.post(this.URL +"publish?access_token=" + this.authenticationService.access_token,damPostDto)
+    .map(this.extractData)
+    .catch(this.handleError);
   }
 
   listHistory(pagination: Pagination) {

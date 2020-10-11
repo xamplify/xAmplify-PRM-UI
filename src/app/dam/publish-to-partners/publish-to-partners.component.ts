@@ -9,6 +9,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { Properties } from '../../common/models/properties';
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
+import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 declare var $: any;
 
 @Component({
@@ -19,7 +20,7 @@ declare var $: any;
 })
 export class PublishToPartnersComponent implements OnInit {
 
-	loading = false;
+	ngxLoading = false;
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
 	customResponse: CustomResponse = new CustomResponse();
@@ -35,14 +36,17 @@ export class PublishToPartnersComponent implements OnInit {
 	responseImage = "";
 	responseClass = "event-success";
 	@Output() notifyOtherComponent = new EventEmitter();
+	damPublishPostDto:DamPublishPostDto = new DamPublishPostDto();
+	statusCode: number=0;
 	constructor(private damService: DamService,private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 	ngOnInit() {
-		if (this.companyId != undefined && this.companyId > 0) {
+		if (this.companyId != undefined && this.companyId > 0 && this.assetId!=undefined && this.assetId>0) {
 			this.pagination.vendorCompanyId = this.companyId;
+			this.pagination.formId = this.assetId;
 			this.openPopup();
 		}else{
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
@@ -88,6 +92,7 @@ export class PublishToPartnersComponent implements OnInit {
 	}
 
 	resetFields() {
+		this.damPublishPostDto = new DamPublishPostDto();
 		this.pagination = new Pagination();
 		this.sortOption = new SortOption();
 		this.isHeaderCheckBoxChecked = false;
@@ -210,7 +215,39 @@ export class PublishToPartnersComponent implements OnInit {
 
 	/****Publish To Partners */
 	publishAsset() {
-		alert(this.selectedPartnerShipIds);
+		this.startLoaders();
+		this.damPublishPostDto.damId = this.assetId;
+		this.damPublishPostDto.partnershipIds = this.selectedPartnerShipIds;
+		this.damPublishPostDto.publishedBy = this.loggedInUserId;
+		this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
+			this.stopLoaders();
+			if (data.access) {
+                this.sendSuccess = true;
+                this.statusCode = data.statusCode;
+                if (data.statusCode == 200) {
+                  this.responseMessage = "Published Successfully";
+                } else {
+                    this.responseMessage = data.message;
+                }
+                this.resetFields();
+            } else {
+                this.authenticationService.forceToLogout();
+            }
+		}, _error => {
+		  this.ngxLoading = false;
+          this.sendSuccess = false;
+          this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+		});
+	}
+
+	startLoaders(){
+		this.ngxLoading = true;
+		this.referenceService.startLoader(this.httpRequestLoader);
+	}
+
+	stopLoaders(){
+		this.ngxLoading = false;
+		this.referenceService.stopLoader(this.httpRequestLoader);
 	}
 
 	
