@@ -25,10 +25,18 @@
                      </ng-container>
                      <div class="inputs" style="float: right">
                         <div style="float: left;">
-                           <select class="form-control" [(ngModel)]="sortOption.damSortOption" (ngModelChange)="sortAssets($event)" style="position: relative;right: -3px;">
-                           <option *ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">
-                           {{option.name}}</option>
-                           </select>
+                           <ng-container *ngIf="isPartnerView">
+                              <select class="form-control" [(ngModel)]="sortOption.publishedDamSortOption" (ngModelChange)="sortAssets($event)" style="position: relative;right: -3px;">
+                                 <option *ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">
+                                 {{option.name}}</option>
+                                 </select>
+                           </ng-container>
+                           <ng-container *ngIf="!isPartnerView">
+                              <select class="form-control" [(ngModel)]="sortOption.damSortOption" (ngModelChange)="sortAssets($event)" style="position: relative;right: -3px;">
+                                 <option *ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">
+                                 {{option.name}}</option>
+                                 </select>
+                           </ng-container>
                         </div>
                         <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
                            <div class="input-icon right" style="position: relative;right: -11px;">
@@ -57,7 +65,8 @@
                         <th colspan="2" style="width: 35%" id="border-bottom">
                            <span class="gridHeader" translate>Asset Details</span>
                         </th>
-                        <th class="text-center" scope="row" translate>Created On</th>
+                        <th class="text-center" scope="row" translate *ngIf="isPartnerView">Published On</th>
+                        <th class="text-center" scope="row" translate *ngIf="!isPartnerView">Created On</th>
                         <th class="text-center" id="min-width" translate>Actions</th>
                      </tr>
                   </thead>
@@ -73,11 +82,12 @@
                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
                               <span><strong>{{asset?.assetName}}</strong></span>
                            </h4>
-                           <h6 class="moreipsis" title="{{asset?.categoryName}}">
+                           <!-- <h6 class="moreipsis" title="{{asset?.categoryName}}">
                               <span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
-                           </h6>
+                           </h6> -->
                            <h6 class="moreipsis" title="{{asset?.displayName}}">
-                              <span translate> Created By <strong>{{asset?.displayName}}</strong></span>
+                              <span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
+                              <span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName}}</strong></span>
                            </h6>
                            <h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
                         </td>
@@ -87,20 +97,20 @@
                         </td>
                         <td id="actions-row">
                            <div [className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon'">
-                              <a *ngIf="asset?.history"  title="History" (click)="expandHistory(asset,i)">
+                              <a  *ngIf="asset?.history &&!isPartnerView "  title="History" (click)="expandHistory(asset,i)">
                               <i class="fa"
                                   [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                               </a>
                               <a  title="Edit" (click)="edit(asset.id)">
                                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                  </a>
-                                 <a  title="Publish" (click)="openPublishPopup(asset.id)">
+                                 <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                  <i class="fa fa-share" aria-hidden="true"></i>
                                  </a>
                                  <a  title="Download" (click)="openPopup(asset.alias)">
                                    <i class="fa fa-download" aria-hidden="true"></i>
                                    </a>
-                                 <a  title="Delete" (click)="edit(asset)">
+                                 <a *ngIf="!isPartnerView" title="Delete"  (click)="referenceService.showSweetAlertInfoMessage()">
                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
                                  </a>
                            </div>
@@ -149,7 +159,7 @@
                                                    <a  title="Edit" (click)="edit(asset.id)">
                                                       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                       </a>
-                                                      <a  title="Publish" (click)="edit(asset)">
+                                                      <a  title="Publish" (click)="openPublishPopup(asset.id)">
                                                       <i class="fa fa-share" aria-hidden="true"></i>
                                                       </a>
                                                       <a  title="Download" (click)="openPopup(asset.alias)">
@@ -190,12 +200,14 @@
                            {{asset?.assetName | slice:0:25}} <span *ngIf="asset?.assetName?.length>25">...</span><br><br>
                        </h4>
                        <div>
-                           <h6 title="Folder" translate>
+                           <!-- <h6 title="Folder" translate>
                                Folder <strong>Category Name</strong>
-                               <!-- <span *ngIf="form.categoryName?.length>17">..</span> -->
-                           </h6>
+                               <span *ngIf="form.categoryName?.length>17">..</span>
+                           </h6> -->
                            <h6 translate>
-                               Created On <strong>
+                               <span *ngIf="isPartnerView">Published On</span>
+                               <span *ngIf="!isPartnerView">Created On</span>
+                                <strong>
                                  <app-timestamp [showInLine]="'true'"  [dateAndTime]="asset?.displayTime">
                                  </app-timestamp>
                                </strong>
@@ -209,19 +221,19 @@
                            <span translate>{{asset?.assetType}}</span>
                        </div>
                        <div class="bar">
-                        <a *ngIf="asset?.history"  title="History" (click)="referenceService.showSweetAlertInfoMessage()">
+                        <a *ngIf="asset?.history && !isPartnerView "  title="History" (click)="referenceService.showSweetAlertInfoMessage()">
                            <i class="fa" [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                            </a>
-                           <a  title="Edit"  (click)="asset(asset.id)">
+                           <a  title="Edit"  (click)="edit(asset.id)">
                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                            </a>
-                           <a  title="Publish" (click)="openPublishPopup(asset.id)">
+                           <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>
                            </a>
                            <a  title="Download" (click)="openPopup(asset.alias)">
                               <i class="fa fa-download" aria-hidden="true"></i>
                           </a>
-                           <a  title="Delete" class="delete" (click)="referenceService.showSweetAlertInfoMessage()">
+                           <a *ngIf="!isPartnerView" title="Delete" class="delete" (click)="referenceService.showSweetAlertInfoMessage()">
                                <i class="fa fa-trash-o" aria-hidden="true"></i>
                            </a>
                        </div>

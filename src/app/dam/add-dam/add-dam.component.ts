@@ -32,6 +32,7 @@ export class AddDamComponent implements OnInit {
   description = "";
   validForm = false;
   nameErrorMessage = "";
+  isPartnerView =false;
   constructor(public router: Router,private route:ActivatedRoute,public properties: Properties,private damService:DamService,private authenticationService:AuthenticationService,public referenceService:ReferenceService,private httpClient:HttpClient) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -41,6 +42,7 @@ export class AddDamComponent implements OnInit {
     if(this.router.url.indexOf('/edit')>-1){
       this.assetId = this.route.snapshot.params['id'];
       if(this.assetId>0){
+        this.isPartnerView = this.router.url.indexOf('/editp')>-1;
         this.isAdd = false;
         this.modalTitle = "Update Details";
         this.saveOrUpdateButtonText = "Update";
@@ -65,7 +67,8 @@ export class AddDamComponent implements OnInit {
   }
 
   getById(){
-    this.damService.getById(this.assetId).subscribe((result: any) => {
+    alert(this.isPartnerView);
+    this.damService.getById(this.assetId,this.isPartnerView).subscribe((result: any) => {
       if (result.statusCode === 200) {
         let dam = result.data;
         if(dam!=undefined){
@@ -79,7 +82,6 @@ export class AddDamComponent implements OnInit {
         }else{
           this.goToManageSectionWithError();
         }
-        
         this.ngxloading = false;
       }
     }, _error => {
@@ -142,7 +144,7 @@ saveOrUpdate(){
   });
 }
 
-update(){
+updatePublishedAsset(){
 
 }
 

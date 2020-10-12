@@ -41,11 +41,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	selectedPdfAlias = "";
 	showPublishPopup = false;
 	selectedAssetId:number = 0;
+	isPartnerView = false;
 	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 	ngOnInit() {
+		this.isPartnerView = this.router.url.indexOf('/shared')>-1;
 		this.startLoaders();
 		this.getCompanyId();
 		this.viewType = this.route.snapshot.params['viewType'];
@@ -67,7 +69,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	setViewType(viewType: string) {
-		this.referenceService.goToRouter("/home/dam/manage/" + viewType);
+		if(this.isPartnerView){
+			this.referenceService.goToRouter("/home/dam/shared/" + viewType);
+		}else{
+			this.referenceService.goToRouter("/home/dam/manage/" + viewType);
+		}
+		
 	}
 
 	startLoaders() {
@@ -92,8 +99,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				() => {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
 						this.pagination.companyId = this.loggedInUserCompanyId;
-						this.historyPagination.companyId = this.loggedInUserCompanyId;
-						this.listAssets(this.pagination);
+						if(this.isPartnerView){
+							this.listPublishedAssets(this.pagination);
+						}else{
+							this.historyPagination.companyId = this.loggedInUserCompanyId;
+							this.listAssets(this.pagination);
+						}
+						
 					}
 				}
 			);
@@ -133,11 +145,34 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	listPublishedAssets(pagination: Pagination) {
+		this.referenceService.goToTop();
+		this.startLoaders();
+		this.damService.listPublishedAssets(pagination).subscribe((result: any) => {
+			if (result.statusCode === 200) {
+				let data = result.data;
+				pagination.totalRecords = data.totalRecords;
+				$.each(data.assets, function (_index: number, asset: any) {
+					asset.displayTime = new Date(asset.publishedTimeInUTCString);
+				});
+				pagination = this.pagerService.getPagedItems(pagination, data.assets);
+			}
+			this.stopLoaders();
+		}, error => {
+			this.stopLoadersAndShowError(error);
+		});
+	}
+
+
 	/********************Pagaination&Search Code*****************/
 
 	/*************************Sort********************** */
 	sortAssets(text: any) {
-		this.sortOption.damSortOption = text;
+		if(this.isPartnerView){
+			this.sortOption.publishedDamSortOption = text;
+		}else{
+			this.sortOption.damSortOption = text;
+		}
 		this.getAllFilteredResults();
 	}
 	/*************************Search********************** */
@@ -147,13 +182,24 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/************Page************** */
 	setPage(event: any) {
 		this.pagination.pageIndex = event.page;
-		this.listAssets(this.pagination);
+		if(this.isPartnerView){
+			this.listPublishedAssets(this.pagination);
+		}else{
+			this.listAssets(this.pagination);
+		}
+		
 	}
 	getAllFilteredResults() {
 		this.pagination.pageIndex = 1;
 		this.pagination.searchKey = this.sortOption.searchKey;
-		this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
-		this.listAssets(this.pagination);
+		if(this.isPartnerView){
+			this.pagination = this.utilService.sortOptionValues(this.sortOption.publishedDamSortOption, this.pagination);
+			this.listPublishedAssets(this.pagination);
+		}else{
+			this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
+			this.listAssets(this.pagination);
+		}
+		
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchAssets(); } }
 	/********************Pagaination&Search Code*****************/
@@ -197,7 +243,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	edit(id: number) {
-		this.referenceService.goToRouter("/home/dam/edit/" + id);
+		if(this.isPartnerView){
+			this.referenceService.goToRouter("/home/dam/editp/" + id);
+		}else{
+			this.referenceService.goToRouter("/home/dam/edit/" + id);
+		}
+		
 	}
 
 	openPopup(alias:string){

@@ -244,14 +244,51 @@
                     </li>
                  </ng-container>
          <!------DAM----------->
-         <li *ngIf="damAccess" [ngClass]="{'active': location.path().includes('dam')}">
-            <a [routerLink]="['./dam']">
-                <i class="fa fa-file" aria-hidden="true"></i>
-                <span class="title" translate>DAM</span>
-                <span class="arrow"></span>
-                <span class="selected"></span>
-            </a>
+         <!---Vendor And Partner-->
+         <ng-container *ngIf="damAccess && damAccessAsPartner">
+            <li  [ngClass]="{'active': location.path().includes('dam')}">
+                <a href="javascript:;" (click)="openOrCloseTabs('dam')">
+                    <i class="fa fa-file" aria-hidden="true"></i>
+                    <span class="title" translate>DAM</span>
+                    <span class="arrow"></span>
+                    <span class="selected"></span>
+                </a>
+                <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': dam? 'block': 'none' }" >
+                    <li>
+                        <a [routerLink]="['/home/dam/manage']">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span class="title" translate>Manage My Assets</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/home/dam/shared']">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span class="title" translate>Manage Shared Assets</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
+         </ng-container>
+         <!--Only Dam Acess As Vendor-->
+         <ng-container *ngIf="damAccess && !damAccessAsPartner">
+            <li>
+                <a [routerLink]="['/home/dam/manage']">
+                <i class="fa fa-file" aria-hidden="true"></i>
+                <span class="title">DAM</span>
+                <span class="arrow"></span>
+                </a>
+             </li> 
+         </ng-container>
+        <!--Only Dam Acess As Partner-->
+        <ng-container *ngIf="!damAccess && damAccessAsPartner">
+            <li>
+                <a [routerLink]="['/home/dam/shared']">
+                <i class="fa fa-file" aria-hidden="true"></i>
+                <span class="title">DAM</span>
+                <span class="arrow"></span>
+                </a>
+             </li> 
+         </ng-container>
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>

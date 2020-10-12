@@ -15,6 +15,9 @@ export class DamService {
   list(pagination: Pagination) {
     return this.utilPostListMethod("list",pagination);
   }
+  listPublishedAssets(pagination: Pagination) {
+    return this.utilPostListMethod("listPublishedAssets",pagination);
+  }
 
   listPartners(pagination: Pagination) {
     return this.utilPostListMethod("listPartners",pagination);
@@ -35,11 +38,7 @@ export class DamService {
    return this.utilPostListMethod("listHistory",pagination);
   }
 
-  utilPostListMethod(url:string,pagination:Pagination){
-    return this.http.post(this.URL +url+"?access_token=" + this.authenticationService.access_token,pagination)
-    .map(this.extractData)
-    .catch(this.handleError);
-  }
+  
 
   save(damPostDto:DamPostDto){
     return this.http.post(this.URL + "save?access_token=" + this.authenticationService.access_token,damPostDto)
@@ -47,13 +46,20 @@ export class DamService {
     .catch(this.handleError);
   }
 
-  getById(id:number){
-    return this.http.get(this.URL + "getById/"+id+"?access_token=" + this.authenticationService.access_token)
+  getById(id:number,isPartnerView:boolean){
+    let url = isPartnerView ? 'getPublishedAssetById':'getById';
+    return this.http.get(this.URL +url+"/"+id+"?access_token=" + this.authenticationService.access_token)
     .map(this.extractData)
     .catch(this.handleError);
   }
 
 
+
+  utilPostListMethod(url:string,pagination:Pagination){
+    return this.http.post(this.URL +url+"?access_token=" + this.authenticationService.access_token,pagination)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
   
   extractData(res: Response) {
     let body = res.json();

@@ -214,6 +214,12 @@ export class SortOption {
       { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
       { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
   ];
+  publishedDamSortDropDownOptions = [
+    { 'name': 'Name(A-Z)', 'value': 'assetName-ASC' },
+    { 'name': 'Name(Z-A)', 'value': 'assetName-DESC' },
+    { 'name': 'Published On(ASC)', 'value': 'publishedTime-ASC' },
+    { 'name': 'Published On(DESC)', 'value': 'publishedTime-DESC' }
+];
 
   damPartnersDropDownOptions = [
     { 'name': 'Name(A-Z)', 'value': 'assetName-ASC' },
@@ -249,6 +255,7 @@ export class SortOption {
     public mdfVendorsSortOption:any = this.mdfVendorsSortDropDownOptions[5];
 	  public userLevelCampaignAnalyticsSortOption:any = this.userLevelCampaignAnalyticsSortDropDownOptions[this.userLevelCampaignAnalyticsSortDropDownOptions.length-1];
     public damSortOption:any = this.damSortDropDownOptions[this.damSortDropDownOptions.length-1];
+    public publishedDamSortOption:any = this.publishedDamSortDropDownOptions[this.publishedDamSortDropDownOptions.length-1];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

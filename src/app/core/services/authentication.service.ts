@@ -471,6 +471,8 @@ export class AuthenticationService {
     module.isOnlyPartner = false;
     module.isReDistribution = false;
     module.isPartnershipEstablishedOnlyWithVendorTier = false;
+    module.damAccessAsPartner = false;
+    module.damAccess = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	this.contactsCount = false;
