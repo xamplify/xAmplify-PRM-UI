@@ -9,6 +9,7 @@ import { Properties } from '../../common/models/properties';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 
 declare var $:any;
 @Component({
@@ -33,7 +34,7 @@ export class AddDamComponent implements OnInit {
   validForm = false;
   nameErrorMessage = "";
   isPartnerView =false;
-  constructor(public router: Router,private route:ActivatedRoute,public properties: Properties,private damService:DamService,private authenticationService:AuthenticationService,public referenceService:ReferenceService,private httpClient:HttpClient) {
+  constructor(private xtremandLogger:XtremandLogger,public router: Router,private route:ActivatedRoute,public properties: Properties,private damService:DamService,private authenticationService:AuthenticationService,public referenceService:ReferenceService,private httpClient:HttpClient) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
 
@@ -67,7 +68,6 @@ export class AddDamComponent implements OnInit {
   }
 
   getById(){
-    alert(this.isPartnerView);
     this.damService.getById(this.assetId,this.isPartnerView).subscribe((result: any) => {
       if (result.statusCode === 200) {
         let dam = result.data;
@@ -84,15 +84,21 @@ export class AddDamComponent implements OnInit {
         }
         this.ngxloading = false;
       }
-    }, _error => {
+    }, error => {
+      this.xtremandLogger.log(error);
       this.ngxloading = false;
-      this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+      this.goBack();
+      this.referenceService.showSweetAlertServerErrorMessage();
     });
   }
 
-goToManageDam(){
-	this.ngxloading = true;
-	this.referenceService.goToRouter("/home/dam/manage");
+  goBack(){
+  this.ngxloading = true;
+  if(this.isPartnerView){
+    this.referenceService.goToRouter("/home/dam/shared");
+  }else{
+    this.referenceService.goToRouter("/home/dam/manage");
+  }
 }
 
 readBeeTemplateData(event:any){
@@ -123,29 +129,34 @@ saveOrUpdate(){
   this.customResponse = new CustomResponse();
   this.modalPopupLoader = true;
   this.damPostDto.createdBy = this.loggedInUserId;
-  if(!this.isAdd){
-    this.damPostDto.id = this.assetId;
-  }
-  this.damService.save(this.damPostDto).subscribe((result: any) => {
-    this.hidePopup();
-    this.referenceService.isCreated = true;
-    this.referenceService.goToRouter("/home/dam/manage");
-    this.modalPopupLoader = false;
-  }, error => {
-    this.modalPopupLoader = false;
-    let statusCode = JSON.parse(error['status']);
-    if (statusCode == 409) {
-        this.validForm = false;
-        this.nameErrorMessage = "Already exists";
-    } else {
-      this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+  if(this.isPartnerView){
+      this.updatePublishedAsset();
+  }else{
+    if(!this.isAdd){
+      this.damPostDto.id = this.assetId;
     }
-    
-  });
+    this.damService.save(this.damPostDto).subscribe((result: any) => {
+      this.hidePopup();
+      this.referenceService.isCreated = true;
+      this.referenceService.goToRouter("/home/dam/manage");
+      this.modalPopupLoader = false;
+    }, error => {
+      this.modalPopupLoader = false;
+      let statusCode = JSON.parse(error['status']);
+      if (statusCode == 409) {
+          this.validForm = false;
+          this.nameErrorMessage = "Already exists";
+      } else {
+        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+      }
+    });
+  }
+
+  
 }
 
 updatePublishedAsset(){
-
+  console.log(this.damPostDto);
 }
 
 }
