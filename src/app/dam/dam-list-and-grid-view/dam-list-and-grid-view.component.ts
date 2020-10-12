@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { DamService } from '../services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -15,16 +15,16 @@ import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { ErrorResponse } from 'app/util/models/error-response';
-import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
-declare var $: any;
+declare var $,swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
 	templateUrl: './dam-list-and-grid-view.component.html',
 	styleUrls: ['./dam-list-and-grid-view.component.css'],
 	providers: [HttpRequestLoader, SortOption, Properties]
 })
-export class DamListAndGridViewComponent implements OnInit,OnDestroy {
+export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	loading = false;
 	loggedInUserId: number = 0;
@@ -34,36 +34,45 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 	viewType: string;
 	modulesDisplayType = new ModulesDisplayType();
 	colspanValue = 4;
-	historyLoader:HttpRequestLoader = new HttpRequestLoader();
+	historyLoader: HttpRequestLoader = new HttpRequestLoader();
 	assets: Array<any> = new Array<any>();
-	historyPagination:Pagination = new Pagination();
-	constructor(private route: ActivatedRoute,private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+	historyPagination: Pagination = new Pagination();
+	modalPopupLoader = false;
+	selectedPdfAlias = "";
+	showPublishPopup = false;
+	selectedAssetId:number = 0;
+	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 	ngOnInit() {
-		this.loading = true;
+		this.startLoaders();
 		this.getCompanyId();
 		this.viewType = this.route.snapshot.params['viewType'];
-		if(this.viewType!=undefined){
-			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType,this.viewType);
-		}else{
+		if (this.viewType != undefined) {
+			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
+		} else {
 			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 		}
 		if (this.referenceService.isCreated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Added Successfully', true);
-		}else if(this.referenceService.isUpdated){
+		} else if (this.referenceService.isUpdated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
 		}
-	}   
-	
+	}
+
 	ngOnDestroy() {
 		this.referenceService.isCreated = false;
 		this.referenceService.isUpdated = false;
-    }
+	}
 
-	setViewType(viewType:string){
-		this.referenceService.goToRouter("/home/dam/manage/"+viewType);
+	setViewType(viewType: string) {
+		this.referenceService.goToRouter("/home/dam/manage/" + viewType);
+	}
+
+	startLoaders() {
+		this.loading = true;
+		this.referenceService.loading(this.listLoader, true);
 	}
 
 	getCompanyId() {
@@ -78,9 +87,7 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 						this.router.navigate(["/home/dashboard"]);
 					}
 				}, (error: any) => {
-					this.stopLoaders();
-					this.xtremandLogger.log(error);
-					this.xtremandLogger.errorPage(error);
+					this.stopLoadersAndShowError(error);
 				},
 				() => {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
@@ -97,14 +104,19 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 		}
 	}
 
+	stopLoadersAndShowError(error:any){
+		this.stopLoaders();
+		this.xtremandLogger.log(error);
+		this.xtremandLogger.errorPage(error);
+	}
+
 	stopLoaders() {
 		this.loading = false;
 		this.referenceService.loading(this.listLoader, false);
 	}
 	listAssets(pagination: Pagination) {
 		this.referenceService.goToTop();
-		this.loading = true;
-		this.referenceService.loading(this.listLoader, true);
+		this.startLoaders();
 		this.damService.list(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
@@ -115,46 +127,52 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 				});
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
-			this.loading = false;
-			this.referenceService.loading(this.listLoader, false);
+			this.stopLoaders();
 		}, error => {
-			this.loading = false;
-			this.xtremandLogger.log(error);
-			this.xtremandLogger.errorPage(error);
+			this.stopLoadersAndShowError(error);
 		});
 	}
 
-	searchAssets() {
-		this.listAssets(this.pagination);
-	}
+	/********************Pagaination&Search Code*****************/
 
+	/*************************Sort********************** */
+	sortAssets(text: any) {
+		this.sortOption.damSortOption = text;
+		this.getAllFilteredResults();
+	}
+	/*************************Search********************** */
+	searchAssets() {
+		this.getAllFilteredResults();
+	}
+	/************Page************** */
 	setPage(event: any) {
 		this.pagination.pageIndex = event.page;
 		this.listAssets(this.pagination);
-	  }
-
-	  /********Edit***************** */
-	  edit(id:number){
-		this.referenceService.goToRouter("/home/dam/edit/"+id);
-	  }
-
-	  expandHistory(asset:any,selectedIndex:number){
-		$.each(this.assets, function (index:number, row:any) {
-		  if (selectedIndex != index) {
-			row.expand = false;
-		  }
+	}
+	getAllFilteredResults() {
+		this.pagination.pageIndex = 1;
+		this.pagination.searchKey = this.sortOption.searchKey;
+		this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
+		this.listAssets(this.pagination);
+	}
+	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchAssets(); } }
+	/********************Pagaination&Search Code*****************/
+	expandHistory(asset: any, selectedIndex: number) {
+		$.each(this.assets, function (index: number, row: any) {
+			if (selectedIndex != index) {
+				row.expand = false;
+			}
 		});
 		asset.expand = !asset.expand;
 		if (asset.expand) {
 			this.historyPagination.campaignId = asset.id;
 			this.listAssetsHistory(this.historyPagination);
-		}else{
+		} else {
 			this.historyPagination.campaignId = 0;
 		}
-	  }
+	}
 
-
-	  listAssetsHistory(pagination: Pagination) {
+	listAssetsHistory(pagination: Pagination) {
 		this.loading = true;
 		this.referenceService.loading(this.historyLoader, true);
 		this.damService.listHistory(pagination).subscribe((result: any) => {
@@ -169,12 +187,56 @@ export class DamListAndGridViewComponent implements OnInit,OnDestroy {
 			this.loading = false;
 			this.referenceService.loading(this.historyLoader, false);
 		}, error => {
-			this.loading = false;
-			this.xtremandLogger.log(error);
-			this.xtremandLogger.errorPage(error);
+			this.stopLoadersAndShowError(error);
 		});
 	}
+	/************Page************** */
+	setHistoryPage(event: any) {
+		this.historyPagination.pageIndex = event.page;
+		this.listAssetsHistory(this.historyPagination);
+	}
+
+	edit(id: number) {
+		this.referenceService.goToRouter("/home/dam/edit/" + id);
+	}
+
+	openPopup(alias:string){
+		$('#selectedSize').val('A0');
+		this.selectedPdfAlias = alias;
+		$('#downloadPdfModalPopup').modal('show');
+	}
 	
-	sortBy(event:any){}
-	eventHandler(event:any){}
+	downloadAsPdf(){
+		this.modalPopupLoader = true;
+		let selectedSize = $('#selectedSize option:selected').val();
+		let self = this;
+		swal( {
+			title:'Please Wait',
+			allowOutsideClick: false, 
+			showConfirmButton: false, 
+			imageUrl: 'assets/images/loader.gif',
+		});
+		setTimeout(function() {
+			window.open(self.authenticationService.REST_URL+"dam/download/"+self.selectedPdfAlias+"/"+selectedSize+"?access_token="+self.authenticationService.access_token);
+			$('#downloadPdfModalPopup').modal('hide');
+			self.modalPopupLoader = false;
+			swal.close();
+		}, 1500);
+	}
+
+	hidePopup(){
+		$('#downloadPdfModalPopup').modal('hide');
+		this.modalPopupLoader = false;
+		this.selectedPdfAlias = "";
+	}
+
+	openPublishPopup(assetId:number){
+		this.showPublishPopup = true;
+		this.selectedAssetId = assetId;
+	}
+
+	notificationFromPublishToPartnersComponent(){
+		this.showPublishPopup = false;
+		this.selectedAssetId = 0;
+	}
 }

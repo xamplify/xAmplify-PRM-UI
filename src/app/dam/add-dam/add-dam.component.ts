@@ -28,6 +28,10 @@ export class AddDamComponent implements OnInit {
   isAdd = false;
   modalTitle = "";
   saveOrUpdateButtonText  = "";
+  name = "";
+  description = "";
+  validForm = false;
+  nameErrorMessage = "";
   constructor(public router: Router,private route:ActivatedRoute,public properties: Properties,private damService:DamService,private authenticationService:AuthenticationService,public referenceService:ReferenceService,private httpClient:HttpClient) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -68,6 +72,10 @@ export class AddDamComponent implements OnInit {
           this.jsonBody = dam.jsonBody;
           this.damPostDto.name = dam.assetName;
           this.damPostDto.description = dam.description;
+          this.name = dam.assetName;
+          this.validForm = true;
+          this.nameErrorMessage = "";
+          this.description = dam.description;
         }else{
           this.goToManageSectionWithError();
         }
@@ -93,9 +101,23 @@ readBeeTemplateData(event:any){
 
 hidePopup(){
   $('#addAssetDetailsPopup').modal('hide');
+  if(!this.isAdd){
+    if($.trim(this.damPostDto.name).length==0){
+      this.damPostDto.name = this.name;
+    }
+    if($.trim(this.damPostDto.description).length==0){
+      this.damPostDto.description = this.description;
+    }
+  }
 }
 
+validateName(name:string){
+  this.validForm = (name!=undefined && $.trim(name).length>0);
+}
+
+
 saveOrUpdate(){
+  this.nameErrorMessage = "";
   this.customResponse = new CustomResponse();
   this.modalPopupLoader = true;
   this.damPostDto.createdBy = this.loggedInUserId;
@@ -103,20 +125,20 @@ saveOrUpdate(){
     this.damPostDto.id = this.assetId;
   }
   this.damService.save(this.damPostDto).subscribe((result: any) => {
-    if (result.statusCode === 200) {
-      this.hidePopup();
-      this.referenceService.goToRouter("/home/dam/manage");
-      if(this.isAdd){
-        this.referenceService.isCreated = true;
-      }else{
-        this.referenceService.isUpdated = true;
-      }
-      
+    this.hidePopup();
+    this.referenceService.isCreated = true;
+    this.referenceService.goToRouter("/home/dam/manage");
+    this.modalPopupLoader = false;
+  }, error => {
+    this.modalPopupLoader = false;
+    let statusCode = JSON.parse(error['status']);
+    if (statusCode == 409) {
+        this.validForm = false;
+        this.nameErrorMessage = "Already exists";
+    } else {
+      this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
     }
-    this.modalPopupLoader = false;
-  }, _error => {
-    this.modalPopupLoader = false;
-    this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    
   });
 }
 

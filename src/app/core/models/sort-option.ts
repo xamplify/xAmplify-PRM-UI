@@ -208,6 +208,20 @@ export class SortOption {
       { 'name': 'Launched On (DESC)', 'value': 'launchTime-DESC' }
     ];
 
+  damSortDropDownOptions = [
+      { 'name': 'Name(A-Z)', 'value': 'assetName-ASC' },
+      { 'name': 'Name(Z-A)', 'value': 'assetName-DESC' },
+      { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+  ];
+
+  damPartnersDropDownOptions = [
+    { 'name': 'Name(A-Z)', 'value': 'assetName-ASC' },
+    { 'name': 'Name(Z-A)', 'value': 'assetName-DESC' },
+    { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+    { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+];
+
 
 
     numberOfItemsPerPage = [
@@ -229,10 +243,12 @@ export class SortOption {
     public selectedDemoRequestSortOption:any = this.demoRequestSortOptions[7];
     public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[0];
     public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[3];
-    public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];
+    public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];//This is used in multiple places.Be careful while changing it dude.
+    public selectedDamPartnerDropDownOption:any = this.activeUsersSortDropDownOptions[this.activeUsersSortDropDownOptions.length-1];
     public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
     public mdfVendorsSortOption:any = this.mdfVendorsSortDropDownOptions[5];
-	public userLevelCampaignAnalyticsSortOption:any = this.userLevelCampaignAnalyticsSortDropDownOptions[this.userLevelCampaignAnalyticsSortDropDownOptions.length-1];
+	  public userLevelCampaignAnalyticsSortOption:any = this.userLevelCampaignAnalyticsSortDropDownOptions[this.userLevelCampaignAnalyticsSortDropDownOptions.length-1];
+    public damSortOption:any = this.damSortDropDownOptions[this.damSortDropDownOptions.length-1];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

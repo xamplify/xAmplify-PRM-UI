@@ -1,10 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Campaign } from '../../campaigns/models/campaign';
-import { CampaignService } from '../../campaigns/services/campaign.service';
+import { Component, OnInit } from '@angular/core';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
-import { Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
@@ -14,6 +11,7 @@ import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { CampaignService } from '../../campaigns/services/campaign.service';
 
 declare var  $: any;
 @Component({
@@ -45,7 +43,7 @@ export class SendCampaignsComponent implements OnInit {
   isLoggedInThroughVanityUrl = false;
   /******When a new partner is added in list******* */
   newlyAddedPartners:any[] = [];
-  constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
+  constructor(private campaignService: CampaignService,private xtremandLogger: XtremandLogger,
     public pagination: Pagination, private pagerService: PagerService, public authenticationService: AuthenticationService, 
     public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public contactService: ContactService,
     private vanityUrlService:VanityURLService
@@ -111,7 +109,7 @@ export class SendCampaignsComponent implements OnInit {
             pagination = this.pagerService.getPagedItems(pagination, campaigns);
             /*******Header checkbox will be chcked when navigating through page numbers*****/
             var campaignIds = this.pagination.pagedItems.map(function (a) { return a.id; });
-            var items = $.grep(this.selectedCampaignIds, function (element) {
+            var items = $.grep(this.selectedCampaignIds, function (element:any) {
               return $.inArray(element, campaignIds) !== -1;
             });
             if (items.length == campaignIds.length) {
@@ -122,7 +120,7 @@ export class SendCampaignsComponent implements OnInit {
           }
           this.referenceService.stopLoader(this.httpRequestLoader);
         },
-        (error: any) => {
+        (_error: any) => {
           this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
         },
         () => this.xtremandLogger.info('Finished listCampaignsByUserListIdAndUserId()')
@@ -184,12 +182,12 @@ export class SendCampaignsComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCampaigns(); } }
 
   /***********CheckBox Selection************ */
-  checkAll(ev) {
+  checkAll(ev:any) {
     if (ev.target.checked) {
       $('[name="campaignCheckBoxName[]"]').prop('checked', true);
       this.isCampaignSelected = true;
       let self = this;
-      $('[name="campaignCheckBoxName[]"]:checked').each(function (index: number) {
+      $('[name="campaignCheckBoxName[]"]:checked').each(function (_index: number) {
         var id = $(this).val();
         self.selectedCampaignIds.push(parseInt(id));
         $('#campaignTr_' + id).addClass('row-selected');
@@ -286,7 +284,6 @@ export class SendCampaignsComponent implements OnInit {
       "loggedInUserId":this.loggedInUserId,
       "type":this.type
     }
-    console.log(campaignDetails);
     this.campaignService.shareOrSendCampaigns(campaignDetails)
       .subscribe(
         data => {
@@ -304,7 +301,7 @@ export class SendCampaignsComponent implements OnInit {
                 this.authenticationService.forceToLogout();
             }
         },
-        error => {
+        _error => {
           this.ngxLoading = false;
           this.sendSuccess = false;
           this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);

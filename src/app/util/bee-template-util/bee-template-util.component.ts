@@ -88,8 +88,13 @@ export class BeeTemplateUtilComponent implements OnInit {
 		
 			  var save = function (jsonContent: string, htmlContent: string) {
 				let input = {};
-				input['jsonContent'] = jsonContent;
-				input['htmlContent'] = htmlContent;
+				let updatedJsonContent = jsonContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+				let updatedHtmlContent = "";
+				if (htmlContent!= undefined) {
+					updatedHtmlContent = htmlContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+				}
+				input['jsonContent'] = updatedJsonContent;
+				input['htmlContent'] = updatedHtmlContent;
 				self.notifyParentComponent.emit(input);
 			  };
 		

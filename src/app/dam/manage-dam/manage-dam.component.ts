@@ -37,6 +37,8 @@ export class ManageDamComponent implements OnInit {
 		this.referenceService.goToRouter("/home/dam/add");
 	}
 
-	
+	viewPublishedContent(){
+		this.referenceService.showSweetAlertInfoMessage();
+	}
 
 }
