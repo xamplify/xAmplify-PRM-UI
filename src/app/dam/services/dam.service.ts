@@ -25,6 +25,12 @@ export class DamService {
     .catch(this.handleError);
   }
 
+  listPublishedPartners(damId:number){
+    return this.http.get(this.URL +"listPublishedPartneshipIdsByDamId/"+damId+"?access_token=" + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   listHistory(pagination: Pagination) {
    return this.utilPostListMethod("listHistory",pagination);
   }

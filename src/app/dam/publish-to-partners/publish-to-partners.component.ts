@@ -38,6 +38,7 @@ export class PublishToPartnersComponent implements OnInit {
 	@Output() notifyOtherComponent = new EventEmitter();
 	damPublishPostDto:DamPublishPostDto = new DamPublishPostDto();
 	statusCode: number=0;
+	publishedPartnershipIds:any[] = [];
 	constructor(private damService: DamService,private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -79,8 +80,12 @@ export class PublishToPartnersComponent implements OnInit {
 			this.referenceService.stopLoader(this.httpRequestLoader);
 		}, _error => {
 			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+		},()=>{
+			
 		});
 	}
+
+
 	closePopup() {
 		this.notifyOtherComponent.emit();
 		$('#pulishDamPopup').modal('hide');
@@ -97,6 +102,7 @@ export class PublishToPartnersComponent implements OnInit {
 		this.sortOption = new SortOption();
 		this.isHeaderCheckBoxChecked = false;
 		this.selectedPartnerShipIds = [];
+		this.publishedPartnershipIds = [];
 	}
 
 	/********************Pagaination&Search Code*****************/
@@ -215,29 +221,35 @@ export class PublishToPartnersComponent implements OnInit {
 
 	/****Publish To Partners */
 	publishAsset() {
-		this.startLoaders();
-		this.damPublishPostDto.damId = this.assetId;
-		this.damPublishPostDto.partnershipIds = this.selectedPartnerShipIds;
-		this.damPublishPostDto.publishedBy = this.loggedInUserId;
-		this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
-			this.stopLoaders();
-			if (data.access) {
-                this.sendSuccess = true;
-                this.statusCode = data.statusCode;
-                if (data.statusCode == 200) {
-                  this.responseMessage = "Published Successfully";
-                } else {
-                    this.responseMessage = data.message;
-                }
-                this.resetFields();
-            } else {
-                this.authenticationService.forceToLogout();
-            }
-		}, _error => {
-		  this.ngxLoading = false;
-          this.sendSuccess = false;
-          this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-		});
+		if(this.selectedPartnerShipIds.length>0){
+			this.startLoaders();
+			this.damPublishPostDto.damId = this.assetId;
+			this.damPublishPostDto.partnershipIds = this.selectedPartnerShipIds;
+			this.damPublishPostDto.publishedBy = this.loggedInUserId;
+			this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
+				this.stopLoaders();
+				if (data.access) {
+					this.sendSuccess = true;
+					this.statusCode = data.statusCode;
+					if (data.statusCode == 200) {
+					  this.responseMessage = "Published Successfully";
+					} else {
+						this.responseMessage = data.message;
+					}
+					this.resetFields();
+				} else {
+					this.authenticationService.forceToLogout();
+				}
+			}, _error => {
+			  this.ngxLoading = false;
+			  this.sendSuccess = false;
+			  this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+			});
+		}else{
+			this.referenceService.goToTop();
+			this.customResponse = new CustomResponse('ERROR','Please select atleast one partner',true);
+		}
+		
 	}
 
 	startLoaders(){

@@ -1,8 +1,8 @@
 export class DamPublishPostDto {
 
     damId:number=0;
-    partnershipIds:Array<Number> = new Array<Number>();
-    userListIds:Array<Number> = new Array<Number>();
+    partnershipIds:Array<number> = new Array<number>();
+    userListIds:Array<number> = new Array<number>();
     publishedBy:number=0;
     partnerListSelected:boolean = false;
 
