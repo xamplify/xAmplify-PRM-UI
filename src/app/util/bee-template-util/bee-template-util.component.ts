@@ -119,7 +119,10 @@ export class BeeTemplateUtilComponent implements OnInit {
 				];
 		
 			  var beeUserId = "bee-"+self.loggedInUserCompanyId;
-			  var roleHash = self.authenticationService.vendorRoleHash;
+			  let roleHash = self.authenticationService.vendorRoleHash;
+			  if(self.isPartnerView){
+				roleHash = self.authenticationService.partnerRoleHash;
+			  }	
 			  var beeConfig = {
 				  uid: beeUserId,
 				  container: 'xamplify-bee-template-container',

@@ -39,7 +39,7 @@ export class PublishToPartnersComponent implements OnInit {
 	damPublishPostDto:DamPublishPostDto = new DamPublishPostDto();
 	statusCode: number=0;
 	publishedPartnershipIds:any[] = [];
-	isPublishedPartnersList = false;
+	showPublishedPartnersList = false;
 	constructor(private damService: DamService,private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -107,14 +107,15 @@ export class PublishToPartnersComponent implements OnInit {
 	}
 
 	/********************Pagaination&Search Code*****************/
-
+	listItems(pagination:any){
+		this.pagination = pagination;
+		this.listPublishedOrUnPublishedPartners();	
+	}
 	/*************************Sort********************** */
 	sortBy(text: any) {
 		this.sortOption.selectedDamPartnerDropDownOption = text;
 		this.getAllFilteredResults();
 	}
-
-
 	/*************************Search********************** */
 	searchPartners() {
 		this.getAllFilteredResults();
@@ -128,7 +129,7 @@ export class PublishToPartnersComponent implements OnInit {
 	setPage(event: any) {
 		this.customResponse = new CustomResponse();
 		this.pagination.pageIndex = event.page;
-		this.listPartners(this.pagination);
+		this.listPublishedOrUnPublishedPartners();	
 	}
 
 
@@ -137,9 +138,17 @@ export class PublishToPartnersComponent implements OnInit {
 		this.pagination.pageIndex = 1;
 		this.pagination.searchKey = this.sortOption.searchKey;
 		this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedDamPartnerDropDownOption, this.pagination);
-		this.listPartners(this.pagination);
+		this.listPublishedOrUnPublishedPartners();	
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+
+	listPublishedOrUnPublishedPartners(){
+		if(this.showPublishedPartnersList){
+			this.listPublishedPartners(this.pagination);
+		}else{
+			this.listPartners(this.pagination);
+		}
+	}
 
 	/***********CheckBox Selection************ */
 	checkAll(ev: any) {
@@ -203,20 +212,22 @@ export class PublishToPartnersComponent implements OnInit {
 	}
 
 	highlightSelectedCampaignRow(partnership: any, event: any) {
-		let partnershipId = partnership.partnershipId;
-		let isChecked = $('#' + partnershipId).is(':checked');
-		if (isChecked) {
-			//Removing Highlighted Row
-			$('#' + partnershipId).prop("checked", false);
-			$('#damPartnershipTr_' + partnershipId).removeClass('row-selected');
-			this.selectedPartnerShipIds.splice($.inArray(partnershipId, this.selectedPartnerShipIds), 1);
-		} else {
-			//Highlighting Row
-			$('#' + partnershipId).prop("checked", true);
-			$('#damPartnershipTr_' + partnershipId).addClass('row-selected');
-			this.selectedPartnerShipIds.push(partnershipId);
+		if(!this.showPublishedPartnersList){
+			let partnershipId = partnership.partnershipId;
+			let isChecked = $('#' + partnershipId).is(':checked');
+			if (isChecked) {
+				//Removing Highlighted Row
+				$('#' + partnershipId).prop("checked", false);
+				$('#damPartnershipTr_' + partnershipId).removeClass('row-selected');
+				this.selectedPartnerShipIds.splice($.inArray(partnershipId, this.selectedPartnerShipIds), 1);
+			} else {
+				//Highlighting Row
+				$('#' + partnershipId).prop("checked", true);
+				$('#damPartnershipTr_' + partnershipId).addClass('row-selected');
+				this.selectedPartnerShipIds.push(partnershipId);
+			}
+			this.utility();
 		}
-		this.utility();
 		event.stopPropagation();
 	}
 
@@ -264,7 +275,7 @@ export class PublishToPartnersComponent implements OnInit {
 	}
 
 	viewPublishedPartners(){
-		this.isPublishedPartnersList = true;
+		this.showPublishedPartnersList = true;
 		this.pagination = new Pagination();
 		this.pagination.vendorCompanyId = this.companyId;
 		this.pagination.formId = this.assetId;
@@ -287,7 +298,7 @@ export class PublishToPartnersComponent implements OnInit {
 	}
 
 	viewUnPublishedPartners(){
-		this.isPublishedPartnersList = false;
+		this.showPublishedPartnersList = false;
 		this.pagination = new Pagination();
 		this.pagination.vendorCompanyId = this.companyId;
 		this.pagination.formId = this.assetId;

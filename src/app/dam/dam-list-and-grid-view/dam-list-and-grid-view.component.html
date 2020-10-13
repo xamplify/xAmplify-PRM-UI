@@ -227,7 +227,7 @@
                            </h6>
                        </div>
                        <div class="ribbon">
-                           <span translate>{{asset?.assetType}}</span>
+                           <span *ngIf="asset?.published" class="view-banner published" translate>Published</span>
                        </div>
                        <div class="bar">
                         <a *ngIf="asset?.history && !isPartnerView "  title="History" (click)="referenceService.showSweetAlertInfoMessage()">

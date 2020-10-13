@@ -47,6 +47,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this.callInitMethods();
+	}
+
+	callInitMethods(){
 		this.isPartnerView = this.router.url.indexOf('/shared')>-1;
 		this.startLoaders();
 		this.getCompanyId();
@@ -290,5 +294,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	notificationFromPublishToPartnersComponent(){
 		this.showPublishPopup = false;
 		this.selectedAssetId = 0;
+		this.callInitMethods();
 	}
 }
