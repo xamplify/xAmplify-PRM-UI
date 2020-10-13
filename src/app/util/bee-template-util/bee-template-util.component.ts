@@ -16,16 +16,19 @@ export class BeeTemplateUtilComponent implements OnInit {
 
 	loading = false;
 	@Input() defaultJsonBody: any;
-	@Input() isPartner:boolean;
+	@Input() vendorCompanyLogoPath:any;
+	@Input() partnerCompanyLogoPath:any;
 	loggedInUserId: number;
 	loggedInUserCompanyId: any;
 	@Output() notifyParentComponent = new EventEmitter();
+	isPartnerView: boolean;
 	constructor(private referenceService:ReferenceService,private authenticationService:AuthenticationService,private router:Router,private xtremandLogger:XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	 }
 
 	ngOnInit() {
 		this.loading =  true;
+		this.isPartnerView = this.router.url.indexOf('/editp')>-1;
 		this.getCompanyId();
 	}
 
@@ -88,13 +91,24 @@ export class BeeTemplateUtilComponent implements OnInit {
 		
 			  var save = function (jsonContent: string, htmlContent: string) {
 				let input = {};
-				let updatedJsonContent = jsonContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
-				let updatedHtmlContent = "";
-				if (htmlContent!= undefined) {
-					updatedHtmlContent = htmlContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+				if(self.isPartnerView){
+					let updatedJsonContent = jsonContent.replace(self.vendorCompanyLogoPath, "https://xamp.io/vod/replace-company-logo.png").replace(self.partnerCompanyLogoPath,"https://xamp.io/vod/images/co-branding.png");
+					let updatedHtmlContent = "";
+					if (htmlContent!= undefined) {
+						updatedHtmlContent = htmlContent.replace(self.vendorCompanyLogoPath, "https://xamp.io/vod/replace-company-logo.png").replace(self.partnerCompanyLogoPath,"https://xamp.io/vod/images/co-branding.png");
+					}
+					input['jsonContent'] = updatedJsonContent;
+					input['htmlContent'] = updatedHtmlContent;
+				}else{
+					let updatedJsonContent = jsonContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+					let updatedHtmlContent = "";
+					if (htmlContent!= undefined) {
+						updatedHtmlContent = htmlContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+					}
+					input['jsonContent'] = updatedJsonContent;
+					input['htmlContent'] = updatedHtmlContent;
 				}
-				input['jsonContent'] = updatedJsonContent;
-				input['htmlContent'] = updatedHtmlContent;
+				
 				self.notifyParentComponent.emit(input);
 			  };
 		
@@ -151,7 +165,12 @@ export class BeeTemplateUtilComponent implements OnInit {
 							  function( template: any ) {
 								  if(defaultJsonBody!=undefined){
 									var body = defaultJsonBody;
-									body = body.replace( "https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage );
+									if(self.isPartnerView){
+										body = body.replace( "https://xamp.io/vod/replace-company-logo.png", self.vendorCompanyLogoPath);
+										body = body.replace( "https://xamp.io/vod/images/co-branding.png", self.partnerCompanyLogoPath );
+									}else{
+										body = body.replace( "https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage );
+									}
 									defaultJsonBody = body;
 									var jsonBody = JSON.parse( body );
 									bee.load( jsonBody );

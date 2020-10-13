@@ -38,14 +38,6 @@ export class DamService {
    return this.utilPostListMethod("listHistory",pagination);
   }
 
-  
-
-  save(damPostDto:DamPostDto){
-    return this.http.post(this.URL + "save?access_token=" + this.authenticationService.access_token,damPostDto)
-    .map(this.extractData)
-    .catch(this.handleError);
-  }
-
   getById(id:number,isPartnerView:boolean){
     let url = isPartnerView ? 'getPublishedAssetById':'getById';
     return this.http.get(this.URL +url+"/"+id+"?access_token=" + this.authenticationService.access_token)
@@ -53,6 +45,19 @@ export class DamService {
     .catch(this.handleError);
   }
 
+  save(damPostDto:DamPostDto){
+    return this.utilPostSaveOrUpdateMethod("save",damPostDto);
+  }
+
+  updatePublishedAsset(damPostDto:DamPostDto){
+    return this.utilPostSaveOrUpdateMethod("updatePublishedAsset",damPostDto);
+  }
+  
+  utilPostSaveOrUpdateMethod(url:string,postObject:any){
+    return this.http.post(this.URL +url+ "?access_token=" + this.authenticationService.access_token,postObject)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
 
 
   utilPostListMethod(url:string,pagination:Pagination){

@@ -19,7 +19,7 @@
       					</a>
                   </div>
                   <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
-                    <app-bee-template-util [defaultJsonBody]="jsonBody" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+                    <app-bee-template-util [defaultJsonBody]="jsonBody" [vendorCompanyLogoPath]="vendorCompanyLogoPath" [partnerCompanyLogoPath]="partnerCompanyLogoPath" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
                   </ng-container>
               </div>
           </div>
