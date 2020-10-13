@@ -22,13 +22,17 @@ export class DamService {
   listPartners(pagination: Pagination) {
     return this.utilPostListMethod("listPartners",pagination);
   }
+
+  listPublishedPartners(pagination: Pagination) {
+    return this.utilPostListMethod("listPublishedPartners",pagination);
+  }
   publish(damPostDto:DamPublishPostDto){
     return this.http.post(this.URL +"publish?access_token=" + this.authenticationService.access_token,damPostDto)
     .map(this.extractData)
     .catch(this.handleError);
   }
 
-  listPublishedPartners(damId:number){
+  listPublishedPartnersByDamId(damId:number){
     return this.http.get(this.URL +"listPublishedPartneshipIdsByDamId/"+damId+"?access_token=" + this.authenticationService.access_token)
     .map(this.extractData)
     .catch(this.handleError);

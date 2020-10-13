@@ -39,6 +39,7 @@ export class PublishToPartnersComponent implements OnInit {
 	damPublishPostDto:DamPublishPostDto = new DamPublishPostDto();
 	statusCode: number=0;
 	publishedPartnershipIds:any[] = [];
+	isPublishedPartnersList = false;
 	constructor(private damService: DamService,private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -262,5 +263,35 @@ export class PublishToPartnersComponent implements OnInit {
 		this.referenceService.stopLoader(this.httpRequestLoader);
 	}
 
-	
+	viewPublishedPartners(){
+		this.isPublishedPartnersList = true;
+		this.pagination = new Pagination();
+		this.pagination.vendorCompanyId = this.companyId;
+		this.pagination.formId = this.assetId;
+		this.sortOption = new SortOption();
+		this.listPublishedPartners(this.pagination);
+	}
+	listPublishedPartners(pagination: Pagination) {
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.damService.listPublishedPartners(pagination).subscribe((result: any) => {
+			let data = result.data;
+			pagination.totalRecords = data.totalRecords;
+			this.sortOption.totalRecords = data.totalRecords;
+			pagination = this.pagerService.getPagedItems(pagination, data.list);
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}, _error => {
+			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+		},()=>{
+			
+		});
+	}
+
+	viewUnPublishedPartners(){
+		this.isPublishedPartnersList = false;
+		this.pagination = new Pagination();
+		this.pagination.vendorCompanyId = this.companyId;
+		this.pagination.formId = this.assetId;
+		this.sortOption = new SortOption();
+		this.listPartners(this.pagination);
+	}
 }
