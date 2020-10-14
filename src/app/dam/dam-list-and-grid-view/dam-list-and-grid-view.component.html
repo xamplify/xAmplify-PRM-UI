@@ -274,8 +274,11 @@
              <h4 class="modal-title" style="font-weight: 600;" translate>Download As PDF</h4>
          </div>
          <div class="modal-body">
-           <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-            <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
+            <div style="position: relative; top:-10px;">
+               <app-response-message [customResponse]="downloadOptionsCustomResponse" *ngIf="downloadOptionsCustomResponse.isVisible"></app-response-message>
+           </div>
+           <app-modal-popup-loader [hidden]="!modalPopupLoader"></app-modal-popup-loader>
+            <form role="form" class="form-horizontal form-bordered form-label-stripped" [hidden]="modalPopupLoader">
                <div class="portlet box">
                    <div class="">
                      <div class="col-md-12 col-lg-12 ">
@@ -325,10 +328,10 @@
                </div>
            </form>
          </div>
-         <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
+         <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader && downloadOptionsCustomResponse?.responseType!='ERROR'">
             <button type="button" class="btn btn-info"  (click)="updateDownloadOptions()" translate>Update</button>
-             <button class="btn btn-info" type="reset" (click)="hidePopup();" translate>Cancel</button>
              <button type="button" class="btn btn-primary"  (click)="downloadAsPdf()" translate>Download</button>
+             <button class="btn btn-info" type="reset" (click)="hidePopup();" translate>Cancel</button>
          </div>
      </div>
  </div>

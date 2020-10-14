@@ -32,6 +32,18 @@ export class DamService {
     .catch(this.handleError);
   }
 
+  updateDownloadOptions(input:any){
+    return this.http.post(this.URL +"updateDownloadOptions?access_token=" + this.authenticationService.access_token,input)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getDownloadOptions(alias:string){
+    return this.http.get(this.URL +"getDownloadOptions/"+alias+"?access_token=" + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   listPublishedPartnersByDamId(damId:number){
     return this.http.get(this.URL +"listPublishedPartneshipIdsByDamId/"+damId+"?access_token=" + this.authenticationService.access_token)
     .map(this.extractData)

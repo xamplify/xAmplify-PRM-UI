@@ -42,6 +42,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	showPublishPopup = false;
 	selectedAssetId:number = 0;
 	isPartnerView = false;
+	downloadOptionsCustomResponse: CustomResponse = new CustomResponse();
 	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -128,6 +129,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	stopLoaders() {
 		this.loading = false;
+		this.modalPopupLoader = false;
 		this.referenceService.loading(this.listLoader, false);
 	}
 	listAssets(pagination: Pagination) {
@@ -262,9 +264,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if(this.isPartnerView){
 				this.downloadAsPdf();
 			}else{
-				$('#selectedSize').val(asset.pageSize);
-				$('#selectedOrientation').val(asset.pageOrientation);
 				$('#downloadPdfModalPopup').modal('show');
+				this.getDownloadOptions(alias);
 			}
 			
 		}catch (error) {
@@ -298,6 +299,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		$('#downloadPdfModalPopup').modal('hide');
 		this.modalPopupLoader = false;
 		this.selectedPdfAlias = "";
+		this.downloadOptionsCustomResponse = new CustomResponse();
 	}
 
 	openPublishPopup(assetId:number){
@@ -312,6 +314,34 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	updateDownloadOptions(){
-		this.referenceService.showSweetAlertInfoMessage();
+		this.downloadOptionsCustomResponse = new CustomResponse();
+		this.modalPopupLoader = true;
+		let selectedSize = $('#selectedSize option:selected').val();
+		let selectedOrientation = $('#selectedOrientation option:selected').val();
+		let input = {};
+		input['alias'] = this.selectedPdfAlias;
+		input['pageSize'] = selectedSize;
+		input['pageOrientation'] = selectedOrientation;
+		input['userId'] = this.loggedInUserId;
+		this.damService.updateDownloadOptions(input).subscribe((result: any) => {
+			this.modalPopupLoader = false;
+			this.downloadOptionsCustomResponse = new CustomResponse('SUCCESS','Options Updated Successfully',true);
+		}, error => {
+			this.modalPopupLoader = false;
+			this.downloadOptionsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+		});
+	}
+
+	getDownloadOptions(alias:string){
+		this.modalPopupLoader = true;
+		this.damService.getDownloadOptions(alias).subscribe((result: any) => {
+			let data = result.data;
+			$('#selectedSize').val(data.pageSize);
+			$('#selectedOrientation').val(data.pageOrientation);
+			this.modalPopupLoader = false;
+		}, error => {
+			this.modalPopupLoader = false;
+			this.downloadOptionsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+		});
 	}
 }
