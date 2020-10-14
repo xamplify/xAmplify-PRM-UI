@@ -112,7 +112,7 @@
                                  <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                  <i class="fa fa-share" aria-hidden="true"></i>
                                  </a>
-                                 <a  title="Download" (click)="openPopup(asset.alias)">
+                                 <a  title="Download" (click)="openPopup(asset)">
                                    <i class="fa fa-download" aria-hidden="true"></i>
                                    </a>
                                  <a *ngIf="!isPartnerView" title="Delete"  (click)="referenceService.showSweetAlertInfoMessage()">
@@ -167,7 +167,7 @@
                                                       <a  title="Publish" (click)="openPublishPopup(asset.id)">
                                                       <i class="fa fa-share" aria-hidden="true"></i>
                                                       </a>
-                                                      <a  title="Download" (click)="openPopup(asset.alias)">
+                                                      <a  title="Download" (click)="openPopup(asset)">
                                                         <i class="fa fa-download" aria-hidden="true"></i>
                                                         </a>
                                                       <a  title="Delete" (click)="referenceService.showSweetAlertInfoMessage()">
@@ -239,7 +239,7 @@
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>
                            </a>
-                           <a  title="Download" (click)="openPopup(asset.alias)">
+                           <a  title="Download" (click)="openPopup(asset)">
                               <i class="fa fa-download" aria-hidden="true"></i>
                           </a>
                            <a *ngIf="!isPartnerView" title="Delete" class="delete" (click)="referenceService.showSweetAlertInfoMessage()">
@@ -280,7 +280,7 @@
                    <div class="">
                      <div class="col-md-12 col-lg-12 ">
                         <div class="form-group">
-                            <label class="control-label col-sm-3" translate>Select Size </label>
+                            <label class="control-label col-sm-3" translate>Select Page Size </label>
                             <div class="col-sm-8">
                               <select class="form-control" id="selectedSize">
                                  <option value="A0">A0</option>
@@ -309,11 +309,24 @@
                              </div>
                         </div>
                     </div>
+                    <!-----Page Orientation------->
+                    <div class="col-md-12 col-lg-12 ">
+                     <div class="form-group">
+                         <label class="control-label col-sm-3" translate>Select Page Orientation</label>
+                         <div class="col-sm-8">
+                           <select class="form-control" id="selectedOrientation">
+                              <option value="Portrait">Portrait</option>
+                              <option value="Landscape">Landscape</option>
+                           </select>
+                          </div>
+                     </div>
+                 </div>
              </div>
                </div>
            </form>
          </div>
          <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
+            <button type="button" class="btn btn-info"  (click)="updateDownloadOptions()" translate>Update</button>
              <button class="btn btn-info" type="reset" (click)="hidePopup();" translate>Cancel</button>
              <button type="button" class="btn btn-primary"  (click)="downloadAsPdf()" translate>Download</button>
          </div>

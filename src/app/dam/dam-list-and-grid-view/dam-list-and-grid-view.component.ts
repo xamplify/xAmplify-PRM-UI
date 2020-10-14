@@ -255,15 +255,29 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		
 	}
 
-	openPopup(alias:string){
-		$('#selectedSize').val('A0');
-		this.selectedPdfAlias = alias;
-		$('#downloadPdfModalPopup').modal('show');
+	openPopup(asset:any){
+		try{
+			let alias = asset.alias;
+			this.selectedPdfAlias = alias;
+			if(this.isPartnerView){
+				this.downloadAsPdf();
+			}else{
+				$('#selectedSize').val(asset.pageSize);
+				$('#selectedOrientation').val(asset.pageOrientation);
+				$('#downloadPdfModalPopup').modal('show');
+			}
+			
+		}catch (error) {
+			this.xtremandLogger.error(error);
+			this.referenceService.showSweetAlertErrorMessage(error.message+" "+error.name);
+		}
+		
 	}
 	
 	downloadAsPdf(){
 		this.modalPopupLoader = true;
 		let selectedSize = $('#selectedSize option:selected').val();
+		let selectedOrientation = $('#selectedOrientation option:selected').val();
 		let self = this;
 		swal( {
 			title:'Please Wait',
@@ -271,9 +285,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			showConfirmButton: false, 
 			imageUrl: 'assets/images/loader.gif',
 		});
-		let downloadUrl = this.isPartnerView ? 'downloadp':'download';
+		let downloadUrl = this.isPartnerView ? 'downloadp/'+self.selectedPdfAlias:'download/'+self.selectedPdfAlias+"/"+selectedSize+"/"+selectedOrientation;
 		setTimeout(function() {
-			window.open(self.authenticationService.REST_URL+"dam/"+downloadUrl+"/"+self.selectedPdfAlias+"/"+selectedSize+"?access_token="+self.authenticationService.access_token);
+			window.open(self.authenticationService.REST_URL+"dam/"+downloadUrl+"?access_token="+self.authenticationService.access_token);
 			$('#downloadPdfModalPopup').modal('hide');
 			self.modalPopupLoader = false;
 			swal.close();
@@ -295,5 +309,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.showPublishPopup = false;
 		this.selectedAssetId = 0;
 		this.callInitMethods();
+	}
+
+	updateDownloadOptions(){
+		this.referenceService.showSweetAlertInfoMessage();
 	}
 }
