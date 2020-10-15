@@ -37,6 +37,7 @@ export class ReferenceService {
 	campaignSuccessMessage = "";
 	isCreated = false;
 	isUpdated = false;
+	isUploaded = false;
 	isLandingPageCreated = false;
 	isLandingPageUpdated = false;
 	errorPrepender = "Error In";

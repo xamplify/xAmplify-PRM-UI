@@ -9,12 +9,12 @@
          <li><a translate>DAM</a></li>
       </ul>
       <div class="edit-mdf-form-margin" id="right">
-         <button class="add-button-xamplify" (click)="goToUploadComponent()"  translate>Upload</button>
+         <button *ngIf="!isPartnerView" class="add-button-xamplify" (click)="goToUploadComponent()"  translate>Upload</button>
          <button *ngIf="authenticationService.module.damAccess" class="add-button-xamplify" (click)="addAsset()" translate>Design Template</button>
      </div>
    </div>
    <!---Component Comes here-->
    <app-dam-list-and-grid-view></app-dam-list-and-grid-view>
-   <app-upload-asset *ngIf="uploadAsset" (notificationFromUploadAsset)="clearValues()"></app-upload-asset>
+   <app-upload-asset *ngIf="uploadAsset" (notificationFromUploadAsset)="clearValues()" (uploadSuccessNotification)="showSuccessMessage()"></app-upload-asset>
    </div>
    

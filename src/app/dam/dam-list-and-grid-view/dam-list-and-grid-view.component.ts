@@ -65,12 +65,15 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Added Successfully', true);
 		} else if (this.referenceService.isUpdated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
+		}else if(this.referenceService.isUploaded){
+			this.customResponse = new CustomResponse('SUCCESS', 'Uploaded Successfully', true);
 		}
 	}
 
 	ngOnDestroy() {
 		this.referenceService.isCreated = false;
 		this.referenceService.isUpdated = false;
+		this.referenceService.isUploaded = false;
 	}
 
 	setViewType(viewType: string) {

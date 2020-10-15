@@ -106,7 +106,7 @@
                               <i class="fa"
                                   [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                               </a>
-                              <a  title="Edit" (click)="edit(asset.id)">
+                              <a *ngIf="asset?.beeTemplate"  title="Edit" (click)="edit(asset.id)">
                                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                  </a>
                                  <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
@@ -227,13 +227,13 @@
                            </h6>
                        </div>
                        <div class="ribbon">
-                           <span *ngIf="asset?.published" class="view-banner published" translate>Published</span>
+                           <span *ngIf="asset?.published" translate>Published</span>
                        </div>
                        <div class="bar">
                         <a *ngIf="asset?.history && !isPartnerView "  title="History" (click)="referenceService.showSweetAlertInfoMessage()">
                            <i class="fa" [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                            </a>
-                           <a  title="Edit"  (click)="edit(asset.id)">
+                           <a *ngIf="asset?.beeTemplate"  title="Edit"  (click)="edit(asset.id)">
                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">

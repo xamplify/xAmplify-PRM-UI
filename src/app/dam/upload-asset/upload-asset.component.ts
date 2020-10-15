@@ -21,6 +21,8 @@ export class UploadAssetComponent implements OnInit {
 	damUploadPostDto:DamUploadPostDto = new DamUploadPostDto();
 	formData: any = new FormData();
 	@Output() notificationFromUploadAsset = new EventEmitter();
+	@Output() uploadSuccessNotification = new EventEmitter();
+	dupliateNameErrorMessage: string;
   constructor(private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
 
   ngOnInit() {
@@ -28,12 +30,13 @@ export class UploadAssetComponent implements OnInit {
   }
 
 	closePopup(){
-		this.notificationFromUploadAsset.emit();
 		this.customResponse = new CustomResponse();
 		this.formData = new FormData();
 		this.clearFile();
 		this.damUploadPostDto = new DamUploadPostDto();
-		$('#uploadDamModalPopup').modal('hide');	
+		$('#uploadDamModalPopup').modal('hide');
+		this.notificationFromUploadAsset.emit();
+	
 	}
 
 	onFileChangeEvent(event:any){
@@ -47,10 +50,11 @@ export class UploadAssetComponent implements OnInit {
 
 	uploadAsset(){
 		this.customResponse = new CustomResponse();
+		this.dupliateNameErrorMessage= "";
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
 		let  fileLength = $("#uploadedAsset")[0].files.length;
-		if(fileLength==0){
-			this.customResponse = new CustomResponse('ERROR','Please upload file',true);
+		if(fileLength==0 || $.trim(this.damUploadPostDto.assetName).length==0){
+			this.customResponse = new CustomResponse('ERROR','Please fill required fields',true);
 		  }else{
 			this.modalPopupLoader = true;
 			this.damService.uploadAsset(this.formData,this.damUploadPostDto).subscribe(
@@ -58,7 +62,8 @@ export class UploadAssetComponent implements OnInit {
 				this.clearFile();
 				if(result.statusCode==200){
 				  this.closePopup();
-				  this.referenceService.showSweetAlertSuccessMessage("Uploaded Successfully");
+				  this.uploadSuccessNotification.emit();
+				  
 				}else if(result.statusCode==400){
 				  this.customResponse = new CustomResponse('ERROR',result.message,true);
 				}else if(result.statusCode==404){
@@ -66,10 +71,15 @@ export class UploadAssetComponent implements OnInit {
 				}
 			  this.modalPopupLoader = false;
 			  }, error => {
-			  this.clearFile();
 			  this.modalPopupLoader = false;
-			  this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-			  this.xtremandLogger.log(error);
+			  let statusCode = JSON.parse(error['status']);
+			  if (statusCode == 409) {
+				this.dupliateNameErrorMessage = "Already exists";
+			  } else {
+				this.clearFile();
+				this.xtremandLogger.log(error);
+				this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+			  }
 			  });
 		  }
 	}
