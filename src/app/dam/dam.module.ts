@@ -10,11 +10,12 @@ import { AddDamComponent } from './add-dam/add-dam.component';
 import { DamListAndGridViewComponent } from './dam-list-and-grid-view/dam-list-and-grid-view.component';
 import { PublishToPartnersComponent } from './publish-to-partners/publish-to-partners.component';
 import { PublishedDamListComponent } from './published-dam-list/published-dam-list.component';
+import { UploadAssetComponent } from './upload-asset/upload-asset.component';
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule
   ],
-  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishToPartnersComponent, PublishedDamListComponent],
+  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishToPartnersComponent, PublishedDamListComponent, UploadAssetComponent],
 providers: [DamService]
 })
 export class DamModule { }

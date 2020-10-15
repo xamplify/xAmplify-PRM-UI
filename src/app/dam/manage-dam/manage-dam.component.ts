@@ -8,13 +8,10 @@ import { ReferenceService } from "app/core/services/reference.service";
 import { Router } from '@angular/router';
 import { SortOption } from '../../core/models/sort-option';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { UtilService } from '../../core/services/util.service';
-import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
-import { ErrorResponse } from 'app/util/models/error-response';
-declare var $: any;
+
 @Component({
 	selector: 'app-manage-dam',
 	templateUrl: './manage-dam.component.html',
@@ -25,7 +22,8 @@ export class ManageDamComponent implements OnInit {
 	loading = false;
 	loggedInUserId: number = 0;
 	pagination:Pagination = new Pagination();
-	constructor(private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+	uploadAsset = false;
+	constructor(public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
@@ -41,4 +39,11 @@ export class ManageDamComponent implements OnInit {
 		this.referenceService.showSweetAlertInfoMessage();
 	}
 
+	goToUploadComponent(){
+		this.uploadAsset = true;
+	}
+
+	clearValues(){
+		this.uploadAsset = false;
+	}
 }

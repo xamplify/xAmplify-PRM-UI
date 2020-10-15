@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 import { Pagination } from "app/core/models/pagination";
 import {DamPostDto} from '../models/dam-post-dto';
 import { DamPublishPostDto } from '../models/dam-publish-post-dto';
+import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 
 @Injectable()
 export class DamService {
@@ -78,6 +79,16 @@ export class DamService {
 
   utilPostListMethod(url:string,pagination:Pagination){
     return this.http.post(this.URL +url+"?access_token=" + this.authenticationService.access_token,pagination)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  uploadAsset(formData:FormData,damUploadPostDto:DamUploadPostDto){
+    formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
+    {
+      type: "application/json"
+    }));
+  return this.http.post(this.URL + "upload?access_token=" + this.authenticationService.access_token, formData)
     .map(this.extractData)
     .catch(this.handleError);
   }
