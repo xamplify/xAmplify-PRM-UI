@@ -30,15 +30,12 @@ export class ManageDamComponent implements OnInit {
 		this.referenceService.showSweetAlertInfoMessage();
 	}
 
-	goToUploadComponent(){
-		this.uploadAsset = true;
-	}
-
-	clearValues(){
-		this.uploadAsset = false;
-	}
 	showSuccessMessage(){
 	this.referenceService.isUploaded = true;
     this.referenceService.goToRouter("/home/dam/manage");
+	}
+
+	goToUploadComponent(){
+		this.referenceService.goToRouter("/home/dam/upload");
 	}
 }

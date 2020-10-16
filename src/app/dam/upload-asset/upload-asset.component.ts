@@ -1,4 +1,4 @@
-import { Component, OnInit,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { DamService } from '../services/dam.service';
@@ -10,82 +10,79 @@ import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
-  selector: 'app-upload-asset',
-  templateUrl: './upload-asset.component.html',
-  styleUrls: ['./upload-asset.component.css'],
-  providers:[Properties]
+	selector: 'app-upload-asset',
+	templateUrl: './upload-asset.component.html',
+	styleUrls: ['./upload-asset.component.css'],
+	providers: [Properties]
 })
 export class UploadAssetComponent implements OnInit {
-  modalPopupLoader = false;
-	customResponse:CustomResponse = new CustomResponse();
-	damUploadPostDto:DamUploadPostDto = new DamUploadPostDto();
+	formLoader = false;
+	customResponse: CustomResponse = new CustomResponse();
+	damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
 	formData: any = new FormData();
-	@Output() notificationFromUploadAsset = new EventEmitter();
-	@Output() uploadSuccessNotification = new EventEmitter();
+	loading = false;
 	dupliateNameErrorMessage: string;
-  constructor(private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
-
-  ngOnInit() {
-    $('#uploadDamModalPopup').modal('show');	
-  }
-
-	closePopup(){
-		this.customResponse = new CustomResponse();
-		this.formData = new FormData();
-		this.clearFile();
-		this.damUploadPostDto = new DamUploadPostDto();
-		$('#uploadDamModalPopup').modal('hide');
-		this.notificationFromUploadAsset.emit();
-	
+	descriptionErrorMessage: string;
+	constructor(private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
+	ngOnInit() {
 	}
 
-	onFileChangeEvent(event:any){
+	onFileChangeEvent(event: any) {
 		if (event.target.files.length > 0) {
-		  let file = event.target.files[0];
-		  this.formData.append("uploadedFile", file, file['name']);
+			let file = event.target.files[0];
+			this.formData.append("uploadedFile", file, file['name']);
 		} else {
-		  this.referenceService.showSweetAlertErrorMessage("No File Found")
+			this.referenceService.showSweetAlertErrorMessage("No File Found")
 		}
-	  }
+	}
 
-	uploadAsset(){
-		this.customResponse = new CustomResponse();
-		this.dupliateNameErrorMessage= "";
+	uploadAsset() {
+		this.clearErrors();
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-		let  fileLength = $("#uploadedAsset")[0].files.length;
-		if(fileLength==0 || $.trim(this.damUploadPostDto.assetName).length==0){
-			this.customResponse = new CustomResponse('ERROR','Please fill required fields',true);
-		  }else{
-			this.modalPopupLoader = true;
-			this.damService.uploadAsset(this.formData,this.damUploadPostDto).subscribe(
-			  (result: any) => {
-				this.clearFile();
-				if(result.statusCode==200){
-				  this.closePopup();
-				  this.uploadSuccessNotification.emit();
-				  
-				}else if(result.statusCode==400){
-				  this.customResponse = new CustomResponse('ERROR',result.message,true);
-				}else if(result.statusCode==404){
-				  this.referenceService.showSweetAlertErrorMessage("Invalid Request");
-				}
-			  this.modalPopupLoader = false;
-			  }, error => {
-			  this.modalPopupLoader = false;
-			  let statusCode = JSON.parse(error['status']);
-			  if (statusCode == 409) {
-				this.dupliateNameErrorMessage = "Already exists";
-			  } else {
-				this.clearFile();
-				this.xtremandLogger.log(error);
-				this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-			  }
-			  });
-		  }
+		let fileLength = $("#uploadedAsset")[0].files.length;
+		if (fileLength == 0 || $.trim(this.damUploadPostDto.assetName).length == 0) {
+			this.customResponse = new CustomResponse('ERROR', 'Please fill required fields', true);
+		} else {
+			this.formLoader = true;
+			this.damService.uploadAsset(this.formData, this.damUploadPostDto).subscribe(
+				(result: any) => {
+					if (result.statusCode == 200) {
+						this.referenceService.isUploaded = true;
+						this.referenceService.goToRouter("home/dam/manage");
+					} else if (result.statusCode == 400) {
+						this.customResponse = new CustomResponse('ERROR', result.message, true);
+					} else if (result.statusCode == 404) {
+						this.referenceService.showSweetAlertErrorMessage("Invalid Request");
+					}
+					this.formLoader = false;
+				}, error => {
+					this.formLoader = false;
+					let statusCode = JSON.parse(error['status']);
+					if (statusCode == 409) {
+						this.dupliateNameErrorMessage = "Already exists";
+					} else {
+						this.xtremandLogger.log(error);
+						this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+					}
+				});
+		}
 	}
 
-	clearFile(){
-		$('#uploadedAsset').val('');
-		this.formData = new FormData();
+
+	goToManageDam() {
+		this.loading = true;
+		this.referenceService.goToRouter("home/dam/manage");
 	}
+
+	clearErrors(){
+		this.dupliateNameErrorMessage = "";
+		this.descriptionErrorMessage = "";
+		this.customResponse = new CustomResponse();
+	}
+
+	validateForm(){
+		
+	}
+
+	
 }
