@@ -75,7 +75,7 @@
                      <tr>
                         <td style="width: 10%;">
                            <div class="thumbnail-wrapper">
-                              <img class="custom-image-css" src="{{asset?.assetPath}}" alt="Image Not Found">
+                              <img class="custom-image-css" src="{{asset?.thumbnailPath}}" alt="Image Not Found">
                            </div>
                         </td>
                         <td>
@@ -140,7 +140,7 @@
                                        <tr *ngFor="let asset of historyPagination.pagedItems ;let i =index" id="history-tr">
                                           <td style="width: 10%;">
                                              <div class="thumbnail-wrapper">
-                                                <img class="custom-image-css" src="{{asset?.assetPath}}" alt="Image Not Found">
+                                                <img class="custom-image-css" src="{{asset?.thumbnailPath}}" alt="Image Not Found">
                                              </div>
                                           </td>
                                           <td>
@@ -200,7 +200,7 @@
             <div class="row" *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
                <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index" id="assetList_{{asset.id}}">
                    <div class="grid-box">
-                       <img class="img-class" src="{{asset?.assetPath}}" alt="{{asset?.assetName}}">
+                       <img class="img-class" src="{{asset?.thumbnailPath}}" alt="{{asset?.assetName}}">
                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
                            {{asset?.assetName | slice:0:25}} <span *ngIf="asset?.assetName?.length>25">...</span><br><br>
                        </h4>
