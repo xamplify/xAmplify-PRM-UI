@@ -33,7 +33,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	loggedInUserCompanyId: any;
 	viewType: string;
 	modulesDisplayType = new ModulesDisplayType();
-	colspanValue = 4;
+	colspanValue = 5;
 	historyLoader: HttpRequestLoader = new HttpRequestLoader();
 	assets: Array<any> = new Array<any>();
 	historyPagination: Pagination = new Pagination();

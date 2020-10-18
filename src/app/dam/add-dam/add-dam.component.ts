@@ -122,6 +122,8 @@ export class AddDamComponent implements OnInit {
       if ($.trim(this.damPostDto.description).length == 0) {
         this.damPostDto.description = this.description;
       }
+      this.validateForm('name');
+      this.validateForm('description');
       this.validateFields();
     }
   }
