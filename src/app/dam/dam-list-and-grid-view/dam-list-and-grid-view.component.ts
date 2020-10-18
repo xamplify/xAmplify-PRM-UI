@@ -17,7 +17,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
-declare var $,swal: any;
+declare var $, swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
 	templateUrl: './dam-list-and-grid-view.component.html',
@@ -40,7 +40,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	modalPopupLoader = false;
 	selectedPdfAlias = "";
 	showPublishPopup = false;
-	selectedAssetId:number = 0;
+	selectedAssetId: number = 0;
 	isPartnerView = false;
 	downloadOptionsCustomResponse: CustomResponse = new CustomResponse();
 	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
@@ -51,8 +51,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.callInitMethods();
 	}
 
-	callInitMethods(){
-		this.isPartnerView = this.router.url.indexOf('/shared')>-1;
+	callInitMethods() {
+		this.isPartnerView = this.router.url.indexOf('/shared') > -1;
 		this.startLoaders();
 		this.getCompanyId();
 		this.viewType = this.route.snapshot.params['viewType'];
@@ -65,7 +65,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Added Successfully', true);
 		} else if (this.referenceService.isUpdated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
-		}else if(this.referenceService.isUploaded){
+		} else if (this.referenceService.isUploaded) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Uploaded Successfully', true);
 		}
 	}
@@ -77,12 +77,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	setViewType(viewType: string) {
-		if(this.isPartnerView){
+		if (this.isPartnerView) {
 			this.referenceService.goToRouter("/home/dam/shared/" + viewType);
-		}else{
+		} else {
 			this.referenceService.goToRouter("/home/dam/manage/" + viewType);
 		}
-		
+
 	}
 
 	startLoaders() {
@@ -107,13 +107,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				() => {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
 						this.pagination.companyId = this.loggedInUserCompanyId;
-						if(this.isPartnerView){
+						if (this.isPartnerView) {
 							this.listPublishedAssets(this.pagination);
-						}else{
+						} else {
 							this.historyPagination.companyId = this.loggedInUserCompanyId;
 							this.listAssets(this.pagination);
 						}
-						
+
 					}
 				}
 			);
@@ -124,7 +124,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	stopLoadersAndShowError(error:any){
+	stopLoadersAndShowError(error: any) {
 		this.stopLoaders();
 		this.xtremandLogger.log(error);
 		this.xtremandLogger.errorPage(error);
@@ -177,9 +177,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/*************************Sort********************** */
 	sortAssets(text: any) {
-		if(this.isPartnerView){
+		if (this.isPartnerView) {
 			this.sortOption.publishedDamSortOption = text;
-		}else{
+		} else {
 			this.sortOption.damSortOption = text;
 		}
 		this.getAllFilteredResults();
@@ -191,24 +191,24 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/************Page************** */
 	setPage(event: any) {
 		this.pagination.pageIndex = event.page;
-		if(this.isPartnerView){
+		if (this.isPartnerView) {
 			this.listPublishedAssets(this.pagination);
-		}else{
+		} else {
 			this.listAssets(this.pagination);
 		}
-		
+
 	}
 	getAllFilteredResults() {
 		this.pagination.pageIndex = 1;
 		this.pagination.searchKey = this.sortOption.searchKey;
-		if(this.isPartnerView){
+		if (this.isPartnerView) {
 			this.pagination = this.utilService.sortOptionValues(this.sortOption.publishedDamSortOption, this.pagination);
 			this.listPublishedAssets(this.pagination);
-		}else{
+		} else {
 			this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
 			this.listAssets(this.pagination);
 		}
-		
+
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchAssets(); } }
 	/********************Pagaination&Search Code*****************/
@@ -252,71 +252,79 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	edit(id: number) {
-		if(this.isPartnerView){
+		if (this.isPartnerView) {
 			this.referenceService.goToRouter("/home/dam/editp/" + id);
-		}else{
+		} else {
 			this.referenceService.goToRouter("/home/dam/edit/" + id);
 		}
-		
+
 	}
 
-	openPopup(asset:any){
-		try{
+	openPopup(asset: any) {
+		try {
 			let alias = asset.alias;
-			this.selectedPdfAlias = alias;
-			if(this.isPartnerView){
-				this.downloadAsPdf();
-			}else{
-				$('#downloadPdfModalPopup').modal('show');
-				this.getDownloadOptions(alias);
+			if (asset.beeTemplate) {
+				this.selectedPdfAlias = alias;
+				if (this.isPartnerView) {
+					this.downloadAsPdf();
+				} else {
+					$('#downloadPdfModalPopup').modal('show');
+					this.getDownloadOptions(alias);
+				}
+			} else {
+				this.downloadContent(alias);
 			}
-			
-		}catch (error) {
+		} catch (error) {
 			this.xtremandLogger.error(error);
-			this.referenceService.showSweetAlertErrorMessage(error.message+" "+error.name);
+			this.referenceService.showSweetAlertErrorMessage(error.message + " " + error.name);
 		}
-		
 	}
-	
-	downloadAsPdf(){
+
+	downloadContent(alias: string) {
+		let url = this.isPartnerView ? 'downloadpc':'downloadc';
+		window.open(this.authenticationService.REST_URL + "dam/"+url+"/" + alias + "?access_token=" + this.authenticationService.access_token);
+
+	}
+
+	downloadAsPdf() {
 		this.modalPopupLoader = true;
 		let selectedSize = $('#selectedSize option:selected').val();
 		let selectedOrientation = $('#selectedOrientation option:selected').val();
 		let self = this;
-		swal( {
-			title:'Please Wait',
-			allowOutsideClick: false, 
-			showConfirmButton: false, 
+		swal({
+			title: 'Please Wait',
+			allowOutsideClick: false,
+			showConfirmButton: false,
 			imageUrl: 'assets/images/loader.gif',
 		});
-		let downloadUrl = this.isPartnerView ? 'downloadp/'+self.selectedPdfAlias:'download/'+self.selectedPdfAlias+"/"+selectedSize+"/"+selectedOrientation;
-		setTimeout(function() {
-			window.open(self.authenticationService.REST_URL+"dam/"+downloadUrl+"?access_token="+self.authenticationService.access_token);
+		let downloadUrl = this.isPartnerView ? 'downloadp/' + self.selectedPdfAlias : 'download/' + self.selectedPdfAlias + "/" + selectedSize + "/" + selectedOrientation;
+		setTimeout(function () {
+			window.open(self.authenticationService.REST_URL + "dam/" + downloadUrl + "?access_token=" + self.authenticationService.access_token);
 			$('#downloadPdfModalPopup').modal('hide');
 			self.modalPopupLoader = false;
 			swal.close();
 		}, 1500);
 	}
 
-	hidePopup(){
+	hidePopup() {
 		$('#downloadPdfModalPopup').modal('hide');
 		this.modalPopupLoader = false;
 		this.selectedPdfAlias = "";
 		this.downloadOptionsCustomResponse = new CustomResponse();
 	}
 
-	openPublishPopup(assetId:number){
+	openPublishPopup(assetId: number) {
 		this.showPublishPopup = true;
 		this.selectedAssetId = assetId;
 	}
 
-	notificationFromPublishToPartnersComponent(){
+	notificationFromPublishToPartnersComponent() {
 		this.showPublishPopup = false;
 		this.selectedAssetId = 0;
 		this.callInitMethods();
 	}
 
-	updateDownloadOptions(){
+	updateDownloadOptions() {
 		this.downloadOptionsCustomResponse = new CustomResponse();
 		this.modalPopupLoader = true;
 		let selectedSize = $('#selectedSize option:selected').val();
@@ -328,14 +336,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		input['userId'] = this.loggedInUserId;
 		this.damService.updateDownloadOptions(input).subscribe((result: any) => {
 			this.modalPopupLoader = false;
-			this.downloadOptionsCustomResponse = new CustomResponse('SUCCESS','Options Updated Successfully',true);
+			this.downloadOptionsCustomResponse = new CustomResponse('SUCCESS', 'Options Updated Successfully', true);
 		}, error => {
 			this.modalPopupLoader = false;
-			this.downloadOptionsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+			this.downloadOptionsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 		});
 	}
 
-	getDownloadOptions(alias:string){
+	getDownloadOptions(alias: string) {
 		this.modalPopupLoader = true;
 		this.damService.getDownloadOptions(alias).subscribe((result: any) => {
 			let data = result.data;
@@ -344,7 +352,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.modalPopupLoader = false;
 		}, error => {
 			this.modalPopupLoader = false;
-			this.downloadOptionsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+			this.downloadOptionsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 		});
 	}
 }
