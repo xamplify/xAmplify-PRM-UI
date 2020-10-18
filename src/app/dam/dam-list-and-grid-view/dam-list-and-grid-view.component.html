@@ -65,6 +65,7 @@
                         <th colspan="2" style="width: 35%" id="border-bottom">
                            <span class="gridHeader" translate>Asset Details </span>
                         </th>
+                        <th class="text-center" scope="row" translate>Type</th>
                         <th class="text-center" scope="row" translate *ngIf="isPartnerView">Published On</th>
                         <th class="text-center" scope="row" translate *ngIf="!isPartnerView">Created On</th>
                         <th class="text-center" id="min-width" translate>Actions</th>
@@ -82,9 +83,6 @@
                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
                               <span><strong>{{asset?.assetName}}</strong></span>
                            </h4>
-                           <!-- <h6 class="moreipsis" title="{{asset?.categoryName}}">
-                              <span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
-                           </h6> -->
                            <h6 class="moreipsis" title="{{asset?.displayName}}">
                               <span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
                               <span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName}}</strong></span>
@@ -95,6 +93,9 @@
                               </span>
                            </h6>
                            <h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
+                        </td>
+                        <td class="text-center">
+                           {{asset?.assetType}}
                         </td>
                         <td class="text-center">
                            <app-timestamp  [dateAndTime]="asset?.displayTime">
@@ -130,6 +131,7 @@
                                        <th colspan="2" style="width: 35%" id="border-bottom">
                                           <span class="gridHeader" translate>Asset Details (Versions)</span>
                                        </th>
+                                       <th class="text-center" scope="row" translate>Type</th>
                                        <th class="text-center" scope="row" translate>Created On</th>
                                        <th class="text-center" id="min-width" translate>Actions</th>
                                     </tr>
@@ -147,13 +149,13 @@
                                              <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
                                                 <span><strong>{{asset?.assetName}}</strong></span>
                                              </h4>
-                                             <!-- <h6 class="moreipsis" title="{{asset?.categoryName}}">
-                                                <span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
-                                             </h6> -->
                                              <h6 class="moreipsis" title="{{asset?.displayName}}">
                                                 <span translate> Created By <strong>{{asset?.displayName}}</strong></span>
                                              </h6>
                                              <h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
+                                          </td>
+                                          <td class="text-center">
+                                             {{asset?.assetType}}
                                           </td>
                                           <td class="text-center">
                                              <app-timestamp  [dateAndTime]="asset?.displayTime">
@@ -204,11 +206,8 @@
                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
                            {{asset?.assetName | slice:0:25}} <span *ngIf="asset?.assetName?.length>25">...</span><br><br>
                        </h4>
+                       <span class="view-banner-dam">{{asset?.assetType}}</span>
                        <div>
-                           <!-- <h6 title="Folder" translate>
-                               Folder <strong>Category Name</strong>
-                               <span *ngIf="form.categoryName?.length>17">..</span>
-                           </h6> -->
                            <h6 translate>
                                <span *ngIf="isPartnerView">Published On</span>
                                <span *ngIf="!isPartnerView">Created On</span>

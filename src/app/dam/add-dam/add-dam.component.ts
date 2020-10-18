@@ -36,6 +36,8 @@ export class AddDamComponent implements OnInit {
   isPartnerView = false;
   vendorCompanyLogoPath = "";
   partnerCompanyLogoPath = "";
+  isValidName = false;
+  isValidDescription = false;
   constructor(private xtremandLogger: XtremandLogger, public router: Router, private route: ActivatedRoute, public properties: Properties, private damService: DamService, private authenticationService: AuthenticationService, public referenceService: ReferenceService, private httpClient: HttpClient) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -116,16 +118,25 @@ export class AddDamComponent implements OnInit {
     if (!this.isAdd || this.isPartnerView) {
       if ($.trim(this.damPostDto.name).length == 0) {
         this.damPostDto.name = this.name;
-        this.validForm = true;
       }
       if ($.trim(this.damPostDto.description).length == 0) {
         this.damPostDto.description = this.description;
       }
+      this.validateFields();
     }
   }
 
-  validateName(name: string) {
-    this.validForm = (name != undefined && $.trim(name).length > 0);
+  validateForm(columnName:string){
+    if(columnName=="name"){
+      this.isValidName = $.trim(this.damPostDto.name)!=undefined && $.trim(this.damPostDto.name).length>0;
+    }else if(columnName=="description"){
+      this.isValidDescription = $.trim(this.damPostDto.description)!=undefined && $.trim(this.damPostDto.description).length>0;
+    }
+    this.validateFields();
+  }
+
+  validateFields() {
+    this.validForm = this.isValidName && this.isValidDescription;
   }
 
 
@@ -155,7 +166,6 @@ export class AddDamComponent implements OnInit {
 
   updatePublishedAsset() {
     this.damPostDto.id = this.assetId;
-    console.log(this.damPostDto);
     this.damService.updatePublishedAsset(this.damPostDto).subscribe((result: any) => {
       this.hidePopup();
       this.referenceService.isUpdated = true;

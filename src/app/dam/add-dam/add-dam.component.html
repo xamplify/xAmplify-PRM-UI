@@ -49,8 +49,8 @@
                              <label class="control-label col-sm-3" translate>Name
                                  <span class="required">*</span></label>
                              <div class="col-sm-8">
-                               <input class="form-control"  type="text" placeholder="Name" (input)="validateName(damPostDto.name)" [(ngModel)]="damPostDto.name"  [ngModelOptions]="{standalone: true}" >
-                                <span class="required" *ngIf="!validForm">{{nameErrorMessage}}</span>
+                               <input class="form-control"  type="text" placeholder="Name" (input)="validateForm('name')" [(ngModel)]="damPostDto.name"  [ngModelOptions]="{standalone: true}" >
+                                <span class="required" *ngIf="nameErrorMessage?.length>0">{{nameErrorMessage}}</span>
                               </div>
                          </div>
                      </div>
@@ -58,7 +58,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3" translate>Description</label>
                             <div class="col-sm-8">
-                              <textarea class="form-control" rows="7"  placeholder="Description" maxlength="5000" [(ngModel)]="damPostDto.description"  [ngModelOptions]="{standalone: true}"></textarea>
+                              <textarea class="form-control" rows="7" (input)="validateForm('description')"  placeholder="Description" maxlength="5000" [(ngModel)]="damPostDto.description"  [ngModelOptions]="{standalone: true}"></textarea>
                             </div>
                         </div>
                     </div>
