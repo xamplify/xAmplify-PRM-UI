@@ -60,6 +60,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
 		} else {
 			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+			if(this.modulesDisplayType.isFolderGridView || this.modulesDisplayType.isFolderListView){
+				this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, 'l');
+			}
 		}
 		if (this.referenceService.isCreated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Added Successfully', true);
