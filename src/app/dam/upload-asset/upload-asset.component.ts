@@ -23,6 +23,7 @@ export class UploadAssetComponent implements OnInit {
 	loading = false;
 	dupliateNameErrorMessage: string;
 	descriptionErrorMessage: string;
+	isValidForm = false;
 	constructor(private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
 	ngOnInit() {
 	}
@@ -31,19 +32,26 @@ export class UploadAssetComponent implements OnInit {
 		if (event.target.files.length > 0) {
 			let file = event.target.files[0];
 			this.formData.append("uploadedFile", file, file['name']);
-		} else {
-			this.referenceService.showSweetAlertErrorMessage("No File Found")
 		}
+		this.validateAllFields();
+	}
+	validateForm(columnName:string){
+		if(columnName=="assetName"){
+			this.damUploadPostDto.validName = $.trim(this.damUploadPostDto.assetName)!=undefined && $.trim(this.damUploadPostDto.assetName).length>0;
+		}else if(columnName=="description"){
+			this.damUploadPostDto.validDescription = $.trim(this.damUploadPostDto.description)!=undefined && $.trim(this.damUploadPostDto.description).length>0;
+		}
+		this.validateAllFields();
+	}
+
+	validateAllFields(){
+		this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription && $('#uploadedAsset').val().length>0;
 	}
 
 	uploadAsset() {
 		this.clearErrors();
+		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-		let fileLength = $("#uploadedAsset")[0].files.length;
-		if (fileLength == 0 || $.trim(this.damUploadPostDto.assetName).length == 0) {
-			this.customResponse = new CustomResponse('ERROR', 'Please fill required fields', true);
-		} else {
-			this.formLoader = true;
 			this.damService.uploadAsset(this.formData, this.damUploadPostDto).subscribe(
 				(result: any) => {
 					if (result.statusCode == 200) {
@@ -65,7 +73,6 @@ export class UploadAssetComponent implements OnInit {
 						this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 					}
 				});
-		}
 	}
 
 
@@ -80,9 +87,6 @@ export class UploadAssetComponent implements OnInit {
 		this.customResponse = new CustomResponse();
 	}
 
-	validateForm(){
-		
-	}
-
 	
+
 }

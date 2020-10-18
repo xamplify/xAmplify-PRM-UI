@@ -1,4 +1,4 @@
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<ngx-loading [show]="formLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
    <div class="page-bar">
       <div class="col-md-12 col-lg-12">
@@ -32,7 +32,7 @@
             </div>
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
-            <app-modal-popup-loader [hidden]="!ormLoader"></app-modal-popup-loader>
+            <app-modal-popup-loader [hidden]="!formLoader"></app-modal-popup-loader>
             <div [hidden]="formLoader" class="row" style="margin-top: 20px;">
                <form role="form" class="form-horizontal form-bordered form-label-stripped">
                   <div class="portlet box">
@@ -54,17 +54,18 @@
                                <span class="required">*</span>
                                  </label>
                              <div class="col-sm-8">
-                                <input type="text" class="form-control" [(ngModel)]="damUploadPostDto.assetName"  [ngModelOptions]="{standalone: true}" placeholder="Enter Name">
+                                <input type="text" class="form-control" [(ngModel)]="damUploadPostDto.assetName"  [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
                                 <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
                               </div>
                          </div>
                      </div>
-                        <div class="col-md-12 col-lg-12 ">
+                        <div class="col-md-12 col-lg-12">
                             <div class="form-group">
                                 <label class="control-label col-sm-3" translate>Description
+                                 <span class="required">*</span>
                                     </label>
                                 <div class="col-sm-8">
-                                   <textarea class="form-control" [(ngModel)]="damUploadPostDto.description"  [ngModelOptions]="{standalone: true}"  placeholder="Enter Description" maxlength="1000"></textarea>
+                                   <textarea class="form-control" [(ngModel)]="damUploadPostDto.description"  [ngModelOptions]="{standalone: true}"  placeholder="Enter Description" maxlength="5000" (input)="validateForm('description')"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +73,7 @@
                   </div>
                   <div class="footer">
                      <button class="btn btn-info" id="right" style="margin-right: 108px;"  type="button"  (click)="goToManageDam();" translate>Cancel</button>
-                     <button  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadAsset()" translate>Submit</button>
+                     <button [disabled]="!isValidForm"  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadAsset()" translate>Submit</button>
                     </div>
                </form>
             </div>
