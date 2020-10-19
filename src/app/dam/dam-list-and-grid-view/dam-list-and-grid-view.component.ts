@@ -16,7 +16,7 @@ import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
-
+import {AssetDetailsViewDto} from '../models/asset-details-view-dto';
 declare var $, swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -45,6 +45,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	isPartnerView = false;
 	downloadOptionsCustomResponse: CustomResponse = new CustomResponse();
 	selectedAssetName = "";
+	assetDetailsPreview: boolean = false;
+	assetViewLoader = false;
+	assetDetailsViewDto:AssetDetailsViewDto = new AssetDetailsViewDto();
+	selectedAsset: any;
 	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -418,10 +422,40 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                         this.authenticationService.forceToLogout();
                     }
                 },
-                (error: string) => {
+                (_error: string) => {
                     this.referenceService.showServerErrorMessage(this.listLoader);
                     this.customResponse = new CustomResponse('ERROR', this.listLoader.message, true);
                 }
             );
-    }
+	}
+	
+	viewDetails(asset:any){
+		this.selectedAsset = asset;
+		this.assetDetailsPreview = true;
+		this.selectedAssetId = asset.id;
+		this.assetViewLoader = true;
+		this.damService.getSharedAssetDetailsById(asset.id)
+		.subscribe(
+			(response: any) => {
+				this.assetViewLoader = false;
+				if(response.access){
+					if (response.statusCode == 200) {
+						this.assetDetailsViewDto = response.data;
+					} 
+				}else{
+					this.authenticationService.forceToLogout();
+				}
+			},
+			(_error: string) => {
+				this.referenceService.showServerErrorMessage(this.listLoader);
+				this.customResponse = new CustomResponse('ERROR', this.listLoader.message, true);
+			}
+		);
+	}
+
+	closeAssetDetails(){
+		this.selectedAsset = undefined;
+		this.assetDetailsPreview = false;
+		this.assetDetailsViewDto = new AssetDetailsViewDto();
+	}
 }

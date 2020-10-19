@@ -2,7 +2,7 @@
 <div class="row">
    <div class="col-md-12">
       <div class="portlet light clearfix" style="min-height: 644px;">
-         <ng-container *ngIf="!isGridViewHistory">
+         <ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
          <div class="portlet-title" style="border-bottom: none">
             <div class="row">
                <div class="page-toolbar col-xs-12">
@@ -114,8 +114,11 @@
                                  <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                  <i class="fa fa-share" aria-hidden="true"></i>
                                  </a>
-                                 <a  title="Download" (click)="openPopup(asset)">
-                                   <i class="fa fa-download" aria-hidden="true"></i>
+                                 <a  *ngIf="!isPartnerView" title="Download" (click)="openPopup(asset)">
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                    </a>
+                                 <a  title="View Details" (click)="viewDetails(asset)">
+                                   <i class="fa fa-eye" aria-hidden="true"></i>
                                    </a>
                                  <a *ngIf="!isPartnerView" title="Delete"  (click)="confirmDelete(asset)">
                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -170,7 +173,7 @@
                                                       <a  title="Publish" (click)="openPublishPopup(asset.id)">
                                                       <i class="fa fa-share" aria-hidden="true"></i>
                                                       </a>
-                                                      <a  title="Download" (click)="openPopup(asset)">
+                                                      <a   title="Download" (click)="openPopup(asset)">
                                                         <i class="fa fa-download" aria-hidden="true"></i>
                                                         </a>
                                                       <a  title="Delete" (click)="confirmDelete(asset)">
@@ -239,9 +242,12 @@
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>
                            </a>
-                           <a  title="Download" (click)="openPopup(asset)">
+                           <a *ngIf="!isPartnerView" title="Download" (click)="openPopup(asset)">
                               <i class="fa fa-download" aria-hidden="true"></i>
                           </a>
+                          <a *ngIf="isPartnerView" title="View Details" (click)="viewDetails(asset)">
+                           <i class="fa fa-eye" aria-hidden="true"></i>
+                           </a>
                            <a *ngIf="!isPartnerView" title="Delete" class="delete" (click)="confirmDelete(asset)">
                                <i class="fa fa-trash-o" aria-hidden="true"></i>
                            </a>
@@ -259,7 +265,7 @@
           </app-pagination>
          </div>
       </ng-container>
-      <ng-container *ngIf="isGridViewHistory">
+      <ng-container *ngIf="isGridViewHistory && !assetDetailsPreview">
          <h4 title="{{selectedAssetName}}">
             <strong>{{selectedAssetName | slice:0:25}}<span *ngIf="selectedAssetName?.length>25">...</span></strong>
              <a class="close-circle"  (click)="closeHistory()">
@@ -322,6 +328,57 @@
          <div *ngIf="historyPagination.pagedItems.length !== 0" [hidden]="historyLoader.isLoading">
           <app-pagination [pagination]="historyPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAssetsHistory($event)">
           </app-pagination>
+         </div>
+      </ng-container>
+      <!---View Asset Details For Partner-->
+      <ng-container *ngIf="assetDetailsPreview">
+         <h4>
+            <strong>Asset Details</strong>
+             <a class="close-circle ml5"  (click)="closeAssetDetails()">
+               <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+            <a class="close-circle"  (click)="openPopup(selectedAsset)">
+               <i class="fa fa-download" aria-hidden="true"></i>
+            </a>
+         </h4>
+         <div class="row">
+            <div class="col-md-12 col-lg-12">
+               <div class="portlet light">
+                  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                  </app-response-message>
+                  <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
+                  <div [hidden]="assetViewLoader" class="row" style="margin-top: 20px;">
+                     <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="desc">
+                        <div class="portlet box">
+                           <div class="">
+                              <div class="col-md-12 col-lg-12 ">
+                               <div class="form-group">
+                                   <label class="control-label col-sm-3" translate>Name
+                                       </label>
+                                   <div class="col-sm-8">
+                                      <input type="text" [(ngModel)]="assetDetailsViewDto.assetName"  [ngModelOptions]="{standalone: true}" disabled="disabled" class="form-control" >
+                                    </div>
+                               </div>
+                           </div>
+                              <div class="col-md-12 col-lg-12">
+                                  <div class="form-group">
+                                      <label class="control-label col-sm-3" translate>Description
+                                          </label>
+                                      <div class="col-sm-8">
+                                         <textarea disabled="disabled" class="form-control" rows="7"  [(ngModel)]="assetDetailsViewDto.description" [ngModelOptions]="{standalone: true}"></textarea>
+                                      </div>
+                                  </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!-- <div class="footer">
+                           <button class="btn btn-info" id="right" style="margin-right: 108px;"  type="button"  (click)="goToManageDam();" translate>Cancel</button>
+                           <button [disabled]="!isValidForm"  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadAsset()" translate>Submit</button>
+                          </div> -->
+                     </form>
+                  </div>
+               </div>
+            </div>
          </div>
       </ng-container>
       </div>

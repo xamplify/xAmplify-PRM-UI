@@ -70,6 +70,13 @@ export class DamService {
     return this.utilPostSaveOrUpdateMethod("updatePublishedAsset",damPostDto);
   }
 
+  getSharedAssetDetailsById(id:number){
+    return this.http.get(this.URL+"getSharedAssetDetailsById/"+id+"?access_token=" + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+
   delete(damUploadPostDTO:DamUploadPostDto){
     return this.http.post(this.URL +"delete?access_token=" + this.authenticationService.access_token,damUploadPostDTO)
     .map(this.extractData)
