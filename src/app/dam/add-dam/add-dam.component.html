@@ -56,7 +56,7 @@
                      </div>
                      <div class="col-md-12 col-lg-12 ">
                         <div class="form-group">
-                            <label class="control-label col-sm-3" translate>Description</label>
+                            <label class="control-label col-sm-3" translate>Description <span class="required">*</span></label>
                             <div class="col-sm-8">
                               <textarea class="form-control" rows="7" (input)="validateForm('description')"  placeholder="Description" maxlength="5000" [(ngModel)]="damPostDto.description"  [ngModelOptions]="{standalone: true}"></textarea>
                             </div>

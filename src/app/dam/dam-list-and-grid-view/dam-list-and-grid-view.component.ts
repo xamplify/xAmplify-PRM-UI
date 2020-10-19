@@ -37,12 +37,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	historyLoader: HttpRequestLoader = new HttpRequestLoader();
 	assets: Array<any> = new Array<any>();
 	historyPagination: Pagination = new Pagination();
+	isGridViewHistory = false;
 	modalPopupLoader = false;
 	selectedPdfAlias = "";
 	showPublishPopup = false;
 	selectedAssetId: number = 0;
 	isPartnerView = false;
 	downloadOptionsCustomResponse: CustomResponse = new CustomResponse();
+	selectedAssetName = "";
 	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -113,7 +115,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 						if (this.isPartnerView) {
 							this.listPublishedAssets(this.pagination);
 						} else {
-							this.historyPagination.companyId = this.loggedInUserCompanyId;
 							this.listAssets(this.pagination);
 						}
 
@@ -231,6 +232,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	listAssetsHistory(pagination: Pagination) {
+		pagination.companyId = this.loggedInUserCompanyId;
 		this.loading = true;
 		this.referenceService.loading(this.historyLoader, true);
 		this.damService.listHistory(pagination).subscribe((result: any) => {
@@ -357,5 +359,20 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.modalPopupLoader = false;
 			this.downloadOptionsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 		});
+	}
+
+	viewGirdHistory(asset:any){
+		this.isGridViewHistory = true;
+		this.selectedAssetId = asset.id;
+		this.selectedAssetName = asset.assetName;
+		this.historyPagination.campaignId = asset.id;
+		this.listAssetsHistory(this.historyPagination);
+	}
+
+	closeHistory(){
+		this.isGridViewHistory = false;
+		this.selectedAssetId = 0;
+		this.selectedAssetName = "";
+		this.historyPagination = new Pagination();
 	}
 }

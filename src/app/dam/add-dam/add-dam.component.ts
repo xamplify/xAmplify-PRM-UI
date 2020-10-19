@@ -81,6 +81,8 @@ export class AddDamComponent implements OnInit {
           this.damPostDto.description = dam.description;
           this.name = dam.assetName;
           this.validForm = true;
+          this.isValidName = true;
+          this.isValidDescription = true;
           this.nameErrorMessage = "";
           this.description = dam.description;
           this.vendorCompanyLogoPath = dam.vendorCompanyLogo;
