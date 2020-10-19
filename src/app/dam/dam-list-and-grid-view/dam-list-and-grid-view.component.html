@@ -117,7 +117,7 @@
                                  <a  title="Download" (click)="openPopup(asset)">
                                    <i class="fa fa-download" aria-hidden="true"></i>
                                    </a>
-                                 <a *ngIf="!isPartnerView" title="Delete"  (click)="referenceService.showSweetAlertInfoMessage()">
+                                 <a *ngIf="!isPartnerView" title="Delete"  (click)="confirmDelete(asset)">
                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
                                  </a>
                            </div>
@@ -173,7 +173,7 @@
                                                       <a  title="Download" (click)="openPopup(asset)">
                                                         <i class="fa fa-download" aria-hidden="true"></i>
                                                         </a>
-                                                      <a  title="Delete" (click)="referenceService.showSweetAlertInfoMessage()">
+                                                      <a  title="Delete" (click)="confirmDelete(asset)">
                                                       <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                       </a>
                                              </div>
@@ -242,7 +242,7 @@
                            <a  title="Download" (click)="openPopup(asset)">
                               <i class="fa fa-download" aria-hidden="true"></i>
                           </a>
-                           <a *ngIf="!isPartnerView" title="Delete" class="delete" (click)="referenceService.showSweetAlertInfoMessage()">
+                           <a *ngIf="!isPartnerView" title="Delete" class="delete" (click)="confirmDelete(asset)">
                                <i class="fa fa-trash-o" aria-hidden="true"></i>
                            </a>
                        </div>
@@ -307,7 +307,7 @@
                            <a  title="Download" (click)="openPopup(asset)">
                               <i class="fa fa-download" aria-hidden="true"></i>
                           </a>
-                           <a *ngIf="!isPartnerView" title="Delete" class="delete" (click)="referenceService.showSweetAlertInfoMessage()">
+                           <a *ngIf="!isPartnerView" title="Delete" class="delete" (click)="confirmDelete(asset)">
                                <i class="fa fa-trash-o" aria-hidden="true"></i>
                            </a>
                        </div>

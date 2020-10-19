@@ -69,6 +69,12 @@ export class DamService {
   updatePublishedAsset(damPostDto:DamPostDto){
     return this.utilPostSaveOrUpdateMethod("updatePublishedAsset",damPostDto);
   }
+
+  delete(damUploadPostDTO:DamUploadPostDto){
+    return this.http.post(this.URL +"delete?access_token=" + this.authenticationService.access_token,damUploadPostDTO)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
   
   utilPostSaveOrUpdateMethod(url:string,postObject:any){
     return this.http.post(this.URL +url+ "?access_token=" + this.authenticationService.access_token,postObject)
@@ -88,6 +94,7 @@ export class DamService {
     {
       type: "application/json"
     }));
+
   return this.http.post(this.URL + "upload?access_token=" + this.authenticationService.access_token, formData)
     .map(this.extractData)
     .catch(this.handleError);

@@ -14,8 +14,8 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
-import { ErrorResponse } from 'app/util/models/error-response';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 
 declare var $, swal: any;
 @Component({
@@ -375,4 +375,53 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.selectedAssetName = "";
 		this.historyPagination = new Pagination();
 	}
+
+	confirmDelete(asset:any) {
+        try {
+            let self = this;
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
+                type: 'warning',
+                showCancelButton: true,
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then(function () {
+                self.deleteById(asset);
+            }, function (dismiss: any) {
+                console.log('you clicked on option' + dismiss);
+            });
+        } catch (error) {
+            this.xtremandLogger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+        }
+	}
+	
+	deleteById(asset: any) {
+        this.customResponse = new CustomResponse();
+        this.referenceService.loading(this.listLoader, true);
+		this.referenceService.goToTop();
+		let damUploadPostDto = new DamUploadPostDto();
+		damUploadPostDto.loggedInUserId = this.loggedInUserId;
+		damUploadPostDto.id = asset.id;
+        this.damService.delete(damUploadPostDto)
+            .subscribe(
+                (response: any) => {
+                    if(response.access){
+                        if (response.statusCode == 200) {
+                            this.customResponse = new CustomResponse('SUCCESS', "Asset Deleted Successfully", true);
+                            this.pagination.pageIndex = 1;
+                            this.listAssets(this.pagination);
+                        } 
+                    }else{
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: string) => {
+                    this.referenceService.showServerErrorMessage(this.listLoader);
+                    this.customResponse = new CustomResponse('ERROR', this.listLoader.message, true);
+                }
+            );
+    }
 }
