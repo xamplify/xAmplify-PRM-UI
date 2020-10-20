@@ -32,6 +32,8 @@ export class UploadAssetComponent implements OnInit {
 		if (event.target.files.length > 0) {
 			let file = event.target.files[0];
 			this.formData.append("uploadedFile", file, file['name']);
+		}else{
+			this.formData.delete("uploadedFile");
 		}
 		this.validateAllFields();
 	}
@@ -68,6 +70,7 @@ export class UploadAssetComponent implements OnInit {
 					let statusCode = JSON.parse(error['status']);
 					if (statusCode == 409) {
 						this.dupliateNameErrorMessage = "Already exists";
+						this.formData.delete("damUploadPostDTO");
 					} else {
 						this.xtremandLogger.log(error);
 						this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);

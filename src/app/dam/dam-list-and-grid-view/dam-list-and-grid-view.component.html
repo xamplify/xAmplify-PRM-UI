@@ -340,8 +340,8 @@
               </a>
            </h4>
            <div class="row">
-              <div class="col-md-8 col-lg-8" style="padding: 40px 40px 0px 17px;">
-                 <div class="portlet light" style="padding: 0px 0px!important;">
+              <div class="col-md-8 col-lg-8 cpdam">
+                 <div class="portlet light cphdam">
                     <div class="portlet-title port-heading">
                        <div class="caption" style="color:#000!important;">
                           Overview
@@ -359,7 +359,7 @@
               <div class="col-md-4 col-lg-4" style="padding: 6px 40px 0px 17px;">
                  <div>
                     <div class="grid-box" style="min-height: 200px;">
-                        <img class="img-class" src="assets/images/content/pdfs.png" alt="No Image Found"><br>
+                        <img class="img-class" src="{{assetDetailsViewDto?.thumbnailPath}}" alt="No Image Found"><br>
                         <a class="btn btn-info" (click)="openPopup(selectedAsset)">Download</a>
                         <h4>Published On : <app-timestamp [showInLine]="'true'"  [dateAndTime]="assetDetailsViewDto?.displayTime">
                        </app-timestamp></h4>

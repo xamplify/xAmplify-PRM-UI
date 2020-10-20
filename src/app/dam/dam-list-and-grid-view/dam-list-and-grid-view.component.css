@@ -162,3 +162,12 @@ cursor: default;
   padding-top: 10px!important;
   background: #f1f1f1;
 }
+
+.cpdam{
+  padding: 40px 40px 0px 17px;
+}
+
+.cphdam{
+  padding: 0px 0px!important;min-height: 200px;
+}
+

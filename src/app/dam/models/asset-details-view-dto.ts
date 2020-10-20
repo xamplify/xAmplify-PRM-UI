@@ -4,4 +4,5 @@ export class AssetDetailsViewDto {
     alias = "";
     displayTime:Date;
     publishedTimeInUTCString = "";
+    thumbnailPath = "";
 }
