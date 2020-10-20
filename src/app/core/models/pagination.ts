@@ -70,6 +70,6 @@ export class Pagination {
 	collectionId:number = 0;
 	feedId = 0;
 	partnershipId = 0;
-
+	pipelineType = "LEAD";
 
 }

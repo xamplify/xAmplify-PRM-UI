@@ -10,6 +10,7 @@ import 'rxjs/add/observable/throw';
 import { AuthenticationService } from '../core/services/authentication.service';
 import { SocialConnection } from '../social/models/social-connection';
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
+import { Pipeline } from './models/pipeline';
 
 @Injectable()
 export class DashboardService {
@@ -420,4 +421,39 @@ export class DashboardService {
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw(error);
     }
+
+    savePipeline( request: any) {
+        return this.http.post(this.authenticationService.REST_URL + `pipeline?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    saveOrUpdatePipeline(pipeline: Pipeline) { 
+        let url =  this.authenticationService.REST_URL + `pipeline`; 
+        if (pipeline.id > 0) {
+            url = url + `/edit`;            
+        }
+        return this.http.post(url+`?access_token=${this.authenticationService.access_token}`, pipeline)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listAllPipelines(pagination: Pagination){
+        return this.http.post(this.authenticationService.REST_URL + `v/pipeline/list?access_token=${this.authenticationService.access_token}`, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getPipeline(pipelineId:number, userId:number){
+        return this.http.get(this.authenticationService.REST_URL + `pipeline/${pipelineId}/${userId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    deletePipeline(pipeline:Pipeline) {
+        return this.http.post(this.authenticationService.REST_URL + `pipeline/delete?access_token=${this.authenticationService.access_token}`, pipeline)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }

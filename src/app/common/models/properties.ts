@@ -150,6 +150,8 @@ export class Properties {
   folders = "Folders";
   dashboardButtons = "Dashboard Buttons";
   samlSettings = "Allbound SAML Settings";
+  leadPipelines = "Lead Pipelines";
+  dealPipelines = "Deal Pipelines";
 
   /********Error Messages************* */
   roleUpdatedMessage = "Your role has been changed.Please login again.";
