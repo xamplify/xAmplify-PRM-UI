@@ -441,14 +441,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				if(response.access){
 					if (response.statusCode == 200) {
 						this.assetDetailsViewDto = response.data;
+						this.assetDetailsViewDto.displayTime = new Date(this.assetDetailsViewDto.publishedTimeInUTCString);
 					} 
 				}else{
 					this.authenticationService.forceToLogout();
 				}
 			},
-			(_error: string) => {
-				this.referenceService.showServerErrorMessage(this.listLoader);
-				this.customResponse = new CustomResponse('ERROR', this.listLoader.message, true);
+			(error: string) => {
+				this.xtremandLogger.errorPage(error);
 			}
 		);
 	}
