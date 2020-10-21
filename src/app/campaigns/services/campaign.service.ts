@@ -988,6 +988,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    listDownloadHistory(pagination:Pagination){
+        return this.http.post(this.URL + "campaign/viewDownloadedTemplateHistory?access_token=" + this.authenticationService.access_token, pagination)
+        .map(this.extractData)
+            .catch(this.handleError);
+	}
+
     private extractData(res: Response) {
         let body = res.json();
         return body || {};

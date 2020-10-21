@@ -1213,7 +1213,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   }
   navigatePreviewPartners(campaign: any) {
     $('#myModal').modal('hide');
-    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + "/remove-access"]);
+    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + "/downloadAnalytics"]);
   }
   
   showLandingPagePreview(campaign:Campaign){

@@ -471,7 +471,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
     }
     goToPreviewPartners(campaign: Campaign) {
-        this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/remove-access"]);
+        this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/plc"]);
     }
 
     getCancelEventDetails(campaignId: number, channelCampaign:boolean, nurtureCampaign:boolean, toPartner:boolean) {

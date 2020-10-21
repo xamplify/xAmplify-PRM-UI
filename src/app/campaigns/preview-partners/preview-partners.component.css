@@ -9,3 +9,13 @@
 #campaign-partner-table th {
 	text-align: center;
 }
+#right-align{
+	text-align: right !important;
+}
+
+#asset-history{
+	background-color: #f1f1f1;
+  }
+  #history-tr{
+	background-color: #d3d3d317;
+  }

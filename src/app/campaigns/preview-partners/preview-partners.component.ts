@@ -13,13 +13,15 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { SortOption } from '../../core/models/sort-option';
+import { Properties } from '../../common/models/properties';
+
 declare var swal, $: any;
 
 @Component({
   selector: 'app-preview-partners',
   templateUrl: './preview-partners.component.html',
   styleUrls: ['./preview-partners.component.css'],
-  providers: [Pagination, HttpRequestLoader, ActionsDescription,SortOption]
+  providers: [Pagination, HttpRequestLoader, ActionsDescription,SortOption,Properties]
 })
 export class PreviewPartnersComponent implements OnInit {
 
@@ -28,7 +30,12 @@ export class PreviewPartnersComponent implements OnInit {
     partnersPagination: Pagination = new Pagination();
     campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
     campaignId:number = 0;
-    constructor(public route: ActivatedRoute,private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
+    colspanValue = 2;
+    historyPagination: Pagination = new Pagination();
+    historyLoader:HttpRequestLoader = new HttpRequestLoader();
+    partnersList: Array<any> = new Array<any>();
+    historyResponse: CustomResponse = new CustomResponse();
+    constructor(public properties: Properties,public route: ActivatedRoute,private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService,public sortOption:SortOption) {
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -36,13 +43,13 @@ export class PreviewPartnersComponent implements OnInit {
 
 
     listPartners(pagination: Pagination ) {
-        this.partnerActionResponse = new CustomResponse();
         this.refService.loading( this.campaignPartnerLoader, true );
         this.campaignService.listCampaignPartners( pagination, this.campaignId)
             .subscribe(
             data => {
                 pagination.totalRecords = data.totalRecords;
                 this.sortOption.totalRecords = data.totalRecords;
+                this.partnersList = data.campaignPartners;
                 pagination = this.pagerService.getPagedItems( pagination, data.campaignPartners );
                 this.refService.loading( this.campaignPartnerLoader, false );
             },
@@ -54,7 +61,6 @@ export class PreviewPartnersComponent implements OnInit {
     }
 
     confirmDeletePartnerById( partner: any, position: number ) {
-
         let self = this;
         swal( {
             title: 'Are you sure?',
@@ -136,5 +142,45 @@ export class PreviewPartnersComponent implements OnInit {
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.listPartners(this.partnersPagination);
     }
+
+    /********************Pagaination&Search Code*****************/
+	expandHistory(history: any, selectedIndex: number) {
+        this.historyResponse = new CustomResponse();
+		$.each(this.partnersList, function (index: number, row: any) {
+			if (selectedIndex != index) {
+				row.expand = false;
+			}
+		});
+		history.expand = !history.expand;
+		if (history.expand) {
+			this.historyPagination.campaignId = history.campaignPartnerId;
+			this.listAssetsHistory(this.historyPagination);
+		} else {
+			this.historyPagination.campaignId = 0;
+		}
+	}
+
+	listAssetsHistory(pagination: Pagination) {
+		this.refService.loading(this.historyLoader, true);
+		this.campaignService.listDownloadHistory(pagination).subscribe((result: any) => {
+			if (result.statusCode === 200) {
+				let data = result.data;
+				pagination.totalRecords = data.totalRecords;
+				$.each(data.list, function (_index: number, history: any) {
+					history.displayTime = new Date(history.downloadedTimeInUTCString);
+				});
+				pagination = this.pagerService.getPagedItems(pagination, data.list);
+			}
+			this.refService.loading(this.historyLoader, false);
+		}, error => {
+			this.historyResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+		});
+	}
+	/************Page************** */
+	setHistoryPage(event: any) {
+		this.historyPagination.pageIndex = event.page;
+		this.listAssetsHistory(this.historyPagination);
+	}
+
 
 }
