@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute,Router} from '@angular/router';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from '../../core/services/user.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { Campaign } from '../models/campaign';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';

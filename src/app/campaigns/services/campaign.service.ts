@@ -989,10 +989,18 @@ export class CampaignService {
     }
 
     listDownloadHistory(pagination:Pagination){
-        return this.http.post(this.URL + "campaign/viewDownloadedTemplateHistory?access_token=" + this.authenticationService.access_token, pagination)
+        return this.utilPostPaginationMethod("campaign/viewDownloadedTemplateHistory",pagination)
+    }
+    
+    viewDownloadHistoryForPartners(pagination:Pagination){
+        return this.utilPostPaginationMethod("campaign/viewDownloadedTemplateHistoryForPartner",pagination)
+    }
+    
+    private utilPostPaginationMethod(url:string,pagination:Pagination){
+        return this.http.post(this.URL + url+"?access_token=" + this.authenticationService.access_token, pagination)
         .map(this.extractData)
             .catch(this.handleError);
-	}
+    }
 
     private extractData(res: Response) {
         let body = res.json();

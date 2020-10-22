@@ -12,11 +12,11 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { UtilService } from 'app/core/services/util.service';
-
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
+import { CampaignTemplateDownloadHistoryComponent } from '../campaign-template-download-history/campaign-template-download-history.component';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {Properties} from 'app/common/models/properties';
 declare var $,swal: any;
@@ -65,6 +65,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
+    @ViewChild('campaignTemplateDownloadHistoryComponent') campaignTemplateDownloadHistoryComponent: CampaignTemplateDownloadHistoryComponent;
+
     loadingEmailTemplate: boolean =false;
     isListView: boolean = false;
     isFolderGridView:boolean  = false;
@@ -560,31 +562,16 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaignService.hasCampaignListViewOrAnalyticsOrDeleteAccess().subscribe(
             data => {
                 if (data.access) {
-                this.customResponse = new CustomResponse();
-                    this.ngxloading = true;
-                    this.authenticationService.checkPartnerAccess(this.loggedInUserId)
-                        .subscribe(
-                        data => {
-                            let access = data.access;
-                            this.ngxloading = false;
-                            if (access) {
-                                window.open(this.authenticationService.REST_URL + "campaign/download/" + campaign.campaignId + "/" + this.loggedInUserId + "/" + type + "?access_token=" + this.authenticationService.access_token, "_blank");
-                            } else {
-                                this.authenticationService.forceToLogout();
-                            }
-                        },
-                        error => {
-                            this.ngxloading = false;
-                            this.customResponse = new CustomResponse('ERROR', "Unable to download.Please try after sometime", true);
-                        },
-                        () => console.log()
-                        );
-
+                    this.downloadFile(campaign,type);
                 } else {
                     this.authenticationService.forceToLogout();
                 }
             }
         );
+  }
+
+  viewDownloadedHistory(campaign:any){
+    this.campaignTemplateDownloadHistoryComponent.viewHistoryForPartners(campaign);
   }
     
 }
