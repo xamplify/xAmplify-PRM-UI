@@ -108,7 +108,7 @@
 			<li style="color: #888" translate>Add {{checkingContactTypeName}}s</li>
 
 		</ul>
-		<div align="right" style="margin-top: 2px;" class="hidden-xs">
+		<div align="right" style="margin-top: 2px;" class="hidden-xs" *ngIf="!assignLeads">
 			<a (click)="downloadEmptyCsv()">
 				<button type="button" class="btn green" download style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
 					Download Contact CSV Template
@@ -169,7 +169,7 @@
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
 								<div class="portlet light cloud-services" style="padding-bottom: 30px !important;">
-									<div class="portlet-title" translate>Import contacts from the cloud:</div>
+									<div class="portlet-title" translate>Import {{checkingContactTypeName}}s from the cloud:</div>
 									<div class="portlet-body">
 										<div class="row">
 											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
@@ -324,7 +324,7 @@
 								</div>
 							</div>
 							<!--  // -->
-							<div class="col-xs-12 col-md-4">
+							<div class="col-xs-12 col-md-4" *ngIf="!assignLeads">
 							<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600" translate>Public vs Private</h4>
 							<span style="cursor: pointer;color: #54a7e9;">
@@ -352,7 +352,7 @@
 						</div>
 							
 							<!--  // -->
-							<div class="col-xs-12 col-md-4">
+							<div class="col-xs-12 col-md-4" class="pull-right" style = "margin-right: 30px;">
 								<section class="pull-right" style="margin-bottom: 10px; margin-top: 3px;">
 									<button id="sample_editable_1_new" class="btn green" (click)="saveContacts()" translate>
 										Save <i class="fa fa-save"></i>
@@ -363,6 +363,28 @@
 								</section>
 							</div>
 						</div>
+						<!--  // -->
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:20px">
+						<div  class="col-xs-3 col-sm-3 col-md-3 col-lg-3 hidden-xs"></div>
+						<div  class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+							<div class="form-group">
+								<label for="hostedBy" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 labal-css color-css"
+									translate><b>Select Partner:</b></label>
+								<div class="col-xs-8 col-sm-6 col-md-6 col-lg-6 p0">
+									<select class="form-control" [(ngModel)]="model.assignedTo"
+										[ngModelOptions]="{standalone: true}">
+										<!-- <option [value]="" selected>{{partnerEmailIds[0]}} </option>> -->
+										   <option value="" disabled selected>Select your Partner</option>
+										
+										<option *ngFor="let partnerEmailId of partnerEmailIds"
+											[value]="partnerEmailId" >{{partnerEmailId}}</option>
+									</select>
+								</div>
+							</div>
+							</div>
+							<div  class="col-xs-3 col-sm-3 col-md-3 col-lg-3 hidden-xs"></div>
+						</div>
+						<!--  // -->
 						<div class="row" *ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
 						<br><br>
 								<div class="col-xs-12 col-md-6">

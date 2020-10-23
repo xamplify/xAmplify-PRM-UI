@@ -31,6 +31,7 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 })
 
 export class ManageContactsComponent implements OnInit, AfterViewInit, AfterViewChecked {
+	assignLeads :boolean = false;
 	public socialContact: SocialContact;
 	public googleSynchronizeButton: boolean;
 	public storeLogin: any;
@@ -205,7 +206,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.referenceService.renderer = render;
 		let currentUrl = this.router.url;
 		this.model.isPublic = true;
-		if (currentUrl.includes('home/contacts')) {
+		if (currentUrl.includes('home/assignleads')) {
+			this.isPartner = false;
+            this.assignLeads = true;
+             this.checkingContactTypeName = "Lead"
+		}else if (currentUrl.includes('home/contacts')) {
 			this.isPartner = false;
 			this.checkingContactTypeName = "Contact"
 		} else {
@@ -288,44 +293,88 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	loadContactLists(pagination: Pagination) {
-		try {
-			this.referenceService.loading(this.httpRequestLoader, true);
-			this.pagination.filterKey = 'isPartnerUserList';
-			this.pagination.filterValue = this.isPartner;
-			this.contactService.loadContactLists(pagination)
-				.subscribe(
-					(data: any) => {
-						this.xtremandLogger.info(data);
-						data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate); });
-						this.contactLists = data.listOfUserLists;
-						this.totalRecords = data.totalRecords;
-						if (data.totalRecords.length == 0) {
-							this.resetResponse();
-							this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
-						} else {
-							pagination.totalRecords = this.totalRecords;
-							pagination = this.pagerService.getPagedItems(pagination, this.contactLists);
+    loadContactLists(pagination: Pagination) {
 
-						}
-						if (this.contactLists.length == 0) {
-							this.resetResponse();
-							// this.responseMessage = ['INFO', 'No results found.','show'];
-							this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
-							this.pagedItems = null;
-						}
-						this.referenceService.loading(this.httpRequestLoader, false);
-					},
-					(error: any) => {
-						this.xtremandLogger.error(error);
-						this.xtremandLogger.errorPage(error);
-					},
-					() => this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished")
-				)
-		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "loadAllContactList()");
-		}
+        if (this.assignLeads) {
+        	this.loadAssignedLeadsLists(pagination);
+        } else {
+            try {
+
+                this.referenceService.loading(this.httpRequestLoader, true);
+                this.pagination.filterKey = 'isPartnerUserList';
+                this.pagination.filterValue = this.isPartner;
+                this.contactService.loadContactLists(pagination)
+                    .subscribe(
+                    (data: any) => {
+                        this.xtremandLogger.info(data);
+                        data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate); });
+                        this.contactLists = data.listOfUserLists;
+                        this.totalRecords = data.totalRecords;
+                        if (data.totalRecords.length == 0) {
+                            this.resetResponse();
+                            this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
+                        } else {
+                            pagination.totalRecords = this.totalRecords;
+                            pagination = this.pagerService.getPagedItems(pagination, this.contactLists);
+
+                        }
+                        if (this.contactLists.length == 0) {
+                            this.resetResponse();
+                            // this.responseMessage = ['INFO', 'No results found.','show'];
+                            this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
+                            this.pagedItems = null;
+                        }
+                        this.referenceService.loading(this.httpRequestLoader, false);
+                    },
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished")
+                    )
+            } catch (error) {
+                this.xtremandLogger.error(error, "ManageContactsComponent", "loadAllContactList()");
+            }
+        }
 	}
+    
+    loadAssignedLeadsLists(pagination: Pagination) {
+        try {
+            this.referenceService.loading(this.httpRequestLoader, true);
+            this.pagination.filterKey = 'isPartnerUserList';
+            this.pagination.filterValue = this.isPartner;
+            this.contactService.loadAssignedLeadsLists(pagination)
+                .subscribe(
+                (data: any) => {
+                    this.xtremandLogger.info(data);
+                    data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate); });
+                    this.contactLists = data.listOfUserLists;
+                    this.totalRecords = data.totalRecords;
+                    if (data.totalRecords.length == 0) {
+                        this.resetResponse();
+                        this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
+                    } else {
+                        pagination.totalRecords = this.totalRecords;
+                        pagination = this.pagerService.getPagedItems(pagination, this.contactLists);
+
+                    }
+                    if (this.contactLists.length == 0) {
+                        this.resetResponse();
+                        this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
+                        this.pagedItems = null;
+                    }
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                },
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("MangeContactsComponent loadAssignedLeadsLists() finished")
+                )
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "loadAssignedLeadsLists()");
+        }
+    }
 
 	loadContactListsNames() {
 		try {

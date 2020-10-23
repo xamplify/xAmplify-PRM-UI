@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, Input, AfterViewInit, OnDestroy } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
+import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { User } from '../../core/models/user';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -41,12 +42,16 @@ declare var swal, $, Papa: any;
     providers: [FileUtil, SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent, CallActionSwitch]
 })
 export class AddContactsComponent implements OnInit, OnDestroy {
+    partnerEmailIds: string[] = [];
+    userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
+
     settingSocialNetwork: string;
     isUnLinkSocialNetwork: boolean = false;
     public contactLists: Array<ContactList>;
     contactListObject: ContactList;
     public clipBoard: boolean = false;
     public newUsers: Array<User>;
+    public socialUsers:Array<User>;
     addContactuser: User = new User();
     public clipboardUsers: Array<User>;
     public clipboardTextareaText: string;
@@ -92,6 +97,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     pagedItems: any[];
     checkingForEmail: boolean;
     isPartner: boolean;
+    assignLeads: boolean = false;
     checkingContactTypeName: string;
     selectedContactListIds = [];
     allselectedUsers = [];
@@ -165,6 +171,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     public zohoCurrentUser:any;
     loggedInUserId = 0;
     public providerName: String = 'zoho';
+    //leadsPartnerEmail = "";
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -177,13 +184,20 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.isPartner = false;
             this.checkingContactTypeName = "Contact"
-        } else {
+        } else if( currentUrl.includes( 'home/assignleads' ) ){
+            this.isPartner = false;
+            this.assignLeads = true;
+             this.checkingContactTypeName = "Lead"
+        }        
+        else {
             this.isPartner = true;
             this.checkingContactTypeName = "Partner"
         }
+        
 
         this.contacts = new Array<User>();
         this.newUsers = new Array<User>();
+        this.socialUsers = new Array<User>();
         this.clipboardUsers = new Array<User>();
         this.socialContact = new SocialContact();
         this.zohoContact = new ZohoContact();
@@ -205,10 +219,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.uploader.onCompleteItem = ( item: any, response: any, status: any, headers: any ) => {
             var responsePath = response;
             this.xtremandLogger.info( "addContacts.component onCompleteItem:" + responsePath );// the url will be in the response
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
+            if (this.assignLeads) {
+                this.router.navigateByUrl('/home/assignLeads/manage')
+            } else if (this.isPartner == false && !this.assignLeads) {
+                this.router.navigateByUrl('/home/contacts/manage')
             } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
+                this.router.navigateByUrl('home/partners/manage')
             }
         };
         this.parentInput = {};
@@ -757,7 +773,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.isDuplicateEmailId = isDuplicate;
         this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
 
-        if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
+        if ( !this.assignLeads && this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
             this.xtremandLogger.info( this.newUsers[0].emailId.toLowerCase() );
             if ( this.newUsers[0].emailId != undefined ) {
                 if ( !isDuplicate ) {
@@ -771,7 +787,22 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.error( "AddContactComponent saveContactList() ContactListName Error" );
             }
 
-        } else if ( this.validEmailPatternSuccess === false ) {
+        }
+        else if(this.assignLeads && this.model.contactListName != '' && !this.isValidContactName && this.model.assignedTo != ''){
+            if ( this.newUsers[0].emailId != undefined ) {
+                if ( !isDuplicate ) {
+                    this.saveValidEmails();
+                    $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                } else {
+                    this.customResponse = new CustomResponse( 'ERROR', "please remove duplicate email id(s) " + "'" + this.duplicateEmailIds + "'", true );
+                    $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                }
+            } else {
+                this.xtremandLogger.error( "AddContactComponent saveContactList() ContactListName Error" );
+            }
+            
+        }     
+        else if ( this.validEmailPatternSuccess === false ) {
             this.emailNotValid = true;
             this.contactListNameError = false;
             this.noOptionsClickError = false;
@@ -782,8 +813,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
             this.xtremandLogger.error( "AddContactComponent saveContactList() ContactListName Error" );
         }
-    }
+    }  
 
+     
     saveValidEmails() {
         try {
             this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.newUsers ) );
@@ -804,6 +836,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
             
+            if(this.assignLeads){
+                this.contactListObject.publicList = true;
+                this.contactListObject.assignedTo = this.model.assignedTo;
+           }
+            
             this.askForPermission('oneAtTime');
             
         } catch ( error ) {
@@ -812,12 +849,57 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
     
     
-    oneAtTimeSaveAfterGotPermition(){
+    oneAtTimeSaveAfterGotPermition() {
+
+        if (this.assignLeads) {
+            this.contactListObject.contactType="ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork="MANUAL";
+            this.userUserListWrapper.users = this.newUsers;
+            this.saveAssignedLeadsList();
+        } else {
+
+            this.loading = true;
+            this.contactService.saveContactList(this.newUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        this.contactService.successMessage = true;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: any) => {
+                    this.loading = false;
+                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    this.xtremandLogger.error(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
+                )
+        }
+    }
+    
+    saveAssignedLeadsList(){
         this.loading = true;
-        this.contactService.saveContactList( this.newUsers, this.model.contactListName, this.isPartner,this.model.isPublic )
+        this.userUserListWrapper.userList = this.contactListObject;
+        
+        this.contactService.saveAssignedLeadsList( this.userUserListWrapper)
         .subscribe(
         data => {
-        	if(data.access){
+            if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
@@ -825,12 +907,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactService.successMessage = true;
             this.contactService.saveAsSuccessMessage = "add";
             if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
-            } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
-            }
+                this.router.navigateByUrl( '/home/assignleads/manage' )
+            } 
         }else{
-        	this.authenticationService.forceToLogout();
+            this.authenticationService.forceToLogout();
         }
         },
         ( error: any ) => {
@@ -842,10 +922,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
             this.xtremandLogger.error( error );
         },
-        () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
-        )
+        () => this.xtremandLogger.info( "addcontactComponent saveAssignedLeadsList() finished" )
+        )           
     }
-
+    
     saveClipBoardContactList() {
         this.clipboardShowPreview();
         this.duplicateEmailIds = [];
@@ -916,6 +996,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
+            if(this.assignLeads){
+                this.contactListObject.publicList = true;
+                this.contactListObject.assignedTo = this.model.assignedTo;
+           }
             if ( this.model.contactListName != ' ' ) {
                 
                 this.askForPermission('clipBoard');
@@ -926,40 +1010,48 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveClipBoardContactsAfterGotPermition(){
-        this.loading = true;
-        this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
-        this.setLegalBasisOptions(this.clipboardUsers);
-        this.contactService.saveContactList( this.clipboardUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
-            .subscribe(
-            data => {
-            	if(data.access){
-                data = data;
-                this.loading = false;
-                this.selectedAddContactsOption = 8;
-                this.contactService.saveAsSuccessMessage = "add";
-                this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-                this.disableOtherFuctionality = false;
-                if ( this.isPartner == false ) {
-                    this.router.navigateByUrl( '/home/contacts/manage' )
-                } else {
-                    this.router.navigateByUrl( 'home/partners/manage' )
-                }
-            }else{
-            	this.authenticationService.forceToLogout();
-            }
-            },
-            ( error: any ) => {
-                this.loading = false;
-                if ( error._body.includes( "email addresses in your contact list that aren't formatted properly" ) ) {
-                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse( error._body ).message, true );
-                } else {
-                    this.xtremandLogger.errorPage( error );
-                }
-                this.xtremandLogger.error( error );
-            },
-            () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
-            )
+    saveClipBoardContactsAfterGotPermition() {
+        if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "MANUAL";
+            this.setLegalBasisOptions(this.clipboardUsers);
+            this.userUserListWrapper.users = this.clipboardUsers;
+            this.saveAssignedLeadsList();
+        } else {
+            this.loading = true;
+            this.xtremandLogger.info("update contacts #contactSelectedListId " + " data => " + JSON.stringify(this.clipboardUsers));
+            this.setLegalBasisOptions(this.clipboardUsers);
+            this.contactService.saveContactList(this.clipboardUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        this.disableOtherFuctionality = false;
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: any) => {
+                    this.loading = false;
+                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    this.xtremandLogger.error(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
+                )
+        }
     }
 
     saveCsvContactList() {
@@ -1018,6 +1110,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             this.contactListObject.name = this.model.contactListName;
                             this.contactListObject.isPartnerUserList = this.isPartner;
                             
+                            if(this.assignLeads){
+                                this.contactListObject.publicList = true;
+                                this.contactListObject.assignedTo = this.model.assignedTo;
+                           }
+                            
                             this.askForPermission('csvContacts');
                             
                         } else {
@@ -1042,39 +1139,47 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveCsvContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.contacts);
-        this.contactService.saveContactList( this.contacts, this.model.contactListName, this.isPartner, this.model.isPublic )
-        .subscribe(
-        data => {
-        	if(data.access){
-            data = data;
-            this.loading = false;
-            this.selectedAddContactsOption = 8;
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            this.contactService.saveAsSuccessMessage = "add";
-            this.uploadedCsvFileName = "";
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
-            } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
-            }
-        }else{
-        	this.authenticationService.forceToLogout();
+    saveCsvContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "MANUAL";
+            this.setLegalBasisOptions(this.contacts);
+            this.userUserListWrapper.users = this.contacts;
+            this.saveAssignedLeadsList();
+        } else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.contacts);
+            this.contactService.saveContactList(this.contacts, this.model.contactListName, this.isPartner, this.model.isPublic)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.uploadedCsvFileName = "";
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: any) => {
+                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    this.xtremandLogger.error(error);
+                    this.loading = false;
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveCsvContactList() finished")
+                )
         }
-        },
-        ( error: any ) => {
-            if ( error._body.includes( "email addresses in your contact list that aren't formatted properly" ) ) {
-                this.customResponse = new CustomResponse( 'ERROR', JSON.parse( error._body ).message, true );
-            } else {
-                this.xtremandLogger.errorPage( error );
-            }
-            this.xtremandLogger.error( error );
-            this.loading = false;
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveCsvContactList() finished" )
-        )
     }
     
     validateLegalBasisOptions(){
@@ -1483,45 +1588,55 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveGoogleContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.socialContact.contacts);
-        this.socialContact.publicList  = this.model.isPublic;
-        this.contactService.saveSocialContactList( this.socialContact )
-        .subscribe(
-        data => {
-        	if(data.access){
-            data = data;
-            this.selectedAddContactsOption = 8;
-            this.loading = false;
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            }
-        }else{
-            this.authenticationService.forceToLogout();
-            localStorage.setItem('isZohoSynchronization','no');
-            localStorage.removeItem('isZohoSynchronization');
+    saveGoogleContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject = new ContactList;
+            this.contactListObject.name = this.model.contactListName;
+            this.contactListObject.isPartnerUserList = this.isPartner;
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
+            this.contactListObject.publicList = true;
+            this.contactListObject.assignedTo = this.model.assignedTo;
+            this.setSocialUsers(this.socialContact);
+            this.setLegalBasisOptions(this.socialUsers);
+           
+            this.userUserListWrapper.users = this.socialUsers;
+            this.saveAssignedLeadsList();
+        } else {
+
+            this.loading = true;
+            this.setLegalBasisOptions(this.socialContact.contacts);
+            this.socialContact.publicList = this.model.isPublic;
+            this.contactService.saveSocialContactList(this.socialContact)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        data = data;
+                        this.selectedAddContactsOption = 8;
+                        this.loading = false;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: any) => {
+                    this.loading = false;
+                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    this.xtremandLogger.error(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
+                )
         }
-        },
-        ( error: any ) => {
-            this.loading = false;
-            if ( error._body.includes( "email addresses in your contact list that aren't formatted properly" ) ) {
-                this.customResponse = new CustomResponse( 'ERROR', JSON.parse( error._body ).message, true );
-            } else {
-                this.xtremandLogger.errorPage( error );
-            }
-            this.xtremandLogger.error( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
-        )
     }
     
 
@@ -1548,42 +1663,45 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveGoogleSelectedContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
-        .subscribe(
-        data => {
-        	if(data.access){
-            this.loading = false;
-            this.selectedAddContactsOption = 8;
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            }
-            this.contactService.successMessage = true;
-        }else{
-        	this.authenticationService.forceToLogout();
+    saveGoogleSelectedContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "MANUAL";
+            this.saveAssignedLeadsList();
         }
-        },
-        ( error: any ) => {
-            this.loading = false;
-            if ( error._body.includes( "email addresses in your contact list that aren't formatted properly" ) ) {
-                this.customResponse = new CustomResponse( 'ERROR', JSON.parse( error._body ).message, true );
-            } else {
-                this.xtremandLogger.errorPage( error );
-            }
-            this.xtremandLogger.error( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveacontact() finished" )
-        )
+           else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.allselectedUsers);
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                        }
+                        this.contactService.successMessage = true;
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: any) => {
+                    this.loading = false;
+                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    this.xtremandLogger.error(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
+                )
+           }
     }
 
     checkAll( ev: any ) {
@@ -1895,46 +2013,53 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveZohoContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.socialContact.contacts);
-        this.socialContact.publicList  = this.model.isPublic;
-      //  this.socialContact.contactType = 'CONTACT';//Added after oAuth2.0 implementation by Sravan
-        this.contactService.saveSocialContactList( this.socialContact )
-        .subscribe(
-        data => {
-        if(data.access){
-            this.loading = false;
-            this.selectedAddContactsOption = 8;
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            if (!this.isPartner) {
-                localStorage.removeItem('isZohoSynchronization');
-                this.router.navigateByUrl( '/home/contacts/manage' )
-                localStorage.removeItem('isZohoSynchronization');
-            } else {
-                localStorage.removeItem('isZohoSynchronization');
-                this.router.navigateByUrl( 'home/partners/manage' )
-                localStorage.removeItem('isZohoSynchronization');
-            }
-        }else{
-            localStorage.removeItem('isZohoSynchronization');
-            this.authenticationService.forceToLogout();
-           
+    saveZohoContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "ZOHO";
+            this.saveAssignedLeadsList();
         }
-        },
+           else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.socialContact.contacts);
+            this.socialContact.publicList = this.model.isPublic;
+            //  this.socialContact.contactType = 'CONTACT';//Added after oAuth2.0 implementation by Sravan
+            this.contactService.saveSocialContactList(this.socialContact)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        if (!this.isPartner) {
+                            localStorage.removeItem('isZohoSynchronization');
+                            this.router.navigateByUrl('/home/contacts/manage')
+                            localStorage.removeItem('isZohoSynchronization');
+                        } else {
+                            localStorage.removeItem('isZohoSynchronization');
+                            this.router.navigateByUrl('home/partners/manage')
+                            localStorage.removeItem('isZohoSynchronization');
+                        }
+                    } else {
+                        localStorage.removeItem('isZohoSynchronization');
+                        this.authenticationService.forceToLogout();
 
-        ( error: any ) => {
-            this.loading = false;
-            if ( error._body.includes( "email addresses in your contact list that aren't formatted properly" ) ) {
-                this.customResponse = new CustomResponse( 'ERROR', JSON.parse( error._body ).message, true );
-            } else {
-                this.xtremandLogger.errorPage( error );
-            }
-            this.xtremandLogger.error( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveZohoContact() finished" )
-        )
+                    }
+                },
+
+                (error: any) => {
+                    this.loading = false;
+                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    this.xtremandLogger.error(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveZohoContact() finished")
+                )
+        }
     }
 
     saveZohoContactSelectedUsers() {
@@ -1961,44 +2086,51 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveZohoSelectedContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
-        .subscribe(
-        data => {
-        	if(data.access){
-            this.loading = false;
-            this.selectedAddContactsOption = 8;
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
-                localStorage.removeItem('isZohoSynchronization');
-            } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
-                localStorage.removeItem('isZohoSynchronization');
-            }
-            this.contactService.successMessage = true;
-            localStorage.removeItem('isZohoSynchronization');
-        }else{
-            localStorage.removeItem('isZohoSynchronization');
-            this.authenticationService.forceToLogout();
-            
+    saveZohoSelectedContactsWithPermission() {
+        if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "MANUAL";
+            this.saveAssignedLeadsList();
         }
-        },
+        else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.allselectedUsers);
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                            localStorage.removeItem('isZohoSynchronization');
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                            localStorage.removeItem('isZohoSynchronization');
+                        }
+                        this.contactService.successMessage = true;
+                        localStorage.removeItem('isZohoSynchronization');
+                    } else {
+                        localStorage.removeItem('isZohoSynchronization');
+                        this.authenticationService.forceToLogout();
 
-        ( error: any ) => {
-            this.loading = false;
-            if ( error._body.includes( "email addresses in your contact list that aren't formatted properly" ) ) {
-                this.customResponse = new CustomResponse( 'ERROR', JSON.parse( error._body ).message, true );
-            } else {
-                this.xtremandLogger.errorPage( error );
-            }
-            this.xtremandLogger.error( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
-        )
+                    }
+                },
+
+                (error: any) => {
+                    this.loading = false;
+                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    this.xtremandLogger.error(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveZohoContactUsers() finished")
+                )
+        }
     }
 
     onChange( item: any ) {
@@ -2303,43 +2435,45 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveSalesForceSelectedContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
-        .subscribe(
-        data => {
-        if(data.access){
-            this.loading = false;
-            data = data;
-            this.selectedAddContactsOption = 8;
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            }
-            this.contactService.successMessage = true;
-        }else{
-        	this.authenticationService.forceToLogout();
-        }            
-        },
-        ( error: any ) => {
-            this.loading = false;
-            if ( error._body.includes( "email addresses in your contact list that aren't formatted properly" ) ) {
-                this.customResponse = new CustomResponse( 'ERROR', JSON.parse( error._body ).message, true );
-            } else {
-                this.xtremandLogger.errorPage( error );
-            }
-            this.xtremandLogger.error( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveZohoContactUsers() finished" )
-        )
+    saveSalesForceSelectedContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "MANUAL";
+            this.saveAssignedLeadsList();
+        } else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.allselectedUsers);
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        this.loading = false;
+                        data = data;
+                        this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                        }
+                        this.contactService.successMessage = true;
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: any) => {
+                    this.loading = false;
+                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    this.xtremandLogger.error(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveZohoContactUsers() finished")
+                )
+        }
     }
 
     saveSalesforceContacts() {
@@ -2369,44 +2503,48 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveSalesForceContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.socialContact.contacts);
-        this.socialContact.publicList  = this.model.isPublic;
-        this.contactService.saveSocialContactList( this.socialContact )
-        .subscribe(
-        data => {
-        	if(data.access){
-            data = data;
-            this.loading = false;
-            this.selectedAddContactsOption = 8;
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            }
-            this.contactService.successMessage = true;
-        }else{
-        	this.authenticationService.forceToLogout();
+    saveSalesForceContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject.publicList = true;
+            this.contactListObject.assignedTo = this.model.assignedTo;
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "SALESFORCE";
+            this.saveAssignedLeadsList();
+        } else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.socialContact.contacts);
+            this.socialContact.publicList = this.model.isPublic;
+            this.contactService.saveSocialContactList(this.socialContact)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                        }
+                        this.contactService.successMessage = true;
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: any) => {
+                    this.loading = false;
+                    if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
+                        this.customResponse = new CustomResponse('ERROR', JSON.parse(error._body).message, true);
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    this.xtremandLogger.error(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveSalesforceContacts() finished")
+                )
         }
-        },
-        ( error: any ) => {
-            this.loading = false;
-            if ( error._body.includes( "email addresses in your contact list that aren't formatted properly" ) ) {
-                this.customResponse = new CustomResponse( 'ERROR', JSON.parse( error._body ).message, true );
-            } else {
-                this.xtremandLogger.errorPage( error );
-            }
-            this.xtremandLogger.error( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveSalesforceContacts() finished" )
-        )
     }
 
     socialContactImage() {
@@ -2450,6 +2588,27 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 );
         } catch ( error ) {
             this.xtremandLogger.error( error, "addContactComponent", "social Partners images" );
+        }
+    }
+    
+    partnerEmails(){
+
+        try {
+            this.contactService.getPartnerEmails()
+                .subscribe(
+                        response => {
+                    for ( let i = 0; i < response.data.length; i++ ) {
+                        this.partnerEmailIds.push( response.data[i].replace( /\s/g, '' ) );
+                    }
+                },
+                ( error: any ) => {
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                () => this.xtremandLogger.log( "AddContactsComponent partnerEmails() finished." )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "addContactComponent", "partnerEmails" );
         }
     }
 
@@ -2550,6 +2709,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         try {
+            this.partnerEmails();
             this.socialContactImage();
             this.hideModal();
             this.loadContactListsNames();
@@ -2834,42 +2994,42 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveMarketoContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.socialContact.contacts);
-        this.socialContact.publicList  = this.model.isPublic;
-        this.contactService.saveMarketoContactList( this.socialContact )
-        .subscribe(
-        data => {
-        	if(data.access){
-            data = data;
-            this.loading = false;
-            this.selectedAddContactsOption = 8;
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            }
-        }else{
-            this.authenticationService.forceToLogout();
-            localStorage.setItem('isZohoSynchronization','no');
-            localStorage.removeItem('isZohoSynchronization');
-        }
-        },
+    saveMarketoContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "MARKETO";
+            this.saveAssignedLeadsList();
+        } else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.socialContact.contacts);
+            this.socialContact.publicList = this.model.isPublic;
+            this.contactService.saveMarketoContactList(this.socialContact)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 
-        ( error: any ) => {
-            this.loading = false;
-            this.xtremandLogger.error( error );
-            this.xtremandLogger.errorPage( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveMarketoContact() finished" )
-        )
+                (error: any) => {
+                    this.loading = false;
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveMarketoContact() finished")
+                )
+        }
     }
     
     saveMarketoContactSelectedUsers() {
@@ -2893,48 +3053,48 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     
-    saveMarketoSelectedContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
-        .subscribe(
-        data => {
-        	if(data.access){
-            data = data;
-            this.loading = false;
-            this.selectedAddContactsOption = 8;
+    saveMarketoSelectedContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "MANUAL";
+            this.saveAssignedLeadsList();
+        } else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.allselectedUsers);
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
 
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/contacts/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            } else {
-                this.router.navigateByUrl( 'home/partners/manage' )
-                localStorage.setItem('isZohoSynchronization','no');
-                localStorage.removeItem('isZohoSynchronization');
-            }
-        }else{
-            this.authenticationService.forceToLogout();
-            localStorage.setItem('isZohoSynchronization','no');
-            localStorage.removeItem('isZohoSynchronization');
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        if (this.isPartner == false) {
+                            this.router.navigateByUrl('/home/contacts/manage')
+                        } else {
+                            this.router.navigateByUrl('home/partners/manage')
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+
+                (error: any) => {
+                    this.loading = false;
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveMarketoContactSelectedUsers() finished")
+                )
         }
-        },
-
-        ( error: any ) => {
-            this.loading = false;
-            this.xtremandLogger.error( error );
-            this.xtremandLogger.errorPage( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveMarketoContactSelectedUsers() finished" )
-        )
     }
 
     authorisedMarketoContacts() {
     }
     retriveMarketoContacts() {
-		this.loading = true;
+        this.loading = true;
 
         $( "#marketoShowLoginPopup" ).modal( 'hide' );
         this.contactService.getMarketoContacts( this.authenticationService.getUserId() ).subscribe( data => {
@@ -2993,7 +3153,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.info( this.getMarketoConatacts );
             this.setPage( 1 );
              } else if (data.statusCode === 400) {
-				 this.customResponse = new CustomResponse( 'ERROR', data.message, true );   
+                 this.customResponse = new CustomResponse( 'ERROR', data.message, true );   
              }
               this.loading = false;
         },
@@ -3378,68 +3538,72 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
 
-    saveHubSpotContactsWithPermission(){
-        this.loading = true;
-        this.socialContact.type = "hubspot";
-        this.socialContact.userId = this.authenticationService.getUserId();
-        this.socialContact.externalListId = this.hubSpotSelectContactListOption;
-        this.setLegalBasisOptions(this.socialContact.contacts);
-        this.socialContact.publicList  = this.model.isPublic;
-        this.hubSpotService.saveHubSpotContacts(this.socialContact)
-        .subscribe(
-        data => {
-        	if(data.access){
-            this.loading = false;
-            this.selectedAddContactsOption = 8;
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "Save Contacts ListUsers:" + data );
-            this.router.navigateByUrl( '/home/contacts/manage' );
-            localStorage.setItem('isZohoSynchronization','no');
-            localStorage.removeItem('isZohoSynchronization');
-        }else{
-            this.authenticationService.forceToLogout();
-            localStorage.setItem('isZohoSynchronization','no');
-            localStorage.removeItem('isZohoSynchronization');
-        }
-        },
+    saveHubSpotContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "HUBSPOT";
+            this.saveAssignedLeadsList();
+        } else {
+            this.loading = true;
+            this.socialContact.type = "hubspot";
+            this.socialContact.userId = this.authenticationService.getUserId();
+            this.socialContact.externalListId = this.hubSpotSelectContactListOption;
+            this.setLegalBasisOptions(this.socialContact.contacts);
+            this.socialContact.publicList = this.model.isPublic;
+            this.hubSpotService.saveHubSpotContacts(this.socialContact)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("Save Contacts ListUsers:" + data);
+                        this.router.navigateByUrl('/home/contacts/manage');
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 
-        ( error: any ) => {
-            this.loading = false;
-            this.xtremandLogger.error( error );
-            this.xtremandLogger.errorPage( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveHubSpotContactsWithPermission() finished" )
-        )
+                (error: any) => {
+                    this.loading = false;
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveHubSpotContactsWithPermission() finished")
+                )
+        }
     }
 
-    saveHubSpotSelectedContactsWithPermission(){
-        this.loading = true;
-        this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
-        .subscribe(
-        data => {
-        	if(data.access){
-            this.loading = false;
-            this.selectedAddContactsOption = 8;
-            this.contactService.saveAsSuccessMessage = "add";
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            this.router.navigateByUrl( '/home/contacts/manage')
-            localStorage.setItem('isZohoSynchronization','no');
-            localStorage.removeItem('isZohoSynchronization');
-        }else{
-            this.authenticationService.forceToLogout();
-            localStorage.setItem('isZohoSynchronization','no');
-            localStorage.removeItem('isZohoSynchronization');
-        }
-        },
+    saveHubSpotSelectedContactsWithPermission() {
+           if (this.assignLeads) {
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = "MANUAL";
+            this.saveAssignedLeadsList();
+        } else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.allselectedUsers);
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        this.loading = false;
+                        this.selectedAddContactsOption = 8;
+                        this.contactService.saveAsSuccessMessage = "add";
+                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                        this.router.navigateByUrl('/home/contacts/manage')
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 
-        ( error: any ) => {
-            this.loading = false;
-            this.xtremandLogger.error( error );
-            this.xtremandLogger.errorPage( error );
-        },
-        () => this.xtremandLogger.info( "addcontactComponent saveHubSpotSelectedContactsWithPermission() finished" )
-        )
+                (error: any) => {
+                    this.loading = false;
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveHubSpotSelectedContactsWithPermission() finished")
+                )
+        }
     }
     
     showFilePreview(){
@@ -3457,8 +3621,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
     
     changeStatus(event){
-    	this.model.isPublic = event;
-    	
+        this.model.isPublic = event;
+        
     }
 
     /**************Sravan************************ */
@@ -3598,8 +3762,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'INFO', data.message, true );
                         this.selectedAddContactsOption = 6;
-						this.zohoImageBlur = true;
-					    this.zohoImageNormal = false;
+                        this.zohoImageBlur = true;
+                        this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
@@ -3639,7 +3803,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.customResponse = new CustomResponse( 'INFO', data.message, true );
                         this.selectedAddContactsOption = 6;
                         this.zohoImageBlur = true;
-					    this.zohoImageNormal = false;
+                        this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
@@ -3703,6 +3867,26 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
         this.selectedAddContactsOption = 5;
         this.setPage(1);
+    }
+   /* setAssignedTo(event:any){
+        this.leadsPartnerEmail = event.target.value;
+        
+        alert(this.leadsPartnerEmail);
+    }*/
+    
+    setSocialUsers(socialContact) {
+        let contacts = this.socialContact.contacts;
+        for (var i = 0; i < this.socialContact.contacts.length; i++) {
+            let user = new User();
+            if (this.validateEmailAddress(contacts[i].emailId)) {
+                user.emailId = contacts[i].emailId.trim();
+                user.firstName = contacts[i].firstName;
+                user.lastName = contacts[i].lastName;
+                user.contactCompany = contacts[i].contactCompany;
+                this.socialUsers.push(user);
+            }
+
+        }
     }
 
     

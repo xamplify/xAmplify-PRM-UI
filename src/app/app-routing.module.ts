@@ -60,6 +60,7 @@ export const routes: Routes = [
             { path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule' },
             { path: 'rss', loadChildren: 'app/social/rss/rss.module#RssModule' },
             { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
+            { path: 'assignleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
             { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule', data: { preload: false } },
             { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule', data: { preload: false } },
             { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },

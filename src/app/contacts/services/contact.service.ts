@@ -16,6 +16,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import {ReferenceService} from '../../core/services/reference.service';
+import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 
 @Injectable()
 export class ContactService {
@@ -79,6 +80,18 @@ export class ContactService {
 
         this.logger.info( "Service class loadContact() completed" );
         return this._http.post( this.contactsUrl + '?userId='+ userId + "&access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    loadAssignedLeadsLists( pagination: Pagination ): Observable<ContactList[]> {
+
+        let userId = this.authenticationService.user.id;
+
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+
+        this.logger.info( "Service class loadContact() completed" );
+        return this._http.post( this.contactsUrl + 'assign-leads-lists/'+ userId + "?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -190,6 +203,22 @@ export class ContactService {
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
             .catch( this.handleError );
+    }
+    
+    saveAssignedLeadsList( userUserListWrapper : UserUserListWrapper ): Observable<any> {
+        var requestoptions = new RequestOptions( {
+            body:  userUserListWrapper
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+        var url = this.contactsUrl + "save-assign-leads-list/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token ;
+      
+        return this._http.post( url, options, requestoptions )
+        .map(( response: any ) => response.json() )
+       .catch( this.handleError);
     }
 
     updateContactList( contactListId: number, users: Array<User> ): Observable<any> {
@@ -598,6 +627,14 @@ export class ContactService {
         return this._http.post(this.contactsUrl+ "getContactsLimit/"+loggedInUserId+"?access_token=" +this.authenticationService.access_token,partners)
         .map( this.extractData )
         .catch( this.handleError );
+    }
+    
+
+    getPartnerEmails() {
+        this.logger.info(this.contactsUrl + "partner-emails/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token);
+        return this._http.get( this.contactsUrl + "partner-emails/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
     }
 
 }
