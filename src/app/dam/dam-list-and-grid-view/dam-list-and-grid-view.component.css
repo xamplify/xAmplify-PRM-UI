@@ -119,10 +119,10 @@ cursor: default;
 }
 
 .custom-image-css{
-    max-height: 55% !important;
+    /* max-height: 55% !important; */
    /*  max-width: 69px !important; */
     position: relative;
-    top: 16px;
+    /* top: 16px; */
 }
 
 .custom-image-css-grid{
