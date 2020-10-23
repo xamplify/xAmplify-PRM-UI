@@ -1,4 +1,4 @@
-import { Injectable,Renderer } from '@angular/core';
+import { Injectable, Renderer } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { AuthenticationService } from './authentication.service';
@@ -20,14 +20,14 @@ import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
 import { User } from '../../core/models/user';
-import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 
 declare var $, swal: any;
 
 @Injectable()
 export class ReferenceService {
-	renderer : Renderer;
+	renderer: Renderer;
 	swalConfirmButtonColor: '#54a7e9';
 	swalCancelButtonColor: '#999';
 	refcategories: Category[];
@@ -241,10 +241,10 @@ export class ReferenceService {
 	goToTopImmediately() {
 		$('html,body').animate({ scrollTop: 0 }, 'fast');
 	}
-	
+
 	removeDuplicates(list: any) {
 		let result = [];
-		$.each(list, function(i, e) {
+		$.each(list, function (i, e) {
 			if ($.inArray(e, result) == -1) result.push(e);
 		});
 		return result;
@@ -273,16 +273,16 @@ export class ReferenceService {
 		return regex.test(emailId);
 	}
 
-	validateWebsiteURL(url: string){
+	validateWebsiteURL(url: string) {
 		var regex = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
 		return regex.test(url);
 	}
 
-	validatePhoneNumber(phoneNumber: string){
+	validatePhoneNumber(phoneNumber: string) {
 		var regex = /^[0-9-+]+$/;
 		return regex.test(phoneNumber);
 	}
-	
+
 	hideDiv(divId: string) {
 		$('#' + divId).hide(600);
 	}
@@ -1587,7 +1587,7 @@ export class ReferenceService {
 
 	getTimeZonesByCountryId(countryId: number) {
 		let convertedCountryId = +countryId;
-		var filteredTimeZones = this.getTimeZones().filter(function(timezone) {
+		var filteredTimeZones = this.getTimeZones().filter(function (timezone) {
 			return timezone.countryId === convertedCountryId;
 		});
 		return filteredTimeZones;
@@ -1595,7 +1595,7 @@ export class ReferenceService {
 	}
 
 	getTimeZoneByTimeZonId(timeZoneId: string) {
-		var filteredTimeZones = this.getTimeZones().filter(function(timezone) {
+		var filteredTimeZones = this.getTimeZones().filter(function (timezone) {
 			return timezone.timezoneId === timeZoneId;
 		});
 		return filteredTimeZones;
@@ -1636,13 +1636,13 @@ export class ReferenceService {
 
 	getAnchorTagsFromEmailTemplate(body: string, emailTemplateHrefLinks: any) {
 		let self = this;
-		$(body).find('a').each(function(e) {
+		$(body).find('a').each(function (e) {
 			let href = $(this).attr('href');
 			if (href != undefined && $.trim(href).length > 0) {
 				if (href != "<SocialUbuntuURL>" && href != "https://dummyurl.com" && href != "https://dummycobrandingurl.com" && href != "<unsubscribeURL>") {
-					if(self.regularExpressions.URL_PATTERN.test(href)){
+					if (self.regularExpressions.URL_PATTERN.test(href)) {
 						emailTemplateHrefLinks.push(href);
-					}	
+					}
 				}
 
 			}
@@ -1712,7 +1712,7 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png", "");
 
 		}
-		let isRedistributeSection = this.router.url.indexOf("/re-distribute")>-1;
+		let isRedistributeSection = this.router.url.indexOf("/re-distribute") > -1;
 		if (campaign.nurtureCampaign || isRedistributeSection) {
 			updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
 		}
@@ -1750,7 +1750,7 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"", "<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
 			updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png", "");
 		}
-		let isRedistributeSection = this.router.url.indexOf("/re-distribute")>-1;
+		let isRedistributeSection = this.router.url.indexOf("/re-distribute") > -1;
 		if (campaign.nurtureCampaign || isRedistributeSection) {
 			updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
 		}
@@ -1786,7 +1786,7 @@ export class ReferenceService {
 
 	hasMyMergeTagsExits(body: string) {
 		return body.indexOf(this.senderMergeTag.senderFirstName) > -1 || body.indexOf(this.senderMergeTag.senderLastName) > -1 || body.indexOf(this.senderMergeTag.senderFullName) > -1 ||
-		body.indexOf(this.senderMergeTag.senderTitle) > -1  || body.indexOf(this.senderMergeTag.senderEmailId) > -1 || body.indexOf(this.senderMergeTag.senderContactNumber) > -1 || body.indexOf(this.senderMergeTag.senderCompany) > -1
+			body.indexOf(this.senderMergeTag.senderTitle) > -1 || body.indexOf(this.senderMergeTag.senderEmailId) > -1 || body.indexOf(this.senderMergeTag.senderContactNumber) > -1 || body.indexOf(this.senderMergeTag.senderCompany) > -1
 			|| body.indexOf(this.senderMergeTag.senderCompanyUrl) > -1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber) > -1 || body.indexOf(this.senderMergeTag.aboutUs) > -1;
 	}
 
@@ -1849,14 +1849,14 @@ export class ReferenceService {
 	}
 
 	removeObjectFromArrayList(arr: any, id: string, key: string) {
-		arr = $.grep(arr, function(data, index) {
+		arr = $.grep(arr, function (data, index) {
 			return data[key] !== id;
 		});
 		return arr;
 	}
 
 	spliceArray(arr: any, id: string) {
-		arr = $.grep(arr, function(data: any, index: number) {
+		arr = $.grep(arr, function (data: any, index: number) {
 			return data.divId !== id
 		});
 		return arr;
@@ -1901,7 +1901,7 @@ export class ReferenceService {
 	setLegalBasisOptions(input: any, gdprStatus: boolean, selectedLegalBasisOptions: any) {
 		if (gdprStatus) {
 			let self = this;
-			$.each(input, function(index: number, contact: User) {
+			$.each(input, function (index: number, contact: User) {
 				contact.legalBasis = selectedLegalBasisOptions;
 			});
 		}
@@ -1921,7 +1921,7 @@ export class ReferenceService {
 		}
 		const otherEmailIds = newEmailIds.map(v => v.toLowerCase());
 		var uniqueEmailids = [];
-		$.each(otherEmailIds, function(i, el) {
+		$.each(otherEmailIds, function (i, el) {
 			if ($.inArray(el, uniqueEmailids) === -1) uniqueEmailids.push(el);
 		});
 		if (uniqueEmailids.length < emailIds.length) { emailIds.pop(); }
@@ -1944,16 +1944,16 @@ export class ReferenceService {
 		swal(message1, message2, type);
 	}
 
-	showSweetAlertSuccessMessage(message:string){
+	showSweetAlertSuccessMessage(message: string) {
 		swal({
-			title:message,
+			title: message,
 			type: 'success',
 			allowOutsideClick: false
 		})
 	}
-	showSweetAlertFailureMessage(message:string){
+	showSweetAlertFailureMessage(message: string) {
 		swal({
-			title:message,
+			title: message,
 			type: 'error',
 			allowOutsideClick: false
 		})
@@ -1986,20 +1986,20 @@ export class ReferenceService {
 	}
 
 
-	public onMouseDown(event: any, tableId: string,columnPosition:number) {
+	public onMouseDown(event: any, tableId: string, columnPosition: number) {
 		this.start = event.target;
 		this.pressed = true;
 		this.startX = event.x;
 		this.startWidth = $(this.start).parent().width();
-		this.initResizableColumns(tableId,columnPosition);
+		this.initResizableColumns(tableId, columnPosition);
 	}
 
-	public initResizableColumns(tableId: string,columnPosition:number) {
+	public initResizableColumns(tableId: string, columnPosition: number) {
 		this.renderer.listenGlobal('body', 'mousemove', (event: any) => {
 			if (this.pressed) {
 				let width = this.startWidth + (event.x - this.startX);
 				$(this.start).parent().css({ 'min-width': width, 'max-   width': width });
-				let index = $(this.start).parent().index()+columnPosition;
+				let index = $(this.start).parent().index() + columnPosition;
 				console.log(tableId);
 				console.log(index);
 				$('#' + tableId + ' tr td:nth-child(' + index + ')').css({ 'min-width': width, 'max-width': width });
@@ -2012,48 +2012,48 @@ export class ReferenceService {
 		});
 	}
 
-	setDefaultDisplayType(modulesDisplayType:ModulesDisplayType){
+	setDefaultDisplayType(modulesDisplayType: ModulesDisplayType) {
 		let defaultDisplayType = localStorage.getItem('defaultDisplayType');
-		if("LIST"==defaultDisplayType){
-            modulesDisplayType.isListView = true;
-            modulesDisplayType.isGridView = false;
+		if ("LIST" == defaultDisplayType) {
+			modulesDisplayType.isListView = true;
+			modulesDisplayType.isGridView = false;
 			modulesDisplayType.isFolderGridView = false;
 			modulesDisplayType.isFolderListView = false;
 			modulesDisplayType.defaultDisplayType = defaultDisplayType;
-        }else if("GRID"==defaultDisplayType){
-            modulesDisplayType.isListView = false;
-            modulesDisplayType.isGridView = true;
-			modulesDisplayType.isFolderGridView = false;
-			modulesDisplayType.isFolderListView = false;
-			modulesDisplayType.defaultDisplayType = defaultDisplayType;
-        }else if("FOLDER_LIST"==defaultDisplayType){
+		} else if ("GRID" == defaultDisplayType) {
 			modulesDisplayType.isListView = false;
-            modulesDisplayType.isGridView = false;
+			modulesDisplayType.isGridView = true;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = false;
+			modulesDisplayType.defaultDisplayType = defaultDisplayType;
+		} else if ("FOLDER_LIST" == defaultDisplayType) {
+			modulesDisplayType.isListView = false;
+			modulesDisplayType.isGridView = false;
 			modulesDisplayType.isFolderGridView = false;
 			modulesDisplayType.isFolderListView = true;
 			modulesDisplayType.defaultDisplayType = defaultDisplayType;
-        }else if("FOLDER_GRID"==defaultDisplayType){
-            modulesDisplayType.isListView = false;
-            modulesDisplayType.isGridView = false;
+		} else if ("FOLDER_GRID" == defaultDisplayType) {
+			modulesDisplayType.isListView = false;
+			modulesDisplayType.isGridView = false;
 			modulesDisplayType.isFolderGridView = true;
 			modulesDisplayType.isFolderListView = false;
 			modulesDisplayType.defaultDisplayType = defaultDisplayType;
-        }else{
-            modulesDisplayType.isListView = true;
-            modulesDisplayType.isGridView = false;
+		} else {
+			modulesDisplayType.isListView = true;
+			modulesDisplayType.isGridView = false;
 			modulesDisplayType.isFolderGridView = false;
 			modulesDisplayType.isFolderListView = false;
 		}
 		return modulesDisplayType;
 	}
 
-	setDisplayType(modulesDisplayType:ModulesDisplayType,viewType:string){
-		if("l"==viewType){
+	setDisplayType(modulesDisplayType: ModulesDisplayType, viewType: string) {
+		if ("l" == viewType) {
 			modulesDisplayType.isListView = true;
 			modulesDisplayType.isGridView = false;
 			modulesDisplayType.isFolderGridView = false;
 			modulesDisplayType.isFolderListView = false;
-		}else if("g"==viewType){
+		} else if ("g" == viewType) {
 			modulesDisplayType.isListView = false;
 			modulesDisplayType.isGridView = true;
 			modulesDisplayType.isFolderGridView = false;
@@ -2063,7 +2063,7 @@ export class ReferenceService {
 
 	}
 
-	showSweetAlertProceesor(title:string){
+	showSweetAlertProceesor(title: string) {
 		swal({ title: title, text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 	}
 
@@ -2073,27 +2073,33 @@ export class ReferenceService {
 			.catch(this.handleError);
 	}
 
-	openChildWindow(url:string){
-		var x = screen.width/2 - 700/2;
-		var y = screen.height/2 - 450/2;
-		window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+	openChildWindow(url: string) {
+		var x = screen.width / 2 - 700 / 2;
+		var y = screen.height / 2 - 450 / 2;
+		window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
 	}
 
-	closeChildWindowAndRefreshParentWindow(url:string){
-		window.opener.location.href=url;
-        self.close();
+	closeChildWindowAndRefreshParentWindow(url: string) {
+		window.opener.location.href = url;
+		self.close();
 	}
 
-	closeChildWindowOnError(){
-        window.opener.postMessage('Something went wrong', '*');
-        self.close();
+	closeChildWindowOnError() {
+		window.opener.postMessage('Something went wrong', '*');
+		self.close();
 	}
-	
-	goToRouter(url:string){
+
+	goToRouter(url: string) {
 		this.router.navigate([url]);
 	}
 
-	filterSelectedColumnsFromArrayList(list:any,columnName:string){
-		return list.map(function (e:any) { return e[columnName]; });
+	filterSelectedColumnsFromArrayList(list: any, columnName: string) {
+		return list.map(function (e: any) { return e[columnName]; });
+	}
+
+	getFileExtension(filename:string) {
+		var ext = filename.split('.').pop();
+		if (ext == filename) return "";
+		return ext;
 	}
 }

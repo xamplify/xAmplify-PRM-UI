@@ -24,6 +24,8 @@ export class UploadAssetComponent implements OnInit {
 	dupliateNameErrorMessage: string;
 	descriptionErrorMessage: string;
 	isValidForm = false;
+	invalidThumbnail: boolean;
+	thumbnailErrorMessage:string;
 	constructor(private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
 	ngOnInit() {
 	}
@@ -34,9 +36,44 @@ export class UploadAssetComponent implements OnInit {
 			this.formData.append("uploadedFile", file, file['name']);
 		}else{
 			this.formData.delete("uploadedFile");
+			$('#uploadedAsset').val('');
 		}
 		this.validateAllFields();
 	}
+
+	getThumbnailImage(event:any){
+		this.invalidThumbnail = false;
+		this.thumbnailErrorMessage = '';
+		if (event.target.files.length > 0) {
+			let file = event.target.files[0];
+			let sizeInKb = file.size/1024;
+			let maxFileSizeInKb = 1024*10;
+			let extension = this.referenceService.getFileExtension(file['name']);
+			if(sizeInKb >= maxFileSizeInKb){
+				this.showThumbnailErrorMessage('Max file size is 10 MB');
+			}else if("jpg"==extension ||"JPG"==extension || "PNG"==extension || "png"==extension || "JPEG"==extension ||"jpeg"==extension){
+				this.formData.append("thumbnailImage", file, file['name']);
+			}else{
+				this.showThumbnailErrorMessage('Please Upload .jpg, .jpeg, .png files only');
+			}
+		}else{
+			this.formData.delete("thumbnailImage");
+			$('#thumbnailFile').val('');
+		}
+		this.validateAllFields();
+	}
+
+clearThumbnailImage(){
+	this.formData.delete("thumbnailImage");
+	$('#thumbnailFile').val('');
+}
+
+showThumbnailErrorMessage(errorMessage:string){
+	this.invalidThumbnail = true;
+	$('#thumbnailFile').val('');
+	this.thumbnailErrorMessage = errorMessage;
+}
+
 	validateForm(columnName:string){
 		if(columnName=="assetName"){
 			this.damUploadPostDto.validName = $.trim(this.damUploadPostDto.assetName)!=undefined && $.trim(this.damUploadPostDto.assetName).length>0;
