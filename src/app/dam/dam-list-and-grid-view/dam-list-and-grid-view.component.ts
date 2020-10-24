@@ -17,6 +17,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import {AssetDetailsViewDto} from '../models/asset-details-view-dto';
+import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
 declare var $, swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -437,7 +438,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.damService.getSharedAssetDetailsById(asset.id)
 		.subscribe(
 			(response: any) => {
-				this.assetViewLoader = false;
 				if(response.access){
 					if (response.statusCode == 200) {
 						this.assetDetailsViewDto = response.data;
@@ -449,6 +449,21 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			},
 			(error: string) => {
 				this.xtremandLogger.errorPage(error);
+			},
+			() => {
+				let damAnalyticsPostDto  = new DamAnalyticsPostDto();
+				damAnalyticsPostDto.loggedInUserId = this.loggedInUserId;
+				damAnalyticsPostDto.damPartnerId = asset.id;
+				damAnalyticsPostDto.actionType = 1;
+				this.damService.saveDamAnalytics(damAnalyticsPostDto).
+				subscribe(
+					(response:any) =>{
+						this.assetViewLoader = false;
+						this.xtremandLogger.info("View Analytics Are Saved");
+					},(error:string) =>{
+						this.xtremandLogger.errorPage(error);
+					}
+				);
 			}
 		);
 	}
