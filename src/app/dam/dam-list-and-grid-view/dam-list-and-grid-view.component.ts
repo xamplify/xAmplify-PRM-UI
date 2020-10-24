@@ -307,7 +307,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			showConfirmButton: false,
 			imageUrl: 'assets/images/loader.gif',
 		});
-		let downloadUrl = this.isPartnerView ? 'downloadp/' + self.selectedPdfAlias : 'download/' + self.selectedPdfAlias + "/" + selectedSize + "/" + selectedOrientation;
+		let downloadUrl = this.isPartnerView ? 'downloadp/' + self.selectedPdfAlias+"/"+self.loggedInUserId : 'download/' + self.selectedPdfAlias + "/" + selectedSize + "/" + selectedOrientation;
 		setTimeout(function () {
 			window.open(self.authenticationService.REST_URL + "dam/" + downloadUrl + "?access_token=" + self.authenticationService.access_token);
 			$('#downloadPdfModalPopup').modal('hide');
