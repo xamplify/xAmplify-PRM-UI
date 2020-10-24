@@ -2102,4 +2102,16 @@ export class ReferenceService {
 		if (ext == filename) return "";
 		return ext;
 	}
+
+	showSweetAlertProcessingLoader(title:string) {
+		swal(
+			{
+				title: title,
+				text: "Please Wait...",
+				showConfirmButton: false,
+				imageUrl: "assets/images/loader.gif"
+			}
+		);
+
+	}
 }

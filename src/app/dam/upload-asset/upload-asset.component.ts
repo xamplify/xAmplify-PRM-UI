@@ -7,7 +7,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Router } from '@angular/router';
-declare var $: any;
+declare var $,swal: any;
 
 @Component({
 	selector: 'app-upload-asset',
@@ -88,11 +88,13 @@ showThumbnailErrorMessage(errorMessage:string){
 	}
 
 	uploadAsset() {
+		this.referenceService.showSweetAlertProcessingLoader('File has been uploaded...')
 		this.clearErrors();
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
 			this.damService.uploadAsset(this.formData, this.damUploadPostDto).subscribe(
 				(result: any) => {
+					swal.close();
 					if (result.statusCode == 200) {
 						this.referenceService.isUploaded = true;
 						this.referenceService.goToRouter("home/dam/manage");
@@ -103,6 +105,7 @@ showThumbnailErrorMessage(errorMessage:string){
 					}
 					this.formLoader = false;
 				}, error => {
+					swal.close();
 					this.formLoader = false;
 					let statusCode = JSON.parse(error['status']);
 					if (statusCode == 409) {
