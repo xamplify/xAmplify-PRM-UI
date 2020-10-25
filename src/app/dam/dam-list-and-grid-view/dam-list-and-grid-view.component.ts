@@ -18,6 +18,8 @@ import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import {AssetDetailsViewDto} from '../models/asset-details-view-dto';
 import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
+import { Ng2DeviceService } from 'ng2-device-detector';
+
 declare var $, swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -50,7 +52,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	assetViewLoader = false;
 	assetDetailsViewDto:AssetDetailsViewDto = new AssetDetailsViewDto();
 	selectedAsset: any;
-	constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+	constructor(public deviceService: Ng2DeviceService,private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
@@ -291,9 +293,44 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	downloadContent(alias: string) {
-		let url = this.isPartnerView ? 'downloadpc':'downloadc';
-		window.open(this.authenticationService.REST_URL + "dam/"+url+"/" + alias + "?access_token=" + this.authenticationService.access_token);
+		if(this.isPartnerView){
+			this.utilService.getJSONLocation().subscribe(
+				(response:any) =>{
+					let param = this.getLocationDetails(response,alias);
+					let completeUrl = this.authenticationService.REST_URL+"dam/downloadpc?access_token=" + this.authenticationService.access_token;
+					this.referenceService.post(param,completeUrl);
+				},(_error:any) =>{
+					this.xtremandLogger.error( "Error In Fetching Location Details");
+				}
+			);
+		}else{
+			window.open(this.authenticationService.REST_URL+"dam/downloadc/"+alias+"?access_token=" + this.authenticationService.access_token);
 
+		}
+	}
+
+	getLocationDetails(response: any, alias: string) {
+		let deviceInfo = this.deviceService.getDeviceInfo();
+		if (deviceInfo.device === 'unknown') {
+			deviceInfo.device = 'computer';
+		}
+		let param = {
+			'alias': alias,
+			'loggedInUserId': this.loggedInUserId,
+			'deviceType': deviceInfo.device,
+			'os': deviceInfo.os,
+			'city': response.city,
+			'country': response.country,
+			'isp': response.isp,
+			'ipAddress': response.query,
+			'state': response.regionName,
+			'zip': response.zip,
+			'latitude': response.lat,
+			'longitude': response.lon,
+			'countryCode': response.countryCode,
+			'timezone': response.timezone
+		};
+		return param;
 	}
 
 	downloadAsPdf() {
@@ -307,13 +344,33 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			showConfirmButton: false,
 			imageUrl: 'assets/images/loader.gif',
 		});
-		let downloadUrl = this.isPartnerView ? 'downloadp/' + self.selectedPdfAlias+"/"+self.loggedInUserId : 'download/' + self.selectedPdfAlias + "/" + selectedSize + "/" + selectedOrientation;
 		setTimeout(function () {
-			window.open(self.authenticationService.REST_URL + "dam/" + downloadUrl + "?access_token=" + self.authenticationService.access_token);
-			$('#downloadPdfModalPopup').modal('hide');
-			self.modalPopupLoader = false;
+			if(self.isPartnerView){
+				self.downloadForPartner();
+			}else{
+				let downloadUrl = 'download/' + self.selectedPdfAlias + "/" + selectedSize + "/" + selectedOrientation;
+				self.downloadPdfForVendor(self,downloadUrl);
+			}
 			swal.close();
 		}, 1500);
+	}
+
+	downloadPdfForVendor(self:any,downloadUrl:string){
+		window.open(self.authenticationService.REST_URL + "dam/" + downloadUrl + "?access_token=" + self.authenticationService.access_token);
+		$('#downloadPdfModalPopup').modal('hide');
+		self.modalPopupLoader = false;
+	}
+	
+	downloadForPartner(){
+		this.utilService.getJSONLocation().subscribe(
+			(response:any) =>{
+				let param = this.getLocationDetails(response,this.selectedPdfAlias);
+				let completeUrl = this.authenticationService.REST_URL+"dam/downloadp?access_token=" + this.authenticationService.access_token;
+				this.referenceService.post(param,completeUrl);
+			},(_error:any) =>{
+				this.xtremandLogger.error( "Error In Fetching Location Details");
+			}
+		);
 	}
 
 	hidePopup() {
