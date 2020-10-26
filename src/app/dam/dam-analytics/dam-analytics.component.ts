@@ -32,6 +32,7 @@ export class DamAnalyticsComponent implements OnInit {
   tileClass = "col-sm-4 col-xs-8 col-lg-4 col-md-4";
   damAnalyticsTilesDto: DamAnalyticsTilesDto = new DamAnalyticsTilesDto();
   selectedAnalyticsTypeIndex = 0;
+  dataFound = false;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -51,20 +52,30 @@ export class DamAnalyticsComponent implements OnInit {
     this.damService.getDamAnalyticsTilesInfo(this.pagination.campaignId).
     subscribe((response)=>{
       this.damAnalyticsTilesDto = response.data;
-      let fullName = this.damAnalyticsTilesDto.fullName;
-      if(fullName!=undefined && fullName!="" && fullName!=null){
-        this.damAnalyticsTilesDto.circleAlphabet = fullName.slice(0,1);
-        }else{
-        this.damAnalyticsTilesDto.circleAlphabet = this.damAnalyticsTilesDto.emailId.slice(0,1);
-        }
-        this.tilesLoader = false;
-        this.stopLoaders();
+      if(this.damAnalyticsTilesDto!=undefined){
+        this.dataFound = true;
+        let fullName = this.damAnalyticsTilesDto.fullName;
+        if(fullName!=undefined && fullName!="" && fullName!=null){
+          this.damAnalyticsTilesDto.circleAlphabet = fullName.slice(0,1);
+          }else{
+          this.damAnalyticsTilesDto.circleAlphabet = this.damAnalyticsTilesDto.emailId.slice(0,1);
+          }
+          this.tilesLoader = false;
+          this.stopLoaders();
+      }else{
+        this.dataFound = false;
+        this.referenceService.showSweetAlertErrorMessage("No Data Found");
+        this.goBack();
+      }
+      
     },(error)=>{
       this.xtremandLogger.log(error);
 			this.xtremandLogger.errorPage(error);
     },
     () => {
-      this.listAnalytics(this.pagination);
+      if(this.dataFound){
+        this.listAnalytics(this.pagination);
+      }
     }
     );
   }
