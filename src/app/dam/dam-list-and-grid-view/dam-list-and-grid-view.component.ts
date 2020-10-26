@@ -531,8 +531,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							geoLocationDetails.countryCode = response.countryCode;
 							geoLocationDetails.timezone = response.timezone;
 							damAnalyticsPostDto.geoLocationDetails = geoLocationDetails;
-							console.log(geoLocationDetails);
-							console.log(damAnalyticsPostDto);
 							damAnalyticsPostDto.damPartnerId = asset.id;
 							this.saveAnalytics(damAnalyticsPostDto);
 						}, (_error: any) => {
@@ -563,5 +561,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.selectedAsset = undefined;
 		this.assetDetailsPreview = false;
 		this.assetDetailsViewDto = new AssetDetailsViewDto();
+	}
+
+	viewAnalytics(asset:any){
+		console.log(asset.id);
+		if(this.isPartnerView){
+
+		}else{
+			
+		}
 	}
 }

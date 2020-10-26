@@ -3,6 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { ManageDamComponent } from './manage-dam/manage-dam.component';
 import { AddDamComponent } from './add-dam/add-dam.component';
 import { UploadAssetComponent } from './upload-asset/upload-asset.component';
+import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
 
 export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
@@ -13,6 +14,8 @@ export const routes: Routes = [
 	{ path: "upload", component: UploadAssetComponent },
 	{ path: "edit/:id", component: AddDamComponent },
 	{ path: "editp/:id", component: AddDamComponent },
+	{ path: "pda/:damPartnerId", component: DamAnalyticsComponent },
+
 
 ];
 

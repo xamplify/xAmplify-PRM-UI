@@ -117,9 +117,12 @@
                                  <a  *ngIf="!isPartnerView" title="Download" (click)="openPopup(asset)">
                                     <i class="fa fa-download" aria-hidden="true"></i>
                                     </a>
-                                 <a *ngIf="isPartnerView" title="View Details" (click)="viewDetails(asset)">
-                                   <i class="fa fa-eye" aria-hidden="true"></i>
+                                 <a  title="View Details" (click)="viewAnalytics(asset)">
+                                   <i class="fa fa-line-chart" aria-hidden="true"></i>
                                    </a>
+                                 <a  title="View Details" (click)="viewDetails(asset)">
+                                 <i class="fa fa-eye" aria-hidden="true"></i>
+                                 </a>
                                  <a *ngIf="!isPartnerView" title="Delete"  (click)="confirmDelete(asset)">
                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
                                  </a>
