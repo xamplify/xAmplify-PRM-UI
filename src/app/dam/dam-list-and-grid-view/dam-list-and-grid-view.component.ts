@@ -564,11 +564,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	viewAnalytics(asset:any){
-		console.log(asset.id);
+		this.loading = true;
 		if(this.isPartnerView){
-
+			this.referenceService.goToRouter("/home/dam/pda/"+asset.id);
 		}else{
-			
+			this.referenceService.showSweetAlertInfoMessage();
+			this.loading = false;
 		}
 	}
 }

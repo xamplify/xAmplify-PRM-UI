@@ -103,6 +103,16 @@ export class DamService {
     .catch(this.handleError);
   }
 
+  getDamAnalyticsTilesInfo(damPartnerId:number){
+    return this.http.get(this.URL +"showPartnerDetailsWithAnalyticsCount/"+damPartnerId+"?access_token=" + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  listDamAnalytics(pagination:Pagination){
+    return this.utilPostListMethod("listDamAnalytics",pagination);
+  }
+
   uploadAsset(formData:FormData,damUploadPostDto:DamUploadPostDto){
     formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
     {
