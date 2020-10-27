@@ -902,13 +902,20 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if(data.access){
             data = data;
             this.loading = false;
-            this.selectedAddContactsOption = 8;
-            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            this.contactService.successMessage = true;
-            this.contactService.saveAsSuccessMessage = "add";
-            if ( this.isPartner == false ) {
-                this.router.navigateByUrl( '/home/assignleads/manage' )
-            } 
+            if ( data.statusCode === 401 ) {
+                this.customResponse = new CustomResponse( 'ERROR',  data.message , true );
+            }else if ( data.statusCode === 402 ) {
+                this.customResponse = new CustomResponse( 'ERROR',  data.message + '<br>' + data.data, true );
+            }else{
+            	this.selectedAddContactsOption = 8;
+                this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+                this.contactService.successMessage = true;
+                this.contactService.saveAsSuccessMessage = "add";
+                if ( this.isPartner == false ) {
+                    this.router.navigateByUrl( '/home/assignleads/manage' )
+                } 
+            }
+           
         }else{
             this.authenticationService.forceToLogout();
         }
