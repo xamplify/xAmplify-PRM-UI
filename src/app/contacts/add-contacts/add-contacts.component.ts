@@ -1665,11 +1665,18 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     saveGoogleSelectedContactsWithPermission() {
            if (this.assignLeads) {
-            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
-            this.contactListObject.socialNetwork = "MANUAL";
-            this.saveAssignedLeadsList();
-        }
-           else {
+               this.contactListObject = new ContactList;
+               this.contactListObject.name = this.model.contactListName;
+               this.contactListObject.isPartnerUserList = this.isPartner;
+               this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+               this.contactListObject.socialNetwork = "MANUAL";
+               this.contactListObject.publicList = true;
+               this.contactListObject.assignedTo = this.model.assignedTo;
+               this.setLegalBasisOptions(this.allselectedUsers);
+              
+               this.userUserListWrapper.users = this.allselectedUsers;
+               this.saveAssignedLeadsList();
+        }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
             this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
@@ -2015,11 +2022,19 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     saveZohoContactsWithPermission() {
            if (this.assignLeads) {
-            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
-            this.contactListObject.socialNetwork = "ZOHO";
-            this.saveAssignedLeadsList();
-        }
-           else {
+        	      this.contactListObject = new ContactList;
+                  this.contactListObject.name = this.model.contactListName;
+                  this.contactListObject.isPartnerUserList = this.isPartner;
+                  this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+                  this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
+                  this.contactListObject.publicList = true;
+                  this.contactListObject.assignedTo = this.model.assignedTo;
+                  this.setSocialUsers(this.socialContact);
+                  this.setLegalBasisOptions(this.socialUsers);
+                 
+                  this.userUserListWrapper.users = this.socialUsers;
+                  this.saveAssignedLeadsList();
+        } else {
             this.loading = true;
             this.setLegalBasisOptions(this.socialContact.contacts);
             this.socialContact.publicList = this.model.isPublic;
@@ -2088,11 +2103,18 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     saveZohoSelectedContactsWithPermission() {
         if (this.assignLeads) {
+            this.contactListObject = new ContactList;
+            this.contactListObject.name = this.model.contactListName;
+            this.contactListObject.isPartnerUserList = this.isPartner;
             this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
             this.contactListObject.socialNetwork = "MANUAL";
+            this.contactListObject.publicList = true;
+            this.contactListObject.assignedTo = this.model.assignedTo;
+            this.setLegalBasisOptions(this.allselectedUsers);
+           
+            this.userUserListWrapper.users = this.allselectedUsers;
             this.saveAssignedLeadsList();
-        }
-        else {
+        }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
             this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
@@ -2437,10 +2459,18 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     saveSalesForceSelectedContactsWithPermission() {
            if (this.assignLeads) {
-            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
-            this.contactListObject.socialNetwork = "MANUAL";
-            this.saveAssignedLeadsList();
-        } else {
+        	     this.contactListObject = new ContactList;
+                 this.contactListObject.name = this.model.contactListName;
+                 this.contactListObject.isPartnerUserList = this.isPartner;
+                 this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+                 this.contactListObject.socialNetwork = "MANUAL";
+                 this.contactListObject.publicList = true;
+                 this.contactListObject.assignedTo = this.model.assignedTo;
+                 this.setLegalBasisOptions(this.allselectedUsers);
+                
+                 this.userUserListWrapper.users = this.allselectedUsers;
+                 this.saveAssignedLeadsList();
+        }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
             this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
@@ -2505,10 +2535,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     saveSalesForceContactsWithPermission() {
            if (this.assignLeads) {
+            this.contactListObject = new ContactList;
+            this.contactListObject.name = this.model.contactListName;
+            this.contactListObject.isPartnerUserList = this.isPartner;
+            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
             this.contactListObject.publicList = true;
             this.contactListObject.assignedTo = this.model.assignedTo;
-            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
-            this.contactListObject.socialNetwork = "SALESFORCE";
+            this.setSocialUsers(this.socialContact);
+            this.setLegalBasisOptions(this.socialUsers);
+           
+            this.userUserListWrapper.users = this.socialUsers;
             this.saveAssignedLeadsList();
         } else {
             this.loading = true;
@@ -2996,9 +3033,18 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     saveMarketoContactsWithPermission() {
            if (this.assignLeads) {
-            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
-            this.contactListObject.socialNetwork = "MARKETO";
-            this.saveAssignedLeadsList();
+               this.contactListObject = new ContactList;
+               this.contactListObject.name = this.model.contactListName;
+               this.contactListObject.isPartnerUserList = this.isPartner;
+               this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+               this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
+               this.contactListObject.publicList = true;
+               this.contactListObject.assignedTo = this.model.assignedTo;
+               this.setSocialUsers(this.socialContact);
+               this.setLegalBasisOptions(this.socialUsers);
+              
+               this.userUserListWrapper.users = this.socialUsers;
+               this.saveAssignedLeadsList();
         } else {
             this.loading = true;
             this.setLegalBasisOptions(this.socialContact.contacts);
@@ -3055,10 +3101,18 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     saveMarketoSelectedContactsWithPermission() {
            if (this.assignLeads) {
-            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
-            this.contactListObject.socialNetwork = "MANUAL";
-            this.saveAssignedLeadsList();
-        } else {
+        	     this.contactListObject = new ContactList;
+                 this.contactListObject.name = this.model.contactListName;
+                 this.contactListObject.isPartnerUserList = this.isPartner;
+                 this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+                 this.contactListObject.socialNetwork = "MANUAL";
+                 this.contactListObject.publicList = true;
+                 this.contactListObject.assignedTo = this.model.assignedTo;
+                 this.setLegalBasisOptions(this.allselectedUsers);
+                
+                 this.userUserListWrapper.users = this.allselectedUsers;
+                 this.saveAssignedLeadsList();
+        }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
             this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
@@ -3540,9 +3594,18 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveHubSpotContactsWithPermission() {
            if (this.assignLeads) {
-            this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
-            this.contactListObject.socialNetwork = "HUBSPOT";
-            this.saveAssignedLeadsList();
+               this.contactListObject = new ContactList;
+               this.contactListObject.name = this.model.contactListName;
+               this.contactListObject.isPartnerUserList = this.isPartner;
+               this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+               this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
+               this.contactListObject.publicList = true;
+               this.contactListObject.assignedTo = this.model.assignedTo;
+               this.setSocialUsers(this.socialContact);
+               this.setLegalBasisOptions(this.socialUsers);
+              
+               this.userUserListWrapper.users = this.socialUsers;
+               this.saveAssignedLeadsList();
         } else {
             this.loading = true;
             this.socialContact.type = "hubspot";
@@ -3575,9 +3638,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     saveHubSpotSelectedContactsWithPermission() {
-           if (this.assignLeads) {
+        if (this.assignLeads) {
+            this.contactListObject = new ContactList;
+            this.contactListObject.name = this.model.contactListName;
+            this.contactListObject.isPartnerUserList = this.isPartner;
             this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
             this.contactListObject.socialNetwork = "MANUAL";
+            this.contactListObject.publicList = true;
+            this.contactListObject.assignedTo = this.model.assignedTo;
+            this.setLegalBasisOptions(this.allselectedUsers);
+
+            this.userUserListWrapper.users = this.allselectedUsers;
             this.saveAssignedLeadsList();
         } else {
             this.loading = true;
