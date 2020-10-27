@@ -5,7 +5,7 @@ export class DamAnalyticsTilesDto {
 	lastName:string = "";
 	fullName:string = "";
 	contactCompany:string = "";
-	viewsCount:number = 0;
+	viewCount:number = 0;
 	downloadCount:number = 0;
 	circleAlphabet:string = "";
 }

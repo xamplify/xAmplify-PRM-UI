@@ -4,6 +4,7 @@ import { ManageDamComponent } from './manage-dam/manage-dam.component';
 import { AddDamComponent } from './add-dam/add-dam.component';
 import { UploadAssetComponent } from './upload-asset/upload-asset.component';
 import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
+import { DamPublishedPartnersAnalyticsComponent } from './dam-published-partners-analytics/dam-published-partners-analytics.component';
 
 export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
@@ -15,6 +16,9 @@ export const routes: Routes = [
 	{ path: "edit/:id", component: AddDamComponent },
 	{ path: "editp/:id", component: AddDamComponent },
 	{ path: "pda/:damPartnerId", component: DamAnalyticsComponent },
+	{ path: "partnerAnalytics/:damId", component: DamPublishedPartnersAnalyticsComponent },
+	{ path: "vda/:damId/:damPartnerId", component: DamAnalyticsComponent },
+
 
 
 ];

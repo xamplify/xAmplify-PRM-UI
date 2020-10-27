@@ -568,8 +568,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if(this.isPartnerView){
 			this.referenceService.goToRouter("/home/dam/pda/"+asset.id);
 		}else{
-			this.referenceService.showSweetAlertInfoMessage();
-			this.loading = false;
+			this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+asset.id);
 		}
 	}
 }

@@ -142,7 +142,11 @@ export class DamAnalyticsComponent implements OnInit {
   }
   goBack(){
     this.loading = true;
-    this.referenceService.goToRouter("/home/dam/shared");
+    if(this.router.url.indexOf("vda")>-1){
+      this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+parseInt(this.route.snapshot.params['damId']));
+    }else{
+      this.referenceService.goToRouter("/home/dam/shared");
+    }
   }
   refreshPage(){
     this.callApis();

@@ -28,6 +28,11 @@ export class DamService {
   listPublishedPartners(pagination: Pagination) {
     return this.utilPostListMethod("listPublishedPartners",pagination);
   }
+
+  listPublishedPartnersAnalytics(pagination:Pagination){
+    return this.utilPostListMethod("listPublishedPartnersAnalytics",pagination);
+  }
+
   publish(damPostDto:DamPublishPostDto){
     return this.http.post(this.URL +"publish?access_token=" + this.authenticationService.access_token,damPostDto)
     .map(this.extractData)
