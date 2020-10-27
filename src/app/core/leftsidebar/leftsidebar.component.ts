@@ -236,7 +236,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 this.clearSubMenuValues(false,false,false,false,false,false,false,false,this.dam,false); 
             }
             else if ( urlType === 'assignLeads' ) {
-                this.contacts = this.router.url.includes( 'contacts' ) ? true : ( this.contacts = !this.contacts );
+                this.assignLeads = this.router.url.includes( 'assignLeads' ) ? true : ( this.assignLeads = !this.assignLeads );
                 this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,true );
             }
         }
