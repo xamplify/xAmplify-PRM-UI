@@ -567,11 +567,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
 							console.log("AddContactComponent googleContacts() Authentication Success");
 							this.syncronizeContactList(contactListId, socialNetwork);
+							localStorage.setItem('isZohoSynchronization', 'no');
+							localStorage.removeItem('isZohoSynchronization');
 						} else {
 							localStorage.setItem("userAlias", data.userAlias)
 							console.log(data.redirectUrl);
 							console.log(data.userAlias);
 							window.location.href = "" + data.redirectUrl;
+							localStorage.setItem('isZohoSynchronization', 'no');
+                            localStorage.removeItem('isZohoSynchronization');
 						}
 					},
 					(error: any) => {
@@ -717,12 +721,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
 							console.log("AddContactComponent salesforce() Authentication Success");
 							this.syncronizeContactList(contactListId, socialNetwork);
-
+							localStorage.setItem('isZohoSynchronization', 'no');
+							localStorage.removeItem('isZohoSynchronization');
 						} else {
 							localStorage.setItem("userAlias", data.userAlias)
 							console.log(data.redirectUrl);
 							console.log(data.userAlias);
 							window.location.href = "" + data.redirectUrl;
+							localStorage.setItem('isZohoSynchronization', 'no');
+                            localStorage.removeItem('isZohoSynchronization');
 						}
 					},
 					(error: any) => {
