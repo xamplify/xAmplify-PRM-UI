@@ -170,4 +170,6 @@ cursor: default;
 .cphdam{
   padding: 0px 0px!important;min-height: 200px;
 }
-
+.min-h{
+  min-height: 245px;
+}

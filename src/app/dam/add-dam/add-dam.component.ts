@@ -117,7 +117,7 @@ export class AddDamComponent implements OnInit {
       $('#addAssetDetailsPopup').modal('show');
       this.ngxloading = false;
     }else{
-      this.saveOrUpdate();
+      this.saveOrUpdate(false);
     }
    
   }
@@ -151,7 +151,7 @@ export class AddDamComponent implements OnInit {
   }
 
 
-  saveOrUpdate() {
+  saveOrUpdate(saveAs:boolean) {
     this.nameErrorMessage = "";
     this.customResponse = new CustomResponse();
     this.modalPopupLoader = true;
@@ -159,7 +159,7 @@ export class AddDamComponent implements OnInit {
     if (this.isPartnerView) {
       this.updatePublishedAsset();
     } else {
-      if (!this.isAdd) {
+      if (!this.isAdd && !saveAs) {
         this.damPostDto.id = this.assetId;
       }
       this.damService.save(this.damPostDto).subscribe((result: any) => {

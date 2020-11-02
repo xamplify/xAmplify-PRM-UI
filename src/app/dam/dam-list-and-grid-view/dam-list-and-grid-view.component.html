@@ -89,7 +89,7 @@
                               <span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
                               <span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName}}</strong></span>
                            </h6>
-                           <h6 class="moreipsis"*ngIf="!isPartnerView">
+                           <h6 class="moreipsis"*ngIf="!isPartnerView && asset?.beeTemplate && asset?.history">
                               <span translate> Version <strong>{{asset?.versionInString}}</strong></span>
                            </h6>
                            <h6 class="moreipsis" *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
@@ -166,7 +166,7 @@
                                              <h6 class="moreipsis" title="{{asset?.displayName}}">
                                                 <span translate> Created By <strong>{{asset?.displayName}}</strong></span>
                                              </h6>
-                                             <h6 class="moreipsis"*ngIf="!isPartnerView">
+                                             <h6 class="moreipsis"*ngIf="!isPartnerView && asset?.beeTemplate">
                                                 <span translate> Version <strong>{{asset?.versionInString}}</strong></span>
                                              </h6>
                                              <h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
@@ -218,12 +218,12 @@
          <section *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading">
             <div class="row" *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
                <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index" id="assetList_{{asset.id}}">
-                   <div class="grid-box">
+                   <div class="grid-box min-h">
                        <img class="img-class" src="{{asset?.thumbnailPath}}" alt="{{asset?.assetName}}">
                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
                            {{asset?.assetName | slice:0:25}} <span *ngIf="asset?.assetName?.length>25">...</span><br><br>
                        </h4>
-                         <h4 *ngIf="!isPartnerView">Version {{asset?.versionInString}}</h4> 
+                         <h4 *ngIf="!isPartnerView && asset?.beeTemplate && asset?.history">Version {{asset?.versionInString}}</h4> 
                        <div>
                         <span class="view-banner-dam">{{asset?.assetType}}</span>
                            <h6 translate>
