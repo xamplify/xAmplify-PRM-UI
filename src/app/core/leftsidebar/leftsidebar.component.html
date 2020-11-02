@@ -100,7 +100,7 @@
             </li>
 
 			<li
-				*ngIf="authService.user.hasCompany && (authService.module.isContact)"
+				*ngIf="authService.user.hasCompany && (authService.module.isVendor || authService.module.isOrgAdmin) && (authService.module.isContact)"
 				[ngClass]="{'active': location.path().includes('assignLeads')}"><a
 				href="javascript:;" (click)="openOrCloseTabs('assignLeads')"> <i
 					class="fa fa-list-ul" aria-hidden="true"></i> <span class="title"

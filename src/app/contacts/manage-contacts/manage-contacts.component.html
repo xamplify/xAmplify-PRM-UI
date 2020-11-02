@@ -285,7 +285,7 @@
 													<th class="visible-xs" colspan="1" style="width: 50%" translate>
 														List Info</th>
 														
-													<th class="hidden-xs" ><span [hidden]="isPartner" translate>Type</span></th> 
+													<th class="hidden-xs" ><span [hidden]="isPartner || assignLeads" translate>Type</span></th> 
 													<th class="hidden-xs" translate>Created On</th>
 													<th class="text-center hidden-xs" translate>
 														Total {{checkingContactTypeName}}s</th>
@@ -349,7 +349,7 @@
 															</h5>
 													</td>
 													<td class="hidden-xs">
-													<h5 class="view-banner" *ngIf="!contactList?.partnerUserList">
+													<h5 class="view-banner" *ngIf="!contactList?.partnerUserList" [hidden]="assignLeads">
 													 <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_public}}" translate>Public</span>
 													<span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"

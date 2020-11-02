@@ -3972,6 +3972,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     	console.log(event);
     	//alert(event);
     	this.sharedPartnerDetails = event;
+    	this.model.assignedTo=this.sharedPartnerDetails.emailId;
     }
 
     

@@ -46,7 +46,6 @@ export class ShareLeadsComponent implements OnInit, AfterViewInit,OnDestroy {
 	 
      getPartners(pagination: Pagination) {
     	
-    	 this.pagination.maxResults = 200000;
          this.contactService.getPartners(this.pagination)
              .subscribe(
              data => {
