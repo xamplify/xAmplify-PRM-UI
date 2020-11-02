@@ -108,8 +108,8 @@ export class BeeTemplateUtilComponent implements OnInit {
 					input['jsonContent'] = updatedJsonContent;
 					input['htmlContent'] = updatedHtmlContent;
 				}
-				
 				self.notifyParentComponent.emit(input);
+				self.loading = false;
 			  };
 		
 			  var mergeTags = [{ name: 'First Name', value: '{{firstName}}' },
@@ -133,6 +133,7 @@ export class BeeTemplateUtilComponent implements OnInit {
 				  preventClose: true,
 				  roleHash: roleHash,
 				  onSave: function( jsonFile, htmlFile ) {
+					  self.loading = true;
 					  save( jsonFile, htmlFile );
 				  },
 				  onSaveAsTemplate: function( jsonFile ) { // + thumbnail?

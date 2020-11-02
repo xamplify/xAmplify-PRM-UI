@@ -110,9 +110,16 @@ export class AddDamComponent implements OnInit {
   }
 
   readBeeTemplateData(event: any) {
+    this.ngxloading = true;
     this.damPostDto.jsonBody = event.jsonContent;
     this.damPostDto.htmlBody = event.htmlContent;
-    $('#addAssetDetailsPopup').modal('show');
+    if(!this.isPartnerView){
+      $('#addAssetDetailsPopup').modal('show');
+      this.ngxloading = false;
+    }else{
+      this.saveOrUpdate();
+    }
+   
   }
 
   hidePopup() {
@@ -176,7 +183,7 @@ export class AddDamComponent implements OnInit {
       this.referenceService.goToRouter("/home/dam/shared");
       this.modalPopupLoader = false;
     }, error => {
-      this.showErrorMessageOnSaveOrUpdate(error);
+      this.xtremandLogger.errorPage(error);
     });
   }
 
@@ -189,6 +196,10 @@ export class AddDamComponent implements OnInit {
     } else {
       this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
     }
+  }
+
+  saveAs(){
+    this.referenceService.showSweetAlertInfoMessage();
   }
 
 }

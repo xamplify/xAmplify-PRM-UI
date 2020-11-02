@@ -35,7 +35,7 @@
           <div class="modal-header">
               <a class="close-circle" (click)="hidePopup()">
                 <i class="fa fa-times" aria-hidden="true"></i></a>
-              <h4 class="modal-title" style="font-weight: 600;" translate>{{modalTitle}}</h4>
+              <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
           </div>
           <div class="modal-body">
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
@@ -66,9 +66,11 @@
                 </div>
             </form>
           </div>
-          <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
+          <div class="modal-footer cmr" style="border:none;" *ngIf="!modalPopupLoader">
               <button class="btn btn-info" type="reset" (click)="hidePopup();" translate>Cancel</button>
-              <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate()" translate>{{saveOrUpdateButtonText}}</button>
+              <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate()" translate>Save</button>
+              <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveAs()" translate>Save As</button>
+
           </div>
       </div>
   </div>
