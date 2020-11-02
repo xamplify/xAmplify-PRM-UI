@@ -636,5 +636,12 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    getPartners(pagination: Pagination){
+    	this.logger.info(this.contactsUrl + "list-partners/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token);
+        return this._http.post( this.contactsUrl + "list-partners/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, pagination)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
 }

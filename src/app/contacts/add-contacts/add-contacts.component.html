@@ -364,7 +364,31 @@
 							</div>
 						</div>
 						<!--  // -->
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:20px; margin-bottom:20px" *ngIf="assignLeads">
+						<div class="col-xs-12 col-md-4">
+						<div class="form-group">
+						<label for="name" class="col-xs-12 col-sm-4 control-label" translate> Select Partner*</label>
+						<button class="btn btn-primary" (click)="authenticationService.isSharePartnerModal = true" >Select Partner</button>
+									<!-- <div class="col-xs-12 col-sm-8">
+										<input type="text" class="form-control" id="contactListName" autocomplete="off" (ngModelChange)="changEvent($event)" required
+										 [(ngModel)]="model.contactListName" name="contactListName" (input)="validateContactName(model.contactListName)"
+										 minlength="1" maxlength="250" placeholder="List Name" #contactListName="ngModel">
+									</div>
+						  
+										  <button (click)="authenticationService.isSharePartnerModal = true">Share</button> -->
+						<div class="col-xs-12 share-partner" *ngIf="sharedPartnerDetails">
+						 <h4><b>Selected partner details:</b></h4>
+						  <h5>Name: <b>{{sharedPartnerDetails.firstName}} {{sharedPartnerDetails.lastName}}</b></h5>
+						  <h5>Email: <b>{{sharedPartnerDetails.emailId}}</b></h5>
+						  <h5>Company: <b>{{sharedPartnerDetails.companyName}}</b></h5>
+						 
+						
+						</div>
+						</div>
+						</div>
+						
+						
+						
+			<!-- 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:20px; margin-bottom:20px" *ngIf="assignLeads">
 						<div  class="col-xs-3 col-sm-3 col-md-3 col-lg-3 hidden-xs"></div>
 						<div  class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 							<div class="form-group">
@@ -373,8 +397,10 @@
 								<div class="col-xs-8 col-sm-6 col-md-6 col-lg-6 p0">
 									<select class="form-control" [(ngModel)]="model.assignedTo"
 										[ngModelOptions]="{standalone: true}">
-										<!-- <option [value]="" selected>{{partnerEmailIds[0]}} </option>> -->
+										<option [value]="" selected>{{partnerEmailIds[0]}} </option>>
 										   <option value="" disabled selected>Select your Partner</option>
+										   
+										  <button>Share</button>
 										
 										<option *ngFor="let partnerEmailId of partnerEmailIds"
 											[value]="partnerEmailId" >{{partnerEmailId}}</option>
@@ -383,7 +409,7 @@
 							</div>
 							</div>
 							<div  class="col-xs-3 col-sm-3 col-md-3 col-lg-3 hidden-xs"></div>
-						</div>
+						</div> -->
 						<!--  // -->
 						<div class="row" *ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
 						<br><br>
@@ -1216,3 +1242,5 @@
 		</div>
 	</div>
 </div>
+
+<app-share-leads *ngIf="authenticationService.isSharePartnerModal" (notifyParent)="selectedSharePartner($event)" ></app-share-leads>

@@ -33,6 +33,7 @@ export class AuthenticationService {
   MEDIA_URL: string;
   SHARE_URL: string;
   MARKETO_URL: string;
+  isSharePartnerModal = false;
   user: User = new User();
   userProfile: User = new User();
   userToken: UserToken = new UserToken();

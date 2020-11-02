@@ -171,6 +171,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     public zohoCurrentUser:any;
     loggedInUserId = 0;
     public providerName: String = 'zoho';
+    sharedPartnerDetails: any;
     //leadsPartnerEmail = "";
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
@@ -2875,6 +2876,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+    	this.sharedPartnerDetails = [];
         this.contactService.successMessage = false;
         this.contactService.socialProviderName = "";
         this.hideModal();
@@ -3965,6 +3967,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
 
         }
+    }
+    selectedSharePartner(event: any){
+    	console.log(event);
+    	//alert(event);
+    	this.sharedPartnerDetails = event;
     }
 
     
