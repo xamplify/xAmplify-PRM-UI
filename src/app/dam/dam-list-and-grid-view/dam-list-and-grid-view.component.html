@@ -89,6 +89,9 @@
                               <span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
                               <span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName}}</strong></span>
                            </h6>
+                           <h6 class="moreipsis"*ngIf="!isPartnerView">
+                              <span translate> Version <strong>{{asset?.versionInString}}</strong></span>
+                           </h6>
                            <h6 class="moreipsis" *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
                               <span  translate> From <strong>{{asset?.vendorCompanyName | slice:0:20}}</strong>
                                  <strong *ngIf="asset?.vendorCompanyName?.length>20">..</strong>
@@ -160,6 +163,9 @@
                                              <h6 class="moreipsis" title="{{asset?.displayName}}">
                                                 <span translate> Created By <strong>{{asset?.displayName}}</strong></span>
                                              </h6>
+                                             <h6 class="moreipsis"*ngIf="!isPartnerView">
+                                                <span translate> Version <strong>{{asset?.versionInString}}</strong></span>
+                                             </h6>
                                              <h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
                                           </td>
                                           <td class="text-center">
@@ -214,6 +220,7 @@
                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
                            {{asset?.assetName | slice:0:25}} <span *ngIf="asset?.assetName?.length>25">...</span><br><br>
                        </h4>
+                         <h4>Version {{asset?.versionInString}}</h4> 
                        <div>
                         <span class="view-banner-dam">{{asset?.assetType}}</span>
                            <h6 translate>
@@ -288,6 +295,7 @@
                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
                            {{asset?.assetName | slice:0:25}} <span *ngIf="asset?.assetName?.length>25">...</span><br><br>
                        </h4>
+                       <h4>Version {{asset?.versionInString}}</h4> 
                        <div>
                         <span class="view-banner-dam">{{asset?.assetType}}</span>
                            <h6 translate>
