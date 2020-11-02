@@ -64,7 +64,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	callInitMethods() {
 		this.isPartnerView = this.router.url.indexOf('/shared') > -1;
 		this.startLoaders();
-		this.getCompanyId();
 		this.viewType = this.route.snapshot.params['viewType'];
 		if (this.viewType != undefined) {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
@@ -81,6 +80,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (this.referenceService.isUploaded) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Uploaded Successfully', true);
 		}
+		this.getCompanyId();
 	}
 
 	ngOnDestroy() {

@@ -1,6 +1,9 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="row">
    <div class="col-md-12">
+      <div style="position: relative; top:-10px;">
+         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+     </div>
       <div class="portlet light clearfix" style="min-height: 644px;">
          <ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
          <div class="portlet-title" style="border-bottom: none">
@@ -52,9 +55,7 @@
                </div>
             </div>
          </div>
-         <div style="position: relative; top:-10px;">
-            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-        </div>
+        
          <app-list-loader *ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
          <app-grid-loader *ngIf="listLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
          <!---List View----->
@@ -106,10 +107,10 @@
                            <div [className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon'">
                               <a  *ngIf="asset?.history &&!isPartnerView "  title="History" (click)="expandHistory(asset,i)">
                               <i class="fa"
-                                  [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
+                                  [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                               </a>
-                              <a *ngIf="asset?.beeTemplate"  title="Edit" (click)="edit(asset.id)">
-                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                              <a *ngIf="asset?.beeTemplate"  title="Add" (click)="edit(asset.id)">
+                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                  </a>
                                  <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                  <i class="fa fa-share" aria-hidden="true"></i>
@@ -170,8 +171,8 @@
                                           </td>
                                           <td id="actions-row">
                                              <div class="actions-block override-actions custom-width-icon">
-                                                   <a  title="Edit" (click)="edit(asset.id)">
-                                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                   <a  title="Add" (click)="edit(asset.id)">
+                                                      <i class="fa fa-plus" aria-hidden="true"></i>
                                                       </a>
                                                       <a  title="Publish" (click)="openPublishPopup(asset.id)">
                                                       <i class="fa fa-share" aria-hidden="true"></i>
@@ -237,10 +238,10 @@
                        </div>
                        <div class="bar">
                         <a *ngIf="asset?.history && !isPartnerView "  title="History" (click)="viewGirdHistory(asset)">
-                           <i class="fa" [ngClass]="{'fa-plus': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
+                           <i class="fa" [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                            </a>
-                           <a *ngIf="asset?.beeTemplate"  title="Edit"  (click)="edit(asset.id)">
-                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                           <a *ngIf="asset?.beeTemplate"  title="Add"  (click)="edit(asset.id)">
+                               <i class="fa fa-plus" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>
@@ -310,8 +311,8 @@
                            <span *ngIf="asset?.published" translate>Published</span>
                        </div>
                        <div class="bar">
-                           <a *ngIf="asset?.beeTemplate"  title="Edit"  (click)="edit(asset.id)">
-                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                           <a *ngIf="asset?.beeTemplate"  title="Add"  (click)="edit(asset.id)">
+                               <i class="fa fa-plus" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>

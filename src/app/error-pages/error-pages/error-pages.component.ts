@@ -14,7 +14,7 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
   errorMap = [
     { code: '400', message: 'Bad Request' },
     { code: '401', message: 'Unauthorized' },
-    { code: '403', message: 'Forbidden' },
+    { code: '403', message: 'You are not authorized to see this' },
     { code: '404', message: 'Not Found' },
     { code: '405', message: 'Method Not Allowed' },
     { code: '500', message: "Oops! That wasn't supposed to happen" },
@@ -31,7 +31,7 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
     });
 
     if (this.errorCode === 503 || this.errorCode === 0 || this.errorCode==401) {
-      this.router.navigate(['/su']);
+      this.router.navigate(['/login']);
     }
   }
 
