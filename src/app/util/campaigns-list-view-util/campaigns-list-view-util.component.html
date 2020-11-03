@@ -201,8 +201,12 @@
                                                      (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
                                                         <span class="circled-number disabled"><b>{{campaign.redistributedCount}}</b></span>
                                                     </a>
+                                                    <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                                        (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier)
+                                                        && campaign.channelCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && campaign.campaignType.indexOf('LANDINGPAGE') <0" (click)="goToPreviewPartners(campaign)" data-toggle="tooltip" data-placement="top" title="Show Download History">
+                                                        <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-history" aria-hidden="true"></i></span>
+                                                        </a>
                                                      </ng-container>   
-
                                                     <a [class.disablednew]="!campaign.hasAccess"  *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top"
                                                         title="{{actionsDescription.campaign_report}}">
                                                       <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-line-chart"></i></span>
@@ -577,7 +581,11 @@
                                             title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
                                             <i class="fa fa-handshake-o"></i>
                                         </a>
-
+                                        <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                        (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier)
+                                         && campaign.channelCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && campaign.campaignType.indexOf('LANDINGPAGE') <0" (click)="goToPreviewPartners(campaign)" data-toggle="tooltip" data-placement="top" title="Show Download History">
+                                        <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-history" aria-hidden="true"></i></span>
+                                        </a>
                                     </ng-container>
                                     <span [class.disablednew]="!campaign.hasAccess" *ngIf="!campaign.showCancelButton || campaign.vendorCampaignDeleted ">
                                         <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip"

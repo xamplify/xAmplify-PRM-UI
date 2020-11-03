@@ -1,897 +1,886 @@
 <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
     <div *ngIf="isScheduledCampaignLaunched" id="scheduleCompleted" class="alert alert-info alert-dismissable fade in">
-        <a (click)="refService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
-        <strong translate>Editing This Scheduled Campaign Is Not Allowed As Campaign Already Launched</strong>
+      <a (click)="refService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
+      <strong translate>Editing This Scheduled Campaign Is Not Allowed As Campaign Already Launched</strong>
     </div>
     <div class="page-bar">
-        <ul class="page-breadcrumb">
-            <li *ngIf="!authenticationService.isSuperAdmin()">
-                <i class="fa fa-home"></i>
-                <a [routerLink]="refService.homeRouter" translate>Home</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i>
-            </li>
-            <li *ngIf="pagination.teamMemberAnalytics">
-                <a routerLink="/home/team/add-team" translate>Team</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li>
-                <a translate>Manage Campaigns</a>
-            </li>
-        </ul>
+      <ul class="page-breadcrumb">
+        <li *ngIf="!authenticationService.isSuperAdmin()">
+          <i class="fa fa-home" aria-hidden="true"></i>
+          <a [routerLink]="refService.homeRouter" translate>Home</a>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i>
+        </li>
+        <li *ngIf="pagination.teamMemberAnalytics">
+          <a routerLink="/home/team/add-team" translate>Team</a>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li>
+          <a translate>Manage Campaigns</a>
+        </li>
+      </ul>
     </div>
     <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }">
     </ngx-loading>
     <div style="position: relative; top:-10px;">
-        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
     </div>
     <ng-container *ngIf="!addWorkflows">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="tabbable tabbable-custom tabbable-noborder">
-                    <div class="tab-content">
-                        <div class="page-bar m10">
-                            <ul class="mix-filter col-xs-12 col-sm-12 col-md-5 p0 m0" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="display: inline-flex">
-                                <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
-                                <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign" translate>
-                                    Email</li>
-                                <li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" *ngIf="campaignAccess.videoCampaign" translate>
-                                    Video</li>
-                                <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" *ngIf="campaignAccess.socialCampaign" translate>
-                                    Social</li>
-                                <li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="(campaignAccess.eventCampaign || refService.eventCampaignTabAccess)" translate>Event
-                                </li>
-                                <li class="filter" (click)="filterCampaigns('SMS',5)" [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign" translate>SMS
-                                </li>
-                                <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign" translate>Page</li>
-                                <li class="filter" style="display: none;" translate>Own Template</li>
-                            </ul>
-                            <div class="page-toolbar col-xs-12 col-sm-12 col-md-7" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                                <div class="row btn-group pull-right">
-                                    <div class="col-xs-2 col-sm-4 col-md-5 p0">
-                                        <div style="float: right">
-                                            <ng-container class='m10'>
-                                                <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Calendar View"><i
-                                                        class="fa fa-calendar p10" (click)="goToCalendarView()"></i>
-                                                </span>
-                                                <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" 
-                                                    title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
-                                                    <i class="fa fa-th-list p10" aria-hidden="true"></i>
-                                                </span>
-                                                <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" 
-                                                    title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
-                                                    <i class="fa fa-th-large p10"  aria-hidden="true"></i>
-                                                </span>
-                                                <ng-container *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
-                                                    <span  class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
-                                                    title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView"
-                                                     (click)="setViewType('Folder-Grid')">
-                                                        <i class="fa fa-folder p10" aria-hidden="true"></i>
-                                                    </span>
-                                                    <span class="btn btn-xs hidden-xs l-g-view folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom"
-                                                     title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" 
-                                                     (click)="setViewType('Folder-List')">
-                                                        <img src="assets/images/folder-list.png" class="folder-list-image-custom-css"/>
-                                                </span>
-                                                </ng-container>
-
-                                                <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
-                                                <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
-                                            </ng-container>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-5 col-sm-4 col-md-3">
-                                        <div style="float: left;">
-                                            <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                                                <option *ngFor="let sortOption of sortByDropDown"
-                                                    [ngValue]="sortOption">{{sortOption.name}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-5 col-sm-4 col-md-4" style="padding-right: 0px;">
-                                        <div class="portlet-input input-inline input-small">
-                                            <div class="input-icon" style="position:relative;right: -11px;">
-                                                <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
-                                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchCampaigns();"></button>
-                                                <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
-                            <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tabbable tabbable-custom tabbable-noborder">
+            <div class="tab-content">
+              <div class="page-bar m10">
+                <ul class="mix-filter col-xs-12 col-sm-12 col-md-5 p0 m0" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="display: inline-flex">
+                  <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
+                  <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign" translate>
+                  Email</li>
+                  <li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" *ngIf="campaignAccess.videoCampaign" translate>
+                  Video</li>
+                  <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" *ngIf="campaignAccess.socialCampaign" translate>
+                  Social</li>
+                  <li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="(campaignAccess.eventCampaign || refService.eventCampaignTabAccess)" translate>Event
+                  </li>
+                  <li class="filter" (click)="filterCampaigns('SMS',5)" [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign" translate>SMS
+                  </li>
+                  <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign" translate>Page</li>
+                  <li class="filter" style="display: none;" translate>Own Template</li>
+                </ul>
+                <div class="page-toolbar col-xs-12 col-sm-12 col-md-7" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                  <div class="row btn-group pull-right">
+                    <div class="col-xs-2 col-sm-4 col-md-5 p0">
+                      <div style="float: right">
+                        <ng-container class='m10'>
+                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
+                          <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
+                          </span>
+                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" 
+                          title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
+                          <i class="fa fa-th-list p10" aria-hidden="true"></i>
+                          </span>
+                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" 
+                          title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
+                          <i class="fa fa-th-large p10"  aria-hidden="true"></i>
+                          </span>
+                          <ng-container *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
+                            <span  class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                            title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView"
+                            (click)="setViewType('Folder-Grid')">
+                            <i class="fa fa-folder p10" aria-hidden="true"></i>
+                            </span>
+                            <span class="btn btn-xs hidden-xs l-g-view folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom"
+                            title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" 
+                            (click)="setViewType('Folder-List')">
+                            <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/>
+                            </span>
+                          </ng-container>
+                          <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
+                          <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                         </ng-container>
-                        <app-grid-loader *ngIf="httpRequestLoader.isLoading && (modulesDisplayType.isGridView || modulesDisplayType.isFolderGridView)"></app-grid-loader>
-                        <app-list-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
-                        <!-----List View--------->
-                        <section class='m10' *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                            <div class="table-responsive">
-                                <table [class.bottomTableCss]="pagination.pagedItems.length<5" class='table tgrid table-hover table-sm hidden-xs' *ngIf="modulesDisplayType.isListView" id="manage-campaign-list">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="2" style="width: 30%">
-                                                <span class="ui-column-resizer gray" (mousedown)="refService.onMouseDown($event,'manage-campaign-list',2)"> </span>
-                                                <span class="gridHeader" translate>Campaign</span>
-                                            </th>
-                                            <th class="center" style="width: 28%" translate>Status</th>
-                                            <th class="center" style="width: 15%" translate>Created On</th>
-                                            <th style="width: 25%;text-align:right" translate>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
-                                            <td style="width: 10%;">
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
-                                                </ng-container>
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
-                                                </ng-container>
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
-                                                </ng-container>
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
-                                                </ng-container>
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Page Campaign">
-                                                </ng-container>
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('SMS') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/sms.png" alt="SMS Campaign">
-                                                </ng-container>
-
-                                            </td>
-                                            <td>
-                                                <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
-                                                    <span><b>{{campaign.campaignName}}</b></span>
-                                                </h4>
-                                                <h5 class="moreipsis" [title]="campaign.createdBy">
-                                                    <span translate> By <b>{{campaign.createdBy}}</b></span>
-                                                </h5>
-                                                <h5 class="moreipsis" [title]="campaign.companyName">
-                                                    <span translate> From <b>{{campaign.companyName}}</b></span>
-                                                </h5>
-                                                <h5 class="moreipsis" [title]="campaign.categoryName">
-                                                    <span translate> Folder <b>{{campaign.categoryName}}</b></span>
-                                                </h5>
-                                                <h5 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName" translate>Originated By
-                                                    <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span
-                                                            *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b>
-                                                </h5>
-                                                <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign" translate>
-                                                    Through Campaign</span>
-                                                <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" translate>
-                                                    To Campaign</span>
-                                                <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #5cb85c;" translate>Public</span>
-                                                <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #d9534f;" translate>Private</span>
-                                                <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;"><span *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled</span>
-                                                    <span *ngIf="campaign.vendorCampaignDeleted" translate>Deleted</span>
-                                                </h5>
-                                                <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
-                                                <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>
-                                                    Scheduled
-                                                </h5>
-                                            </td>
-                                            <td class="center">
-                                                <span align="right">
-                                                    <b *ngIf="campaign.launched" translate>Launched On</b>
-                                                    <ng-container
-                                                        *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
-                                                        <b
-                                                            *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
-                                                            </b>
-                                                        <b *ngIf="!campaign.launched && campaign.scheduleType==='NOW'" translate>Saved On
-                                                            </b>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                                                        <b
-                                                            *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
-                                                            </b>
-                                                        <b
-                                                            *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" translate>Saved On
-                                                            </b>
-                                                    </ng-container>
-                                                </span>
-                                                <span align="right" title="Launch Time">
-                                                    <b
-                                                        *ngIf="campaign.scheduleType=='NOW'">
-                                                        <app-timestamp *ngIf="!refService.isSafariBrowser()"
-                                                            [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
-                                                        </app-timestamp>
-                                                        <span
-                                                            *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
-                                                </b>
-                                                <b *ngIf="campaign.scheduleType=='SAVE'">
-                                                        <app-timestamp *ngIf="!refService.isSafariBrowser()"
-                                                            [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
-                                                        </app-timestamp>
-                                                        <span
-                                                            *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
-                                                    </b>
-
-                                                    <b *ngIf="campaign.scheduleType==='SCHEDULE'">
-                                                        <span>{{campaign.campaignScheduleDateInString}}</span>
-                                                        <br>
-                                                        <span>{{campaign.campaignScheduleTimeInString}}</span>
-                                                    </b>
-                                                </span>
-                                            </td>
-                                            <td class="center">
-                                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
-                                                </app-timestamp>
-                                            </td>
-                                            <td class="center">
-                                                <!----Buttons start here----->
-                                                <div class="actions-block override-actions">
-                                                    <ng-container *ngIf="campaign.launched">
-
-                                                        <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
-                                                        <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
-                                                            <span [class.disablednew]="!campaign.hasAccess" class="circled-number"><b>{{campaign.redistributedCount}}</b></span>
-                                                        </a>
-
-                                                        <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
-                                                            <span class="circled-number disabled"><b>{{campaign.redistributedCount}}</b></span>
-                                                        </a>
-                                                         </ng-container>   
-
-                                                        <a [class.disablednew]="!campaign.hasAccess"  *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top"
-                                                            title="{{actionsDescription.campaign_report}}">
-                                                          <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-line-chart"></i></span>
-                                                        </a>
-                                                    </ng-container>
-                                                    <ng-container class="pull-right">
-                                                        <div class="btn-group pull-right">
-                                                            <span [class.disablednew]="!campaign.hasAccess" class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu" data-toggle="dropdown" (click)="checkLastElement(i)"></span><span [class.disablednew]="!campaign.hasAccess" class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
-
-                                                            <ul class="dropdown-menu pull-right" [ngClass]="{'mobile-css': isLastElement}">
-                                                                <li *ngIf="!campaign.launched">
-                                                                    <ng-container *ngIf="!campaign.launched">
-                                                                        <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-											      	                        || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" translate>
-                                                                            <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
-                                                                        </a>
-                                                                    </ng-container>
-                                                                </li>
-                                                                <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
-                                                                    <li *ngIf="campaign.launched ">
-                                                                        <!---Copy Campaign List View-->
-                                                                        <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0 " data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" translate>
-                                                                            <i class="fa fa-files-o" style="width: 30px;"></i> Copy Campaign
-                                                                        </a>
-                                                                        <!---Add Workflows List View-->
-                                                                        <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
-                                                                            data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
-                                                                            <i class="fa fa-reply-all" style="width: 30px;"></i>
-                                                                            Add Workflows
-                                                                        </a> -->
-                                                                        <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
-                                                                            (click)="openEventUrlModal(campaign)" title="Copy Public Event Url" translate>
-                                                                            <i class="fa fa-link" style="width: 30px;"></i> Copy Url
-                                                                        </a>
-                                                                        <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
-                                                                            (click)="sendEventEmail(campaign)" title="Send Preview Email" translate>
-                                                                            <i class="fa fa-envelope" style="width: 30px;"></i> Send Preview Email
-                                                                        </a>
-                                                                        <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
-                                                                            title="Invite More" translate>
-                                                                            <i class="fa fa-users" style="width: 30px;"></i> Invite More
-                                                                        </a>
-                                                                    </li>
-                                                                    <li *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.channelCampaign">
-                                                                        <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button" translate>
-                                                                            <i class="fa fa-handshake-o" style="width: 30px;" id="partner-icon"></i> Preview & Delete Partner(s)
-                                                                        </a>
-                                                                    </li>
-                                                                </ng-container>
-                                                                <li *ngIf="!campaign.vendorCampaignDeleted">
-                                                                    <a (click)="showCampaignPreview(campaign)" translate>
-                                                                        <i class="fa fa-eye mr5" style="width: 30px;"></i> Preview Campaign
-                                                                    </a>
-                                                                </li>
-                                                                <section *ngIf="!campaign.showCancelButton">
-                                                                    <li *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted">
-                                                                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" translate> <i class="fa fa-trash-o" style="width: 30px;">
-                                                                            </i>Delete
-                                                                        </a>
-                                                                    </li>
-                                                                </section>
-                                                                <section *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted ">
-                                                                    <li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier">
-                                                                        <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier" data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId,campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
-                                                                        )" translate>
-                                                                            <i class="fa fa-ban" style="width: 30px;"></i> Cancel Event
-                                                                        </a>
-                                                                    </li>
-                                                                </section>
-                                                                <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
-                                                                    <li *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
-                                                                        <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)" translate>
-                                                                            <i class="fa fa-pencil" style="width: 30px;"></i> Update event
-                                                                        </a>
-                                                                    </li>
-                                                                </section>
-                                                            </ul>
-                                                            <!-- </div> -->
-                                                        </div>
-                                                    </ng-container>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class='table tgrid table-sm visible-xs' *ngIf="modulesDisplayType.isListView">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="1" translate>Campaign</th>
-                                            <th translate>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
-                                            <td class="hidden-xs" style="width: 10%;">
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
-                                                </ng-container>
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
-                                                </ng-container>
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
-                                                </ng-container>
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Page Campaign">
-                                                </ng-container>
-                                                <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
-                                                    <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
-                                                </ng-container>
-                                            </td>
-                                            <td>
-                                                <h4 class="campaign-title" title="{{campaign.campaignName}}">
-                                                    {{campaign.campaignName | slice:0:25}}
-                                                    <span *ngIf="campaign.campaignName?.length>25">...</span>
-                                                </h4>
-                                                <h5 [title]="campaign.createdBy" translate>By
-                                                    <b>{{campaign.createdBy | slice:0:20}}<span
-                                                            *ngIf="campaign.createdBy?.length>20">...</span></b></h5>
-                                                <h5 [title]="campaign.companyName" translate>From
-                                                    <b>{{campaign.companyName | slice:0:20}}<span
-                                                            *ngIf="campaign.companyName?.length>20">...</span></b></h5>
-
-                                                <h5 [title]="campaign.categoryName" translate>Folder
-                                                    <b>{{campaign.categoryName | slice:0:20}}<span
-                                                            *ngIf="campaign.categoryName?.length>20">...</span></b></h5>
-
-                                                <h5>
-                                                    <span *ngIf="campaign.launched" translate>Launched On </span>
-                                                    <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE'">
-                                                        <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0" translate>Scheduled For
-                                                            </b>
-                                                        <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0" translate>Saved On
-                                                            </b>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                                                        <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
-                                                            </b>
-                                                        <b *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'" translate>Saved On
-                                                            </b>
-                                                    </ng-container>
-                                                    <span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
-                                                    <span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span>
-                                                </h5>
-                                            </td>
-                                            <td>
-                                                <div class="pull-right">
-                                                    <div class="dropdown">
-                                                        <i class="fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns" translate>
-                                                                    <span class="mobile-circled-number"><b>{{campaign.redistributedCount}}</b></span>Redistributed Campaigns
-                                                                </a>
-
-                                                                <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns" translate>
-                                                                    <span class="mobile-circled-number disabled"><b>{{campaign.redistributedCount}}</b></span>Redistributed Campaigns
-                                                                </a>
-                                                            </li>
-                                                            <li *ngIf="!campaign.launched">
-                                                                <ng-container *ngIf="!campaign.launched">
-                                                                    <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-											      	                        || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" translate>
-                                                                        <i class="fa fa-pencil-square-o" style="width: 30px;"></i> Edit
-                                                                    </a>
-                                                                </ng-container>
-                                                            </li>
-                                                            <ng-container *ngIf="campaign.launched">
-                                                                <li *ngIf="campaign.launched">
-
-                                                                    <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports" translate>
-                                                                        <i class="fa fa-line-chart" style="width: 30px;"></i> Campaign based reports
-                                                                    </a>
-
-                                                                    <!---Copy Campaign List View-->
-                                                                    <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0" data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" translate>
-                                                                        <i class="fa fa-files-o" style="width: 30px;"></i> Copy Campaign
-                                                                    </a>
-                                                                    <!---Add Workflows List View-->
-                                                                    <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
-                                                                        data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
-                                                                        <i class="fa fa-reply-all" style="width: 30px;"></i>
-                                                                        Add Workflows
-                                                                    </a> -->
-                                                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
-                                                                        (click)="openEventUrlModal(campaign)" title="Copy Public Event Url" translate>
-                                                                        <i class="fa fa-link" style="width: 30px;"></i> Copy Url
-                                                                    </a>
-                                                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
-                                                                        (click)="sendEventEmail(campaign)" title="Send Preview Email" translate>
-                                                                        <i class="fa fa-envelope" style="width: 30px;"></i> Send Preview Email
-                                                                    </a>
-                                                                    <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
-                                                                        title="Invite More" translate>
-                                                                        <i class="fa fa-users" style="width: 30px;"></i> Invite More
-                                                                    </a>
-                                                                </li>
-                                                                <li *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign">
-                                                                    <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button" translate>
-                                                                        <i class="fa fa-handshake-o" style="width: 30px; margin-right: 0px;" id="partner-icon"></i> Preview & Delete Partner(s)
-                                                                    </a>
-                                                                </li>
-                                                            </ng-container>
-                                                            <li>
-                                                                <a (click)="showCampaignPreview(campaign)" translate>
-                                                                    <i class="fa fa-eye" style="width: 30px;"></i> Preview Campaign
-                                                                </a>
-                                                            </li>
-                                                            <section *ngIf="!campaign.showCancelButton">
-                                                                <li *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier">
-                                                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" translate> <i class="fa fa-trash-o" style="width: 30px;">
-                                                                        </i>Delete
-                                                                    </a>
-                                                                </li>
-                                                            </section>
-                                                            <section *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted  ">
-                                                                <li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier">
-                                                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier" data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId, campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
-                                                                    )" translate>
-                                                                        <i class="fa fa-ban" style="width: 30px;"></i> Cancel Event
-                                                                    </a>
-                                                                </li>
-                                                            </section>
-                                                            <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
-                                                                <li *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
-                                                                    <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)" translate>
-                                                                        <i class="fa fa-pencil" style="width: 30px;"></i> Update event
-                                                                    </a>
-                                                                </li>
-                                                            </section>
-
-                          
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-                        <div *ngIf="totalRecords <= 0 && modulesDisplayType.isListView" class="alert alert-info">
-                            <strong translate>No campaigns found</strong>
-                        </div>
-                        <div class="tab-pane active" *ngIf="modulesDisplayType.isGridView">
-                            <!----Grid View------>
-                            <div class="margin-top-10">
-                                <div class="row mix-grid p10">
-                                    <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
-                                    <ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                                        <div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
-                                            <div class="grid-box" style="height:240px">
-                                                <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
-                                                <h4 class="ellipsis" title="{{campaign.campaignName}}">
-                                                    {{campaign.campaignName | slice:0:22}}
-                                                    <span *ngIf="campaign.campaignName?.length>22">...</span>
-                                                    <br><br>
-
-                                                    <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign" style="position: relative;top: -3px;" translate>Through Campaign</span>
-                                                    <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" style="position: relative;top: -3px;" translate>To Campaign</span>
-                                                    <span class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="position: relative;top: -3px; background-color: #f76c1a !important" translate>Draft</span>
-                                                    <span class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" style="position: relative;top: -3px;" translate>Scheduled</span>
-                                                    <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: -3px;background-color: #5cb85c;" translate>Public</span>
-                                                    <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: -3px;background-color: #d9534f;" translate>Private</span>
-                                                </h4>
-                                                <h6 [title]="campaign.createdBy" translate>By
-                                                    <b>{{campaign.createdBy | slice:0:15}}<span
-                                                            *ngIf="campaign.createdBy?.length>15">...</span></b></h6>
-                                                <h6 [title]="campaign.companyName" translate>From
-                                                    <b>{{campaign.companyName | slice:0:15}}<span
-                                                            *ngIf="campaign.companyName?.length>15">...</span></b></h6>
-                                                <h6 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName" translate>Originated By
-                                                    <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span
-                                                            *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b>
-                                                </h6>
-                                                <h6 [title]="campaign.categoryName" translate>Folder
-                                                    <b>{{campaign.categoryName | slice:0:20}}<span
-                                                            *ngIf="campaign.categoryName?.length>20">...</span></b></h6>
-                                                <h6>
-                                                    <span>
-                                                        <span *ngIf="campaign.launched" translate>Launched On</span>
-                                                    <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
-                                                        <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
-                                                                </b>
-                                                        <b *ngIf="!campaign.launched && campaign.scheduleType==='NOW'" translate>Saved On
-                                                                </b>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                                                        <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
-                                                                </b>
-                                                        <b *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" translate>Saved On
-                                                                </b>
-                                                    </ng-container>
-                                                    </span>
-                                                    <span title="Launch Time"><b>
-                                                       <ng-container *ngIf="campaign.scheduleType!=='SCHEDULE'">
-                                                        <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
-                                                        <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
-                                                       </ng-container> 
-                                                       <ng-container *ngIf="campaign.scheduleType==='SCHEDULE'">
-                                                        <span>{{campaign.campaignScheduleDateInString}}</span>
-                                                        <br>
-                                                        <span>{{campaign.campaignScheduleTimeInString}}</span>
-                                                       </ng-container>
-                                                    </b>
-                                                    </span>
-                                                </h6>
-
-                                                <div class="bookmark-ribbon">
-                                                    <span style="margin: 0px -7px; font-size: 17px; color: white;">
-                                                        <i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1"
-                                                            class="fa fa-video-camera" aria-hidden="true"></i>
-                                                        <i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1"
-                                                            class="fa fa-envelope" aria-hidden="true"></i>
-                                                        <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1"
-                                                            class="fa fa-globe" aria-hidden="true"></i>
-                                                        <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1"
-                                                            class="fa fa-calendar" aria-hidden="true"></i>
-                                                        <i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1"
-                                                            class="fa fa-wpforms" aria-hidden="true"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
-                                                    <span *ngIf="campaign.launched && !campaign.vendorCampaignDeleted" translate>Launched</span>
-                                                    <div class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
-                                                        <ng-container *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled
-                                                        </ng-container>
-                                                        <ng-container *ngIf="campaign.vendorCampaignDeleted" translate>Deleted
-                                                        </ng-container>
-                                                    </div>
-                                                    <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
-                                                        <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0" translate>Scheduled</span>
-                                                        <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0" translate>Saved</span>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                                                        <span *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled</span>
-                                                        <span *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" translate>Saved</span>
-                                                    </ng-container>
-                                                </div>
-                                                <div class="bar">
-                                                    <!--Buttons Start Here-->
-                                                    <ng-container *ngIf="!campaign.launched">
-                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="(hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
-														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Edit Campaign">
-                                                            <i class="fa fa-pencil-square-o"></i>
-                                                        </a>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
-                                                        <ng-container *ngIf="campaign.formsCount>0 && !campaign.defaultForm && campaign.campaignType.indexOf('EVENT') <0">
-                                                            <a (click)="goToFormAnalytics(campaign.campaignId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Analytics">
-                                                                <i class="fa fa-wpforms"></i>
-                                                            </a>
-                                                            <span class="badge" id="notification-list">{{campaign.formsCount}}</span>
-                                                        </ng-container>
-                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign  && !campaign.eventStarted" data-rel="fancybox-button"
-                                                            (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
-                                                            <i class="fa fa-link"></i>
-                                                        </a>
-                                                         <!-- <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier)"
-                                                             data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
-                                                            <i class="fa fa-reply-all"></i>
-                                                            </a> -->
-                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
-                                                            title="Invite More">
-                                                            <i class="fa fa-users"></i>
-                                                        </a>
-                                                        <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.redistributedCount>0" (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">
-                                                            <b style="color: white">{{campaign.redistributedCount}}</b>
-                                                        </a>
-
-                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || isOnlyPartner" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="right" title="{{actionsDescription.campaign_report}}">
-                                                            <i class="fa fa-line-chart"></i>
-                                                        </a>
-                                                        <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
-                                                            <i class="fa fa-files-o"></i>
-                                                        </a>
-                                                        <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-toggle="tooltip" data-placement="top"
-                                                            title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
-                                                            <i class="fa fa-handshake-o"></i>
-                                                        </a>
-
-                                                    </ng-container>
-                                                    <span [class.disablednew]="!campaign.hasAccess" *ngIf="!campaign.showCancelButton || campaign.vendorCampaignDeleted ">
-                                                        <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip"
-                                                            data-placement="top" title="Preview">
-                                                            <i class="fa fa-eye mr5"></i>
-                                                        </a>
-                                                        <a *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted"
-                                                            (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            title="Delete Campaign">
-                                                            <i class="fa fa-trash-o"></i>
-                                                        </a>
-                                                    </span>
-
-                                                    <span  [class.disablednew]="!campaign.hasAccess" *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted&& !campaign.eventStarted">
-                                                        <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            title="Cancel Event" data-rel="fancybox-button"
-                                                            (click)="getCancelEventDetails(campaign.campaignId, campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
-                                                            )">
-                                                            <i class="fa fa-ban"></i>
-                                                        </a></span>
-                                                    <span *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted&& !campaign.eventStarted">
-                                                        <a *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            title="Update event" data-rel="fancybox-button"
-                                                            (click)="updateEvent(campaign)">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </div>
-                            <!-- End of 24 -->
-                            <div *ngIf="totalRecords <= 0 && !modulesDisplayType.isListView" class="alert alert-info">
-                                <strong translate>No campaigns found</strong>
-                            </div>
-                        </div>
-                        <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                        <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="background:white">
-                            <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-                                <app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
-                                <select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
-                                    <!-- <option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option> -->
-                                    <option [ngValue]="numberOfItemsPerPage[0]"> {{numberOfItemsPerPage[0].name}}
-                                    </option>
-                                    <option *ngIf="pagination.totalRecords>12" [ngValue]="numberOfItemsPerPage[1]">
-                                        {{numberOfItemsPerPage[1].name}}</option>
-                                    <option *ngIf="pagination.totalRecords>24" [ngValue]="numberOfItemsPerPage[2]">
-                                        {{numberOfItemsPerPage[2].name}}</option>
-                                    <option *ngIf="pagination.totalRecords>12" [ngValue]="numberOfItemsPerPage[3]">
-                                        {{numberOfItemsPerPage[3].name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        </ng-container>
+                      </div>
                     </div>
-                    <!-- End Of tab Content -->
+                    <div class="col-xs-5 col-sm-4 col-md-3">
+                      <div style="float: left;">
+                        <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                        <option *ngFor="let sortOption of sortByDropDown"
+                        [ngValue]="sortOption">{{sortOption.name}}
+                        </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-xs-5 col-sm-4 col-md-4" style="padding-right: 0px;">
+                      <div class="portlet-input input-inline input-small">
+                        <div class="input-icon" style="position:relative;right: -11px;">
+                          <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchCampaigns();"></button>
+                          <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
+              <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
+                <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
+              </ng-container>
+              <app-grid-loader *ngIf="httpRequestLoader.isLoading && (modulesDisplayType.isGridView || modulesDisplayType.isFolderGridView)"></app-grid-loader>
+              <app-list-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
+              <!-----List View--------->
+              <section class='m10' *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                <div class="table-responsive">
+                  <table [class.bottomTableCss]="pagination.pagedItems.length<5" class='table tgrid table-hover table-sm hidden-xs' aria-describedby="campaignsListTable" *ngIf="modulesDisplayType.isListView" id="manage-campaign-list">
+                  <thead>
+                    <tr>
+                      <th colspan="2" style="width: 30%" scope="col">
+                        <span class="ui-column-resizer gray" (mousedown)="refService.onMouseDown($event,'manage-campaign-list',2)"> </span>
+                        <span class="gridHeader" translate>Campaign</span>
+                      </th>
+                      <th class="center" style="width: 28%" translate scope="col">Status</th>
+                      <th class="center" style="width: 15%" translate scope="col">Created On</th>
+                      <th style="width: 25%;text-align:right" translate scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
+                      <td style="width: 10%;">
+                        <ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
+                          <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
+                        </ng-container>
+                        <ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
+                          <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
+                        </ng-container>
+                        <ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
+                          <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
+                        </ng-container>
+                        <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
+                          <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
+                        </ng-container>
+                        <ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
+                          <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Page Campaign">
+                        </ng-container>
+                        <ng-container *ngIf="campaign.campaignType.indexOf('SMS') > -1">
+                          <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/sms.png" alt="SMS Campaign">
+                        </ng-container>
+                      </td>
+                      <td>
+                        <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
+                          <span><strong>{{campaign.campaignName}}</strong></span>
+                        </h4>
+                        <h5 class="moreipsis" [title]="campaign.createdBy">
+                          <span translate> By <strong>{{campaign.createdBy}}</strong></span>
+                        </h5>
+                        <h5 class="moreipsis" [title]="campaign.companyName">
+                          <span translate> From <strong>{{campaign.companyName}}</strong></span>
+                        </h5>
+                        <h5 class="moreipsis" [title]="campaign.categoryName">
+                          <span translate> Folder <strong>{{campaign.categoryName}}</strong></span>
+                        </h5>
+                        <h5 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName" translate>Originated By
+                        <strong>{{campaign.vendorOrganizationName | slice:0:20 }}<span
+                          *ngIf="campaign.vendorOrganizationName?.length>20">...</span></strong>
+                        </h5>
+                        <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign" translate>
+                        Through Campaign</span>
+                        <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" translate>
+                        To Campaign</span>
+                        <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #5cb85c;" translate>Public</span>
+                        <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #d9534f;" translate>Private</span>
+                        <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;"><span *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled</span>
+                          <span *ngIf="campaign.vendorCampaignDeleted" translate>Deleted</span>
+                        </h5>
+                        <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
+                        <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>
+                          Scheduled
+                        </h5>
+                      </td>
+                      <td class="center">
+                        <span align="right">
+                          <strong *ngIf="campaign.launched" translate>Launched On</strong>
+                          <ng-container
+                            *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
+                            <strong
+                              *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
+                            </strong>
+                            <strong *ngIf="!campaign.launched && campaign.scheduleType==='NOW'" translate>Saved On
+                            </strong>
+                          </ng-container>
+                          <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+                            <strong
+                              *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
+                            </strong>
+                            <strong
+                              *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" translate>Saved On
+                            </strong>
+                          </ng-container>
+                        </span>
+                        <span align="right" title="Launch Time">
+                        <strong
+                          *ngIf="campaign.scheduleType=='NOW'">
+                        <app-timestamp *ngIf="!refService.isSafariBrowser()"
+                        [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
+                        </app-timestamp>
+                        <span
+                          *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
+                        </strong>
+                        <strong *ngIf="campaign.scheduleType=='SAVE'">
+                        <app-timestamp *ngIf="!refService.isSafariBrowser()"
+                        [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
+                        </app-timestamp>
+                        <span
+                          *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
+                        </strong>
+                        <strong *ngIf="campaign.scheduleType==='SCHEDULE'">
+                        <span>{{campaign.campaignScheduleDateInString}}</span>
+                        <br>
+                        <span>{{campaign.campaignScheduleTimeInString}}</span>
+                        </strong>
+                        </span>
+                      </td>
+                      <td class="center">
+                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
+                        </app-timestamp>
+                      </td>
+                      <td class="center">
+                        <!----Buttons start here----->
+                        <div class="actions-block override-actions">
+                          <ng-container *ngIf="campaign.launched">
+                            <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
+                              <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                              (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
+                              <span [class.disablednew]="!campaign.hasAccess" class="circled-number"><strong>{{campaign.redistributedCount}}</strong></span>
+                              </a>
+                              <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
+                              <span class="circled-number disabled"><strong>{{campaign.redistributedCount}}</strong></span>
+                              </a>
+                              <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                              (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier)
+                               && campaign.channelCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && campaign.campaignType.indexOf('LANDINGPAGE') <0" (click)="goToPreviewPartners(campaign)" data-toggle="tooltip" data-placement="top" title="Show Download History">
+                              <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-history" aria-hidden="true"></i></span>
+                              </a>
+                            </ng-container>
+                            <a [class.disablednew]="!campaign.hasAccess"  *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top"
+                            title="{{actionsDescription.campaign_report}}">
+                            <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-line-chart" aria-hidden="true"></i></span>
+                            </a>
+                          </ng-container>
+                          <ng-container class="pull-right">
+                            <div class="btn-group pull-right">
+                              <span [class.disablednew]="!campaign.hasAccess" class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu" data-toggle="dropdown" (click)="checkLastElement(i)"></span><span [class.disablednew]="!campaign.hasAccess" class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
+                              <ul class="dropdown-menu pull-right" [ngClass]="{'mobile-css': isLastElement}">
+                                <li *ngIf="!campaign.launched">
+                                  <ng-container *ngIf="!campaign.launched">
+                                    <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
+                                    || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" translate>
+                                    <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
+                                    </a>
+                                  </ng-container>
+                                </li>
+                                <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
+                                  <li *ngIf="campaign.launched ">
+                                    <!---Copy Campaign List View-->
+                                    <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0 " data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" translate>
+                                    <i class="fa fa-files-o" style="width: 30px;" aria-hidden="true"></i> Copy Campaign
+                                    </a>
+                                    <!---Add Workflows List View-->
+                                    <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
+                                      data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
+                                      <i class="fa fa-reply-all" style="width: 30px;"></i>
+                                      Add Workflows
+                                      </a> -->
+                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
+                                    (click)="openEventUrlModal(campaign)" title="Copy Public Event Url" translate>
+                                    <i class="fa fa-link" style="width: 30px;" aria-hidden="true"></i> Copy Url
+                                    </a>
+                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
+                                    (click)="sendEventEmail(campaign)" title="Send Preview Email" translate>
+                                    <i class="fa fa-envelope" style="width: 30px;" aria-hidden="true"></i> Send Preview Email
+                                    </a>
+                                    <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                                    title="Invite More" translate>
+                                    <i class="fa fa-users" style="width: 30px;" aria-hidden="true"></i> Invite More
+                                    </a>
+                                  </li>
+                                  <li *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.channelCampaign">
+                                    <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button" translate>
+                                    <i class="fa fa-handshake-o" style="width: 30px;" id="partner-icon" aria-hidden="true"></i> Preview & Delete Partner(s)
+                                    </a>
+                                  </li>
+                                </ng-container>
+                                <li *ngIf="!campaign.vendorCampaignDeleted">
+                                  <a (click)="showCampaignPreview(campaign)" translate>
+                                  <i class="fa fa-eye mr5" style="width: 30px;" aria-hidden="true"></i> Preview Campaign
+                                  </a>
+                                </li>
+                                <section *ngIf="!campaign.showCancelButton">
+                                  <li *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted">
+                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" translate> <i class="fa fa-trash-o" style="width: 30px;" aria-hidden="true">
+                                    </i>Delete
+                                    </a>
+                                  </li>
+                                </section>
+                                <section *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted ">
+                                  <li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier">
+                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier" data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId,campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
+                                    )" translate>
+                                    <i class="fa fa-ban" style="width: 30px;" aria-hidden="true"></i> Cancel Event
+                                    </a>
+                                  </li>
+                                </section>
+                                <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
+                                  <li *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
+                                    <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)" translate>
+                                    <i class="fa fa-pencil" style="width: 30px;" aria-hidden="true"></i> Update event
+                                    </a>
+                                  </li>
+                                </section>
+                              </ul>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  </table>
+                  <table class='table tgrid table-sm visible-xs' *ngIf="modulesDisplayType.isListView" aria-describedby="tableList">
+                    <thead>
+                      <tr>
+                        <th colspan="1" translate scope="col">Campaign</th>
+                        <th translate scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
+                        <td class="hidden-xs" style="width: 10%;">
+                          <ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
+                            <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
+                          </ng-container>
+                          <ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
+                            <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
+                          </ng-container>
+                          <ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
+                            <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
+                          </ng-container>
+                          <ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
+                            <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Page Campaign">
+                          </ng-container>
+                          <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
+                            <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
+                          </ng-container>
+                        </td>
+                        <td>
+                          <h4 class="campaign-title" title="{{campaign.campaignName}}">
+                            {{campaign.campaignName | slice:0:25}}
+                            <span *ngIf="campaign.campaignName?.length>25">...</span>
+                          </h4>
+                          <h5 [title]="campaign.createdBy" translate>By
+                            <strong>{{campaign.createdBy | slice:0:20}}<span
+                              *ngIf="campaign.createdBy?.length>20">...</span></strong>
+                          </h5>
+                          <h5 [title]="campaign.companyName" translate>From
+                            <strong>{{campaign.companyName | slice:0:20}}<span
+                              *ngIf="campaign.companyName?.length>20">...</span></strong>
+                          </h5>
+                          <h5 [title]="campaign.categoryName" translate>Folder
+                            <strong>{{campaign.categoryName | slice:0:20}}<span
+                              *ngIf="campaign.categoryName?.length>20">...</span></strong>
+                          </h5>
+                          <h5>
+                            <span *ngIf="campaign.launched" translate>Launched On </span>
+                            <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE'">
+                              <strong *ngIf="!campaign.launched && campaign.launchedOn?.length > 0" translate>Scheduled For
+                              </strong>
+                              <strong *ngIf="!campaign.launched && campaign.launchedOn?.length==0" translate>Saved On
+                              </strong>
+                            </ng-container>
+                            <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+                              <strong *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
+                              </strong>
+                              <strong *ngIf="!campaign.launched && campaign.scheduleType==='SAVE'" translate>Saved On
+                              </strong>
+                            </ng-container>
+                            <span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
+                            <span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span>
+                          </h5>
+                        </td>
+                        <td>
+                          <div class="pull-right">
+                            <div class="dropdown">
+                              <i class="fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>
+                              <ul class="dropdown-menu pull-right">
+                                <li>
+                                  <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                  (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns" translate>
+                                  <span class="mobile-circled-number"><strong>{{campaign.redistributedCount}}</strong></span>Redistributed Campaigns
+                                  </a>
+                                  <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                    (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns" translate>
+                                  <span class="mobile-circled-number disabled"><strong>{{campaign.redistributedCount}}</strong></span>Redistributed Campaigns
+                                  </a>
+                                </li>
+                                <li *ngIf="!campaign.launched">
+                                  <ng-container *ngIf="!campaign.launched">
+                                    <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
+                                    || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" translate>
+                                    <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
+                                    </a>
+                                  </ng-container>
+                                </li>
+                                <ng-container *ngIf="campaign.launched">
+                                  <li *ngIf="campaign.launched">
+                                    <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports" translate>
+                                    <i class="fa fa-line-chart" style="width: 30px;" aria-hidden="true"></i> Campaign based reports
+                                    </a>
+                                    <!---Copy Campaign List View-->
+                                    <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0" data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" translate>
+                                    <i class="fa fa-files-o" style="width: 30px;" aria-hidden="true"></i> Copy Campaign
+                                    </a>
+                                    <!---Add Workflows List View-->
+                                    <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
+                                      data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
+                                      <i class="fa fa-reply-all" style="width: 30px;"></i>
+                                      Add Workflows
+                                      </a> -->
+                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
+                                    (click)="openEventUrlModal(campaign)" title="Copy Public Event Url" translate>
+                                    <i class="fa fa-link" style="width: 30px;" aria-hidden="true"></i> Copy Url
+                                    </a>
+                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
+                                    (click)="sendEventEmail(campaign)" title="Send Preview Email" translate>
+                                    <i class="fa fa-envelope" style="width: 30px;" aria-hidden="true"></i> Send Preview Email
+                                    </a>
+                                    <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                                    title="Invite More" translate>
+                                    <i class="fa fa-users" style="width: 30px;" aria-hidden="true"></i> Invite More
+                                    </a>
+                                  </li>
+                                  <li *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign">
+                                    <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button" translate>
+                                    <i class="fa fa-handshake-o" style="width: 30px; margin-right: 0px;" id="partner-icon" aria-hidden="true"></i> Preview & Delete Partner(s)
+                                    </a>
+                                  </li>
+                                </ng-container>
+                                <li>
+                                  <a (click)="showCampaignPreview(campaign)" translate>
+                                  <i class="fa fa-eye" style="width: 30px;" aria-hidden="true"></i> Preview Campaign
+                                  </a>
+                                </li>
+                                <section *ngIf="!campaign.showCancelButton">
+                                  <li *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier">
+                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" translate> <i class="fa fa-trash-o" style="width: 30px;" aria-hidden="true">
+                                    </i>Delete
+                                    </a>
+                                  </li>
+                                </section>
+                                <section *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted  ">
+                                  <li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier">
+                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier" data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId, campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
+                                    )" translate>
+                                    <i class="fa fa-ban" style="width: 30px;" aria-hidden="true"></i> Cancel Event
+                                    </a>
+                                  </li>
+                                </section>
+                                <section *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
+                                  <li *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
+                                    <a title="Update Event" data-rel="fancybox-button" (click)="updateEvent(campaign)" translate>
+                                    <i class="fa fa-pencil" style="width: 30px;" aria-hidden="true"></i> Update event
+                                    </a>
+                                  </li>
+                                </section>
+                              </ul>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+              <div *ngIf="totalRecords <= 0 && modulesDisplayType.isListView" class="alert alert-info">
+                <strong translate>No campaigns found</strong>
+              </div>
+              <div class="tab-pane active" *ngIf="modulesDisplayType.isGridView">
+                <!----Grid View------>
+                <div class="margin-top-10">
+                  <div class="row mix-grid p10">
+                    <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+                    <ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                      <div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
+                        <div class="grid-box" style="height:240px">
+                          <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
+                          <h4 class="ellipsis" title="{{campaign.campaignName}}">
+                            {{campaign.campaignName | slice:0:22}}
+                            <span *ngIf="campaign.campaignName?.length>22">...</span>
+                            <br><br>
+                            <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign" style="position: relative;top: -3px;" translate>Through Campaign</span>
+                            <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" style="position: relative;top: -3px;" translate>To Campaign</span>
+                            <span class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="position: relative;top: -3px; background-color: #f76c1a !important" translate>Draft</span>
+                            <span class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" style="position: relative;top: -3px;" translate>Scheduled</span>
+                            <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: -3px;background-color: #5cb85c;" translate>Public</span>
+                            <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: -3px;background-color: #d9534f;" translate>Private</span>
+                          </h4>
+                          <h6 [title]="campaign.createdBy" translate>By
+                            <strong>{{campaign.createdBy | slice:0:15}}<span
+                              *ngIf="campaign.createdBy?.length>15">...</span></strong>
+                          </h6>
+                          <h6 [title]="campaign.companyName" translate>From
+                            <strong>{{campaign.companyName | slice:0:15}}<span
+                              *ngIf="campaign.companyName?.length>15">...</span></strong>
+                          </h6>
+                          <h6 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName" translate>Originated By
+                          <strong>{{campaign.vendorOrganizationName | slice:0:20 }}<span
+                            *ngIf="campaign.vendorOrganizationName?.length>20">...</span></strong>
+                          </h6>
+                          <h6 [title]="campaign.categoryName" translate>Folder
+                            <strong>{{campaign.categoryName | slice:0:20}}<span
+                              *ngIf="campaign.categoryName?.length>20">...</span></strong>
+                          </h6>
+                          <h6>
+                            <span>
+                              <span *ngIf="campaign.launched" translate>Launched On</span>
+                              <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
+                                <strong *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
+                                </strong>
+                                <strong *ngIf="!campaign.launched && campaign.scheduleType==='NOW'" translate>Saved On
+                                </strong>
+                              </ng-container>
+                              <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+                                <strong *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
+                                </strong>
+                                <strong *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" translate>Saved On
+                                </strong>
+                              </ng-container>
+                            </span>
+                            <span title="Launch Time">
+                              <strong>
+                                <ng-container *ngIf="campaign.scheduleType!=='SCHEDULE'">
+                                  <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
+                                  <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
+                                </ng-container>
+                                <ng-container *ngIf="campaign.scheduleType==='SCHEDULE'">
+                                  <span>{{campaign.campaignScheduleDateInString}}</span>
+                                  <br>
+                                  <span>{{campaign.campaignScheduleTimeInString}}</span>
+                                </ng-container>
+                              </strong>
+                            </span>
+                          </h6>
+                          <div class="bookmark-ribbon">
+                            <span style="margin: 0px -7px; font-size: 17px; color: white;">
+                            <i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1"
+                              class="fa fa-video-camera" aria-hidden="true"></i>
+                            <i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1"
+                              class="fa fa-envelope" aria-hidden="true"></i>
+                            <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1"
+                              class="fa fa-globe" aria-hidden="true"></i>
+                            <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1"
+                              class="fa fa-calendar" aria-hidden="true"></i>
+                            <i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1"
+                              class="fa fa-wpforms" aria-hidden="true"></i>
+                            </span>
+                          </div>
+                          <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
+                            <span *ngIf="campaign.launched && !campaign.vendorCampaignDeleted" translate>Launched</span>
+                            <div class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
+                              <ng-container *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled
+                              </ng-container>
+                              <ng-container *ngIf="campaign.vendorCampaignDeleted" translate>Deleted
+                              </ng-container>
+                            </div>
+                            <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
+                              <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0" translate>Scheduled</span>
+                              <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0" translate>Saved</span>
+                            </ng-container>
+                            <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+                              <span *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled</span>
+                              <span *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" translate>Saved</span>
+                            </ng-container>
+                          </div>
+                          <div class="bar">
+                            <!--Buttons Start Here-->
+                            <ng-container *ngIf="!campaign.launched">
+                              <a [class.disablednew]="!campaign.hasAccess" *ngIf="(hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
+                              || (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Edit Campaign">
+                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                              </a>
+                            </ng-container>
+                            <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
+                              <ng-container *ngIf="campaign.formsCount>0 && !campaign.defaultForm && campaign.campaignType.indexOf('EVENT') <0">
+                                <a (click)="goToFormAnalytics(campaign.campaignId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Analytics">
+                                <i class="fa fa-wpforms" aria-hidden="true"></i>
+                                </a>
+                                <span class="badge" id="notification-list">{{campaign.formsCount}}</span>
+                              </ng-container>
+                              <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign  && !campaign.eventStarted" data-rel="fancybox-button"
+                              (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
+                              <i class="fa fa-link" aria-hidden="true"></i>
+                              </a>
+                              <!-- <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier)"
+                                data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
+                                <i class="fa fa-reply-all"></i>
+                                </a> -->
+                              <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                              title="Invite More">
+                              <i class="fa fa-users" aria-hidden="true"></i>
+                              </a>
+                              <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                              (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.redistributedCount>0" (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">
+                              <strong style="color: white">{{campaign.redistributedCount}}</strong>
+                              </a>
+                              <a [class.disablednew]="!campaign.hasAccess" *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || isOnlyPartner" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="right" title="{{actionsDescription.campaign_report}}">
+                              <i class="fa fa-line-chart" aria-hidden="true"></i>
+                              </a>
+                              <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
+                              <i class="fa fa-files-o" aria-hidden="true"></i>
+                              </a>
+                              <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-toggle="tooltip" data-placement="top"
+                              title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
+                              <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                              </a>
+                              <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) 
+                              && campaign.channelCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && campaign.campaignType.indexOf('LANDINGPAGE') <0 " (click)="goToPreviewPartners(campaign)" data-toggle="tooltip" data-placement="top"
+                              title="Show Download History" data-rel="fancybox-button">
+                              <i class="fa fa-history" aria-hidden="true"></i>
+                              </a>
+                            </ng-container>
+                            <span [class.disablednew]="!campaign.hasAccess" *ngIf="!campaign.showCancelButton || campaign.vendorCampaignDeleted ">
+                            <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip"
+                              data-placement="top" title="Preview">
+                            <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted"
+                            (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
+                            data-toggle="tooltip" data-placement="top"
+                            title="Delete Campaign">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                            </span>
+                            <span  [class.disablednew]="!campaign.hasAccess" *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted&& !campaign.eventStarted">
+                            <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier"
+                            data-toggle="tooltip" data-placement="top"
+                            title="Cancel Event" data-rel="fancybox-button"
+                            (click)="getCancelEventDetails(campaign.campaignId, campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
+                            )">
+                            <i class="fa fa-ban" aria-hidden="true"></i>
+                            </a></span>
+                            <span *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted&& !campaign.eventStarted">
+                            <a *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign"
+                            data-toggle="tooltip" data-placement="top"
+                            title="Update event" data-rel="fancybox-button"
+                            (click)="updateEvent(campaign)">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a></span>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <!-- End of 24 -->
+                <div *ngIf="totalRecords <= 0 && !modulesDisplayType.isListView" class="alert alert-info">
+                  <strong translate>No campaigns found</strong>
+                </div>
+              </div>
+              <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
+                <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="background:white">
+                  <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                    <app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
+                    <select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
+                    <!-- <option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option> -->
+                    <option [ngValue]="numberOfItemsPerPage[0]"> {{numberOfItemsPerPage[0].name}}
+                    </option>
+                    <option *ngIf="pagination.totalRecords>12" [ngValue]="numberOfItemsPerPage[1]">
+                    {{numberOfItemsPerPage[1].name}}</option>
+                    <option *ngIf="pagination.totalRecords>24" [ngValue]="numberOfItemsPerPage[2]">
+                    {{numberOfItemsPerPage[2].name}}</option>
+                    <option *ngIf="pagination.totalRecords>12" [ngValue]="numberOfItemsPerPage[3]">
+                    {{numberOfItemsPerPage[3].name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </ng-container>
             </div>
+            <!-- End Of tab Content -->
+          </div>
         </div>
+      </div>
     </ng-container>
     <ng-container *ngIf="addWorkflows">
-        <app-campaign-work-flows-util [campaignOutPut]="selectedCampaign" (messageEvent)="receiveNotificationFromWorkflows($event)">
-        </app-campaign-work-flows-util>
+      <app-campaign-work-flows-util [campaignOutPut]="selectedCampaign" (messageEvent)="receiveNotificationFromWorkflows($event)">
+      </app-campaign-work-flows-util>
     </ng-container>
-
     <app-scroll-top></app-scroll-top>
-
-</div>
-
-<!-- Save As Modal -->
-<div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+  </div>
+  <!-- Save As Modal -->
+  <div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-copy" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title f-w-600" id="saveAsModalLabel" translate>Copy Campaign</h4>
-                <button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="campaignName" translate>Campaign Name</label>
-                    <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" translate>Close</button>
-                <button type="button" class="btn btn-primary" (click)="saveAsCampaign()" translate>Save changes</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title f-w-600" id="saveAsModalLabel" translate>Copy Campaign</h4>
+          <button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+          <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
         </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="campaignName" translate>Campaign Name</label>
+            <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" translate>Close</button>
+          <button type="button" class="btn btn-primary" (click)="saveAsCampaign()" translate>Save changes</button>
+        </div>
+      </div>
     </div>
-</div>
-
-
-<div id="campaignFilterModal" class="modal right fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  </div>
+  <div id="campaignFilterModal" class="modal right fade" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-copy">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-                    <i class="fa fa-times"></i>
-                </button>
-                <h4 class="modal-title" translate>Filter</h4>
-            </div>
-            <div class="modal-body" style="padding: 28px;">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <input class="form-control" type="text">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn green" translate>Submit</button>
-                <button type="button" class="btn green" data-dismiss="modal" translate>Cancel</button>
-            </div>
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+          <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+          <h4 class="modal-title" translate>Filter</h4>
         </div>
+        <div class="modal-body" style="padding: 28px;">
+          <div class="row">
+            <div class="col-sm-12">
+              <input class="form-control" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn green" translate>Submit</button>
+          <button type="button" class="btn green" data-dismiss="modal" translate>Cancel</button>
+        </div>
+      </div>
     </div>
-</div>
-
-<div class="modal fade right" id="cancelEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  </div>
+  <div class="modal fade right" id="cancelEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a class="close-circle" data-dismiss="modal" (click)="closeCancelEventodal()">
-                    <i class="fa fa-times"></i>
-                </a>
-                <h4 class="modal-title" id="myModalLabel" translate>Canceling the event</h4>
-            </div>
-            <div class="modal-body">
-                <section>
-                    <div class="col-xs-12 col-sm-12">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="eventTitle" class="col-sm-3 labal-css color-css" translate>Event Title </label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="eventTitle" [attr.disabled]="true" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign" [ngModelOptions]="{standalone: true}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Hosted By
-                                     <span class=text-danger>*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" [attr.disabled]="true" class="form-control pull-left" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="eventDateTime" class="col-sm-3 labal-css color-css" translate>Event Date/Time
-                                     <span class="text-danger" style="margin-left: -3px;">*</span>
-                                </label>
-                                <div class="col-sm-9 p0">
-                                    <div class="col-sm-6">
-                                        <input [attr.disabled]="true" type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start" [(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" id="enDatePicker" [attr.disabled]="true" [disabled]="true" class="form-control flatpickr" placeholder="End" [(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}">
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input type="checkbox" id="allDay" class="form-check-input mt10" [attr.disabled]="true" [checked]="eventCampaign.campaignEventTimes[0].allDay">
-                                        <label class="form-check-label" for="allDay" style="float:none" translate> All Day</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Online Meeting
-                                    </label>
-                                <div class="col-sm-9">
-                                    <switch [disabled]="true" [status]="eventCampaign.onlineMeeting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
-                                    </switch>
-                                </div>
-                            </div>
-                            <section *ngIf="!eventCampaign.onlineMeeting">
-                                <div class="form-group">
-                                    <label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Location Name
-                                         <span class="text-danger" style="position: absolute;">*</span>
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" [attr.disabled]="true" class="form-control" id="eventDateTime" placeholder="Corporate headquarters, local restaurant, etc." [(ngModel)]="eventCampaign.campaignLocation.location" [ngModelOptions]="{standalone: true}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Address</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" [attr.disabled]="true" class="form-control" id="address1" placeholder="Street Address" maxlength="25" [(ngModel)]="eventCampaign.campaignLocation.street" [ngModelOptions]="{standalone: true}">
-                                    </div>
-                                    <div class="col-sm-offset-3 col-sm-9 pt10">
-                                        <input type="text" [attr.disabled]="true" class="form-control" id="address2" placeholder="Address2" maxlength="25" [(ngModel)]="eventCampaign.campaignLocation.address2" [ngModelOptions]="{standalone: true}">
-                                    </div>
-
-                                    <div class="col-sm-offset-3 col-sm-9 pt10">
-                                        <div class="col-sm-6" style="padding-left: 0px">
-                                            <input type="text" [attr.disabled]="true" class="form-control" id="city" placeholder="City" [(ngModel)]="eventCampaign.campaignLocation.city" [ngModelOptions]="{standalone: true}">
-                                        </div>
-                                        <div class="col-sm-6" style="padding-right: 0px">
-                                            <input type="text" [attr.disabled]="true" class="form-control" id="state" placeholder="State" [(ngModel)]="eventCampaign.campaignLocation.state" [ngModelOptions]="{standalone: true}">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-offset-3 col-sm-9 pt10">
-                                        <div class="col-sm-6" style="padding-left: 0px">
-                                            <input type="text" class="form-control" [attr.disabled]="true" [(ngModel)]="eventCampaign.campaignLocation.country" [ngModelOptions]="{standalone: true}">
-                                        </div>
-                                        <div class="col-sm-6" style="padding-right: 0px">
-                                            <input type="text" [attr.disabled]="true" class="form-control" id="zip" placeholder="Zip" maxlength="10" [(ngModel)]="eventCampaign.campaignLocation.zip" [ngModelOptions]="{standalone: true}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </form>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 labal-css color-css" translate>Email subject<font style="color: red"> <b>*</b>
-                            </font>
-                        </label>
-                        <div class="col-sm-9">
-                            <input type="text" id="subjectLine" placeholder="Cancel Event Subject Line" class="form-control" (input)="validateCancelEventButton()" [(ngModel)]="cancelEventSubjectLine" name="subjectLine" maxlength="200" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 labal-css color-css" style="padding-top: 25px;" translate>Cancel Message<font
-                                style="color: red"> <b>*</b>
-                            </font>
-                        </label>
-                        <div class="col-sm-9" style="padding-top: 10px;">
-                            <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateCancelEventButton()" placeholder="Add a comment..."></textarea>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <div class="pull-right" style="margin: 0px 29px 0px 0px;">
-                <div class="right-css">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeCancelEventodal()" translate>Close</button>
-                    <button type="button" class="btn btn-primary" [disabled]="!cancelEventButton" (click)="cancelEvent()" translate>Cancel Event
-                        </button>
+      <div class="modal-content">
+        <div class="modal-header">
+          <a class="close-circle" data-dismiss="modal" (click)="closeCancelEventodal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+          </a>
+          <h4 class="modal-title" id="myModalLabel" translate>Canceling the event</h4>
+        </div>
+        <div class="modal-body">
+          <section>
+            <div class="col-xs-12 col-sm-12">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="eventTitle" class="col-sm-3 labal-css color-css" translate>Event Title </label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="eventTitle" [attr.disabled]="true" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign" [ngModelOptions]="{standalone: true}">
+                  </div>
                 </div>
+                <div class="form-group">
+                  <label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Hosted By
+                  <span class=text-danger>*</span>
+                  </label>
+                  <div class="col-sm-9">
+                    <input type="text" [attr.disabled]="true" class="form-control pull-left" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="eventDateTime" class="col-sm-3 labal-css color-css" translate>Event Date/Time
+                  <span class="text-danger" style="margin-left: -3px;">*</span>
+                  </label>
+                  <div class="col-sm-9 p0">
+                    <div class="col-sm-6">
+                      <input [attr.disabled]="true" type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start" [(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-sm-6">
+                      <input type="text" id="enDatePicker" [attr.disabled]="true" [disabled]="true" class="form-control flatpickr" placeholder="End" [(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-sm-12">
+                      <input type="checkbox" id="allDay" class="form-check-input mt10" [attr.disabled]="true" [checked]="eventCampaign.campaignEventTimes[0].allDay">
+                      <label class="form-check-label" for="allDay" style="float:none" translate> All Day</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Online Meeting
+                  </label>
+                  <div class="col-sm-9">
+                    <switch [disabled]="true" [status]="eventCampaign.onlineMeeting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+                    </switch>
+                  </div>
+                </div>
+                <section *ngIf="!eventCampaign.onlineMeeting">
+                  <div class="form-group">
+                    <label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Location Name
+                    <span class="text-danger" style="position: absolute;">*</span>
+                    </label>
+                    <div class="col-sm-9">
+                      <input type="text" [attr.disabled]="true" class="form-control" id="eventDateTime" placeholder="Corporate headquarters, local restaurant, etc." [(ngModel)]="eventCampaign.campaignLocation.location" [ngModelOptions]="{standalone: true}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Address</label>
+                    <div class="col-sm-9">
+                      <input type="text" [attr.disabled]="true" class="form-control" id="address1" placeholder="Street Address" maxlength="25" [(ngModel)]="eventCampaign.campaignLocation.street" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-9 pt10">
+                      <input type="text" [attr.disabled]="true" class="form-control" id="address2" placeholder="Address2" maxlength="25" [(ngModel)]="eventCampaign.campaignLocation.address2" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-9 pt10">
+                      <div class="col-sm-6" style="padding-left: 0px">
+                        <input type="text" [attr.disabled]="true" class="form-control" id="city" placeholder="City" [(ngModel)]="eventCampaign.campaignLocation.city" [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div class="col-sm-6" style="padding-right: 0px">
+                        <input type="text" [attr.disabled]="true" class="form-control" id="state" placeholder="State" [(ngModel)]="eventCampaign.campaignLocation.state" [ngModelOptions]="{standalone: true}">
+                      </div>
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-9 pt10">
+                      <div class="col-sm-6" style="padding-left: 0px">
+                        <input type="text" class="form-control" [attr.disabled]="true" [(ngModel)]="eventCampaign.campaignLocation.country" [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div class="col-sm-6" style="padding-right: 0px">
+                        <input type="text" [attr.disabled]="true" class="form-control" id="zip" placeholder="Zip" maxlength="10" [(ngModel)]="eventCampaign.campaignLocation.zip" [ngModelOptions]="{standalone: true}">
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </form>
             </div>
+            <div class="form-group">
+              <label class="col-sm-3 labal-css color-css" translate>Email subject<font style="color: red"> <strong>*</strong>
+              </font>
+              </label>
+              <div class="col-sm-9">
+                <input type="text" id="subjectLine" placeholder="Cancel Event Subject Line" class="form-control" (input)="validateCancelEventButton()" [(ngModel)]="cancelEventSubjectLine" name="subjectLine" maxlength="200" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 labal-css color-css" style="padding-top: 25px;" translate>Cancel Message<span
+                style="color: red"> <strong>*</strong>
+              </span>
+              </label>
+              <div class="col-sm-9" style="padding-top: 10px;">
+                <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateCancelEventButton()" placeholder="Add a comment..."></textarea>
+              </div>
+            </div>
+          </section>
         </div>
+        <div class="pull-right" style="margin: 0px 29px 0px 0px;">
+          <div class="right-css">
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeCancelEventodal()" translate>Close</button>
+            <button type="button" class="btn btn-primary" [disabled]="!cancelEventButton" (click)="cancelEvent()" translate>Cancel Event
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-<!-- ----------------------Copy Link Modal------------------- -->
-<div class="modal right " id="public-event-url-modal" data-backdrop="static">
+  </div>
+  <!-- ----------------------Copy Link Modal------------------- -->
+  <div class="modal right " id="public-event-url-modal" data-backdrop="static">
     <div class="modal-dialog modal-lg" style="width: 75%;right:0">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-circle" data-dismiss="modal">
-                    <i class="fa fa-times"></i>
-                </button>
-                <h4 class="modal-title text-center" translate>DIRECT LINK FOR YOUR CAMPAIGN</h4>
-            </div>
-            <div class="modal-body">
-                <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
-                </app-response-message>
-                <input type="text" class="form-control" readonly="readonly" [ngModel]="publicEventAliasUrl" #publicEventCampaignUrlInput>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-primary" (click)="copyUrl(publicEventCampaignUrlInput)" translate>Copy Link</a>
-                <a data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+          <h4 class="modal-title text-center" translate>DIRECT LINK FOR YOUR CAMPAIGN</h4>
         </div>
+        <div class="modal-body">
+          <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
+          </app-response-message>
+          <input type="text" class="form-control" readonly="readonly" [ngModel]="publicEventAliasUrl" #publicEventCampaignUrlInput>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-primary" (click)="copyUrl(publicEventCampaignUrlInput)" translate>Copy Link</a>
+          <a data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
+        </div>
+      </div>
     </div>
-</div>
-<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
-<app-add-more-receivers #addMoreReceivers></app-add-more-receivers>
-<!-- -----------------Sending Public Event Email Pop Up------->
-<app-public-event-email-popup #publiEventEmailPopup></app-public-event-email-popup>
-<!-----------------Adding New Workflows Popup-->
+  </div>
+  <app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
+  <app-add-more-receivers #addMoreReceivers></app-add-more-receivers>
+  <!-- -----------------Sending Public Event Email Pop Up------->
+  <app-public-event-email-popup #publiEventEmailPopup></app-public-event-email-popup>
+  <!-----------------Adding New Workflows Popup-->
