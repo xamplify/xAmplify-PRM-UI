@@ -26,6 +26,21 @@ export class ShareLeadsComponent implements OnInit, AfterViewInit,OnDestroy {
 	partners = [];
 	selectedPartner: any;
 	totalRecords: number;
+	 sortOptions = [
+	                { 'name': 'Sort By', 'value': '' },
+	                { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
+	                { 'name': 'Email(Z-A)', 'value': 'emailId-DESC' },
+	                { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+	                { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+	                { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+	                { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+	                { 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
+	                { 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+	            ];
+	            public sortOption: any = this.sortOptions[0];
+	            public searchKey: string;
+	            sortcolumn: string = null;
+	            sortingOrder: string = null;
 	
     constructor(public countryNames: CountryNames, public regularExpressions: RegularExpressions, public router: Router,
         public contactService: ContactService, public videoFileService: VideoFileService, public referenceService: ReferenceService,
@@ -68,6 +83,31 @@ export class ShareLeadsComponent implements OnInit, AfterViewInit,OnDestroy {
          this.pagination = event;
          this.getPartners( this.pagination );
 
+     }
+     
+     sortByOption( event: any, selectedType: string ) {
+         this.sortOption = event;
+         const sortedValue = this.sortOption.value;
+         if ( sortedValue !== '' ) {
+             const options: string[] = sortedValue.split( '-' );
+             this.sortcolumn = options[0];
+             this.sortingOrder = options[1];
+         } else {
+             this.sortcolumn = null;
+             this.sortingOrder = null;
+         }
+
+         this.pagination.pageIndex = 1;
+         this.pagination.sortcolumn = this.sortcolumn;
+         this.pagination.sortingOrder = this.sortingOrder;
+         this.getPartners( this.pagination );
+
+     }
+     
+     search() {
+         this.pagination.searchKey = this.searchKey;
+         this.pagination.pageIndex = 1;
+         this.getPartners( this.pagination );
      }
      
      selectedPartnerObject() {

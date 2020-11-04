@@ -11,6 +11,19 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
     <div class="modal-body">
       <form class="form-horizontal" autocomplete="off">
+      
+       <div class="form-group">
+          <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
+            <span *ngIf="isPartner" class="star"> *</span>
+          </label>
+          <div class="form-group col-xs-10 col-sm-10">
+            <input type="company" style="border: none" class="form-control padding-mobile" id="company"
+              [(ngModel)]="addContactuser.contactCompany" (input)="contactCompanyChecking(addContactuser.contactCompany)"
+              [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
+            <div class="textCss"></div>
+          </div>
+        </div>
+      
       <div class="form-group">
             <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
                 <span class="star"> *</span>
@@ -44,17 +57,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
-            <span *ngIf="isPartner" class="star"> *</span>
-          </label>
-          <div class="form-group col-xs-10 col-sm-10">
-            <input type="company" style="border: none" class="form-control padding-mobile" id="company"
-              [(ngModel)]="addContactuser.contactCompany" (input)="contactCompanyChecking(addContactuser.contactCompany)"
-              [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
-            <div class="textCss"></div>
-          </div>
-        </div>
+       
        
         <ng-container *ngIf="isPartner && isUpdateUser">
           <!---Contacts Limit------->

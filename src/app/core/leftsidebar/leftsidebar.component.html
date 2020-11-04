@@ -101,7 +101,7 @@
 
 			<li
 				*ngIf="authService.user.hasCompany && (authService.module.isVendor || authService.module.isOrgAdmin) && (authService.module.isContact)"
-				[ngClass]="{'active': location.path().includes('assignLeads')}"><a
+				[ngClass]="{'active': location.path().includes('assignleads')}"><a
 				href="javascript:;" (click)="openOrCloseTabs('assignLeads')"> <i
 					class="fa fa-id-badge" aria-hidden="true"></i> <span class="title"
 					translate>Share Leads</span> <span class="arrow "></span> <span

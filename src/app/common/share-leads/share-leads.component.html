@@ -8,25 +8,50 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <h4 class="modal-title size-font" translate>Choose partner which you want to share</h4>
     </div>
     <div class="modal-body">
-           <div class="table-responsive">
+    
+     <div class="col-xs-12" style="margin-bottom: 10px;">
+                        <div class="inputs" align="right" style="float: right; padding: 4px" *ngIf="!referenceService.isMobileScreenSize()">
+                            <div style="float: left; margin: 0 10px;">
+                                <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+                <ng-container *ngFor="let sort of sortOptions; let i = index">
+                  <option [ngValue]="sort">{{sort.name}}</option>
+                </ng-container>
+              </select>
+                            </div>
+                            <div class="portlet-input input-inline">
+                                <div class="input-icon right">
+                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
+                                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
+                                    <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+           <div class="col-xs-12 table-responsive">
                     <table class="table tgrid">
                       <thead>
                         <tr>
                            <th>Select</th>
-                          <th translate>FIRST NAME</th>
-                          <th translate>LAST NAME</th>
-                          <th translate>EMAIL</th>
-                          <th translate>Company Name</th>
+                          <th translate>PARTNER INFO</th>
+                          
+                            <th  translate>VERTICAL</th>
+                            <th translate>REGION</th>
+                            <th translate>TYPE</th>
+                            <th translate>CATEGORY</th>
                         </tr>
                       </thead>
                       <tbody>
                       <ng-container >
                         <tr *ngFor="let partner of partners">
                          <td> <input type="radio" id="partnerid" name="partnerName" value="selectedpartner" (click)="selectPartner(partner)"></td>
-                          <td>{{partner.firstName}}</td>
-                          <td >{{partner.lastName}}</td>
-                          <td>{{partner.emailId}}</td>
-                          <td>{{partner.companyName}}</td>
+                         <td>
+                            <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="partner"> </app-user-info>
+                         </td>
+                          <td>{{partner.vertical}}</td>
+                          <td >{{partner.region}}</td>
+                          <td>{{partner.type}}</td>
+                          <td>{{partner.category}}</td>
                         </tr>
                     </ng-container>
                       </tbody>
@@ -36,7 +61,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
     <div class="modal-footer" style="border:none" >
        <button class="btn btn-default" (click)="shareLeadsModalClose()" translate>Cancel</button>
-        <button class="btn btn-default" (click)="shareLeadsModalClose();selectedPartnerObject()" translate>Done</button>
+        <button class="btn green" (click)="shareLeadsModalClose();selectedPartnerObject()" translate>Proceed</button>
      
     </div>
   </div>

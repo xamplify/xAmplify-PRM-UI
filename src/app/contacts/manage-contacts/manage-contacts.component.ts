@@ -1203,7 +1203,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	contactsCount() {
 		try {
-			this.contactService.loadContactsCount(this.isPartner)
+			
+            this.contactListObject = new ContactList;
+            this.contactListObject.isPartnerUserList = this.isPartner;
+            if (this.assignLeads) {
+                this.contactListObject.assignedLeadsList = true
+			}
+			
+			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
 					data => {
 						this.contactsByType.allContactsCount = data.allContactsCount;

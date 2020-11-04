@@ -128,11 +128,11 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    loadContactsCount(isPartner: boolean) {
+    loadContactsCount(contactListObject : ContactList) {
         let userId = this.authenticationService.user.id;
         userId = this.authenticationService.checkLoggedInUserId(userId);
         this.logger.info( "Service class loadContactCount() completed" );
-        return this._http.get( this.contactsUrl + "contacts_count?" + 'userId='+ userId +"&isPartnerUserList=" + isPartner + "&access_token=" + this.authenticationService.access_token )
+        return this._http.post( this.contactsUrl + "contacts_count/"+ userId + "?access_token=" + this.authenticationService.access_token,  contactListObject)
             .map( this.extractData )
             .catch( this.handleError );
     }
