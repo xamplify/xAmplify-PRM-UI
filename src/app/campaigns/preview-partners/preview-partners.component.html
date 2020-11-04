@@ -8,7 +8,7 @@
          <li><a [routerLink]="['/home/campaigns/manage']">Manage
             Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li><a>Campaign Partners</a></li>
+         <li><a>Partners</a></li>
       </ul>
    </div>
    <div class="row">
@@ -16,8 +16,7 @@
          <div class="portlet light">
             <div class="portlet-title">
                <div class="caption">
-                  <span class="caption-subject font-red-sunglo uppercase">Partners
-                  List</span>
+                  <span class="caption-subject font-red-sunglo uppercase">Partners</span>
                </div>
                <div class="inputs" style="float: right">
                   <div style="float: left;">
@@ -58,7 +57,8 @@
                   <thead>
                      <tr>
                         <th style="text-align: left" scope="row">Partner Details</th>
-                        <th scope="row" id="right-align">Actions</th>
+                        <th *ngIf="!templateDownloadPartners" scope="row" id="right-align">Actions</th>
+                        <th *ngIf="templateDownloadPartners" scope="row" id="right-align">#Download</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -70,8 +70,8 @@
                         </td>
                         <td class="center-align">
                            <div class="actions-block">
-                              <ng-container *ngIf="partner?.downloadCount>0">
-                                 <span class="circled-number" title="Downloaded Count">{{partner?.downloadCount}}</span>
+                              <ng-container *ngIf="templateDownloadPartners">
+                                 <span class="circled-number" title="Download Count">{{partner?.downloadCount}}</span>
                                  <!----Download History-->
                                  <a title="View Download History" (click)="expandHistory(partner,i)"> 
                                     <i class="fa"
@@ -79,7 +79,7 @@
                               </a>
                               </ng-container>
                               <!----Delete-->
-                              <a (click)="confirmDeletePartnerById(partner,i)"
+                              <a *ngIf="!templateDownloadPartners" (click)="confirmDeletePartnerById(partner,i)"
                                  title="{{actionsDescription.campaign_delete_partner}}"> <i
                                  class="fa fa-trash" aria-hidden="true"></i>
                               </a>

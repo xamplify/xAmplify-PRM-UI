@@ -68,6 +68,12 @@ export class DamService {
     .catch(this.handleError);
   }
 
+  getNameAndDescription(id:number){
+    return this.http.get(this.URL +"getNameAndDescription/"+id+"?access_token=" + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   save(damPostDto:DamPostDto){
     return this.utilPostSaveOrUpdateMethod("save",damPostDto);
   }

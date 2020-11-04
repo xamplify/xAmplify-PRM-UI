@@ -22,6 +22,8 @@ export class BeeTemplateUtilComponent implements OnInit {
 	loggedInUserCompanyId: any;
 	@Output() notifyParentComponent = new EventEmitter();
 	isPartnerView: boolean;
+	senderMergeTag:SenderMergeTag = new SenderMergeTag();
+
 	constructor(private referenceService:ReferenceService,private authenticationService:AuthenticationService,private router:Router,private xtremandLogger:XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	 }
@@ -112,11 +114,23 @@ export class BeeTemplateUtilComponent implements OnInit {
 				self.loading = false;
 			  };
 		
-			  var mergeTags = [{ name: 'First Name', value: '{{firstName}}' },
+			  var mergeTags = [
+				{ name: 'First Name', value: '{{firstName}}' },
 				{ name: 'Last Name', value: '{{lastName}}' },
 				{ name: 'Full Name', value: '{{fullName}}' },
 				{ name: 'Email Id', value: '{{emailId}}' },
+				{name: 'Company Name', value: '{{companyName}}' }
 				];
+				mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
+				mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
+				mergeTags.push( { name: 'Sender Full Name', value: this.senderMergeTag.senderFullName } );
+				mergeTags.push( { name: 'Sender Title', value: this.senderMergeTag.senderTitle } );
+				mergeTags.push( { name: 'Sender Email Id',  value: this.senderMergeTag.senderEmailId } );
+				mergeTags.push( { name: 'Sender Contact Number',value: this.senderMergeTag.senderContactNumber } );
+				mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
+				mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
+				mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
+				mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
 		
 			  var beeUserId = "bee-"+self.loggedInUserCompanyId;
 			  let roleHash = self.authenticationService.vendorRoleHash;
@@ -129,7 +143,7 @@ export class BeeTemplateUtilComponent implements OnInit {
 				  autosave: 15,
 				  //language: 'en-US',
 				  language:this.authenticationService.beeLanguageCode,
-				 // mergeTags: mergeTags,
+				  mergeTags: mergeTags,
 				  preventClose: true,
 				  roleHash: roleHash,
 				  onSave: function( jsonFile, htmlFile ) {

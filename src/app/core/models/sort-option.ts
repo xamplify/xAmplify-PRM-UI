@@ -29,7 +29,23 @@ export class SortOption {
         { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
         { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
         { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
-        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' }
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+        { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' }
+      ];
+
+      templateDownloadSortDropDown = [
+        { 'name': 'Sort By', 'value': '' },
+        { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+        { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+        { 'name': 'Download Count (DESC)', 'value': 'download-DESC' },
+        { 'name': 'Downlad Count (ASC)', 'value': 'downloads-ASC' },
       ];
 
     leadPartnersSortDropDown = [
@@ -78,7 +94,6 @@ export class SortOption {
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
-
         { 'name': 'Launch Date(ASC)', 'value': 'createdTime-ASC' },
         { 'name': 'Launch Date(DESC)', 'value': 'createdTime-DESC' },
         { 'name': 'Lead Count(ASC)', 'value': 'count-ASC' },
@@ -88,7 +103,6 @@ export class SortOption {
           { 'name': 'Sort By', 'value': '' },
           { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
           { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
-
           { 'name': 'Launch Date(ASC)', 'value': 'createdTime-ASC' },
           { 'name': 'Launch Date(DESC)', 'value': 'createdTime-DESC' },
           { 'name': 'Deal Count(ASC)', 'value': 'count-ASC' },
@@ -274,6 +288,7 @@ export class SortOption {
 	  public userLevelCampaignAnalyticsSortOption:any = this.userLevelCampaignAnalyticsSortDropDownOptions[this.userLevelCampaignAnalyticsSortDropDownOptions.length-1];
     public damSortOption:any = this.damSortDropDownOptions[this.damSortDropDownOptions.length-1];
     public publishedDamSortOption:any = this.publishedDamSortDropDownOptions[this.publishedDamSortDropDownOptions.length-1];
+    public templateDownloadPartnerSortOption:any = this.templateDownloadSortDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

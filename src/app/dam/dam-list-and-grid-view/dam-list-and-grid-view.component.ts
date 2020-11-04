@@ -53,6 +53,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	assetViewLoader = false;
 	assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
 	selectedAsset: any;
+	showEditForm: boolean =false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -570,5 +571,19 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}else{
 			this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+asset.id);
 		}
+	}
+
+	editDetails(id:number){
+		this.referenceService.showSweetAlertInfoMessage();
+		// this.showEditForm = true;
+		// this.assetViewLoader = true;
+		// this.damService.getNameAndDescription(id).
+		// 	subscribe(
+		// 		(response: any) => {
+		// 			this.assetViewLoader = false;
+		// 		}, (error: any) => {
+		// 			this.xtremandLogger.errorPage(error);
+		// 		}
+		// 	);
 	}
 }

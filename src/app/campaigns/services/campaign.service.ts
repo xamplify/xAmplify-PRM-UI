@@ -467,8 +467,15 @@ export class CampaignService {
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
+    }
 
-
+    listCampaignPartnersOrTemplateDownloadPartners(pagination: Pagination, campaignId: number,templateDownloadPartners:boolean){
+        let url = templateDownloadPartners ?  'listTemplateDownloadPartners':'list-partners-by-campaign-id/'+campaignId;
+        pagination.campaignId = campaignId;
+        let updatedUrl = this.URL +"campaign/"+url+ "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(updatedUrl, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     deletePartner(partner:any) {

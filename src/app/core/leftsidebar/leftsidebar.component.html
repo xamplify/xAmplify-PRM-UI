@@ -78,7 +78,7 @@
 
             <li *ngIf="authService.user.hasCompany && (authService.module.isContact)" [ngClass]="{'active': location.path().includes('contacts')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
-                    <i class="fa fa-list-ul" aria-hidden="true"></i>
+                    <i class="fa fa-id-card" aria-hidden="true"></i>
                     <span class="title" translate>Contacts</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
@@ -103,7 +103,7 @@
 				*ngIf="authService.user.hasCompany && (authService.module.isVendor || authService.module.isOrgAdmin) && (authService.module.isContact)"
 				[ngClass]="{'active': location.path().includes('assignLeads')}"><a
 				href="javascript:;" (click)="openOrCloseTabs('assignLeads')"> <i
-					class="fa fa-list-ul" aria-hidden="true"></i> <span class="title"
+					class="fa fa-id-badge" aria-hidden="true"></i> <span class="title"
 					translate>Share Leads</span> <span class="arrow "></span> <span
 					class="selected"></span>
 			</a>
@@ -184,7 +184,7 @@
                 <!-- ------Deal Registration------ -->
                 <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deals')}">
                     <a [routerLink]="['./deals/manage']">
-                        <i class="fa fa-tags" aria-hidden="true"></i>
+                        <i class="fa fa-usd" aria-hidden="true"></i>
                         <span class="title" translate>Opportunities</span>
                         <span class="arrow "></span>
                         <span class="selected"></span>
@@ -294,7 +294,7 @@
          <ng-container *ngIf="damAccess && !damAccessAsPartner">
             <li>
                 <a [routerLink]="['/home/dam/manage']">
-                <i class="fa fa-file" aria-hidden="true"></i>
+                <i class="fa fa-th-large" aria-hidden="true"></i>
                 <span class="title">DAM</span>
                 <span class="arrow"></span>
                 </a>
@@ -304,7 +304,7 @@
         <ng-container *ngIf="!damAccess && damAccessAsPartner">
             <li>
                 <a [routerLink]="['/home/dam/shared']">
-                <i class="fa fa-file" aria-hidden="true"></i>
+                <i class="fa fa-th-large" aria-hidden="true"></i>
                 <span class="title">DAM</span>
                 <span class="arrow"></span>
                 </a>

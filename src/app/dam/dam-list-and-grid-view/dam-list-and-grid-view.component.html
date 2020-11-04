@@ -5,7 +5,7 @@
 <div class="row">
    <div class="col-md-12">
       <div class="portlet light clearfix" style="min-height: 644px;">
-         <ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
+         <ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview && !showEditForm">
          <div class="portlet-title" style="border-bottom: none">
             <div class="row">
                <div class="page-toolbar col-xs-12">
@@ -115,7 +115,10 @@
                               <a *ngIf="asset?.beeTemplate && !isPartnerView"  title="Add" (click)="edit(asset.id)">
                                  <i class="fa fa-plus" aria-hidden="true"></i>
                               </a>
-                              <a *ngIf="asset?.beeTemplate && isPartnerView"  title="Edit" (click)="edit(asset.id)">
+                              <a *ngIf="(asset?.beeTemplate && isPartnerView)"  title="Edit" (click)="edit(asset.id)">
+                                 <i class="fa fa-edit" aria-hidden="true"></i>
+                              </a>
+                              <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                                  <i class="fa fa-edit" aria-hidden="true"></i>
                               </a>
                                  <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
@@ -285,7 +288,7 @@
           </app-pagination>
          </div>
       </ng-container>
-      <ng-container *ngIf="isGridViewHistory && !assetDetailsPreview">
+      <ng-container *ngIf="isGridViewHistory && !assetDetailsPreview && !showEditForm">
          <h4 title="{{selectedAssetName}}">
             <strong>{{selectedAssetName | slice:0:25}}<span *ngIf="selectedAssetName?.length>25">...</span></strong>
              <a class="close-circle"  (click)="closeHistory()">
@@ -393,6 +396,38 @@
            </div>
          </div>
       </ng-container>
+
+      <ng-container *ngIf="showEditForm">
+         <div class="col-md-12 col-lg-12">
+            <div class="portlet light">
+               <div class="portlet-title">
+                  <div class="caption" translate>
+                     Edit Asset Details
+                  </div>
+               </div>
+               <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
+               <div [hidden]="assetViewLoader" class="row" style="margin-top: 20px;">
+                  <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-labelledby="">
+                     <div class="portlet box">
+                        <div class="">
+                           <div class="col-md-12 col-lg-12 ">
+                              <div class="form-group">
+                                  <label class="control-label col-sm-3" translate>Upload Asset
+                                      <span class="required">*</span>
+                                      </label>
+                                  <div class="col-sm-8">
+                                      <input type="file" id="uploadedAsset" class="form-control" placeholder="Upload File" (change)="onFileChangeEvent($event)">
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </ng-container>
+
       </div>
    </div>
 </div>

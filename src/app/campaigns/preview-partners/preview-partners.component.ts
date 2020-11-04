@@ -34,16 +34,20 @@ export class PreviewPartnersComponent implements OnInit {
     historyLoader:HttpRequestLoader = new HttpRequestLoader();
     partnersList: Array<any> = new Array<any>();
     historyResponse: CustomResponse = new CustomResponse();
+    templateDownloadPartners = false;
     constructor(public properties: Properties,public route: ActivatedRoute,private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService,public sortOption:SortOption) {
         this.loggedInUserId = this.authenticationService.getUserId();
     }
-
-
+    ngOnInit() {
+        this.campaignId = this.route.snapshot.params['campaignId'];
+        this.templateDownloadPartners = this.router.url.indexOf('/tda') > -1;
+        this.listPartners(this.partnersPagination);
+    }
     listPartners(pagination: Pagination ) {
         this.refService.loading( this.campaignPartnerLoader, true );
-        this.campaignService.listCampaignPartners( pagination, this.campaignId)
+        this.campaignService.listCampaignPartnersOrTemplateDownloadPartners( pagination, this.campaignId,this.templateDownloadPartners)
             .subscribe(
             data => {
                 pagination.totalRecords = data.totalRecords;
@@ -137,10 +141,7 @@ export class PreviewPartnersComponent implements OnInit {
     search(){
         this.getAllFilteredResults(this.partnersPagination);
     }
-    ngOnInit() {
-        this.campaignId = this.route.snapshot.params['campaignId'];
-        this.listPartners(this.partnersPagination);
-    }
+    
 
     /********************Pagaination&Search Code*****************/
 	expandHistory(history: any, selectedIndex: number) {
