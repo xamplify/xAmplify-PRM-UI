@@ -914,6 +914,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.contactService.saveAsSuccessMessage = "add";
                 if ( this.isPartner == false ) {
                     this.router.navigateByUrl( '/home/assignleads/manage' )
+                   localStorage.setItem('isZohoSynchronization', 'no');
+                    localStorage.removeItem('isZohoSynchronization');
                 } 
             }
            
