@@ -68,8 +68,8 @@ export class DamService {
     .catch(this.handleError);
   }
 
-  getNameAndDescription(id:number){
-    return this.http.get(this.URL +"getNameAndDescription/"+id+"?access_token=" + this.authenticationService.access_token)
+  getAssetDetailsById(id:number){
+    return this.http.get(this.URL +"getAssetDetailsById/"+id+"?access_token=" + this.authenticationService.access_token)
     .map(this.extractData)
     .catch(this.handleError);
   }

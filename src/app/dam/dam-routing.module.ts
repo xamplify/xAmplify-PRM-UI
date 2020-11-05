@@ -13,6 +13,7 @@ export const routes: Routes = [
 	{ path: "shared/:viewType", component: ManageDamComponent },
 	{ path: "add", component: AddDamComponent },
 	{ path: "upload", component: UploadAssetComponent },
+	{ path: "editDetails/:id", component: UploadAssetComponent },
 	{ path: "edit/:id", component: AddDamComponent },
 	{ path: "editp/:id", component: AddDamComponent },
 	{ path: "pda/:damPartnerId", component: DamAnalyticsComponent },

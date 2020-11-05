@@ -173,3 +173,10 @@ cursor: default;
 .min-h{
   min-height: 245px;
 }
+
+.edit-cancel{
+  margin-right: 95px;
+}
+.edit-submit{
+  margin-right: 5px;
+}

@@ -6,7 +6,8 @@ import { Properties } from '../../common/models/properties';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
+
 declare var $,swal: any;
 
 @Component({
@@ -26,8 +27,32 @@ export class UploadAssetComponent implements OnInit {
 	isValidForm = false;
 	invalidThumbnail: boolean;
 	thumbnailErrorMessage:string;
-	constructor(private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
+	isAdd = true;
+	headerText = "Upload Asset";
+	previewItems = false;
+	previewPath = "";
+	constructor(private route: ActivatedRoute,private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
 	ngOnInit() {
+		this.isAdd = this.router.url.indexOf('/upload') > -1;
+		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
+		if(!this.isAdd){
+			let selectedAssetId = this.route.snapshot.params['id'];
+			this.getAssetDetailsById(selectedAssetId);
+		}
+	}
+
+	getAssetDetailsById(selectedAssetId:number){
+		this.formLoader = true;
+		this.damService.getAssetDetailsById(selectedAssetId).
+		subscribe(
+			(result:any) =>{
+				this.damUploadPostDto = result.data;
+				this.formLoader = false;
+			},(error:any)=>{
+				this.xtremandLogger.errorPage(error);
+			}
+		);
+	
 	}
 
 	onFileChangeEvent(event: any) {
@@ -88,6 +113,14 @@ showThumbnailErrorMessage(errorMessage:string){
 	}
 
 	uploadAsset() {
+		if(this.isAdd){
+			this.upload();
+		}else{
+			this.referenceService.showSweetAlertInfoMessage();
+		}
+	}
+
+	upload(){
 		this.referenceService.showSweetAlertProcessingLoader('File has been uploaded...')
 		this.clearErrors();
 		this.formLoader = true;
@@ -130,6 +163,15 @@ showThumbnailErrorMessage(errorMessage:string){
 		this.customResponse = new CustomResponse();
 	}
 
+	showPreview(columnName:string){
+		this.previewItems = true;
+		this.previewPath = columnName =="asset" ? this.damUploadPostDto.assetPath : this.damUploadPostDto.thumbnailPath;
+	}
+
+	closePreview(){
+		this.previewItems = false;
+		this.previewPath = "";
+	}
 	
 
 }

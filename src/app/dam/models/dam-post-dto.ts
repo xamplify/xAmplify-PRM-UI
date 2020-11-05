@@ -7,5 +7,5 @@ export class DamPostDto {
 	htmlBody:string = "";
 	jsonBody:string = "";
 	createdBy:number = 0;
-
+	
 }

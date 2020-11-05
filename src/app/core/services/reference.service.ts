@@ -2109,7 +2109,8 @@ export class ReferenceService {
 				title: title,
 				text: "Please Wait...",
 				showConfirmButton: false,
-				imageUrl: "assets/images/loader.gif"
+				imageUrl: "assets/images/loader.gif",
+				allowOutsideClick:false
 			}
 		);
 	}
@@ -2129,5 +2130,6 @@ export class ReferenceService {
 	  document.body.appendChild(mapForm);
 	  mapForm.submit();
 	}
+
 
 }

@@ -20,7 +20,6 @@ import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
-
 declare var $, swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -53,7 +52,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	assetViewLoader = false;
 	assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
 	selectedAsset: any;
-	showEditForm: boolean =false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -574,16 +572,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	editDetails(id:number){
-		this.referenceService.showSweetAlertInfoMessage();
-		// this.showEditForm = true;
-		// this.assetViewLoader = true;
-		// this.damService.getNameAndDescription(id).
-		// 	subscribe(
-		// 		(response: any) => {
-		// 			this.assetViewLoader = false;
-		// 		}, (error: any) => {
-		// 			this.xtremandLogger.errorPage(error);
-		// 		}
-		// 	);
+		this.loading = true;
+		this.referenceService.goToRouter("/home/dam/editDetails/"+id);
 	}
+
 }

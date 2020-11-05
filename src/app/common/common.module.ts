@@ -75,6 +75,7 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 import { BeeTemplateUtilComponent } from 'app/util/bee-template-util/bee-template-util.component';
 import { CampaignTemplateDownloadHistoryComponent } from 'app/campaigns/campaign-template-download-history/campaign-template-download-history.component';
 import { ShareLeadsComponent } from './share-leads/share-leads.component';
+import { ImageLoaderComponent } from './image-loader/image-loader.component';
 
 
 
@@ -90,7 +91,8 @@ import { ShareLeadsComponent } from './share-leads/share-leads.component';
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
 		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, DatePickerComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent],
+		ShareLeadsComponent,
+		ImageLoaderComponent],
 
 
     exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,TagInputModule,
@@ -103,7 +105,7 @@ import { ShareLeadsComponent } from './share-leads/share-leads.component';
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
 		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent,DatePickerComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent]
+		ShareLeadsComponent,ImageLoaderComponent]
 
 })
 export class CommonComponentModule { }

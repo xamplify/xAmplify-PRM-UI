@@ -8,8 +8,9 @@
                   <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a>
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
-                  <li><a (click)="goToManageDam()" translate>Manage DAM</a>  <i class="fa fa-angle-right" aria-hidden="true"></i></li>
-                  <li><a translate>Upload Asset</a></li>
+                  <li><a (click)="goToManageDam()" translate>Manage DAM</a>  
+                     <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+                  <li><a translate>{{headerText}}</a></li>
                </ul>
             </div>
             <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
@@ -27,46 +28,59 @@
          <div class="portlet light">
             <div class="portlet-title">
                <div class="caption" translate>
-                  Upload Asset
+                  {{headerText}}
                </div>
+               <div *ngIf="previewItems" class="btn-group" id="right">
+                  <a class="close-circle" (click)="closePreview()"  title="Close">
+                 <i class="fa fa-times" aria-hidden="true"></i>
+              </a> 
+              </div>
             </div>
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <app-modal-popup-loader [hidden]="!formLoader"></app-modal-popup-loader>
+            <ng-container *ngIf="!previewItems">
             <div [hidden]="formLoader" class="row" style="margin-top: 20px;">
                <form role="form" class="form-horizontal form-bordered form-label-stripped">
                   <div class="portlet box">
                      <div class="">
+                        <ng-container *ngIf="!isAdd && !damUploadPostDto?.beeTemplate">
                         <div class="col-md-12 col-lg-12 ">
                             <div class="form-group">
                                 <label class="control-label col-sm-3" translate>Upload Asset
                                     <span class="required">*</span>
                                     </label>
-                                <div class="col-sm-8">
+                                <div [attr.class]="isAdd ? 'col-sm-8':'col-sm-7'">
                                     <input type="file" id="uploadedAsset" class="form-control" placeholder="Upload File" (change)="onFileChangeEvent($event)">
                                     <span>Maximum File Size Limit 800 MB</span>
                                 </div>
+                                <div *ngIf="!isAdd" class="col-sm-1">
+                                 <button class="btn btn-primary" (click)="showPreview('asset')">Preview</button>
+                               </div>
                             </div>
                         </div>
-
                         <div class="col-md-12 col-lg-12 ">
                            <div class="form-group">
                                <label class="control-label col-sm-3" translate>Upload Thumbnail Image
                                    </label>
-                               <div class="col-sm-8">
+                               <div  [attr.class]="isAdd ? 'col-sm-8':'col-sm-7'">
                                    <input type="file" id="thumbnailFile" class="form-control" placeholder="Upload Thumbnail Image" (change)="getThumbnailImage($event)">
                                    <span>Maximum File Size Limit 10 MB</span><br>
                                    <span class="required" *ngIf="invalidThumbnail">{{thumbnailErrorMessage}}</span>
                                </div>
+                               <div *ngIf="!isAdd" class="col-sm-1">
+                                 <button class="btn btn-primary" (click)="showPreview('thumbnail')">Preview</button>
+                               </div>
                            </div>
                        </div>
+                     </ng-container>
                         <div class="col-md-12 col-lg-12 ">
                          <div class="form-group">
                              <label class="control-label col-sm-3" translate>Name
                                <span class="required">*</span>
                                  </label>
                              <div class="col-sm-8">
-                                <input type="text" class="form-control" [(ngModel)]="damUploadPostDto.assetName"  [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
+                                <input type="text" maxlength="255" class="form-control" [(ngModel)]="damUploadPostDto.assetName"  [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
                                 <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
                               </div>
                          </div>
@@ -89,6 +103,10 @@
                     </div>
                </form>
             </div>
+         </ng-container>
+            <ng-container *ngIf="previewItems">
+               <app-image-loader  image="{{previewPath}}"></app-image-loader>
+            </ng-container>
          </div>
       </div>
    </div>
