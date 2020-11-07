@@ -121,7 +121,7 @@ showThumbnailErrorMessage(errorMessage:string){
 	}
 
 	upload(){
-		this.referenceService.showSweetAlertProcessingLoader('File has been uploaded...')
+		this.referenceService.showSweetAlertProcessingLoader('File has been uploaded...');
 		this.clearErrors();
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();

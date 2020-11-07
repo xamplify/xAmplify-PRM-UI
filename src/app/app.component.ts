@@ -14,14 +14,14 @@ import { Keepalive } from '@ng-idle/keepalive';
 import { RouteConfigLoadEnd } from "@angular/router";
 import { RouteConfigLoadStart } from "@angular/router";
 import { Event as RouterEvent } from "@angular/router";
-
+import {VersionCheckService} from "app/version-check/version-check.service";
 declare var QuickSidebar, $: any;
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
-    providers: [LocalStorageExpiry, { provide: IdleExpiry, useExisting: LocalStorageExpiry }, Idle],
+    providers: [VersionCheckService,LocalStorageExpiry, { provide: IdleExpiry, useExisting: LocalStorageExpiry }, Idle],
 
 })
 export class AppComponent implements OnInit, AfterViewInit {
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 	public isShowingRouteLoadIndicator: boolean;
 
 sessionExpireMessage = "Your session has timed out. Please login again.";
-    constructor(private idle: Idle, private keepalive: Keepalive, private titleService: Title,public userService: UserService,public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router,private referenceService:ReferenceService) {
+    constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive, private titleService: Title,public userService: UserService,public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router,private referenceService:ReferenceService) {
       //this.checkIdleState(idle,keepalive);
 		this.addLoaderForLazyLoadingModules(router);
     }
@@ -91,8 +91,7 @@ sessionExpireMessage = "Your session has timed out. Please login again.";
     
     
     ngOnInit() {
-      console.log("on inint");
-        
+        this.versionCheckService.initVersionCheck('../assets/config-files/version.json');
         //QuickSidebar.init();
        // this.getTeamMembersDetails();
         // reloading the same url with in the application
