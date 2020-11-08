@@ -91,7 +91,7 @@ sessionExpireMessage = "Your session has timed out. Please login again.";
     
     
     ngOnInit() {
-        this.versionCheckService.initVersionCheck('../assets/config-files/version.json');
+        this.versionCheckService.initVersionCheck();
         //QuickSidebar.init();
        // this.getTeamMembersDetails();
         // reloading the same url with in the application

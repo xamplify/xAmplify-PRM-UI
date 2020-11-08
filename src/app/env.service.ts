@@ -23,6 +23,13 @@ export class EnvService {
   partnerRoleHash = "";
 
   captchaSiteKey = "6LfGfb0ZAAAAAEsdwjFHjpcssfxfCjMsZ8rL6gEQ";
+
+  /******Auto Reload Configurations */
+  reloadAfterDeployment = false;
+  reloadIntervalInMilliSeconds = 1000 *60*5;//5 Minutes
+  logoutAndReloadAfterDeployment = false;
+  versionFilePath = '../assets/config-files/version.json';
+  updatedVersionMessage = 'New Update Is Available';
   
   
   // Whether or not to enable debug mode

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { EnvService } from 'app/env.service';
 
 @Injectable()
 export class VersionCheckService {
-	frequencyInterVal = 1000 * 60;
 
 	// this will be replaced by actual hash post-build.js
 	private currentHash = '{{POST_BUILD_ENTERS_HASH_HERE}}';
 
-	constructor(private http: HttpClient, private referenceService: ReferenceService) { }
+	constructor(public envService: EnvService,private http: HttpClient, private referenceService: ReferenceService) { }
 
 
     /**
@@ -17,30 +17,36 @@ export class VersionCheckService {
      * @param url
      * @param {number} frequency - in milliseconds, defaults to 30 minutes
      */
-	public initVersionCheck(url: string, frequency: number = this.frequencyInterVal) {
-		console.log("Version File Path:-" + url);
-		setInterval(() => {
-			this.checkVersion(url);
-		}, frequency);
+	public initVersionCheck(frequency: number = this.envService.reloadIntervalInMilliSeconds) {
+		if(this.envService.CLIENT_URL.indexOf('https://')>-1){
+			setInterval(() => {
+				this.checkVersion();
+			}, frequency);
+		}
+		
 	}
 
     /**
      * Will do the call and check if the hash has changed or not
      * @param url
      */
-	private checkVersion(url: string) {
+	private checkVersion() {
+		let url = this.envService.versionFilePath;
 		// timestamp these requests to invalidate caches
 		this.http.get(url + '?t=' + new Date().getTime())
 			.first()
 			.subscribe(
 				(response: any) => {
-					if (response != undefined) {
+					console.log(response);
+					if (response != null &&response != undefined) {
 						const hash = response.hash;
 						const hashChanged = this.hasHashChanged(this.currentHash, hash);
+						let reloadAfterDeployment = this.envService.reloadAfterDeployment;
+						let logoutAndReloadAfterDeployment = this.envService.logoutAndReloadAfterDeployment;
 						// If new version, do something
-						if (hashChanged) {
+						if (hashChanged && (reloadAfterDeployment || logoutAndReloadAfterDeployment)) {
 							let self = this;
-							self.referenceService.showSweetAlertProcessingLoader('New Update Is Available');
+							self.referenceService.showSweetAlertProcessingLoader(this.envService.updatedVersionMessage);
 							setTimeout(function () {
 								location.reload();
 							}, 5000);

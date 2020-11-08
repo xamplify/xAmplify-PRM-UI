@@ -21,7 +21,7 @@
 
 
     /*********************QA**********************/
-    window.__env.CLIENT_URL = 'https://xamplify.co/';
+    window.__env.CLIENT_URL = 'https://xamplify.cog/';
      window.__env.SERVER_URL =  'https://aravindu.com/';
      window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
@@ -37,6 +37,13 @@
     window.__env.vendorRoleHash = "xvendorrole";
     window.__env.partnerRoleHash = "xpartnerrole";
     window.__env.captchaSiteKey = "6LfGfb0ZAAAAAEsdwjFHjpcssfxfCjMsZ8rL6gEQ";
+
+/******Auto Reload Deployment Configurations */
+window.__env.reloadAfterDeployment = true;
+window.__env.reloadIntervalInMilliSeconds = 1000 *60*5;//5 Minutes
+window.__env.logoutAndReloadAfterDeployment = !window.__env.reloadAfterDeployment;
+window.__env.versionFilePath = '../assets/config-files/version.json';
+window.__env.updatedVersionMessage = 'New Update Is Available';
 
     //
 
