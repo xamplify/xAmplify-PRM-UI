@@ -44,7 +44,7 @@
                <form role="form" class="form-horizontal form-bordered form-label-stripped">
                   <div class="portlet box">
                      <div class="">
-                        <ng-container *ngIf="!isAdd && !damUploadPostDto?.beeTemplate">
+                        <ng-container *ngIf="!damUploadPostDto?.beeTemplate || isAdd">
                         <div class="col-md-12 col-lg-12 ">
                             <div class="form-group">
                                 <label class="control-label col-sm-3" translate>Upload Asset

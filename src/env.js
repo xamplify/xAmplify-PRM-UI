@@ -8,9 +8,9 @@
     // Setting this to false will disable console output
 
     /*************Local*******************************/
-   /// window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
-    //window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
-   // window.__env.imagesHost = "https://aravind.com/vod/images/";
+    window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
+    window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
+    window.__env.imagesHost = "https://aravind.com/vod/images/";
 
 
     //USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
@@ -40,7 +40,7 @@
 
 /******Auto Reload Deployment Configurations */
 window.__env.reloadAfterDeployment = true;
-window.__env.reloadIntervalInMilliSeconds = 1000 *60*5;//5 Minutes
+window.__env.reloadIntervalInMilliSeconds = 1000 *60*1;//1 Minute
 window.__env.logoutAndReloadAfterDeployment = !window.__env.reloadAfterDeployment;
 window.__env.versionFilePath = '../assets/config-files/version.json';
 window.__env.updatedVersionMessage = 'New Update Is Available';
