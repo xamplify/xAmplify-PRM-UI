@@ -6,7 +6,9 @@ export class DamUploadPostDto {
     thumbnailPath:string = "";
     assetPath:string = "";
     beeTemplate=false;
+
     validFile = false;
     validName = false;
     validDescription = false;
+    
 }

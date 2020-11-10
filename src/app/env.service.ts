@@ -30,7 +30,7 @@ export class EnvService {
   logoutAndReloadAfterDeployment = false;
   versionFilePath = '../assets/config-files/version.json';
   updatedVersionMessage = 'New Update Is Available';
-  
+  loaderGif = "";
   
   // Whether or not to enable debug mode
   public enableDebug = false;

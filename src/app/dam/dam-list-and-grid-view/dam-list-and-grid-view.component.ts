@@ -263,7 +263,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.listAssetsHistory(this.historyPagination);
 	}
 
-	edit(id: number) {
+	addOrEdit(id: number) {
 		if (this.isPartnerView) {
 			this.referenceService.goToRouter("/home/dam/editp/" + id);
 		} else {
@@ -572,8 +572,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	editDetails(id:number){
-		this.loading = true;
-		this.referenceService.goToRouter("/home/dam/editDetails/"+id);
+		this.referenceService.showSweetAlertInfoMessage();
+		// this.loading = true;
+		// this.referenceService.goToRouter("/home/dam/editDetails/"+id);
 	}
 
 }
