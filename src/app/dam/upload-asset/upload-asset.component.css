@@ -114,3 +114,10 @@
   height: 207px !important;
   max-width: 218px !important;
 }
+.thumbnail-remover{
+  position: absolute;
+    left: 286px;
+    top: -7px;
+  border: none;
+  background: transparent;
+}

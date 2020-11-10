@@ -94,6 +94,13 @@ export class DamService {
     .map(this.extractData)
     .catch(this.handleError);
   }
+
+  deletePartner(id:number){
+    return this.http.get(this.URL +"deletePartner/"+id+"?access_token=" + this.authenticationService.access_token,"")
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+  
   
   utilPostSaveOrUpdateMethod(url:string,postObject:any){
     return this.http.post(this.URL +url+ "?access_token=" + this.authenticationService.access_token,postObject)

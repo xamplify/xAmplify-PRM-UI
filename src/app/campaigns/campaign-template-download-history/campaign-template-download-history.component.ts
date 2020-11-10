@@ -24,6 +24,7 @@ export class CampaignTemplateDownloadHistoryComponent implements OnInit {
    loggedInUserId:number = 0;
    historyResponse:CustomResponse = new CustomResponse();
    campaignName:string = "";
+   historyList: Array<any> = new Array<any>();
   constructor(public properties: Properties,public pagerService:PagerService,private campaignService:CampaignService,private authencticationService:AuthenticationService,private referenceService:ReferenceService) {
     this.loggedInUserId = this.authencticationService.getUserId();
    }
@@ -48,8 +49,9 @@ export class CampaignTemplateDownloadHistoryComponent implements OnInit {
 				pagination.totalRecords = data.totalRecords;
 				$.each(data.list, function (_index: number, history: any) {
 					history.displayTime = new Date(history.downloadedTimeInUTCString);
-				});
-				pagination = this.pagerService.getPagedItems(pagination, data.list);
+        });
+        this.historyList = data.list;
+				//pagination = this.pagerService.getPagedItems(pagination, data.list);
 			}
 			this.referenceService.loading(this.historyLoader, false);
 		}, error => {

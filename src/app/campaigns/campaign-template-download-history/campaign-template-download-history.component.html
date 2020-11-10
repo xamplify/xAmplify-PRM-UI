@@ -20,7 +20,7 @@
                      <tbody>
                         <app-auto-response-loader *ngIf="historyLoader.isLoading"> </app-auto-response-loader>
                         <ng-container *ngIf="!historyLoader.isLoading">
-                           <tr *ngFor="let history of historyPagination.pagedItems ;let i =index">
+                           <tr *ngFor="let history of historyList ;let i =index">
                               <td class="text-center">
                                  {{history?.downloadedType}}
                               </td>

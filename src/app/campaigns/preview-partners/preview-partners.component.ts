@@ -32,6 +32,7 @@ export class PreviewPartnersComponent implements OnInit {
     colspanValue = 2;
     historyPagination: Pagination = new Pagination();
     historyLoader:HttpRequestLoader = new HttpRequestLoader();
+    historyList:Array<any> = new Array<any>();
     partnersList: Array<any> = new Array<any>();
     historyResponse: CustomResponse = new CustomResponse();
     templateDownloadPartners = false;
@@ -168,8 +169,9 @@ export class PreviewPartnersComponent implements OnInit {
 				pagination.totalRecords = data.totalRecords;
 				$.each(data.list, function (_index: number, history: any) {
 					history.displayTime = new Date(history.downloadedTimeInUTCString);
-				});
-				pagination = this.pagerService.getPagedItems(pagination, data.list);
+                });
+                this.historyList = data.list;
+				//pagination = this.pagerService.getPagedItems(pagination, data.list);
 			}
 			this.refService.loading(this.historyLoader, false);
 		}, error => {

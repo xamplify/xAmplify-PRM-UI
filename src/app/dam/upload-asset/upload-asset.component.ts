@@ -38,7 +38,6 @@ export class UploadAssetComponent implements OnInit {
 	invalidThumbnail: boolean;
 	thumbnailErrorMessage: string;
 	croppedImage: any = '';
-	thumbnailPath = "";
 	squareData: any;
 	thumbnailImageText: string = "";
 	imageSelected: any = '';
@@ -48,8 +47,8 @@ export class UploadAssetComponent implements OnInit {
 	uploadedThumbnailName = "";
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
 	ngOnInit() {
-		this.showDefaultLogo = true;
 		this.isAdd = this.router.url.indexOf('/upload') > -1;
+		this.showDefaultLogo = this.isAdd;
 		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
 		if (!this.isAdd) {
 			let selectedAssetId = this.route.snapshot.params['id'];
@@ -178,7 +177,10 @@ export class UploadAssetComponent implements OnInit {
 	clearThumbnailImage() {
 		this.formData.delete("thumbnailImage");
 		$('#thumbnailFile').val('');
-		this.showDefaultLogo = true;
+		if(this.isAdd){
+			this.showDefaultLogo = true;
+		}
+		this.croppedImage = '';
 		this.uploadedThumbnailName = "";
 	}
 

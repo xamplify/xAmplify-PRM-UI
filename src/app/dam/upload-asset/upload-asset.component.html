@@ -82,18 +82,20 @@
                         <div class="asset-thumbnail-div" (click)="browseThumbnail()">
                            <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)" style="opacity: 0.0; position: absolute;">
                            <span  *ngIf="showDefaultLogo && !croppedImage" > 
-                              <img  src="assets/images/company-profile-logo.png"
+                              <img  src="assets/images/content/image.png"
                               class="profile-image asset-img-grid" alt="">
                            </span>
-                           <span *ngIf="croppedImage; else showImage">
+                           <span *ngIf="croppedImage">
+                            <a class="close-circle" (click)="$event.stopPropagation();clearThumbnailImage();"  title="Remove">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                              </a>
                                <img class="asset-img-grid"  [src]="croppedImage" alt="">
                            </span>
-                           <ng-template #showImage>
-                               <img class="asset-img-grid"  *ngIf="thumbnailPath"
-                              [src]="authenticationService.MEDIA_URL + thumbnailPath"
-                              (error)="errorHandler($event)" alt="">
-                            </ng-template>
-                          <a class="btn btn-primary1 profile-pic"  data-toggle="tooltip" data-placement="top" title="upload 2:1 ratio logo !">
+                           <span *ngIf="!isAdd && !croppedImage">
+                            <img class="asset-img-grid"  [src]="damUploadPostDto.thumbnailPath"
+                            (error)="errorHandler($event)" alt="">
+                           </span>
+                          <a class="btn btn-primary1 profile-pic"  title="upload 2:1 ratio logo">
                           &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true" style="font-size:25px;padding-top:10px"></i></a>
                         </div>
                         <div class="col-xs-12 p0 top10px">
