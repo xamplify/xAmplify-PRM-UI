@@ -43,6 +43,8 @@ export class VersionCheckService {
 						const hashChanged = this.hasHashChanged(this.currentHash, hash);
 						let reloadAfterDeployment = this.envService.reloadAfterDeployment;
 						let logoutAndReloadAfterDeployment = this.envService.logoutAndReloadAfterDeployment;
+						console.log("Reload:-"+reloadAfterDeployment);
+						console.log("Logout And Reload:-"+logoutAndReloadAfterDeployment);
 						// If new version, do something
 						if (hashChanged && (reloadAfterDeployment || logoutAndReloadAfterDeployment)) {
 							let self = this;
