@@ -18,4 +18,5 @@ export class CampaignAccess {
   rssFeeds = false;
   dam = false;
   roleId:number = 0;
+  shareLeads = false;
 }

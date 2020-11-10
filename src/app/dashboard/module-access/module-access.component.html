@@ -80,11 +80,11 @@
 										<option value="2" [selected]="roleId ==2">Org Admin</option>
 									</select>
 							</tr>
-							<tr>
+							<!-- <tr>
 								<th scope="row">Select source as ALLBOUND</th>
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.allBoundSource"
 										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
+							</tr> -->
 							<tr>
 								<th scope="row">Email Campaign</th>
 								<td><input disabled="disabled" type="checkbox"
@@ -161,6 +161,11 @@
 							<tr>
 								<th scope="row">DAM</th>
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.dam"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th scope="row">Share Leads</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.shareLeads"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 						</tbody>
