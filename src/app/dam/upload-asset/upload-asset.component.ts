@@ -27,13 +27,14 @@ export class UploadAssetComponent implements OnInit {
 	dupliateNameErrorMessage: string;
 	descriptionErrorMessage: string;
 	isValidForm = false;
-
+	submitButtonText = "Submit";
 	isAdd = true;
 	headerText = "Upload Asset";
 	previewItems = false;
 	previewPath = "";
 	uploadedAssetName = "";
 	invalidAssetName = false;
+	id:number;
 	/****Upload Thumbnail Variables */
 	invalidThumbnail: boolean;
 	thumbnailErrorMessage: string;
@@ -51,8 +52,9 @@ export class UploadAssetComponent implements OnInit {
 		this.showDefaultLogo = this.isAdd;
 		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
 		if (!this.isAdd) {
-			let selectedAssetId = this.route.snapshot.params['id'];
-			this.getAssetDetailsById(selectedAssetId);
+			this.id = this.route.snapshot.params['id'];
+			this.getAssetDetailsById(this.id);
+			this.submitButtonText = "Update";
 		}
 	}
 
@@ -62,6 +64,8 @@ export class UploadAssetComponent implements OnInit {
 			subscribe(
 				(result: any) => {
 					this.damUploadPostDto = result.data;
+					this.validateForm('assetName');
+					this.validateForm('description');
 					this.formLoader = false;
 				}, (error: any) => {
 					this.xtremandLogger.errorPage(error);
@@ -194,28 +198,34 @@ export class UploadAssetComponent implements OnInit {
 	}
 
 	validateAllFields() {
-		this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription && $('#uploadedAsset').val().length > 0;
-	}
-
-	uploadAsset() {
-		if (this.isAdd) {
-			this.upload();
-		} else {
-			this.referenceService.showSweetAlertInfoMessage();
+		if(this.isAdd){
+			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription && $('#uploadedAsset').val().length > 0;
+		}else{
+			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
 		}
 	}
 
-	upload() {
+
+	uploadOrUpdate() {
 		this.referenceService.goToTop();
-		this.referenceService.showSweetAlertProcessingLoader('File has been uploaded...');
+		if(this.isAdd){
+			this.referenceService.showSweetAlertProcessingLoader('File has been uploaded...');
+		}else{
+			this.referenceService.showSweetAlertProcessingLoader('We are updating details...');
+			this.damUploadPostDto.id = this.id;
+		}
 		this.clearErrors();
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-		this.damService.uploadAsset(this.formData, this.damUploadPostDto).subscribe(
+		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
 			(result: any) => {
 				swal.close();
 				if (result.statusCode == 200) {
-					this.referenceService.isUploaded = true;
+					if(this.isAdd){
+						this.referenceService.isUploaded = true;
+					}else{
+						this.referenceService.isAssetDetailsUpldated = true;
+					}
 					this.referenceService.goToRouter("home/dam/manage");
 				} else if (result.statusCode == 400) {
 					this.customResponse = new CustomResponse('ERROR', result.message, true);
@@ -236,6 +246,8 @@ export class UploadAssetComponent implements OnInit {
 				}
 			});
 	}
+
+	
 
 	goToManageDam() {
 		this.loading = true;

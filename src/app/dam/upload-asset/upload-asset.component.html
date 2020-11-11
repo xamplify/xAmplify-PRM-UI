@@ -49,7 +49,7 @@
                     <div class="col-md-12 col-lg-12">
                       <div class="form-group">
                         <!---Asset-->
-                        <div class="col-sm-6 mb-padding">
+                        <div class="col-sm-6 mb-padding" *ngIf="isAdd">
                           <span [style.color]="invalidAssetName ? 'red':''"><strong>Upload Asset<span class="required">*</span></strong></span>
                           <div  class="upload-asset-div" (click)="browse()" (drop)="chooseAsset($event)">
                           <input type="file" (change)="chooseAsset($event)" 
@@ -77,7 +77,9 @@
                         </div>
                       </div>
                       <!---Thumbnail Image-->
-                      <div class="col-sm-6 mb-padding">
+                      <label *ngIf="!isAdd" class="control-label col-sm-3" translate>
+                        </label>
+                      <div [attr.class]="isAdd ? 'col-sm-6 mb-padding':'col-sm-8'">
                         <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload Thumbnail </strong></span>
                         <div class="asset-thumbnail-div" (click)="browseThumbnail()">
                            <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)" style="opacity: 0.0; position: absolute;">
@@ -106,7 +108,7 @@
                             </ul>
                           </div>
                         </div>
-                      </div>
+                      </div >
                     </div>
                 </div>
                 </ng-container>
@@ -135,7 +137,7 @@
           </div>
           <div class="footer">
           <button class="btn btn-info" id="right" style="margin-right: 108px;"  type="button"  (click)="goToManageDam();" translate>Cancel</button>
-          <button [disabled]="!isValidForm"  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadAsset()" translate>Submit</button>
+          <button [disabled]="!isValidForm"  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadOrUpdate()" translate>{{submitButtonText}}</button>
           </div>
           </form>
       </div>

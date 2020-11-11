@@ -78,6 +78,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
 		} else if (this.referenceService.isUploaded) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Uploaded Successfully', true);
+		}else if(this.referenceService.isAssetDetailsUpldated){
+			this.customResponse = new CustomResponse('SUCCESS', 'Details Updated Successfully', true);
 		}
 		this.getCompanyId();
 	}
@@ -572,9 +574,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	editDetails(id:number){
-		this.referenceService.showSweetAlertInfoMessage();
-		// this.loading = true;
-		// this.referenceService.goToRouter("/home/dam/editDetails/"+id);
+		 this.loading = true;
+		 this.referenceService.goToRouter("/home/dam/editDetails/"+id);
 	}
 
 }

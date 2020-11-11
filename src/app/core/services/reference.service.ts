@@ -38,6 +38,7 @@ export class ReferenceService {
 	isCreated = false;
 	isUpdated = false;
 	isUploaded = false;
+	isAssetDetailsUpldated = false;
 	isLandingPageCreated = false;
 	isLandingPageUpdated = false;
 	errorPrepender = "Error In";

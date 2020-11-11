@@ -131,13 +131,13 @@ export class DamService {
     return this.utilPostListMethod("listDamAnalytics",pagination);
   }
 
-  uploadAsset(formData:FormData,damUploadPostDto:DamUploadPostDto){
+  uploadOrUpdate(formData:FormData,damUploadPostDto:DamUploadPostDto,isAdd:boolean){
     formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
     {
       type: "application/json"
     }));
-
-  return this.http.post(this.URL + "upload?access_token=" + this.authenticationService.access_token, formData)
+   let url = isAdd ? 'upload':'update';
+  return this.http.post(this.URL +url+ "?access_token=" + this.authenticationService.access_token, formData)
     .map(this.extractData)
     .catch(this.handleError);
   }
