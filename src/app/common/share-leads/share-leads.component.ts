@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy,ViewChild } from '@angular/core';
 import { User } from '../../core/models/user';
 import { Router } from '@angular/router';
-import { CountryNames } from '../../common/models/country-names';
-import { RegularExpressions } from '../../common/models/regular-expressions';
 import { ContactService } from '../../contacts/services/contact.service';
 import { VideoFileService } from '../../videos/services/video-file.service'
 import { ReferenceService } from '../../core/services/reference.service';
@@ -42,7 +40,7 @@ export class ShareLeadsComponent implements OnInit, AfterViewInit,OnDestroy {
 	            sortcolumn: string = null;
 	            sortingOrder: string = null;
 	
-    constructor(public countryNames: CountryNames, public regularExpressions: RegularExpressions, public router: Router,
+    constructor( public router: Router,
         public contactService: ContactService, public videoFileService: VideoFileService, public referenceService: ReferenceService,
         public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService, public pagination: Pagination,
         public pagerService: PagerService) {

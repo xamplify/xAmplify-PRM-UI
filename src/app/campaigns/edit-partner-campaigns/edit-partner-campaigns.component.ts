@@ -1072,6 +1072,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             contactsPagination.editCampaign = false;
         }
         console.log(contactsPagination);
+        contactsPagination.userId = this.campaignService.reDistributeCampaign.userId;
+        contactsPagination.redistributingCampaign = true;
         this.contactService.loadContactLists(contactsPagination)
             .subscribe(
             (data: any) => {

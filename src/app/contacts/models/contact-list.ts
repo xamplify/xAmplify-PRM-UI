@@ -27,4 +27,5 @@ export class ContactList {
     publicList : boolean = false;
     assignedTo: string;
     assignedLeadsList : boolean = false;
+    assignedToPartner: boolean =false;
 }

@@ -13,6 +13,8 @@ export class ActionsDescription {
 
     contact_edit = 'Edit';
     contact_delete = 'Delete'
+    	
+    leads_list_share = 'Share leads list'
 
    /* FOR PARTNERS*/
     partner_edit = 'Edit partner';

@@ -200,6 +200,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	public zohoCurrentUser: any;
 	tempIsZohoSynchronization: any;
 	campaignLoader = false;
+	sharedPartnerDetails: any;
+	selectedListDetails : ContactList;;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch) {
@@ -1959,6 +1961,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	ngOnDestroy() {
 		try {
+			this.sharedPartnerDetails = [];
 			this.xtremandLogger.info('Deinit - Destroyed Component')
 			this.contactService.successMessage = false;
 			this.contactService.deleteUserSucessMessage = false;
@@ -1997,4 +2000,32 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}, 250);
 
 	}
+	
+    selectedSharePartner(event: any){
+        this.sharedPartnerDetails = event;
+        this.model.assignedTo=this.sharedPartnerDetails.emailId;
+        this.assignLeadsListToPartner(this.model.assignedTo);
+    }
+    
+    storeListDetails(selectedList: any){
+    	this.selectedListDetails = selectedList;
+    }
+    
+    assignLeadsListToPartner(assignedTo: any){
+            this.loading = true;
+            this.selectedListDetails.assignedTo = assignedTo;
+            this.contactService.assignLeadsListToPartner(this.selectedListDetails)
+                .subscribe(
+                    data => {
+                        this.loading = false;
+                        this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                        this.loadContactLists(this.pagination);
+                    },
+                    (error: any) => {
+                        this.loading = false;
+                    },
+                    () => this.xtremandLogger.info('Finished AssignLeadsMethos()')
+                );
+        this.loading = false;
+    }
 }

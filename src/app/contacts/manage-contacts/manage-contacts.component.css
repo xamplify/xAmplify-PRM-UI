@@ -93,3 +93,8 @@ h3 {
     font-weight:600;
 }
 
+.override-actions {
+    margin: 0 auto;
+    display: table;
+    float: right!important;
+}

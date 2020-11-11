@@ -99,8 +99,8 @@
                 </ul>
             </li>
 
-			<li
-				*ngIf="authService.user.hasCompany && (authService.module.isVendor || authService.module.isOrgAdmin) && (authService.module.isContact)"
+				<li
+				*ngIf="authService.user.hasCompany && (authService.module.isVendor || authService.module.isOrgAdmin) && (authService.module.isContact) && shareLeadsAccess"
 				[ngClass]="{'active': location.path().includes('assignleads')}"><a
 				href="javascript:;" (click)="openOrCloseTabs('assignLeads')"> <i
 					class="fa fa-id-badge" aria-hidden="true"></i> <span class="title"

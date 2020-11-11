@@ -49,7 +49,10 @@ export class ContactService {
 
     loadUsersOfContactList( contactListId: number, pagination: Pagination ) {
     	//pagination.criterias = criterias;
-    	return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
+    	
+    	 let userId = this.authenticationService.user.id;
+         userId = this.authenticationService.checkLoggedInUserId(userId);
+    	return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token+"&userId="+userId, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -642,6 +645,12 @@ export class ContactService {
         return this._http.post( this.contactsUrl + "list-partners/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, pagination)
             .map( this.extractData )
             .catch( this.handleError );
+    }
+    
+    assignLeadsListToPartner(contactListObject : ContactList){
+    	return this._http.post( this.contactsUrl + "assign-leads-list-to-partner/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, contactListObject)
+        .map( this.extractData )
+        .catch( this.handleError );
     }
 
 }
