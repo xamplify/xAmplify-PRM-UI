@@ -6,8 +6,8 @@
        <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
           <i class="fa fa-angle-right" aria-hidden="true"></i>
        </li>
-       <li><a translate>DAM</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
-       <li><a translate>Published Partners</a></li>
+       <li><a translate (click)="goBack()">DAM</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
+       <li><a class="default-cursor" translate>Published Partners</a></li>
     </ul>
      <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
       <i class="fa fa-times" aria-hidden="true"></i>
@@ -15,6 +15,14 @@
   <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
    <i class="fa fa-refresh" aria-hidden="true"></i>
 </a>
+ </div>
+ <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li style="font-weight: 600;">
+            <span>Asset Name : <strong>{{selectedAssetName | slice:0:50}}</strong>
+               <strong *ngIf="selectedAssetName?.length>50">..</strong></span>
+         </li>
+      </ul>
  </div>
  <div class="row">
   <div class="portlet box">

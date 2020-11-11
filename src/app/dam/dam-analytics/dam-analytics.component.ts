@@ -33,6 +33,10 @@ export class DamAnalyticsComponent implements OnInit {
   damAnalyticsTilesDto: DamAnalyticsTilesDto = new DamAnalyticsTilesDto();
   selectedAnalyticsTypeIndex = 0;
   dataFound = false;
+  vendorView = false;
+  damId:number = 0;
+  selecteAssetDetails:any;
+  selectedAssetName = "";
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -43,7 +47,9 @@ export class DamAnalyticsComponent implements OnInit {
 
   callApis(){
     this.startLoaders();
+    this.vendorView = this.router.url.indexOf('vda')>-1;
     this.pagination.campaignId = parseInt(this.route.snapshot.params['damPartnerId']);
+    this.damId = parseInt(this.route.snapshot.params['damId'])
     this.getTilesInfo();
   }
 
@@ -51,8 +57,9 @@ export class DamAnalyticsComponent implements OnInit {
     this.tilesLoader = true;
     this.damService.getDamAnalyticsTilesInfo(this.pagination.campaignId).
     subscribe((response)=>{
-      this.damAnalyticsTilesDto = response.data;
+      this.damAnalyticsTilesDto = response.data.tilesInfo;
       if(this.damAnalyticsTilesDto!=undefined){
+        this.selectedAssetName = response.data.assetName;
         this.dataFound = true;
         let fullName = this.damAnalyticsTilesDto.fullName;
         if(fullName!=undefined && fullName!="" && fullName!=null){
@@ -80,6 +87,7 @@ export class DamAnalyticsComponent implements OnInit {
     );
   }
 
+  
   listAnalytics(pagination: Pagination) {
 		this.referenceService.goToTop();
 		this.startLoaders();
@@ -143,13 +151,21 @@ export class DamAnalyticsComponent implements OnInit {
   goBack(){
     this.loading = true;
     if(this.router.url.indexOf("vda")>-1){
-      this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+parseInt(this.route.snapshot.params['damId']));
+      this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+this.damId);
     }else{
       this.referenceService.goToRouter("/home/dam/shared");
     }
   }
   refreshPage(){
     this.callApis();
+  }
+  goToDam(){
+    this.loading = true;
+    if(this.vendorView){
+      this.referenceService.goToRouter("/home/dam/manage");
+    }else{
+      this.referenceService.goToRouter("/home/dam/shared");
+    }
   }
 
 }

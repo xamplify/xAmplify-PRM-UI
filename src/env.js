@@ -39,9 +39,9 @@
     window.__env.captchaSiteKey = "6LfGfb0ZAAAAAEsdwjFHjpcssfxfCjMsZ8rL6gEQ";
 
 /******Auto Reload Deployment Configurations */
-window.__env.reloadAfterDeployment = true;
+window.__env.reloadAfterDeployment = false;
 window.__env.reloadIntervalInMilliSeconds = 1000 *60*1;//1 Minute
-window.__env.logoutAndReloadAfterDeployment = !window.__env.reloadAfterDeployment;
+window.__env.logoutAndReloadAfterDeployment = false;
 window.__env.versionFilePath = '../assets/config-files/version.json';
 window.__env.updatedVersionMessage = 'New Update Is Available';
 window.__env.loaderGif = 'assets/images/xamplify-icon.gif';

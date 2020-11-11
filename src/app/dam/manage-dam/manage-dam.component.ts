@@ -38,4 +38,8 @@ export class ManageDamComponent implements OnInit {
 	goToUploadComponent(){
 		this.referenceService.goToRouter("/home/dam/upload");
 	}
+	goToDam(){
+		this.loading = true;
+		this.referenceService.goToRouter("/home/dam/shared");
+	}
 }

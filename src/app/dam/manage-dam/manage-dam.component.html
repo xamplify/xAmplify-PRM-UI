@@ -6,7 +6,7 @@
             <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li><a translate>DAM</a></li>
+         <li><a (click)="goToDam()" translate>DAM</a></li>
       </ul>
       <div class="edit-mdf-form-margin" id="right">
          <button *ngIf="!isPartnerView" class="add-button-xamplify" (click)="goToUploadComponent()"  translate>Upload</button>
