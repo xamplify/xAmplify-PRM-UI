@@ -988,6 +988,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    listCampaignPipelines(userId: number) {
+        return this.http.get(this.URL + "/pipeline/campaign/" + userId + "/list?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         return body || {};

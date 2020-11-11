@@ -30,6 +30,8 @@ import { LandingPageService } from '../../landing-pages/services/landing-page.se
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { ClickedUrlsVendorAnalyticsComponent} from '../clicked-urls-vendor-analytics/clicked-urls-vendor-analytics.component';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { LeadsService } from '../../leads/services/leads.service';
+import { isUndefined } from 'util';
 
 declare var $, Highcharts, swal: any;
 
@@ -186,10 +188,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   isLeadListDownloadProcessing = false;
   showTotalLeads = false;
   disabled: boolean;
+  leadActionType = "add";
+  leadId = 0;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
-    public xtremandLogger: XtremandLogger, private twitterService: TwitterService, private emailTemplateService: EmailTemplateService, private dealRegService: DealRegistrationService, public router: Router) {
+    public xtremandLogger: XtremandLogger, private twitterService: TwitterService, private emailTemplateService: EmailTemplateService, private dealRegService: DealRegistrationService, private leadsService: LeadsService, public router: Router) {
     try {
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
@@ -877,31 +881,45 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       })
     }
 
-    this.dealRegService.getDeal(campaignViews.campaignId, campaignViews.userId).subscribe(data => {
-      this.dealId = data;
-      if (data == -1) {
+    // this.dealRegService.getDeal(campaignViews.campaignId, campaignViews.userId).subscribe(data => {
+    //   this.dealId = data;
+    //   if (data == -1) {
+    //     this.dealButtonText = "Register Lead";
+    //     this.isDeal = false;
+    //   } else {
+    //     this.dealRegService.getDealById(data, campaignViews.userId).subscribe(response => {
+    //       let isDeal = response.data.deal;
+    //       if(this.campaign.showRegisterLeadButton && !isDeal ){
+    //         this.isDeal = false;
+    //       }else{
+    //         this.isDeal = isDeal;
+    //       }
+    //       if (this.isDeal) {
+    //         this.dealButtonText = "Preview Deal";
+    //       } else {
+    //         this.dealButtonText = "Update Lead";
+    //       }
+    //       this.leadData = response.data;
+    //     })
+    //   }
+    // })
+
+
+    this.leadsService.getLeadByCampaign(campaignViews.campaignId, campaignViews.userId, this.loggedInUserId)
+    .subscribe(response => {
+      let data = response.data;
+      if (data == undefined) {
         this.dealButtonText = "Register Lead";
-        this.isDeal = false;
+        this.leadActionType = "add";
+        this.leadId = 0;
+        //this.isDeal = false;
       } else {
-        this.dealRegService.getDealById(data, campaignViews.userId).subscribe(response => {
-          let isDeal = response.data.deal;
-          if(this.campaign.showRegisterLeadButton && !isDeal ){
-            this.isDeal = false;
-          }else{
-            this.isDeal = isDeal;
-          }
-          if (this.isDeal) {
-            this.dealButtonText = "Preview Deal";
-          } else {
-            this.dealButtonText = "Update Lead";
-          }
-          this.leadData = response.data;
-        })
-      }
+       // this.leadData = data;
+        this.dealButtonText = "Update Lead";
+        this.leadActionType = "edit";
+        this.leadId = data.id;
+      }      
     })
-
-
-
 
   }
 

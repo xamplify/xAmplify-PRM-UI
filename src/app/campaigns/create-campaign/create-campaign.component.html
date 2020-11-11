@@ -422,6 +422,28 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
+                                              *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
+                                                <label class="control-label col-sm-4">Lead Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
+                                                        placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
+                                                        <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
+                                              
+                                            <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px"
+                                                *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
+                                                <label class="control-label col-sm-4">Deal Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
+                                                        placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
+                                                        <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
 
 

@@ -72,7 +72,9 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
-
+import { AddLeadComponent } from '../leads/add-lead/add-lead.component';
+//import { AddDealComponent } from '../deals/add-deal/add-deal.component';
+//import { SfDealComponent } from '../deal-registration/sf-deal/sf-deal.component';
 
 
 @NgModule({
@@ -86,7 +88,7 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 		 LandingPageLoaderComponent, DashboardLoaderComponent,ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, 
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
-		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, DatePickerComponent],
+		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, DatePickerComponent,AddLeadComponent],
 
 
     exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,TagInputModule,
@@ -98,7 +100,7 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent, 
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
-		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent,DatePickerComponent]
+		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent,DatePickerComponent, AddLeadComponent]
 
 })
 export class CommonComponentModule { }

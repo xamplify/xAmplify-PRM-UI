@@ -1,0 +1,20 @@
+.btn-white {
+    background-color: #ffffff !important;
+    color: black;
+    border: 1px solid #e5e5e5;
+}
+
+.register_deal{
+    margin-top: 10px;
+    padding: 2px;
+    border: 1px solid #529de1;
+    background-color: #eeeeee;
+}
+
+.register_deal:hover{
+    background-color: #ffffff;
+}
+
+.greay{
+	background-color: #8a8282c4;
+}

@@ -443,7 +443,7 @@ export class DashboardService {
         .map(this.extractData)
         .catch(this.handleError);
     }
-
+    
     getPipeline(pipelineId:number, userId:number){
         return this.http.get(this.authenticationService.REST_URL + `pipeline/${pipelineId}/${userId}?access_token=${this.authenticationService.access_token}`)
         .map(this.extractData)

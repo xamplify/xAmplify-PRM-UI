@@ -70,6 +70,8 @@ export const routes: Routes = [
             { path: 'design', loadChildren: 'app/design/design.module#DesignModule',  data: { preload: true } },
 		 	{ path: 'mdf', loadChildren: 'app/mdf/mdf.module#MdfModule',  data: { preload: false } },
 		   { path: 'dam', loadChildren: 'app/dam/dam.module#DamModule',  data: { preload: false } },
+		   { path: 'leads', loadChildren: 'app/leads/leads.module#LeadsModule',  data: { preload: false } },
+		   { path: 'deal', loadChildren: 'app/deals/deals.module#DealsModule',  data: { preload: false } },
             { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },

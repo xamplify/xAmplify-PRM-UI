@@ -350,7 +350,11 @@ export class UserService {
         return this.http.get(preferredLangFilePath).map(this.extractData).catch(this.handleError);
     }
 
-
+    listFormByCompanyId(companyId: number) {
+        return this.http.get(this.authenticationService.REST_URL + "/users/company/" + companyId + "/forms/list?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     
 
