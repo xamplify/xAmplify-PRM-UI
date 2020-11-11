@@ -88,6 +88,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.isCreated = false;
 		this.referenceService.isUpdated = false;
 		this.referenceService.isUploaded = false;
+		this.referenceService.isAssetDetailsUpldated = false;
 	}
 
 	setViewType(viewType: string) {
