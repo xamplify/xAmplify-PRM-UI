@@ -656,9 +656,19 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         this.contactListsPagination.filterValue = false;
         this.contactListsPagination.filterKey = null;
         this.showContactType = true;
+        if(this.reDistributeEvent || this.reDistributeEventManage){
+            this.contactListsPagination.userId = this.eventCampaign.userDTO.id;
+            this.contactListsPagination.redistributingCampaign = true;
+            this.contactListsPagination.filterKey = 'isPartnerUserList';
+            this.contactListsPagination.filterValue = false;
+            this.contactListsPagination.editCampaign = true;
+            this.contactListsPagination.campaignId = this.eventCampaign.id;
+        }
       }else{
           if(this.reDistributeEvent || this.reDistributeEventManage){
               this.contactListsPagination.filterValue = false;
+              this.contactListsPagination.userId = this.eventCampaign.userDTO.id;
+              this.contactListsPagination.redistributingCampaign = true;
           }else{
           this.contactListsPagination.filterValue = true;
           }
