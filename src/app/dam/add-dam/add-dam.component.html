@@ -69,7 +69,7 @@
           <div class="modal-footer cmr" style="border:none;" *ngIf="!modalPopupLoader">
               <button class="btn btn-info" type="reset" (click)="hidePopup();" translate>Cancel</button>
               <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(false)" translate>Save</button>
-              <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(true)" translate>Save As</button>
+              <button *ngIf="!isAdd" type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(true)" translate>Save As</button>
 
           </div>
       </div>

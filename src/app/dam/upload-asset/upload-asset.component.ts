@@ -209,7 +209,7 @@ export class UploadAssetComponent implements OnInit {
 	uploadOrUpdate() {
 		this.referenceService.goToTop();
 		if(this.isAdd){
-			this.referenceService.showSweetAlertProcessingLoader('File has been uploaded...');
+			this.referenceService.showSweetAlertProcessingLoader('We are uploading file(s)...');
 		}else{
 			this.referenceService.showSweetAlertProcessingLoader('We are updating details...');
 			this.damUploadPostDto.id = this.id;
