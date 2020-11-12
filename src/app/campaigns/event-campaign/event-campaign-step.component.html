@@ -379,7 +379,7 @@ a.disabled {
 									<input
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										type="text" id="startDatePicker"
-										class="form-control flatpickr" placeholder="Start"
+										class="form-control eventflatpickr" placeholder="Start"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString"
 										[ngModelOptions]="{standalone: true}"
 										(input)="eventStartTimeError();validateUpdateButton()" (blur)="eventStartTimeError()"
@@ -391,7 +391,7 @@ a.disabled {
 									<input type="text" id="enDatePicker"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										[disabled]="eventCampaign.campaignEventTimes[0].allDay"
-										class="form-control flatpickr" placeholder="End"
+										class="form-control eventflatpickr" placeholder="End"
 										[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString"
 										[ngModelOptions]="{standalone: true}"
 										(input)="eventEndTimeError();validateUpdateButton()" (blur)="eventEndTimeError()"
@@ -1583,7 +1583,7 @@ a.disabled {
 
           <div class="col-md-12 p0" style="margin-top: 12px;" [hidden]="checkLaunchOption!='SCHEDULE'">
             <div class="col-md-4">
-              <input [attr.disabled]="isPreviewEvent? '' : null"  type="text" id="launchTimeInString" class="form-control flatpickr" placeholder="Launch Time"
+              <input [attr.disabled]="isPreviewEvent? '' : null"  type="text" id="launchTimeInString" class="form-control eventflatpickr" placeholder="Launch Time"
                   [(ngModel)]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}" (input)="scheduleTimeError()" (blur)="scheduleTimeError()">
                   <div class="text-danger" *ngIf="eventError.scheduleTimeError">{{scheduleCampaignError}}</div>
             </div>

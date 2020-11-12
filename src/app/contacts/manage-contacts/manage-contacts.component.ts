@@ -1775,14 +1775,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				.subscribe(
 					data => {
 						console.log(data);
-						if (data.message == "success") {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-							this.contactService.successMessage = true;
-						} else {
-							this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
-						}
+						this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+						this.contactService.successMessage = true;
+						// if (data.message == "success") {
+						// 	this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+						// 	this.contactService.successMessage = true;
+						// } else {
+						// 	this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
+						// }
 					},
 					(error: any) => {
+						this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
 						this.xtremandLogger.error(error);
 					},
 					() => this.xtremandLogger.log("Manage Partner component Mail send method successfull")

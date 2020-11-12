@@ -477,7 +477,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     
     this.listActiveSocialAccounts(this.loggedInUserId);
     
-    flatpickr('.flatpickr', {
+    flatpickr('.eventflatpickr', {
       enableTime: true,
       dateFormat: 'm/d/Y h:i K',
       time_24hr: false,
