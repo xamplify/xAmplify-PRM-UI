@@ -20,6 +20,8 @@ import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+
 declare var $, swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -52,8 +54,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	assetViewLoader = false;
 	assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
 	selectedAsset: any;
+	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
+		if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+			this.vanityLoginDto.userId = this.loggedInUserId; 
+			this.vanityLoginDto.vanityUrlFilter = true;
+		 }
 	}
 
 	ngOnInit() {
@@ -123,6 +131,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
 						this.pagination.companyId = this.loggedInUserCompanyId;
 						if (this.isPartnerView) {
+							if(this.vanityLoginDto.vanityUrlFilter){
+								this.pagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+								this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+							}
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.listAssets(this.pagination);
