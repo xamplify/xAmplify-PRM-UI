@@ -2289,14 +2289,17 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     if (data.access) {
                         console.log(data);
                         this.loading = false;
-                        if (data.message == "success") {
-                            this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-                        }
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+                        this.referenceService.goToTop();
+                        // if (data.message == "success") {
+                        //     this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+                        // }
                     } else {
                         this.authenticationService.forceToLogout();
                     }
                 },
                 ( error: any ) => {
+                    this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
                     this.xtremandLogger.error( error );
                     this.loading = false;
                 },
