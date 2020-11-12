@@ -25,17 +25,18 @@
    <i class="fa fa-refresh" aria-hidden="true"></i>
 </a>
  </div>
- <div class="page-bar">
-   <ul class="page-breadcrumb">
-      <li style="font-weight: 600;">
-         <span>Asset Name : <strong>{{selectedAssetName | slice:0:50}}</strong>
-            <strong *ngIf="selectedAssetName?.length>50">..</strong></span>
-      </li>
-   </ul>
-</div>
+
  <div class="row">
   <div class="col-md-12 col-lg-12">
      <div class="portlet light" style="height:198px;">
+      <div class="page-bar">
+         <ul class="page-breadcrumb">
+            <li>
+               <span><strong class="bold-asset">Asset Name </strong>: {{selectedAssetName | slice:0:50}}
+                  <span *ngIf="selectedAssetName?.length>50">..</span></span>
+            </li>
+         </ul>
+      </div>
         <div class="row" style="margin-top: 20px;">
            <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
            <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
