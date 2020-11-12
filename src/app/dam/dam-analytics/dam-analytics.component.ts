@@ -61,9 +61,9 @@ export class DamAnalyticsComponent implements OnInit {
       if(this.damAnalyticsTilesDto!=undefined){
         this.selectedAssetName = response.data.assetName;
         this.dataFound = true;
-        let fullName = this.damAnalyticsTilesDto.fullName;
-        if(fullName!=undefined && fullName!="" && fullName!=null){
-          this.damAnalyticsTilesDto.circleAlphabet = fullName.slice(0,1);
+        let contactCompany = this.damAnalyticsTilesDto.contactCompany;
+        if(contactCompany!=undefined && contactCompany!="" && contactCompany!=null){
+          this.damAnalyticsTilesDto.circleAlphabet = contactCompany.slice(0,1);
           }else{
           this.damAnalyticsTilesDto.circleAlphabet = this.damAnalyticsTilesDto.emailId.slice(0,1);
           }
