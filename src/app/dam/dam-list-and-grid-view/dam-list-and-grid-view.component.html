@@ -186,12 +186,18 @@
                                                    <a  title="Add" (click)="addOrEdit(asset.id)">
                                                       <i class="fa fa-plus" aria-hidden="true"></i>
                                                       </a>
+                                                      <a *ngIf="!isPartnerView"  title="Edit/Preview" (click)="editDetails(asset.id)">
+                                                         <i class="fa fa-edit" aria-hidden="true"></i>
+                                                      </a>
                                                       <a  title="Publish" (click)="openPublishPopup(asset.id)">
                                                       <i class="fa fa-share" aria-hidden="true"></i>
                                                       </a>
                                                       <a  title="Download" (click)="openPopup(asset)">
                                                         <i class="fa fa-download" aria-hidden="true"></i>
                                                         </a>
+                                                        <a  title="View Analytics" (click)="viewAnalytics(asset)">
+                                                         <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                                         </a>
                                                       <a  title="Delete" (click)="confirmDelete(asset)">
                                                       <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                       </a>
@@ -249,7 +255,7 @@
                        <div class="ribbon">
                            <span *ngIf="asset?.published" translate>Published</span>
                        </div>
-                       <div class="bar">
+                       <div class="bar auto-height">
                         <a *ngIf="asset?.history && !isPartnerView "  title="History" (click)="viewGirdHistory(asset)">
                            <i class="fa" [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                            </a>
@@ -330,9 +336,12 @@
                        <div class="ribbon">
                            <span *ngIf="asset?.published" translate>Published</span>
                        </div>
-                       <div class="bar">
+                       <div class="bar auto-height">
                            <a *ngIf="asset?.beeTemplate"  title="Add"  (click)="addOrEdit(asset.id)">
                                <i class="fa fa-plus" aria-hidden="true"></i>
+                           </a>
+                           <a *ngIf="!isPartnerView"  title="Edit/Preview" (click)="editDetails(asset.id)">
+                              <i class="fa fa-edit" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>
@@ -340,6 +349,9 @@
                            <a  title="Download" (click)="openPopup(asset)">
                               <i class="fa fa-download" aria-hidden="true"></i>
                           </a>
+                          <a  title="View Analytics" (click)="viewAnalytics(asset)">
+                           <i class="fa fa-line-chart" aria-hidden="true"></i>
+                           </a>
                            <a *ngIf="!isPartnerView" title="Delete" class="delete" (click)="confirmDelete(asset)">
                                <i class="fa fa-trash-o" aria-hidden="true"></i>
                            </a>

@@ -180,3 +180,6 @@ cursor: default;
 .edit-submit{
   margin-right: 5px;
 }
+.auto-height{
+  height: auto !important;
+}
