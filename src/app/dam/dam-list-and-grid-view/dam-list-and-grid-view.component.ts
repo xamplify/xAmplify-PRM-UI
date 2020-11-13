@@ -222,8 +222,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else {
 			this.listAssets(this.pagination);
 		}
-
 	}
+	listItems(event:any){
+		this.pagination = event;
+		if(this.isPartnerView){
+			this.listPublishedAssets(this.pagination);
+		}else{
+			this.listAssets(this.pagination);
+		}
+	}
+
 	getAllFilteredResults() {
 		this.pagination.pageIndex = 1;
 		this.pagination.searchKey = this.sortOption.searchKey;

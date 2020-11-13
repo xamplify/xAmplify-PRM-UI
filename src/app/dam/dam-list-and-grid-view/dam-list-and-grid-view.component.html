@@ -293,7 +293,7 @@
           <strong>No Data Found.</strong>
          </div>
          <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
-          <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAssets($event)">
+          <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listItems($event)">
           </app-pagination>
          </div>
       </ng-container>

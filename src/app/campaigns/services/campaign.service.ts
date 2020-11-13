@@ -469,6 +469,13 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    listCampaignUsers(pagination:Pagination){
+        let url = this.URL + "campaign/listCampaignUserList?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     listCampaignPartnersOrTemplateDownloadPartners(pagination: Pagination, campaignId: number,templateDownloadPartners:boolean){
         let url = templateDownloadPartners ?  'listTemplateDownloadPartners':'list-partners-by-campaign-id/'+campaignId;
         pagination.campaignId = campaignId;
