@@ -1,5 +1,7 @@
+import { User } from "app/core/models/user";
 import { DealAnswer } from "app/deal-registration/models/deal-answers";
 import { DealDynamicProperties } from "app/deal-registration/models/deal-dynamic-properties";
+import { SfCustomFieldsDataDTO } from "app/deal-registration/models/sfcustomfieldsdata";
 
 export class Deal {
     id: number;
@@ -23,4 +25,14 @@ export class Deal {
     closeDateString: string; 
     properties: DealDynamicProperties[];
     answers: DealAnswer[];
+    associatedContact: User;
+
+    // Sf Custom Form Fields
+   description: string;
+   stage:string;
+   probability:string;
+   nextStep:string;
+   leadSource:string;
+   
+   sfCustomFieldsDataDto: Array<SfCustomFieldsDataDTO> = new Array<SfCustomFieldsDataDTO>();
 }

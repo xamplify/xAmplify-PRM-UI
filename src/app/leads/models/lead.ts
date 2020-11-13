@@ -17,7 +17,8 @@ export class Lead {
     parentCampaignName: string;
     pipelineStageId: number;
     canUpdate:boolean;
-    canDelete:boolean;    
+    canDelete:boolean;  
+    canRegisterDeal:boolean;  
     userId:number;
     preview = false;
     createdForCompanyId: number;  

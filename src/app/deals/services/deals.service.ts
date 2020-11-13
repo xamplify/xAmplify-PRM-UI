@@ -65,6 +65,12 @@ getCampaignDealPipeline(campaignId:number, userId:number) {
   .catch(this.handleError);
 }
 
+getSalesforcePipeline(createdForCompanyId:number, userId:number) {
+  return this.http.get(this.authenticationService.REST_URL + `/pipeline/DEAL/salesforce/${createdForCompanyId}/${userId}?access_token=${this.authenticationService.access_token}`)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 
 	private extractData(res: Response) {
     let body = res.json();

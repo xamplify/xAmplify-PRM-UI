@@ -45,7 +45,7 @@
               </select>
             </div>
 
-            <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px" *ngIf="!hasCampaignPipeline">
+            <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px" *ngIf="!hasCampaignPipeline && !hasSfPipeline">
               <label class="control-label">Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
               <select class="form-control" [(ngModel)]="deal.pipelineId" [ngModelOptions]="{standalone: true}"
                 placeholder="pipelineId" id="pipelineId" [disabled]="preview"
@@ -63,8 +63,15 @@
                 <option [value]="0">Select Stage</option>
                 <option *ngFor="let stage of stages" [value]="stage.id">{{stage.stageName}}</option>
               </select>
-            </div>
+            </div>           
 
+          </div>
+          <div class="col-sm-6 col-xs-12">
+            <fieldset>
+              <legend>Contact Info</legend>
+              <app-user-info *ngIf="showContactInfo" [userInfo]="contact" [isLeadInfo]="true"></app-user-info>
+              <div *ngIf="!showContactInfo">Not Available</div>
+            </fieldset>            
           </div>
         </div>
         <div *ngIf= "showSfForm">
@@ -205,12 +212,12 @@
         <hr> -->
         </div>
 
-        <div class="pull-right" *ngIf="!preview && !showSfDealForm && showDefaultForm">
+        <div class="pull-right" *ngIf="!preview && !showSfForm && showDefaultForm">
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn green-haze" *ngIf="!edit">REGISTER DEAL</button>
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn green-haze" *ngIf="edit">UPDATE DEAL</button>
           
         </div>
-        <div class="pull-right" *ngIf="!preview && showSfDealForm">
+        <div class="pull-right" *ngIf="!preview && showSfForm">
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="!edit">REGISTER DEAL</button>
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="edit">UPDATE DEAL</button>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>

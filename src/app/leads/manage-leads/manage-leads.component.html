@@ -184,7 +184,8 @@
                             <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
                               <i class="fa fa-check-circle mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                               Deal</div>
-                            <div *ngIf="lead?.associatedDealId == undefined || lead?.associatedDealId <= 0" class="register_deal">
+                              
+                            <div *ngIf="lead?.canRegisterDeal" class="register_deal">
                               <a style="color: #008fd5;" (click)="showDealRegistrationForm(lead)" translate>
                                 Register Deal</a>
                             </div>

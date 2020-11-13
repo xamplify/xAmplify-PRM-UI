@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild} from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -16,6 +16,9 @@ import { DealQuestions } from 'app/deal-registration/models/deal-questions';
 import { DealType } from 'app/deal-registration/models/deal-type';
 import { DealDynamicProperties } from 'app/deal-registration/models/deal-dynamic-properties';
 import { DealAnswer } from 'app/deal-registration/models/deal-answers';
+import { User } from 'app/core/models/user';
+import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
+import { SfCustomFieldsDataDTO } from 'app/deal-registration/models/sfcustomfieldsdata';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -42,9 +45,11 @@ export class AddDealComponent implements OnInit {
   vendorList = new Array();
   deal: Deal = new Deal();
   lead: Lead = new Lead();
+  contact: User = new User();
   pipelines = new Array<Pipeline>();
   stages = new Array<PipelineStage>();
   hasCampaignPipeline = false;
+  hasSfPipeline = false;
   dealTypes: DealType[] = [];
   defaultDealTypes = ['Select Dealtype', 'New Customer', 'New Product', 'Upgrade', 'Services'];
   questions: DealQuestions[] = [];
@@ -52,6 +57,7 @@ export class AddDealComponent implements OnInit {
   propertiesComments: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
   properties: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
   showDefaultForm = false;
+  showContactInfo = false;
 
   ngxloading: boolean;
   isLoading = false;
@@ -75,6 +81,9 @@ export class AddDealComponent implements OnInit {
   pipelineStageId: string;
   pipelineStageIdError: boolean = true;
   isDealRegistrationFormValid: boolean = true;
+
+  @ViewChild(SfDealComponent)
+  sfDealComponent: SfDealComponent;
   
   constructor(public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -149,6 +158,10 @@ export class AddDealComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.lead = data.data;
+            self.showContactInfo = true;
+            self.contact.firstName = self.lead.firstName;
+            self.contact.lastName = self.lead.lastName;
+            self.contact.emailId = self.lead.email;
             self.deal.associatedLeadId = self.lead.id;
             self.deal.createdForCompanyId = self.lead.createdForCompanyId;
             self.createdForCompanyIdError = false;
@@ -214,6 +227,10 @@ export class AddDealComponent implements OnInit {
               self.getCampaignDealPipeline();
             } else {
               self.getPipelines();
+            }
+            if (self.deal.associatedContact != undefined) {
+                self.showContactInfo = true;
+                self.contact = self.deal.associatedContact;
             }
             self.setCloseDate(data);            
             this.setFieldErrorStates();
@@ -306,12 +323,15 @@ export class AddDealComponent implements OnInit {
         () => {
           if (!this.showSfForm) {
             this.showDefaultForm = true;
+            this.resetPipelines();            
             if (this.edit || this.preview) {
               this.setProperties();
             } else {
               this.getQuestions();
             }
             this.getDealTypes();
+          } else {
+            this.getSalesforcePipeline();
           }
         });
   }
@@ -344,11 +364,37 @@ export class AddDealComponent implements OnInit {
     //this.validateField('createdForCompanyId',false);
     if (this.deal.createdForCompanyId > 0) {
       this.isSalesForceEnabled();
-      this.resetPipelines();      
+                  
     } else {
       this.showDefaultForm = false;
       this.propertiesQuestions = [];
     }
+  }
+
+  getSalesforcePipeline() {
+    let self = this;    
+    this.dealsService.getSalesforcePipeline(this.deal.createdForCompanyId, this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (data.statusCode == 200) {
+            let salesforcePipeline = data.data;
+            self.deal.pipelineId = salesforcePipeline.id;
+            self.pipelineIdError = false;
+            self.stages = salesforcePipeline.stages;
+            self.hasSfPipeline = true;
+          } else if (data.statusCode == 404) {
+            self.deal.pipelineId = 0;
+            self.stages = [];
+            self.getPipelines();
+            self.hasSfPipeline = false;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
   }
 
   getPipelines() {
@@ -402,7 +448,7 @@ export class AddDealComponent implements OnInit {
 
     if (this.showSfForm) {
       this.showLoadingButton = true;
-      //this.setSfFormFieldValues();
+      this.setSfFormFieldValues();
     }
 
     if (this.edit) {
@@ -672,7 +718,72 @@ export class AddDealComponent implements OnInit {
     })
 
     this.submitButtonStatus();
+}
 
+setSfFormFieldValues() {
+  if (this.sfDealComponent.form !== undefined || this.sfDealComponent.form !== null) {
+      let formLabelDTOs = this.sfDealComponent.form.formLabelDTOs;
+      if (formLabelDTOs.length !== 0) {
+          let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
+          let sfDefaultFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === false);
+
+          for (let formLabel of sfDefaultFields) {
+              if (formLabel.labelId === "Name") {
+                  this.deal.title = formLabel.value;
+              } else if (formLabel.labelId === "Description") {
+                  this.deal.description = formLabel.value;
+              } else if (formLabel.labelId === "Type") {
+                  this.deal.dealType = formLabel.value;
+              } else if (formLabel.labelId === "LeadSource") {
+                  this.deal.leadSource = formLabel.value;
+              } else if (formLabel.labelId === "Amount") {
+                  this.deal.amount = formLabel.value;
+              } else if (formLabel.labelId === "CloseDate") {
+                  this.deal.closeDateString = formLabel.value;
+              } else if (formLabel.labelId === "NextStep") {
+                  this.deal.nextStep = formLabel.value;
+              } else if (formLabel.labelId === "Probability") {
+                  this.deal.probability = formLabel.value;
+              } else if (formLabel.labelId === "StageName") {
+                  this.deal.stage = formLabel.value;
+              }
+              
+              // else if (formLabel.labelId === "OrderNumber__c") {
+              //     this.deal.orderNumber = formLabel.value;
+              // } else if (formLabel.labelId === "MainCompetitors__c") {
+              //     this.dealRegistration.mainCompetitor = formLabel.value;
+              // } else if (formLabel.labelId === "CurrentGenerators__c") {
+              //     this.dealRegistration.currentGenerator = formLabel.value;
+              // } else if (formLabel.labelId === "TrackingNumber__c") {
+              //     this.dealRegistration.trackingNumber = formLabel.value;
+              // } else if (formLabel.labelId === "DeliveryInstallationStatus__c") {
+              //     this.dealRegistration.deliveryInstallationStatus = formLabel.value;
+              // }
+          }
+
+          let sfCfDataList = [];
+          for (let formLabel of sfCustomFields) {
+              let sfCfData = new SfCustomFieldsDataDTO();
+              sfCfData.sfCfLabelId = formLabel.labelId;                    
+              if(formLabel.labelType === 'multiselect'){
+                  for (let option of formLabel.value) {
+                      sfCfData.value = sfCfData.value + option.name + ";";
+                  }
+                  sfCfData.value = sfCfData.value.substring(0,sfCfData.value.length-1);
+              }else if(formLabel.labelType === 'datetime'){
+                  sfCfData.value = formLabel.value;
+                  sfCfData.type = formLabel.labelType;
+                  const event = new Date(formLabel.value);
+                  sfCfData.dateTimeIsoValue = event.toISOString();                        
+              }
+              else{
+                  sfCfData.value = formLabel.value;
+              }
+              sfCfDataList.push(sfCfData);
+          }
+          this.deal.sfCustomFieldsDataDto = sfCfDataList;
+      }
+  }
 }
 
 }
