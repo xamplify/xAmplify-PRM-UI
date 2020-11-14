@@ -71,6 +71,7 @@ export class Pagination {
 	feedId = 0;
 	partnershipId = 0;
 	redistributingCampaign : boolean = false;
+	parentCampaignId:number = 0;
 
 
 }

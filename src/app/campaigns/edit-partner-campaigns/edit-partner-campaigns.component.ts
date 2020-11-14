@@ -465,19 +465,24 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     validateLaunchForm(): void {
-        this.campaignLaunchForm = this.formBuilder.group({
-            'scheduleCampaign': [this.campaign.scheduleCampaign, Validators.required],
-            'launchTime': [this.campaign.scheduleTime],
-            'timeZoneId': [this.campaign.timeZoneId],
-            'countryId': [this.campaign.countryId]
-        }, {
-                validator: validateCampaignSchedule('scheduleCampaign', 'launchTime')
-            }
-        );
-        this.campaignLaunchForm.valueChanges
-            .subscribe(data => this.onLaunchValueChanged(data));
-
-        this.onLaunchValueChanged(); // (re)set validation messages now
+        if(this.campaign!=undefined){
+            this.campaignLaunchForm = this.formBuilder.group({
+                'scheduleCampaign': [this.campaign.scheduleCampaign, Validators.required],
+                'launchTime': [this.campaign.scheduleTime],
+                'timeZoneId': [this.campaign.timeZoneId],
+                'countryId': [this.campaign.countryId]
+            }, {
+                    validator: validateCampaignSchedule('scheduleCampaign', 'launchTime')
+                }
+            );
+            this.campaignLaunchForm.valueChanges
+                .subscribe(data => this.onLaunchValueChanged(data));
+    
+            this.onLaunchValueChanged(); // (re)set validation messages now
+        }else{
+            this.router.navigate(['/home/campaigns/partner/all']);
+        }
+        
     }
 
     //campaign lunch form value changed method
@@ -1068,20 +1073,23 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         if(this.campaign.nurtureCampaign){
             contactsPagination.editCampaign = true;
             contactsPagination.campaignId = this.campaign.campaignId;
+            contactsPagination.parentCampaignId = this.campaign.parentCampaignId;
         }else{
             contactsPagination.editCampaign = false;
+            contactsPagination.parentCampaignId = this.campaign.campaignId;
         }
-        console.log(contactsPagination);
-        contactsPagination.userId = this.campaignService.reDistributeCampaign.userId;
+        //contactsPagination.userId = this.campaignService.reDistributeCampaign.userId;
+        contactsPagination.userId = this.loggedInUserId;
         contactsPagination.redistributingCampaign = true;
-        this.contactService.loadContactLists(contactsPagination)
+        this.campaignService.listCampaignUsers(contactsPagination)
             .subscribe(
             (data: any) => {
-                this.userLists = data.listOfUserLists;
-                contactsPagination.totalRecords = data.totalRecords;
+                let response = data.data;
+                this.userLists = response.list;
+                contactsPagination.totalRecords = response.totalRecords;
                 if(contactsPagination.filterBy!=null){
                     if(contactsPagination.filterBy==0){
-                        contactsPagination.maxResults = data.totalRecords;
+                        contactsPagination.maxResults = response.totalRecords;
                     }else{
                         contactsPagination.maxResults = contactsPagination.filterBy;
                     }
