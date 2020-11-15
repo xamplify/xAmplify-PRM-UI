@@ -29,6 +29,7 @@ import { LandingPageService } from '../../landing-pages/services/landing-page.se
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -66,6 +67,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     emailTemplateHrefLinks: any[] = [];
     enableWorkFlow = true;
     teamMemberEmailIds:any[] = [];
+    vanityLoginDto : VanityLoginDto = new VanityLoginDto();
     formErrors = {
         'campaignName': '',
         'fromName': '',
@@ -206,6 +208,11 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             if(this.campaignService.reDistributeCampaign!=undefined){
                 this.loadCampaignNames(this.loggedInUserId);
 				if(this.campaignService.reDistributeCampaign.emailTemplate!=undefined){
+                    if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+                        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+                        this.vanityLoginDto.userId = this.loggedInUserId; 
+                        this.vanityLoginDto.vanityUrlFilter = true;
+                     }
 					this.setCampaignData(this.campaignService.reDistributeCampaign);
 				}else{
 					this.referenceService.showSweetAlertErrorMessage("This campaign cannot be redistributed as the email template is not available");
@@ -249,6 +256,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         
         if(this.campaign.nurtureCampaign){
             this.selectedUserlistIds = this.campaign.userListIds;
+            this.getValidUsersCount();
         }
         this.campaignType = this.campaign.campaignType.toLocaleString();
         if(this.campaignType.includes('VIDEO')){
@@ -1078,9 +1086,12 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             contactsPagination.editCampaign = false;
             contactsPagination.parentCampaignId = this.campaign.campaignId;
         }
-        //contactsPagination.userId = this.campaignService.reDistributeCampaign.userId;
         contactsPagination.userId = this.loggedInUserId;
         contactsPagination.redistributingCampaign = true;
+        if(this.vanityLoginDto.vanityUrlFilter){
+            contactsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+            contactsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+        }
         this.campaignService.listCampaignUsers(contactsPagination)
             .subscribe(
             (data: any) => {
@@ -1368,20 +1379,24 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   getValidUsersCount() {
       try {
          if(this.selectedUserlistIds.length > 0){
+         this.ngxloading = true;
           this.contactService.getValidUsersCount( this.selectedUserlistIds )
               .subscribe(
               data => {
                   this.validUsersCount = data['validContactsCount'];
                   this.allUsersCount = data['allContactsCount'];
+                  this.ngxloading = false;
                   console.log( "valid contacts Data:" + data['validContactsCount'] );
               },
               ( error: any ) => {
+                this.ngxloading = false;
                   console.log( error );
               },
               () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
               )
          }
       } catch ( error ) {
+        this.ngxloading = false;
           console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
       }
   }
