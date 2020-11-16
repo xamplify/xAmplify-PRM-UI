@@ -183,6 +183,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     categoryNames: any;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     folderCustomResponse:CustomResponse = new CustomResponse();
+    nurtureCampaign = false;
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
@@ -206,6 +207,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.isVendorAndPartner = this.authenticationService.isVendorPartner();
              CKEDITOR.config.height = '100';
             if(this.campaignService.reDistributeCampaign!=undefined){
+                this.nurtureCampaign = this.campaignService.reDistributeCampaign.nurtureCampaign;
                 this.loadCampaignNames(this.loggedInUserId);
 				if(this.campaignService.reDistributeCampaign.emailTemplate!=undefined){
                     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
@@ -218,10 +220,22 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 					this.referenceService.showSweetAlertErrorMessage("This campaign cannot be redistributed as the email template is not available");
 					this.router.navigate(['/home/campaigns/partner/all']);
 				}
-                
             }else{
                 this.router.navigate(['/home/campaigns/partner/all']);
             }
+        }
+        ngOnInit() {
+            this.validateLaunchForm();
+            if(this.campaignService.reDistributeCampaign!=undefined){
+                flatpickr( '.flatpickr',{
+                    enableTime: true,
+                    dateFormat: 'm/d/Y h:i K',
+                    time_24hr: false
+                } );
+                this.isListView = !this.referenceService.isGridView;
+                this.listCategories();
+            }
+            
         }
 
     checkInteractiveData( text: any ) {
@@ -473,24 +487,20 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     validateLaunchForm(): void {
-        if(this.campaign!=undefined){
-            this.campaignLaunchForm = this.formBuilder.group({
-                'scheduleCampaign': [this.campaign.scheduleCampaign, Validators.required],
-                'launchTime': [this.campaign.scheduleTime],
-                'timeZoneId': [this.campaign.timeZoneId],
-                'countryId': [this.campaign.countryId]
-            }, {
-                    validator: validateCampaignSchedule('scheduleCampaign', 'launchTime')
-                }
-            );
-            this.campaignLaunchForm.valueChanges
-                .subscribe(data => this.onLaunchValueChanged(data));
-    
-            this.onLaunchValueChanged(); // (re)set validation messages now
-        }else{
-            this.router.navigate(['/home/campaigns/partner/all']);
-        }
-        
+        this.campaign = this.campaign!=undefined ? this.campaign:new Campaign();
+        this.campaignLaunchForm = this.formBuilder.group({
+            'scheduleCampaign': [this.campaign.scheduleCampaign, Validators.required],
+            'launchTime': [this.campaign.scheduleTime],
+            'timeZoneId': [this.campaign.timeZoneId],
+            'countryId': [this.campaign.countryId]
+        }, {
+                validator: validateCampaignSchedule('scheduleCampaign', 'launchTime')
+            }
+        );
+        this.campaignLaunchForm.valueChanges
+            .subscribe(data => this.onLaunchValueChanged(data));
+
+        this.onLaunchValueChanged(); // (re)set validation messages now
     }
 
     //campaign lunch form value changed method
@@ -1274,16 +1284,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       }
 
  contactSearchInputKey( keyCode: any ) { if ( keyCode === 13 ) { this.searchContactList(); } }
-  ngOnInit() {
-      flatpickr( '.flatpickr',{
-          enableTime: true,
-          dateFormat: 'm/d/Y h:i K',
-          time_24hr: false
-      } );
-      this.isListView = !this.referenceService.isGridView;
-      this.validateLaunchForm();
-      this.listCategories();
-  }
+  
 
   listCategories(){
       this.loading = true;
@@ -1307,8 +1308,12 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   }
 
   goToCampaigns(){
-      let type = this.campaign.campaignType.toString(1);
-      this.router.navigate(['/home/campaigns/partner/' + type.toLowerCase()]);
+      if(this.nurtureCampaign){
+        this.goToManageCampaigns();
+      }else{
+        this.goToRedistributeCampaigns();
+      }
+      
   }
 
   setPage(event: any) {
@@ -1427,6 +1432,15 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 showSuccessMessage(message:any){
   this.folderCustomResponse = new CustomResponse('SUCCESS',message, true);
   this.listCategories();
+}
+
+goToManageCampaigns(){
+    this.ngxloading = true;
+    this.referenceService.goToRouter("/home/campaigns/manage");
+}
+goToRedistributeCampaigns(){
+    this.ngxloading = true;
+    this.referenceService.goToRouter("/home/campaigns/partner/all");
 }
 
 }
