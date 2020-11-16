@@ -1129,7 +1129,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             },
             (error: string) => this.xtremandLogger.errorPage(error),
             () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
-            )
+            );
     }
 
     showContacts(){

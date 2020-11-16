@@ -470,7 +470,7 @@
 										<th style="width: 5%">Select</th>
 										<th>List Name</th>
 										<th>Created On</th>
-										<th>Recipients</th>
+										<!-- <th>Recipients</th> -->
 										<th>Type</th>
 										<th>Preview</th>
 									</tr>
@@ -486,16 +486,19 @@
 												<span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
 												<span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
 											</h5>
-											<h6 title="{{contactList.uploadedBy}}" style="margin: 5px 0;">
+											<!-- <h6 title="{{contactList.uploadedBy}}" style="margin: 5px 0;">
 												<span *ngIf="contactList.uploadedBy?.length<=50">By {{contactList.uploadedBy}}</span>
 												<span *ngIf="contactList.uploadedBy?.length>50">By {{contactList.uploadedBy | slice:0:50}}...</span>
-											</h6>
+											</h6> -->
 										</td>
 										<td>{{contactList.createdDate | date:'mediumDate'}}</td>
-										<td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td>
-										<td>
-											<span *ngIf="contactList.partnerUserList">partner</span>
-											<span *ngIf="!contactList.partnerUserList">contact</span>
+										<!-- <td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td> -->
+										<td *ngIf="!nurtureCampaign">
+												<span *ngIf="contactList.partnerUserList">partner</span>
+												<span *ngIf="!contactList.partnerUserList">contact</span>
+										</td>
+										<td *ngIf="nurtureCampaign">
+											<span>{{contactList?.type}}</span>
 										</td>
 										<td class='m0'>
 											<a class="actions-block pull-left"><i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>

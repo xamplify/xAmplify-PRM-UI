@@ -412,10 +412,14 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )
         .subscribe(
             data => {
-                this.router.navigate(['/home/campaigns/social', data.socialStatusList[0].alias]);
+                if(data.socialStatusList[0]!=undefined){
+                    this.router.navigate(['/home/campaigns/social', data.socialStatusList[0].alias]);
+                }else{
+                    this.customResponse = new CustomResponse("ERROR","This campaign cannot be redistributed.Please contact admin",true);
+                }
             },
             error => {
-                    this.customResponse = new CustomResponse("ERROR","This campaign cannot be redistributed.Please contact admin",true);
+                this.customResponse = new CustomResponse("ERROR","This campaign cannot be redistributed.Please contact admin",true);
                     
                 },
             () => console.log()
