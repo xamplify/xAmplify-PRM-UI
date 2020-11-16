@@ -357,8 +357,12 @@ export class ReferenceService {
 			},
 				'slow');
 		}
-
 	}
+
+	scrollToModalBodyTop(divId:string){
+	$('#'+divId).animate({ scrollTop: 0 }, 'slow');
+	}
+
 	removeSelectedObjectFromList(arrayList: any, id: any) {
 		for (let i = 0; i < arrayList.length; i++) {
 			if (arrayList[i].id === id) { arrayList.splice(i, 1); break; }
