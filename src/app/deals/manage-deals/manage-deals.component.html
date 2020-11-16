@@ -30,11 +30,11 @@
       <div class="row">
         <div class="col-xs-12  p5">
           <div class="row">
-            <!-- -------Total Leads------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!opportunitiesAnalyticsLoader"
-              [style.pointer-events]="dealsCount != 0 ? 'auto' : 'none' ">
+            <!-- -------Total Deals------- -->
+            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+              [style.pointer-events]="counts.totalDeals != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex"
-                (click)="showLeads()">
+                (click)="showDeals()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
                     [ngStyle]="{'color': 1==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 1==selectedTabIndex"
@@ -42,7 +42,7 @@
                 </div>
                 <div class="details">
                   <div class="number">
-                    <span>{{dealsCount}}</span>
+                    <span>{{counts.totalDeals}}</span>
                   </div>
                   <div class="desc" translate>Total Deals</div>
                 </div>
@@ -52,8 +52,54 @@
               </a>
             </div>
 
+            <!-- -------Won Deals------- -->
+            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+              [style.pointer-events]="counts.wonDeals != 0 ? 'auto' : 'none' ">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
+                (click)="showWonDeals()">
+                <div class="visual">
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
+                    [ngStyle]="{'color': 2==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 2==selectedTabIndex"
+                    aria-hidden="true"></i>
+                </div>
+                <div class="details">
+                  <div class="number">
+                    <span>{{counts.wonDeals}}</span>
+                  </div>
+                  <div class="desc" translate>Won Deals</div>
+                </div>
+                <span id="permhref" class="morePadding ">
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                </span>
+              </a>
+            </div>
+
+            <!-- -------Lost Deals------- -->
+            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+              [style.pointer-events]="counts.lostDeals != 0 ? 'auto' : 'none' ">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="3!=selectedTabIndex"
+                (click)="showLostDeals()">
+                <div class="visual">
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
+                    [ngStyle]="{'color': 3==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 3==selectedTabIndex"
+                    aria-hidden="true"></i>
+                </div>
+                <div class="details">
+                  <div class="number">
+                    <span>{{counts.lostDeals}}</span>
+                  </div>
+                  <div class="desc" translate>Lost Deals</div>
+                </div>
+                <span id="permhref" class="morePadding ">
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                </span>
+              </a>
+            </div>
+
           </div>
         </div>
+
+        
       </div>
 
       <!-- -----------------------------Deals List-------------------------------------- -->
@@ -122,8 +168,13 @@
                               </h5> 
                             </div>
                             <div>
-                              <h5 *ngIf="deal?.campaignId > 0"><b>Campaign:</b>
+                              <h5 *ngIf="isPartnerVersion && deal?.campaignId > 0"><b>Campaign:</b>
                                 <span  style="color: #5b9bd1;">{{deal.campaignName | slice:0:30}}
+                                  <span *ngIf="deal.campaignName?.length>30">...</span>
+                                </span>  
+                              </h5>
+                              <h5 *ngIf="isVendorVersion && deal?.parentCampaignId > 0"><b>Campaign:</b>
+                                <span  style="color: #5b9bd1;">{{deal.parentCampaignName | slice:0:30}}
                                   <span *ngIf="deal.campaignName?.length>30">...</span>
                                 </span>  
                               </h5> 
@@ -147,9 +198,12 @@
                               </app-timestamp>
                             </h5>
                           </td>                          
-                          <td style="width: 10%;">
-                            {{deal.currentStageName | slice:0:30}}                            
-                              
+                          <td style="width: 10%;"> 
+                            <select class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal)"
+                              style="width: 135px">
+                              <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
+                            </select>
+                            
                           </td>
                           <td style="width: 30%;">
                             <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"
@@ -192,12 +246,12 @@
 
               </section>
               <!-- --------------------Pagination0-------------------- -->
-              <div *ngIf="dealsPagination.pagedItems.length !== 0" class="pg8">
+              <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.pagedItems.length !== 0" class="pg8">
                 <app-pagination [pagination]="dealsPagination" (notifyParent)="setDealsPage($event)"
                   (notifyParentDropDown)="listDeals($event)"></app-pagination>
               </div>
               <!-- End of 24 -->
-              <div *ngIf="dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+              <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
                 <strong translate>No Deals Found.</strong>
               </div>
 
@@ -219,6 +273,6 @@
 	<div class="page-content">
 		<a (click)="closeDealForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-      <app-add-deal [dealId]="dealId" [actionType]="actionType"></app-add-deal>
+      <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin"></app-add-deal>
 	</div>
 </section>

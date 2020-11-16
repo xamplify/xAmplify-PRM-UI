@@ -39,38 +39,47 @@ export class ManageLeadsComponent implements OnInit {
   leadsPagination: Pagination;
   leadsSortOption: SortOption = new SortOption();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-  leadsCount = 0;
   leadFormTitle = "Lead";
   actionType = "add";
   leadId = 0;
   showLeadForm = false;
   showDealForm = false;
   leadsResponse: CustomResponse = new CustomResponse();
+  counts : any;
+  countsLoader = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService, private userService: UserService,
     private dealRegistrationService: DealRegistrationService, private leadsService: LeadsService) {
+
+      this.loggedInUserId = this.authenticationService.getUserId();
+        const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+        userService.getHomeRoles(url)
+            .subscribe(
+                response => {
+                    if (response.statusCode == 200) {
+                        this.authenticationService.loggedInUserRole = response.data.role;
+                        this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+                        this.authenticationService.superiorRole = response.data.superiorRole;
+                        if (this.authenticationService.loggedInUserRole == "Team Member") {
+                            dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
+                                this.superiorId = response;
+                                this.init();
+                            });
+                        } else {
+                            this.superiorId = this.authenticationService.getUserId();
+                            this.init();
+                        }
+                    }
+                })
         
   }
 
-  ngOnInit() {
-    this.loggedInUserId = this.authenticationService.getUserId();
-    const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
-    this.getUserRoles(url);
-    if (this.authenticationService.loggedInUserRole == "Team Member") {
-      this.dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
-        this.superiorId = response;        
-      });
-    } else {
-      this.superiorId = this.authenticationService.getUserId();
-    }
-    this.init();
-    this.initVendorOrPartner();
-    this.showLeads();
-    this.referenceService.loading(this.httpRequestLoader, false); 
-    this.httpRequestLoader.isServerError = false;       
+  ngOnInit() {   
+    this.countsLoader = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
   }
 
   initVendorOrPartner() {
@@ -97,8 +106,20 @@ export class ManageLeadsComponent implements OnInit {
           if (response.statusCode == 200) {
             this.authenticationService.loggedInUserRole = response.data.role;
             this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-            this.authenticationService.superiorRole = response.data.superiorRole;            
+            this.authenticationService.superiorRole = response.data.superiorRole; 
+            if (this.authenticationService.loggedInUserRole == "Team Member") {
+              this.dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
+                this.superiorId = response; 
+                this.init();       
+              });
+            } else {
+              this.superiorId = this.authenticationService.getUserId();
+              this.init();
+            }           
           }
+        },
+        () => {
+          
         });
   }
 
@@ -139,7 +160,21 @@ export class ManageLeadsComponent implements OnInit {
     this.referenceService.getCompanyIdByUserId(this.superiorId).subscribe(response => {
       console.log(this.superiorId)
       this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
-        this.enableLeads = data.enableLeads;        
+        this.enableLeads = data.enableLeads; 
+        if (!this.isOnlyPartner) {
+          if (this.authenticationService.vanityURLEnabled) {
+            if (this.authenticationService.isPartnerTeamMember) {
+              this.showPartner();
+            } else {
+              this.isCompanyPartner = false;
+              this.showVendor();
+            }
+          } else {
+            this.showVendor();
+          }
+        } else {
+          this.showPartner();
+        }       
       });
     });
     
@@ -150,6 +185,7 @@ export class ManageLeadsComponent implements OnInit {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
+      this.getVendorCounts();
       this.showLeads();
       //this.switchVersions();
     } else {
@@ -160,14 +196,70 @@ export class ManageLeadsComponent implements OnInit {
     if (this.isCompanyPartner) {
       this.isVendorVersion = false;
       this.isPartnerVersion = true;
+      this.getPartnerCounts();
       this.showLeads();
       //this.switchVersions();
     }
   }
 
+  getVendorCounts() {
+    this.countsLoader = true;
+    this.leadsService.getCounts(this.loggedInUserId)
+    .subscribe(
+        response => {
+            if(response.statusCode==200){
+              this.counts = response.data.vendorCounts;
+              this.countsLoader = false;
+            }            
+        },
+        error => {
+            this.httpRequestLoader.isServerError = true;
+            },
+        () => { }
+    );
+  }
+
+  getPartnerCounts() {
+    this.countsLoader = true;
+    this.leadsService.getCounts(this.loggedInUserId)
+    .subscribe(
+        response => {
+            if(response.statusCode==200){
+              this.countsLoader = false;
+              this.counts = response.data.partnerCounts;
+            }            
+        },
+        error => {
+            this.httpRequestLoader.isServerError = true;
+            },
+        () => { }
+    );
+  }
+
   showLeads() {
     this.selectedTabIndex = 1;
     this.leadsPagination = new Pagination;
+    this.listLeads(this.leadsPagination);
+  }
+
+  showWonLeads() {
+    this.selectedTabIndex = 2;
+    this.leadsPagination = new Pagination;
+    this.leadsPagination.filterKey = "won";
+    this.listLeads(this.leadsPagination);
+  }
+
+  showLostLeads() {
+    this.selectedTabIndex = 3;
+    this.leadsPagination = new Pagination;
+    this.leadsPagination.filterKey = "lost";
+    this.listLeads(this.leadsPagination);
+  }
+
+  showConvertedLeads() {
+    this.selectedTabIndex = 4;
+    this.leadsPagination = new Pagination;
+    this.leadsPagination.filterKey = "converted";
     this.listLeads(this.leadsPagination);
   }
 
@@ -187,7 +279,6 @@ export class ManageLeadsComponent implements OnInit {
         response => {
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.totalRecords;
-            this.leadsCount = response.totalRecords;
             this.leadsSortOption.totalRecords = response.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data);
         },
@@ -205,7 +296,6 @@ export class ManageLeadsComponent implements OnInit {
         response => {
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.totalRecords;
-            this.leadsCount = response.totalRecords;
             this.leadsSortOption.totalRecords = response.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data);
         },
@@ -243,10 +333,13 @@ export class ManageLeadsComponent implements OnInit {
   leadEventHandler(keyCode: any) { if (keyCode === 13) { this.searchLeads(); } }
 
   closeLeadModal() {  
-    //$('#leadFormModel').modal('hide'); 
     this.showLeadForm = false;
+    if (this.isVendorVersion) {
+      this.getVendorCounts();
+    } else if (this.isPartnerVersion) {
+      this.getPartnerCounts();
+    }
     this.showLeads();
-    //this.actionType = "add"; 
   }
 
   addLead() {
@@ -304,7 +397,8 @@ export class ManageLeadsComponent implements OnInit {
       response => {
           this.referenceService.loading(this.httpRequestLoader, false);
           if(response.statusCode==200){
-            this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);  
+            this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+            this.getCounts();  
             this.showLeads();                         
         } else if (response.statusCode==500) {
             this.leadsResponse = new CustomResponse('ERROR', response.message, true);
@@ -316,6 +410,14 @@ export class ManageLeadsComponent implements OnInit {
       () => { }
   );
 
+ }
+
+ getCounts() {
+  if (this.isVendorVersion) {
+    this.getVendorCounts();
+  } else if (this.isPartnerVersion) {
+    this.getPartnerCounts();
+  }
  }
 
  showDealRegistrationForm(lead: Lead) {

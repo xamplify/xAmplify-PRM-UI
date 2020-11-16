@@ -35,6 +35,8 @@ export class AddDealComponent implements OnInit {
   @Input() public campaignId: any;
   @Input() public campaignName: any;
   @Input() public actionType: string;
+  @Input() public isVendorVersion: boolean;
+  @Input() public isOrgAdmin: boolean;
 
   preview = false;
   edit = false;
@@ -223,11 +225,11 @@ export class AddDealComponent implements OnInit {
             if (self.deal.createdForCompanyId > 0) {
               self.isSalesForceEnabled();
             }
-            if (self.deal.campaignId > 0) {
-              self.getCampaignDealPipeline();
-            } else {
-              self.getPipelines();
-            }
+            // if (self.deal.campaignId > 0) {
+            //   self.getCampaignDealPipeline();
+            // } else {
+            //   self.getPipelines();
+            // }
             if (self.deal.associatedContact != undefined) {
                 self.showContactInfo = true;
                 self.contact = self.deal.associatedContact;
@@ -322,12 +324,17 @@ export class AddDealComponent implements OnInit {
         },
         () => {
           if (!this.showSfForm) {
-            this.showDefaultForm = true;
-            this.resetPipelines();            
+            this.showDefaultForm = true;                        
             if (this.edit || this.preview) {
               this.setProperties();
+              if (this.deal.campaignId > 0) {
+                this.getCampaignDealPipeline();
+              } else {
+                this.getPipelines();
+              }
             } else {
               this.getQuestions();
+              this.resetPipelines();
             }
             this.getDealTypes();
           } else {

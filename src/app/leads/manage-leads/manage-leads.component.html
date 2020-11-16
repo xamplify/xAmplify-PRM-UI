@@ -31,8 +31,8 @@
         <div class="col-xs-12  p5">
           <div class="row">
             <!-- -------Total Leads------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!opportunitiesAnalyticsLoader"
-              [style.pointer-events]="leadsCount != 0 ? 'auto' : 'none' ">
+            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+              [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex"
                 (click)="showLeads()">
                 <div class="visual">
@@ -42,7 +42,7 @@
                 </div>
                 <div class="details">
                   <div class="number">
-                    <span>{{leadsCount}}</span>
+                    <span>{{counts.totalLeads}}</span>
                   </div>
                   <div class="desc" translate>Total Leads</div>
                 </div>
@@ -52,10 +52,10 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!opportunitiesAnalyticsLoader"
-              [style.pointer-events]="leadsCount != 0 ? 'auto' : 'none' ">
+            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+              [style.pointer-events]="counts.wonLeads != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
-                (click)="showLeads()">
+                (click)="showWonLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
                     [ngStyle]="{'color': 2==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 2==selectedTabIndex"
@@ -63,7 +63,49 @@
                 </div>
                 <div class="details">
                   <div class="number">
-                    <span>3</span>
+                    <span>{{counts.wonLeads}}</span>
+                  </div>
+                  <div class="desc" translate>Won Leads</div>
+                </div>
+                <span id="permhref" class="morePadding ">
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                </span>
+              </a>
+            </div>
+
+            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+              [style.pointer-events]="counts.lostLeads != 0 ? 'auto' : 'none' ">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="3!=selectedTabIndex"
+                (click)="showLostLeads()">
+                <div class="visual">
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
+                    [ngStyle]="{'color': 3==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 3==selectedTabIndex"
+                    aria-hidden="true"></i>
+                </div>
+                <div class="details">
+                  <div class="number">
+                    <span>{{counts.lostLeads}}</span>
+                  </div>
+                  <div class="desc" translate>Lost Leads</div>
+                </div>
+                <span id="permhref" class="morePadding ">
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                </span>
+              </a>
+            </div>
+
+            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+              [style.pointer-events]="counts.convertedLeads != 0 ? 'auto' : 'none' ">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="4!=selectedTabIndex"
+                (click)="showConvertedLeads()">
+                <div class="visual">
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
+                    [ngStyle]="{'color': 4==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 4==selectedTabIndex"
+                    aria-hidden="true"></i>
+                </div>
+                <div class="details">
+                  <div class="number">
+                    <span>{{counts.convertedLeads}}</span>
                   </div>
                   <div class="desc" translate>Converted Leads</div>
                 </div>
@@ -232,12 +274,12 @@
 
               </section>
               <!-- --------------------Pagination0-------------------- -->
-              <div *ngIf="leadsPagination.pagedItems.length !== 0" class="pg8">
+              <div *ngIf="!httpRequestLoader.isLoading && leadsPagination.pagedItems.length !== 0" class="pg8">
                 <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
                   (notifyParentDropDown)="listLeads($event)"></app-pagination>
               </div>
               <!-- End of 24 -->
-              <div *ngIf="leadsPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+              <div *ngIf="!httpRequestLoader.isLoading && leadsPagination.totalRecords==0" class="alert alert-info">
                 <strong translate>No Leads Found.</strong>
               </div>
 

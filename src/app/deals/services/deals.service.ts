@@ -57,7 +57,7 @@ export class DealsService {
     return this.http.post(this.URL + `/delete?access_token=${this.authenticationService.access_token}`, deal)
    .map(this.extractData)
    .catch(this.handleError);
-}
+ }
 
 getCampaignDealPipeline(campaignId:number, userId:number) {
   return this.http.get(this.authenticationService.REST_URL + `/pipeline/DEAL/campaign/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)
@@ -67,6 +67,18 @@ getCampaignDealPipeline(campaignId:number, userId:number) {
 
 getSalesforcePipeline(createdForCompanyId:number, userId:number) {
   return this.http.get(this.authenticationService.REST_URL + `/pipeline/DEAL/salesforce/${createdForCompanyId}/${userId}?access_token=${this.authenticationService.access_token}`)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+changeDealStatus(deal: Deal) {
+  return this.http.post(this.URL + `/status/change?access_token=${this.authenticationService.access_token}`, deal)
+ .map(this.extractData)
+ .catch(this.handleError);
+}
+
+getCounts(userId:number) {
+  return this.http.get(this.URL + `/counts/${userId}?access_token=${this.authenticationService.access_token}`)
   .map(this.extractData)
   .catch(this.handleError);
 }

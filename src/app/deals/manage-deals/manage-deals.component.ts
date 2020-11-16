@@ -39,36 +39,60 @@ export class ManageDealsComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   dealsPagination: Pagination;
   dealsSortOption: SortOption = new SortOption();
-  dealsCount = 0;
   showDealForm = false;
   dealsResponse: CustomResponse = new CustomResponse();
   actionType = "add";
   dealId= 0;
+  companyId = 0;
+  counts : any;
+  countsLoader = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService, private userService: UserService,
     private dealRegistrationService: DealRegistrationService, private dealsService: DealsService) {
-        
+      this.loggedInUserId = this.authenticationService.getUserId();
+      const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+      userService.getHomeRoles(url)
+          .subscribe(
+              response => {
+                  if (response.statusCode == 200) {
+                      this.authenticationService.loggedInUserRole = response.data.role;
+                      this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+                      this.authenticationService.superiorRole = response.data.superiorRole;
+                      if (this.authenticationService.loggedInUserRole == "Team Member") {
+                          dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
+                              this.superiorId = response;
+                              this.init();
+                          });
+                      } else {
+                          this.superiorId = this.authenticationService.getUserId();
+                          this.init();
+                      }
+                  }
+              })
   }
 
   ngOnInit() {
-  	this.loggedInUserId = this.authenticationService.getUserId();
-    const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
-    this.getUserRoles(url);
-    if (this.authenticationService.loggedInUserRole == "Team Member") {
-      this.dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
-        this.superiorId = response;        
-      });
-    } else {
-      this.superiorId = this.authenticationService.getUserId();
-    }
-    this.init();
-    this.initVendorOrPartner();
-    this.showDeals();
-    this.referenceService.loading(this.httpRequestLoader, false); 
-    this.httpRequestLoader.isServerError = false;
+  	// this.loggedInUserId = this.authenticationService.getUserId();
+    // const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+    // this.getUserRoles(url);
+    // if (this.authenticationService.loggedInUserRole == "Team Member") {
+    //   this.dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
+    //     this.superiorId = response;        
+    //   });
+    // } else {
+    //   this.superiorId = this.authenticationService.getUserId();
+    // }
+    // this.init();
+    // this.initVendorOrPartner();
+    // this.showDeals();
+    // this.referenceService.loading(this.httpRequestLoader, false); 
+    // this.httpRequestLoader.isServerError = false;
+
+    this.countsLoader = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
   }
 
   initVendorOrPartner() {
@@ -135,19 +159,40 @@ export class ManageDealsComponent implements OnInit {
       }
     }
     this.referenceService.getCompanyIdByUserId(this.superiorId).subscribe(response => {
-      console.log(this.superiorId)
+      this.companyId = response;
       this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
-        this.enableLeads = data.enableLeads;        
-      });
+        this.enableLeads = data.enableLeads; 
+        if (!this.isOnlyPartner) {
+          if (this.authenticationService.vanityURLEnabled) {
+            if (this.authenticationService.isPartnerTeamMember) {
+              this.showPartner();
+            } else {
+              this.isCompanyPartner = false;
+              this.showVendor();
+            }
+          } else {
+            this.showVendor();
+          }
+        } else {
+          this.showPartner();
+        }       
+      });    
     });
-    
-    console.log(this.authenticationService.getRoles());
   }
+
+    setEnableLeads() {
+      this.referenceService.getOrgCampaignTypes(this.companyId).subscribe(data => {
+        this.enableLeads = data.enableLeads;              
+      });
+      
+      console.log(this.authenticationService.getRoles());
+    }
 
   showVendor() {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
+      this.getVendorCounts();
       this.showDeals();
       //this.switchVersions();
     } else {
@@ -158,14 +203,63 @@ export class ManageDealsComponent implements OnInit {
     if (this.isCompanyPartner) {
       this.isVendorVersion = false;
       this.isPartnerVersion = true;
+      this.getPartnerCounts();
       this.showDeals();
       //this.switchVersions();
     }
   }
 
+  getVendorCounts() {
+    this.countsLoader = true;
+    this.dealsService.getCounts(this.loggedInUserId)
+    .subscribe(
+        response => {
+            if(response.statusCode==200){
+              this.counts = response.data.vendorCounts;
+              this.countsLoader = false;
+            }            
+        },
+        error => {
+            this.httpRequestLoader.isServerError = true;
+            },
+        () => { }
+    );
+  }
+
+  getPartnerCounts() {
+    this.countsLoader = true;
+    this.dealsService.getCounts(this.loggedInUserId)
+    .subscribe(
+        response => {
+            if(response.statusCode==200){
+              this.countsLoader = false;
+              this.counts = response.data.partnerCounts;
+            }            
+        },
+        error => {
+            this.httpRequestLoader.isServerError = true;
+            },
+        () => { }
+    );
+  }
+
   showDeals() {
     this.selectedTabIndex = 1;
     this.dealsPagination = new Pagination;
+    this.listDeals(this.dealsPagination);
+  }
+
+  showWonDeals() {
+    this.selectedTabIndex = 2;
+    this.dealsPagination = new Pagination;
+    this.dealsPagination.filterKey = "won";
+    this.listDeals(this.dealsPagination);
+  }
+
+  showLostDeals() {
+    this.selectedTabIndex = 3;
+    this.dealsPagination = new Pagination;
+    this.dealsPagination.filterKey = "lost";
     this.listDeals(this.dealsPagination);
   }
 
@@ -185,7 +279,6 @@ export class ManageDealsComponent implements OnInit {
         response => {
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.totalRecords;
-            this.dealsCount = response.totalRecords;
             this.dealsSortOption.totalRecords = response.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data);
         },
@@ -203,7 +296,6 @@ export class ManageDealsComponent implements OnInit {
         response => {
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.totalRecords;
-            this.dealsCount = response.totalRecords;
             this.dealsSortOption.totalRecords = response.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data);
         },
@@ -242,7 +334,16 @@ export class ManageDealsComponent implements OnInit {
 
   closeDealForm() {
     this.showDealForm = false;
+    this.resetCounts();    
     this.showDeals();
+  }
+
+  resetCounts() {
+    if (this.isVendorVersion) {
+      this.getVendorCounts();
+    } else if (this.isPartnerVersion) {
+      this.getPartnerCounts();
+    }
   }
 
   addDeal() {   
@@ -307,5 +408,29 @@ export class ManageDealsComponent implements OnInit {
   );
 
  }
+
+  setDealStatus(deal: Deal) {
+    let request: Deal = new Deal();
+    request.id = deal.id;
+    request.pipelineStageId = deal.pipelineStageId;
+    request.userId = this.loggedInUserId;
+    this.dealsService.changeDealStatus(request)
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (response.statusCode == 200) {
+            this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
+            this.resetCounts();
+            this.showDeals();
+          } else if (response.statusCode == 500) {
+            this.dealsResponse = new CustomResponse('ERROR', response.message, true);
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
 
 }

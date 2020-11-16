@@ -302,6 +302,7 @@ export class AddLeadComponent implements OnInit {
         data => {
             this.ngxloading = false;
             this.referenceService.loading(this.httpRequestLoader, false);
+            this.referenceService.goToTop();
             if(data.statusCode==200){
                 this.leadModalResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);                           
             } else if (data.statusCode==500) {

@@ -659,6 +659,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         /***********Load Email Template Filters/LandingPages Filter Data********/
         this.listEmailTemplateOrLandingPageFolders();
         this.listCampaignPipelines();
+        this.campaign.leadPipelineId = 0;
+        this.campaign.dealPipelineId = 0;
     }
 
     listCampaignPipelines() {
