@@ -599,4 +599,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		 this.referenceService.goToRouter("/home/dam/editDetails/"+id);
 	}
 
+	refreshList(){
+		if (this.isPartnerView) {
+			this.listPublishedAssets(this.pagination);
+		} else {
+			this.listAssets(this.pagination);
+		}
+	}
+
 }

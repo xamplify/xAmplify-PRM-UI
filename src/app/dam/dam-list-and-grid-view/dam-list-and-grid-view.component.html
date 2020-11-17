@@ -28,6 +28,7 @@
                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span> -->
                      </ng-container>
                      <div class="inputs" style="float: right">
+                        <a class="close-circle ref-mar" (click)="refreshList()" title="Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></a>
                         <div style="float: left;">
                            <ng-container *ngIf="isPartnerView">
                               <select class="form-control" [(ngModel)]="sortOption.publishedDamSortOption" (ngModelChange)="sortAssets($event)" style="position: relative;right: -3px;">
@@ -108,6 +109,7 @@
                         </td>
                         <td id="actions-row">
                            <div [className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon'">
+                             <ng-container *ngIf="asset?.status=='COMPLETED'">
                               <a  *ngIf="asset?.history &&!isPartnerView "  title="History" (click)="expandHistory(asset,i)">
                               <i class="fa"
                                   [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
@@ -133,6 +135,7 @@
                                  <a *ngIf="isPartnerView"  title="View Details" (click)="viewDetails(asset)">
                                  <i class="fa fa-eye" aria-hidden="true"></i>
                                  </a>
+                              </ng-container>
                                  <a *ngIf="!isPartnerView" title="Delete"  (click)="confirmDelete(asset)">
                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
                                  </a>
@@ -256,6 +259,7 @@
                            <span *ngIf="asset?.published" translate>Published</span>
                        </div>
                        <div class="bar auto-height">
+                        <ng-container *ngIf="asset?.status=='COMPLETED'">
                         <a *ngIf="asset?.history && !isPartnerView "  title="History" (click)="viewGirdHistory(asset)">
                            <i class="fa" [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                            </a>
@@ -280,6 +284,7 @@
                           <a *ngIf="isPartnerView" title="View Details" (click)="viewDetails(asset)">
                            <i class="fa fa-eye" aria-hidden="true"></i>
                            </a>
+                        </ng-container>
                            <a *ngIf="!isPartnerView" title="Delete" class="delete" (click)="confirmDelete(asset)">
                                <i class="fa fa-trash-o" aria-hidden="true"></i>
                            </a>
