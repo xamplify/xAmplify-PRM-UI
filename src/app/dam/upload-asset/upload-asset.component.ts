@@ -77,6 +77,7 @@ export class UploadAssetComponent implements OnInit {
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
 		if (event.target.files.length > 0) {
+			this.formData.delete("uploadedFile");
 			this.customResponse = new CustomResponse();
 			let file = event.target.files[0];
 			let sizeInKb = file.size / 1024;
@@ -98,7 +99,9 @@ export class UploadAssetComponent implements OnInit {
 	showAssetErrorMessage(message:string){
 		this.referenceService.goToTop();
 		$('#uploadedAsset').val('');
+		this.formData.delete("uploadedFile");
 		this.invalidAssetName = true;
+		this.uploadedAssetName  = "";
 		this.customResponse = new CustomResponse('ERROR',message,true);
 	}
 
@@ -125,6 +128,7 @@ export class UploadAssetComponent implements OnInit {
 		this.invalidThumbnail = false;
 		this.thumbnailErrorMessage = '';
 		if (event.target.files.length > 0) {
+			
 			this.customResponse = new CustomResponse();
 			let file = event.target.files[0];
 			let sizeInKb = file.size / 1024;
@@ -167,6 +171,7 @@ export class UploadAssetComponent implements OnInit {
 
 	saveThumbnail() {
 		if (this.croppedImage != "") {
+			this.formData.delete("thumbnailImage");
 			let fileObj: any;
 			fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
 			fileObj = this.utilService.blobToFile(fileObj);
