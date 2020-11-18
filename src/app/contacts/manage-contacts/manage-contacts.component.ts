@@ -1926,7 +1926,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		if (tempIsZohoSynchronization == 'yes' && !this.isPartner) {
 			this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
 			this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
-			if (!this.isCalledZohoSycronization) {
+			if (!this.isCalledZohoSycronization && this.contactListIdZoho != null) {
 				this.isCalledZohoSycronization = true;
 				this.iszohoAccessTokenExpired = false;
 				this.zohoContactsSynchronizationAuthentication(this.contactListIdZoho, this.socialNetworkZoho);
