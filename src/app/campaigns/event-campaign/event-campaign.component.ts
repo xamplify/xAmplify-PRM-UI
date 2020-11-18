@@ -142,14 +142,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
   beforeDaysLength: number;
   tempStartTime: string;
   isVendor = false;
-  
+
   characterleft = 250;
 
 
-    
+
 
   enableLeads : boolean;
-  
+
   //Push Leads To Marketo
   showMarketoForm: boolean;
   clientId: string;
@@ -177,7 +177,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  enableSmsText: boolean;
  smsTextDivClass: string
 
- 
+
  socialStatusProviders = new Array<SocialStatusProvider>();
  selectedAccounts: number = 0;
  socialStatusList = new Array<SocialStatus>();
@@ -188,7 +188,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  selectedFormId: number;
  formCreatedName: string = '';
  @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
-  
+
 
  validUsersCount: number;
  allUsersCount: number;
@@ -236,7 +236,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
     this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
-     this.completeLoader = true;   
+     this.completeLoader = true;
     referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
         referenceService.getOrgCampaignTypes(response).subscribe(data=>{
             this.enableLeads = data.enableLeads;
@@ -338,9 +338,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         if(this.eventCampaign.detailedAnalyticsShared == undefined){
             this.eventCampaign.detailedAnalyticsShared = false;
         }
-        
-        
-        
+
+
+
         if(result.data.enableCoBrandingLogo){ this.eventCampaign.enableCoBrandingLogo = result.data.enableCoBrandingLogo; }
         else { this.eventCampaign.enableCoBrandingLogo = false;}
         if(result.data.parentCampaignId) { this.parentCampaignIdValue = result.data.parentCampaignId; this.parentCampaignId =true; this.isPartnerUserList = false;}
@@ -418,7 +418,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
                 this.setLaunchOptions( 'SCHEDULE' );
             }
         }
-        
+
         if(this.reDistributeEventManage){
             if ( this.eventCampaign.campaignScheduleType === 'SAVE' ) {
                 this.launchOptions[2];
@@ -428,14 +428,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
                 this.setLaunchOptions( 'SCHEDULE' );
             }
         }
-        
+
         for(let i=0; i< this.timezonesCampaignEventTime.length; i++){
           if(this.timezonesCampaignEventTime[i].timezoneId === this.eventCampaign.campaignEventTimes[0].timeZone){
             console.log(this.timezonesCampaignEventTime[i].timezoneId);
           }
         }
-        
-        this.selectedFormData = result.data.formDTOs; 
+
+        this.selectedFormData = result.data.formDTOs;
         this.eventCampaign.forms = this.selectedFormData;
         for(var i=0; i< this.selectedFormData.length; i++){
           this.selectedFormName = this.selectedFormData[i].name;
@@ -443,17 +443,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         }
         console.log( this.selectedFormName);
         console.log( this.selectedFormId);
-        if(this.previewPopUpComponent && this.selectedFormId && this.selectedFormData) { this.previewPopUpComponent['selectedFormId'] = this.selectedFormId; 
+        if(this.previewPopUpComponent && this.selectedFormId && this.selectedFormData) { this.previewPopUpComponent['selectedFormId'] = this.selectedFormId;
             this.previewPopUpComponent.selectedFormData = this.selectedFormData;
         }
         this.eventCampaign.eventUrl = 'https://www.event-campaign/54ec45';
-        
+
         if(this.eventCampaign.publicEventCampaign && this.eventCampaign.campaign && !this.statusMessage){
             this.statusMessage = this.eventCampaign.campaign;
         }else{
             this.statusMessage = '';
         }
-        
+
 
         this.loadContactLists(this.contactListsPagination);
         this.setTemplateId();
@@ -474,9 +474,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     this.loadContactLists(this.contactListsPagination);
     this.loadEmailTemplates(this.emailTemplatesPagination);
   }
-    
+
     this.listActiveSocialAccounts(this.loggedInUserId);
-    
+
     flatpickr('.eventflatpickr', {
       enableTime: true,
       dateFormat: 'm/d/Y h:i K',
@@ -490,7 +490,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     this.listEmailTemplatesFolders();
     this.listCategories();
 
-    
+
   }
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();
@@ -500,7 +500,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
 
   ngAfterViewChecked(){
   /*    if( this.previewPopUpComponent && this.previewPopUpComponent.selectedFormData.length != 0 ){
-        this.selectedFormData = this.previewPopUpComponent.selectedFormData; 
+        this.selectedFormData = this.previewPopUpComponent.selectedFormData;
         this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
         //this.formCreatedName = this.eventCampaign.forms.createdName;
         for(var i=0; i< this.selectedFormData.length; i++){
@@ -516,7 +516,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
       console.log( this.selectedFormId);
       this.changeDetectorRef.detectChanges();*/
   }
-  
+
   setTemplateId(){
       this.emailTemplateId = this.eventCampaign.emailTemplate.id;
       this.eventCampaign.selectedEditEmailTemplate = this.eventCampaign.emailTemplate;
@@ -716,14 +716,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         this.eventCampaign.userListIds = [];
       }
   }
-  
+
   clearSelectedTemplate(){
       this.eventCampaign.emailTemplate = new EmailTemplate;
       this.eventCampaign.selectedEditEmailTemplate = new EmailTemplate;
       this.emailTemplateId = 0;
       this.resetTabClass();
   }
-  
+
   switchStatusChange(){
     this.clearSelectedContactList();
     this.clearSelectedTemplate();
@@ -755,7 +755,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     }
 
   }
-  
+
   setPartnerEmailNotification(event){
       this.eventCampaign.emailNotification = event;
       if(!event){
@@ -764,6 +764,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
       }
   }
   contactListMethod(contactListsPagination:Pagination){
+
+  if(this.reDistributeEvent || this.reDistributeEventManage){
+    this.loadRedistributionContactList(contactListsPagination)
+  }else{
     this.contactService.loadContactLists(contactListsPagination)
     .subscribe(
     (data: any) => {
@@ -786,12 +790,57 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     },
     (error: any) => { this.logger.error(error); },
     () => { this.logger.info('event campaign page contactListMethod() finished'); } );
+    }
   }
-  
+
+  loadRedistributionContactList(contactsPagination: Pagination) {
+        if(this.eventCampaign.nurtureCampaign){
+            contactsPagination.editCampaign = true;
+            contactsPagination.campaignId = this.eventCampaign.id;
+            contactsPagination.parentCampaignId = this.activatedRoute.snapshot.params['id'];
+        }else{
+            contactsPagination.editCampaign = false;
+            contactsPagination.parentCampaignId = this.activatedRoute.snapshot.params['id'];
+        }
+        contactsPagination.userId = this.loggedInUserId;
+        contactsPagination.redistributingCampaign = true;
+        // if(this.vanityLoginDto.vanityUrlFilter){
+        //     contactsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+        //     contactsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+        // }
+        this.campaignService.listCampaignUsers(contactsPagination)
+            .subscribe(
+            (data: any) => {
+                let response = data.data;
+                this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, response.list);
+                this.contactListsPagination.totalRecords = response.totalRecords;
+                if(this.contactListsPagination.filterBy!=null){
+                    if(this.contactListsPagination.filterBy==0){
+                        this.contactListsPagination.maxResults = response.totalRecords;
+                    }else{
+                        this.contactListsPagination.maxResults = contactsPagination.filterBy;
+                    }
+                }
+                var contactIds = this.contactListsPagination.pagedItems.map(function(a) {return a.id;});
+                var items = $.grep(this.parternUserListIds, function(element) {
+                    return $.inArray(element, contactIds ) !== -1;
+                });
+                if(items.length==contactIds.length){
+                    this.isHeaderCheckBoxChecked = true;
+                }else{
+                    this.isHeaderCheckBoxChecked = false;
+                }
+            },
+            (error: string) => this.logger.error(error),
+            () => console.info("Finished loadContactList()", this.contactListsPagination)
+            );
+    }
+
+
   shareAnalytics(event:any){
       this.eventCampaign.dataShare = event;
   }
-  
+
   checkInteractiveData( text: any ) {
       if ( text == "true" ) {
           this.eventCampaign.detailedAnalyticsShared = true;
@@ -841,7 +890,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
               emailTemplatesPagination.campaignDefaultTemplate = false;
               emailTemplatesPagination.isEmailTemplateSearchedFromCampaign = true;
           }
-          
+
           if(this.isEditCampaign){
               if(this.eventCampaign.enableCoBrandingLogo){
                   this.emailTemplatesPagination.throughPartner = true;
@@ -851,15 +900,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
                   this.emailTemplatesPagination.throughPartner = true;
               }
           }
-          
+
           /*if(this.eventCampaign.enableCoBrandingLogo){
               emailTemplatesPagination.filterBy = null;
           }else{
               emailTemplatesPagination.filterBy = 'campaignEventEmails';
           }*/
-          
+
           emailTemplatesPagination.filterBy = 'campaignEventEmails';
-          
+
           emailTemplatesPagination.userId = this.loggedInUserId;
           this.emailTemplateService.listTemplates(emailTemplatesPagination,this.loggedInUserId)
           .subscribe(
@@ -888,7 +937,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
               () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
               )
       }
-   
+
   }
 
 
@@ -1107,10 +1156,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
        }
     }
-    if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ 
+    if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){
         this.getRepliesData();
        }
-   
+
     if(eventCampaign.userListIds != undefined){
     for (let userListId of eventCampaign.userListIds) {
       let contactList = new ContactList(userListId);
@@ -1146,7 +1195,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
    eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
    eventCampaign.country = this.countries.find(x => x.id == eventCampaign.countryId).name;
    eventCampaign.toPartner = !eventCampaign.channelCampaign;
-   
+
    this.socialStatusList = [];
    this.socialStatusProviders.forEach(data => {
            if(data.selected){
@@ -1167,7 +1216,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
 
    if(eventCampaign.id){
     let vanityUrlDomainName = "";
-    let vanityUrlCampaign = false;    
+    let vanityUrlCampaign = false;
     /********Vanity Url Related Code******************** */
     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
         vanityUrlDomainName = this.authenticationService.companyProfileName;
@@ -1221,7 +1270,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
    }
    return eventCampaign;
   }
-  
+
   createEventCampaign(eventCampaign: any, launchOption: string) {
    // this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
     this.referenceService.loading(this.httpRequestLoader, true);
@@ -1246,9 +1295,9 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             }
         }
     )
-    
+
     eventCampaign.socialStatusList = this.socialStatusList;
-    
+
     eventCampaign.userListIds = this.parternUserListIds;
     if(this.eventCampaign.campaignLocation.country === "Select Country"){
         this.eventCampaign.campaignLocation.country = "";
@@ -1304,11 +1353,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           this.referenceService.campaignSuccessMessage = launchOption;
           if(this.isEventUpdate){ this.referenceService.campaignSuccessMessage="UPDATE"; }
         } else {
-          
+
         	if (response.statusCode === 1999) {
         		this.customResponse = new CustomResponse( 'ERROR', response.message, true );
         	}
-        	
+
           this.loader = false;
           this.referenceService.stopLoader(this.httpRequestLoader);
           if (response.statusCode === 2016) {
@@ -1380,7 +1429,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           this.setEmailIdAsFromName();
           this.eventHostByError();
       }
-   
+
   }
 
   fileChange(event: any) {
@@ -1557,7 +1606,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             }
         );
   }
-  
+
   showPreviewBody(updatedBody:string){
       $("#htmlContent").append(updatedBody);
       $('.modal .modal-body').css('overflow-y', 'auto');
@@ -1746,7 +1795,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
           }
-          
+
           data.body = data.body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
 
           this.getEmailTemplatePreview( data );
@@ -2033,10 +2082,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         this.eventCampaign.onlineMeeting = !this.eventCampaign.onlineMeeting;
         this.resetTabClass();
     }
-    
+
     publicVsPrivateSwitchStatusChange(){
         this.eventCampaign.publicEventCampaign = !this.eventCampaign.publicEventCampaign;
-        
+
         if(this.eventCampaign.publicEventCampaign && this.eventCampaign.campaign && !this.statusMessage){
             this.statusMessage = this.eventCampaign.campaign;
         }else{
@@ -2120,7 +2169,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.isEnableUpdateButton = false;
         }
     }
-    
+
     /*pushHubspot(event: any)
     {
         this.eventCampaign.pushToHubspot =  !this.eventCampaign.pushToHubspot;
@@ -2131,7 +2180,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.checkingHubSpotContactsAuthentication();
         }
     }*/
-    
+
     checkingHubSpotContactsAuthentication(){
         this.hubSpotService.configHubSpot().subscribe(data => {
             let response = data;
@@ -2144,8 +2193,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             else{
                 if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
                     window.location.href = response.data.redirectUrl;
-                }                
-            }            
+                }
+            }
         }, (error: any) => {
             console.error(error, "Error in HubSpot checkIntegrations()");
         }, () => console.log("HubSpot Configuration Checking done"));
@@ -2161,7 +2210,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.checkMarketoCredentials();
         }
     }
- */   
+ */
     checkMarketoCredentials()
     {
         this.loadingMarketo = true;
@@ -2212,7 +2261,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                 this.loadingMarketo = false;
             })
     }
-    
+
     submitMarketoCredentials()
     {
         this.loadingMarketo = true;
@@ -2230,9 +2279,9 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                 $("#closeButton").hide();
                 this.showMarketoForm = false;
                // this.eventCampaign.pushToMarketo = true;
-                
+
                 this.eventCampaign.pushToCRM.push('hubspot');
-                
+
                 this.templateError = false;
                 this.templateSuccessMsg = response.message;
                 this.loadingMarketo = false;
@@ -2255,14 +2304,14 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         )
 
     }
-    
+
     getTemplatesFromMarketo()
     {
         this.clearValues();
 
         this.checkMarketoCredentials();
     }
-    
+
     clearValues()
     {
         this.clientId = '';
@@ -2344,11 +2393,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
        // this.eventCampaign.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
-    
+
     characterSize(){
         this.characterleft = 250 - this.eventCampaign.message.length;
       }
-    
+
     toggleSelectAll() {
         this.isAllSelected = !this.isAllSelected;
         this.selectedAccounts = 0;
@@ -2373,10 +2422,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }else{
           this.isAllSelected = false;
         }
-            
+
     }
-    
-    
+
+
     listActiveSocialAccounts(userId: number) {
         this.socialService.listAccounts(userId, 'ALL', 'ACTIVE')
             .subscribe(
@@ -2390,7 +2439,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                 }
             );
     }
-    
+
     listSocialStatusProviders() {
         if(this.socialStatusProviders.length < 1){
         const socialConnections = this.socialService.socialConnections;
@@ -2448,7 +2497,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     this.smsService =  !this.smsService;
     this.enableSmsText =  this.smsService;
 }
- 
+
 
  /*listForms() {
      this.referenceService.loading( this.httpRequestLoader, true );
@@ -2465,31 +2514,31 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
              }
              this.referenceService.loading( this.httpRequestLoader, false );
          },
-         ( error: any ) => { 
+         ( error: any ) => {
             this.logger.errorPage(error);
          } );
  }*/
- 
+
  /*hideListFormModal(){
-     $( '#listOfFormsModal' ).modal( 'hide' ); 
+     $( '#listOfFormsModal' ).modal( 'hide' );
  }*/
- 
+
 /* selectedForm(form: any){
      this.selectedFormData = form;
      this.eventCampaign.forms = form;
  }*/
- 
+
  previewForm(id: any){
      this.previewPopUpComponent.previewForm(id);
     }
- 
+
 
  getValidUsersCount() {
      try {
          for(var i=0; i< this.userListDTOObj.length; i++){
              this.listOfSelectedUserListIds.push(this.userListDTOObj[i].id);
          }
-         
+
          if(this.listOfSelectedUserListIds.length > 0){
           this.contactService.getValidUsersCount( this.listOfSelectedUserListIds )
              .subscribe(
@@ -2508,19 +2557,19 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
          console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
      }
  }
- 
- 
+
+
  validatePushToCRM(){
      if(this.isPushToCrm && (this.eventCampaign.channelCampaign || this.isOrgAdminOrOrgAdminTeamMember) && this.eventCampaign.pushToCRM.length === 0){
          this.isValidCrmOption = false;
      }else{
          this.isValidCrmOption = true;
      }
-     
+
      this.resetTabClass();
   }
- 
- 
+
+
  pushToCrm(){
      this.isPushToCrm = !this.isPushToCrm;
      if(!this.isPushToCrm){
@@ -2530,11 +2579,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
      //this.checkSalesforceIntegration();
      this.validatePushToCRM();
     }
-    
+
     pushToCrmRequest(crmName: any, event: any){
        console.log(event.target.checked);
        if(event.target.checked){
-           
+
            if(crmName == 'marketo'){
                this.checkMarketoCredentials();
            } else if(crmName == 'hubspot'){
@@ -2542,7 +2591,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
            } else if(crmName == 'salesforce'){
                this.checkSalesforceIntegration();
            }
-           
+
            //this.pushToCRM.push(crmName);
        }else{
           if(crmName == 'marketo' || crmName == 'hubspot' || crmName == 'salesforce' ){
@@ -2550,10 +2599,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
            }
            console.log(this.eventCampaign.pushToCRM);
        }
-       
+
        this.validatePushToCRM();
     }
-    
+
     checkSalesforceIntegration(): any {
       //  if(!this.isOrgAdminOrOrgAdminTeamMember){
       //      this.eventCampaign.pushToCRM = [];
@@ -2568,7 +2617,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             } else{
                   if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
                       window.location.href = response.data.redirectUrl;
-                  }                
+                  }
               }
         },error =>{
             this.logger.error(error, "Error in salesforce checkIntegrations()");
@@ -2580,11 +2629,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     showFolderFilterPopup(){
         $('#filterPopup').modal('show');
         }
-    
+
     closeFilterPopup(){
         $('#filterPopup').modal('hide');
     }
-    
+
     applyFilter(){
         if(this.selectedFolderIds.length>0){
             this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
@@ -2596,7 +2645,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         this.loadEmailTemplates(this.emailTemplatesPagination);
         this.closeFilterPopup();
     }
-    
+
     listEmailTemplatesFolders(){
         this.folderFields = { text: 'name', value: 'id' };
         this.campaignService.listEmailTemplateOrLandingPageFolders(this.loggedInUserId,'email').
@@ -2618,9 +2667,9 @@ editPartnerTemplate(){
         }
     }else{
         this.referenceService.showSweetAlert( "", "This template can't be edited because the vendor has deleted the campaign.", "error" );
-       
+
     }
-    
+
 }
 
   openCreateFolderPopup(){

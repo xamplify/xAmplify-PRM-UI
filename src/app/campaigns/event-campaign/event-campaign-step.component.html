@@ -19,7 +19,7 @@ a.disabled {
 				[routerLink]="referenceService.homeRouter" translate>Home</a>
 				 <i	class="fa fa-angle-right" aria-hidden="true"></i></li>
 			<li *ngIf="!eventRouterPage"><a
-				[routerLink]="['/home/campaigns/select']" translate>Select Campaign</a> 
+				[routerLink]="['/home/campaigns/select']" translate>Select Campaign</a>
 				<i	class="fa fa-angle-right" aria-hidden="true"></i></li>
         <li *ngIf="!referenceService.manageRouter&& eventRouterPage">
             <a *ngIf="isEditCampaign || reDistributeEventManage" [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a>
@@ -162,8 +162,8 @@ a.disabled {
 									[ngModelOptions]="{standalone: true}">
 							</div>
 						</div>
-						
-						
+
+
 						<div class="form-group">
 							<label class="col-sm-3 labal-css color-css" translate>Subject Line
 								 <font style="color: red"> <strong>*</strong></font>
@@ -226,8 +226,8 @@ a.disabled {
 								</span>
 							</div>
 						</div>
-						
-						
+
+
 							<!-- <div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && !reDistributeEvent && !reDistributeEventManage">
 								<label class="col-sm-3">Notify Partners ?</label>
 								<div class="col-sm-8">
@@ -240,7 +240,7 @@ a.disabled {
 									</span>
 								</div>
 							</div> -->
-						
+
 											<div class="form-group" *ngIf="(!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads)" [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
                                                 <label class="control-label col-sm-3" translate>Push To Marketing Automation</label>
                                                 <div class="col-sm-3">
@@ -301,7 +301,7 @@ a.disabled {
                                                         <!-- <div class="col-md-4" *ngIf="enableLeads">
                                                             <div class=" cenetered-block1">
                                                                 <div class="">
-                                                                   
+
                                                                     <label class="customcheck">
                                                                             <input type="checkbox" (click)="pushToCrmRequest('salesforce', $event)">
                                                                             <span class="checkmark"></span>
@@ -318,8 +318,8 @@ a.disabled {
                                                     </div>
                                                 </div>
                                             </div>
-						
-						
+
+
 <!-- 						<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads">
 												<label class="control-label col-sm-3">Push Leads To Marketo</label>
 												<div class="col-sm-9">
@@ -343,7 +343,7 @@ a.disabled {
 													</div>
 												</div>
 											</div>
-											
+
 						<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign">
 												<label class="control-label col-sm-3">Push Leads To Hubspot</label>
 												<div class="col-sm-9">
@@ -367,9 +367,9 @@ a.disabled {
 													</div>
 												</div>
 											</div> -->
-						
-						
-						
+
+
+
 						<div class="form-group">
 							<label for="eventDateTime" class="col-sm-3 labal-css color-css" translate>Event Date/Time
 								 <span class="text-danger" style="margin-left: -3px;">*</span>
@@ -461,7 +461,7 @@ a.disabled {
 								</switch>
 							</div>
 						</div>
-						
+
 						<section *ngIf="eventCampaign.onlineMeeting">
 							<div class="form-group">
 								<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Description
@@ -473,7 +473,7 @@ a.disabled {
 								</div>
 							</div>
 						</section>
-						
+
 						<section *ngIf="!eventCampaign.onlineMeeting">
 							<div class="form-group">
 								<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Location Name
@@ -550,7 +550,7 @@ a.disabled {
 								</div>
 							</div>
             </section>
-            
+
             <div class="form-group" *ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner() && enableSMS">
               <label class="control-label col-sm-3">SMS service</label>
               <div class="col-sm-9">
@@ -565,12 +565,12 @@ a.disabled {
                      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="smsServices(smsService)" id="trueAction" *ngIf="smsService">
                       </switch>
                     </div>
-                     
+
                         <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Enable SMS services for this campaign">
                           <i class="fa fa-question-circle" style="padding: 8px;"></i>
                         </span>
-                      
-                    
+
+
                   </div>
                 </div>
               </div>
@@ -586,7 +586,7 @@ a.disabled {
                  (input)="validateForm();validateField('smsText');" maxlength="200" ></textarea>
               </div>
             </div>
-						
+
 				<!-- 		<div class="form-group" *ngIf="reDistributeEvent || reDistributeEventManage">
                   <label class="col-sm-3 labal-css color-css">Data Sharing</label>
                   <div class="col-sm-9" style="margin-bottom: 10px;">
@@ -629,7 +629,7 @@ a.disabled {
                     </div>
                   </div>
                 </div> -->
-						
+
 						<div class="form-group" *ngIf="isEventUpdate">
 							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
 								style="color: red"> <b>*</b>
@@ -663,7 +663,7 @@ a.disabled {
 											(statusChange)="eventCampaign.emailOpened = !eventCampaign.emailOpened">
 										</switch> Notify me when email is opened
 								</label></li>
-								
+
 								<li><label> <switch
 											[status]="eventCampaign.linkOpened"
 											[onText]="callActionSwitch.onTextValue"
@@ -687,7 +687,7 @@ a.disabled {
 											(statusChange)="eventCampaign.rsvpReceived = !eventCampaign.rsvpReceived">
 										</switch> Notify me when guests RSVP
 								</label></li>
-								
+
 								<li><label> <switch
 											[status]="eventCampaign.inviteOthers"
 											[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
@@ -703,7 +703,7 @@ a.disabled {
 							</ul>
 						</div>
 					</div>
-					
+
 					<div class="boxes portlet light" [class.disabled]="isEventUpdate">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Public vs Private</h4>
@@ -723,8 +723,8 @@ a.disabled {
 							<!-- <label>Event URL</label>
 							<input type="text" class="form-control" id="eventUrl" placeholder="Event Url" [(ngModel)]="eventCampaign.eventUrl" [ngModelOptions]="{standalone: true}">
 							 -->
-							
-							
+
+
 					<!-- <div class="col-xs-12"> -->
 						<div *ngIf="socialStatusProviders?.length > 0"  [class.disabled]="(isPreviewEvent)">
 							<button type="button" class="btn btn-primary pull-right" (click)="isSocialEnable = !isSocialEnable">
@@ -783,19 +783,19 @@ a.disabled {
 							</div>
 						</div>
 				<!-- </div> -->
-							
+
 						</div>
 					</div>
-					
-					
+
+
 					<div class="boxes portlet light" *ngIf="!reDistributeEvent && authenticationService.module.hasFormAccess"  [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Event Form</h4>
 						</div>
 						<div class="portlet-body clearfix">
-							
+
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
-							
+
 							<section *ngIf="previewPopUpComponent?.selectedFormId">
 							<span>Name: <b><a title="{{previewPopUpComponent?.selectedFormData[0].name}}" (click)="previewForm(previewPopUpComponent?.selectedFormId)">{{previewPopUpComponent?.selectedFormData[0].name | slice:0:40}}<span
 													*ngIf="previewPopUpComponent?.selectedFormData[0].name?.length>40">..</span></a></b></span><br>
@@ -809,7 +809,7 @@ a.disabled {
 							</section>
 						</div>
 					</div>
-					
+
 					<div class="boxes portlet light" *ngIf="(reDistributeEvent) && selectedFormId">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Event Form</h4>
@@ -828,9 +828,9 @@ a.disabled {
 							</section>
 						</div>
 					</div>
-					
-					
-				<!-- 	
+
+
+				<!--
 					<div class="form-group">
 							<label for="hostedBy" class="labal-css color-css">Public vs Private</label>
 							<div class="col-sm-9">
@@ -845,8 +845,8 @@ a.disabled {
 								</switch>
 							</div>
 						</div> -->
-					
-					
+
+
 					<div class="boxes portlet light" *ngIf="false">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Listing Privacy</h4>
@@ -996,7 +996,7 @@ a.disabled {
                       <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
                       (change)="checkAllForPartners($event)" id="checkAllExistingContacts" />
                      </td>
-						<th class="custom-center" style="width:18%"> 
+						<th class="custom-center" style="width:18%">
 							<span class="ui-column-resizer" (mousedown)="referenceService.onMouseDown($event,'contact-list-table',1)"> </span>
                             <span class="gridHeader">List Name</span>
                         </th>
@@ -1020,10 +1020,13 @@ a.disabled {
                           <td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
                               *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
                           </td>
-                           <td style="text-align:center" class="moreipsis">
+                           <td style="text-align:center" class="moreipsis" *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
                               <span *ngIf="contactList.publicList">Public</span>
-							<span *ngIf="!contactList.publicList">Private</span>
+						                	<span *ngIf="!contactList.publicList">Private</span>
                           </td>
+                          <td style="text-align:center" *ngIf="this.reDistributeEvent || this.reDistributeEventManage">
+                            {{contactList.type}}
+                        </td>
 			      							<td class="text-center">
                             	<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
                               <span *ngIf="referenceService.isSafariBrowser()"> {{contactList.createdDate}} </span>
@@ -1290,13 +1293,13 @@ a.disabled {
                       </a>
                       <!-- <a  *ngIf="reDistributeEvent" (click)="referenceService.downloadTemplate(eventCampaign.id,'html')" data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
                         <i class="fa fa-download" id="download-template-i-font"></i></a>
-                        
+
                          <a  *ngIf="reDistributeEvent" (click)="referenceService.downloadTemplate(eventCampaign.id,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
                         <i class="fa fa-file-pdf-o" id="download-template-i-font"></i></a> -->
                     </td>
-                    
-                    
-                    
+
+
+
                     <td style="text-align: right" width="20%">
                       <a [class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate" class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent" (click)="resetTabs('templates')">Change</a>
 					  <a *ngIf="reDistributeEvent || reDistributeEventManage" class="btn btn-primary btn-sm"  (click)="editPartnerTemplate()"><i class="fa fa-edit"></i>Edit</a>
@@ -1637,8 +1640,8 @@ a.disabled {
 				<app-create-bee-template  [partnerEmailTemplate]="eventCampaign.emailTemplate"></app-create-bee-template>
 			</div></div>
 		</div>
-	
-		
+
+
 	</div>
 </div>
    <!--   contacts preview modal    -->
@@ -1708,9 +1711,9 @@ a.disabled {
       </div>
     </div>
   </div>
-  
+
 <!--      Span check modal popup    -->
-  
+
   	<div class="modal right fade" id="email_spam_check" *ngIf="eventCampaign.emailTemplate">
 		<div class="modal-dialog modal-lg modal-template" style="width: 65% !important;right:0">
 			<div class="modal-content">
@@ -1727,7 +1730,7 @@ a.disabled {
 			</div>
 		</div>
 	</div>
-	
+
 <!--   -------Marketo authentication------	 -->
 
 <div class="modal right fade" id="templateRetrieve" tabindex="-1"
@@ -1829,7 +1832,7 @@ a.disabled {
             <div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
                 <button type="button" class="btn btn-default" (click)="closeFilterPopup()">Cancel</button>
                 <button type="button" class="btn btn-primary" (click)="closeFilterPopup()">Apply</button>
-                   
+
             </div>
         </div>
     </div>
