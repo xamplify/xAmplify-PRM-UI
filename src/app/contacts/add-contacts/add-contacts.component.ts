@@ -2342,6 +2342,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                           //  $( "#Gfile_preview" ).show();
                             this.showFilePreview();
+                            this.setPage( 1 );
+                            
                             $( "button#cancel_button" ).prop( 'disabled', false );
                             this.hideModal();
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -2357,7 +2359,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                     }
                     this.xtremandLogger.info( this.getSalesforceConatactList );
-                    this.setPage( 1 );
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
