@@ -142,7 +142,8 @@ export class ContactService {
 
     listOfSelectedContactListByType(contactListId: number,contactType: string, pagination: Pagination ){
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
-        return this._http.post( this.contactsUrl  + contactListId + "/contacts?contactType="+ contactType + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl  + contactListId + "/contacts?contactType="+ contactType + "&access_token=" + this.authenticationService.access_token
+        		+ '&userId='+ this.authenticationService.getUserId(), pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
