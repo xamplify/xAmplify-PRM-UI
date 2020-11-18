@@ -40,6 +40,7 @@ import { Category as folder } from 'app/dashboard/models/category';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { Form } from 'app/forms/models/form';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var $,swal, flatpickr, CKEDITOR,require;
 var moment = require('moment-timezone');
@@ -75,6 +76,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
   contactListsPagination: Pagination = new Pagination();
   contactsPagination: Pagination = new Pagination();
   paginationType: string;
+
+  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 
   teamMemberEmailIds: any[] = [];
   isFormSubmitted = false;
@@ -237,6 +240,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
     this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
      this.completeLoader = true;
+     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+   }
     referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
         referenceService.getOrgCampaignTypes(response).subscribe(data=>{
             this.enableLeads = data.enableLeads;
@@ -804,32 +812,51 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         }
         contactsPagination.userId = this.loggedInUserId;
         contactsPagination.redistributingCampaign = true;
-        // if(this.vanityLoginDto.vanityUrlFilter){
-        //     contactsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
-        //     contactsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
-        // }
+        if(this.vanityLoginDto.vanityUrlFilter){
+            contactsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+            contactsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+        }
         this.campaignService.listCampaignUsers(contactsPagination)
             .subscribe(
             (data: any) => {
-                let response = data.data;
-                this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, response.list);
-                this.contactListsPagination.totalRecords = response.totalRecords;
-                if(this.contactListsPagination.filterBy!=null){
-                    if(this.contactListsPagination.filterBy==0){
-                        this.contactListsPagination.maxResults = response.totalRecords;
-                    }else{
-                        this.contactListsPagination.maxResults = contactsPagination.filterBy;
-                    }
-                }
-                var contactIds = this.contactListsPagination.pagedItems.map(function(a) {return a.id;});
-                var items = $.grep(this.parternUserListIds, function(element) {
-                    return $.inArray(element, contactIds ) !== -1;
-                });
-                if(items.length==contactIds.length){
-                    this.isHeaderCheckBoxChecked = true;
-                }else{
-                    this.isHeaderCheckBoxChecked = false;
-                }
+
+              this.contactListsPagination.totalRecords = data.data.totalRecords;
+               this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.data.list);
+               if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
+                  const contactsAll:any = [];
+                    this.contactListsPagination.pagedItems.forEach((element, index) => {
+                      if( element.id ===this.parternUserListIds[index]) { contactsAll.push(this.contactListsPagination.pagedItems[index]);}
+                    });
+                    this.contactListsPagination.pagedItems = contactsAll;
+                  }
+                  const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+                  const items = $.grep( this.parternUserListIds, function( element ) { return $.inArray( element, contactIds ) !== -1;});
+                  if ( items.length == this.contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
+                      this.isHeaderCheckBoxChecked = true;
+                  } else {
+                      this.isHeaderCheckBoxChecked = false;
+                  }
+                // let response = data.data;
+                // this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, response.list);
+                // this.contactListsPagination.totalRecords = response.totalRecords;
+                // if(this.contactListsPagination.filterBy!=null){
+                //     if(this.contactListsPagination.filterBy==0){
+                //         this.contactListsPagination.maxResults = response.totalRecords;
+                //     }else{
+                //         this.contactListsPagination.maxResults = contactsPagination.filterBy;
+                //     }
+                // }else{
+                //   this.contactListsPagination.maxResults = response.totalRecords;
+                // }
+                // var contactIds = this.contactListsPagination.pagedItems.map(function(a) {return a.id;});
+                // var items = $.grep(this.parternUserListIds, function(element) {
+                //     return $.inArray(element, contactIds ) !== -1;
+                // });
+                // if(items.length==contactIds.length){
+                //     this.isHeaderCheckBoxChecked = true;
+                // }else{
+                //     this.isHeaderCheckBoxChecked = false;
+                // }
             },
             (error: string) => this.logger.error(error),
             () => console.info("Finished loadContactList()", this.contactListsPagination)
