@@ -871,12 +871,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.contactService.successMessage = true;
                         this.contactService.saveAsSuccessMessage = "add";
                         if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage')
+                            this.router.navigateByUrl('/home/contacts/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         } else {
-                            this.router.navigateByUrl('home/partners/manage')
+                            this.router.navigateByUrl('home/partners/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         }
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
                 (error: any) => {
@@ -914,13 +917,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.contactService.saveAsSuccessMessage = "add";
                 if ( this.isPartner == false ) {
                     this.router.navigateByUrl( '/home/assignleads/manage' )
-                   localStorage.setItem('isZohoSynchronization', 'no');
+                    localStorage.setItem('isZohoSynchronization', 'no');
                     localStorage.removeItem('isZohoSynchronization');
                 } 
             }
            
         }else{
             this.authenticationService.forceToLogout();
+			localStorage.removeItem('isZohoSynchronization');
         }
         },
         ( error: any ) => {
@@ -1042,12 +1046,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
                         this.disableOtherFuctionality = false;
                         if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage')
+                            this.router.navigateByUrl('/home/contacts/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         } else {
-                            this.router.navigateByUrl('home/partners/manage')
+                            this.router.navigateByUrl('home/partners/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         }
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
                 (error: any) => {
@@ -1170,12 +1177,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.contactService.saveAsSuccessMessage = "add";
                         this.uploadedCsvFileName = "";
                         if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage')
+                            this.router.navigateByUrl('/home/contacts/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         } else {
-                            this.router.navigateByUrl('home/partners/manage')
+                            this.router.navigateByUrl('home/partners/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         }
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
                 (error: any) => {
@@ -1627,12 +1637,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
                         if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage')
+                            this.router.navigateByUrl('/home/contacts/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         } else {
-                            this.router.navigateByUrl('home/partners/manage')
+                            this.router.navigateByUrl('home/partners/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         }
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
                 (error: any) => {
@@ -1698,13 +1711,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
                         if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage')
+                            this.router.navigateByUrl('/home/contacts/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         } else {
-                            this.router.navigateByUrl('home/partners/manage')
+                            this.router.navigateByUrl('home/partners/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         }
                         this.contactService.successMessage = true;
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
                 (error: any) => {
@@ -2494,13 +2510,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
                         if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage')
+                            this.router.navigateByUrl('/home/contacts/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         } else {
-                            this.router.navigateByUrl('home/partners/manage')
+                            this.router.navigateByUrl('home/partners/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         }
                         this.contactService.successMessage = true;
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
                 (error: any) => {
@@ -2572,13 +2591,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
                         if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage')
+                            this.router.navigateByUrl('/home/contacts/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         } else {
-                            this.router.navigateByUrl('home/partners/manage')
+                            this.router.navigateByUrl('home/partners/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         }
                         this.contactService.successMessage = true;
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
                 (error: any) => {
@@ -3071,12 +3093,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
                         if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage')
+                            this.router.navigateByUrl('/home/contacts/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         } else {
-                            this.router.navigateByUrl('home/partners/manage')
+                            this.router.navigateByUrl('home/partners/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         }
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
 
@@ -3138,12 +3163,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
                         if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage')
+                            this.router.navigateByUrl('/home/contacts/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         } else {
-                            this.router.navigateByUrl('home/partners/manage')
+                            this.router.navigateByUrl('home/partners/manage');
+							localStorage.removeItem('isZohoSynchronization');
                         }
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
 
@@ -3634,8 +3662,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info("Save Contacts ListUsers:" + data);
                         this.router.navigateByUrl('/home/contacts/manage');
+						localStorage.removeItem('isZohoSynchronization');
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
 
@@ -3673,9 +3703,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.selectedAddContactsOption = 8;
                         this.contactService.saveAsSuccessMessage = "add";
                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
-                        this.router.navigateByUrl('/home/contacts/manage')
+                        this.router.navigateByUrl('/home/contacts/manage');
+						localStorage.removeItem('isZohoSynchronization');
                     } else {
                         this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
                     }
                 },
 
