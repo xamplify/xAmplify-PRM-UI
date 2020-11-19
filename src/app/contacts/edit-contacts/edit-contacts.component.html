@@ -191,15 +191,15 @@
 															<li><a *ngIf="selectedAddContactsOption != 8 && !isSegmentation" id="save_button" (click)="saveContacts()">Save
 															</a></li>
 															<li><a id="saveAs_button"
-																*ngIf="selectedAddContactsOption == 8"
+																*ngIf="selectedAddContactsOption == 8 && !assignLeads"
 																(click)="saveAs(true)" translate>Save As </a></li>
 															<li><a id="exportToExcel"
-																*ngIf="selectedAddContactsOption == 8"
+																*ngIf="selectedAddContactsOption == 8 && !assignLeads"
 																(click)="hasAccess()" translate>Export To Excel</a></li>
 															<li><a id="download_empy_csv"
 																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8" translate>Download CSV Template</a></li>
 															<li><a id="delete_button"
-																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList"
+																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && !assignLeads"
 																(click)="showAlert(selectedContactListId)" translate> Delete</a></li>
 														</ul>
 													</div>
@@ -733,10 +733,10 @@
 															</td>
 															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
 															<div class="actions-block override-actions" style="width:170px">
-															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
+															  	<a *ngIf="!assignLeads" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																 </a>
-																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">
+																<a *ngIf="!assignLeads" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>	
 																</a>
  																<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)">
