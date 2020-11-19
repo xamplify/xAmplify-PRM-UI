@@ -39,12 +39,13 @@ export class EventCampaign {
     rsvpReceived: boolean = true;
     onlineMeeting: boolean = true;
     enableCoBrandingLogo = false;
-    
+    parentCampaignId: number = 0;
+
     eventUrl: string = '';
-    
+
     dataShare = false;
     detailedAnalyticsShared = false;
-    
+
 
     userLists: Array<ContactList> = [];
     userListIds: Array<number> = [];
@@ -63,9 +64,9 @@ export class EventCampaign {
     pushToMarketo = false;
     socialStatusList: Array<SocialStatus> = [];
     forms: Array<Form> = [];
-   
+
     pushToCRM = [];
-    
+
     emailIds = [];
     eventStarted = false;
     categoryId:number = 0;
@@ -73,7 +74,7 @@ export class EventCampaign {
 	pushToHubspot = false;
 	pushToSalesforce = false;
 	pushToMarketingAutomation = false;
-	
+
 	eventCancellation : EventCancellation;
 
     constructor() {

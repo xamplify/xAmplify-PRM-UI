@@ -805,10 +805,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         if(this.eventCampaign.nurtureCampaign){
             contactsPagination.editCampaign = true;
             contactsPagination.campaignId = this.eventCampaign.id;
-            contactsPagination.parentCampaignId = this.activatedRoute.snapshot.params['id'];
+            if(this.reDistributeEventManage){
+              contactsPagination.parentCampaignId = this.eventCampaign.parentCampaignId;
+            }else{
+              contactsPagination.parentCampaignId = this.eventCampaign.id;
+            }
         }else{
             contactsPagination.editCampaign = false;
-            contactsPagination.parentCampaignId = this.activatedRoute.snapshot.params['id'];
+            if(this.reDistributeEventManage){
+              contactsPagination.parentCampaignId = this.eventCampaign.parentCampaignId;
+            }else{
+              contactsPagination.parentCampaignId = this.eventCampaign.id;
+            }
         }
         contactsPagination.userId = this.loggedInUserId;
         contactsPagination.redistributingCampaign = true;
