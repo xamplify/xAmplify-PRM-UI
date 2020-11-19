@@ -121,12 +121,12 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    listContactsByType(contactType: string, pagination: Pagination ){
+    listContactsByType(assignLeads:boolean, contactType: string, pagination: Pagination ){
         let userId = this.authenticationService.user.id;
         userId = this.authenticationService.checkLoggedInUserId(userId);
 
         this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
-        return this._http.post( this.contactsUrl + "contacts?contactType="+ contactType + '&userId='+ userId + "&access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + "contacts/"+assignLeads+"?contactType="+ contactType + '&userId='+ userId + "&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }

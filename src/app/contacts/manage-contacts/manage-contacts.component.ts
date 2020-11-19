@@ -1247,7 +1247,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.pagination.filterValue = this.isPartner;
 			this.contactsByType.pagination.criterias = this.criterias;
 
-			this.contactService.listContactsByType(contactType, this.contactsByType.pagination)
+			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.pagination)
 				.subscribe(
 					data => {
 						this.contactsByType.selectedCategory = contactType;
@@ -1602,7 +1602,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.criterias = this.criterias;
 			this.contactsByType.contactPagination.maxResults = totalRecords;
 
-			this.contactService.listContactsByType(contactType, this.contactsByType.contactPagination)
+			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.contactPagination)
 				.subscribe(
 					data => {
 						this.contactsByType.listOfAllContacts = data.listOfUsers;
