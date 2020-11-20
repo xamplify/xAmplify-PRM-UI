@@ -240,11 +240,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.access_token = this.authenticationService.access_token;
 		this.xtremandLogger.info("successmessageLoad" + this.contactService.successMessage)
 		if (this.contactService.saveAsSuccessMessage === "add" || this.contactService.successMessage === true || this.contactService.saveAsSuccessMessage === "SUCCESS") {
-			if (this.isPartner) {
-				this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_CREATE_SUCCESS, true);
-			} else {
-				this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
-			}
+			if (currentUrl.includes('home/partners')) {
+		        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_CREATE_SUCCESS, true);
+		      } else if (currentUrl.includes('home/contacts')){
+		        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
+		      }else{
+		        this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_CREATE_SUCCESS, true);
+		      }
 			this.xtremandLogger.info("Success Message in manage contact pape");
 			this.contactService.saveAsSuccessMessage = "";
 		}
@@ -756,10 +758,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		$("#pagination").hide();
 	}
 
-	setListType(publicList: boolean) {
+	setListType(publicList: boolean, contactType:string, assignedToPartner: boolean ) {
 		this.contactService.publicList = publicList;
+		this.contactService.contactType = contactType;
+		this.contactService.assignedToPartner = assignedToPartner
 	}
+	
 
+	
 	backToManageContactPage() { }
 
 	backToEditContactPage() {
