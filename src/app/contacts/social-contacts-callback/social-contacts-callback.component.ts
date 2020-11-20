@@ -56,7 +56,7 @@ export class SocialContactsCallbackComponent implements OnInit {
                 .subscribe(
                 result => {
                     localStorage.removeItem( "userAlias" );
-                    localStorage.removeItem( "isPartner" );
+                    localStorage.removeItem( "currentModule" );
                     this.xtremandLogger.info( "result: " + result );
 
                     if ( this.callbackName == 'google' ) {
@@ -91,7 +91,7 @@ export class SocialContactsCallbackComponent implements OnInit {
                         this.referenceService.integrationCallBackStatus = true;
                         this.xtremandLogger.info("Hubspot Callback :: " + result);
                         localStorage.removeItem("userAlias");
-                        localStorage.removeItem("isPartner");
+                        localStorage.removeItem("currentModule");
                         this.router.navigate(['/home/dashboard/myprofile'])
                     },
                     error => {
@@ -112,7 +112,7 @@ export class SocialContactsCallbackComponent implements OnInit {
                         this.referenceService.integrationCallBackStatus = true;
                         this.xtremandLogger.info("Integration Callback :: " + result);
                         localStorage.removeItem("userAlias");
-                        localStorage.removeItem("isPartner");
+                        localStorage.removeItem("currentModule");
                         this.router.navigate(['/home/dashboard/myprofile']);
                         // Commented below code by Swathi. Custom form creation should not be done here.
                         /*if(type === "isalesforce"){

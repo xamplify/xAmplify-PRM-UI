@@ -49,14 +49,14 @@ export class ContactService {
 
     loadUsersOfContactList( contactListId: number, pagination: Pagination ) {
     	//pagination.criterias = criterias;
-    	
+
     	 let userId = this.authenticationService.user.id;
          userId = this.authenticationService.checkLoggedInUserId(userId);
     	return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token+"&userId="+userId, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     loadPreviewCampaignUsersOfContactList( contactListId: number, campaignId: number, pagination: Pagination ) {
         return this._http.post( this.contactsUrl + campaignId + "/"+ contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
@@ -86,7 +86,7 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     loadAssignedLeadsLists( pagination: Pagination ): Observable<ContactList[]> {
 
         let userId = this.authenticationService.user.id;
@@ -188,11 +188,11 @@ export class ContactService {
         if(isPartner == false){
             this.successMessage = true;
         }
-        
+
         if(isPartner){
         	isPublic = true;
         }
-        
+
         var requestoptions = new RequestOptions( {
             body:  users,
         })
@@ -208,7 +208,7 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     saveAssignedLeadsList( userUserListWrapper : UserUserListWrapper ): Observable<any> {
         var requestoptions = new RequestOptions( {
             body:  userUserListWrapper
@@ -219,7 +219,7 @@ export class ContactService {
             headers: headers
         };
         var url = this.contactsUrl + "save-assign-leads-list/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token ;
-      
+
         return this._http.post( url, options, requestoptions )
         .map(( response: any ) => response.json() )
        .catch( this.handleError);
@@ -278,29 +278,29 @@ export class ContactService {
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() );
     }
-    
-    
+
+
     validateUndelivarableEmailsAddress( validateUserIds: Array<number> ): Observable<any> {
         this.logger.info( validateUserIds );
         var newUrl = this.contactsUrl + "makeContactsValid?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
         return this._http.post( newUrl, validateUserIds )
             .map(( response: any ) => response.json() );
     }
-    
+
     getValidUsersCount( selectedListIds: Array<number> ): Observable<Object> {
         this.logger.info( selectedListIds );
         var newUrl = this.contactsUrl + "valid-contacts-count?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
         return this._http.post( newUrl, selectedListIds )
             .map(( response: any ) => response.json() );
     }
-    
+
 
     downloadContactList( contactListId: number ): Observable<Response> {
         this.logger.info( contactListId );
         return this._http.get( this.contactsUrl +  contactListId + "/download?access_token=" + this.authenticationService.access_token)
             .map(( response: any ) => response );
     }
-    
+
     hasAccess(isPartner: boolean): Observable<any> {
         this.logger.info(isPartner);
         return this._http.get(this.contactsUrl + this.authenticationService.getUserId() + "/" + isPartner + "/has-access?access_token=" + this.authenticationService.access_token)
@@ -314,9 +314,9 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    googleLogin(isPartner: boolean) {
+    googleLogin(currentModule: any) {
         this.logger.info( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token );
-        return this._http.post( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId() +"&isPartner=" + isPartner, "")
+        return this._http.post( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId() +"&isPartner=" + currentModule, "")
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -417,8 +417,8 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
-    
+
+
     getZohoAutherizedLeads( socialContact: SocialContact ) {
         this.logger.info( "get zoho leads :" + socialContact );
         //this.successMessage = true;
@@ -437,9 +437,9 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    salesforceLogin(isPartner: boolean) {
+    salesforceLogin(currentModule: any) {
         this.logger.info( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
-        return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&isPartner=" + isPartner)
+        return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&isPartner=" + currentModule)
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -452,8 +452,8 @@ export class ContactService {
                 let denied = param['denied'];
                 queryParam = "?code=" + code;
             });*/
-        this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&isPartner=" + localStorage.getItem( 'isPartner' ) );
-        return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&isPartner=" + localStorage.getItem( 'isPartner' ) )
+        this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'currentModule' ) );
+        return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'currentModule' ) )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -513,7 +513,7 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     forceProcessList(contactListId: number) {
         this.logger.info( this.contactsUrl + "/process-userlist?access_token=" + this.authenticationService.access_token);
         return this._http.get( this.contactsUrl + contactListId +"/process-userlist?access_token=" + this.authenticationService.access_token)
@@ -632,7 +632,7 @@ export class ContactService {
         .map( this.extractData )
         .catch( this.handleError );
     }
-    
+
 
     getPartnerEmails() {
         this.logger.info(this.contactsUrl + "partner-emails/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token);
@@ -640,14 +640,14 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     getPartners(pagination: Pagination){
     	this.logger.info(this.contactsUrl + "list-partners/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token);
         return this._http.post( this.contactsUrl + "list-partners/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, pagination)
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
+
     assignLeadsListToPartner(contactListObject : ContactList){
     	return this._http.post( this.contactsUrl + "assign-leads-list-to-partner/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, contactListObject)
         .map( this.extractData )
