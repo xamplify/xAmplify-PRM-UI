@@ -21,11 +21,9 @@ export class SocialContactsCallbackComponent implements OnInit {
     constructor( private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger,private hubSpotService:HubSpotService ,private integrationService:IntegrationService) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
-          if(currentUrl.includes( 'leads' )){
-            this.currentModule = 'leads';
-          }else{
             this.currentModule = 'contacts';
-          }
+        } else if( currentUrl.includes( 'home/assignleads' )){
+          this.currentModule = 'leads';
         } else {
           this.currentModule = 'partners';
         }
