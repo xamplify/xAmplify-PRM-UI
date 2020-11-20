@@ -174,11 +174,11 @@
 											</button>
 										</div>
 									</div>
-									
+
 									<span *ngIf = "iszohoAccessTokenExpired">
 										<h4>{{zohoExpiredAccessTokenMessage}}<a (click)="zohoAuthenticationThroughExpiredAccessTokenMessage('zoho')" class="badge badge-primary"> ReLogin</a></h4>
-									</span> 
-									
+									</span>
+
 	<!--	<div *ngIf = "iszohoAccessTokenExpired">
 			<div class="alert alert-dismissible m0" role="alert"
 			[ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
@@ -192,15 +192,15 @@
 				<!-- <i class="fa"
 					[ngClass]="{'fa-check': customResponse.responseType == 'SUCCESS',
 					'fa-exclamation': customResponse.responseType == 'ERROR'}"
-					aria-hidden="true" style="padding-right: 7px; padding-top: 10px;"></i> --> 
+					aria-hidden="true" style="padding-right: 7px; padding-top: 10px;"></i> -->
 		   <!--			<span class="text" id='responseMessage'>
 						<h4>{{zohoExpiredAccessTokenMessage}}<a (click)="zohoAuthenticationThroughExpiredAccessTokenMessage('zoho')" class="badge badge-primary"> Relogin</a></h4>
-									
+
 					</span>
 			</h4>
 		</div>
 		</div>  -->
-									
+
 									<div class="page-bar m0" *ngIf="showListOfContactList">
 										<ul class="page-breadcrumb">
 											<li style="font-size: 16px; color: #888888" translate>
@@ -284,9 +284,9 @@
 													</th>
 													<th class="visible-xs" colspan="1" style="width: 35%" translate>
 														List Info</th>
-														
-													<th class="hidden-xs" [hidden]="!assignLeads" translate><span [hidden]="!assignLeads" >status</span></th> 
-													<th class="hidden-xs" [hidden]="isPartner || assignLeads" translate><span [hidden]="isPartner || assignLeads" >Type</span></th> 
+
+													<th class="hidden-xs" [hidden]="!assignLeads" translate><span [hidden]="!assignLeads" >status</span></th>
+													<th class="hidden-xs" [hidden]="isPartner || assignLeads" translate><span [hidden]="isPartner || assignLeads" >Type</span></th>
 													<th class="hidden-xs" [hidden]="assignLeads" translate><span [hidden]="assignLeads" >Created On</span></th>
 													<th class="hidden-xs" translate [hidden]="!assignLeads"><span [hidden]="!assignLeads" >Date</span></th>
 													<th class="text-center hidden-xs" translate>
@@ -317,13 +317,13 @@
 														<img *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))"
 														src="assets/images/Spinner.gif"
 														style="width: 55px; margin-top: -88px; margin-left: 17px;">
-														
+
 													</td>
 													<td>
 														<h4 class="moreipsis"  title="{{contactList.name}}">
 															 <span> {{contactList.name}}</span>
 														</h4>
-														
+
 														<h5 class='m0 ellipsis' title="{{contactList.uploadedBy}}" translate>
 															By <span class='f-w-400'>{{contactList.uploadedBy
 																| slice:0:50}} <span
@@ -338,7 +338,7 @@
 																	<span class="mb0"
 																		*ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)" translate>
 																		Total {{checkingContactTypeName}}s:
-																		{{contactList.noOfContacts}}</span> 
+																		{{contactList.noOfContacts}}</span>
 																	<span
 																		*ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
 																		<b>-</b></span>
@@ -349,17 +349,17 @@
 																	</span>
 																</h5>
 															</h5>
-															
+
 																<h5 style=" position: relative;top: 10px;text-align: left;" *ngIf="contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads">
 																<span class="view-banner"
 																	data-toggle="tooltip" data-placement="top"
 																	title="assigned status" translate>Shared leads list</span>
-																	
+
 															</h5>
 													</td>
 														<td class="hidden-xs" *ngIf="assignLeads">
 															<h5 class="view-banner" style="width: auto;" *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner">
-																<span 
+																<span
 																	data-toggle="tooltip" data-placement="top"
 																	title="assigned status" translate>Assigned</span>
 															</h5>
@@ -376,7 +376,7 @@
 													 <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_public}}" translate>Public</span>
 													<span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"
-																title="{{actionsDescription.contact_list_private}}" translate>Private</span> 
+																title="{{actionsDescription.contact_list_private}}" translate>Private</span>
 													</h5>
 														</td>
 													<td class="hidden-xs" *ngIf="!assignLeads"><app-timestamp
@@ -389,7 +389,7 @@
 															[isOnlyDate]="true"
 															[dateAndTime]="contactList.createdDate">
 														</app-timestamp></b></div>
-														<div>Assigned On: 
+														<div>Assigned On:
 														   <b><app-timestamp
 															[isOnlyDate]="true"
 															[dateAndTime]="contactList.assignedDate">
@@ -409,12 +409,12 @@
 																	*ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole) || authenticationService.isOnlyPartner())
 																 && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner)"
 																	data-toggle="tooltip" data-placement="top"
-																	(click)="storeListDetails(contactList);authenticationService.isSharePartnerModal = true" 
+																	(click)="storeListDetails(contactList);authenticationService.isSharePartnerModal = true"
 																	title="{{actionsDescription.leads_list_share}}"> <i
 																	class="fa fa-share"></i>
-																</a> <a  
+																</a> <a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isPartner() ||
-																 (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((!contactList.assignedLeadsList) || contactList.assignedLeadsList && !contactList.assignedToPartner)"
+																 (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_edit}}"> <i
@@ -446,15 +446,15 @@
 																	(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
 																		<i class="fa fa-refresh" aria-hidden="true"></i>
 																</a>
-																</span> <a 
+																</span> <a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner())
-																 && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
+																 && !contactList.defaultPartnerList && !contactList.marketoMasterList"
 																(click)="showAlert(contactList.id)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_delete}}">
 																<i class="fa fa-trash-o"></i>
 															</a>
-															
+
 														</div>
 														<div class="actions-block override-actions" *ngIf="contactList.marketoSyncComplete && !contactList.emailValidationInd">
 														<a data-toggle="tooltip" data-placement="top"
@@ -467,7 +467,7 @@
 												</tr>
 											</tbody>
 										</table>
-									</div>	
+									</div>
 								</section>
 
 								<div class="row mix-grid" [hidden]="isListView"
@@ -501,14 +501,14 @@
 													</span>
 												</h3>
 											</div>
-											
+
 											<div id="container" *ngIf="contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads">
 												<h3 translate style="font-size: 14px;">
 													Shared leads list
 													<span class="arrow"></span>
 												</h3>
 											</div>
-											
+
 											<h4 class="ellipsis" title="{{contactList.name}}">
 												{{contactList.name | slice:0:25}} <span
 													*ngIf="contactList.name?.length>25">...</span>
@@ -550,13 +550,13 @@
 												<a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole) || authenticationService.isOnlyPartner())
 																 && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner)"
 																	data-toggle="tooltip" data-placement="top"
-																	(click)="storeListDetails(contactList);authenticationService.isSharePartnerModal = true" 
+																	(click)="storeListDetails(contactList);authenticationService.isSharePartnerModal = true"
 																	title="{{actionsDescription.leads_list_share}}"> <i
 																	class="fa fa-share"></i>
-																</a> 
+																</a>
 												<a [class.disabled]="!contactList.emailValidationInd"
 													*ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isPartner() ||
-																 (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((!contactList.assignedLeadsList) || contactList.assignedLeadsList && !contactList.assignedToPartner)"
+																 (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
 													(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
 													data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_edit}}"
@@ -597,8 +597,8 @@
 													style="color: white;"></i>
 												</a> </ng-container>
 												<a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
-													*ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList
-													&& (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
+                          *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId)
+                           || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 													(click)="showAlert(contactList.id)" data-toggle="tooltip"
 													data-placement="top"
 													title="{{actionsDescription.contact_list_delete}}"
@@ -609,8 +609,8 @@
 											<div class="bar" *ngIf="!contactList.emailValidationInd">
 											<a data-toggle="tooltip" data-placement="top"
 													title="Force process the list"
-													data-rel="fancybox-button" 
-													(click)="forceProcessList(contactList.id)"> 
+													data-rel="fancybox-button"
+													(click)="forceProcessList(contactList.id)">
 													<i class="fa fa-repeat"></i>
 												</a>
 										   </div>
@@ -833,7 +833,7 @@
 															lang="{{contact.name}}" name="invalidContact[]"
 															value="{{contact.id}}" id="{{contact.id}}"
 															(click)="invalidContactsSelectedUserIds(contact.id,contact.emailId,contact.firstName,contact.lastName,$event)" />
-														</td> 
+														</td>
 														<td *ngIf="isPartner"><app-user-info
 																[isPartnerEntityInfo]="true" [isPartnerInfo]="true"
 																[userInfo]="contact"> </app-user-info></td>
@@ -1084,9 +1084,9 @@
 						type="text" id="campaignName" [(ngModel)]="saveAsListName" placeholder="Name">
 					<span style="color: red">{{saveAsError}}</span>
 				</div>
-			
 
-			 
+
+
          <!-- ------------Legal Basis------------ -->
         <div class="form-group" *ngIf="gdprStatus && saveAsTypeList === 'manage-all-contacts'">
         <label for="campaignName" translate>Legal Basis Options <span class="danger">*</span></label>
@@ -1100,26 +1100,26 @@
 	    </div>
 	    </div>
 	</div>
-	
+
 	<!-- start   -->
 				<div class="form-group" class="col-xs-12"
 					*ngIf="saveAsTypeList === 'manage-all-contacts' && !isPartner" >
 					<label class="col-xs-4" for="campaignName" translate>Contact List Type <span class="danger">*</span></label>
 					<div class="col-xs-8">
-						
-							<switch [status]="model.isPublic" 
+
+							<switch [status]="model.isPublic"
 							      [onText]="'Public'"
 								[offText]="'Private'"
 								[onColor]="callActionSwitch.onGreenColorSwitch"
 								[offColor]="callActionSwitch.offPrivateColor"
 								[size]="large"
 								(statusChange)="changeStatus($event)"> </switch>
-						
+
 					</div>
 				</div>
 				<!-- end  -->
-	
-	
+
+
 	</div>
 
 			<div class="modal-footer">
@@ -1131,5 +1131,5 @@
 	</div>
 </div>
 
- <app-share-leads *ngIf="authenticationService.isSharePartnerModal" (notifyParent)="selectedSharePartner($event)" ></app-share-leads> 
+ <app-share-leads *ngIf="authenticationService.isSharePartnerModal" (notifyParent)="selectedSharePartner($event)" ></app-share-leads>
 <!-- END PAGE CONTENT-->

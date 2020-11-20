@@ -139,7 +139,7 @@
 										<div class="visual">
 
 											<!-- <i class="fa fa-times"></i> -->
-											
+
 											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribe' ? '#white' : '#ccc' }"
                										 *ngIf="contactsByType.selectedCategory == 'unsubscribe'" ></i>
 										</div>
@@ -213,9 +213,9 @@
 									<div class="table-toolbar">
 										<div class="clearfix">
 											<ng-container *ngIf="showAddOptions">
-											<div class="col-xs-12 col-md-6 col-sm-6 p0" 
+											<div class="col-xs-12 col-md-6 col-sm-6 p0"
 											*ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
-											 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || 
+											 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner ||
 											 (hasContactRole && loggedInUserId==uploadedUserId) || assignLeads">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
@@ -250,7 +250,7 @@
 												</div>
 												</ng-container>
 											</div>
-										</ng-container>		
+										</ng-container>
 								 <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-top: 10px;">
 									<div class="col-xs-2 col-md-2 col-sm-2">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
@@ -338,7 +338,7 @@
 											class="alert alert-danger alert-dismissable"
 											style="width: 50%">
 											<b translate>File type not allowed please select the .csv file only..</b>
-												
+
 										</div>
 										<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
 											class="alert alert-danger alert-dismissable"
@@ -382,7 +382,7 @@
 												    </div>
 											</div>
 											</div>
-									
+
 									<div class="row" *ngIf="clickBoard">
 										<div class="col-sm-12" style="padding-left:0px">
 											<h3 class="col-xs-12" translate>Copy from text -- paste below</h3>
@@ -453,7 +453,7 @@
 									<div class="row" id="file_preview" *ngIf="filePrevew">
 										<div class="col-xs-12">
 											<!-- BEGIN EXAMPLE TABLE PORTLET-->
-											
+
 											<div *ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading">
 									<app-list-loader></app-list-loader>
 									</div>
@@ -488,7 +488,7 @@
 																<td title="{{user.emailId}}">{{user.emailId | slice:0:35}}
 																	<span *ngIf="user.emailId?.length>35">...</span>
 																</td>
-																
+
 																<td>
 																	<button id='more_less_button_{{i}}'
 																		(click)="user.isShowDetails = ! user.isShowDetails">
@@ -562,7 +562,7 @@
 															</ng-container>
 														</tbody>
 													</table>
-													
+
 											<ul *ngIf="pager.pages && pager.pages.length"
 										class="pagination">
 										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
@@ -581,7 +581,7 @@
 											<a (click)="setCsvPage(pager.totalPages)" translate>Last</a>
 										</li>
 									</ul>
-													
+
 
 												</div>
 											</div>
@@ -733,11 +733,11 @@
 															</td>
 															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
 															<div class="actions-block override-actions" style="width:170px">
-															  	<a *ngIf="!assignLeads" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
+															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																 </a>
-																<a *ngIf="!assignLeads" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">
-																		<i class="fa fa-trash-o" aria-hidden="true"></i>	
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">
+																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
  																<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)">
                                                                 <i class="fa fa-bullhorn" aria-hidden="true"></i></a>
@@ -1035,8 +1035,8 @@
 																</tr> -->
 
 															</ng-container>
-															
-															
+
+
 														</tbody>
 													</table>
 												</td>
@@ -1156,20 +1156,20 @@
 			<div>
 				<h4 class="modal-title f-w-600" translate>You are agreeing to xAmplify's Terms and Conditions.</h4>
 			</div>
-			
+
 			<div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
 			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
 			  By onboarding a partner you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 			  <br>
 			</div>
-			
+
 			<div class="form-group" style="margin-top: 15px;" *ngIf="!isPartner">
 			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
 				By adding a contact you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 			  <br>
 			</div>
-			
-			
+
+
 			<div *ngIf="!isCheckTC" style="color:red" translate>You must agree T&C</div>
 			</div>
 			<div class="modal-footer">
@@ -1182,7 +1182,7 @@
 </div>
 
 
-<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" [isPartner]="isPartner" 
+<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" [isPartner]="isPartner"
    [showGDPR]="showGDPR" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
 
 <!-- <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
