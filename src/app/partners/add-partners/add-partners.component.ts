@@ -82,6 +82,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     public socialPartnerUsers: SocialContact[] = new Array();
     socialPartnersAllChecked: boolean;
     isPartner: boolean = true;
+	module: string;
     public socialContactsValue: boolean;
     zohoCredentialError = '';
     selectedZohoDropDown: string = 'DEFAULT';
@@ -217,6 +218,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.socialPartners = new SocialContact();
         this.addPartnerUser.country = ( this.countryNames.countries[0] );
         this.pageNumber = this.paginationComponent.numberPerPage[0];
+
+		let currentUrl = this.router.url;
+        if ( currentUrl.includes( 'home/partners' ) ) {
+            this.isPartner = false;
+			this.module = "partners";
+        }
 
         this.parentInput = {};
         const currentUser = localStorage.getItem( 'currentUser' );
@@ -3423,7 +3430,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.zohoPopupLoader = false;
                 }else{
                     if (this.selectedAddPartnerOption == 6 && !this.disableOtherFuctionality) {
-                        this.contactService.checkingZohoAuthentication(this.isPartner)
+                        this.contactService.checkingZohoAuthentication(this.module)
                             .subscribe(
                                 (data: any) => {
                                     this.storeLogin = data;
@@ -3476,7 +3483,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 }
                 else{
                     if (this.selectedAddPartnerOption == 6 && !this.disableOtherFuctionality) {
-                        this.contactService.checkingZohoAuthentication(this.isPartner)
+                        this.contactService.checkingZohoAuthentication(this.module)
                             .subscribe(
                                 (data: any) => {
                                     this.storeLogin = data;
@@ -3563,7 +3570,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     zohoAuthentication()
     {
-        this.contactService.checkingZohoAuthentication(this.isPartner)
+        this.contactService.checkingZohoAuthentication(this.module)
                             .subscribe(
                                 (data: any) => {
                                     this.zohoAuthUrl = data.redirectUrl;

@@ -166,6 +166,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	filterCondition = this.filterConditions[0];
 
 	isPartner: boolean;
+	module: string;
 	checkingContactTypeName: string;
 	isListView = false;
 	responseMessage = [];
@@ -214,6 +215,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
              this.checkingContactTypeName = "Lead"
 		}else if (currentUrl.includes('home/contacts')) {
 			this.isPartner = false;
+			this.module = 'contacts';
 			this.checkingContactTypeName = "Contact"
 		} else {
 			this.isPartner = true;
@@ -660,7 +662,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 			this.socialContact.socialNetwork = "ZOHO";
 			this.socialContact.contactType = this.contactType;
-			this.contactService.checkingZohoSyncAuthentication(this.isPartner)
+			this.contactService.checkingZohoSyncAuthentication()
 				.subscribe(
 					(data: any) => {
 						this.xtremandLogger.info(data);
@@ -1989,7 +1991,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	zohoAuthenticationThroughExpiredAccessTokenMessage(providerName: string) {
 		this.zohoCurrentUser = localStorage.getItem('currentUser');
-		let url = this.authenticationService.APP_URL + "e/" + providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.authenticationService.access_token + "/" + this.zohoCurrentUser + "/" + this.isPartner;
+		this.module = 'contacts';
+		let url = this.authenticationService.APP_URL + "e/" + providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.authenticationService.access_token + "/" + this.zohoCurrentUser + "/" + this.module;
 		var x = screen.width / 2 - 700 / 2;
 		var y = screen.height / 2 - 450 / 2;
 		window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");

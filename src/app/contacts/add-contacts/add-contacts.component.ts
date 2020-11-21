@@ -97,6 +97,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     pagedItems: any[];
     checkingForEmail: boolean;
     isPartner: boolean;
+	module: string;
     assignLeads: boolean = false;
     checkingContactTypeName: string;
     selectedContactListIds = [];
@@ -184,6 +185,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.isPartner = false;
+			this.module = "contacts";
             this.checkingContactTypeName = "Contact"
         } else if( currentUrl.includes( 'home/assignleads' ) ){
             this.isPartner = false;
@@ -3771,7 +3773,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     this.zohoPopupLoader = false;
                 }else{
                     if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
-                        this.contactService.checkingZohoAuthentication(this.isPartner)
+                        this.contactService.checkingZohoAuthentication(this.module)
                             .subscribe(
                                 (data: any) => {
                                     this.storeLogin = data;
@@ -3823,7 +3825,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 }
                 else{
                     if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
-                        this.contactService.checkingZohoAuthentication(this.isPartner)
+                        this.contactService.checkingZohoAuthentication(this.module)
                             .subscribe(
                                 (data: any) => {
                                     this.storeLogin = data;
@@ -3842,14 +3844,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                     } else {
                                         this.zohoPopupLoader = false;
                                         localStorage.setItem("userAlias", data.userAlias)
-                                        localStorage.setItem("currentModule", data.modue);
+                                        localStorage.setItem("currentModule", data.module);
                                         localStorage.setItem("statusCode", data.statusCode);
                                        // window.location.href = "" + data.redirectUrl;
 
                                        this.loggedInUserId = this.authenticationService.getUserId();
 
                                        this.zohoCurrentUser = localStorage.getItem('currentUser');
-                                       let url = this.authenticationService.APP_URL+"e/"+this.providerName+"/"+this.loggedInUserId+"/"+window.location.hostname+"/"+this.authenticationService.access_token+"/"+this.zohoCurrentUser+"/"+this.isPartner;
+                                       let url = this.authenticationService.APP_URL+"e/"+this.providerName+"/"+this.loggedInUserId+"/"+window.location.hostname+"/"+this.authenticationService.access_token+"/"+this.zohoCurrentUser+"/"+this.module;
                                        var x = screen.width/2 - 700/2;
                                        var y = screen.height/2 - 450/2;
                                         window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");

@@ -374,14 +374,14 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    checkingZohoAuthentication(isPartner:boolean) {
-        return this._http.get( this.authenticationService.REST_URL + "zohoOauth/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId()+"&isPartner="+isPartner)
+    checkingZohoAuthentication(module: string) {
+        return this._http.get( this.authenticationService.REST_URL + "zohoOauth/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId()+"&module="+module)
             .map( this.extractData )
             .catch( this.handleError );
     }
 
-    checkingZohoSyncAuthentication(isPartner:boolean) {
-        return this._http.get( this.authenticationService.REST_URL + "zohoOauth/checkSyncAuthorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId()+"&isPartner="+isPartner)
+    checkingZohoSyncAuthentication() {
+        return this._http.get( this.authenticationService.REST_URL + "zohoOauth/checkSyncAuthorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId())
             .map( this.extractData )
             .catch( this.handleError );
     }
