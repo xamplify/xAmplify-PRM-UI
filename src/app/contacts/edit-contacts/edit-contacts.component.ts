@@ -2729,15 +2729,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				.subscribe(
 					(data: any) => {
 						this.loading = false;
-						if (data.access) {
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
-							} else {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
-							}
-							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-						} else {
-							this.authenticationService.forceToLogout();
+                        if (data.access) {
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_UPDATE_SUCCESS , true);
+                            } else if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
+                            } else {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
+                            }
+                            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                        } else {
+                            this.authenticationService.forceToLogout();
 						}
 					},
 					error => {

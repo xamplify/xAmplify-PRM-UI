@@ -182,7 +182,7 @@
 															Cancel<i class="fa fa-cancel"></i>
 														</button>
 													</div>
-													<div class="btn-group pull-right" *ngIf="(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')">
+													<div class="btn-group pull-right" >
 														<button class="btn dropdown-toggle" style="background-color: white"
 															id="save&delete_button" data-toggle="dropdown" translate>
 															Actions <i class="fa fa-angle-down"></i>
@@ -191,15 +191,15 @@
 															<li><a *ngIf="selectedAddContactsOption != 8 && !isSegmentation" id="save_button" (click)="saveContacts()">Save
 															</a></li>
 															<li><a id="saveAs_button"
-																*ngIf="selectedAddContactsOption == 8 && !assignLeads"
+																*ngIf=" (selectedAddContactsOption == 8) && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')"
 																(click)="saveAs(true)" translate>Save As </a></li>
 															<li><a id="exportToExcel"
-																*ngIf="selectedAddContactsOption == 8 && !assignLeads"
+																*ngIf="selectedAddContactsOption == 8 && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')"
 																(click)="hasAccess()" translate>Export To Excel</a></li>
 															<li><a id="download_empy_csv"
-																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8" translate>Download CSV Template</a></li>
+																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8 && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')" translate>Download CSV Template</a></li>
 															<li><a id="delete_button"
-																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && !assignLeads"
+																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')"
 																(click)="showAlert(selectedContactListId)" translate> Delete</a></li>
 														</ul>
 													</div>
