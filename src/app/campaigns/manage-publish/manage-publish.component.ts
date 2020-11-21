@@ -502,6 +502,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/tda"]);
     }
 
+    goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
+        this.isloading = true;
+        this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/teoa"]);
+    }
+
     getCancelEventDetails(campaignId: number, channelCampaign:boolean, nurtureCampaign:boolean, toPartner:boolean) {
         this.selectedCancelEventId = campaignId;
         this.selectedCancelEventChannelCampaign = channelCampaign;

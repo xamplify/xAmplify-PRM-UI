@@ -50,6 +50,7 @@ export const campaignRoutes: Routes = [
   { path: "re-distribute-manage/:id", component: EventCampaignComponent },
   { path: ":campaignId/plc", component: PreviewPartnersComponent },
   { path: ":campaignId/tda", component: PreviewPartnersComponent },
+  { path: ":campaignId/teoa", component: PreviewPartnersComponent },
   { path: "calendar", component: CalendarComponent },
   { path: "calendar/:teamMemberId", component: CalendarComponent },
   { path: "calendar/f/:categoryId", component: CalendarComponent },

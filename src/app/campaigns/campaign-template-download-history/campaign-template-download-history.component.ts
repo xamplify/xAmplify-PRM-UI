@@ -50,14 +50,19 @@ export class CampaignTemplateDownloadHistoryComponent implements OnInit {
 				$.each(data.list, function (_index: number, history: any) {
 					history.displayTime = new Date(history.downloadedTimeInUTCString);
         });
-        this.historyList = data.list;
-				//pagination = this.pagerService.getPagedItems(pagination, data.list);
-			}
+		pagination = this.pagerService.getPagedItems(pagination, data.list);
+		}
 			this.referenceService.loading(this.historyLoader, false);
 		}, error => {
 			this.historyResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
 		});
 	}
+	
+	setHistoryPage(event: any) {
+		this.historyPagination.pageIndex = event.page;
+		this.listHistory(this.historyPagination);
+	}
+
 
   closePopup(){
     $('#campaignTemplateDownloadHistoryPopup').modal('hide');

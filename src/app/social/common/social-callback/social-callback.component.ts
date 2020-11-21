@@ -34,7 +34,9 @@ export class SocialCallbackComponent implements OnInit {
         }else{
             parentWindowUserId = 0;
         }
-        this.socialService.callback(providerName,parentWindowUserId,this.isLoggedInVanityUrl)
+        this.route.queryParams.subscribe(
+            (param: any) => {
+              this.socialService.callback(providerName,parentWindowUserId,this.isLoggedInVanityUrl,param)
             .subscribe(
             result => {
                 this.socialConnection = result;
@@ -102,6 +104,9 @@ export class SocialCallbackComponent implements OnInit {
                 this.error = error;   
             },
             () => console.log( 'login() Complete' ) );
+            });
+
+        
         return false;
 
     }

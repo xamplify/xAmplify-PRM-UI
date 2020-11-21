@@ -180,9 +180,7 @@ cursor: default;
 .edit-submit{
   margin-right: 5px;
 }
-.auto-height{
-  height: auto !important;
-}
+
 .ref-mar{
   margin-top: 3px !important;
   margin-left: 10px !important;

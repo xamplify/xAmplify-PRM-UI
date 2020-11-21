@@ -36,6 +36,8 @@ export class PreviewPartnersComponent implements OnInit {
     partnersList: Array<any> = new Array<any>();
     historyResponse: CustomResponse = new CustomResponse();
     templateDownloadPartners = false;
+    templateEmailOpenedPartners = false;
+    viewType = "";
     constructor(public properties: Properties,public route: ActivatedRoute,private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService,public sortOption:SortOption) {
@@ -44,11 +46,20 @@ export class PreviewPartnersComponent implements OnInit {
     ngOnInit() {
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.templateDownloadPartners = this.router.url.indexOf('/tda') > -1;
+        this.templateEmailOpenedPartners = this.router.url.indexOf('/teoa') > -1;
+        if(this.templateDownloadPartners){
+            this.viewType = "tda"
+        }else if(this.templateEmailOpenedPartners){
+            this.viewType = "teoa";
+        }else{
+            this.viewType = "plc";
+        }
         this.listPartners(this.partnersPagination);
     }
     listPartners(pagination: Pagination ) {
+        this.refService.goToTop();
         this.refService.loading( this.campaignPartnerLoader, true );
-        this.campaignService.listCampaignPartnersOrTemplateDownloadPartners( pagination, this.campaignId,this.templateDownloadPartners)
+        this.campaignService.listCampaignPartnersOrTemplateDownloadOrTemplateEmailOpenedPartners( pagination, this.campaignId,this.viewType)
             .subscribe(
             data => {
                 pagination.totalRecords = data.totalRecords;
@@ -147,6 +158,7 @@ export class PreviewPartnersComponent implements OnInit {
     /********************Pagaination&Search Code*****************/
 	expandHistory(history: any, selectedIndex: number) {
         this.historyResponse = new CustomResponse();
+        this.historyPagination = new Pagination();
 		$.each(this.partnersList, function (index: number, row: any) {
 			if (selectedIndex != index) {
 				row.expand = false;
@@ -154,24 +166,29 @@ export class PreviewPartnersComponent implements OnInit {
 		});
 		history.expand = !history.expand;
 		if (history.expand) {
-			this.historyPagination.campaignId = history.campaignPartnerId;
-			this.listAssetsHistory(this.historyPagination);
+            this.historyPagination.campaignId = history.campaignPartnerId;
+			this.listDownloadHistory(this.historyPagination);
 		} else {
 			this.historyPagination.campaignId = 0;
 		}
 	}
 
-	listAssetsHistory(pagination: Pagination) {
+	listDownloadHistory(pagination: Pagination) {
 		this.refService.loading(this.historyLoader, true);
-		this.campaignService.listDownloadHistory(pagination).subscribe((result: any) => {
+		this.campaignService.listDownloadOrOpenedHistory(pagination,this.viewType).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
-				pagination.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                let self = this;
 				$.each(data.list, function (_index: number, history: any) {
-					history.displayTime = new Date(history.downloadedTimeInUTCString);
+                    if(self.viewType=="tda"){
+                        history.displayTime = new Date(history.downloadedTimeInUTCString);
+                    }else{
+                        history.displayTime = new Date(history.trackedTimeInUTCString);
+                    }
                 });
                 this.historyList = data.list;
-				//pagination = this.pagerService.getPagedItems(pagination, data.list);
+				pagination = this.pagerService.getPagedItems(pagination, data.list);
 			}
 			this.refService.loading(this.historyLoader, false);
 		}, error => {
@@ -181,7 +198,7 @@ export class PreviewPartnersComponent implements OnInit {
 	/************Page************** */
 	setHistoryPage(event: any) {
 		this.historyPagination.pageIndex = event.page;
-		this.listAssetsHistory(this.historyPagination);
+		this.listDownloadHistory(this.historyPagination);
 	}
 
 

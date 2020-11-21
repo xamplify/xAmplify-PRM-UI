@@ -483,10 +483,17 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listCampaignPartnersOrTemplateDownloadPartners(pagination: Pagination, campaignId: number,templateDownloadPartners:boolean){
-        let url = templateDownloadPartners ?  'listTemplateDownloadPartners':'list-partners-by-campaign-id/'+campaignId;
+    listCampaignPartnersOrTemplateDownloadOrTemplateEmailOpenedPartners(pagination: Pagination, campaignId: number,viewType:string){
+        let url = "";
+        if(viewType=="plc"){
+            url = "list-partners-by-campaign-id"+"/"+campaignId
+        }else if(viewType=="tda"){
+            url = "listTemplateDownloadPartners";
+        }else if(viewType=="teoa"){
+            url = "listTemplateEmailOpenedPartners";
+        }
         pagination.campaignId = campaignId;
-        let updatedUrl = this.URL +"campaign/"+url+ "?access_token=" + this.authenticationService.access_token;
+        let updatedUrl = this.URL +"campaign/"+url+"?access_token=" + this.authenticationService.access_token;
         return this.http.post(updatedUrl, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -1009,8 +1016,14 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listDownloadHistory(pagination:Pagination){
-        return this.utilPostPaginationMethod("campaign/viewDownloadedTemplateHistory",pagination)
+    listDownloadOrOpenedHistory(pagination:Pagination,viewType:string){
+        let url = "";
+        if(viewType=="tda"){
+            url = "viewDownloadedTemplateHistory";
+        }else{
+            url = "viewEmailOpenedTemplateHistory";
+        }
+        return this.utilPostPaginationMethod("campaign/"+url,pagination)
     }
     
     viewDownloadHistoryForPartners(pagination:Pagination){

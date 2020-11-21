@@ -57,8 +57,9 @@
                   <thead>
                      <tr>
                         <th style="text-align: left" scope="row">Partner Details</th>
-                        <th *ngIf="!templateDownloadPartners" scope="row" id="right-align">Actions</th>
-                        <th *ngIf="templateDownloadPartners" scope="row" id="right-align">#Download</th>
+                        <th *ngIf="viewType=='plc'" scope="row" id="right-align">Actions</th>
+                        <th *ngIf="viewType=='tda'" scope="row" id="right-align">#Download</th>
+                        <th *ngIf="viewType=='teoa'" scope="row" id="right-align">#Opened</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -70,7 +71,7 @@
                         </td>
                         <td class="center-align">
                            <div class="actions-block">
-                              <ng-container *ngIf="templateDownloadPartners">
+                              <ng-container *ngIf="viewType=='tda'">
                                  <span class="circled-number" title="Download Count">{{partner?.downloadCount}}</span>
                                  <!----Download History-->
                                  <a title="View Download History" (click)="expandHistory(partner,i)"> 
@@ -78,8 +79,16 @@
                                   [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}" aria-hidden="true"></i>
                               </a>
                               </ng-container>
+                              <ng-container *ngIf="viewType=='teoa'">
+                                 <span class="circled-number" title="Email Opened Count">{{partner?.emailOpenedCount}}</span>
+                                 <!----Download History-->
+                                 <a title="View Email Opened History" (click)="expandHistory(partner,i)"> 
+                                    <i class="fa"
+                                  [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}" aria-hidden="true"></i>
+                              </a>
+                              </ng-container>
                               <!----Delete-->
-                              <a *ngIf="!templateDownloadPartners" (click)="confirmDeletePartnerById(partner,i)"
+                              <a *ngIf="viewType=='plc'" (click)="confirmDeletePartnerById(partner,i)"
                                  title="{{actionsDescription.campaign_delete_partner}}"> <i
                                  class="fa fa-trash" aria-hidden="true"></i>
                               </a>
@@ -93,18 +102,19 @@
                               <table class="table tgrid table-condensed" aria-describedby="asset-history" id="asset-history">
                                  <thead>
                                     <tr>
-                                       <th class="text-center" scope="row" translate>Downloaded Type</th>
-                                       <th class="text-center" id="min-width" translate>Downloaded Time</th>
+                                       <th *ngIf="viewType=='tda'" class="text-center" scope="row" translate>Downloaded Type</th>
+                                       <th *ngIf="viewType=='tda'" class="text-center" id="min-width" translate>Downloaded Time</th>
+                                       <th *ngIf="viewType=='teoa'" class="text-center" id="min-width" translate>Opened Time</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                     <app-auto-response-loader *ngIf="historyLoader.isLoading"> </app-auto-response-loader>
                                     <ng-container *ngIf="!historyLoader.isLoading">
                                        <tr *ngFor="let history of historyList ;let i =index" id="history-tr">
-                                          <td class="text-center">
+                                          <td *ngIf="viewType=='tda'" class="text-center">
                                              {{history?.downloadedType}}
                                           </td>
-                                          <td class="text-center">
+                                          <td  class="text-center">
                                              <app-timestamp  [dateAndTime]="history?.displayTime">
                                              </app-timestamp>
                                           </td>
@@ -112,12 +122,17 @@
                                     </ng-container>
                                  </tbody>
                               </table>
+                              <div  *ngIf="historyPagination.pagedItems.length !== 0" [hidden]="historyLoader.isLoading">
+                                 <app-pagination [pagination]="historyPagination" (notifyParent)="setHistoryPage($event)" (notifyParentDropDown)="listDownloadHistory($event)">
+                                 </app-pagination>
+                                </div>
                               </div>
                            </td>
                      </tr>
                   </ng-container>
                   </tbody>
                </table>
+               
             </div>
             <div
                *ngIf="sortOption.totalRecords > 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
