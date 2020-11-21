@@ -94,6 +94,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   exportObject:any = {};
   @Input() folderListViewInput:any;
   @Output() updatedItemsCount = new EventEmitter();
+  templateEmailOpenedAnalyticsAccess = false;
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
       public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer,
@@ -141,6 +142,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             this.isloading = false;
               if(data.access){
                 this.campaigns = data.campaigns;
+				this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
                 $.each(this.campaigns, function (_index:number, campaign) {
                     campaign.displayTime = new Date(campaign.utcTimeInString);
                     campaign.createdDate = new Date(campaign.createdDate);

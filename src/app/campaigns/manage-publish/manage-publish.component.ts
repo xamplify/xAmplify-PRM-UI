@@ -92,6 +92,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     categoryId:number = 0;
     modulesDisplayType = new ModulesDisplayType();
     exportObject:any = {};
+    templateEmailOpenedAnalyticsAccess = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
@@ -156,6 +157,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.isloading = false;
                 if(data.access){
                     this.campaigns = data.campaigns;
+                    this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
                     $.each(this.campaigns, function (_index:number, campaign) {
                         campaign.displayTime = new Date(campaign.utcTimeInString);
                         campaign.createdDate = new Date(campaign.createdDate);
@@ -266,8 +268,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
 				let isTeamMemberFilter = this.router.url.indexOf("manage/tm")>-1;
                 if(showList || isTeamMemberFilter){
-                    this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
-                    this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
                     if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
                         this.modulesDisplayType.isListView = true;
                         this.modulesDisplayType.isGridView = false;
