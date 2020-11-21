@@ -68,7 +68,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <div class="textCss"></div>
           </div>
         </div>
-        <ng-container *ngIf="isPartner && isUpdateUser">
+        <ng-container *ngIf="isPartner && isUpdateUser && !isAssignLeads">
           <!---Contacts Limit------->
         <div class="form-group" *ngIf="authenticationService.contactsCount">
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
@@ -248,7 +248,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         </div> -->
       </form>
     </div>
-    <div class="modal-footer" style="border:none" *ngIf="!isPartner">
+    <div class="modal-footer" style="border:none" *ngIf="!isPartner && !isAssignLeads">
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
       <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
@@ -263,6 +263,15 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Proceed</button>
       <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Proceed</button>
       <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
+      <!-- <button type="button" class="btn green" data-dismiss="modal"
+        (click)="addContactModalClose()">Close</button> -->
+    </div>
+        <div class="modal-footer" style="border:none" *ngIf="isAssignLeads">
+      <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
+      <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
+      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
+      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Save</button>
+      <button  *ngIf="isAssignLeads" type="submit" class="btn green" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>

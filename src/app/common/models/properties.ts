@@ -31,13 +31,14 @@ export class Properties {
   CONTACTS_CREATE_SUCCESS = "Your contacts list have been created successfully.";
   CONTACTS_CREATE_ERROR = "An error occured while creating your Contacts";
 
-  LEADS_UPDATE_SUCCESS = "Your lead list has been updated successfully.";
+  LEADS_UPDATE_SUCCESS = "Your leads has been updated successfully.";
   CONTACTS_UPDATE_SUCCESS = "Your contact has been updated successfully.";
   CONTACTS_UPDATE_ERROR = "An error occured while updating your contacts.";
 
   CONTACTS_DELETE_SUCCESS = "Your Contacts have been deleted successfully.";
   CONTACTS_DELETE_ERROR = "An error occured while deleting your contacts";
 
+  LEAD_LIST_UPDATE_SUCCESS = "Your lead list has been updated successfully.";
   CONTACT_SAVE_SUCCESS = "Your contact list has been updated successfully.";
   CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your contact list has been updated successfully and any selected campaigns have been launched.";
   CONTACTS_SAVE_ERROR = "An error occured while saving your contacts.";

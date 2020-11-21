@@ -686,10 +686,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 						this.cancelContacts();
 						if (data.statusCode == 200) {
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-							} else {
-								this.showSuccessMessage(data);
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_UPDATE_SUCCESS , true);
+                            } else if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+                            } else {
+                                this.showSuccessMessage(data);
 							}
 							//this.getContactsAssocialteCampaigns();
 							this.openCampaignsPopupForNewlyAddedPartners();

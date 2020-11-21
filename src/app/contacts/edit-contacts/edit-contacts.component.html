@@ -732,16 +732,16 @@
 															</button>
 															</td>
 															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
-															<div class="actions-block override-actions" style="width:170px" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')">
-															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
+															<div class="actions-block override-actions" style="width:170px" >
+															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')|| (assignLeads && !contactService?.assignedToPartner)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																 </a>
-																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')">
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
- 																<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)">
+ 																<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')">
                                                                 <i class="fa fa-bullhorn" aria-hidden="true"></i></a>
-                                                                <a *ngIf="authenticationService.module.isCampaign"   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
+                                                                <a *ngIf="authenticationService.module.isCampaign && !assignLeads && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') "   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
                                                                 <i class="fa fa-line-chart" aria-hidden="true"></i></a>
                                                             </div>
 															</td>
