@@ -921,7 +921,7 @@
 														</td>
 														<td *ngIf="authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid'">
 															<div class="actions-block override-actions" >
-																<a 	title="Campaign Analytics" (click)="showCampaigns(contact.id)">
+																<a 	 *ngIf=" !assignLeads && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')" title="Campaign Analytics" (click)="showCampaigns(contact.id)">
 																	 <i	class="fa fa-line-chart" aria-hidden="true"></i>
 																</a>
 															</div>

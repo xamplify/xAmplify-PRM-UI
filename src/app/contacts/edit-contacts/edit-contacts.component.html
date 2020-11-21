@@ -736,7 +736,7 @@
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')|| (assignLeads && !contactService?.assignedToPartner)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																 </a>
-																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')">
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner)">
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
  																<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')">
