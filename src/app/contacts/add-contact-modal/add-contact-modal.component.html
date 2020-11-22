@@ -271,7 +271,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
       <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Save</button>
-      <button  *ngIf="isAssignLeads" type="submit" class="btn green" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
+      <button  *ngIf="isAssignLeads && isUpdateUser" type="submit" class="btn green" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>
