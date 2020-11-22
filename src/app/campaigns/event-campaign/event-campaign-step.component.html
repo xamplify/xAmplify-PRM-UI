@@ -1000,7 +1000,7 @@ a.disabled {
 							<span class="ui-column-resizer" (mousedown)="referenceService.onMouseDown($event,'contact-list-table',1)"> </span>
                             <span class="gridHeader">List Name</span>
                         </th>
-                          <th style="text-align: center;" *ngIf="showContactType">Type</th>
+                          <th style="text-align: center;" *ngIf="showContactType && !reDistributeEvent&&!reDistributeEventManage">Type</th>
                           <th style="text-align: center;">Type</th>
                           <th class="custom-center">Uploaded Date</th>
                           <th class="custom-center">Preview</th>
@@ -1017,12 +1017,13 @@ a.disabled {
                               <span>{{contactList.name}}</span>
                             </h5>
                           </td>
-                          <td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
-                              *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
+                          <td class='text-center m0' *ngIf="showContactType && !reDistributeEvent&&!reDistributeEventManage">
+							  <ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container>
+							   <ng-container  *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
                           </td>
                            <td style="text-align:center" class="moreipsis" *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
                               <span *ngIf="contactList.publicList">Public</span>
-						                	<span *ngIf="!contactList.publicList">Private</span>
+						        <span *ngIf="!contactList.publicList">Private</span>
                           </td>
                           <td style="text-align:center" *ngIf="this.reDistributeEvent || this.reDistributeEventManage">
                             {{contactList.type}}

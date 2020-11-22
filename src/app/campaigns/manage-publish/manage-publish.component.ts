@@ -300,8 +300,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             } else {
                 if (campaign.nurtureCampaign) {
                     this.campaignService.reDistributeEvent = false;
-                    this.router.navigate(['/home/campaigns/re-distribute-manage/' + campaign.campaignId]);
-                } else { this.router.navigate(['/home/campaigns/event-edit/' + campaign.campaignId]); }
+                    this.isPartnerGroupSelected(campaign.campaignId,true);
+                } else {
+                     this.router.navigate(['/home/campaigns/event-edit/' + campaign.campaignId]); 
+                    }
             }
         }
         else {
@@ -322,7 +324,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             if (isNurtureCampaign) {
                                 this.campaignService.reDistributeCampaign = data;
                                 this.campaignService.isExistingRedistributedCampaignName = true;
-                                this.isPartnerGroupSelected(campaign.campaignId);
+                                this.isPartnerGroupSelected(campaign.campaignId,false);
                               //  this.router.navigate(['/home/campaigns/re-distribute-campaign']);
                             }
                             else {
@@ -338,7 +340,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
     }
 
-    isPartnerGroupSelected(campaignId:number){
+    isPartnerGroupSelected(campaignId:number,eventCampaign:boolean){
         this.pagination.campaignId = campaignId;
         this.pagination.userId = this.loggedInUserId;
         this.campaignService.isPartnerGroupSelected(this.pagination).
@@ -350,7 +352,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                    this.isloading = false;
  					this.refService.goToTop();
                }else{
-                this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+                   if(eventCampaign){
+                    this.router.navigate(['/home/campaigns/re-distribute-manage/' + campaignId]);
+                   }else{
+                    this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+
+                   }
                }
 
         },error=>{

@@ -794,11 +794,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.editCampaignPagination.vanityUrlFilter = true;
     }
       if(this.previewCampaignType === 'EVENT'){
-        $('#myModal').modal('hide');
         if (campaign.nurtureCampaign) {
           this.campaignService.reDistributeEvent = false;
-          this.router.navigate(['/home/campaigns/re-distribute-manage/' + this.previewCampaignId]);
+          this.isPartnerGroupSelected(this.previewCampaignId,true);
         } else {
+          $('#myModal').modal('hide');
           this.router.navigate(['/home/campaigns/event-edit/' + this.previewCampaignId]);
         }
       }
@@ -806,11 +806,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         if (campaign.launched) {
           this.isScheduledCampaignLaunched = true;
         } else {
-          $('#myModal').modal('hide');
           if (campaign.nurtureCampaign) {
             this.campaignService.reDistributeEvent = false;
-            this.router.navigate(['/home/campaigns/re-distribute-manage/' + this.previewCampaignId]);
+            this.isPartnerGroupSelected(this.previewCampaignId,true);
           } else {
+            $('#myModal').modal('hide');
             this.router.navigate(['/home/campaigns/event-edit/' + this.previewCampaignId]);
           }
         }
@@ -829,7 +829,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               if (isNurtureCampaign) {
                 this.campaignService.reDistributeCampaign = data;
                 this.campaignService.isExistingRedistributedCampaignName = true;
-                this.isPartnerGroupSelected(campaign.campaignId);
+                this.isPartnerGroupSelected(campaign.campaignId,false);
               }
               else {
                 $('#myModal').modal('hide');
@@ -844,7 +844,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.isScheduledCampaignLaunched = false;
       }
     }
-    isPartnerGroupSelected(campaignId:number){
+    isPartnerGroupSelected(campaignId:number,eventCamaign:boolean){
       this.editCampaignPagination.campaignId = campaignId;
       this.editCampaignPagination.userId = this.loggedInUserId;
       this.campaignService.isPartnerGroupSelected(this.editCampaignPagination).
@@ -857,7 +857,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                  this.ngxloading = false;
              }else{
               $('#myModal').modal('hide');
-              this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+              if(eventCamaign){
+                this.router.navigate(['/home/campaigns/re-distribute-manage/' + this.previewCampaignId]);
+              }else{
+                this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+              }
              }
 
       },error=>{
