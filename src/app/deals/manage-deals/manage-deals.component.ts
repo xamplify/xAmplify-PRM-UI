@@ -395,7 +395,8 @@ export class ManageDealsComponent implements OnInit {
       response => {
           this.referenceService.loading(this.httpRequestLoader, false);
           if(response.statusCode==200){
-            this.dealsResponse = new CustomResponse('SUCCESS', "Deal Deleted Successfully", true);  
+            this.dealsResponse = new CustomResponse('SUCCESS', "Deal Deleted Successfully", true); 
+            this.getCounts();  
             this.showDeals();                         
         } else if (response.statusCode==500) {
             this.dealsResponse = new CustomResponse('ERROR', response.message, true);
@@ -407,6 +408,14 @@ export class ManageDealsComponent implements OnInit {
       () => { }
   );
 
+ }
+
+ getCounts() {
+  if (this.isVendorVersion) {
+    this.getVendorCounts();
+  } else if (this.isPartnerVersion) {
+    this.getPartnerCounts();
+  }
  }
 
   setDealStatus(deal: Deal) {
