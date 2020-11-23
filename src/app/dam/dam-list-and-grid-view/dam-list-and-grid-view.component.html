@@ -120,7 +120,7 @@
                               <a *ngIf="(asset?.beeTemplate && isPartnerView)"  title="Edit" (click)="addOrEdit(asset.id)">
                                  <i class="fa fa-edit" aria-hidden="true"></i>
                               </a>
-                              <a *ngIf="!isPartnerView"  title="Edit/Preview" (click)="editDetails(asset.id)">
+                              <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                                  <i class="fa fa-edit" aria-hidden="true"></i>
                               </a>
                                  <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
@@ -189,7 +189,7 @@
                                                    <a  title="Add" (click)="addOrEdit(asset.id)">
                                                       <i class="fa fa-plus" aria-hidden="true"></i>
                                                       </a>
-                                                      <a *ngIf="!isPartnerView"  title="Edit/Preview" (click)="editDetails(asset.id)">
+                                                      <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                                                          <i class="fa fa-edit" aria-hidden="true"></i>
                                                       </a>
                                                       <a  title="Publish" (click)="openPublishPopup(asset.id)">
@@ -269,7 +269,7 @@
                            <a *ngIf="asset?.beeTemplate && isPartnerView"  title="Edit"  (click)="addOrEdit(asset.id)">
                               <i class="fa fa-edit" aria-hidden="true"></i>
                           </a>
-                          <a *ngIf="!isPartnerView"  title="Edit/Preview" (click)="editDetails(asset.id)">
+                          <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                            <i class="fa fa-edit" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
@@ -345,7 +345,7 @@
                            <a *ngIf="asset?.beeTemplate"  title="Add"  (click)="addOrEdit(asset.id)">
                                <i class="fa fa-plus" aria-hidden="true"></i>
                            </a>
-                           <a *ngIf="!isPartnerView"  title="Edit/Preview" (click)="editDetails(asset.id)">
+                           <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                               <i class="fa fa-edit" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">

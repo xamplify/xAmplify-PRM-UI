@@ -1019,7 +1019,8 @@ export class CampaignService {
 
     listCampaignPipelines(userId: number) {
         return this.http.get(this.URL + "/pipeline/campaign/" + userId + "/list?access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
+            .map(this.extractData) .catch(this.handleError);
+    }
 
     listDownloadOrOpenedHistory(pagination:Pagination,viewType:string){
         let url = "";
