@@ -9,11 +9,15 @@ import {DamService} from './services/dam.service';
 import { AddDamComponent } from './add-dam/add-dam.component';
 import { DamListAndGridViewComponent } from './dam-list-and-grid-view/dam-list-and-grid-view.component';
 import { PublishToPartnersComponent } from './publish-to-partners/publish-to-partners.component';
+import { PublishedDamListComponent } from './published-dam-list/published-dam-list.component';
+import { UploadAssetComponent } from './upload-asset/upload-asset.component';
+import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
+import { DamPublishedPartnersAnalyticsComponent } from './dam-published-partners-analytics/dam-published-partners-analytics.component';
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule
   ],
-  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishToPartnersComponent],
+  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishToPartnersComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent],
 providers: [DamService]
 })
 export class DamModule { }

@@ -201,8 +201,19 @@
                                                      (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
                                                         <span class="circled-number disabled"><b>{{campaign.redistributedCount}}</b></span>
                                                     </a>
+                                                    <ng-container *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                                    (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier)
+                                                    && campaign.channelCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && campaign.campaignType.indexOf('LANDINGPAGE') <0">
+                                                        <a  (click)="goToTemplateDownloadPartners(campaign)" data-toggle="tooltip" data-placement="top" title="Show Download History">
+                                                        <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-history" aria-hidden="true"></i></span>
+                                                        </a>
+                                                        <a  *ngIf="templateEmailOpenedAnalyticsAccess" (click)="goToTemplateEmailOpenedAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Email Open History By Template">
+                                                            <span>
+                                                              <i [class.disablednew]="!campaign.hasAccess" class="fa fa-envelope-open-o" aria-hidden="true"></i></span>
+                                                        </a>
+                                                    </ng-container>
+                                                    
                                                      </ng-container>   
-
                                                     <a [class.disablednew]="!campaign.hasAccess"  *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top"
                                                         title="{{actionsDescription.campaign_report}}">
                                                       <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-line-chart"></i></span>
@@ -535,7 +546,7 @@
                                         <span *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Saved</span>
                                     </ng-container>
                                 </div>
-                                <div class="bar">
+                                <div class="bar auto-height">
                                     <!--Buttons Start Here-->
                                     <ng-container *ngIf="!campaign.launched">
                                         <a [class.disablednew]="!campaign.hasAccess" *ngIf="(hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
@@ -577,7 +588,18 @@
                                             title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
                                             <i class="fa fa-handshake-o"></i>
                                         </a>
-
+                                        <ng-container *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                        (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier)
+                                         && campaign.channelCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && campaign.campaignType.indexOf('LANDINGPAGE') <0">
+                                            <a  (click)="goToTemplateDownloadPartners(campaign)" data-toggle="tooltip" data-placement="top" title="Show Download History">
+                                            <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-history" aria-hidden="true"></i></span>
+                                            </a>
+                                            <a  *ngIf="templateEmailOpenedAnalyticsAccess"  (click)="goToTemplateEmailOpenedAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Email Open History By Template">
+                                                <span>
+                                                  <i [class.disablednew]="!campaign.hasAccess" class="fa fa-envelope-open-o" aria-hidden="true"></i></span>
+                                            </a>
+                                        </ng-container>
+                                        
                                     </ng-container>
                                     <span [class.disablednew]="!campaign.hasAccess" *ngIf="!campaign.showCancelButton || campaign.vendorCampaignDeleted ">
                                         <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip"

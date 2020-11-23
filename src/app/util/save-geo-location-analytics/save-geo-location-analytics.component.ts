@@ -24,7 +24,6 @@ export class SaveGeoLocationAnalyticsComponent implements OnInit {
     }
 
     getLocationDetails(landingPageAnalytics:GeoLocationAnalytics) {
-        console.log(landingPageAnalytics);
         this.utilService.getJSONLocation()
             .subscribe(
             ( response: any ) => {

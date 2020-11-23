@@ -1,4 +1,4 @@
-<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+<div  class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
     <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
@@ -7,15 +7,18 @@
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
-                    <i class="fa fa-home"></i>
+                    <i class="fa fa-home" aria-hidden="true"></i>
                     <a [routerLink]="referenceService.homeRouter">Home</a>
-                    <i class="fa fa-angle-right"></i>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </li>
+                <li *ngIf="nurtureCampaign">
+                    <a (click)="goToManageCampaigns()">Manage Campaigns</a>
+                </li>
+                <li *ngIf="!nurtureCampaign">
+                    <a (click)="goToRedistributeCampaigns()"> Campaigns shared by Vendors</a>
                 </li>
                 <li>
-                    <a [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
-                </li>
-                <li>
-                    <i class="fa fa-angle-right"></i>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                     <a> Redistribute Campaign</a>
                 </li>
             </ul>
@@ -24,13 +27,12 @@
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
         <div [hidden]="isEditPartnerTemplate">
         <div class="portlet light shadow">
             <div class="portlet-title">
                 <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Redistribute a Campaign</h4>
                 <a class="close-circle pull-right" data-dismiss="modal" (click)="goToCampaigns()">
-                    <i class="fa fa-times"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                 </a>
             </div>
             <div class="portlet-body clearfix">
@@ -314,14 +316,11 @@
                                                                     <td class="text-center moreipsis" title="{{contacts.name}}">
                                                                         <span> {{contacts.name}}</span>
                                                                     </td>
-																	<td class="text-center moreipsis"><span
-																		*ngIf="contacts.publicList">Public</span> <span
-																		*ngIf="!contacts.publicList">Private</span></td>
-
+																	<td class="text-center moreipsis">
+                                                                        <span>{{contacts.type}}</span></td>
 																	<!--  <td class="text-center moreipsis" title="{{contacts.publicList}}">
                                                                         <span> {{contacts.publicList}}</span>
                                                                     </td> -->
-
 
                                                                     <td class="text-center sorting_1">
                                                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>

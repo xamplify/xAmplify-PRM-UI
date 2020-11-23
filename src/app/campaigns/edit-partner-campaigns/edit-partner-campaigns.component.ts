@@ -29,6 +29,7 @@ import { LandingPageService } from '../../landing-pages/services/landing-page.se
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -66,6 +67,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     emailTemplateHrefLinks: any[] = [];
     enableWorkFlow = true;
     teamMemberEmailIds:any[] = [];
+    vanityLoginDto : VanityLoginDto = new VanityLoginDto();
     formErrors = {
         'campaignName': '',
         'fromName': '',
@@ -181,6 +183,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     categoryNames: any;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     folderCustomResponse:CustomResponse = new CustomResponse();
+    nurtureCampaign = false;
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
@@ -204,17 +207,35 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.isVendorAndPartner = this.authenticationService.isVendorPartner();
              CKEDITOR.config.height = '100';
             if(this.campaignService.reDistributeCampaign!=undefined){
+                this.nurtureCampaign = this.campaignService.reDistributeCampaign.nurtureCampaign;
                 this.loadCampaignNames(this.loggedInUserId);
 				if(this.campaignService.reDistributeCampaign.emailTemplate!=undefined){
+                    if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+                        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+                        this.vanityLoginDto.userId = this.loggedInUserId; 
+                        this.vanityLoginDto.vanityUrlFilter = true;
+                     }
 					this.setCampaignData(this.campaignService.reDistributeCampaign);
 				}else{
 					this.referenceService.showSweetAlertErrorMessage("This campaign cannot be redistributed as the email template is not available");
 					this.router.navigate(['/home/campaigns/partner/all']);
 				}
-                
             }else{
                 this.router.navigate(['/home/campaigns/partner/all']);
             }
+        }
+        ngOnInit() {
+            this.validateLaunchForm();
+            if(this.campaignService.reDistributeCampaign!=undefined){
+                flatpickr( '.flatpickr',{
+                    enableTime: true,
+                    dateFormat: 'm/d/Y h:i K',
+                    time_24hr: false
+                } );
+                this.isListView = !this.referenceService.isGridView;
+                this.listCategories();
+            }
+            
         }
 
     checkInteractiveData( text: any ) {
@@ -249,6 +270,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         
         if(this.campaign.nurtureCampaign){
             this.selectedUserlistIds = this.campaign.userListIds;
+            this.getValidUsersCount();
         }
         this.campaignType = this.campaign.campaignType.toLocaleString();
         if(this.campaignType.includes('VIDEO')){
@@ -465,6 +487,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     validateLaunchForm(): void {
+        this.campaign = this.campaign!=undefined ? this.campaign:new Campaign();
         this.campaignLaunchForm = this.formBuilder.group({
             'scheduleCampaign': [this.campaign.scheduleCampaign, Validators.required],
             'launchTime': [this.campaign.scheduleTime],
@@ -1068,18 +1091,26 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         if(this.campaign.nurtureCampaign){
             contactsPagination.editCampaign = true;
             contactsPagination.campaignId = this.campaign.campaignId;
+            contactsPagination.parentCampaignId = this.campaign.parentCampaignId;
         }else{
             contactsPagination.editCampaign = false;
+            contactsPagination.parentCampaignId = this.campaign.campaignId;
         }
-        console.log(contactsPagination);
-        this.contactService.loadContactLists(contactsPagination)
+        contactsPagination.userId = this.loggedInUserId;
+        contactsPagination.redistributingCampaign = true;
+        if(this.vanityLoginDto.vanityUrlFilter){
+            contactsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+            contactsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+        }
+        this.campaignService.listCampaignUsers(contactsPagination)
             .subscribe(
             (data: any) => {
-                this.userLists = data.listOfUserLists;
-                contactsPagination.totalRecords = data.totalRecords;
+                let response = data.data;
+                this.userLists = response.list;
+                contactsPagination.totalRecords = response.totalRecords;
                 if(contactsPagination.filterBy!=null){
                     if(contactsPagination.filterBy==0){
-                        contactsPagination.maxResults = data.totalRecords;
+                        contactsPagination.maxResults = response.totalRecords;
                     }else{
                         contactsPagination.maxResults = contactsPagination.filterBy;
                     }
@@ -1098,7 +1129,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             },
             (error: string) => this.xtremandLogger.errorPage(error),
             () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
-            )
+            );
     }
 
     showContacts(){
@@ -1253,16 +1284,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       }
 
  contactSearchInputKey( keyCode: any ) { if ( keyCode === 13 ) { this.searchContactList(); } }
-  ngOnInit() {
-      flatpickr( '.flatpickr',{
-          enableTime: true,
-          dateFormat: 'm/d/Y h:i K',
-          time_24hr: false
-      } );
-      this.isListView = !this.referenceService.isGridView;
-      this.validateLaunchForm();
-      this.listCategories();
-  }
+  
 
   listCategories(){
       this.loading = true;
@@ -1286,8 +1308,12 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   }
 
   goToCampaigns(){
-      let type = this.campaign.campaignType.toString(1);
-      this.router.navigate(['/home/campaigns/partner/' + type.toLowerCase()]);
+      if(this.nurtureCampaign){
+        this.goToManageCampaigns();
+      }else{
+        this.goToRedistributeCampaigns();
+      }
+      
   }
 
   setPage(event: any) {
@@ -1358,20 +1384,24 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   getValidUsersCount() {
       try {
          if(this.selectedUserlistIds.length > 0){
+         this.ngxloading = true;
           this.contactService.getValidUsersCount( this.selectedUserlistIds )
               .subscribe(
               data => {
                   this.validUsersCount = data['validContactsCount'];
                   this.allUsersCount = data['allContactsCount'];
+                  this.ngxloading = false;
                   console.log( "valid contacts Data:" + data['validContactsCount'] );
               },
               ( error: any ) => {
+                this.ngxloading = false;
                   console.log( error );
               },
               () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
               )
          }
       } catch ( error ) {
+        this.ngxloading = false;
           console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
       }
   }
@@ -1402,6 +1432,15 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 showSuccessMessage(message:any){
   this.folderCustomResponse = new CustomResponse('SUCCESS',message, true);
   this.listCategories();
+}
+
+goToManageCampaigns(){
+    this.ngxloading = true;
+    this.referenceService.goToRouter("/home/campaigns/manage");
+}
+goToRedistributeCampaigns(){
+    this.ngxloading = true;
+    this.referenceService.goToRouter("/home/campaigns/partner/all");
 }
 
 }

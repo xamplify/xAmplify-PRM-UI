@@ -1,11 +1,25 @@
-#delete-partner{
+#delete-partner {
 	margin: 4px;
 	color: red;
 	margin-left: 2px;
 }
-#campaign-partner-table  td {
+
+/* #campaign-partner-table  td {
 	text-align: center;
 }
+
 #campaign-partner-table th {
 	text-align: center;
+} */
+
+#right-align {
+	text-align: right !important;
+}
+
+#asset-history {
+	background-color: #f1f1f1;
+}
+
+#history-tr {
+	background-color: #d3d3d317;
 }

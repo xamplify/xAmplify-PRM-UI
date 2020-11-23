@@ -10,7 +10,9 @@ import { Properties } from '../../common/models/properties';
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 import { DamPublishPostDto } from '../models/dam-publish-post-dto';
-declare var $: any;
+import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+
+declare var $,swal: any;
 
 @Component({
 	selector: 'app-publish-to-partners',
@@ -38,7 +40,9 @@ export class PublishToPartnersComponent implements OnInit {
 	@Output() notifyOtherComponent = new EventEmitter();
 	damPublishPostDto:DamPublishPostDto = new DamPublishPostDto();
 	statusCode: number=0;
-	constructor(private damService: DamService,private pagerService: PagerService, public authenticationService: AuthenticationService,
+	publishedPartnershipIds:any[] = [];
+	showPublishedPartnersList = false;
+	constructor(public xtremandLogger:XtremandLogger,private damService: DamService,private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -79,8 +83,12 @@ export class PublishToPartnersComponent implements OnInit {
 			this.referenceService.stopLoader(this.httpRequestLoader);
 		}, _error => {
 			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+		},()=>{
+			
 		});
 	}
+
+
 	closePopup() {
 		this.notifyOtherComponent.emit();
 		$('#pulishDamPopup').modal('hide');
@@ -97,17 +105,19 @@ export class PublishToPartnersComponent implements OnInit {
 		this.sortOption = new SortOption();
 		this.isHeaderCheckBoxChecked = false;
 		this.selectedPartnerShipIds = [];
+		this.publishedPartnershipIds = [];
 	}
 
 	/********************Pagaination&Search Code*****************/
-
+	listItems(pagination:any){
+		this.pagination = pagination;
+		this.listPublishedOrUnPublishedPartners();	
+	}
 	/*************************Sort********************** */
 	sortBy(text: any) {
 		this.sortOption.selectedDamPartnerDropDownOption = text;
 		this.getAllFilteredResults();
 	}
-
-
 	/*************************Search********************** */
 	searchPartners() {
 		this.getAllFilteredResults();
@@ -121,7 +131,7 @@ export class PublishToPartnersComponent implements OnInit {
 	setPage(event: any) {
 		this.customResponse = new CustomResponse();
 		this.pagination.pageIndex = event.page;
-		this.listPartners(this.pagination);
+		this.listPublishedOrUnPublishedPartners();	
 	}
 
 
@@ -130,9 +140,17 @@ export class PublishToPartnersComponent implements OnInit {
 		this.pagination.pageIndex = 1;
 		this.pagination.searchKey = this.sortOption.searchKey;
 		this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedDamPartnerDropDownOption, this.pagination);
-		this.listPartners(this.pagination);
+		this.listPublishedOrUnPublishedPartners();	
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+
+	listPublishedOrUnPublishedPartners(){
+		if(this.showPublishedPartnersList){
+			this.listPublishedPartners(this.pagination);
+		}else{
+			this.listPartners(this.pagination);
+		}
+	}
 
 	/***********CheckBox Selection************ */
 	checkAll(ev: any) {
@@ -196,48 +214,56 @@ export class PublishToPartnersComponent implements OnInit {
 	}
 
 	highlightSelectedCampaignRow(partnership: any, event: any) {
-		let partnershipId = partnership.partnershipId;
-		let isChecked = $('#' + partnershipId).is(':checked');
-		if (isChecked) {
-			//Removing Highlighted Row
-			$('#' + partnershipId).prop("checked", false);
-			$('#damPartnershipTr_' + partnershipId).removeClass('row-selected');
-			this.selectedPartnerShipIds.splice($.inArray(partnershipId, this.selectedPartnerShipIds), 1);
-		} else {
-			//Highlighting Row
-			$('#' + partnershipId).prop("checked", true);
-			$('#damPartnershipTr_' + partnershipId).addClass('row-selected');
-			this.selectedPartnerShipIds.push(partnershipId);
+		if(!this.showPublishedPartnersList){
+			let partnershipId = partnership.partnershipId;
+			let isChecked = $('#' + partnershipId).is(':checked');
+			if (isChecked) {
+				//Removing Highlighted Row
+				$('#' + partnershipId).prop("checked", false);
+				$('#damPartnershipTr_' + partnershipId).removeClass('row-selected');
+				this.selectedPartnerShipIds.splice($.inArray(partnershipId, this.selectedPartnerShipIds), 1);
+			} else {
+				//Highlighting Row
+				$('#' + partnershipId).prop("checked", true);
+				$('#damPartnershipTr_' + partnershipId).addClass('row-selected');
+				this.selectedPartnerShipIds.push(partnershipId);
+			}
+			this.utility();
 		}
-		this.utility();
 		event.stopPropagation();
 	}
 
 	/****Publish To Partners */
 	publishAsset() {
-		this.startLoaders();
-		this.damPublishPostDto.damId = this.assetId;
-		this.damPublishPostDto.partnershipIds = this.selectedPartnerShipIds;
-		this.damPublishPostDto.publishedBy = this.loggedInUserId;
-		this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
-			this.stopLoaders();
-			if (data.access) {
-                this.sendSuccess = true;
-                this.statusCode = data.statusCode;
-                if (data.statusCode == 200) {
-                  this.responseMessage = "Published Successfully";
-                } else {
-                    this.responseMessage = data.message;
-                }
-                this.resetFields();
-            } else {
-                this.authenticationService.forceToLogout();
-            }
-		}, _error => {
-		  this.ngxLoading = false;
-          this.sendSuccess = false;
-          this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-		});
+		if(this.selectedPartnerShipIds.length>0){
+			this.startLoaders();
+			this.damPublishPostDto.damId = this.assetId;
+			this.damPublishPostDto.partnershipIds = this.selectedPartnerShipIds;
+			this.damPublishPostDto.publishedBy = this.loggedInUserId;
+			this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
+				this.stopLoaders();
+				if (data.access) {
+					this.sendSuccess = true;
+					this.statusCode = data.statusCode;
+					if (data.statusCode == 200) {
+					  this.responseMessage = "Published Successfully";
+					} else {
+						this.responseMessage = data.message;
+					}
+					this.resetFields();
+				} else {
+					this.authenticationService.forceToLogout();
+				}
+			}, _error => {
+			  this.ngxLoading = false;
+			  this.sendSuccess = false;
+			  this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+			});
+		}else{
+			this.referenceService.goToTop();
+			this.customResponse = new CustomResponse('ERROR','Please select atleast one partner',true);
+		}
+		
 	}
 
 	startLoaders(){
@@ -250,5 +276,75 @@ export class PublishToPartnersComponent implements OnInit {
 		this.referenceService.stopLoader(this.httpRequestLoader);
 	}
 
-	
+	viewPublishedPartners(){
+		this.showPublishedPartnersList = true;
+		this.pagination = new Pagination();
+		this.pagination.vendorCompanyId = this.companyId;
+		this.pagination.formId = this.assetId;
+		this.sortOption = new SortOption();
+		this.listPublishedPartners(this.pagination);
+	}
+	listPublishedPartners(pagination: Pagination) {
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.damService.listPublishedPartners(pagination).subscribe((result: any) => {
+			let data = result.data;
+			pagination.totalRecords = data.totalRecords;
+			this.sortOption.totalRecords = data.totalRecords;
+			pagination = this.pagerService.getPagedItems(pagination, data.list);
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}, _error => {
+			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+		},()=>{
+			
+		});
+	}
+
+	viewUnPublishedPartners(){
+		this.showPublishedPartnersList = false;
+		this.pagination = new Pagination();
+		this.pagination.vendorCompanyId = this.companyId;
+		this.pagination.formId = this.assetId;
+		this.sortOption = new SortOption();
+		this.listPartners(this.pagination);
+	}
+
+	openDeletePopup(partner:any){
+		try {
+			let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to undo this action!",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, delete it!'
+			}).then(function () {
+				self.deleteById(partner);
+			}, function (dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+		} catch (error) {
+			this.xtremandLogger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+		}
+	}
+
+	deleteById(partner: any) {
+		this.customResponse = new CustomResponse();
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.referenceService.goToTop();
+		this.damService.deletePartner(partner.id)
+			.subscribe(
+				(response: any) => {
+					this.customResponse = new CustomResponse('SUCCESS', "Partner Deleted Successfully", true);
+					this.pagination.pageIndex = 1;
+					this.listPublishedPartners(this.pagination);
+				},
+				(_error: string) => {
+					this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+					this.customResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+				}
+			);
+	}
+
 }

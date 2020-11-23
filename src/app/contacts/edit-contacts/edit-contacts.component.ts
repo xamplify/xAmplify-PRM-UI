@@ -59,6 +59,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isSegmentation: boolean = false;
 	isSegmentationErrorMessage: boolean;
 	filterConditionErrorMessage = "";
+	assignLeads :boolean = false;
 
 	totalListUsers = [];
 	updatedUserDetails = [];
@@ -223,28 +224,33 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactsByType.selectedCategory = "all";
 		this.sourceType = this.authenticationService.getSource();
 		let currentUrl = this.router.url;
-		if (currentUrl.includes('home/contacts')) {
-			this.isPartner = false;
-			this.checkingContactTypeName = "Contact";
-			this.showAddOptions = true;
-		} else {
-			this.isPartner = true;
-			if (this.sourceType != "ALLBOUND") {
-				this.showAddOptions = true;
-			} else {
-				this.showAddOptions = false;
-			}
-			this.checkingContactTypeName = "Partner";
-			this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC' });
-			this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC' });
-			this.sortOptions.push({ 'name': 'Vertical (ASC)', 'value': 'vertical-ASC' });
-			this.sortOptions.push({ 'name': 'Vertical (DESC)', 'value': 'vertical-DESC' });
-			this.sortOptions.push({ 'name': 'Region (ASC)', 'value': 'region-ASC' });
-			this.sortOptions.push({ 'name': 'Region (DESC)', 'value': 'region-DESC' });
-			this.sortOptions.push({ 'name': 'Partner type (ASC)', 'value': 'partnerType-ASC' });
-			this.sortOptions.push({ 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC' });
-			this.sortOptions.push({ 'name': 'Category (ASC)', 'value': 'category-ASC' });
-			this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC' });
+        if (currentUrl.includes('home/assignleads')) {
+            this.isPartner = false;
+            this.assignLeads = true;
+            this.showAddOptions = true;
+            this.checkingContactTypeName = "Lead"
+        } else if (currentUrl.includes('home/contacts')) {
+            this.isPartner = false;
+            this.checkingContactTypeName = "Contact";
+            this.showAddOptions = true;
+        } else {
+            this.isPartner = true;
+            if (this.sourceType != "ALLBOUND") {
+                this.showAddOptions = true;
+            } else {
+                this.showAddOptions = false;
+            }
+            this.checkingContactTypeName = "Partner";
+            this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC' });
+            this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC' });
+            this.sortOptions.push({ 'name': 'Vertical (ASC)', 'value': 'vertical-ASC' });
+            this.sortOptions.push({ 'name': 'Vertical (DESC)', 'value': 'vertical-DESC' });
+            this.sortOptions.push({ 'name': 'Region (ASC)', 'value': 'region-ASC' });
+            this.sortOptions.push({ 'name': 'Region (DESC)', 'value': 'region-DESC' });
+            this.sortOptions.push({ 'name': 'Partner type (ASC)', 'value': 'partnerType-ASC' });
+            this.sortOptions.push({ 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC' });
+            this.sortOptions.push({ 'name': 'Category (ASC)', 'value': 'category-ASC' });
+            this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC' });
 
 		}
 		if (this.checkingContactTypeName == "Contact") {
@@ -680,10 +686,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 						this.cancelContacts();
 						if (data.statusCode == 200) {
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-							} else {
-								this.showSuccessMessage(data);
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_UPDATE_SUCCESS , true);
+                            } else if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+                            } else {
+                                this.showSuccessMessage(data);
 							}
 							//this.getContactsAssocialteCampaigns();
 							this.openCampaignsPopupForNewlyAddedPartners();
@@ -2723,15 +2731,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				.subscribe(
 					(data: any) => {
 						this.loading = false;
-						if (data.access) {
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
-							} else {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
-							}
-							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-						} else {
-							this.authenticationService.forceToLogout();
+                        if (data.access) {
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_UPDATE_SUCCESS , true);
+                            } else if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
+                            } else {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
+                            }
+                            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                        } else {
+                            this.authenticationService.forceToLogout();
 						}
 					},
 					error => {

@@ -46,3 +46,8 @@
 .mr8{
 	margin-right: 20px !important;
 }
+.share-partner{
+	margin-top: 12px;
+	box-shadow: 7px 7px 30px -5px rgba(0,0,0,0.1);
+	border: 1px solid #d9d9d9;
+}

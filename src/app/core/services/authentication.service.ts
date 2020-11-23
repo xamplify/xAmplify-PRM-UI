@@ -33,6 +33,7 @@ export class AuthenticationService {
   MEDIA_URL: string;
   SHARE_URL: string;
   MARKETO_URL: string;
+  isSharePartnerModal = false;
   user: User = new User();
   userProfile: User = new User();
   userToken: UserToken = new UserToken();
@@ -471,6 +472,8 @@ export class AuthenticationService {
     module.isOnlyPartner = false;
     module.isReDistribution = false;
     module.isPartnershipEstablishedOnlyWithVendorTier = false;
+    module.damAccessAsPartner = false;
+    module.damAccess = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	this.contactsCount = false;

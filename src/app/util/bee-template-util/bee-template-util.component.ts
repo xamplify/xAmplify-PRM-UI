@@ -16,16 +16,21 @@ export class BeeTemplateUtilComponent implements OnInit {
 
 	loading = false;
 	@Input() defaultJsonBody: any;
-	@Input() isPartner:boolean;
+	@Input() vendorCompanyLogoPath:any;
+	@Input() partnerCompanyLogoPath:any;
 	loggedInUserId: number;
 	loggedInUserCompanyId: any;
 	@Output() notifyParentComponent = new EventEmitter();
+	isPartnerView: boolean;
+	senderMergeTag:SenderMergeTag = new SenderMergeTag();
+
 	constructor(private referenceService:ReferenceService,private authenticationService:AuthenticationService,private router:Router,private xtremandLogger:XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	 }
 
 	ngOnInit() {
 		this.loading =  true;
+		this.isPartnerView = this.router.url.indexOf('/editp')>-1;
 		this.getCompanyId();
 	}
 
@@ -88,34 +93,61 @@ export class BeeTemplateUtilComponent implements OnInit {
 		
 			  var save = function (jsonContent: string, htmlContent: string) {
 				let input = {};
-				let updatedJsonContent = jsonContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
-				let updatedHtmlContent = "";
-				if (htmlContent!= undefined) {
-					updatedHtmlContent = htmlContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+				if(self.isPartnerView){
+					let updatedJsonContent = jsonContent.replace(self.vendorCompanyLogoPath, "https://xamp.io/vod/replace-company-logo.png").replace(self.partnerCompanyLogoPath,"https://xamp.io/vod/images/co-branding.png");
+					let updatedHtmlContent = "";
+					if (htmlContent!= undefined) {
+						updatedHtmlContent = htmlContent.replace(self.vendorCompanyLogoPath, "https://xamp.io/vod/replace-company-logo.png").replace(self.partnerCompanyLogoPath,"https://xamp.io/vod/images/co-branding.png");
+					}
+					input['jsonContent'] = updatedJsonContent;
+					input['htmlContent'] = updatedHtmlContent;
+				}else{
+					let updatedJsonContent = jsonContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+					let updatedHtmlContent = "";
+					if (htmlContent!= undefined) {
+						updatedHtmlContent = htmlContent.replace(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+					}
+					input['jsonContent'] = updatedJsonContent;
+					input['htmlContent'] = updatedHtmlContent;
 				}
-				input['jsonContent'] = updatedJsonContent;
-				input['htmlContent'] = updatedHtmlContent;
 				self.notifyParentComponent.emit(input);
+				self.loading = false;
 			  };
 		
-			  var mergeTags = [{ name: 'First Name', value: '{{firstName}}' },
+			  var mergeTags = [
+				{ name: 'First Name', value: '{{firstName}}' },
 				{ name: 'Last Name', value: '{{lastName}}' },
 				{ name: 'Full Name', value: '{{fullName}}' },
 				{ name: 'Email Id', value: '{{emailId}}' },
+				{name: 'Company Name', value: '{{companyName}}' }
 				];
+				mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
+				mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
+				mergeTags.push( { name: 'Sender Full Name', value: this.senderMergeTag.senderFullName } );
+				mergeTags.push( { name: 'Sender Title', value: this.senderMergeTag.senderTitle } );
+				mergeTags.push( { name: 'Sender Email Id',  value: this.senderMergeTag.senderEmailId } );
+				mergeTags.push( { name: 'Sender Contact Number',value: this.senderMergeTag.senderContactNumber } );
+				mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
+				mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
+				mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
+				mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
 		
 			  var beeUserId = "bee-"+self.loggedInUserCompanyId;
-			  var roleHash = self.authenticationService.vendorRoleHash;
+			  let roleHash = self.authenticationService.vendorRoleHash;
+			  if(self.isPartnerView){
+				roleHash = self.authenticationService.partnerRoleHash;
+			  }	
 			  var beeConfig = {
 				  uid: beeUserId,
 				  container: 'xamplify-bee-template-container',
 				  autosave: 15,
 				  //language: 'en-US',
 				  language:this.authenticationService.beeLanguageCode,
-				 // mergeTags: mergeTags,
+				  mergeTags: mergeTags,
 				  preventClose: true,
 				  roleHash: roleHash,
 				  onSave: function( jsonFile, htmlFile ) {
+					  self.loading = true;
 					  save( jsonFile, htmlFile );
 				  },
 				  onSaveAsTemplate: function( jsonFile ) { // + thumbnail?
@@ -151,7 +183,12 @@ export class BeeTemplateUtilComponent implements OnInit {
 							  function( template: any ) {
 								  if(defaultJsonBody!=undefined){
 									var body = defaultJsonBody;
-									body = body.replace( "https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage );
+									if(self.isPartnerView){
+										body = body.replace( "https://xamp.io/vod/replace-company-logo.png", self.vendorCompanyLogoPath);
+										body = body.replace( "https://xamp.io/vod/images/co-branding.png", self.partnerCompanyLogoPath );
+									}else{
+										body = body.replace( "https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage );
+									}
 									defaultJsonBody = body;
 									var jsonBody = JSON.parse( body );
 									bee.load( jsonBody );

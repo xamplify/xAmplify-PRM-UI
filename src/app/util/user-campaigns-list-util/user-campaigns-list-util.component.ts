@@ -206,6 +206,12 @@ export class UserCampaignsListUtilComponent implements OnInit {
   }
 
 
+setAutoResponsesPage(event: any,campaign:any) {
+    this.autoResponseAnalyticsPagination.pageIndex = event.page;
+    this.listAutoResponseAnalytics(this.autoResponseAnalyticsPagination,campaign);
+  }
+
+
   listAutoResponseAnalytics(pagination: Pagination, campaign: any) {
     this.referenceService.loading(this.autoResponeAnalyticsLoader, true);
     this.autoResponseAnalyticsPagination.campaignId = campaign.campaignId;

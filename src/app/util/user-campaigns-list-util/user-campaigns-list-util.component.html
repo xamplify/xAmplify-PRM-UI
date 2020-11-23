@@ -241,8 +241,8 @@
                                  </div>
                                    <div *ngIf="autoResponseAnalyticsPagination.pagedItems.length !== 0">
                                      <app-pagination [pagination]="autoResponseAnalyticsPagination"
-                                       (notifyParent)="setAutoResponsesPage($event,item)"
-                                       (notifyParentDropDown)="listAutoResponseAnalytics($event,item)"
+                                       (notifyParent)="setAutoResponsesPage($event,campaignAnalytics)"
+                                       (notifyParentDropDown)="listAutoResponseAnalytics($event,campaignAnalytics)"
                                        [hidden]="autoResponeAnalyticsLoader.isLoading"></app-pagination>
                                    </div>
                                  </td>

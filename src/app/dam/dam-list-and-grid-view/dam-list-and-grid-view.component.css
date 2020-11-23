@@ -6,11 +6,11 @@
     border-radius: 1px;
 }
 .img-class{
-	height: 50px;
+	/* height: 50px; */
     width: auto;
 }
 #actions-row{
-	width: 30%
+	width: 35%
 }
 
 #min-width{
@@ -42,6 +42,15 @@ cursor: default;
     margin: 0 0;
     font-size: 11px;
     font-weight: 600;
+}
+
+.view-banner-dam{
+  background-color: #00a6e8;
+    color: white;
+    padding: 3px 6px 3px 6px;
+    text-align: center;
+    font-size: 10px;
+    border-radius: 3px;
 }
 
 .ribbon div {
@@ -110,10 +119,10 @@ cursor: default;
 }
 
 .custom-image-css{
-    max-height: 55% !important;
-    max-width: 69px !important;
+    /* max-height: 55% !important; */
+   /*  max-width: 69px !important; */
     position: relative;
-    top: 16px;
+    /* top: 16px; */
 }
 
 .custom-image-css-grid{
@@ -141,4 +150,38 @@ cursor: default;
 }
 #history-tr{
   background-color: #d3d3d317;
+}
+
+.ml5{
+  margin-left: 5px;
+}
+
+
+.port-heading {
+  padding-left: 10px!important;
+  padding-top: 10px!important;
+  background: #f1f1f1;
+}
+
+.cpdam{
+  padding: 40px 40px 0px 17px;
+}
+
+.cphdam{
+  padding: 0px 0px!important;min-height: 200px;
+}
+.min-h{
+  min-height: 245px;
+}
+
+.edit-cancel{
+  margin-right: 95px;
+}
+.edit-submit{
+  margin-right: 5px;
+}
+
+.ref-mar{
+  margin-top: 3px !important;
+  margin-left: 10px !important;
 }

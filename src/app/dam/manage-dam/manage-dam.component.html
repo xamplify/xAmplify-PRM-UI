@@ -6,14 +6,14 @@
             <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li><a translate>DAM</a></li>
+         <li><a (click)="goToDam()" translate>DAM</a></li>
       </ul>
       <div class="edit-mdf-form-margin" id="right">
-         <!-- <button class="add-button-xamplify"  translate>Upload</button> -->
-         <button class="add-button-xamplify" (click)="addAsset()" translate>Design Template</button>
-         <button class="add-button-xamplify" (click)="viewPublishedContent()" translate>Partner View</button>
+         <button *ngIf="!isPartnerView" class="add-button-xamplify" (click)="goToUploadComponent()"  translate>Upload</button>
+         <button *ngIf="authenticationService.module.damAccess && !isPartnerView" class="add-button-xamplify" (click)="addAsset()" translate>Design Template</button>
      </div>
    </div>
    <!---Component Comes here-->
    <app-dam-list-and-grid-view></app-dam-list-and-grid-view>
    </div>
+   

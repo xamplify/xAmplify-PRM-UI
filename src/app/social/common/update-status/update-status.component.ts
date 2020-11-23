@@ -81,7 +81,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	savedURL: string;
 	categoryNames: any;
 	showRssFeed:boolean = false;
-
+	nurtureCampaign = false;
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
 		public authenticationService: AuthenticationService, private contactService: ContactService,
@@ -686,22 +686,53 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 
 	loadContactLists(contactListsPagination: Pagination) {
-		contactListsPagination.filterValue = (this.alias === undefined) ? true : false;
-		contactListsPagination.filterKey = "isPartnerUserList";
-		contactListsPagination.isLoading = true;
-		this.paginationType = 'updatestatuscontactlists';
-		if (this.authenticationService.isOnlyPartner()) { this.socialCampaign.isPartner = false; }
-		this.contactService.loadContactLists(contactListsPagination)
-			.subscribe(
-				(data: any) => {
-					contactListsPagination.totalRecords = data.totalRecords;
-					contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
-				},
-				(error: any) => {
-					this.logger.error(error);
-				},
-				() => contactListsPagination.isLoading = false
-			);
+		if(this.alias!=undefined){
+			this.loadContactsLeadsAndPartners(contactListsPagination);
+		}else{
+			contactListsPagination.filterValue = (this.alias === undefined) ? true : false;
+			contactListsPagination.filterKey = "isPartnerUserList";
+			contactListsPagination.isLoading = true;
+			this.paginationType = 'updatestatuscontactlists';
+			if (this.authenticationService.isOnlyPartner()) { this.socialCampaign.isPartner = false; }
+			this.contactService.loadContactLists(contactListsPagination)
+				.subscribe(
+					(data: any) => {
+						contactListsPagination.totalRecords = data.totalRecords;
+						contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+					},
+					(error: any) => {
+						this.logger.error(error);
+					},
+					() => contactListsPagination.isLoading = false
+				);
+		}
+		
+	}
+
+	loadContactsLeadsAndPartners(contactListsPagination: Pagination){
+		if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+			this.contactListsPagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+			this.contactListsPagination.vanityUrlFilter = true;
+		   }
+		if(this.socialCampaign.nurtureCampaign){
+			contactListsPagination.editCampaign = true;
+			contactListsPagination.campaignId = this.socialCampaign.campaignId;
+			contactListsPagination.parentCampaignId = this.socialCampaign.parentCampaignId;
+		}else{
+			contactListsPagination.editCampaign = false;
+			contactListsPagination.parentCampaignId = this.socialCampaign.campaignId;
+		}
+		contactListsPagination.userId = this.authenticationService.getUserId();
+		this.campaignService.listCampaignUsers(contactListsPagination)
+		.subscribe(
+		(response: any) => {
+			let data = response.data;
+			contactListsPagination.totalRecords = data.totalRecords;
+			contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.list);
+		},
+		(error: string) => this.logger.errorPage(error),
+		() => this.logger.info("Finished loadContactList()")
+		);
 	}
 
 	/*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
@@ -883,6 +914,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				},
 				error => this.router.navigate(['/home/error/404']),
 				() => {
+					this.loadContactLists(this.contactListsPagination);
 					this.listSocialStatusProviders();
 				}
 			);
@@ -920,9 +952,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		if (this.isSocialCampaign) {
 			this.socialCampaign.isPartner = this.authenticationService.isOnlyPartner() ? false : true;
 			if (this.alias) {
+				this.nurtureCampaign = true;
 				this.getSocialCampaign(this.alias);
+			}else{
+				this.nurtureCampaign = false;
+				this.loadContactLists(this.contactListsPagination);
 			}
-			this.loadContactLists(this.contactListsPagination);
 			this.loadCampaignNames(this.userId);
 			this.listCategories();
 		}

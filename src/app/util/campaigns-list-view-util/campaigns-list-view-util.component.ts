@@ -94,6 +94,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   exportObject:any = {};
   @Input() folderListViewInput:any;
   @Output() updatedItemsCount = new EventEmitter();
+  templateEmailOpenedAnalyticsAccess = false;
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
       public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer,
@@ -141,6 +142,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             this.isloading = false;
               if(data.access){
                 this.campaigns = data.campaigns;
+				this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
                 $.each(this.campaigns, function (_index:number, campaign) {
                     campaign.displayTime = new Date(campaign.utcTimeInString);
                     campaign.createdDate = new Date(campaign.createdDate);
@@ -255,6 +257,8 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   }
 
   editCampaign(campaign: any) {
+    this.isloading = true;
+    this.customResponse = new CustomResponse();
       if (campaign.campaignType.indexOf('EVENT') > -1) {
           if (campaign.launched) {
               this.isScheduledCampaignLaunched = true;
@@ -278,7 +282,6 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                       this.campaignService.campaign = data;
                       let isLaunched = this.campaignService.campaign.launched;
                       let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
-                      let campaignType = this.campaignService.campaign.campaignType;
                       if (isLaunched) {
                           this.isScheduledCampaignLaunched = true;
                           //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
@@ -286,7 +289,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                           if (isNurtureCampaign) {
                               this.campaignService.reDistributeCampaign = data;
                               this.campaignService.isExistingRedistributedCampaignName = true;
-                              this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+                              this.isPartnerGroupSelected(campaign.campaignId);
                           }
                           else {
                               this.refService.isEditNurtureCampaign = false;
@@ -300,6 +303,26 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
           this.isScheduledCampaignLaunched = false;
       }
   }
+
+  isPartnerGroupSelected(campaignId:number){
+    this.pagination.campaignId = campaignId;
+    this.pagination.userId = this.loggedInUserId;
+    this.campaignService.isPartnerGroupSelected(this.pagination).
+    subscribe(
+        response=>{
+           if(response.data){
+               let message = "This campaign cannot be edited as partner group has been selected.";
+               this.customResponse = new CustomResponse('ERROR',message,true); 
+               this.isloading = false;
+               this.refService.goToTop();
+           }else{
+            this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+           }
+
+    },error=>{
+        this.logger.errorPage(error)
+    });
+}
 
   confirmDeleteCampaign(id: number, position: number, name: string) {
       let self = this;
@@ -432,8 +455,16 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
   }
   goToPreviewPartners(campaign: Campaign) {
-      this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/remove-access"]);
+      this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/plc"]);
   }
+
+  goToTemplateDownloadPartners(campaign: Campaign) {
+    this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/tda"]);
+}
+goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
+    this.isloading = true;
+    this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/teoa"]);
+}
 
   getCancelEventDetails(campaignId: number, channelCampaign:boolean, nurtureCampaign:boolean, toPartner:boolean) {
       this.selectedCancelEventId = campaignId;

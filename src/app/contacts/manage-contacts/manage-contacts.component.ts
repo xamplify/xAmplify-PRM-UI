@@ -31,6 +31,7 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 })
 
 export class ManageContactsComponent implements OnInit, AfterViewInit, AfterViewChecked {
+	assignLeads :boolean = false;
 	public socialContact: SocialContact;
 	public googleSynchronizeButton: boolean;
 	public storeLogin: any;
@@ -165,6 +166,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	filterCondition = this.filterConditions[0];
 
 	isPartner: boolean;
+	module: string;
 	checkingContactTypeName: string;
 	isListView = false;
 	responseMessage = [];
@@ -199,14 +201,21 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	public zohoCurrentUser: any;
 	tempIsZohoSynchronization: any;
 	campaignLoader = false;
+	sharedPartnerDetails: any;
+	selectedListDetails : ContactList;;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch) {
 		this.referenceService.renderer = render;
 		let currentUrl = this.router.url;
 		this.model.isPublic = true;
-		if (currentUrl.includes('home/contacts')) {
+		if (currentUrl.includes('home/assignleads')) {
 			this.isPartner = false;
+            this.assignLeads = true;
+             this.checkingContactTypeName = "Lead"
+		}else if (currentUrl.includes('home/contacts')) {
+			this.isPartner = false;
+			this.module = 'contacts';
 			this.checkingContactTypeName = "Contact"
 		} else {
 			this.isPartner = true;
@@ -233,11 +242,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.access_token = this.authenticationService.access_token;
 		this.xtremandLogger.info("successmessageLoad" + this.contactService.successMessage)
 		if (this.contactService.saveAsSuccessMessage === "add" || this.contactService.successMessage === true || this.contactService.saveAsSuccessMessage === "SUCCESS") {
-			if (this.isPartner) {
-				this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_CREATE_SUCCESS, true);
-			} else {
-				this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
-			}
+			if (currentUrl.includes('home/partners')) {
+		        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_CREATE_SUCCESS, true);
+		      } else if (currentUrl.includes('home/contacts')){
+		        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
+		      }else{
+		        this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_CREATE_SUCCESS, true);
+		      }
 			this.xtremandLogger.info("Success Message in manage contact pape");
 			this.contactService.saveAsSuccessMessage = "";
 		}
@@ -288,44 +299,88 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	loadContactLists(pagination: Pagination) {
-		try {
-			this.referenceService.loading(this.httpRequestLoader, true);
-			this.pagination.filterKey = 'isPartnerUserList';
-			this.pagination.filterValue = this.isPartner;
-			this.contactService.loadContactLists(pagination)
-				.subscribe(
-					(data: any) => {
-						this.xtremandLogger.info(data);
-						data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate); });
-						this.contactLists = data.listOfUserLists;
-						this.totalRecords = data.totalRecords;
-						if (data.totalRecords.length == 0) {
-							this.resetResponse();
-							this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
-						} else {
-							pagination.totalRecords = this.totalRecords;
-							pagination = this.pagerService.getPagedItems(pagination, this.contactLists);
+    loadContactLists(pagination: Pagination) {
 
-						}
-						if (this.contactLists.length == 0) {
-							this.resetResponse();
-							// this.responseMessage = ['INFO', 'No results found.','show'];
-							this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
-							this.pagedItems = null;
-						}
-						this.referenceService.loading(this.httpRequestLoader, false);
-					},
-					(error: any) => {
-						this.xtremandLogger.error(error);
-						this.xtremandLogger.errorPage(error);
-					},
-					() => this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished")
-				)
-		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "loadAllContactList()");
-		}
+        if (this.assignLeads) {
+        	this.loadAssignedLeadsLists(pagination);
+        } else {
+            try {
+
+                this.referenceService.loading(this.httpRequestLoader, true);
+                this.pagination.filterKey = 'isPartnerUserList';
+                this.pagination.filterValue = this.isPartner;
+                this.contactService.loadContactLists(pagination)
+                    .subscribe(
+                    (data: any) => {
+                        this.xtremandLogger.info(data);
+                        data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate); });
+                        this.contactLists = data.listOfUserLists;
+                        this.totalRecords = data.totalRecords;
+                        if (data.totalRecords.length == 0) {
+                            this.resetResponse();
+                            this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
+                        } else {
+                            pagination.totalRecords = this.totalRecords;
+                            pagination = this.pagerService.getPagedItems(pagination, this.contactLists);
+
+                        }
+                        if (this.contactLists.length == 0) {
+                            this.resetResponse();
+                            // this.responseMessage = ['INFO', 'No results found.','show'];
+                            this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
+                            this.pagedItems = null;
+                        }
+                        this.referenceService.loading(this.httpRequestLoader, false);
+                    },
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished")
+                    )
+            } catch (error) {
+                this.xtremandLogger.error(error, "ManageContactsComponent", "loadAllContactList()");
+            }
+        }
 	}
+    
+    loadAssignedLeadsLists(pagination: Pagination) {
+        try {
+            this.referenceService.loading(this.httpRequestLoader, true);
+            this.pagination.filterKey = 'isPartnerUserList';
+            this.pagination.filterValue = this.isPartner;
+            this.contactService.loadAssignedLeadsLists(pagination)
+                .subscribe(
+                (data: any) => {
+                    this.xtremandLogger.info(data);
+                    data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate); });
+                    this.contactLists = data.listOfUserLists;
+                    this.totalRecords = data.totalRecords;
+                    if (data.totalRecords.length == 0) {
+                        this.resetResponse();
+                        this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
+                    } else {
+                        pagination.totalRecords = this.totalRecords;
+                        pagination = this.pagerService.getPagedItems(pagination, this.contactLists);
+
+                    }
+                    if (this.contactLists.length == 0) {
+                        this.resetResponse();
+                        this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
+                        this.pagedItems = null;
+                    }
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                },
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("MangeContactsComponent loadAssignedLeadsLists() finished")
+                )
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "loadAssignedLeadsLists()");
+        }
+    }
 
 	loadContactListsNames() {
 		try {
@@ -518,11 +573,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
 							console.log("AddContactComponent googleContacts() Authentication Success");
 							this.syncronizeContactList(contactListId, socialNetwork);
+							localStorage.setItem('isZohoSynchronization', 'no');
+							localStorage.removeItem('isZohoSynchronization');
 						} else {
 							localStorage.setItem("userAlias", data.userAlias)
 							console.log(data.redirectUrl);
 							console.log(data.userAlias);
 							window.location.href = "" + data.redirectUrl;
+							localStorage.setItem('isZohoSynchronization', 'no');
+                            localStorage.removeItem('isZohoSynchronization');
 						}
 					},
 					(error: any) => {
@@ -603,7 +662,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 			this.socialContact.socialNetwork = "ZOHO";
 			this.socialContact.contactType = this.contactType;
-			this.contactService.checkingZohoSyncAuthentication(this.isPartner)
+			this.contactService.checkingZohoSyncAuthentication()
 				.subscribe(
 					(data: any) => {
 						this.xtremandLogger.info(data);
@@ -668,12 +727,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
 							console.log("AddContactComponent salesforce() Authentication Success");
 							this.syncronizeContactList(contactListId, socialNetwork);
-
+							localStorage.setItem('isZohoSynchronization', 'no');
+							localStorage.removeItem('isZohoSynchronization');
 						} else {
 							localStorage.setItem("userAlias", data.userAlias)
 							console.log(data.redirectUrl);
 							console.log(data.userAlias);
 							window.location.href = "" + data.redirectUrl;
+							localStorage.setItem('isZohoSynchronization', 'no');
+                            localStorage.removeItem('isZohoSynchronization');
 						}
 					},
 					(error: any) => {
@@ -698,10 +760,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		$("#pagination").hide();
 	}
 
-	setListType(publicList: boolean) {
+	setListType(publicList: boolean, contactType:string, assignedToPartner: boolean ) {
 		this.contactService.publicList = publicList;
+		this.contactService.contactType = contactType;
+		this.contactService.assignedToPartner = assignedToPartner
 	}
+	
 
+	
 	backToManageContactPage() { }
 
 	backToEditContactPage() {
@@ -1147,7 +1213,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	contactsCount() {
 		try {
-			this.contactService.loadContactsCount(this.isPartner)
+			
+            this.contactListObject = new ContactList;
+            this.contactListObject.isPartnerUserList = this.isPartner;
+            if (this.assignLeads) {
+                this.contactListObject.assignedLeadsList = true
+			}
+			
+			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
 					data => {
 						this.contactsByType.allContactsCount = data.allContactsCount;
@@ -1182,7 +1255,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.pagination.filterValue = this.isPartner;
 			this.contactsByType.pagination.criterias = this.criterias;
 
-			this.contactService.listContactsByType(contactType, this.contactsByType.pagination)
+			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.pagination)
 				.subscribe(
 					data => {
 						this.contactsByType.selectedCategory = contactType;
@@ -1537,7 +1610,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.criterias = this.criterias;
 			this.contactsByType.contactPagination.maxResults = totalRecords;
 
-			this.contactService.listContactsByType(contactType, this.contactsByType.contactPagination)
+			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.contactPagination)
 				.subscribe(
 					data => {
 						this.contactsByType.listOfAllContacts = data.listOfUsers;
@@ -1710,14 +1783,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				.subscribe(
 					data => {
 						console.log(data);
-						if (data.message == "success") {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-							this.contactService.successMessage = true;
-						} else {
-							this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
-						}
+						this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+						this.contactService.successMessage = true;
+						// if (data.message == "success") {
+						// 	this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+						// 	this.contactService.successMessage = true;
+						// } else {
+						// 	this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
+						// }
 					},
 					(error: any) => {
+						this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
 						this.xtremandLogger.error(error);
 					},
 					() => this.xtremandLogger.log("Manage Partner component Mail send method successfull")
@@ -1858,7 +1934,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		if (tempIsZohoSynchronization == 'yes' && !this.isPartner) {
 			this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
 			this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
-			if (!this.isCalledZohoSycronization) {
+			if (!this.isCalledZohoSycronization && this.contactListIdZoho != null) {
 				this.isCalledZohoSycronization = true;
 				this.iszohoAccessTokenExpired = false;
 				this.zohoContactsSynchronizationAuthentication(this.contactListIdZoho, this.socialNetworkZoho);
@@ -1896,6 +1972,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	ngOnDestroy() {
 		try {
+			this.sharedPartnerDetails = [];
 			this.xtremandLogger.info('Deinit - Destroyed Component')
 			this.contactService.successMessage = false;
 			this.contactService.deleteUserSucessMessage = false;
@@ -1914,7 +1991,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	zohoAuthenticationThroughExpiredAccessTokenMessage(providerName: string) {
 		this.zohoCurrentUser = localStorage.getItem('currentUser');
-		let url = this.authenticationService.APP_URL + "e/" + providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.authenticationService.access_token + "/" + this.zohoCurrentUser + "/" + this.isPartner;
+		this.module = 'contacts';
+		let url = this.authenticationService.APP_URL + "e/" + providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.authenticationService.access_token + "/" + this.zohoCurrentUser + "/" + this.module;
 		var x = screen.width / 2 - 700 / 2;
 		var y = screen.height / 2 - 450 / 2;
 		window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
@@ -1934,4 +2012,32 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}, 250);
 
 	}
+	
+    selectedSharePartner(event: any){
+        this.sharedPartnerDetails = event;
+        this.model.assignedTo=this.sharedPartnerDetails.emailId;
+        this.assignLeadsListToPartner(this.model.assignedTo);
+    }
+    
+    storeListDetails(selectedList: any){
+    	this.selectedListDetails = selectedList;
+    }
+    
+    assignLeadsListToPartner(assignedTo: any){
+            this.loading = true;
+            this.selectedListDetails.assignedTo = assignedTo;
+            this.contactService.assignLeadsListToPartner(this.selectedListDetails)
+                .subscribe(
+                    data => {
+                        this.loading = false;
+                        this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                        this.loadContactLists(this.pagination);
+                    },
+                    (error: any) => {
+                        this.loading = false;
+                    },
+                    () => this.xtremandLogger.info('Finished AssignLeadsMethos()')
+                );
+        this.loading = false;
+    }
 }

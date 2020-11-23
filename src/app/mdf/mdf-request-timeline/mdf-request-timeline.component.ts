@@ -223,6 +223,7 @@ export class MdfRequestTimelineComponent implements OnInit {
 
   clearFile(){
     $('#requestDocument').val('');
+	this.formData = new FormData();
   }
 
   downloadFile(document:any){

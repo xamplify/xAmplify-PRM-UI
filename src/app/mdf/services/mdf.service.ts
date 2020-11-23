@@ -7,11 +7,11 @@ import { Form } from "app/forms/models/form";
 import { ColumnInfo } from "app/forms/models/column-info";
 import { FormOption } from "app/forms/models/form-option";
 import { Pagination } from "app/core/models/pagination";
-import {MdfDetails} from '../models/mdf-details';
-import {VanityLoginDto} from '../../util/models/vanity-login-dto';
-import {SaveMdfRequest} from '../models/save-mdf-request';
-import {MdfRequestDto} from "../models/mdf-request-dto";
-import {MdfRequestCommentDto} from '../models/mdf-request-comment-dto';
+import { MdfDetails } from '../models/mdf-details';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { SaveMdfRequest } from '../models/save-mdf-request';
+import { MdfRequestDto } from "../models/mdf-request-dto";
+import { MdfRequestCommentDto } from '../models/mdf-request-comment-dto';
 
 
 @Injectable()

@@ -1,35 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { DamService } from '../services/dam.service';
-
-/*****Common Imports**********************/
-import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Router } from '@angular/router';
-import { SortOption } from '../../core/models/sort-option';
-import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { UtilService } from '../../core/services/util.service';
-import { CustomResponse } from 'app/common/models/custom-response';
-import { Properties } from '../../common/models/properties';
-import { Pagination } from 'app/core/models/pagination';
-import { PagerService } from 'app/core/services/pager.service';
-import { ErrorResponse } from 'app/util/models/error-response';
-declare var $: any;
+import { AuthenticationService } from '../../core/services/authentication.service';
+
 @Component({
 	selector: 'app-manage-dam',
 	templateUrl: './manage-dam.component.html',
-	styleUrls: ['./manage-dam.component.css'],
-	providers: [HttpRequestLoader, SortOption, Properties]
+	styleUrls: ['./manage-dam.component.css']
 })
 export class ManageDamComponent implements OnInit {
 	loading = false;
-	loggedInUserId: number = 0;
-	pagination:Pagination = new Pagination();
-	constructor(private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
-		this.loggedInUserId = this.authenticationService.getUserId();
+	uploadAsset = false;
+	isPartnerView = false;
+	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
+		
 	}
 
 	ngOnInit() {
+		this.isPartnerView = this.router.url.indexOf('/shared')>-1;
 	}
 
 	addAsset() {
@@ -41,4 +30,16 @@ export class ManageDamComponent implements OnInit {
 		this.referenceService.showSweetAlertInfoMessage();
 	}
 
+	showSuccessMessage(){
+	this.referenceService.isUploaded = true;
+    this.referenceService.goToRouter("/home/dam/manage");
+	}
+
+	goToUploadComponent(){
+		this.referenceService.goToRouter("/home/dam/upload");
+	}
+	goToDam(){
+		this.loading = true;
+		this.referenceService.goToRouter("/home/dam/shared");
+	}
 }
