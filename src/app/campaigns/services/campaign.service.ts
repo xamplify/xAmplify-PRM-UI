@@ -1016,6 +1016,11 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+
+    listCampaignPipelines(userId: number) {
+        return this.http.get(this.URL + "/pipeline/campaign/" + userId + "/list?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+
     listDownloadOrOpenedHistory(pagination:Pagination,viewType:string){
         let url = "";
         if(viewType=="tda"){

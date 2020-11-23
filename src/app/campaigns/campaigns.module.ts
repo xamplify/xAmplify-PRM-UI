@@ -37,6 +37,7 @@ import { ClickedUrlsVendorAnalyticsComponent } from './clicked-urls-vendor-analy
 import { UserLevelTimelineComponent } from './user-level-timeline/user-level-timeline.component';
 import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
 
+import { LeadsService } from '../leads/services/leads.service';
 
 @NgModule({
   imports: [
@@ -76,6 +77,6 @@ import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util
   ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],
-  providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService]
+  providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService, LeadsService]
 })
 export class CampaignsModule {}

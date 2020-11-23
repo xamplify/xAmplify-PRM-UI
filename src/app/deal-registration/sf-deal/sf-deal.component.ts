@@ -13,10 +13,10 @@ declare var $: any;
   styleUrls: ['./sf-deal.component.css']
 })
 export class SfDealComponent implements OnInit {
-
-  @Input() dealId: any;
+  @Input() public createdForCompanyId: any;
+  @Input() public dealId: any;
   @Input() campaign: any;
-  @Input() isPreview = false;
+  @Input() public isPreview = false;
   @Input() isVendor = false;
   form: Form = new Form();
   errorMessage: string;
@@ -39,29 +39,55 @@ export class SfDealComponent implements OnInit {
       classes: "myclass custom-class"
     };
 
-    this.contactService.displaySfForm(this.dealId).subscribe(result => {
-      this.form = result.data;
-      /*if (this.campaign.campaignName !== undefined || this.campaign.campaignName !== '') {
-        this.form.formLabelDTOs.find(field => field.labelId === 'Name').value = this.campaign.campaignName;
-      }*/
-
-      let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
-      for (let multiSelectObj of allMultiSelects) {
-        let selectedOptions = multiSelectObj.value.split(';');        
-        for(let option of selectedOptions){
-          this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
-          this.multiSelectvalueArray.push(this.optionObj);
-        }
-        multiSelectObj.value = this.multiSelectvalueArray; 
-      }      
-
-      let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
-      if (reqFieldsCheck.length === 0) {
-        this.isDealRegistrationFormValid = false;
+    if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
+      if (this.dealId == undefined || this.dealId <= 0) {
+        this.dealId = 0;
       }
-    }, error => {
-      console.log(error);
-    });
+      this.contactService.getSfForm(this.createdForCompanyId, this.dealId).subscribe(result => {
+        this.form = result.data;
+        let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
+        for (let multiSelectObj of allMultiSelects) {
+          let selectedOptions = multiSelectObj.value.split(';');        
+          for(let option of selectedOptions){
+            this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+            this.multiSelectvalueArray.push(this.optionObj);
+          }
+          multiSelectObj.value = this.multiSelectvalueArray; 
+        }      
+  
+        let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
+        if (reqFieldsCheck.length === 0) {
+          this.isDealRegistrationFormValid = false;
+        }
+      }, error => {
+        console.log(error);
+      });
+    }
+    
+
+    // this.contactService.displaySfForm(this.dealId).subscribe(result => {
+    //   this.form = result.data;
+    //   /*if (this.campaign.campaignName !== undefined || this.campaign.campaignName !== '') {
+    //     this.form.formLabelDTOs.find(field => field.labelId === 'Name').value = this.campaign.campaignName;
+    //   }*/
+
+    //   let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
+    //   for (let multiSelectObj of allMultiSelects) {
+    //     let selectedOptions = multiSelectObj.value.split(';');        
+    //     for(let option of selectedOptions){
+    //       this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+    //       this.multiSelectvalueArray.push(this.optionObj);
+    //     }
+    //     multiSelectObj.value = this.multiSelectvalueArray; 
+    //   }      
+
+    //   let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
+    //   if (reqFieldsCheck.length === 0) {
+    //     this.isDealRegistrationFormValid = false;
+    //   }
+    // }, error => {
+    //   console.log(error);
+    // });
   }
 
   validateField() {
