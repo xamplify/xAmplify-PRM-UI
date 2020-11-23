@@ -282,9 +282,11 @@ export class FormPreviewComponent implements OnInit {
               this.addHeaderMessage(response.message, this.successAlertClass);
               this.formSubmitted = true;
               let formSubmissionUrl = this.form.formSubmissionUrl;
+              if(!formSubmissionUrl.startsWith("https://")){
+                formSubmissionUrl = "https://"+formSubmissionUrl;
+              }
               let openLinkInNewTab = this.form.openLinkInNewTab;
               if(formSubmissionUrl!=undefined && $.trim(formSubmissionUrl).length>0){
-                let url = (window.location != window.parent.location) ? document.referrer: document.location;
                 let redirectMessage = '<strong> You are being redirect to '+formSubmissionUrl+'</strong>' ;
                 let text = !openLinkInNewTab ? redirectMessage:redirectMessage+' <br>(opens in new window)';
                 swal( {
@@ -299,7 +301,6 @@ export class FormPreviewComponent implements OnInit {
                   window.open(formSubmissionUrl, '_blank');
                 }else{
                   window.parent.location.href = formSubmissionUrl;
-                  //window.location.replace(formSubmissionUrl);
                 }
                 swal.close();
                 }, 3000);
