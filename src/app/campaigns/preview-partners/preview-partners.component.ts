@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute,Router} from '@angular/router';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from '../../core/services/user.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { Campaign } from '../models/campaign';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -13,13 +12,15 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { SortOption } from '../../core/models/sort-option';
+import { Properties } from '../../common/models/properties';
+
 declare var swal, $: any;
 
 @Component({
   selector: 'app-preview-partners',
   templateUrl: './preview-partners.component.html',
   styleUrls: ['./preview-partners.component.css'],
-  providers: [Pagination, HttpRequestLoader, ActionsDescription,SortOption]
+  providers: [Pagination, HttpRequestLoader, ActionsDescription,SortOption,Properties]
 })
 export class PreviewPartnersComponent implements OnInit {
 
@@ -28,21 +29,42 @@ export class PreviewPartnersComponent implements OnInit {
     partnersPagination: Pagination = new Pagination();
     campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
     campaignId:number = 0;
-    constructor(public route: ActivatedRoute,private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
+    colspanValue = 2;
+    historyPagination: Pagination = new Pagination();
+    historyLoader:HttpRequestLoader = new HttpRequestLoader();
+    historyList:Array<any> = new Array<any>();
+    partnersList: Array<any> = new Array<any>();
+    historyResponse: CustomResponse = new CustomResponse();
+    templateDownloadPartners = false;
+    templateEmailOpenedPartners = false;
+    viewType = "";
+    constructor(public properties: Properties,public route: ActivatedRoute,private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService,public sortOption:SortOption) {
         this.loggedInUserId = this.authenticationService.getUserId();
     }
-
-
+    ngOnInit() {
+        this.campaignId = this.route.snapshot.params['campaignId'];
+        this.templateDownloadPartners = this.router.url.indexOf('/tda') > -1;
+        this.templateEmailOpenedPartners = this.router.url.indexOf('/teoa') > -1;
+        if(this.templateDownloadPartners){
+            this.viewType = "tda"
+        }else if(this.templateEmailOpenedPartners){
+            this.viewType = "teoa";
+        }else{
+            this.viewType = "plc";
+        }
+        this.listPartners(this.partnersPagination);
+    }
     listPartners(pagination: Pagination ) {
-        this.partnerActionResponse = new CustomResponse();
+        this.refService.goToTop();
         this.refService.loading( this.campaignPartnerLoader, true );
-        this.campaignService.listCampaignPartners( pagination, this.campaignId)
+        this.campaignService.listCampaignPartnersOrTemplateDownloadOrTemplateEmailOpenedPartners( pagination, this.campaignId,this.viewType)
             .subscribe(
             data => {
                 pagination.totalRecords = data.totalRecords;
                 this.sortOption.totalRecords = data.totalRecords;
+                this.partnersList = data.campaignPartners;
                 pagination = this.pagerService.getPagedItems( pagination, data.campaignPartners );
                 this.refService.loading( this.campaignPartnerLoader, false );
             },
@@ -54,7 +76,6 @@ export class PreviewPartnersComponent implements OnInit {
     }
 
     confirmDeletePartnerById( partner: any, position: number ) {
-
         let self = this;
         swal( {
             title: 'Are you sure?',
@@ -132,9 +153,53 @@ export class PreviewPartnersComponent implements OnInit {
     search(){
         this.getAllFilteredResults(this.partnersPagination);
     }
-    ngOnInit() {
-        this.campaignId = this.route.snapshot.params['campaignId'];
-        this.listPartners(this.partnersPagination);
-    }
+    
+
+    /********************Pagaination&Search Code*****************/
+	expandHistory(history: any, selectedIndex: number) {
+        this.historyResponse = new CustomResponse();
+        this.historyPagination = new Pagination();
+		$.each(this.partnersList, function (index: number, row: any) {
+			if (selectedIndex != index) {
+				row.expand = false;
+			}
+		});
+		history.expand = !history.expand;
+		if (history.expand) {
+            this.historyPagination.campaignId = history.campaignPartnerId;
+			this.listDownloadHistory(this.historyPagination);
+		} else {
+			this.historyPagination.campaignId = 0;
+		}
+	}
+
+	listDownloadHistory(pagination: Pagination) {
+		this.refService.loading(this.historyLoader, true);
+		this.campaignService.listDownloadOrOpenedHistory(pagination,this.viewType).subscribe((result: any) => {
+			if (result.statusCode === 200) {
+				let data = result.data;
+                pagination.totalRecords = data.totalRecords;
+                let self = this;
+				$.each(data.list, function (_index: number, history: any) {
+                    if(self.viewType=="tda"){
+                        history.displayTime = new Date(history.downloadedTimeInUTCString);
+                    }else{
+                        history.displayTime = new Date(history.trackedTimeInUTCString);
+                    }
+                });
+                this.historyList = data.list;
+				pagination = this.pagerService.getPagedItems(pagination, data.list);
+			}
+			this.refService.loading(this.historyLoader, false);
+		}, error => {
+			this.historyResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+		});
+	}
+	/************Page************** */
+	setHistoryPage(event: any) {
+		this.historyPagination.pageIndex = event.page;
+		this.listDownloadHistory(this.historyPagination);
+	}
+
 
 }

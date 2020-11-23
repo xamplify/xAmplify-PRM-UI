@@ -9,7 +9,10 @@
              <h4 class="modal-title" id="myModalLabel" *ngIf="previewCampaignType !=='EVENT'" title="{{campaign?.campaignName}}"><b>{{campaign?.campaignName | slice:0:50}} <span *ngIf="campaign?.campaignName?.length>50">...</span></b></h4>
              <h4 class="modal-title" id="myModalLabel" *ngIf="previewCampaignType ==='EVENT'" title="{{campaign?.campaign}}"><b>{{campaign?.campaign | slice:0:50}} <span *ngIf="campaign?.campaign?.length>50">...</span></b></h4>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" id="previewCampaignModalBody">
+            <div style="position: relative; top:-10px;">
+               <app-response-message [customResponse]="campaignErrorResponse" *ngIf="campaignErrorResponse.isVisible"></app-response-message>
+            </div>
              <ng-container *ngIf="campaign && !deleteCampaignAlert">
                 <fieldset>
                    <legend>Campaign details:</legend>
@@ -880,14 +883,14 @@
        <div class="modal-content">
           <div class="modal-header">
              <button  type="button" class="close-circle"  data-dismiss="modal">
-             <i class="fa fa-times"></i>
+             <i class="fa fa-times" aria-hidden="true"></i>
              </button>
              <h4 class="modal-title text-center">Change Folder</h4>
           </div>
+          <div style="position: relative; top:-10px;">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+         </div>
           <div class="modal-body">
-             <div style="position: relative; top:-10px;">
-                <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-             </div>
              <app-modal-popup-loader *ngIf="folderPreviewLoader"></app-modal-popup-loader>
              <ng-container *ngIf="!folderPreviewLoader">
                 <div class="form-group">

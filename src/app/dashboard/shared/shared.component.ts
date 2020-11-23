@@ -75,7 +75,7 @@ export class SharedComponent implements OnInit {
   sharedDetails(pagination: Pagination) {
     //this.pagination.maxResults = 12;
     this.logger.log(pagination);
-    this.contactService.listContactsByType("all", pagination).subscribe(
+    this.contactService.listContactsByType(false,"all", pagination).subscribe(
       (data: any) => {
         this.allFollowers = data.listOfUsers;
         this.totalRecords = data.totalRecords;

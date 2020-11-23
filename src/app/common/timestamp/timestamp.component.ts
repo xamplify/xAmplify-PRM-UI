@@ -11,6 +11,7 @@ export class TimestampComponent implements OnInit {
  @Input() isOnlyTime = false;
  @Input() isOnlyDate = false;
 @Input() campaignView = false;
+@Input() showInLine = false;
  isSpacethere = false;
 
   constructor(public referenceService: ReferenceService) { }

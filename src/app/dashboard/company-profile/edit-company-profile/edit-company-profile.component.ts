@@ -509,6 +509,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         }
                         this.authenticationService.v_companyFavIconPath = this.companyProfile.favIconLogoPath;
                         this.authenticationService.v_companyName = this.companyProfile.companyName;
+						this.authenticationService.module.isContact = false;
                         this.vanityURLService.setVanityURLTitleAndFavIcon();                        
                         $('#info').hide();
                         $('#edit-sucess').show(600);
@@ -543,7 +544,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
                             self.homeComponent.getTeamMembersDetails();
-                            console.log(JSON.parse(localStorage.getItem('currentUser')))
                         }, 3000);
                     },
                     error => { this.ngxloading = false;

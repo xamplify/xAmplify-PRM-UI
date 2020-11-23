@@ -29,6 +29,9 @@ export class Module {
     isVendorTier = false;
     isMarketing = false;
 
-	isPartnershipEstablishedOnlyWithVendorTier = false;
+    isPartnershipEstablishedOnlyWithVendorTier = false;
+    
+    damAccess = false;
+    damAccessAsPartner = false;
 
 }

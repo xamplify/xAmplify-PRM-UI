@@ -1,0 +1,112 @@
+<div class="modal fade right" id="pulishDamPopup" tabindex="-1" role="dialog" aria-labelledby="pulishDamPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <button type="button" class="close-circle" (click)="closePopup()">
+             <i class="fa fa-times" aria-hidden="true"></i>
+             </button>
+             <h4 class="modal-title text-center">List Of Partners</h4>
+          </div>
+          <div class="modal-body">
+             <div class="thank-you-pop" *ngIf="sendSuccess">
+                <ng-container *ngIf="statusCode==200">
+                   <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
+                   <h4 class="event-success">{{responseMessage}}</h4>
+                </ng-container>
+                <ng-container *ngIf="statusCode!=200">
+                   <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
+                   <h4 class="event-error">{{responseMessage}}</h4>
+                </ng-container>
+             </div>
+             <ng-container *ngIf="!sendSuccess">
+                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                </app-response-message>
+                <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
+                   <div class="row">
+                      <div>
+                         <div class="col-xs-12">
+                            <div class="page-toolbar">
+                               <div class="btn-group pull-right">
+                                  <ng-container class='m10'>
+                                     <span *ngIf="!showPublishedPartnersList" class="btn btn-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Edit Selected Partners" (click)="viewPublishedPartners()">
+                                     <i class="fa fa-edit p10" aria-hidden="true"></i></span> &nbsp;
+                                     <span *ngIf="showPublishedPartnersList" class="btn btn-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Go To Partners" (click)="viewUnPublishedPartners()">
+                                     <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span> &nbsp;
+                                  </ng-container>
+                                  <div class="inputs float-right" style="display: inline-flex;">
+                                     <div>
+                                        <select class="form-control" [(ngModel)]="sortOption.selectedDamPartnerDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                        <option
+                                        *ngFor="let option of sortOption.activeUsersSortDropDownOptions"
+                                        [ngValue]="option">
+                                        {{option.name}}</option>
+                                        </select>
+                                     </div>
+                                     <div class="portlet-input input-inline" id="search-div">
+                                        <div class="input-icon right" id="icon">
+                                           <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
+                                           <button type="submit" class="search-box-item-click" (click)="searchPartners()">
+                                           <i class="fa fa-search" aria-hidden="true"></i>
+                                           </button>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                <br>
+                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                <ng-container *ngIf="!httpRequestLoader.isLoading">
+                   <div class="table-responsive">
+                      <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="dam-partnership-list-table" aria-describedby="damPartnersTableDescription">
+                         <thead>
+                            <tr>
+                               <th *ngIf="!showPublishedPartnersList" class="text-center" scope="col">
+                                  <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="selectAllPartners">
+                               </th>
+                               <th scope="col">Partner Info</th>
+                               <th *ngIf="showPublishedPartnersList" scope="col">Actions</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            <tr *ngFor="let partner of pagination.pagedItems ;let i =index" id="damPartnershipTr_{{partner.partnershipId}}" [class.row-selected]="selectedPartnerShipIds.indexOf(partner.partnershipId)>-1" (click)="highlightSelectedCampaignRow(partner,$event)">
+                            <td *ngIf="!showPublishedPartnersList" class="text-center">
+                               <input type="checkbox" class="chk"  id="{{partner.partnershipId}}" [checked]="selectedPartnerShipIds.indexOf(partner.partnershipId)>-1" name="damPartnershipCheckBoxName[]" value="{{partner.partnershipId}}" (click)="highlightRowByCheckBox(partner,$event)">
+                            </td>
+                            <td>
+                               <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="partner">
+                               </app-user-info>
+                            </td>
+                            <td id="actions-row" *ngIf="showPublishedPartnersList">
+                               <div class="actions-block override-actions custom-width-icon float-none">
+                                  <a  title="Delete" (click)="openDeletePopup(partner)">
+                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                  </a>
+                               </div>
+                            </td>
+                            </tr>
+                         </tbody>
+                      </table>
+                   </div>
+                   <!-- End of 24 -->
+                   <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                      <strong>No Data Found.</strong>
+                   </div>
+                </ng-container>
+             </ng-container>
+             <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+             <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listItems($event)">
+             </app-pagination>
+          </div>
+       </div>
+       <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading && !showPublishedPartnersList">
+          <button type="submit" class="btn green-haze" [disabled]="selectedPartnerShipIds?.length==0" *ngIf="!sendSuccess" (click)="publishAsset()">Publish</button>
+          <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
+       </div>
+    </div>
+ </div>
+ </div>

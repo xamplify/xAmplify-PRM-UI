@@ -24,4 +24,8 @@ export class ContactList {
     constructor(id?: number) {
         this.id = id;
     }
+    publicList : boolean = false;
+    assignedTo: string;
+    assignedLeadsList : boolean = false;
+    assignedToPartner: boolean =false;
 }

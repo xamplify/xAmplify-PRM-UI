@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+<router-outlet *ngIf="!isShowingRouteLoadIndicator"></router-outlet>
+
+<!-- I indicate that a router module is being loaded asynchronously. -->
+<div *ngIf="isShowingRouteLoadIndicator" id="router-loader">
+  <img   [src]=env.loaderGif  alt="">
+    <p>l</p>
+    <p>o</p>
+    <p>a</p>
+    <p>d</p>
+    <p>i</p>
+    <p>n</p>
+    <p>g</p>
+  </div>
+  

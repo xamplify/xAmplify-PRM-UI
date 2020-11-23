@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {VanityLoginDto} from '../../util/models/vanity-login-dto';
-import {MdfRequestTiles} from '../models/mdf-request-tiles';
-import {MdfRequestVendorDto} from '../models/mdf-request-vendor-dto';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { MdfRequestTiles } from '../models/mdf-request-tiles';
+import { MdfRequestVendorDto } from '../models/mdf-request-vendor-dto';
 /*****Common Imports**********************/
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
@@ -52,7 +52,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   countLoader = 3;
   constructor(private utilService: UtilService, public sortOption: SortOption, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,private route:ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
-     this.vanityLoginDto.userId = this.loggedInUserId; 
+    this.vanityLoginDto.userId = this.loggedInUserId; 
     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.vanityUrlFilter = true;

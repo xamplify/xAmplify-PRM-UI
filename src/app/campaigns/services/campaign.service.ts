@@ -467,8 +467,36 @@ export class CampaignService {
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
+    }
 
+    listCampaignUsers(pagination:Pagination){
+        let url = this.URL + "campaign/listCampaignUserList?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
+    isPartnerGroupSelected(pagination:Pagination){
+        let url = this.URL + "campaign/isPartnerGroupSelected?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url,pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listCampaignPartnersOrTemplateDownloadOrTemplateEmailOpenedPartners(pagination: Pagination, campaignId: number,viewType:string){
+        let url = "";
+        if(viewType=="plc"){
+            url = "list-partners-by-campaign-id"+"/"+campaignId
+        }else if(viewType=="tda"){
+            url = "listTemplateDownloadPartners";
+        }else if(viewType=="teoa"){
+            url = "listTemplateEmailOpenedPartners";
+        }
+        pagination.campaignId = campaignId;
+        let updatedUrl = this.URL +"campaign/"+url+"?access_token=" + this.authenticationService.access_token;
+        return this.http.post(updatedUrl, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     deletePartner(partner:any) {
@@ -988,9 +1016,28 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+
     listCampaignPipelines(userId: number) {
         return this.http.get(this.URL + "/pipeline/campaign/" + userId + "/list?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
+
+    listDownloadOrOpenedHistory(pagination:Pagination,viewType:string){
+        let url = "";
+        if(viewType=="tda"){
+            url = "viewDownloadedTemplateHistory";
+        }else{
+            url = "viewEmailOpenedTemplateHistory";
+        }
+        return this.utilPostPaginationMethod("campaign/"+url,pagination)
+    }
+    
+    viewDownloadHistoryForPartners(pagination:Pagination){
+        return this.utilPostPaginationMethod("campaign/viewDownloadedTemplateHistoryForPartner",pagination)
+    }
+    
+    private utilPostPaginationMethod(url:string,pagination:Pagination){
+        return this.http.post(this.URL + url+"?access_token=" + this.authenticationService.access_token, pagination)
+        .map(this.extractData)
             .catch(this.handleError);
     }
 

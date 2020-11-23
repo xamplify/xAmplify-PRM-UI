@@ -13,6 +13,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 export class ExpiredAccessTokenLoginComponent implements OnInit {
 
   public isPartner: boolean;
+  currentModule: string;
 
   constructor(private router: Router, private route: ActivatedRoute,private authenticationService: AuthenticationService,
     public contactService: ContactService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService)
@@ -24,12 +25,14 @@ ngOnInit()
     let zohoCurrentUser = this.route.snapshot.params['zohoCurrentUser'];
     let vanityUrlDomainName = this.route.snapshot.params['vud'];
     let accessToken = this.route.snapshot.params['accessToken'];
-    let isPartner = this.route.snapshot.params['isPartner'];
-    this.isPartner = isPartner;
+    let currentModule = this.route.snapshot.params['module'];
+    this.currentModule = currentModule;
     let redirectUrl = this.route.snapshot.params['redirectUrl'];
     localStorage.setItem('vanityUrlDomain',vanityUrlDomainName);
     localStorage.setItem('access_token',accessToken);
     localStorage.setItem('currentUser',zohoCurrentUser);
+    
+
 
     this.authenticationService.access_token = accessToken;
     this.authenticationService.vanityURLEnabled == true;
@@ -41,16 +44,14 @@ ngOnInit()
     else if(providerName == "zoho"){
       this.zohoAuth();
     }
-
-  } 
-  public zohoAuth()
-  {
-   
-    this.contactService.checkingZohoAuthentication(this.isPartner)
+ 
+}
+  public zohoAuth(){
+    this.contactService.checkingZohoAuthentication(this.currentModule)
     .subscribe(
         (data: any) => {
             localStorage.setItem("userAlias", data.userAlias);
-            localStorage.setItem("isPartner", data.isPartner);
+            localStorage.setItem("currentModule", data.module);
             localStorage.setItem("statusCode", data.statusCode);
             window.location.href = "" + data.redirectUrl;
           },
@@ -61,4 +62,5 @@ ngOnInit()
         () => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
         );
   }
+
 }

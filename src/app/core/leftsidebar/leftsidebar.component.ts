@@ -27,6 +27,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     campaigns = false;
     videos = false;
     contacts = false;
+    assignLeads = false;
     partners = false;
     enableLeads = false;
     enableLeadsByVendor = false;
@@ -46,6 +47,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     mdfAccessAsPartner: boolean;
     mdf: boolean;
     dam:boolean;
+    damAccess = false;
+    shareLeadsAccess = false;
+    damAccessAsPartner = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -192,51 +196,55 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { 
-            this.clearSubMenuValues( false, false, false, false, false,false,false,false,false ); }
+            this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,false ); }
     }
     openOrCloseTabs( urlType: string ) {
         if ( window.innerWidth < 990 ) {
             if ( urlType === 'emailtemplates' ) {
                 this.emailtemplates = this.router.url.includes( 'emailtemplates' ) ? true : ( this.emailtemplates = !this.emailtemplates );
-                this.clearSubMenuValues( this.emailtemplates, false, false, false, false,false,false,false,false );
+                this.clearSubMenuValues( this.emailtemplates, false, false, false, false,false,false,false,false,false );
             }
             else if ( urlType === 'contacts' ) {
                 this.contacts = this.router.url.includes( 'contacts' ) ? true : ( this.contacts = !this.contacts );
-                this.clearSubMenuValues( false, false, false, this.contacts, false,false,false,false,false );
+                this.clearSubMenuValues( false, false, false, this.contacts, false,false,false,false,false,false );
             }
             else if ( urlType === 'partners' ) {
                 this.partners = this.router.url.includes( 'partners' ) ? true : ( this.partners = !this.partners );
-                this.clearSubMenuValues( false, false, false, false, this.partners,false,false,false,false );
+                this.clearSubMenuValues( false, false, false, false, this.partners,false,false,false,false,false );
             }
             else if ( urlType === 'campaigns' ) {
                 this.campaigns = this.router.url.includes( 'campaigns' ) ? true : ( this.campaigns = !this.campaigns );
-                this.clearSubMenuValues( false, this.campaigns, false, false, false,false,false,false,false );
+                this.clearSubMenuValues( false, this.campaigns, false, false, false,false,false,false,false,false );
             }
             else if ( urlType === 'content' ) {
                 this.videos = this.router.url.includes( 'content' ) ? true : ( this.videos = !this.videos );
-                this.clearSubMenuValues( false, false, this.videos, false, false,false,false,false,false );
+                this.clearSubMenuValues( false, false, this.videos, false, false,false,false,false,false,false );
             }
             else if(urlType ==='forms') {
                 this.videos = this.router.url.includes('forms') ? true: (this.forms = !this.forms);
-                this.clearSubMenuValues(false,false,false,false,false,this.forms,false,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,this.forms,false,false,false,false); 
             }
             else if(urlType ==='landing-pages') {
                 this.videos = this.router.url.includes('forms') ? true: (this.landingPages = !this.landingPages);
-                this.clearSubMenuValues(false,false,false,false,false,false,this.landingPages,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,false,this.landingPages,false,false,false); 
             }
             else if(urlType ==='mdf') {
                 this.mdf = this.router.url.includes('mdf') ? true: (this.mdf = !this.mdf);
-                this.clearSubMenuValues(false,false,false,false,false,false,false,this.mdf,false); 
+                this.clearSubMenuValues(false,false,false,false,false,false,false,this.mdf,false,false); 
             }
             else if(urlType ==='dam') {
                 this.dam = this.router.url.includes('dam') ? true: (this.dam = !this.dam);
-                this.clearSubMenuValues(false,false,false,false,false,false,false,false,this.dam); 
+                this.clearSubMenuValues(false,false,false,false,false,false,false,false,this.dam,false); 
+            }
+            else if ( urlType === 'assignleads' ) {
+                this.assignLeads = this.router.url.includes( 'assignleads' ) ? true : ( this.assignLeads = !this.assignLeads );
+                this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,true );
             }
         }
     }
-    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners,forms,landingPages,mdf,dam) {
+    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners,forms,landingPages,mdf,dam, assignLeads) {
         this.emailtemplates = emailTemplate; this.campaigns = campaigs; this.videos = videos; this.contacts = contacts; this.partners = partners;
-        this.forms = forms;this.landingPages = landingPages;this.mdf = mdf;this.dam = dam;
+        this.forms = forms;this.landingPages = landingPages;this.mdf = mdf;this.dam = dam;this.assignLeads=assignLeads;
     }
     logout() {
         this.authService.logout();
@@ -260,6 +268,11 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.mdfAccess = data.mdf;
             this.mdfAccessAsPartner = data.mdfAccessAsPartner;
             this.authService.contactsCount = data.contactsCount;
+            this.damAccess = data.dam;
+            this.shareLeadsAccess = data.shareLeads;
+            this.damAccessAsPartner = data.damAccessAsPartner;
+            this.authService.module.damAccess = data.dam;
+            this.authService.module.damAccessAsPartner = data.damAccessAsPartner;
             this.authService.module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
           },
           _error => {

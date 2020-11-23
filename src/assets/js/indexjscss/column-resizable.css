@@ -216,3 +216,11 @@ span.ui-column-resizer {
     padding: 7px;
     border-radius: 50%;
 }
+
+.bold-asset{
+	font-weight: bold !important;
+}
+
+.auto-height{
+  height: auto !important;
+}

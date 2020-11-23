@@ -1,3 +1,79 @@
-<p>
-  add-dam works!
-</p>
+<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+      <div class="row">
+          <div class="col-xs-12">
+              <div class="tile">
+                  <div class="page-bar">
+                      <ul class="page-breadcrumb">
+                          <li>
+                              <i class="fa fa-home" aria-hidden="true"></i>
+                              <a [routerLink]="referenceService.homeRouter">Home</a>
+                              <i class="fa fa-angle-right" aria-hidden="true"></i>
+                          </li>
+                          <li>
+                              <a>Design Template</a>
+                          </li>
+                      </ul>
+                      <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+      						<i class="fa fa-times" aria-hidden="true"></i>
+      					</a>
+                  </div>
+                  <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
+                    <app-bee-template-util [defaultJsonBody]="jsonBody" [vendorCompanyLogoPath]="vendorCompanyLogoPath" [partnerCompanyLogoPath]="partnerCompanyLogoPath" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+                  </ng-container>
+              </div>
+          </div>
+      </div>
+  <app-scroll-top></app-scroll-top>
+
+<!--Add Asset Details------->
+<div id="addAssetDetailsPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-css" role="document">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <div class="modal-header">
+              <a class="close-circle" (click)="hidePopup()">
+                <i class="fa fa-times" aria-hidden="true"></i></a>
+              <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
+          </div>
+          <div class="modal-body">
+            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message>
+            <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+             <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
+                <div class="portlet box">
+                    <div class="">
+                      <div class="col-md-12 col-lg-12 ">
+                         <div class="form-group">
+                             <label class="control-label col-sm-3" translate>Name
+                                 <span class="required">*</span></label>
+                             <div class="col-sm-8">
+                               <input class="form-control"  type="text" placeholder="Name" (input)="validateForm('name')" [(ngModel)]="damPostDto.name"  [ngModelOptions]="{standalone: true}" >
+                                <span class="required" *ngIf="nameErrorMessage?.length>0">{{nameErrorMessage}}</span>
+                              </div>
+                         </div>
+                     </div>
+                     <div class="col-md-12 col-lg-12 ">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" translate>Description <span class="required">*</span></label>
+                            <div class="col-sm-8">
+                              <textarea class="form-control" rows="7" (input)="validateForm('description')"  placeholder="Description" maxlength="5000" [(ngModel)]="damPostDto.description"  [ngModelOptions]="{standalone: true}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer cmr" style="border:none;" *ngIf="!modalPopupLoader">
+              <button class="btn btn-info" type="reset" (click)="hidePopup();" translate>Cancel</button>
+              <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(false)" translate>Save</button>
+              <button *ngIf="!isAdd" type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(true)" translate>Save As</button>
+
+          </div>
+      </div>
+  </div>
+ </div>
+ 
+ 

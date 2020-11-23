@@ -72,4 +72,9 @@ export class Pagination {
 	partnershipId = 0;
 	pipelineType = "LEAD";
 
+	redistributingCampaign : boolean = false;
+	parentCampaignId:number = 0;
+
+
+
 }

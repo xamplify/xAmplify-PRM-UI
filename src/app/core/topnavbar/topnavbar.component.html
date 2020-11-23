@@ -190,7 +190,7 @@
                                 <a [routerLink]="['/home/dashboard/myprofile']" translate> <i class="icon-user"></i> My Profile
                                 </a>
                             </li>
-                            <li *ngIf="!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin() && authenticationService.superiorRole != 'Partner'">
+                            <li *ngIf="(!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin() && authenticationService.superiorRole != 'Partner') || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
                                 <!-- *ngIf="(authenticationService.module.isOrgAdmin || isUser)" -->
                                 <a [routerLink]="['/home/dashboard/edit-company-profile']" translate> <i class="fa fa-building-o"></i> Company Profile
                                 </a>
@@ -221,10 +221,6 @@
                                         <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
                                 </li>
                             </ng-container>
-                            
-                            
-   
-                           
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
                                 <a translate> <i class="icon-key" aria-hidden="true"></i> Log Out

@@ -23,6 +23,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     @Input() isContactTypeEdit: boolean;
     @Input() mdfAccess: boolean;
     isPartner: boolean;
+    isAssignLeads = false;
     @Input() isUpdateUser: boolean;
     @Input() totalUsers: any;
     @Output() notifyParent: EventEmitter<any>;
@@ -48,7 +49,17 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
+        
+        if(this.router.url.includes('home/contacts')){
+            this.checkingContactTypeName = "Contact";
+        }else if(this.router.url.includes('home/assignleads')){
+            this.checkingContactTypeName = "Lead";
+        }else{
+            this.checkingContactTypeName = "Partner";
+        }
+        
         this.isPartner = this.router.url.includes('home/contacts')? false: true;
+        this.isAssignLeads = this.router.url.includes('home/assignleads')? true: false;
 
     }
 
@@ -194,11 +205,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
        try{
         //this.geoLocation();
         this.addContactuser.country = this.countryNames.countries[0];
-        if(this.isPartner){
+        /*if(this.isPartner){
             this.checkingContactTypeName = "Partner";
+        }else if(this.isAssignLeads){
+        	this.checkingContactTypeName = "Lead";
         }else{
             this.checkingContactTypeName = "Contact";
-        }
+        }*/
 
         if ( this.isUpdateUser ) {
             this.checkingForEmail = true;

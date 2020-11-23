@@ -29,7 +29,23 @@ export class SortOption {
         { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
         { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
         { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
-        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' }
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+        { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' }
+      ];
+
+      templateDownloadSortDropDown = [
+        { 'name': 'Sort By', 'value': '' },
+        { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+        { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+        { 'name': 'Download Count (DESC)', 'value': 'download-DESC' },
+        { 'name': 'Downlad Count (ASC)', 'value': 'downloads-ASC' },
       ];
 
     leadPartnersSortDropDown = [
@@ -78,7 +94,6 @@ export class SortOption {
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
-
         { 'name': 'Launch Date(ASC)', 'value': 'createdTime-ASC' },
         { 'name': 'Launch Date(DESC)', 'value': 'createdTime-DESC' },
         { 'name': 'Lead Count(ASC)', 'value': 'count-ASC' },
@@ -88,7 +103,6 @@ export class SortOption {
           { 'name': 'Sort By', 'value': '' },
           { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
           { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
-
           { 'name': 'Launch Date(ASC)', 'value': 'createdTime-ASC' },
           { 'name': 'Launch Date(DESC)', 'value': 'createdTime-DESC' },
           { 'name': 'Deal Count(ASC)', 'value': 'count-ASC' },
@@ -184,6 +198,23 @@ export class SortOption {
       { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
 
+    publishedPartnerAnalyticsDropDown =  [
+      { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+      { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+      { 'name': 'Last Name (A-Z)', 'value': 'lastName-ASC' },
+      { 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
+      { 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+      { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+      { 'name': 'Company Name (A-Z)', 'value': 'contactCompany-ASC' },
+      { 'name': 'Company Name (Z-A)', 'value': 'contactCompany-DESC' },
+      { 'name': 'View Count (DESC)', 'value': 'views-DESC' },
+      { 'name': 'View Count (ASC)', 'value': 'views-ASC' },
+      { 'name': 'Download Count (DESC)', 'value': 'download-DESC' },
+      { 'name': 'Downlad Count (ASC)', 'value': 'downloads-ASC' },
+      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
+    ];
+
     mdfVendorsSortDropDownOptions = [
       { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
       { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
@@ -208,6 +239,26 @@ export class SortOption {
       { 'name': 'Launched On (DESC)', 'value': 'launchTime-DESC' }
     ];
 
+  damSortDropDownOptions = [
+      { 'name': 'Name(A-Z)', 'value': 'assetName-ASC' },
+      { 'name': 'Name(Z-A)', 'value': 'assetName-DESC' },
+      { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+  ];
+  publishedDamSortDropDownOptions = [
+    { 'name': 'Name(A-Z)', 'value': 'assetName-ASC' },
+    { 'name': 'Name(Z-A)', 'value': 'assetName-DESC' },
+    { 'name': 'Published On(ASC)', 'value': 'publishedTime-ASC' },
+    { 'name': 'Published On(DESC)', 'value': 'publishedTime-DESC' }
+];
+
+  damPartnersDropDownOptions = [
+    { 'name': 'Name(A-Z)', 'value': 'assetName-ASC' },
+    { 'name': 'Name(Z-A)', 'value': 'assetName-DESC' },
+    { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+    { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+];
+
 
 
     numberOfItemsPerPage = [
@@ -229,10 +280,15 @@ export class SortOption {
     public selectedDemoRequestSortOption:any = this.demoRequestSortOptions[7];
     public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[0];
     public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[3];
-    public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];
+    public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];//This is used in multiple places.Be careful while changing it dude.
+    public selectedDamPartnerDropDownOption:any = this.activeUsersSortDropDownOptions[this.activeUsersSortDropDownOptions.length-1];
     public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
+    public publishedPartnerAnalyticsSortOption: any = this.publishedPartnerAnalyticsDropDown[this.publishedPartnerAnalyticsDropDown.length-1];
     public mdfVendorsSortOption:any = this.mdfVendorsSortDropDownOptions[5];
-	public userLevelCampaignAnalyticsSortOption:any = this.userLevelCampaignAnalyticsSortDropDownOptions[this.userLevelCampaignAnalyticsSortDropDownOptions.length-1];
+	  public userLevelCampaignAnalyticsSortOption:any = this.userLevelCampaignAnalyticsSortDropDownOptions[this.userLevelCampaignAnalyticsSortDropDownOptions.length-1];
+    public damSortOption:any = this.damSortDropDownOptions[this.damSortDropDownOptions.length-1];
+    public publishedDamSortOption:any = this.publishedDamSortDropDownOptions[this.publishedDamSortDropDownOptions.length-1];
+    public templateDownloadPartnerSortOption:any = this.templateDownloadSortDropDown[0];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

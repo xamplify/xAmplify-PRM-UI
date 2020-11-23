@@ -303,7 +303,6 @@ hr {
 }
 
 
-
 .content-mgmt-box{
 	background: #fff;
 border: 1px solid #ddd;
@@ -313,20 +312,10 @@ box-shadow: 0 1px 3px 0 rgba(0,0,0,.07);
 border-radius: 3px; padding:1rem;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#custom-align-padding{
+	margin-top: 9px;
+	margin-right: 5px;
+}
 
 .content__list {
 	margin:0;
@@ -596,8 +585,3 @@ label {
 .mcss{  padding-right: 0;}
 @media only screen and (max-width:600px) { .mcss{  padding: 0;} }
 .override-actions{ margin: 0 auto; display: table;float: none !important; }
-
-#custom-align-padding{
-	margin-top: 9px;
-	margin-right: 5px;
-}

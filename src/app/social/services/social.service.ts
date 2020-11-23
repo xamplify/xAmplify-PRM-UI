@@ -46,29 +46,24 @@ export class SocialService {
       .catch(this.handleError);
   }
 
-  callback(socialProvider: string,parentWindowUserId:number,loggedInThroughVanityUrl:string): Observable<SocialConnection> {
+  callback(socialProvider: string,parentWindowUserId:number,loggedInThroughVanityUrl:string,param:any): Observable<SocialConnection> {
     let queryParam: string;
     let isDenied = false;
-
-    this.activatedRoute.queryParams.subscribe(
-      (param: any) => {
-        const oauth_token = param['oauth_token'];
-        const oauth_verifier = param['oauth_verifier'];
-        const denied = param['denied'];
-        const code = param['code'];
-        const error = param['error'];
-        const error_code = param['error_code'];
-        const error_message = param['error_message'];
-        const error_description = param['error_description'];
-
-        if (oauth_token != null && oauth_verifier != null) {
-          queryParam = '?oauth_token=' + oauth_token + '&oauth_verifier=' + oauth_verifier;
-        } else if (denied != null || ( (error_code != null || error != null) && (error_message != null || error_description != null))) {
-          isDenied = true;
-        } else {
-          queryParam = '?code=' + code;
-        }
-      });
+    const oauth_token = param['oauth_token'];
+    const oauth_verifier = param['oauth_verifier'];
+    const denied = param['denied'];
+    const code = param['code'];
+    const error = param['error'];
+    const error_code = param['error_code'];
+    const error_message = param['error_message'];
+    const error_description = param['error_description'];
+    if (oauth_token != null && oauth_verifier != null) {
+      queryParam = '?oauth_token=' + oauth_token + '&oauth_verifier=' + oauth_verifier;
+    } else if (denied != null || ( (error_code != null || error != null) && (error_message != null || error_description != null))) {
+      isDenied = true;
+    } else {
+      queryParam = '?code=' + code;
+    }
 
       if(loggedInThroughVanityUrl=="true"){
         if(parentWindowUserId!=undefined && parentWindowUserId!=0){

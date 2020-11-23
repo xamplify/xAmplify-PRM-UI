@@ -19,7 +19,7 @@ import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import {AddMoreReceiversComponent} from 'app/campaigns/add-more-receivers/add-more-receivers.component';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
-import { VanityURL } from 'app/vanity-url/models/vanity.url';
+import { CampaignTemplateDownloadHistoryComponent } from 'app/campaigns/campaign-template-download-history/campaign-template-download-history.component';
 
 declare var $,swal: any;
 
@@ -68,6 +68,7 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   senderMergeTag:SenderMergeTag = new SenderMergeTag();
   @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
   @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
+  @ViewChild('campaignTemplateDownloadHistoryComponent') campaignTemplateDownloadHistoryComponent: CampaignTemplateDownloadHistoryComponent;
   loadingEmailTemplate: boolean =false;
   isListView: boolean = false;
   isFolderGridView:boolean  = false;
@@ -445,6 +446,9 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
         );
     }
 
+ viewDownloadedHistory(campaign:any){
+    this.campaignTemplateDownloadHistoryComponent.viewHistoryForPartners(campaign);
+  }
 
   
 
