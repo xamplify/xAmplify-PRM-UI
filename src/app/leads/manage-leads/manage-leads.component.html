@@ -294,7 +294,8 @@
 
 <!-- Add Lead Model-->
 <ng-container *ngIf="showLeadForm">
-  <app-add-lead [leadId]="leadId" [actionType]="actionType" (notifyOtherComponent)="closeLeadModal()"></app-add-lead>
+  <app-add-lead [leadId]="leadId" [actionType]="actionType" (notifyOtherComponent)="closeLeadModal()"
+  [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 </ng-container>
 
 <!-- Deal Form-->
@@ -302,6 +303,6 @@
 	<div class="page-content">
 		<a (click)="closeDealForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-      <app-add-deal [leadId]="leadId" [actionType]="actionType"></app-add-deal>
+      <app-add-deal [leadId]="leadId" [actionType]="actionType" ></app-add-deal>
 	</div>
 </section>

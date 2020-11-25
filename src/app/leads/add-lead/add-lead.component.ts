@@ -24,6 +24,8 @@ export class AddLeadComponent implements OnInit {
   @Input() public actionType: string;  
   @Input() public selectedContact: any;
   @Input() public email: any;
+  @Input() public isVendorVersion: any;
+  @Input() public isOrgAdmin: any;
   @Output() notifyOtherComponent = new EventEmitter();
 
   lead: Lead = new Lead();
