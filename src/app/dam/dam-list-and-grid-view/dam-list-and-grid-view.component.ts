@@ -607,4 +607,28 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	preview(asset:any){
+		let htmlContent = "#asset-preview-content";
+		$(htmlContent).empty();
+		$('#assetTitle').val('');
+		this.referenceService.setModalPopupProperties();
+		$("#asset-preview-modal").modal('show');
+		this.modalPopupLoader = true;
+		this.damService.previewAssetById(asset.id).subscribe(
+			(response:any) =>{
+				this.modalPopupLoader = false;
+				let assetDetails = response.data;
+				if(assetDetails.beeTemplate){
+					$(htmlContent).append(assetDetails.htmlBody);
+				}
+				$('#assetTitle').text(assetDetails.name);
+				this.modalPopupLoader = false;
+			},(error:any) =>{
+				swal("Please Contact Admin!", "Unable to show  preview", "error"); 
+				this.modalPopupLoader = false;
+				this.xtremandLogger.log(error);
+				$("#asset-preview-modal").modal('hide');
+			}
+		);
+	}
 }
