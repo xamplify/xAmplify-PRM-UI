@@ -343,7 +343,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             }
         }
 	}
-    
+
     loadAssignedLeadsLists(pagination: Pagination) {
         try {
             this.referenceService.loading(this.httpRequestLoader, true);
@@ -765,9 +765,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.contactService.contactType = contactType;
 		this.contactService.assignedToPartner = assignedToPartner
 	}
-	
 
-	
+
+
 	backToManageContactPage() { }
 
 	backToEditContactPage() {
@@ -1173,12 +1173,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 
-	validateUndeliverableContacts() {
+	validateUndeliverableContacts(contactId: any) {
 		try {
 			this.resetResponse();
 			this.loading = true;
-			this.xtremandLogger.info(this.selectedInvalidContactIds);
-			this.contactService.validateUndelivarableEmailsAddress(this.selectedInvalidContactIds)
+      this.xtremandLogger.info(contactId);
+      const ids = [];
+      ids.push(contactId);
+			this.contactService.validateUndelivarableEmailsAddress(ids)
 				.subscribe(
 					data => {
 						if (data.access) {
@@ -1213,13 +1215,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	contactsCount() {
 		try {
-			
+
             this.contactListObject = new ContactList;
             this.contactListObject.isPartnerUserList = this.isPartner;
             if (this.assignLeads) {
                 this.contactListObject.assignedLeadsList = true
 			}
-			
+
 			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
 					data => {
@@ -2012,17 +2014,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}, 250);
 
 	}
-	
+
     selectedSharePartner(event: any){
         this.sharedPartnerDetails = event;
         this.model.assignedTo=this.sharedPartnerDetails.emailId;
         this.assignLeadsListToPartner(this.model.assignedTo);
     }
-    
+
     storeListDetails(selectedList: any){
     	this.selectedListDetails = selectedList;
     }
-    
+
     assignLeadsListToPartner(assignedTo: any){
             this.loading = true;
             this.selectedListDetails.assignedTo = assignedTo;

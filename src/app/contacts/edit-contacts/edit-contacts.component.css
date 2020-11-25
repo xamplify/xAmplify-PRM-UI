@@ -81,4 +81,14 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 }
 .popup-header-title-font { font-weight: 600;}
 
-
+.markas{
+  color: #3598dc;
+  border: 1px solid #3598dc;
+  padding: 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.markas:hover{
+  background: #008fd5;
+  color: white;
+}

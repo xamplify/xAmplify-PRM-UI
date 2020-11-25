@@ -185,12 +185,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.isPartner = false;
-			this.module = "contacts";
+			      this.module = "contacts";
             this.checkingContactTypeName = "Contact"
         } else if( currentUrl.includes( 'home/assignleads' ) ){
             this.isPartner = false;
             this.assignLeads = true;
-             this.checkingContactTypeName = "Lead"
+            this.checkingContactTypeName = "Lead"
         }
         else {
             this.isPartner = true;

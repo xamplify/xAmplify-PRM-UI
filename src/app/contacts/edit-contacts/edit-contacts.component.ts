@@ -1936,12 +1936,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	validateUndeliverableContacts() {
+	validateUndeliverableContacts(contactId: any) {
 		try {
 			this.resetResponse();
 			this.loading = true;
-			this.xtremandLogger.info(this.selectedInvalidContactIds);
-			this.contactService.validateUndelivarableEmailsAddress(this.selectedInvalidContactIds)
+      this.xtremandLogger.info(this.selectedInvalidContactIds);
+      const ids = [];
+      ids.push(contactId);
+			this.contactService.validateUndelivarableEmailsAddress(ids)
 				.subscribe(
 					data => {
 						if (data.access) {
@@ -3076,7 +3078,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			} catch ( error ) {
 				this.xtremandLogger.log( error );
 			}
-	
+
 		}
 	*/
 	closeModal(event) {
