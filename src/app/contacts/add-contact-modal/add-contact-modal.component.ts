@@ -49,9 +49,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
-        
-        
-              
+
+
         if ( this.router.url.includes( 'home/contacts' ) ) {
           this.isPartner = false;
           // this.module = "contacts";
@@ -119,7 +118,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     addRow() {
         this.validateGdprLegalBasis();
     }
-    
+
     validateLegalBasisOptions(){
         if(this.addContactuser.legalBasis.length==0){
             this.isValidLegalOptions = false;
@@ -127,7 +126,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.isValidLegalOptions = true;
         }
     }
-    
+
     validateGdprLegalBasis(){
         if(this.gdprStatus){
             if(this.addContactuser.legalBasis.length>0){
@@ -139,7 +138,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }else{
             this.closeAndEmitData();
         }
-    
+
     }
     closeAndEmitData(){
         this.addContactModalClose();
@@ -177,7 +176,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     validteContactsCount(contactsLimit:number){
         this.validLimit = contactsLimit>0;
-       
+
     }
 
 /*    geoLocation(){
@@ -204,8 +203,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
         }
     }*/
-    
- 
+
+
     ngOnInit() {
        try{
         //this.geoLocation();
@@ -245,8 +244,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 //this.addContactuser.mobileNumber = "+1";
                 this.geoLocation()
             }*/
-            if ( this.isPartner ) {
-                if ( this.addContactuser.contactCompany != undefined ) {
+            if ( this.isPartner || this.isAssignLeads ) {
+                if ( this.addContactuser.contactCompany !== undefined && this.addContactuser.contactCompany !== '') {
                     this.isCompanyDetails = true;
                 } else {
                     this.isCompanyDetails = false;
@@ -267,7 +266,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.gdprStatus = this.gdprInput.gdprStatus;
         }
         $( '#addContactModal' ).modal( 'show' );
-      
+
        } catch ( error ) {
            console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
        }

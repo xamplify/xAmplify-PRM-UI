@@ -825,9 +825,9 @@
 									<ul class="dropdown-menu pull-right">
 										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a id="delete_button"
 											(click)="invalidContactsShowAlert()" translate> Delete </a></li>
-										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
+										<!-- <li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
 													id="validate_email_button" (click)="validateUndeliverableContacts()" translate>
-													Mark as valid email(s) </a></li>
+													Mark as valid email(s) </a></li> -->
 										<li><a id="export_button"
 										(click) = "hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a></li>
 									</ul>
@@ -976,7 +976,12 @@
 														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 												</td>
 												<td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td>
-												<td align="center">
+
+                        <td *ngIf="contactsByType.selectedCategory =='invalid'">
+                          <span class="markas" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
+                          </td>
+
+                        <td align="center">
                            							<button id='more_less_button_{{i}}'
 																(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
 																<span *ngIf="!allcontacts.isShowDetails" translate>More</span> <span

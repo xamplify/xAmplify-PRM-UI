@@ -432,4 +432,12 @@ export class DealRegistrationService
       .map( this.extractData ).catch( this.handleError );
      }
 
+     listDealTypesByCompanyId(companyId:number)
+    {
+        var url = this.URL + "deal-type/list/company/"+companyId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }

@@ -48,7 +48,7 @@
               <div class="page-bar">
 		         <ul class="page-breadcrumb">
 		            <li>
-		               <span><strong class="bold-asset">Asset Name </strong>: {{selectedAssetName | slice:0:50}}
+		               <span title="{{selectedAssetName}}"><strong class="bold-asset">Asset Name </strong>: {{selectedAssetName | slice:0:50}}
 		                  <span *ngIf="selectedAssetName?.length>50">..</span></span>
 		            </li>
 		         </ul>

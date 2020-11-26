@@ -86,5 +86,7 @@ export class Campaign {
     pushToMarketingAutomation = false;
     ownCampaignLeadAndDeal = false;
     showRegisterLeadButton = false;
+    leadPipelineId: number;
+    dealPipelineId: number;
 
 }

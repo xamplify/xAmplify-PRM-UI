@@ -2136,5 +2136,10 @@ export class ReferenceService {
 	  mapForm.submit();
 	}
 
+	setModalPopupProperties(){
+		$('.modal .modal-body').css('overflow-y', 'auto');
+		$('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+	}
+
 
 }
