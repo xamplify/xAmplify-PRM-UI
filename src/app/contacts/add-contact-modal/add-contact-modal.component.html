@@ -12,7 +12,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     <div class="modal-body">
       <form class="form-horizontal" autocomplete="off">
       
-       <div class="form-group" *ngIf="isAssignLeads || isPartner">
+       <div class="form-group" *ngIf="isPartner">
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
             <span class="star"> *</span>
           </label>
@@ -57,7 +57,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           </div>
         </div>
         
-        <div class="form-group" *ngIf="!isAssignLeads && !isPartner">
+        <div class="form-group" *ngIf="!isPartner">
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
             <!-- <span class="star"> *</span> -->
           </label>
@@ -248,7 +248,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         </div> -->
       </form>
     </div>
-    <div class="modal-footer" style="border:none" *ngIf="!isPartner && !isAssignLeads">
+    <div class="modal-footer" style="border:none" *ngIf="!isPartner">
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
       <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
@@ -257,7 +257,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>
-    <div class="modal-footer" *ngIf="isPartner && !isAssignLeads"  style="border:none" >
+    <div class="modal-footer" *ngIf="isPartner"  style="border:none" >
        <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Proceed</button>
@@ -266,15 +266,12 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>
-        <div class="modal-footer" style="border:none" *ngIf="isAssignLeads">
-      <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
+      <!--  <div class="modal-footer" style="border:none" *ngIf="isAssignLeads">
       <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
       <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Save</button>
       <button  *ngIf="isAssignLeads && isUpdateUser" type="submit" class="btn green" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
-      <!-- <button type="button" class="btn green" data-dismiss="modal"
-        (click)="addContactModalClose()">Close</button> -->
-    </div>
+    </div>-->
   </div>
 </div>
 </div>
