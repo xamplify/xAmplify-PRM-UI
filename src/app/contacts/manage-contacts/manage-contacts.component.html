@@ -806,9 +806,10 @@
 														<th class="text-center" *ngIf="isPartner"></th>
 														<th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs" translate>Reason</th>
 														<th class="text-center" *ngIf="(contactsByType.selectedCategory == 'non-active' && isPartner) || contactsByType.selectedCategory == 'unsubscribe'" translate>ACTIONS</th>
-														<th></th>
+														<th *ngIf="contactsByType.selectedCategory !== 'invalid'"></th>
 														<th *ngIf="authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid'"></th>
-														<th *ngIf="contactsByType.selectedCategory == 'non-active'"></th>
+                            <th *ngIf="contactsByType.selectedCategory == 'non-active'"></th>
+                            <th *ngIf="contactsByType.selectedCategory == 'invalid'">Actions</th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>

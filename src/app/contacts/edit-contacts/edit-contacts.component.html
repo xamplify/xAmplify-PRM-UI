@@ -908,11 +908,13 @@
 													<!-- 	<th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
-														<th class="text-center hidden-xs" *ngIf="gdprStatus || isPartner"></th>
+														<th class="text-center hidden-xs" *ngIf="contactsByType.selectedCategory !== 'invalid' && (gdprStatus || isPartner)"></th>
 														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Reason</th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%" translate>ACTIONS</th>
-												<!-- <th>MORE</th> -->
-												<th *ngIf="!isPartner"></th>
+                        <!-- <th>MORE</th> -->
+                        <th *ngIf="contactsByType.selectedCategory === 'invalid'">Actions</th>
+                        <th *ngIf="!isPartner"></th>
+
 											</tr>
 										</thead>
 										<tbody>
