@@ -50,16 +50,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
 
-        // if(this.router.url.includes('home/contacts')){
-        //     this.checkingContactTypeName = "Contact";
-        // }else if(this.router.url.includes('home/assignleads')){
-        //     this.checkingContactTypeName = "Lead";
-        // }else{
-        //     this.checkingContactTypeName = "Partner";
-        // }
-
-        // this.isPartner = this.router.url.includes('home/contacts')? false: true;
-        // this.isAssignLeads = this.router.url.includes('home/assignleads')? true: false;
 
         if ( this.router.url.includes( 'home/contacts' ) ) {
           this.isPartner = false;
