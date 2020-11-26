@@ -614,6 +614,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.imageLoading = false;
 		let htmlContent = "#asset-preview-content";
 		$(htmlContent).empty();
+		this.assetPath = "";
 		$('#assetTitle').val('');
 		this.referenceService.setModalPopupProperties();
 		$("#asset-preview-modal").modal('show');
