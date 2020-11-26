@@ -55,6 +55,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
 	selectedAsset: any;
 	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+	beeTemplatePreview = false;
+	assetPath = "";
+	imageLoading = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
@@ -608,6 +611,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	preview(asset:any){
+		this.imageLoading = false;
 		let htmlContent = "#asset-preview-content";
 		$(htmlContent).empty();
 		$('#assetTitle').val('');
@@ -616,10 +620,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.modalPopupLoader = true;
 		this.damService.previewAssetById(asset.id).subscribe(
 			(response:any) =>{
-				this.modalPopupLoader = false;
+				this.imageLoading = true;
 				let assetDetails = response.data;
+				this.beeTemplatePreview = assetDetails.beeTemplate;
 				if(assetDetails.beeTemplate){
 					$(htmlContent).append(assetDetails.htmlBody);
+				}else{
+					this.assetPath = assetDetails.assetPath;
 				}
 				$('#assetTitle').text(assetDetails.name);
 				this.modalPopupLoader = false;
@@ -631,4 +638,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
+	hideLoader(){
+		this.imageLoading=false;
+	  }
 }

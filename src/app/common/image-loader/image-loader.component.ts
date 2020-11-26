@@ -8,17 +8,18 @@ import { Component, OnInit,Input } from '@angular/core';
 export class ImageLoaderComponent implements OnInit {
 
   @Input() image:string;
-
-  isLoading:boolean;
+@Input() loading:boolean;	
   constructor() { 
-    this.isLoading=true;
+   
   }
 
   hideLoader(){
-    this.isLoading=false;
+    this.loading=false;
   }
 
   ngOnInit() {
+	 this.loading=true;
   }
+
 
 }

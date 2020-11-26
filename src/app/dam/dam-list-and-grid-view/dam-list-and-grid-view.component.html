@@ -123,7 +123,7 @@
                               <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                                  <i class="fa fa-edit" aria-hidden="true"></i>
                               </a>
-                              <a *ngIf="!isPartnerView && asset?.beeTemplate"  title="Preview" (click)="preview(asset)">
+                              <a *ngIf="!isPartnerView && asset?.showPreviewIcon"  title="Preview" (click)="preview(asset)">
                                  <i class="fa fa-eye" aria-hidden="true"></i>
                               </a>
                               <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
@@ -278,7 +278,7 @@
                           <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                            <i class="fa fa-edit" aria-hidden="true"></i>
                            </a>
-                           <a *ngIf="!isPartnerView && asset?.beeTemplate"  title="Preview" (click)="preview(asset)">
+                           <a *ngIf="!isPartnerView && asset?.showPreviewIcon"  title="Preview" (click)="preview(asset)">
                               <i class="fa fa-eye" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
@@ -356,6 +356,9 @@
                            </a>
                            <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                               <i class="fa fa-edit" aria-hidden="true"></i>
+                           </a>
+                           <a  title="Preview" (click)="preview(asset)">
+                              <i class="fa fa-eye" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>
@@ -509,7 +512,7 @@
 </ng-container>
 <!---Preview Pop Up-->
 <div class="modal fade right" id="asset-preview-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-   <div class="modal-dialog modal-lg modal-template" role="document">
+   <div class="modal-dialog modal-lg modal-template fullwidth" role="document">
      <div class="modal-content">
        <div class="modal-header">
          <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
@@ -518,9 +521,14 @@
          <h4 class="modal-title" id="assetTitle"></h4>
        </div>
        <div class="modal-body">
-         <div id="asset-preview-content">
-         </div>
          <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+         <div [hidden]="!beeTemplatePreview">
+            <div id="asset-preview-content">
+            </div>
+         </div>
+         <div [hidden]="beeTemplatePreview">
+            <app-image-loader [loading]="imageLoading" image="{{assetPath}}"></app-image-loader>
+         </div>
        </div>
        <div class="modal-footer">
          <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
