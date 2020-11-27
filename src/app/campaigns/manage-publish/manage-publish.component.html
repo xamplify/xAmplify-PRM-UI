@@ -196,7 +196,7 @@
                         </span>
                         <span align="right" title="Launch Time">
                         <strong
-                          *ngIf="campaign.scheduleType=='NOW'">
+                          *ngIf="campaign.scheduleType=='NOW' || campaign.launched">
                         <app-timestamp *ngIf="!refService.isSafariBrowser()"
                         [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
                         </app-timestamp>
@@ -210,7 +210,7 @@
                         <span
                           *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
                         </strong>
-                        <strong *ngIf="campaign.scheduleType==='SCHEDULE'">
+                        <strong *ngIf="campaign.scheduleType==='SCHEDULE' && !campaign.launched">
                         <span>{{campaign.campaignScheduleDateInString}}</span>
                         <br>
                         <span>{{campaign.campaignScheduleTimeInString}}</span>
@@ -540,11 +540,11 @@
                             </span>
                             <span title="Launch Time">
                               <strong>
-                                <ng-container *ngIf="campaign.scheduleType!=='SCHEDULE'">
+                                <ng-container *ngIf="campaign.scheduleType!='SCHEDULE' || campaign.launched">
                                   <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
                                   <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
                                 </ng-container>
-                                <ng-container *ngIf="campaign.scheduleType==='SCHEDULE'">
+                                <ng-container *ngIf="campaign.scheduleType==='SCHEDULE' && !campaign.launched">
                                   <span>{{campaign.campaignScheduleDateInString}}</span>
                                   <br>
                                   <span>{{campaign.campaignScheduleTimeInString}}</span>

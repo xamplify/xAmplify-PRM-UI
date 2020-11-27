@@ -140,46 +140,46 @@
                                         </td>
                                         <td class="center">
                                             <span align="right">
-                                                <b *ngIf="campaign.launched">Launched On</b>
+                                                <strong *ngIf="campaign.launched">Launched On</strong>
                                                 <ng-container
                                                     *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
-                                                    <b
+                                                    <strong
                                                         *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled
-                                                        For</b>
-                                                    <b *ngIf="!campaign.launched && campaign.scheduleType==='NOW'">Saved
-                                                        On</b>
+                                                        For</strong>
+                                                    <strong *ngIf="!campaign.launched && campaign.scheduleType==='NOW'">Saved
+                                                        On</strong>
                                                 </ng-container>
                                                 <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                                                    <b
+                                                    <strong
                                                         *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled
-                                                        For</b>
-                                                    <b
+                                                        For</strong>
+                                                    <strong
                                                         *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Saved
-                                                        On</b>
+                                                        On</strong>
                                                 </ng-container>
                                             </span>
-                                            <span align="right" title="Upload Date">
-                                                <b
-                                                    *ngIf="campaign.scheduleType=='NOW'">
+                                            <span align="right" title="Launch Time">
+                                                <strong
+                                                    *ngIf="campaign.scheduleType=='NOW'  || campaign.launched">
                                                     <app-timestamp *ngIf="!refService.isSafariBrowser()"
                                                         [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
                                                     </app-timestamp>
                                                     <span
                                                         *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
-                                            </b>
-                                            <b *ngIf="campaign.scheduleType=='SAVE'">
+                                                </strong>
+                                            <strong *ngIf="campaign.scheduleType=='SAVE'">
                                                     <app-timestamp *ngIf="!refService.isSafariBrowser()"
                                                         [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
                                                     </app-timestamp>
                                                     <span
                                                         *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
-                                                </b>
+                                                </strong>
 
-                                                <b *ngIf="campaign.scheduleType==='SCHEDULE'">
+                                                <strong *ngIf="campaign.scheduleType==='SCHEDULE' && !campaign.launched">
                                                     <span>{{campaign.campaignScheduleDateInString}}</span>
                                                     <br>
                                                     <span>{{campaign.campaignScheduleTimeInString}}</span>
-                                                </b>
+                                                </strong>
                                             </span>
                                         </td>
                                         <td class="center">
@@ -459,7 +459,7 @@
                     <ng-container *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let campaign of pagination.pagedItems; let i= index">
                             <div class="grid-box" style="height:240px">
-                                <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
+                                <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                                 <h4 class="ellipsis" title="{{campaign.campaignName}}">
                                     {{campaign.campaignName | slice:0:22}}
                                     <span *ngIf="campaign.campaignName?.length>22">...</span>
@@ -473,45 +473,45 @@
                                     <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: -3px;background-color: #d9534f;">Private</span>
                                 </h4>
                                 <h6 [title]="campaign.createdBy">By
-                                    <b>{{campaign.createdBy | slice:0:15}}<span
-                                            *ngIf="campaign.createdBy?.length>15">...</span></b></h6>
+                                    <strong>{{campaign.createdBy | slice:0:15}}<span
+                                            *ngIf="campaign.createdBy?.length>15">...</span></strong></h6>
                                 <h6 [title]="campaign.companyName">From
-                                    <b>{{campaign.companyName | slice:0:15}}<span
-                                            *ngIf="campaign.companyName?.length>15">...</span></b></h6>
+                                    <strong>{{campaign.companyName | slice:0:15}}<span
+                                            *ngIf="campaign.companyName?.length>15">...</span></strong></h6>
                                 <h6 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By
-                                    <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span
-                                            *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b>
+                                    <strong>{{campaign.vendorOrganizationName | slice:0:20 }}<span
+                                            *ngIf="campaign.vendorOrganizationName?.length>20">...</span></strong>
                                 </h6>
                                 <h6 [title]="campaign.categoryName">Folder
-                                    <b>{{campaign.categoryName | slice:0:20}}<span
-                                            *ngIf="campaign.categoryName?.length>20">...</span></b></h6>
+                                    <strong>{{campaign.categoryName | slice:0:20}}<span
+                                            *ngIf="campaign.categoryName?.length>20">...</span></strong></h6>
                                 <h6>
                                     <span>
                                         <span *ngIf="campaign.launched">Launched On</span>
                                     <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
-                                        <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled
-                                                For</b>
-                                        <b *ngIf="!campaign.launched && campaign.scheduleType==='NOW'">Saved
-                                                On</b>
+                                        <strong *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled
+                                                For</strong>
+                                        <strong *ngIf="!campaign.launched && campaign.scheduleType==='NOW'">Saved
+                                                On</strong>
                                     </ng-container>
                                     <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                                        <b *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled
-                                                For</b>
-                                        <b *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Saved
-                                                On</b>
+                                        <strong *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled
+                                                For</strong>
+                                        <strong *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Saved
+                                                On</strong>
                                     </ng-container>
                                     </span>
-                                    <span title="Upload date"><b>
-                                       <ng-container *ngIf="campaign.scheduleType!=='SCHEDULE'">
+                                    <span title="Launch Time"><strong>
+                                       <ng-container *ngIf="campaign.scheduleType!='SCHEDULE' || campaign.launched">
                                         <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
                                         <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
                                        </ng-container> 
-                                       <ng-container *ngIf="campaign.scheduleType==='SCHEDULE'">
+                                       <ng-container *ngIf="campaign.scheduleType==='SCHEDULE' && !campaign.launched">
                                         <span>{{campaign.campaignScheduleDateInString}}</span>
                                         <br>
                                         <span>{{campaign.campaignScheduleTimeInString}}</span>
                                        </ng-container>
-                                    </b>
+                                    </strong>
                                     </span>
                                 </h6>
 
