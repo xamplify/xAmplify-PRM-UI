@@ -116,8 +116,11 @@
                         <span class="ui-column-resizer gray" (mousedown)="refService.onMouseDown($event,'manage-campaign-list',2)"> </span>
                         <span class="gridHeader" translate>Campaign</span>
                       </th>
-                      <th class="center" style="width: 28%" translate scope="col">Status</th>
-                      <th class="center" style="width: 15%" translate scope="col">Created On</th>
+                      <th class="center" style="width: 20%" translate scope="col">Status</th>
+                      <th class="center" translate scope="col">Total Recipients <i class="fa fa-envelope sky-blue" aria-hidden="true"></i></th>
+                      <th class="center" translate scope="col">Active Recipients <i class="fa fa-envelope-open sky-blue" aria-hidden="true"></i></th>
+                      <th class="center" translate scope="col">Clicked URL <i class="fa fa-globe sky-blue" aria-hidden="true"></i></th>
+                      <th class="center" translate scope="col">Views <i class="fa fa-eye sky-blue" aria-hidden="true"></i></th>
                       <th style="width: 25%;text-align:right" translate scope="col">Actions</th>
                     </tr>
                   </thead>
@@ -173,6 +176,12 @@
                         <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>
                           Scheduled
                         </h5>
+                        <h5>
+                          <strong>
+                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
+                            </app-timestamp>
+                          </strong>
+                        </h5>
                       </td>
                       <td class="center">
                         <span align="right">
@@ -218,9 +227,49 @@
                         </span>
                       </td>
                       <td class="center">
-                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
-                        </app-timestamp>
+                        <div>
+                        <button class="btn btn-default btn-xs re-distributed-high-level">
+                          <div class="portlet-body text-center">
+                            <h4>
+                              <strong class="sky-blue">100000 (50%)</strong>
+                            </h4>
+                          </div>
+                        </button>
+                      </div>
+                       </td>
+                        <td class="center">
+                         <div>
+                          <button class="btn btn-default btn-xs re-distributed-high-level">
+                            <div class="portlet-body text-center">
+                              <h4>
+                                <strong class="sky-blue">100000000000093934394343493434343434343434934343434343434934393 (50%)</strong>
+                              </h4>
+                            </div>
+                          </button>
+                        </div>
+                       </td>
+                       <td class="center">
+                        <div>
+                        <button class="btn btn-default btn-xs re-distributed-high-level">
+                          <div class="portlet-body text-center">
+                            <h4>
+                              <strong class="sky-blue">10000</strong>
+                            </h4>
+                          </div>
+                        </button>
+                      </div>
                       </td>
+                       <td class="center">
+                          <div>
+                          <button class="btn btn-default btn-xs re-distributed-high-level">
+                            <div class="portlet-body text-center">
+                              <h4>
+                                <strong class="sky-blue">100000</strong>
+                              </h4>
+                            </div>
+                          </button>
+                      </div>
+                       </td>
                       <td class="center">
                         <!----Buttons start here----->
                         <div class="actions-block override-actions">
