@@ -5,6 +5,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { ContactService } from '../../contacts/services/contact.service';
+import { Router } from '@angular/router';
 
 declare var $:any;
 
@@ -31,14 +32,24 @@ export class SaveAsComponent implements OnInit {
   isValidLegalOptions = true;
   gdprStatus = true;
   selectedLegalBasisOptions = [];
-  
-  
+  isAssignLeads = false;
+  module = '';
+
+
 
   constructor(public referenceService:ReferenceService, public editContactsComponent:EditContactsComponent, public xtremandLogger:XtremandLogger,
-		  public callActionSwitch: CallActionSwitch, public contactService: ContactService) {
+		  public callActionSwitch: CallActionSwitch, public contactService: ContactService, private router:Router,) {
     this.notifyParentSaveAs = new EventEmitter();
    this.model.isPublic = this.contactService.publicList;
-    
+
+    if ( this.router.url.includes( 'home/contacts' ) ) {
+        this.module = 'contacts';
+    } else if( this.router.url.includes( 'home/assignleads' ) ){
+        this.module = 'leads';
+    }else {
+      this.module = 'partners';
+    }
+
    }
 
   saveAsInputChecking(){
@@ -57,7 +68,7 @@ export class SaveAsComponent implements OnInit {
                     $('#saveAsModal').modal('hide');
                     this.notifyParentSaveAs.emit('success');
                 }
-              
+
             }
             else if(this.saveAsListName === ""){  this.saveAsError = 'List Name is Required.';  }
             else{ this.saveAsError = 'You have exceeded 250 characters!'; }
@@ -83,7 +94,7 @@ export class SaveAsComponent implements OnInit {
 	                    $('#saveAsModal').modal('hide');
 	                    this.notifyParentSaveAs.emit('success');
 	               // }
-	              
+
 	            }
 	            else if(this.saveAsListName === ""){  this.saveAsError = 'List Name is Required.';  }
 	            else{ this.saveAsError = 'You have exceeded 250 characters!'; }
@@ -106,7 +117,7 @@ export class SaveAsComponent implements OnInit {
       }
     $('#saveAsModal').modal('show');
   }
-  
+
   validateLegalBasisOptions(){
       if(this.gdprStatus && this.selectedLegalBasisOptions.length==0){
           this.isValidLegalOptions = false;
@@ -114,11 +125,11 @@ export class SaveAsComponent implements OnInit {
           this.isValidLegalOptions = true;
       }
   }
-  
+
   changeStatus(event){
       this.model.isPublic = event;
-      
+
   }
-  
+
 
 }

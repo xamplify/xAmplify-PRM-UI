@@ -17,17 +17,20 @@
 				Manage {{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"
 				*ngIf="! showListOfContactList"></i></li>
 			<li
-				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'"><span
-				class="capitalize" translate><!-- {{contactsByType.selectedCategory}} -->
-				Registered {{checkingContactTypeName}}s</span></li>
+				*ngIf="!showListOfContactList && contactsByType.selectedCategory != 'all' && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'"><span
+				class="capitalize" translate>{{contactsByType.selectedCategory}}
+         {{checkingContactTypeName}}s</span></li>
+         <li
+         *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'all'"><span
+         class="capitalize" translate>All {{checkingContactTypeName}}s</span></li>
 			<li
-				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
+				*ngIf="!showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
 				class="capitalize" translate>Unregistered {{checkingContactTypeName}}s</span></li>
 			<li
-				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'unsubscribe'"><span
+				*ngIf="!showListOfContactList && contactsByType.selectedCategory == 'unsubscribe'"><span
 				class="capitalize" translate>Unsubscribed {{checkingContactTypeName}}s</span></li>
 			<li
-				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'invalid'"><span
+				*ngIf="!showListOfContactList && contactsByType.selectedCategory == 'invalid'"><span
 				class="capitalize" translate>Undeliverable {{checkingContactTypeName}}s</span></li>
 		</ul>
 	</div>
