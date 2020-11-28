@@ -54,7 +54,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="portlet-input input-inline input-small" style="width: 198px !important;">
+                                    <div class="portlet-input input-inline input-small">
                                         <div class="input-icon" style="position:relative;right: -11px;">
                                             <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
                                             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchCampaigns();"></button>
@@ -79,8 +79,11 @@
                                             <span class="ui-column-resizer gray" (mousedown)="refService.onMouseDown($event,'manage-campaign-list',2)"> </span>
                                             <span class="gridHeader">Campaign</span>
                                         </th>
-                                        <th class="center" style="width: 28%">Status</th>
-                                        <th class="center" style="width: 15%">Created On</th>
+                                        <th class="center" style="width: 20%">Status</th>
+                                        <th class="center" translate scope="col">Total Recipients <i class="fa fa-envelope sky-blue" aria-hidden="true"></i></th>
+                                        <th class="center" translate scope="col">Active Recipients <i class="fa fa-envelope-open sky-blue" aria-hidden="true"></i></th>
+                                        <th class="center" translate scope="col">Clicked URL <i class="fa fa-globe sky-blue" aria-hidden="true"></i></th>
+                                        <th class="center" translate scope="col">Views <i class="fa fa-eye sky-blue" aria-hidden="true"></i></th>
                                         <th style="width: 25%;text-align:right">Actions</th>
                                     </tr>
                                 </thead>
@@ -128,14 +131,21 @@
                                                 Campaign</span>
                                             <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign">To
                                                 Campaign</span>
+                                            
+                                            <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
+                                            <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">
+                                                Scheduled
+                                            </h5>
+                                            <h5>
+                                                <strong>
+                                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
+                                                  </app-timestamp>
+                                                </strong>
+                                              </h5>
                                             <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #5cb85c;">Public</span>
                                             <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #d9534f;">Private</span>
                                             <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;"><span *ngIf="!campaign.vendorCampaignDeleted">Cancelled</span>
                                                 <span *ngIf="campaign.vendorCampaignDeleted">Deleted</span>
-                                            </h5>
-                                            <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
-                                            <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">
-                                                Scheduled
                                             </h5>
                                         </td>
                                         <td class="center">
@@ -183,9 +193,49 @@
                                             </span>
                                         </td>
                                         <td class="center">
-                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
-                                            </app-timestamp>
-                                        </td>
+                                            <div>
+                                            <button class="btn btn-default btn-xs re-distributed-high-level">
+                                              <div class="portlet-body text-center">
+                                                <h4>
+                                                  <strong class="sky-blue">{{campaign?.totalRecipients}}</strong>
+                                                </h4>
+                                              </div>
+                                            </button>
+                                          </div>
+                                           </td>
+                                            <td class="center">
+                                             <div>
+                                              <button class="btn btn-default btn-xs re-distributed-high-level">
+                                                <div class="portlet-body text-center">
+                                                  <h4>
+                                                    <strong class="sky-blue">{{campaign?.activeRecipients}}</strong>
+                                                  </h4>
+                                                </div>
+                                              </button>
+                                            </div>
+                                           </td>
+                                           <td class="center">
+                                            <div>
+                                            <button class="btn btn-default btn-xs re-distributed-high-level">
+                                              <div class="portlet-body text-center">
+                                                <h4>
+                                                  <strong class="sky-blue">{{campaign?.emailClicked}}</strong>
+                                                </h4>
+                                              </div>
+                                            </button>
+                                          </div>
+                                          </td>
+                                           <td class="center">
+                                              <div>
+                                              <button class="btn btn-default btn-xs re-distributed-high-level">
+                                                <div class="portlet-body text-center">
+                                                  <h4>
+                                                    <strong class="sky-blue">{{campaign?.views}}</strong>
+                                                  </h4>
+                                                </div>
+                                              </button>
+                                          </div>
+                                           </td>
                                         <td class="center">
                                             <!----Buttons start here----->
                                             <div class="actions-block override-actions">

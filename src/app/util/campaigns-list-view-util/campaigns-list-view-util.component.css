@@ -5,3 +5,16 @@
 .bar a{
     margin: 10px 1px;
 }
+
+.re-distributed-high-level {
+	width: 100px;
+	height: 50px;
+	cursor: default;
+	border-color: #00a6e8;
+	border-radius: 3px !important;
+	overflow: auto;
+}
+
+.sky-blue {
+	color: #00a6e8;
+}
