@@ -167,11 +167,6 @@
                         Through Campaign</span>
                         <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" translate>
                         To Campaign</span>
-                        <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #5cb85c;" translate>Public</span>
-                        <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #d9534f;" translate>Private</span>
-                        <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;"><span *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled</span>
-                          <span *ngIf="campaign.vendorCampaignDeleted" translate>Deleted</span>
-                        </h5>
                         <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
                         <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>
                           Scheduled
@@ -181,6 +176,11 @@
                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
                             </app-timestamp>
                           </strong>
+                        </h5>
+                        <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #5cb85c;" translate>Public</span>
+                        <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #d9534f;" translate>Private</span>
+                        <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;"><span *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled</span>
+                          <span *ngIf="campaign.vendorCampaignDeleted" translate>Deleted</span>
                         </h5>
                       </td>
                       <td class="center">
