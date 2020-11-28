@@ -140,12 +140,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     listCampaign(pagination: Pagination) {
         this.isloading = true;
+        this.refService.goToTop();
         this.refService.loading(this.httpRequestLoader, true);
         pagination.searchKey = this.searchKey;
         if(this.pagination.teamMemberAnalytics){
             this.pagination.teamMemberId = this.teamMemberId;
         }
-
         //Added by Vivek for Vanity URL
         if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
             this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
