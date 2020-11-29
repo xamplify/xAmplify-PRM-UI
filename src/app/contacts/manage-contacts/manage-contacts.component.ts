@@ -300,12 +300,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     loadContactLists(pagination: Pagination) {
-
         if (this.assignLeads) {
         	this.loadAssignedLeadsLists(pagination);
         } else {
             try {
-
+				this.campaignLoader = true;
                 this.referenceService.loading(this.httpRequestLoader, true);
                 this.pagination.filterKey = 'isPartnerUserList';
                 this.pagination.filterValue = this.isPartner;
@@ -330,7 +329,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                             this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
                             this.pagedItems = null;
                         }
-                        this.referenceService.loading(this.httpRequestLoader, false);
+						this.referenceService.loading(this.httpRequestLoader, false);
+						this.campaignLoader = false;
                     },
                     (error: any) => {
                         this.xtremandLogger.error(error);
@@ -346,6 +346,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     loadAssignedLeadsLists(pagination: Pagination) {
         try {
+			this.campaignLoader = false;
             this.referenceService.loading(this.httpRequestLoader, true);
             this.pagination.filterKey = 'isPartnerUserList';
             this.pagination.filterValue = this.isPartner;
@@ -369,7 +370,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
                         this.pagedItems = null;
                     }
-                    this.referenceService.loading(this.httpRequestLoader, false);
+					this.referenceService.loading(this.httpRequestLoader, false);
+					this.campaignLoader = false;
                 },
                 (error: any) => {
                     this.xtremandLogger.error(error);
@@ -1243,6 +1245,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	listContactsByType(contactType: string) {
+		this.campaignLoader = true;
 		try {
 			this.contactsByType.isLoading = true;
 			this.resetResponse();
@@ -1256,7 +1259,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.pagination.filterKey = 'isPartnerUserList';
 			this.contactsByType.pagination.filterValue = this.isPartner;
 			this.contactsByType.pagination.criterias = this.criterias;
-
 			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.pagination)
 				.subscribe(
 					data => {
@@ -1295,7 +1297,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.isInvalidHeaderCheckBoxChecked = false;
 						}
 						this.referenceService.loading(this.httpRequestLoader, false);
-
+						this.campaignLoader = false;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -1606,12 +1608,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	listAllContactsByType(contactType: string, totalRecords: number) {
+		this.campaignLoader = true;
 		try {
 			this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
 			this.contactsByType.contactPagination.filterValue = this.isPartner;
 			this.contactsByType.contactPagination.criterias = this.criterias;
 			this.contactsByType.contactPagination.maxResults = totalRecords;
-
 			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.contactPagination)
 				.subscribe(
 					data => {
@@ -1623,6 +1625,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					},
 					() => {
 						this.contactsByType.isLoading = false;
+						this.campaignLoader = false;
 					}
 				);
 		} catch (error) {

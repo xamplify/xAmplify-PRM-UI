@@ -917,11 +917,11 @@
 						</td>
 						<td></td>
 						<ng-container *ngIf="authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid' &&  !assignLeads">
-							<td>1</td>
-							<td>2</td>
-							<td>3</td>
-							<td>4</td>
-							<td>
+							<td class="text-center">{{contact?.totalCampaignsCount}}</td>
+							<td class="text-center">{{contact?.activeCampaignsCount}}</td>
+							<td class="text-center">{{contact?.emailOpenedCount}}</td>
+							<td class="text-center">{{contact?.clickedUrlsCount}}</td>
+							<td class="text-center">
 								<div class="actions-block override-actions" >
 								  <a title="Campaign Analytics" (click)="showCampaigns(contact.id)">
 								  <i	class="fa fa-line-chart" aria-hidden="true"></i>
