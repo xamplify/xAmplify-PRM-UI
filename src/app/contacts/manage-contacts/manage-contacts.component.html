@@ -783,27 +783,21 @@
                       <th style="width: 25%" *ngIf="!isPartner" translate>NAME</th>
                       <th *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" translate>EMAIL CATEGORY</th>
                       <th style="width: 25%" *ngIf="isPartner" translate>Entity info</th>
-                      <th *ngIf="isPartner" class="hidden-xs" translate>VERTICAL</th>
-                      <th *ngIf="isPartner" class="hidden-xs" translate>REGION</th>
-                      <th *ngIf="isPartner" class="hidden-xs" translate>TYPE</th>
-                      <th *ngIf="isPartner" class="hidden-xs" translate>CATEGORY</th>
-                      <!-- <th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
                       <th class="text-center hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
                       <th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
                       <th class="text-center" *ngIf="isPartner"></th>
                       <th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs" translate>Reason</th>
                       <th class="text-center" *ngIf="(contactsByType.selectedCategory == 'non-active' && isPartner) || contactsByType.selectedCategory == 'unsubscribe'" translate>ACTIONS</th>
-					  <th *ngIf="contactsByType.selectedCategory !== 'invalid'"></th>
-					  <ng-container *ngIf=" authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid' &&  !assignLeads">
-						<th scope="col">Total Campaigns</th>
-						<th scope="col">Active Campaigns</th>
-						<th scope="col">Email Opened</th>
-						<th scope="col">Clicked Urls</th>
-						<th scope="col"></th>
+                      <th *ngIf="contactsByType.selectedCategory !== 'invalid'"></th>
+                      <ng-container *ngIf=" authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid' &&  !assignLeads">
+                      <th scope="col" class="text-center">Total Campaigns</th>
+                      <th scope="col" class="text-center">Active Campaigns</th>
+                      <th scope="col" class="text-center">Email Opened</th>
+                      <th scope="col" class="text-center">Clicked Urls</th>
+                      <th scope="col" class="text-center">Campaign Analytics</th>
 					  </ng-container>
                       <th *ngIf="contactsByType.selectedCategory == 'non-active'"></th>
                       <th *ngIf="contactsByType.selectedCategory == 'invalid'">Actions</th>
-                      <!-- <th>MORE</th> -->
                     </tr>
                   </thead>
                   <tbody>
@@ -840,34 +834,8 @@
                         <td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" >{{contact.emailCategory}}
                           <span *ngIf="!contact.emailCategory"><b>-</b></span>
                         </td>
-                        <td *ngIf="isPartner" class="hidden-xs" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
-                          <span *ngIf="contact.vertical?.length>14">..</span>
-                        </td>
-                        <td *ngIf="isPartner" class="hidden-xs" title="{{contact.region}}">{{contact.region | slice:0:14}}
-                          <span *ngIf="contact.region?.length>14">..</span>
-                        </td>
-                        <td *ngIf="isPartner" class="hidden-xs" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:14}}
-                          <span *ngIf="contact.partnerType?.length>14">..</span>
-                        </td>
-                        <td *ngIf="isPartner" class="hidden-xs" title="{{contact.category}}">{{contact.category | slice:0:14}}
-                          <span *ngIf="contact.category?.length>14">..</span>
-                        </td>
-                        <!-- <td class="hidden-xs" *ngIf="!isPartner">
-                          <div *ngIf="contact.mobileNumber" [class.disabled]="true"
-                          	style="pointer-events: none !important; cursor: auto;">
-                          	<int-phone-prefix [(ngModel)]="contact.mobileNumber"
-                          		[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                          </div> <h5>
-                                           <span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-                                         </h5>
-                          </td> -->
+                       
                         <td class="text-center hidden-xs" *ngIf="!isPartner">{{contact.jobTitle}}</td>
-                        <!-- 	<td class="text-center hidden-xs">
-                          <h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">
-                          	{{contact.jobTitle | slice:0:25}} <span
-                          		*ngIf="contact.jobTitle?.length>25">...</span>
-                          </h5> <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6>
-                          </td> -->
                         <td class="text-center hidden-xs" *ngIf="!isPartner">
                           <h5 *ngIf="contact?.address" title="{{contact.address}}" class='mb0'>{{contact.address | slice:0:30}}
                             <span *ngIf="contact.address?.length>30">..</span>
@@ -896,11 +864,6 @@
                           </button>
                         </td>
                         <td  align="center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">
-                          <!-- <button id='more_less_button_{{i}}' *ngIf="isPartner"
-                            (click)="contact.isShowDetails = ! contact.isShowDetails">
-                            <span *ngIf="!contact.isShowDetails">More</span> <span
-                            	*ngIf="contact.isShowDetails">Less</span>
-                            </button> -->
                           <button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || referenceService.roles.contactsRole || referenceService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
                           (click)="activateUnsubscribedUser(contact.id)" translate>
                           Subscribe
@@ -917,12 +880,52 @@
 						</td>
 						<td></td>
 						<ng-container *ngIf="authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid' &&  !assignLeads">
-							<td class="text-center">{{contact?.totalCampaignsCount}}</td>
-							<td class="text-center">{{contact?.activeCampaignsCount}}</td>
-							<td class="text-center">{{contact?.emailOpenedCount}}</td>
-							<td class="text-center">{{contact?.clickedUrlsCount}}</td>
 							<td class="text-center">
-								<div class="actions-block override-actions" >
+                <div>
+                  <button class="btn btn-default btn-xs re-distributed-high-level">
+                    <div class="portlet-body text-center">
+                      <h4>
+                        <strong class="sky-blue">{{contact?.totalCampaignsCount}}</strong>
+                      </h4>
+                    </div>
+                  </button>
+                </div>
+                </td>
+							<td class="text-center">
+                <div>
+                  <button class="btn btn-default btn-xs re-distributed-high-level">
+                    <div class="portlet-body text-center">
+                      <h4>
+                        <strong class="sky-blue">{{contact?.activeCampaignsCount}}</strong>
+                      </h4>
+                    </div>
+                  </button>
+                </div>
+               </td>
+							<td class="text-center">
+                <div>
+                  <button class="btn btn-default btn-xs re-distributed-high-level">
+                    <div class="portlet-body text-center">
+                      <h4>
+                        <strong class="sky-blue">{{contact?.emailOpenedCount}}</strong>
+                      </h4>
+                    </div>
+                  </button>
+                </div>
+              </td>
+							<td class="text-center">
+                <div>
+                  <button class="btn btn-default btn-xs re-distributed-high-level">
+                    <div class="portlet-body text-center">
+                      <h4>
+                        <strong class="sky-blue">{{contact?.clickedUrlsCount}}</strong>
+                      </h4>
+                    </div>
+                  </button>
+                </div>
+                </td>
+							<td class="text-center">
+								<div class="actions-block no-float">
 								  <a title="Campaign Analytics" (click)="showCampaigns(contact.id)">
 								  <i	class="fa fa-line-chart" aria-hidden="true"></i>
 								  </a>
@@ -938,17 +941,6 @@
                           <table cellpadding="5" cellspacing="0"
                             style="padding-left: 50px; margin-left: 55px;">
                             <tbody>
-                              <!-- <tr>
-                                <td class='pt10 pb10 bold'>Phone:</td>
-                                <td class='pt10 pb10'>
-                                	<div *ngIf="contact.mobileNumber"
-                                		[class.disabled]="true"
-                                		style="pointer-events: none !important; cursor: auto;">
-                                		<int-phone-prefix [(ngModel)]="contact.mobileNumber"
-                                			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                                	</div>
-                                </td>
-                                </tr> -->
                               <tr>
                                 <td class='pt10 pb10 bold' translate>Address: </td>
                                 <td align="center" class="hidden-xs">
@@ -962,6 +954,30 @@
                                     {{contact.zipCode}}<span
                                       *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
                                   </h5>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class='pt10 pb10 bold' translate>Vertical: </td>
+                                <td class="hidden-xs" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
+                                  <span *ngIf="contact.vertical?.length>14">..</span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class='pt10 pb10 bold' translate>Region: </td>
+                                <td class="hidden-xs" title="{{contact.region}}">{{contact.region | slice:0:14}}
+                                  <span *ngIf="contact.region?.length>14">..</span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class='pt10 pb10 bold' translate>Type: </td>
+                                <td  class="hidden-xs" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:14}}
+                                  <span *ngIf="contact.partnerType?.length>14">..</span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class='pt10 pb10 bold' translate>Category: </td>
+                                <td  class="hidden-xs" title="{{contact.category}}">{{contact.category | slice:0:14}}
+                                  <span *ngIf="contact.category?.length>14">..</span>
                                 </td>
                               </tr>
                             </tbody>
