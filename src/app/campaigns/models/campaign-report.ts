@@ -84,4 +84,6 @@ export class CampaignReport {
     allPartnersMayBeCount: number = 0;
     allPartnersAdditionalCount: number = 0;
 
+    activeRecipientsPercentage:any;
+
 }
