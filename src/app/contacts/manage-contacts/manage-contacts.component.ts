@@ -1267,7 +1267,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						//this.setLegalBasisOptionString(this.contactsByType.contacts);
 						this.contactsByType.pagination.totalRecords = data.totalRecords;
 						this.contactsByType.pagination = this.pagerService.getPagedItems(this.contactsByType.pagination, this.contactsByType.contacts);
-						this.listAllContactsByType(contactType, this.contactsByType.pagination.totalRecords);
+					//	this.listAllContactsByType(contactType, this.contactsByType.pagination.totalRecords);
 						if (this.contactsByType.selectedCategory == 'invalid' || this.contactsByType.selectedCategory == 'all') {
 							this.userListIds = data.listOfUsers;
 						}
@@ -1557,7 +1557,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						const response = JSON.parse(body);
 						let access = response.access;
 						if (access) {
-							this.downloadContactTypeList();
+              this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
+						//	this.downloadContactTypeList();
 						} else {
 							this.authenticationService.forceToLogout();
 						}
@@ -1566,7 +1567,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		} catch (error) {
 			this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
 		}
-	}
+  }
+
 
 	downloadContactTypeList() {
 		try {
@@ -1617,7 +1619,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.contactPagination)
 				.subscribe(
 					data => {
-						this.contactsByType.listOfAllContacts = data.listOfUsers;
+            this.contactsByType.listOfAllContacts = data.listOfUsers;
+            this.downloadContactTypeList();
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
