@@ -2210,7 +2210,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
 		this.contactsByType.selectedCategory = null;
-		this.listOfAllSelectedContactListByType(contactType);
+	//	this.listOfAllSelectedContactListByType(contactType);
 		this.listOfSelectedContactListByType(contactType);
 	}
 
@@ -2258,7 +2258,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						} else {
 							this.isInvalidHeaderCheckBoxChecked = false;
 						}
-						this.refService.loading(this.httpRequestLoader, false);
+            this.refService.loading(this.httpRequestLoader, false);
+            this.contactsByType.isLoading = false;
 
 					},
 					error => console.log(error),
@@ -2943,7 +2944,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						const response = JSON.parse(body);
 						let access = response.access;
 						if (access) {
-							this.downloadContactTypeList();
+              this.listOfAllSelectedContactListByType()
+							// this.downloadContactTypeList();
 						} else {
 							this.authenticationService.forceToLogout();
 						}
@@ -2985,19 +2987,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.refService.isDownloadCsvFile = true;
 	}
 
-	listOfAllSelectedContactListByType(contactType: string) {
+	listOfAllSelectedContactListByType() {
 		try {
+      this.contactsByType.isLoading = true;
 			this.currentContactType = '';
-			this.resetListContacts();
-			this.resetResponse();
+			// this.resetListContacts();
+			// this.resetResponse();
 			this.contactsByType.contactPagination.maxResults = this.contactsByType.allContactsCount;
-			this.contactService.listOfSelectedContactListByType(this.selectedContactListId, contactType, this.contactsByType.contactPagination)
+			this.contactService.listOfSelectedContactListByType(this.selectedContactListId, this.contactsByType.selectedCategory, this.contactsByType.contactPagination)
 				.subscribe(
 					data => {
-						this.contactsByType.selectedCategory = contactType;
+					//	this.contactsByType.selectedCategory = contactType;
 						this.contactsByType.listOfAllContacts = data.listOfUsers;
-						this.contactsByType.contactPagination.totalRecords = data.totalRecords;
-						this.contactsByType.contactPagination = this.pagerService.getPagedItems(this.contactsByType.contactPagination, this.contactsByType.contacts);
+            this.downloadContactTypeList();
+             // this.contactsByType.contactPagination.totalRecords = data.totalRecords;
+					//	this.contactsByType.contactPagination = this.pagerService.getPagedItems(this.contactsByType.contactPagination, this.contactsByType.contacts);
 					},
 					error => console.log(error),
 					() => {
