@@ -342,6 +342,17 @@ export class ManageLeadsComponent implements OnInit {
     this.showLeads();
   }
 
+  showSubmitLeadSuccess() {  
+    this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    this.showLeadForm = false;
+    if (this.isVendorVersion) {
+      this.getVendorCounts();
+    } else if (this.isPartnerVersion) {
+      this.getPartnerCounts();
+    }
+    this.showLeads();
+  }
+
   addLead() {
    // this.leadFormTitle = "Add a Lead"; 
    // $('#leadFormModel').modal('show');
@@ -397,7 +408,7 @@ export class ManageLeadsComponent implements OnInit {
       response => {
           this.referenceService.loading(this.httpRequestLoader, false);
           if(response.statusCode==200){
-            this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+            this.leadsResponse = new CustomResponse('SUCCESS', "Lead Deleted Successfully", true);
             this.getCounts();  
             this.showLeads();                         
         } else if (response.statusCode==500) {
@@ -429,6 +440,12 @@ export class ManageLeadsComponent implements OnInit {
  closeDealForm() {  
   this.showDealForm = false;
   this.showLeads();
-}
+ }
+
+ showSubmitDealSuccess() {  
+  this.leadsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+  this.showDealForm = false;
+  this.showLeads();
+ }
  
 }

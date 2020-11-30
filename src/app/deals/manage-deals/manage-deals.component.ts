@@ -338,6 +338,13 @@ export class ManageDealsComponent implements OnInit {
     this.showDeals();
   }
 
+  showSubmitDealSuccess() {
+    this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    this.showDealForm = false;
+    this.resetCounts();    
+    this.showDeals();
+  }
+
   resetCounts() {
     if (this.isVendorVersion) {
       this.getVendorCounts();

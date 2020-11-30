@@ -148,7 +148,7 @@
                         <th class="center-aligned" translate>Deal Details</th>                        
                         <th class="center" translate>Added By</th>
                         <th class="center" translate>Status</th>
-                        <th class="center" style="width: 18%" translate>Actions</th>
+                        <th style="width: 18%; text-align:right" translate>Actions</th>
                       </tr>
 
                     </thead>
@@ -206,7 +206,20 @@
                             
                           </td>
                           <td style="width: 30%;">
-                            <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"
+                            <div class="actions-block override-actions">
+                              <ng-container>
+                                <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
+                                  <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                                </a>
+                                <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" id="deal">
+                                  <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                                </a>
+                                <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)" title="Delete Deal" id="deal">
+                                  <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                </a>
+                              </ng-container>
+                            </div>
+                            <!-- <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"
                               id="deal">
                               <span class="circled-number" style="height: 40px;width:40px">
                                 <i class="fa fa-eye mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
@@ -217,7 +230,7 @@
                               <span class="circled-number" style="height: 40px;width:40px">
                                 <i class="fa fa-edit mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                               </span>
-                            </a>  
+                            </a>   -->
                             <!-- <a *ngIf="lead.campaignId" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
                               <span class="circled-number"  style="height: 40px;width:40px">
                                 <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
@@ -229,12 +242,12 @@
                                   style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
                               </span>
                             </a> -->
-                            <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)" title="Delete Deal" style="margin-top: 10px"
+                            <!-- <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)" title="Delete Deal" style="margin-top: 10px"
                               id="deal">
                               <span class="circled-number" style="height: 40px;width:40px">
                                 <i class="fa fa-trash mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                              </span>
-                            </a>                                                        
+                              </span> 
+                            </a> -->                                                       
                           </td>
                         </tr>
 
@@ -273,6 +286,7 @@
 	<div class="page-content">
 		<a (click)="closeDealForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-      <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin"></app-add-deal>
+      <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin" 
+      (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
 	</div>
 </section>

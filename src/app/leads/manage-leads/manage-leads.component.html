@@ -165,7 +165,7 @@
                         <th class="center-aligned" translate>Lead Details</th>                        
                         <th class="center" translate>Added By</th>
                         <th class="center" translate>Status</th>
-                        <th class="center" style="width: 18%" translate>Actions</th>
+                        <th style="width: 18%; text-align:right" translate>Actions</th>
                       </tr>
 
                     </thead>
@@ -233,8 +233,21 @@
                             </div>
                               
                           </td>
-                          <td style="width: 30%;">
-                            <a data-rel="fancybox-button" (click)="viewLead(lead)" title="View Lead" style="margin-top: 10px"
+                          <td>
+                            <div class="actions-block override-actions">
+                              <ng-container>
+                                <a data-rel="fancybox-button" (click)="viewLead(lead)" title="View Lead" id="lead">
+                                  <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                                </a>
+                                <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)" title="Edit Lead" id="lead">
+                                  <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                                </a>
+                                <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)" title="Delete Lead" id="lead">
+                                  <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                </a>
+                              </ng-container>
+                            </div>
+                            <!-- <a data-rel="fancybox-button" (click)="viewLead(lead)" title="View Lead" style="margin-top: 10px"
                               id="lead">
                               <span class="circled-number" style="height: 40px;width:40px">
                                 <i class="fa fa-eye mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
@@ -245,7 +258,7 @@
                               <span class="circled-number" style="height: 40px;width:40px">
                                 <i class="fa fa-edit mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                               </span>
-                            </a>  
+                            </a>   -->
                             <!-- <a *ngIf="lead.campaignId" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
                               <span class="circled-number"  style="height: 40px;width:40px">
                                 <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
@@ -257,12 +270,12 @@
                                   style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
                               </span>
                             </a> -->
-                            <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)" title="Delete Lead" style="margin-top: 10px"
+                            <!-- <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)" title="Delete Lead" style="margin-top: 10px"
                               id="lead">
                               <span class="circled-number" style="height: 40px;width:40px">
                                 <i class="fa fa-trash mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                               </span>
-                            </a>                                                        
+                            </a>                                                         -->
                           </td>
                         </tr>
 
@@ -294,7 +307,7 @@
 
 <!-- Add Lead Model-->
 <ng-container *ngIf="showLeadForm">
-  <app-add-lead [leadId]="leadId" [actionType]="actionType" (notifyOtherComponent)="closeLeadModal()"
+  <app-add-lead [leadId]="leadId" [actionType]="actionType" (notifyOtherComponent)="closeLeadModal()" (notifySubmitSuccess)="showSubmitLeadSuccess()"
   [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 </ng-container>
 
@@ -303,6 +316,6 @@
 	<div class="page-content">
 		<a (click)="closeDealForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-      <app-add-deal [leadId]="leadId" [actionType]="actionType" ></app-add-deal>
+      <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
 	</div>
 </section>

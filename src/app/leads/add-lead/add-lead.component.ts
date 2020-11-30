@@ -27,6 +27,7 @@ export class AddLeadComponent implements OnInit {
   @Input() public isVendorVersion: any;
   @Input() public isOrgAdmin: any;
   @Output() notifyOtherComponent = new EventEmitter();
+  @Output() notifySubmitSuccess = new EventEmitter();
 
   lead: Lead = new Lead();
   preview = false;
@@ -306,7 +307,9 @@ export class AddLeadComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             this.referenceService.goToTop();
             if(data.statusCode==200){
-                this.leadModalResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);                           
+                //this.leadModalResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);   
+                this.notifySubmitSuccess.emit(); 
+                $('#leadFormModel').modal('hide');                       
             } else if (data.statusCode==500) {
                 this.leadModalResponse = new CustomResponse('ERROR', data.message, true);
             }

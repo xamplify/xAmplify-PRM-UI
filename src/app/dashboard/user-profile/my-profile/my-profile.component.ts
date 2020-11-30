@@ -2437,6 +2437,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     addStage() {
         let pipelineStage = new PipelineStage();
         pipelineStage.markAs = "markAs";
+        pipelineStage.canDelete = true;
         this.pipeline.stages.push(pipelineStage);
     }
 
@@ -2502,6 +2503,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.pipelineResponse = new CustomResponse('SUCCESS', message, true);                        
                         this.pipelinePagination.pageIndex = 1;
                         this.listAllPipelines(this.pipelinePagination);
+                    } else if (response.statusCode == 400) {
+                        this.pipelineResponse = new CustomResponse('ERROR', response.message, true); 
                     }
                 },
                 (error: string) => {

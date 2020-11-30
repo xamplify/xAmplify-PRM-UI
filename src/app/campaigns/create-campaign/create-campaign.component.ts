@@ -808,7 +808,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 isValid = false;
         }
 
-        if (isValid && this.enableLeads) {
+        if (isValid && this.enableLeads && this.campaign.channelCampaign) {
             if (this.campaign.leadPipelineId != undefined && this.campaign.leadPipelineId > 0) {
                 isValid =  true;
             } else {

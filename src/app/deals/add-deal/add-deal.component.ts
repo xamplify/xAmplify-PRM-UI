@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter} from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -37,6 +37,7 @@ export class AddDealComponent implements OnInit {
   @Input() public actionType: string;
   @Input() public isVendorVersion: boolean;
   @Input() public isOrgAdmin: boolean;
+  @Output() notifySubmitSuccess = new EventEmitter();
 
   preview = false;
   edit = false;
@@ -506,8 +507,9 @@ export class AddDealComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.showLoadingButton = false;
           this.deal.properties.forEach(p => p.isSaved = true);
-          if (data.statusCode == 200) {
-            this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+          if (data.statusCode == 200) {            
+            //this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+            this.notifySubmitSuccess.emit(); 
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
           }

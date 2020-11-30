@@ -181,34 +181,57 @@
                 </li>
 
 				<!-- ------Leads------ -->
-                <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('leads')}">
+                <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('leads')}">
                     <a [routerLink]="['./leads/manage']">
                         <i class="fa fa-user-circle" aria-hidden="true"></i>
                         <span class="title" translate>Leads</span>
                         <span class="arrow "></span>
                         <span class="selected"></span>
                     </a>
-                </li>
+                </li> -->
                 
                 <!-- ------Deals------ -->
-                <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deal')}">
+                <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deal')}">
                     <a [routerLink]="['./deal/manage']">
                         <i class="fa fa-tags" aria-hidden="true"></i>
                         <span class="title" translate>Deals</span>
                         <span class="arrow "></span>
                         <span class="selected"></span>
                     </a>
-                </li>
+                </li> -->
 
                 <!-- ------Deal Registration------ -->
-                <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deals')}">
+                <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deals')}">
                     <a [routerLink]="['./deals/manage']">
                         <i class="fa fa-usd" aria-hidden="true"></i>
                         <span class="title" translate>Opportunities</span>
                         <span class="arrow "></span>
                         <span class="selected"></span>
                     </a>
+                </li> -->
+                <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deals')}">
+                    <a href="javascript:;" (click)="openOrCloseTabs('deals')">
+                        <i class="fa fa-money" aria-hidden="true"></i>
+                        <span class="title" translate>Opportunities</span>
+                        <span class="arrow"></span>
+                        <span class="selected"></span>
+                    </a>
+                    <ul class="sub-menu" [ngStyle]="{'display': deals? 'block': 'none' }" >
+                        <li>
+                            <a [routerLink]="['/home/leads/']">
+                                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                <span class="title" translate>Leads</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/home/deal/']">
+                                <i class="fa fa-tags" aria-hidden="true"></i>
+                                <span class="title" translate>Deals</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+
                 <!-- ------RSS------ -->
                  <li *ngIf="rssFeedAccess">
                     <a [routerLink]="['/home/rss/']">
