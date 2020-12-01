@@ -599,6 +599,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     
     openEventUrlModal(campaign:Campaign){
         this.modalPopupLoader = true;
+        this.publicEventAliasUrl = "";
+        this.publicEventAlias = "";
         this.copiedLinkCustomResponse = new CustomResponse();
         $('#public-event-url-modal').modal('show');
         this.campaignService.getPublicEventCampaignAlias(campaign.campaignId).

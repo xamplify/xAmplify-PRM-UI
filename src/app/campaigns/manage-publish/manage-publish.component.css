@@ -397,6 +397,7 @@ td h5 {
 	background: #f2f4f9;
 	border: solid 1px #008fd5;
 	border-radius: 3px;
+	height: 60px !important;
 }
 
 .btn-xs {
@@ -437,13 +438,26 @@ td h5 {
 
 .re-distributed-high-level {
 	width: 100px;
-	height: 50px;
+	height: 60px;
 	cursor: default;
 	border-color: #00a6e8;
 	border-radius: 3px !important;
 	overflow: auto;
+	color:#00a6e8;
 }
 
 .sky-blue {
 	color: #00a6e8;
+}
+
+.i-custom-font{
+	font-size: 30px;
+	color: #00a6e8;
+	margin-top: 8px;
+}
+.banner-top{
+	margin-top:5px;
+}
+.custom-font-weight{
+	font-weight: 400 !important;
 }

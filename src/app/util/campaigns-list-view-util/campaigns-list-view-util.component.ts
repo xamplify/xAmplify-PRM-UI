@@ -95,6 +95,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   @Input() folderListViewInput:any;
   @Output() updatedItemsCount = new EventEmitter();
   templateEmailOpenedAnalyticsAccess = false;
+  modalPopupLoader = false;
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
       public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer,
@@ -549,9 +550,23 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
   }
   
   openEventUrlModal(campaign:Campaign){
-      this.copiedLinkCustomResponse = new CustomResponse();
-      this.publicEventAlias = campaign.publicEventAlias;
-      $('#public-event-url-modal').modal('show');
+      this.modalPopupLoader = true;
+      this.publicEventAlias = "";
+        this.copiedLinkCustomResponse = new CustomResponse();
+        $('#public-event-url-modal').modal('show');
+        this.campaignService.getPublicEventCampaignAlias(campaign.campaignId).
+        subscribe(
+            data =>{
+                if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {           
+                    this.publicEventAlias = this.authenticationService.vanityURLink + "rsvp/" + data +"?type=YES&utm_source=public";
+                  }else{              
+                    this.publicEventAlias = this.authenticationService.APP_URL + "rsvp/" + data+"?type=YES&utm_source=public";
+                  }
+                  this.modalPopupLoader = false;
+            },_error =>{
+                this.modalPopupLoader = false;
+                this.copiedLinkCustomResponse = new CustomResponse('ERROR','Please try after sometime',true);
+            });
   }
   copyUrl(inputElement){
       this.copiedLinkCustomResponse = new CustomResponse();

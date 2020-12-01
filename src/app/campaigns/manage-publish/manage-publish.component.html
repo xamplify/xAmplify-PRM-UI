@@ -116,11 +116,11 @@
                         <span class="ui-column-resizer gray" (mousedown)="refService.onMouseDown($event,'manage-campaign-list',2)"> </span>
                         <span class="gridHeader" translate>Campaign</span>
                       </th>
-                      <th class="center" style="width: 20%" translate scope="col">Status</th>
-                      <th class="center" translate scope="col">Total Recipients <i class="fa fa-envelope sky-blue" aria-hidden="true"></i></th>
-                      <th class="center" translate scope="col">Active Recipients <i class="fa fa-envelope-open sky-blue" aria-hidden="true"></i></th>
-                      <th class="center" translate scope="col">Clicked URL <i class="fa fa-globe sky-blue" aria-hidden="true"></i></th>
-                      <th class="center" translate scope="col">Views <i class="fa fa-eye sky-blue" aria-hidden="true"></i></th>
+                      <!-- <th class="center" style="width: 20%" translate scope="col">Status</th> -->
+                      <th class="center" translate scope="col"></th>
+                      <th class="center" translate scope="col"></th>
+                      <th class="center" translate scope="col"></th>
+                      <th class="center" translate scope="col"></th>
                       <th style="width: 25%;text-align:right" translate scope="col">Actions</th>
                     </tr>
                   </thead>
@@ -145,6 +145,21 @@
                         <ng-container *ngIf="campaign.campaignType.indexOf('SMS') > -1">
                           <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/sms.png" alt="SMS Campaign">
                         </ng-container>
+                        <br>
+                        <h6 class="view-banner banner-top" *ngIf="campaign.launched && campaign.channelCampaign" translate>
+                          Through Campaign</h6>
+                          <h6 class="view-banner banner-top" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" translate>
+                            To Campaign</h6>
+                          <h6 class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #5cb85c;margin-top: 5px;" translate>Public</h6>
+                          <h6 class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #d9534f;margin-top: 5px;" translate>Private</h6>
+                          <h6 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">
+                            <span *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled</span>
+                            <span *ngIf="campaign.vendorCampaignDeleted" translate>Deleted</span>
+                          </h6>
+                          <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
+                          <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>
+                            Scheduled
+                          </h5>
                       </td>
                       <td>
                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
@@ -163,76 +178,67 @@
                         <strong>{{campaign.vendorOrganizationName | slice:0:20 }}<span
                           *ngIf="campaign.vendorOrganizationName?.length>20">...</span></strong>
                         </h5>
-                        <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign" translate>
-                        Through Campaign</span>
-                        <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" translate>
-                        To Campaign</span>
-                        <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
-                        <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>
-                          Scheduled
-                        </h5>
                         <h5>
+                          <span>Created On
                           <strong>
                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
                             </app-timestamp>
                           </strong>
-                        </h5>
-                        <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #5cb85c;" translate>Public</span>
-                        <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #d9534f;" translate>Private</span>
-                        <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;"><span *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled</span>
-                          <span *ngIf="campaign.vendorCampaignDeleted" translate>Deleted</span>
-                        </h5>
-                      </td>
-                      <td class="center">
-                        <span align="right">
-                          <strong *ngIf="campaign.launched" translate>Launched On</strong>
-                          <ng-container
-                            *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
-                            <strong
-                              *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
-                            </strong>
-                            <strong *ngIf="!campaign.launched && campaign.scheduleType==='NOW'" translate>Saved On
-                            </strong>
-                          </ng-container>
-                          <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
-                            <strong
-                              *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
-                            </strong>
-                            <strong
-                              *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" translate>Saved On
-                            </strong>
-                          </ng-container>
                         </span>
-                        <span align="right" title="Launch Time">
-                        <strong
-                          *ngIf="campaign.scheduleType=='NOW' || campaign.launched">
-                        <app-timestamp *ngIf="!refService.isSafariBrowser()"
-                        [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
-                        </app-timestamp>
-                        <span
-                          *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
-                        </strong>
-                        <strong *ngIf="campaign.scheduleType=='SAVE'">
-                        <app-timestamp *ngIf="!refService.isSafariBrowser()"
-                        [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
-                        </app-timestamp>
-                        <span
-                          *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
-                        </strong>
-                        <strong *ngIf="campaign.scheduleType==='SCHEDULE' && !campaign.launched">
-                        <span>{{campaign.campaignScheduleDateInString}}</span>
-                        <br>
-                        <span>{{campaign.campaignScheduleTimeInString}}</span>
-                        </strong>
-                        </span>
+                        </h5>
+                        <h5>
+                          <span align="right">
+                            <span *ngIf="campaign.launched" translate>Launched On</span>
+                            <ng-container
+                              *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
+                              <strong
+                                *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
+                              </strong>
+                              <strong *ngIf="!campaign.launched && campaign.scheduleType==='NOW'" translate>Saved On
+                              </strong>
+                            </ng-container>
+                            <ng-container *ngIf="!campaign.launched && campaign.scheduleType">
+                              <strong
+                                *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>Scheduled For
+                              </strong>
+                              <strong
+                                *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" translate>Saved On
+                              </strong>
+                            </ng-container>
+                          </span>
+                          <span align="right" title="Launch Time">
+                          <strong
+                            *ngIf="campaign.scheduleType=='NOW' || campaign.launched">
+                          <app-timestamp *ngIf="!refService.isSafariBrowser()"
+                          [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
+                          </app-timestamp>
+                          <span
+                            *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
+                          </strong>
+                          <strong *ngIf="campaign.scheduleType=='SAVE'">
+                          <app-timestamp *ngIf="!refService.isSafariBrowser()"
+                          [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
+                          </app-timestamp>
+                          <span
+                            *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
+                          </strong>
+                          <strong *ngIf="campaign.scheduleType==='SCHEDULE' && !campaign.launched">
+                          <span>{{campaign.campaignScheduleDateInString}}</span>
+                          <br>
+                          <span>{{campaign.campaignScheduleTimeInString}}</span>
+                          </strong>
+                          </span>
+                        </h5>
                       </td>
                       <td class="center" title="{{campaign?.totalRecipients}}">
                         <div>
                         <button class="btn btn-default btn-xs re-distributed-high-level">
                           <div class="portlet-body text-center">
-                            <h4>
-                              <strong class="sky-blue">{{campaign?.totalRecipients}}</strong>
-                            </h4>
+                            <h6>
+                              <strong class="custom-font-weight">{{campaign?.totalRecipients}}</strong>
+                            </h6>
+                            <h6 *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Invites</h6>
+                            <h6 *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Recipients</h6>
                           </div>
                         </button>
                       </div>
@@ -241,38 +247,55 @@
                          <div>
                           <button class="btn btn-default btn-xs re-distributed-high-level">
                             <div class="portlet-body text-center">
-                              <h4>
-                                <strong class="sky-blue">{{campaign?.activeRecipients}}</strong>
-                              </h4>
+                              <h6>
+                                <strong class="custom-font-weight">{{campaign?.activeRecipients}}</strong>
+                              </h6>
+                            <h6 *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Opened</h6>
+                            <h6 *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Active Recipients</h6>
                             </div>
                           </button>
                         </div>
                        </td>
-                       <td class="center" title="{{campaign?.emailClicked}}">
+                       <td *ngIf="campaign.campaignType.indexOf('EVENT') < 0" class="center" title="{{campaign?.emailClicked}}">
                         <div>
                         <button class="btn btn-default btn-xs re-distributed-high-level">
                           <div class="portlet-body text-center">
-                            <h4>
-                              <strong class="sky-blue">{{campaign?.emailClicked}}</strong>
-                            </h4>
+                            <h6>
+                             <strong class="custom-font-weight">{{campaign?.emailClicked}}</strong> 
+                            </h6>
+                            <h6>Clicked URL</h6>
                           </div>
                         </button>
                       </div>
                       </td>
-                       <td class="center" title="{{campaign?.views}}">
+                      <td *ngIf="campaign.campaignType.indexOf('EVENT') >-1" class="center" title="{{campaign?.yesCount}} ({{campaign?.additionalCount}})">
+                        <div>
+                        <button class="btn btn-default btn-xs re-distributed-high-level">
+                          <div class="portlet-body text-center">
+                            <h6>
+                             <strong class="custom-font-weight">{{campaign?.yesCount}} ({{campaign?.additionalCount}})</strong> 
+                            </h6>
+                            <h6>Yes</h6>
+                          </div>
+                        </button>
+                      </div>
+                      </td>
+                      <td *ngIf="campaign.campaignType.indexOf('VIDEO')<0"></td>
+                       <td *ngIf="campaign.campaignType.indexOf('VIDEO')>-1" class="center" title="{{campaign?.views}}">
                           <div>
                           <button class="btn btn-default btn-xs re-distributed-high-level">
                             <div class="portlet-body text-center">
-                              <h4>
-                                <strong class="sky-blue">{{campaign?.views}}</strong>
-                              </h4>
+                              <h6>
+                                <strong class="custom-font-weight">{{campaign?.views}}</strong>
+                              </h6>
+                              <h6>Views</h6>
                             </div>
                           </button>
                       </div>
                        </td>
                       <td class="center">
                         <!----Buttons start here----->
-                        <div class="actions-block override-actions">
+                        <div class="actions-block override-actions" style="display: flex;">
                           <ng-container *ngIf="campaign.launched">
                             <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
                               <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
@@ -923,7 +946,7 @@
     <div class="modal-dialog modal-lg" style="width: 75%;right:0">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close-circle" data-dismiss="modal">
+          <button type="button" class="close-circle" data-dismiss="modal" [hidden]="modalPopupLoader">
           <i class="fa fa-times" aria-hidden="true"></i>
           </button>
           <h4 class="modal-title text-center" translate>DIRECT LINK FOR YOUR CAMPAIGN</h4>

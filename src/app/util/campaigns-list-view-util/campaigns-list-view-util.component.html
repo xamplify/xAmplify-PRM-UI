@@ -296,7 +296,7 @@
                                                                     </a> -->
                                                                     <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                                                         (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
-                                                                        <i class="fa fa-files-o" style="width: 30px;"></i> Copy Url
+                                                                        <i class="fa fa-link" style="width: 30px;"></i> Copy Url
                                                                     </a>
                                                                     <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                                                         (click)="sendEventEmail(campaign)" title="Send Preview Email">
@@ -451,7 +451,7 @@
                                                                 </a> -->
                                                                 <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                                                     (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
-                                                                    <i class="fa fa-files-o" style="width: 30px;"></i> Copy Url
+                                                                    <i class="fa fa-link" style="width: 30px;"></i> Copy Url
                                                                 </a>
                                                                 <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                                                     (click)="sendEventEmail(campaign)" title="Send Preview Email">
@@ -893,12 +893,15 @@
                 </button>
                 <h4 class="modal-title text-center">DIRECT LINK FOR YOUR CAMPAIGN</h4>
             </div>
-            <div class="modal-body">
-                <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
-                </app-response-message>
-                <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}rsvp/{{publicEventAlias}}?type=YES&utm_source=public" #publicEventCampaignUrlInput>
-            </div>
-            <div class="modal-footer">
+             <div class="modal-body">
+		          <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
+		          </app-response-message>
+		          <app-modal-popup-loader [hidden]="!modalPopupLoader"></app-modal-popup-loader>
+		              <div [hidden]="modalPopupLoader">
+		                <input  type="text" class="form-control" readonly="readonly" [ngModel]="publicEventAlias" #publicEventCampaignUrlInput>
+		              </div>
+       		 </div>
+            <div class="modal-footer" [hidden]="modalPopupLoader">
                 <a class="btn btn-primary" (click)="copyUrl(publicEventCampaignUrlInput)">Copy Link</a>
                 <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
             </div>
