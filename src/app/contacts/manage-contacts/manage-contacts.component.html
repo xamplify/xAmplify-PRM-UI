@@ -422,7 +422,7 @@
                             title="{{actionsDescription.contact_list_info}}"> <i
                               class="fa fa-info"></i>
                             </a> <a [class.disabled]="contactList.noOfContacts == 0 " data-toggle="tooltip" data-placement="top"
-                            *ngIf= "(contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
+                            *ngIf= "assignLeads || (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
                             title="{{actionsDescription.contact_list_saveAs}}"
                             (click)="saveAsNewList(contactList.id,contactList.name,contactList.publicList)">
                             <i class="fa fa-files-o"></i>
@@ -1102,7 +1102,7 @@
           <span style="color: red">{{saveAsError}}</span>
         </div>
         <!-- ------------Legal Basis------------ -->
-        <div class="form-group" *ngIf="gdprStatus && saveAsTypeList === 'manage-all-contacts'">
+        <div class="form-group" *ngIf="gdprStatus && saveAsTypeList === 'manage-all-contacts' ">
           <label for="campaignName" translate>Legal Basis Options <span class="danger">*</span></label>
           <div id="multiselect-sample" class="control-section">
             <div class="col-lg-14">
@@ -1116,7 +1116,7 @@
         </div>
         <!-- start   -->
         <div class="form-group" class="col-xs-12"
-          *ngIf="saveAsTypeList === 'manage-all-contacts' && !isPartner" >
+          *ngIf="saveAsTypeList === 'manage-all-contacts' && !isPartner && !assignLeads" >
           <label class="col-xs-4" for="campaignName" translate>Contact List Type <span class="danger">*</span></label>
           <div class="col-xs-8">
             <switch [status]="model.isPublic"

@@ -226,6 +226,23 @@ export class ContactService {
         .map(( response: any ) => response.json() )
        .catch( this.handleError);
     }
+    
+    saveAsSharedLeadsList( contactListObject: ContactList ): Observable<any> {
+        var requestoptions = new RequestOptions( {
+            body:  contactListObject
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+    
+        var url = this.contactsUrl +  "/save-as-share-leads/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token ;
+
+        return this._http.post( url, options, requestoptions )
+        .map(( response: any ) => response.json() )
+       .catch( this.handleError);
+    }
 
     updateContactList( contactListId: number, users: Array<User> ): Observable<any> {
         var requestoptions = new RequestOptions( {
