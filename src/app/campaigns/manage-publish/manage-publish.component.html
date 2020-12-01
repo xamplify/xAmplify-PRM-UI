@@ -256,7 +256,7 @@
                           </button>
                         </div>
                        </td>
-                       <td *ngIf="campaign.campaignType.indexOf('EVENT') < 0" class="center" title="{{campaign?.emailClicked}}">
+                       <td *ngIf="campaign.campaignType.indexOf('REGULAR')>-1 ||campaign.campaignType.indexOf('VIDEO')>-1 || campaign.campaignType.indexOf('LANDINGPAGE')>-1 " class="center" title="{{campaign?.emailClicked}}">
                         <div>
                         <button class="btn btn-default btn-xs re-distributed-high-level">
                           <div class="portlet-body text-center">
@@ -268,14 +268,26 @@
                         </button>
                       </div>
                       </td>
-                      <td *ngIf="campaign.campaignType.indexOf('EVENT') >-1" class="center" title="{{campaign?.yesCount}} ({{campaign?.additionalCount}})">
+                      <td *ngIf="campaign.campaignType.indexOf('EVENT') >-1" class="center" title="{{campaign?.attendeesCount}}">
                         <div>
                         <button class="btn btn-default btn-xs re-distributed-high-level">
                           <div class="portlet-body text-center">
                             <h6>
-                             <strong class="custom-font-weight">{{campaign?.yesCount}} ({{campaign?.additionalCount}})</strong> 
+                             <strong class="custom-font-weight">{{campaign?.attendeesCount}}</strong> 
                             </h6>
                             <h6>Yes</h6>
+                          </div>
+                        </button>
+                      </div>
+                      </td>
+                      <td *ngIf="campaign.campaignType.indexOf('SOCIAL') >-1" class="center" title="{{campaign?.socialCampaignRedistributedCount}}">
+                        <div>
+                        <button class="btn btn-default btn-xs re-distributed-high-level">
+                          <div class="portlet-body text-center">
+                            <h6>
+                             <strong class="custom-font-weight">{{campaign?.socialCampaignRedistributedCount}}</strong> 
+                            </h6>
+                            <h6>Redistributed</h6>
                           </div>
                         </button>
                       </div>
