@@ -426,6 +426,7 @@ export class ManageDealsComponent implements OnInit {
  }
 
   setDealStatus(deal: Deal) {
+    this.referenceService.loading(this.httpRequestLoader, true);
     let request: Deal = new Deal();
     request.id = deal.id;
     request.pipelineStageId = deal.pipelineStageId;

@@ -133,6 +133,20 @@
                         <i class="fa fa-plus" aria-hidden="true"></i> Add a Lead
                       </button>
                     </a>
+
+                    <a *ngIf="isVendorVersion && syncSalesForce" (click)="syncLeadsWithSalesforce()">
+                      <button class="btn btn-white" data-toggle="tooltip"
+                      data-placement="bottom" title="Synchronize with Salesforce" translate>
+                        <i class="fa fa-refresh" aria-hidden="true"></i> Salesforce
+                      </button>
+                    </a>
+
+                    <!-- <button class="btn btn-primary register_deal" data-toggle="tooltip" 
+                        data-placement="top" title="Synchronize with Salesforce"
+                        (click)="syncLeadsWithSalesforce()" *ngIf="isVendorVersion && syncSalesForce"
+                        style="margin-right: 4px; margin-top: 0px !important;" translate>
+                        <i class="fa fa-refresh"></i> Salesforce
+                      </button> -->
                     <div class="inputs" align="right" style="float: right">
                       <div class="portlet-input input-inline" style="display: table-cell;">
                         <div class="input-icon right" style="position: relative;right: -11px;">
@@ -307,7 +321,7 @@
 
 <!-- Add Lead Model-->
 <ng-container *ngIf="showLeadForm">
-  <app-add-lead [leadId]="leadId" [actionType]="actionType" (notifyOtherComponent)="closeLeadModal()" (notifySubmitSuccess)="showSubmitLeadSuccess()"
+  <app-add-lead [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitLeadSuccess()"
   [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 </ng-container>
 

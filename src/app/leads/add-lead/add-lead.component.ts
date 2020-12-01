@@ -309,7 +309,7 @@ export class AddLeadComponent implements OnInit {
             if(data.statusCode==200){
                 //this.leadModalResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);   
                 this.notifySubmitSuccess.emit(); 
-                $('#leadFormModel').modal('hide');                       
+                this.closeLeadModal();                     
             } else if (data.statusCode==500) {
                 this.leadModalResponse = new CustomResponse('ERROR', data.message, true);
             }

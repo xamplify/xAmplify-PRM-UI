@@ -2389,6 +2389,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     stage.won = true;
                 } else if (stage.markAs === "lost") {
                     stage.lost = true;
+                } else {
+                    stage.won = false;
+                    stage.lost = false;
                 }
                 stage.defaultStage = false;
             } else {
