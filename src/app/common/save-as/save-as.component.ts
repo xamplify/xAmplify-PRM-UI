@@ -52,32 +52,57 @@ export class SaveAsComponent implements OnInit {
 
    }
 
-  saveAsInputChecking(){
-    try{
-      this.saveAsError = "";
-      this.isValidLegalOptions = true;
-     const names = this.referenceService.namesArray;
-     const inputName = this.saveAsListName.toLowerCase().replace( /\s/g, '' );
-     this.validateLegalBasisOptions();
-        if ( $.inArray( inputName, names ) > -1 ) {
-            this.saveAsError = 'This list name is already taken.';
-        } else {
-            if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
-                if(this.isValidLegalOptions){
-                    this.editContactsComponent.saveDuplicateContactList(this.saveAsListName,this.selectedLegalBasisOptions, this.model.isPublic );
-                    $('#saveAsModal').modal('hide');
-                    this.notifyParentSaveAs.emit('success');
-                }
+  saveAsInputChecking() {
+      if (this.listName === 'Lead'){
+    	  this.saveAsLeadsInputChecking();
+      } else {
+          try {
+              this.saveAsError = "";
+              this.isValidLegalOptions = true;
+              const names = this.referenceService.namesArray;
+              const inputName = this.saveAsListName.toLowerCase().replace(/\s/g, '');
+              this.validateLegalBasisOptions();
+              if ($.inArray(inputName, names) > -1) {
+                  this.saveAsError = 'This list name is already taken.';
+              } else {
+                  if (this.saveAsListName !== "" && this.saveAsListName.length < 250) {
+                      if (this.isValidLegalOptions) {
+                          this.editContactsComponent.saveDuplicateContactList(this.saveAsListName, this.selectedLegalBasisOptions, this.model.isPublic);
+                          $('#saveAsModal').modal('hide');
+                          this.notifyParentSaveAs.emit('success');
+                      }
 
-            }
-            else if(this.saveAsListName === ""){  this.saveAsError = 'List Name is Required.';  }
-            else{ this.saveAsError = 'You have exceeded 250 characters!'; }
+                  }
+                  else if (this.saveAsListName === "") { this.saveAsError = 'List Name is Required.'; }
+                  else { this.saveAsError = 'You have exceeded 250 characters!'; }
+              }
+          } catch (error) {
+              $('#saveAsModal').modal('hide');
+              this.xtremandLogger.error(error, "Add partner Component", "saveAsInputChecking()");
           }
-        }catch(error){
-          $('#saveAsModal').modal('hide');
-          this.xtremandLogger.error( error, "Add partner Component", "saveAsInputChecking()" );
-        }
+      }
     }
+  
+  saveAsLeadsInputChecking() {
+      try {
+          const name = this.saveAsListName;
+          this.isValidLegalOptions = true;
+          const inputName = name.toLowerCase().replace(/\s/g, '');
+          if (name !== "" && name.length < 250) {
+             // this.saveAsError = '';
+              this.validateLegalBasisOptions();
+              if (this.isValidLegalOptions) {
+                  this.editContactsComponent.saveDuplicateLeadList(this.saveAsListName, this.selectedLegalBasisOptions, this.model.isPublic);
+                  this.notifyParentSaveAs.emit('success');
+              }
+          }
+          else if (name == "") { this.saveAsError = 'List Name is Required.'; }
+          else { this.saveAsError = 'You have exceeded 250 characters!'; }
+      } catch (error) {
+          this.xtremandLogger.error(error, "EditContactsComponent", "saveAsLeadsInputChecking()");
+      }
+  }
+  
   updateListType(){
 	    try{
 	      this.saveAsError = "";

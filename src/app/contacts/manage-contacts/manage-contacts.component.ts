@@ -249,7 +249,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_CREATE_SUCCESS, true);
 		      } else if (currentUrl.includes('home/contacts')){
 		        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
-		      }else{
+		      }else {
 		        this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_CREATE_SUCCESS, true);
 		      }
 			this.xtremandLogger.info("Success Message in manage contact pape");
