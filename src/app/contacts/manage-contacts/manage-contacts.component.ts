@@ -490,24 +490,28 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	hasDownLoadAccess(contactListId: number, contactListName: any) {
-		try {
-			this.contactService.hasAccess(this.isPartner)
-				.subscribe(
-					data => {
-						const body = data['_body'];
-						const response = JSON.parse(body);
-						let access = response.access;
-						if (access) {
-							this.downloadContactList(contactListId, contactListName);
-						} else {
-							this.authenticationService.forceToLogout();
-						}
-					}
-				);
-		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
-		}
+    hasDownLoadAccess(contactListId: number, contactListName: any) {
+        if (this.assignLeads) {
+            this.downloadContactList(contactListId, contactListName);
+        } else {
+            try {
+                this.contactService.hasAccess(this.isPartner)
+                    .subscribe(
+                    data => {
+                        const body = data['_body'];
+                        const response = JSON.parse(body);
+                        let access = response.access;
+                        if (access) {
+                            this.downloadContactList(contactListId, contactListName);
+                        } else {
+                            this.authenticationService.forceToLogout();
+                        }
+                    }
+                    );
+            } catch (error) {
+                this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+            }
+        }
 	}
 
 	downloadContactList(contactListId: number, contactListName: any) {

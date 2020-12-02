@@ -2897,24 +2897,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		window.URL.revokeObjectURL(url);
 	}
 
-	hasAccess() {
-		try {
-			this.contactService.hasAccess(this.isPartner)
-				.subscribe(
-					data => {
-						const body = data['_body'];
-						const response = JSON.parse(body);
-						let access = response.access;
-						if (access) {
-							this.downloadList();
-						} else {
-							this.authenticationService.forceToLogout();
-						}
-					}
-				);
-		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
-		}
+    hasAccess() {
+        if (this.assignLeads) {
+            this.downloadList();
+        } else {
+            try {
+                this.contactService.hasAccess(this.isPartner)
+                    .subscribe(
+                    data => {
+                        const body = data['_body'];
+                        const response = JSON.parse(body);
+                        let access = response.access;
+                        if (access) {
+                            this.downloadList();
+                        } else {
+                            this.authenticationService.forceToLogout();
+                        }
+                    }
+                    );
+            } catch (error) {
+                this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+            }
+        }
 	}
 
 	downloadList() {

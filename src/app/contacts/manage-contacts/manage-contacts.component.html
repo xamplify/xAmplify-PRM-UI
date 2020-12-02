@@ -427,7 +427,7 @@
                             (click)="saveAsNewList(contactList.id,contactList.name,contactList.publicList)">
                             <i class="fa fa-files-o"></i>
                             </a> <a [class.disabled]="contactList.noOfContacts == 0 "
-                            *ngIf= "(contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
+                            *ngIf= "assignLeads || (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
                             (click)="hasDownLoadAccess(contactList.id, contactList.name)"
                             data-toggle="tooltip" data-placement="top"
                             title="{{actionsDescription.contact_list_download}}"
