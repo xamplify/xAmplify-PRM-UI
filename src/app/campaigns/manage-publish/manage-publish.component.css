@@ -437,8 +437,7 @@ td h5 {
 }
 
 .re-distributed-high-level {
-	width: 100px;
-	height: 60px;
+	width: 120px;
 	cursor: default;
 	border-color: #00a6e8;
 	border-radius: 3px !important;
@@ -459,5 +458,5 @@ td h5 {
 	margin-top:5px;
 }
 .custom-font-weight{
-	font-weight: 400 !important;
+	font-weight: 700 !important;
 }

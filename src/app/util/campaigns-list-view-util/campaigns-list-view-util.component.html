@@ -199,8 +199,8 @@
                                                 <h6>
                                                   <strong class="custom-font-weight">{{campaign?.totalRecipients}}</strong>
                                                 </h6>
-                                                <h6 *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Invites</h6>
-                                                <h6 *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Recipients</h6>
+                                                <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Invites</span>
+                                                <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Recipients</span>
                                               </div>
                                             </button>
                                           </div>
@@ -212,8 +212,8 @@
                                                   <h6>
                                                     <strong class="custom-font-weight">{{campaign?.activeRecipients}}</strong>
                                                   </h6>
-                                                <h6 *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Opened</h6>
-                                                <h6 *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Active Recipients</h6>
+                                                <span class="custom-font-weight"*ngIf="campaign.campaignType.indexOf('EVENT') > -1">Opened</span>
+                                                <span class="custom-font-weight"*ngIf="campaign.campaignType.indexOf('EVENT') < 0">Active Recipients</span>
                                                 </div>
                                               </button>
                                             </div>
@@ -225,7 +225,7 @@
                                                 <h6>
                                                  <strong class="custom-font-weight">{{campaign?.emailClicked}}</strong> 
                                                 </h6>
-                                                <h6>Clicked URL</h6>
+                                                <span class="custom-font-weight">Clicked URL</span>
                                               </div>
                                             </button>
                                           </div>
@@ -237,7 +237,7 @@
                                                 <h6>
                                                  <strong class="custom-font-weight">{{campaign?.attendeesCount}}</strong> 
                                                 </h6>
-                                                <h6>Yes</h6>
+                                                <span class="custom-font-weight">Yes</span>
                                               </div>
                                             </button>
                                           </div>
@@ -249,7 +249,7 @@
                                                 <h6>
                                                  <strong class="custom-font-weight">{{campaign?.socialCampaignRedistributedCount}}</strong> 
                                                 </h6>
-                                                <h6>Redistributed</h6>
+                                                <span class="custom-font-weight">Redistributed</span>
                                               </div>
                                             </button>
                                           </div>
@@ -262,7 +262,7 @@
                                                   <h6>
                                                     <strong class="custom-font-weight">{{campaign?.views}}</strong>
                                                   </h6>
-                                                  <h6>Views</h6>
+                                                  <span class="custom-font-weight">Views</span>
                                                 </div>
                                               </button>
                                           </div>
