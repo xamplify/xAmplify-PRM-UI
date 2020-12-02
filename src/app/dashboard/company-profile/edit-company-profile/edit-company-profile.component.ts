@@ -1413,26 +1413,34 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                this.companyProfileService.createNewVendorRole(this.companyProfile)
                .subscribe(
                (result:any) => {
-                   if(this.campaignAccess.mdf){
-                    this.mdfService.saveMdfRequestForm(this.companyProfile.userEmailId, this.companyProfile.companyProfileName).subscribe((result :any)=> {
-                        if (result.access) {
-                            if (result.statusCode === 100) {
-                                console.log("Mdf Form already exists");
-                            }                                                        
-                        }else{
-                            this.customResponse = new CustomResponse( 'ERROR',"MDF form not created", true );
-                        }   
-                        this.goBackToAdminPanel("Account Created Successfully");                     
-                    },(error:string) => {
-                        this.isLoading = false;
-                        $('#module-access-button').show();
-                        this.refService.goToTop();
-                        this.customResponse = new CustomResponse( 'ERROR', this.serverErrorMessage, true );
-                    });
+                   this.customResponse = new CustomResponse();
+                   if(result.statusCode==404){
+                    this.isLoading = false;
+                    this.refService.showSweetAlertErrorMessage("Please Upload Company Logo");
+                    this.refService.goToTop();
+                   }else{
+                    if(this.campaignAccess.mdf){
+                        this.mdfService.saveMdfRequestForm(this.companyProfile.userEmailId, this.companyProfile.companyProfileName).subscribe((result :any)=> {
+                            if (result.access) {
+                                if (result.statusCode === 100) {
+                                    console.log("Mdf Form already exists");
+                                }                                                        
+                            }else{
+                                this.customResponse = new CustomResponse( 'ERROR',"MDF form not created", true );
+                            }   
+                            this.goBackToAdminPanel("Account Created Successfully");                     
+                        },(error:string) => {
+                            this.isLoading = false;
+                            $('#module-access-button').show();
+                            this.refService.goToTop();
+                            this.customResponse = new CustomResponse( 'ERROR', this.serverErrorMessage, true );
+                        });
+                       }
+                       else{
+                        this.goBackToAdminPanel("Account Created Successfully");
+                       }
                    }
-                   else{
-                    this.goBackToAdminPanel("Account Created Successfully");
-                   }
+                   
                },
                (error:string) => {
                    this.isLoading = false;
