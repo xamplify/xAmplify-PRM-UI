@@ -378,16 +378,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.getCampaignUrls(this.campaign);
             this.contactsPagination.campaignId = this.campaign.campaignId;
             /******************Campaign Details Tab**************************/
-            var campaignNameLength= $.trim(this.campaign.campaignName).length;
-            var fromNameLength = $.trim(this.campaign.fromName).length;
-            var subjectLineLength = $.trim(this.campaign.subjectLine).length;
-            var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
+            // var campaignNameLength= $.trim(this.campaign.campaignName).length;
+            // var fromNameLength = $.trim(this.campaign.fromName).length;
+            // var subjectLineLength = $.trim(this.campaign.subjectLine).length;
+            // var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
             
-            if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0 && this.isValidCrmOption){
-                this.isCampaignDetailsFormValid = true;
-            }else{
-                this.isCampaignDetailsFormValid = false;
-            }
+            // if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0 && this.isValidCrmOption){
+            //     this.isCampaignDetailsFormValid = true;
+            // }else{
+            //     this.isCampaignDetailsFormValid = false;
+            // }
+            this.validateForm();
             /***********Select Video Tab*************************/
             if(this.campaign.partnerVideoSelected || this.isOnlyPartner){
                 this.partnerVideosClass = this.tabClassActive;
@@ -793,7 +794,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isValidCampaignName:boolean = true;
      validateForm() {
          var isValid = true;
-         let self = this;
         $('#campaignDetailsForm input[type="text"]').each(function() {
             if ($.trim($(this).val())== '' ){
               isValid = false;
@@ -808,7 +808,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 isValid = false;
         }
 
-        if (isValid && this.enableLeads) {
+        if (isValid && this.enableLeads && (this.campaign.channelCampaign || this.showMarketingAutomationOption)) {
             if (this.campaign.leadPipelineId != undefined && this.campaign.leadPipelineId > 0) {
                 isValid =  true;
             } else {

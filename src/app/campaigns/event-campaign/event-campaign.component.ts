@@ -41,6 +41,7 @@ import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-
 import { Form } from 'app/forms/models/form';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { Pipeline } from 'app/dashboard/models/pipeline';
 
 declare var $,swal, flatpickr, CKEDITOR,require;
 var moment = require('moment-timezone');
@@ -179,8 +180,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  smsText: any;
  enableSmsText: boolean;
  smsTextDivClass: string
-
-
+ 
  socialStatusProviders = new Array<SocialStatusProvider>();
  selectedAccounts: number = 0;
  socialStatusList = new Array<SocialStatus>();
@@ -213,6 +213,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  folderCustomResponse:CustomResponse = new CustomResponse();
  completeLoader = false;
  isOrgAdminOrOrgAdminTeamMember: boolean;
+ leadPipelines = new Array<Pipeline>();
+ dealPipelines = new Array<Pipeline>();
+
   constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService, public socialService: SocialService,
     public campaignService: CampaignService,
@@ -497,9 +500,29 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
 
     this.listEmailTemplatesFolders();
     this.listCategories();
-
+	this.listCampaignPipelines();
+    this.eventCampaign.leadPipelineId = 0;
+    this.eventCampaign.dealPipelineId = 0;
 
   }
+  
+  listCampaignPipelines() {
+    this.campaignService.listCampaignPipelines(this.loggedInUserId)
+    .subscribe(
+    response => {           
+      if(response.statusCode==200){
+        let data = response.data;  
+        this.leadPipelines = data.leadPipelines;
+        this.dealPipelines = data.dealPipelines;                    
+       }            
+    },
+    error => {
+        this.httpRequestLoader.isServerError = true;
+        },
+    () => { }
+);
+}
+  
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();
       this.detailsTab = true;

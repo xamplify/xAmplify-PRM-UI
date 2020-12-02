@@ -338,6 +338,13 @@ export class ManageDealsComponent implements OnInit {
     this.showDeals();
   }
 
+  showSubmitDealSuccess() {
+    this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    this.showDealForm = false;
+    this.resetCounts();    
+    this.showDeals();
+  }
+
   resetCounts() {
     if (this.isVendorVersion) {
       this.getVendorCounts();
@@ -419,6 +426,7 @@ export class ManageDealsComponent implements OnInit {
  }
 
   setDealStatus(deal: Deal) {
+    this.referenceService.loading(this.httpRequestLoader, true);
     let request: Deal = new Deal();
     request.id = deal.id;
     request.pipelineStageId = deal.pipelineStageId;

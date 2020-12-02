@@ -608,8 +608,9 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th ><span>Name</span></th>
+                                                                        <th>Created By</th> 
                                                                         <th>Stages</th>                                                                        
-                                                                        <th>Actions</th>
+                                                                        <th style="text-align:right">Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -619,9 +620,22 @@
                                                                         </td> -->
                                                                         <td><i class="fa fa-sort-amount-asc" style="margin-right:10px;display: inline-block;
                                                                             border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i><span>{{pipeline.name}}</span></td>                                                                        
+                                                                        <td>
+                                                                            <h5 class='ellipsis' title="{{pipeline.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{pipeline.createdByName | slice:0:20}}
+                                                                                <span *ngIf="pipeline.createdByName?.length>20">...</span>
+                                                                              </h5>
+                                                                              <h6 class='m0' style="font-weight: 400;">
+                                                                                <a title="{{pipeline.createdByEmail}}">{{pipeline.createdByEmail | slice:0:30}}</a>
+                                                                                <span *ngIf="pipeline.createdByEmail?.length>30">...</span>
+                                                                              </h6>
+                                                                              <h5 style="font-weight: 600; color: #676767;">
+                                                                                <app-timestamp [isOnlyDate]="false" [dateAndTime]="pipeline.createdTime">
+                                                                                </app-timestamp>
+                                                                              </h5>
+                                                                        </td>
                                                                         <td>{{pipeline.stages.length}}</td>
                                                                        <td>
-                                                                            <div class="actions-block override-actions" style="float: none !important;">                                                                                
+                                                                            <div class="actions-block override-actions">                                                                                
                                                                                 <ng-container>
                                                                                     <a data-toggle="tooltip" data-placement="top" title="View" (click)="viewPipeline(pipeline)">
                                                                                         <i class="fa fa-eye"></i>
@@ -1369,7 +1383,7 @@
                                         <option value="none">None</option>
                                     </select>
                                     <button type="button" *ngIf="x != 0 && !pipelinePreview"  class="btn-danger button-blue" (click)="deleteStage(x)"
-                                    style="float: right;"><span class="glyphicon glyphicon-trash"></span></button>
+                                    style="float: right;" [disabled]="!pipelineStage.canDelete"><span class="glyphicon glyphicon-trash"></span></button>
                                 </li>
                             </ng-container>                            
                           </ul>

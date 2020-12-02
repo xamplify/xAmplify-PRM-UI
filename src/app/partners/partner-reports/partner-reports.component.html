@@ -381,7 +381,8 @@
                         <span title="">{{item.emailId | slice:0:38}}</span>
                         <span *ngIf="item.emailId?.length>38">...</span>
                       </h6>
-                      	<h5 style="font-weight: 600; color: #676767;"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp></h5>
+                      	<h5 style="font-weight: 600; color: #676767;">
+                      	<app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp></h5>
                     </td>
                     <td class="center">
                     	<div>
@@ -462,7 +463,8 @@
                                 <h5 class='ellipsis' title="{{redistributedCampaign.campaignName}}" style="font-weight: 400;">{{redistributedCampaign.campaignName | slice:0:20}}
                                   <span *ngIf="redistributedCampaign.campaignName?.length>20">...</span>
                                 </h5>
-                                <h5 style="font-weight: 600; color: #676767;"><app-timestamp [isOnlyDate]="false" [dateAndTime]="redistributedCampaign.redistributedOn"> </app-timestamp></h5>
+                                <h5 style="font-weight: 600; color: #676767;">
+                                <app-timestamp [isOnlyDate]="false" [dateAndTime]="redistributedCampaign.displayTime"> </app-timestamp></h5>
                               </span>
                             </div>
                             </td>

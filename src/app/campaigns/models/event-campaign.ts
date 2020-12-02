@@ -76,6 +76,8 @@ export class EventCampaign {
 	pushToMarketingAutomation = false;
 
 	eventCancellation : EventCancellation;
+	leadPipelineId: number;
+    dealPipelineId: number;
 
     constructor() {
         this.campaignEventMedias.push(new CampaignEventMedia());

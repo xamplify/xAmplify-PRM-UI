@@ -81,6 +81,12 @@ export class LeadsService {
     .catch(this.handleError);
   }
 
+  syncLeadsWithSalesforce(userId:number) {
+    return this.http.get(this.authenticationService.REST_URL + `/salesforce/${userId}/leads/sync?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body || {};

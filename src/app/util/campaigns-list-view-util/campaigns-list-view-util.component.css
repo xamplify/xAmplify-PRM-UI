@@ -5,3 +5,28 @@
 .bar a{
     margin: 10px 1px;
 }
+
+.re-distributed-high-level {
+	width: 120px;
+	cursor: default;
+	border-color: #00a6e8;
+	border-radius: 3px !important;
+	overflow: auto;
+	color:#00a6e8;
+}
+
+.sky-blue {
+	color: #00a6e8;
+}
+
+.i-custom-font{
+	font-size: 30px;
+	color: #00a6e8;
+	margin-top: 8px;
+}
+.banner-top{
+	margin-top:5px;
+}
+.custom-font-weight{
+	font-weight: 700 !important;
+}

@@ -308,6 +308,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         .subscribe(
           data => {
             this.campaignReport.emailSentCount = data.emails_sent_count;
+            this.campaignReport.activeRecipientsPercentage = ((this.campaignReport.emailOpenCount/this.campaignReport.emailSentCount)*100);
+            if(this.campaignReport.activeRecipientsPercentage>=0){
+              this.campaignReport.activeRecipientsPercentage = this.campaignReport.activeRecipientsPercentage.toFixed(1);
+            }
             this.loading = false;
           },
           error => console.log(error),
@@ -524,6 +528,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           data => {
             this.campaignReport.emailOpenCount = data["email_opened_count"];
             this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
+            
             this.campaignReport.dataShareClickedUrlsCountForVendor = data['dataShareClickedUrlsCountForVendor'];
             this.loading = false;
           },

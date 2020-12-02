@@ -1035,6 +1035,11 @@ export class CampaignService {
     viewDownloadHistoryForPartners(pagination:Pagination){
         return this.utilPostPaginationMethod("campaign/viewDownloadedTemplateHistoryForPartner",pagination)
     }
+
+    getPublicEventCampaignAlias(campaignId:number){
+        return this.http.get(this.URL + "/campaign/getPublicEventCampaignAlias/" + campaignId + "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData) .catch(this.handleError);
+    }
     
     private utilPostPaginationMethod(url:string,pagination:Pagination){
         return this.http.post(this.URL + url+"?access_token=" + this.authenticationService.access_token, pagination)

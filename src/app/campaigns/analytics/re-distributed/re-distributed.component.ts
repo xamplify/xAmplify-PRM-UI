@@ -7,6 +7,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { SortOption } from '../../../core/models/sort-option';
 import { ReferenceService } from '../../../core/services/reference.service';
+declare var $:any;
 @Component({
   selector: 'app-re-distributed',
   templateUrl: './re-distributed.component.html',
@@ -31,8 +32,10 @@ export class ReDistributedComponent implements OnInit {
       this.partnerService.listRedistributedCampaigns(this.campaignId,this.pagination).subscribe(
           ( response: any ) => {
               let data  = response.data;
-              console.log(data);
               this.pagination.totalRecords = data.totalRecords;
+              $.each(data.redistributedCampaigns, function (_index:number, campaign) {
+                campaign.displayTime = new Date(campaign.redistributedUtcString);
+            });
               this.pagination = this.pagerService.getPagedItems( this.pagination, data.redistributedCampaigns);
               this.referenceService.loading(this.httpRequestLoader, false );
           },

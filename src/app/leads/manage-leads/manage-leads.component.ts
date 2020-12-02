@@ -16,6 +16,7 @@ import { DealRegistrationService } from '../../deal-registration/services/deal-r
 import { Roles } from '../../core/models/roles';
 import { LeadsService } from '../services/leads.service';
 import { Lead } from '../models/lead';
+import { IntegrationService } from 'app/core/services/integration.service';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -47,12 +48,14 @@ export class ManageLeadsComponent implements OnInit {
   leadsResponse: CustomResponse = new CustomResponse();
   counts : any;
   countsLoader = false;
+  syncSalesForce = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService, private userService: UserService,
-    private dealRegistrationService: DealRegistrationService, private leadsService: LeadsService) {
+    private dealRegistrationService: DealRegistrationService, private leadsService: LeadsService, 
+    public integrationService: IntegrationService) {
 
       this.loggedInUserId = this.authenticationService.getUserId();
         const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
@@ -80,6 +83,7 @@ export class ManageLeadsComponent implements OnInit {
   ngOnInit() {   
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    
   }
 
   initVendorOrPartner() {
@@ -185,6 +189,7 @@ export class ManageLeadsComponent implements OnInit {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
+      this.checkSalesforceIntegration();
       this.getVendorCounts();
       this.showLeads();
       //this.switchVersions();
@@ -342,6 +347,17 @@ export class ManageLeadsComponent implements OnInit {
     this.showLeads();
   }
 
+  showSubmitLeadSuccess() {  
+    this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    this.showLeadForm = false;
+    if (this.isVendorVersion) {
+      this.getVendorCounts();
+    } else if (this.isPartnerVersion) {
+      this.getPartnerCounts();
+    }
+    this.showLeads();
+  }
+
   addLead() {
    // this.leadFormTitle = "Add a Lead"; 
    // $('#leadFormModel').modal('show');
@@ -397,7 +413,7 @@ export class ManageLeadsComponent implements OnInit {
       response => {
           this.referenceService.loading(this.httpRequestLoader, false);
           if(response.statusCode==200){
-            this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+            this.leadsResponse = new CustomResponse('SUCCESS', "Lead Deleted Successfully", true);
             this.getCounts();  
             this.showLeads();                         
         } else if (response.statusCode==500) {
@@ -429,6 +445,63 @@ export class ManageLeadsComponent implements OnInit {
  closeDealForm() {  
   this.showDealForm = false;
   this.showLeads();
+ }
+
+ showSubmitDealSuccess() {  
+  this.leadsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+  this.showDealForm = false;
+  this.showLeads();
+ }
+
+ checkSalesforceIntegration(): any {
+  this.referenceService.loading(this.httpRequestLoader, true);
+    this.integrationService.checkConfigurationByTypeAndUserId("isalesforce", this.loggedInUserId).subscribe(data =>{
+         let response = data;
+         if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+             this.integrationService.checkSfCustomFields(this.loggedInUserId).subscribe(cfData =>{
+               let cfResponse = cfData;
+               if (cfResponse.statusCode === 400) {
+                 this.syncSalesForce = false;
+               } else {
+                 this.syncSalesForce = true;
+               }
+           },error =>{
+               console.log("Error in salesforce checkSalesforceIntegration()");
+           }, () => console.log("Error in salesforce checkSalesforceIntegration()"));
+              console.log("Error in salesforce checkSalesforceIntegration()");
+         } else{
+               this.syncSalesForce = false;             
+            }
+     },error =>{
+         console.log("Error in salesforce checkSalesforceIntegration()");
+     }, () => console.log("Error in checkSalesforceIntegration()"));
+     this.referenceService.loading(this.httpRequestLoader, false);
+ }
+
+ syncLeadsWithSalesforce() {
+  this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.leadsService.syncLeadsWithSalesforce(this.loggedInUserId)
+     .subscribe(
+       data => {
+         let statusCode = data.statusCode;
+         if(statusCode==200){
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
+            this.getCounts();  
+            this.showLeads();            
+         }else{
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
+         }
+       },
+       error => {
+         
+       },
+       () => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+       }
+     );
 }
  
 }

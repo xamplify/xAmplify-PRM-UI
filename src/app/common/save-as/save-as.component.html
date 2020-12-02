@@ -14,7 +14,7 @@
           <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
           <span style="color:red">{{saveAsError}}</span>
         </div>
-        
+
          <!-- ------------Legal Basis------------ -->
         <div class="form-group" *ngIf="gdprStatus && showGDPR">
         <label for="campaignName">Legal Basis Options <span class="danger">*</span></label>
@@ -28,25 +28,25 @@
 	    </div>
 	    </div>
     </div>
-    
+
     	<!-- start   -->
-				<div class="form-group" class="col-xs-12" *ngIf="!isPartner">
-					
+				<div class="form-group" class="col-xs-12" *ngIf="module === 'contacts'">
+
 					<label class="col-xs-4" for="campaignName">Contact List Type <span class="danger">*</span></label>
 					<div class="col-xs-8">
-						
+
 							<switch [status]="model.isPublic" [onText]="'Public'"
 								[offText]="'Private'"
 								[onColor]="callActionSwitch.onGreenColorSwitch"
 								[offColor]="callActionSwitch.offPrivateColor"
 								[size]="large"
 								(statusChange)="changeStatus($event)"> </switch>
-						
+
 					</div>
 				</div>
 				<!-- end  -->
-        
-        
+
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>

@@ -107,7 +107,7 @@
                            <app-timestamp  [dateAndTime]="asset?.displayTime">
                            </app-timestamp>
                         </td>
-                        <td id="actions-row">
+                        <td>
                            <div [className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon'">
                              <ng-container *ngIf="asset?.status=='COMPLETED'">
                               <a  *ngIf="asset?.history &&!isPartnerView "  title="History" (click)="expandHistory(asset,i)">
@@ -123,18 +123,21 @@
                               <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                                  <i class="fa fa-edit" aria-hidden="true"></i>
                               </a>
-                                 <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
-                                 <i class="fa fa-share" aria-hidden="true"></i>
-                                 </a>
-                                 <a  *ngIf="!isPartnerView" title="Download" (click)="openPopup(asset)">
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                    </a>
-                                 <a  title="View Analytics" (click)="viewAnalytics(asset)">
-                                   <i class="fa fa-line-chart" aria-hidden="true"></i>
-                                   </a>
-                                 <a *ngIf="isPartnerView"  title="View Details" (click)="viewDetails(asset)">
+                              <a *ngIf="!isPartnerView && asset?.showPreviewIcon"  title="Preview" (click)="preview(asset)">
                                  <i class="fa fa-eye" aria-hidden="true"></i>
+                              </a>
+                              <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
+                              <i class="fa fa-share" aria-hidden="true"></i>
+                              </a>
+                              <a  *ngIf="!isPartnerView" title="Download" (click)="openPopup(asset)">
+                                 <i class="fa fa-download" aria-hidden="true"></i>
                                  </a>
+                              <a  title="View Analytics" (click)="viewAnalytics(asset)">
+                                 <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                 </a>
+                              <a *ngIf="isPartnerView"  title="View Details" (click)="viewDetails(asset)">
+                              <i class="fa fa-eye" aria-hidden="true"></i>
+                              </a>
                               </ng-container>
                                  <a *ngIf="!isPartnerView" title="Delete"  (click)="confirmDelete(asset)">
                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -191,6 +194,9 @@
                                                       </a>
                                                       <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                                                          <i class="fa fa-edit" aria-hidden="true"></i>
+                                                      </a>
+                                                      <a  title="Preview" (click)="preview(asset)">
+                                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                                       </a>
                                                       <a  title="Publish" (click)="openPublishPopup(asset.id)">
                                                       <i class="fa fa-share" aria-hidden="true"></i>
@@ -272,6 +278,9 @@
                           <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                            <i class="fa fa-edit" aria-hidden="true"></i>
                            </a>
+                           <a *ngIf="!isPartnerView && asset?.showPreviewIcon"  title="Preview" (click)="preview(asset)">
+                              <i class="fa fa-eye" aria-hidden="true"></i>
+                           </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>
                            </a>
@@ -347,6 +356,9 @@
                            </a>
                            <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                               <i class="fa fa-edit" aria-hidden="true"></i>
+                           </a>
+                           <a  title="Preview" (click)="preview(asset)">
+                              <i class="fa fa-eye" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
                                <i class="fa fa-share" aria-hidden="true"></i>
@@ -498,4 +510,29 @@
 <ng-container *ngIf="showPublishPopup">
    <app-publish-to-partners [companyId]="loggedInUserCompanyId" [assetId]="selectedAssetId" (notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-publish-to-partners>
 </ng-container>
-
+<!---Preview Pop Up-->
+<div class="modal fade right" id="asset-preview-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog modal-lg modal-template fullwidth" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+         <i class="fa fa-times" aria-hidden="true"></i>
+         </button>
+         <h4 class="modal-title" id="assetTitle"></h4>
+       </div>
+       <div class="modal-body">
+         <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+         <div [hidden]="!beeTemplatePreview">
+            <div id="asset-preview-content">
+            </div>
+         </div>
+         <div [hidden]="beeTemplatePreview">
+            <app-image-loader [loading]="imageLoading" image="{{assetPath}}"></app-image-loader>
+         </div>
+       </div>
+       <div class="modal-footer">
+         <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+       </div>
+     </div>
+   </div>
+ </div>

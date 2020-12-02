@@ -533,6 +533,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           if(clickedCampaignId!=campaignId){
               element.expand =false;
           }
+		let redistributedCampaigns = item.redistributedCampaigns;
+		 $.each(redistributedCampaigns,function(index,campaign){
+                  campaign.displayTime = new Date(campaign.redistributedUtcString);
+           });
         });
       item.expand = !item.expand;
   }

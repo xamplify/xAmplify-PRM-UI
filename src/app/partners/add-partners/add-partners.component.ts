@@ -221,7 +221,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 		let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/partners' ) ) {
-            this.isPartner = false;
+            this.isPartner = true;
 			this.module = "partners";
         }
 
