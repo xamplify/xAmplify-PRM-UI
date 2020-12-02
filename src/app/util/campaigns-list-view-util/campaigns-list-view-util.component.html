@@ -324,11 +324,11 @@
                                                                         <i class="fa fa-reply-all" style="width: 30px;"></i>
                                                                         Add Workflows
                                                                     </a> -->
-                                                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
+                                                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                                                         (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
                                                                         <i class="fa fa-link" style="width: 30px;"></i> Copy Url
                                                                     </a>
-                                                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
+                                                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                                                         (click)="sendEventEmail(campaign)" title="Send Preview Email">
                                                                         <i class="fa fa-envelope" style="width: 30px;"></i> Send Preview Email
                                                                     </a>
@@ -479,11 +479,11 @@
                                                                     <i class="fa fa-reply-all" style="width: 30px;"></i>
                                                                     Add Workflows
                                                                 </a> -->
-                                                                <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
+                                                                <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                                                     (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
                                                                     <i class="fa fa-link" style="width: 30px;"></i> Copy Url
                                                                 </a>
-                                                                <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
+                                                                <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                                                     (click)="sendEventEmail(campaign)" title="Send Preview Email">
                                                                     <i class="fa fa-envelope" style="width: 30px;"></i> Send Preview Email
                                                                 </a>
@@ -641,7 +641,7 @@
                                             </a>
                                             <span class="badge" id="notification-list">{{campaign.formsCount}}</span>
                                         </ng-container>
-                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
+                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                             (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
                                             <i class="fa fa-files-o"></i>
                                         </a>
