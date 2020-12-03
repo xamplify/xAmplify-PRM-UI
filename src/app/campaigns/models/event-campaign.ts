@@ -71,12 +71,12 @@ export class EventCampaign {
     eventStarted = false;
     categoryId:number = 0;
     categoryName:string = "";
-	pushToHubspot = false;
-	pushToSalesforce = false;
-	pushToMarketingAutomation = false;
+	  pushToHubspot = false;
+	  pushToSalesforce = false;
+	  pushToMarketingAutomation = false;
 
-	eventCancellation : EventCancellation;
-	leadPipelineId: number;
+	  eventCancellation : EventCancellation;
+	  leadPipelineId: number;
     dealPipelineId: number;
 
     constructor() {
