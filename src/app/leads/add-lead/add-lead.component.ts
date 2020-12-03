@@ -292,7 +292,7 @@ export class AddLeadComponent implements OnInit {
     if (this.isValid) {
       this.saveOrUpdateLead();
     } else {      
-      //scroll to top
+      this.referenceService.scrollToModalBodyTopByClass();
     }
   }
 
