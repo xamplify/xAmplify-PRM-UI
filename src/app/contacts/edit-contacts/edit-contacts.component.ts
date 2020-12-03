@@ -3325,7 +3325,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}, 250);
 
 	}
-	
+
 	  saveDuplicateLeadList(name: string, selectedLegalBasisOptions: any, isPublic: boolean) {
         try {
 
