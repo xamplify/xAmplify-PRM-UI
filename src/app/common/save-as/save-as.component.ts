@@ -82,7 +82,7 @@ export class SaveAsComponent implements OnInit {
           }
       }
     }
-  
+
   saveAsLeadsInputChecking() {
       try {
           const name = this.saveAsListName;
@@ -93,6 +93,7 @@ export class SaveAsComponent implements OnInit {
               this.validateLegalBasisOptions();
               if (this.isValidLegalOptions) {
                   this.editContactsComponent.saveDuplicateLeadList(this.saveAsListName, this.selectedLegalBasisOptions, this.model.isPublic);
+                  $('#saveAsModal').modal('hide');
                   this.notifyParentSaveAs.emit('success');
               }
           }
@@ -102,7 +103,7 @@ export class SaveAsComponent implements OnInit {
           this.xtremandLogger.error(error, "EditContactsComponent", "saveAsLeadsInputChecking()");
       }
   }
-  
+
   updateListType(){
 	    try{
 	      this.saveAsError = "";

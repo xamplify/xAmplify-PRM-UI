@@ -28,5 +28,8 @@
 	margin-top:5px;
 }
 .custom-font-weight{
-	font-weight: 700 !important;
+	font-weight: 600 !important;
+}
+.custom-font-size {
+	font-size: 16px !important;
 }

@@ -1,4 +1,5 @@
 /* action.css*/
+
 .hiddenStepInfo {
 	display: none;
 }
@@ -13,7 +14,6 @@
 
 .step {
 	/*margin-top: 27px;*/
-	
 }
 
 .view-banner {
@@ -103,6 +103,7 @@
 }
 
 /* publish.css*/
+
 .btn-squared-default {
 	width: 165px !important;
 	height: 125px !important;
@@ -146,8 +147,7 @@ a.disabled {
 .launched {
 	background: #337ab7;
 	background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
-	background: -webkit-gradient(linear, left top, left bottom, from(#16b2f4),
-		to(#16b2f4));
+	background: -webkit-gradient(linear, left top, left bottom, from(#16b2f4), to(#16b2f4));
 	padding: 4px 23px;
 	margin-left: -16px;
 	margin-top: 3px;
@@ -175,8 +175,7 @@ a.disabled {
 
 .saved {
 	background: #808080;
-	background: -webkit-gradient(linear, left top, left bottom, from(#808080),
-		to(#808080));
+	background: -webkit-gradient(linear, left top, left bottom, from(#808080), to(#808080));
 	padding: 4px 23px;
 	margin-left: -16px;
 	margin-top: 3px;
@@ -285,7 +284,7 @@ td h5 {
 	margin-left: 2px;
 }
 
-#campaign-partner-table  td {
+#campaign-partner-table td {
 	text-align: center;
 }
 
@@ -442,21 +441,27 @@ td h5 {
 	border-color: #00a6e8;
 	border-radius: 3px !important;
 	overflow: auto;
-	color:#00a6e8;
+	color: #00a6e8;
 }
 
 .sky-blue {
 	color: #00a6e8;
 }
 
-.i-custom-font{
+.i-custom-font {
 	font-size: 30px;
 	color: #00a6e8;
 	margin-top: 8px;
 }
-.banner-top{
-	margin-top:5px;
+
+.banner-top {
+	margin-top: 5px;
 }
-.custom-font-weight{
-	font-weight: 700 !important;
+
+.custom-font-weight {
+	font-weight: 600 !important;
+}
+
+.custom-font-size {
+	font-size: 16px !important;
 }
