@@ -31,7 +31,7 @@
         <div class="col-xs-12  p5">
           <div class="row">
             <!-- -------Total Deals------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-12 col-sm-4 col-md-4" *ngIf="!countsLoader"
               [style.pointer-events]="counts.totalDeals != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex"
                 (click)="showDeals()">
@@ -47,13 +47,13 @@
                   <div class="desc" translate>Total Deals</div>
                 </div>
                 <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
             </div>
 
             <!-- -------Won Deals------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-12 col-sm-4 col-md-4" *ngIf="!countsLoader"
               [style.pointer-events]="counts.wonDeals != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="showWonDeals()">
@@ -69,13 +69,13 @@
                   <div class="desc" translate>Won Deals</div>
                 </div>
                 <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
             </div>
 
             <!-- -------Lost Deals------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-12 col-sm-4 col-md-4" *ngIf="!countsLoader"
               [style.pointer-events]="counts.lostDeals != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="3!=selectedTabIndex"
                 (click)="showLostDeals()">
@@ -91,7 +91,7 @@
                   <div class="desc" translate>Lost Deals</div>
                 </div>
                 <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
             </div>
