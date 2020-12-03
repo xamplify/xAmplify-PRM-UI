@@ -9,13 +9,14 @@ import { PipelineStage } from 'app/dashboard/models/pipeline-stage';
 import { CustomResponse } from '../../common/models/custom-response';
 import { CountryNames } from '../../common/models/country-names';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
+import {Properties} from 'app/common/models/properties';
 declare var swal, $, videojs: any;
 
 @Component({
   selector: 'app-add-lead',
   templateUrl: './add-lead.component.html',
   styleUrls: ['./add-lead.component.css'],
-  providers: [ HttpRequestLoader, CountryNames],
+  providers: [ HttpRequestLoader, CountryNames,Properties],
 })
 export class AddLeadComponent implements OnInit {
   @Input() public leadId: any;
@@ -28,7 +29,7 @@ export class AddLeadComponent implements OnInit {
   @Input() public isOrgAdmin: any;
   @Output() notifyOtherComponent = new EventEmitter();
   @Output() notifySubmitSuccess = new EventEmitter();
-
+  @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
   lead: Lead = new Lead();
   preview = false;
   edit = false;
@@ -43,11 +44,11 @@ export class AddLeadComponent implements OnInit {
   WEBSITE_PATTERN = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
   EMAIL_PATTERN = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
   leadModalResponse: CustomResponse = new CustomResponse();
-  ngxloading : false;
+  ngxloading : boolean;
   hasCampaignPipeline = false;
 
 
-  constructor(public authenticationService: AuthenticationService, private leadsService: LeadsService,
+  constructor(public properties:Properties,public authenticationService: AuthenticationService, private leadsService: LeadsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames) {
             
    }   
@@ -227,6 +228,7 @@ export class AddLeadComponent implements OnInit {
 
   closeLeadModal() {
     this.notifyOtherComponent.emit();
+    this.notifyManageLeadsComponentToHidePopup.emit();
     $('#leadFormModel').modal('hide');
   }
 
@@ -297,6 +299,8 @@ export class AddLeadComponent implements OnInit {
   }
 
   saveOrUpdateLead() {
+    this.ngxloading = true;
+    this.leadModalResponse = new CustomResponse();
     this.referenceService.loading(this.httpRequestLoader, true);
     this.errorMessage = "";
     this.lead.userId = this.loggedInUserId;
@@ -316,6 +320,8 @@ export class AddLeadComponent implements OnInit {
         },
         error => {
             this.ngxloading = false;
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.leadModalResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
             },
         () => { }
     );

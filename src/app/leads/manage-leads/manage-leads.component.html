@@ -47,7 +47,7 @@
                   <div class="desc" translate>Total Leads</div>
                 </div>
                 <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
             </div>
@@ -110,7 +110,7 @@
                   <div class="desc" translate>Converted Leads</div>
                 </div>
                 <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
             </div>
@@ -129,7 +129,7 @@
                 <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
                   <div class="btn-group pull-right">
                     <a *ngIf="isPartnerVersion || isOrgAdmin" (click)="addLead()">
-                      <button class="btn btn-white" translate>
+                      <button class="btn btn-primary" translate>
                         <i class="fa fa-plus" aria-hidden="true"></i> Add a Lead
                       </button>
                     </a>
@@ -190,28 +190,28 @@
                           <td style="width: 40%;">
                             <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                             <div style="margin-left: 60px;">
-                              <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
+                              <h5 *ngIf="isPartnerVersion"><strong>Added For:</strong>
                                 <span  style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
                                   <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
                                 </span>  
                               </h5> 
                             </div>
                             <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;">
-                              <h5><b>Campaign:</b>
+                              <h5><strong>Campaign:</strong>
                                 <span  style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                   <span *ngIf="lead.campaignName?.length>30">...</span>
                                 </span>  
                               </h5> 
                             </div>
                             <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;">
-                              <h5><b>Campaign:</b>
+                              <h5><strong>Campaign:</strong>
                                 <span  style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
                                   <span *ngIf="lead.parentCampaignName?.length>30">...</span>
                                 </span>  
                               </h5> 
                             </div>
                             <div *ngIf="isVendorVersion && lead?.parentCampaignId <= 0 && lead?.campaignId > 0" style="margin-left: 60px;">
-                              <h5><b>Campaign:</b>
+                              <h5><strong>Campaign:</strong>
                                 <span  style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                   <span *ngIf="lead.campaignName?.length>30">...</span>
                                 </span>  
@@ -320,10 +320,9 @@
 </div>
 
 <!-- Add Lead Model-->
-<ng-container *ngIf="showLeadForm">
-  <app-add-lead [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitLeadSuccess()"
+<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitLeadSuccess()"
+  (notifyManageLeadsComponentToHidePopup) = "resetValues()"
   [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin"></app-add-lead>
-</ng-container>
 
 <!-- Deal Form-->
 <section *ngIf="showDealForm">

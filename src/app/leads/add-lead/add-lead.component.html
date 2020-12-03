@@ -12,9 +12,8 @@
         <div class="portlet light" id="del-profile-div" style="border: 0px">
           <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
           </ngx-loading>
-
-          <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-          </app-list-loader>                   
+          <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+          </app-modal-popup-loader>                   
           <div class="alert alert-danger" id="company-profile-error-div" *ngIf ="!isValid">
             <a class="close" aria-label="close">x</a>
             <strong>{{errorMessage}}</strong>
