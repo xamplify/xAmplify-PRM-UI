@@ -366,6 +366,10 @@ export class ManageLeadsComponent implements OnInit {
     this.leadId = 0;    
   }
 
+  resetValues(){
+    this.showLeadForm = false;
+  }
+
   viewLead(lead: Lead) {        
     //this.leadFormTitle = "View Lead";
    // $('#leadFormModel').modal('show');    

@@ -19,6 +19,7 @@ import { DealAnswer } from 'app/deal-registration/models/deal-answers';
 import { User } from 'app/core/models/user';
 import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
 import { SfCustomFieldsDataDTO } from 'app/deal-registration/models/sfcustomfieldsdata';
+import {Properties} from 'app/common/models/properties';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -26,7 +27,7 @@ declare var flatpickr: any, $: any, swal: any;
   selector: 'app-add-deal',
   templateUrl: './add-deal.component.html',
   styleUrls: ['./add-deal.component.css'],
-  providers: [HttpRequestLoader, LeadsService],
+  providers: [HttpRequestLoader, LeadsService,Properties],
 })
 export class AddDealComponent implements OnInit {
 
@@ -88,7 +89,7 @@ export class AddDealComponent implements OnInit {
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
   
-  constructor(public authenticationService: AuthenticationService, private dealsService: DealsService,
+  constructor(public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService) {
 
@@ -447,6 +448,7 @@ export class AddDealComponent implements OnInit {
   }
 
   save() {
+    this.customResponse = new CustomResponse();
     this.ngxloading = true;
     this.isLoading = true;
     this.deal.userId = this.loggedInUserId;
@@ -515,8 +517,11 @@ export class AddDealComponent implements OnInit {
           }
         },
         error => {
+          this.referenceService.goToTop();
           this.ngxloading = false;
+          this.isLoading = false;
           this.showLoadingButton = false;
+          this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
         },
         () => { }
       );

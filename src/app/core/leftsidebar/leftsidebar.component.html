@@ -236,7 +236,7 @@
                  <li *ngIf="rssFeedAccess">
                     <a [routerLink]="['/home/rss/']">
                     <i class="fa fa-rss" aria-hidden="true"></i>
-                    <span class="title">Feeds</span>
+                    <span class="title">Social Feeds</span>
                     <span class="arrow "></span>
                     </a>
                  </li> 
@@ -244,7 +244,7 @@
                  <ng-container *ngIf="mdfAccess && !mdfAccessAsPartner">
                     <li  [ngClass]="{'active': location.path().includes('mdf')}">
                         <a href="javascript:;" (click)="openOrCloseTabs('mdf')">
-                            <i class="fa fa-money" aria-hidden="true"></i>
+                            <i class="fa fa-dollar" aria-hidden="true"></i>
                             <span class="title" translate>MDF</span>
                             <span class="arrow"></span>
                             <span class="selected"></span>
@@ -269,7 +269,7 @@
                  <ng-container *ngIf="mdfAccessAsPartner && !mdfAccess">
                     <li>
                         <a [routerLink]="['/home/mdf/requests/p']">
-                        <i class="fa fa-money" aria-hidden="true"></i>
+                        <i class="fa fa-dollar" aria-hidden="true"></i>
                         <span class="title">MDF</span>
                         <span class="arrow"></span>
                         </a>
@@ -279,7 +279,7 @@
                  <ng-container *ngIf="mdfAccess && mdfAccessAsPartner">
                     <li  [ngClass]="{'active': location.path().includes('mdf')}">
                         <a href="javascript:;" (click)="openOrCloseTabs('mdf')">
-                            <i class="fa fa-money" aria-hidden="true"></i>
+                            <i class="fa fa-dollar" aria-hidden="true"></i>
                             <span class="title" translate>MDF</span>
                             <span class="arrow"></span>
                             <span class="selected"></span>
