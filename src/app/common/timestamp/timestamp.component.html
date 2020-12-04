@@ -1,13 +1,8 @@
 <span *ngIf="campaignView && dateAndTime!==null && dateAndTime!=='' && !referenceService.isSafariBrowser() && !showInLine">{{dateAndTime |date:'mediumDate'}},<br> {{dateAndTime |date:'shortTime'}}</span>
 <span *ngIf="campaignView && dateAndTime!==null &&  dateAndTime!=='' && referenceService.isSafariBrowser() && !showInLine">{{dateAndTime}}</span>
 <span *ngIf="dateAndTime!==null && dateAndTime!=='' && !referenceService.isSafariBrowser() && showInLine">{{dateAndTime |date:'mediumDate'}},{{dateAndTime |date:'shortTime'}}</span>
-
 <span *ngIf="!isOnlyDate && !campaignView && dateAndTime!==null && !referenceService.isSafariBrowser() && !showInLine">{{dateAndTime |date:'mediumDate'}},<br> {{dateAndTime |date:'shortTime'}}</span>
 <span *ngIf="isOnlyDate && !campaignView && dateAndTime!==null && !referenceService.isSafariBrowser() && !showInLine">{{dateAndTime |date:'mediumDate'}}</span>
 <span *ngIf="!isOnlyDate && !campaignView && dateAndTime!==null && referenceService.isSafariBrowser() && !isSpacethere && !showInLine">{{dateAndTime |date:'mediumDate'}},<br> {{dateAndTime |date:'shortTime'}}</span>
 <span *ngIf="isOnlyDate && !campaignView && dateAndTime!==null && referenceService.isSafariBrowser() && !isSpacethere && !showInLine">{{dateAndTime |date:'mediumDate'}}</span>
 <span *ngIf="!isOnlyDate && !campaignView && dateAndTime!==null && referenceService.isSafariBrowser() && isSpacethere && !showInLine">{{dateAndTime}}</span>
-
-
-
-<!-- {{dateAndTime |date:'medium'}} -->

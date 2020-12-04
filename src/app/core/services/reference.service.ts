@@ -2009,8 +2009,6 @@ export class ReferenceService {
 				let width = this.startWidth + (event.x - this.startX);
 				$(this.start).parent().css({ 'min-width': width, 'max-   width': width });
 				let index = $(this.start).parent().index() + columnPosition;
-				console.log(tableId);
-				console.log(index);
 				$('#' + tableId + ' tr td:nth-child(' + index + ')').css({ 'min-width': width, 'max-width': width });
 			}
 		});
