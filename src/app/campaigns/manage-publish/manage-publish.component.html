@@ -209,14 +209,14 @@
                           <strong
                             *ngIf="campaign.scheduleType=='NOW' || campaign.launched">
                           <app-timestamp *ngIf="!refService.isSafariBrowser()"
-                          [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
+                          [isOnlyDate]="false" [showInLine]="true" [dateAndTime]="campaign.displayTime">
                           </app-timestamp>
                           <span
                             *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
                           </strong>
                           <strong *ngIf="campaign.scheduleType=='SAVE'">
                           <app-timestamp *ngIf="!refService.isSafariBrowser()"
-                          [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
+                          [isOnlyDate]="false" [showInLine]="true" [dateAndTime]="campaign.displayTime">
                           </app-timestamp>
                           <span
                             *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
@@ -279,6 +279,18 @@
                         </button>
                       </div>
                       </td>
+                      <td *ngIf="campaign.campaignType.indexOf('EVENT') >-1" class="center" title="{{campaign?.totalAttendeesCount}}">
+                        <div>
+                        <button class="btn btn-default btn-xs re-distributed-high-level">
+                          <div class="portlet-body text-center">
+                            <h6 class="custom-font-size">
+                             <strong class="custom-font-weight">{{campaign?.totalAttendeesCount}}</strong> 
+                            </h6>
+                            <span class="custom-font-weight">Total</span>
+                          </div>
+                        </button>
+                      </div>
+                      </td>
                       <td *ngIf="campaign.campaignType.indexOf('SOCIAL') >-1" class="center" title="{{campaign?.socialCampaignRedistributedCount}}">
                         <div>
                         <button class="btn btn-default btn-xs re-distributed-high-level">
@@ -291,7 +303,7 @@
                         </button>
                       </div>
                       </td>
-                      <td *ngIf="campaign.campaignType.indexOf('VIDEO')<0"></td>
+                      <td *ngIf="campaign.campaignType.indexOf('VIDEO')<0 && campaign.campaignType.indexOf('EVENT')<0"></td>
                        <td *ngIf="campaign.campaignType.indexOf('VIDEO')>-1" class="center" title="{{campaign?.views}}">
                           <div>
                           <button class="btn btn-default btn-xs re-distributed-high-level">
