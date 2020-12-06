@@ -98,13 +98,13 @@
                                 authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                               authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.superiorRole != 'Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}" class="hidden-xs" *ngIf="!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                               authenticationService.isVendor() || authenticationService.isVendorPartner())">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}" (click)="activateTab('leadPipelines');clearCustomResponse()"> {{properties.leadPipelines | translate}}</a>
                             </li>
                             <li [ngClass]="{'active-tab': activeTabName == 'dealPipelines'}" class="hidden-xs"
-                                *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                                                        authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.superiorRole != 'Partner'">
+                                *ngIf="!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                                authenticationService.isVendor() || authenticationService.isVendorPartner())">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealPipelines'}"
                                     (click)="activateTab('dealPipelines');clearCustomResponse()"> {{properties.dealPipelines | translate}}</a>
                             </li>
