@@ -241,7 +241,6 @@
                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
                            {{asset?.assetName | slice:0:25}} <span *ngIf="asset?.assetName?.length>25">...</span><br><br>
                        </h4>
-                         <h4 *ngIf="!isPartnerView && asset?.beeTemplate && asset?.history">Version {{asset?.versionInString}}</h4> 
                        <div>
                         <span class="view-banner-dam">{{asset?.assetType}}</span>
                            <h6 translate>
