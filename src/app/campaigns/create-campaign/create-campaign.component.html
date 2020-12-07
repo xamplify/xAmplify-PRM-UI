@@ -377,7 +377,7 @@
                                                                             (click)="pushToCrmRequest('marketo', $event)">
                                                                         <span class="checkmark"></span>
                                                                     </label>
-                                                                    <img class="image-size" src="assets/images/crm/marketo-crm.png">
+                                                                    <img class="image-size" src="assets/images/crm/marketo-crm.png" alt="">
                                                                     <div>
                                                                         <h5 class="hidden-xs mr-2" translate>Marketo</h5>
                                                                     </div>
@@ -392,7 +392,7 @@
                                                                             (click)="pushToCrmRequest('hubspot', $event)">
                                                                         <span class="checkmark"></span>
                                                                     </label>
-                                                                    <img class="image-size" src="assets/images/crm/hubspot-crm.png">
+                                                                    <img class="image-size" src="assets/images/crm/hubspot-crm.png" alt="">
                                                                     <div>
                                                                         <h5 class="hidden-xs mr-2" translate>Hubspot</h5>
                                                                     </div>
@@ -401,27 +401,35 @@
 
 
                                                         </div>
-                                                        <!-- <div class="col-md-6" *ngIf="enableLeads">
-                                                            <div class=" cenetered-block1">
-                                                                <div class="">
-                                                                    <label class="customcheck">
-                                                                        <input type="checkbox"
-                                                                            (click)="pushToCrmRequest('salesforce', $event)">
-                                                                        <span class="checkmark"></span>
-                                                                    </label>
-                                                                    <div>
-                                                                        <img class="image-size" src="assets/images/crm/salesforce-crm.png">
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5 class="hidden-xs" translate>Salesforce</h5>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div> -->
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
 
+                                            <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
+                                              *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
+                                                <label class="control-label col-sm-4">Lead Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
+                                                        placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
+                                                        <option [value]="0">Select Pipeline</option>
+                                                        <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
+                                              
+                                            <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px"
+                                                *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
+                                                <label class="control-label col-sm-4">Deal Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
+                                                        placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
+                                                        <option [value]="0">Select Pipeline</option>
+                                                        <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
 
 

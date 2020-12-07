@@ -98,6 +98,16 @@
                                 authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations | translate}}</a>
                             </li>
+                            <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}" class="hidden-xs" *ngIf="!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                               authenticationService.isVendor() || authenticationService.isVendorPartner())">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}" (click)="activateTab('leadPipelines');clearCustomResponse()"> {{properties.leadPipelines | translate}}</a>
+                            </li>
+                            <li [ngClass]="{'active-tab': activeTabName == 'dealPipelines'}" class="hidden-xs"
+                                *ngIf="!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                                authenticationService.isVendor() || authenticationService.isVendorPartner())">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealPipelines'}"
+                                    (click)="activateTab('dealPipelines');clearCustomResponse()"> {{properties.dealPipelines | translate}}</a>
+                            </li>
                             <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || 
                                         authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
                                         authenticationService.isOnlyPartner() || roleNames=='Partner'">
@@ -564,6 +574,100 @@
 												</div>
                                         </div>
                                     </div>
+
+                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'leadPipelines' || activeTabName == 'dealPipelines'}">
+                                        <ng-container>
+                                            <app-response-message class="pg8" [customResponse]="pipelineResponse" *ngIf="pipelineResponse.isVisible">
+                                            </app-response-message>
+                                            <div class="portlet-title" style="border-bottom: none;">
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-12 col-lg-12">
+                                                        <div class="col-xs-12 col-sm-5 col-lg-5 p0">
+                                                             <button class="add-button-xamplify"  (click)="addPipeline()" translate>Create Pipeline</button>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-7 col-lg-7 p0">
+                                                            <div class="page-toolbar">
+                                                                <div class="btn-group pull-right">
+                                                                    <div class="inputs float-right" style="display: inline-flex;">                                                                        
+                                                                        <div class="portlet-input input-inline" id="search-div">
+                                                                            <div class="input-icon right" id="icon">
+                                                                                <input type="text" id="sort-text" class="form-control" [(ngModel)]="pipelineSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="pipelineEventHandler($event.keyCode)">
+                                                                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pipelineSortOption.searchKey" (click)="pipelineSortOption.searchKey='';searchPipelines();"></button>
+                                                                                <button type="submit" class="search-box-item-click" (click)="searchPipelines()">
+                                                                                    <i class="fa fa-search"
+                                                                                        aria-hidden="true"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 p0" style="padding-top: 10px !important;">
+                                                            <table class='table tgrid' id="pipeline-list">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th ><span>Name</span></th>
+                                                                        <th>Created By</th> 
+                                                                        <th>Stages</th>                                                                        
+                                                                        <th style="text-align:right">Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr *ngFor="let pipeline of pipelinePagination.pagedItems ;let i =index" id="pipeline_{{pipeline.id}}">
+                                                                        <!-- <td class="custom-icon-width">
+                                                                            <i class="{{category.icon}}" aria-hidden="true" id="fa-custom-width"></i>
+                                                                        </td> -->
+                                                                        <td><i class="fa fa-sort-amount-asc" style="margin-right:10px;display: inline-block;
+                                                                            border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i><span>{{pipeline.name}}</span></td>                                                                        
+                                                                        <td>
+                                                                            <h5 class='ellipsis' title="{{pipeline.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{pipeline.createdByName | slice:0:20}}
+                                                                                <span *ngIf="pipeline.createdByName?.length>20">...</span>
+                                                                              </h5>
+                                                                              <h6 class='m0' style="font-weight: 400;">
+                                                                                <a title="{{pipeline.createdByEmail}}">{{pipeline.createdByEmail | slice:0:30}}</a>
+                                                                                <span *ngIf="pipeline.createdByEmail?.length>30">...</span>
+                                                                              </h6>
+                                                                              <h5 style="font-weight: 600; color: #676767;">
+                                                                                <app-timestamp [isOnlyDate]="false" [dateAndTime]="pipeline.createdTime">
+                                                                                </app-timestamp>
+                                                                              </h5>
+                                                                        </td>
+                                                                        <td>{{pipeline.stages.length}}</td>
+                                                                       <td>
+                                                                            <div class="actions-block override-actions">                                                                                
+                                                                                <ng-container>
+                                                                                    <a data-toggle="tooltip" data-placement="top" title="View" (click)="viewPipeline(pipeline)">
+                                                                                        <i class="fa fa-eye"></i>
+                                                                                    </a>
+                                                                                    <a *ngIf="pipeline.canUpdate" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editPipeline(pipeline)">
+                                                                                        <i class="fa fa-pencil-square-o"></i>
+                                                                                    </a>
+                                                                                    <a *ngIf="pipeline.canDelete" id="template-delete" (click)="confirmDeletePipeline(pipeline)" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                                        <i class="fa fa-trash-o"></i>
+                                                                                    </a>
+                                                                                </ng-container>                                                                                
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>  
+                                                            <div *ngIf="pipelinePagination.pagedItems.length !== 0" class="pg8">
+                                                                <app-pagination [pagination]="pipelinePagination" (notifyParent)="setPipelinePage($event)" (notifyParentDropDown)="listAllPipelines($event)"></app-pagination>
+                                                            </div>
+                                                            <!-- End of 24 -->
+                                                            <div *ngIf="pipelinePagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                                                                <strong translate>No Pipelines Found.</strong>
+                                                            </div>                                                          
+                                                        </div>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>                                            
+                                        </ng-container>
+                                    </div>
+
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'password'}">
                                         <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
                                             <div class="form-group" *ngIf="userData.hasPassword">
@@ -1230,6 +1334,70 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" (click)="closeDeleteCategoryModal()">Cancel</button>
                 <button type="button" class="btn btn-primary" title="Move items to other foler and delete existing folder" [disabled]="selectedCategoryIdForTransferItems==0" (click)="moveAndDeleteCategory()">Move & Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------Add/Edit Pipeline----------->
+<div class="modal fade right" id="addPipelineModalPopup" tabindex="-1" role="dialog" aria-labelledby="addPipelineModalPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closePipelineModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h4 class="modal-title text-center">{{pipelineModalTitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <app-dashboard-loader *ngIf="addPipelineLoader.isLoading"></app-dashboard-loader>
+                <app-response-message class="pg8" [customResponse]="pipelineModalResponse" *ngIf="pipelineModalResponse.isVisible">
+                </app-response-message>
+                <ng-container *ngIf="!addPipelineLoader.isLoading" >
+                    <div class="form-group" id="pipelineNameDiv">
+                        <label>Name of the Pipeline<font class="required">*</font></label>
+                        <input type="text" [disabled]="pipelinePreview" [(ngModel)]="pipeline.name" class="form-control" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validatePipelineName(pipeline.name)" (keydown)="pipelineSumbitOnEnter($event)"> 
+                        <span *ngIf="!pipeline.isValidName" class="required">{{pipelineNameErrorMessage}}</span>
+                        <!-- <input type="text" class="form-control" [(ngModel)]="pipeline.name" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validateCategoryNames(category.name)" >
+                        <span *ngIf="!pipeline.isValid" class="required">{{PipelineNameErrorMessage}}</span> -->
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
+                        data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
+                    </div>
+                    <div class="form-group" id="pipelineStageDiv">
+                        <label>Stages</label>
+                        <span *ngIf="!pipeline.isValidStage" class="required">{{pipelineStageErrorMessage}}</span>
+                        <ul id="sortable" [dragula]='"pipelineStagesDragula"' class="list-group" [dragulaModel]='pipeline.stages'>
+                            <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
+                                <li class="list-group-item" id="stage{{x}}">
+                                    <span class="fa fa-ellipsis-v"></span>
+                                    <input type="text" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name" style="width: 260px;
+                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)" (keydown)="pipelineSumbitOnEnter($event)">
+                                    <input type="radio" [disabled]="pipelinePreview" [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
+                                    <span style="margin-right: 5px;">Default</span> 
+                                    <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview" >
+                                        <option value="markAs">Mark as</option>
+                                        <option value="won">Won</option>
+                                        <option value="lost">Lost</option>
+                                        <option value="none">None</option>
+                                    </select>
+                                    <button type="button" *ngIf="x != 0 && !pipelinePreview"  class="btn-danger button-blue" (click)="deleteStage(x)"
+                                    style="float: right;" [disabled]="!pipelineStage.canDelete"><span class="glyphicon glyphicon-trash"></span></button>
+                                </li>
+                            </ng-container>                            
+                          </ul>
+                    </div>
+                    <div class="form-group" *ngIf="!pipelinePreview">
+                        <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px;width: 90px;" (click)="addStage()" >
+                            <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Stage
+                        </a>
+                    </div>
+                </ng-container>
+            </div> 
+            <div class="modal-footer" *ngIf="!pipelinePreview">
+                <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading" class="btn green-haze" (click)="saveOrUpdatePipeline()">Submit</button>
+                <!-- <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading " class="btn green-haze" (click)="saveOrUpdatePipeline()">Submit</button> -->
             </div>
         </div>
     </div>

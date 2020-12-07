@@ -340,6 +340,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
     saveAsCampaign() {
       const campaignData = this.setSaveCampaignData();
+      campaignData.userId = this.loggedInUserId;
       this.campaignService.saveAsCampaign(campaignData)
         .subscribe(data => {
         	if(data.access){
@@ -1245,7 +1246,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   }
   navigatePreviewPartners(campaign: any) {
     $('#myModal').modal('hide');
-    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + "/downloadAnalytics"]);
+    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + "/plc"]);
   }
   
   showLandingPagePreview(campaign:Campaign){

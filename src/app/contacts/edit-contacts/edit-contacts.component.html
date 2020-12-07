@@ -191,20 +191,20 @@
 															<li><a *ngIf="selectedAddContactsOption != 8 && !isSegmentation" id="save_button" (click)="saveContacts()">Save
 															</a></li>
 															<li><a id="saveAs_button"
-																*ngIf=" (selectedAddContactsOption == 8) && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')"
+																*ngIf=" (selectedAddContactsOption == 8) && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST'))"
 																(click)="saveAs(true)" translate>Save As </a></li>
 															<li><a id="exportToExcel"
-																*ngIf="selectedAddContactsOption == 8 && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')"
+																*ngIf="selectedAddContactsOption == 8 && (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"
 																(click)="hasAccess()" translate>Export To Excel</a></li>
 															<li><a id="download_empy_csv"
-																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8 && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')" translate>Download CSV Template</a></li>
+																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))" translate>Download CSV Template</a></li>
 															<li><a id="delete_button"
 																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')"
 																(click)="showAlert(selectedContactListId)" translate> Delete</a></li>
 														</ul>
 													</div>
 													</div>
-										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0 && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') "
+										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0 && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) "
 															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070" translate>
 															Save As<!-- <i class="fa fa-save"></i> -->
 														</button>
@@ -817,17 +817,16 @@
 										Undeliverable {{checkingContactTypeName}} List</span>
 								</div>
 								<div class="btn-group pull-right"
-									style="margin-top: 4px; color: #000000;"
-									*ngIf="contactsByType.selectedCategory == 'invalid'">
+									style="margin-top: 4px; color: #000000;">
 									<span class="dropdown-toggle" data-toggle="dropdown" style="color: #FFF; box-shadow:none; margin-top: 8px; float:right;">
 										<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 									</span>
 									<ul class="dropdown-menu pull-right">
 										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a id="delete_button"
 											(click)="invalidContactsShowAlert()" translate> Delete </a></li>
-										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
+										<!-- <li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
 													id="validate_email_button" (click)="validateUndeliverableContacts()" translate>
-													Mark as valid email(s) </a></li>
+													Mark as valid email(s) </a></li> -->
 										<li><a id="export_button"
 										(click) = "hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a></li>
 									</ul>
@@ -908,11 +907,13 @@
 													<!-- 	<th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
-														<th class="text-center hidden-xs" *ngIf="gdprStatus || isPartner"></th>
+														<th class="text-center hidden-xs" *ngIf="contactsByType.selectedCategory !== 'invalid' && (gdprStatus || isPartner)"></th>
 														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Reason</th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%" translate>ACTIONS</th>
-												<!-- <th>MORE</th> -->
-												<th *ngIf="!isPartner"></th>
+                        <!-- <th>MORE</th> -->
+                        <th *ngIf="contactsByType.selectedCategory === 'invalid'">Actions</th>
+                        <th *ngIf="!isPartner"></th>
+
 											</tr>
 										</thead>
 										<tbody>
@@ -976,7 +977,12 @@
 														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 												</td>
 												<td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td>
-												<td align="center">
+
+                        <td *ngIf="contactsByType.selectedCategory =='invalid'">
+                          <span class="markas" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
+                          </td>
+
+                        <td align="center">
                            							<button id='more_less_button_{{i}}'
 																(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
 																<span *ngIf="!allcontacts.isShowDetails" translate>More</span> <span

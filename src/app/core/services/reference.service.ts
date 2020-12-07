@@ -363,6 +363,10 @@ export class ReferenceService {
 	$('#'+divId).animate({ scrollTop: 0 }, 'slow');
 	}
 
+	scrollToModalBodyTopByClass(){
+		$('.modal-body').animate({ scrollTop: 0 }, 'slow');
+	}
+
 	removeSelectedObjectFromList(arrayList: any, id: any) {
 		for (let i = 0; i < arrayList.length; i++) {
 			if (arrayList[i].id === id) { arrayList.splice(i, 1); break; }
@@ -2005,8 +2009,6 @@ export class ReferenceService {
 				let width = this.startWidth + (event.x - this.startX);
 				$(this.start).parent().css({ 'min-width': width, 'max-   width': width });
 				let index = $(this.start).parent().index() + columnPosition;
-				console.log(tableId);
-				console.log(index);
 				$('#' + tableId + ' tr td:nth-child(' + index + ')').css({ 'min-width': width, 'max-width': width });
 			}
 		});
@@ -2134,6 +2136,11 @@ export class ReferenceService {
 	  });
 	  document.body.appendChild(mapForm);
 	  mapForm.submit();
+	}
+
+	setModalPopupProperties(){
+		$('.modal .modal-body').css('overflow-y', 'auto');
+		$('.modal .modal-body').css('max-height', $(window).height() * 0.75);
 	}
 
 

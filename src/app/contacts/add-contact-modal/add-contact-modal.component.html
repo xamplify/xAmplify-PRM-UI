@@ -11,8 +11,9 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
     <div class="modal-body">
       <form class="form-horizontal" autocomplete="off">
-      
-       <div class="form-group" *ngIf="isPartner">
+
+       <div class="form-group" *ngIf="isPartner && !isAssignLeads">
+
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
             <span class="star"> *</span>
           </label>
@@ -23,7 +24,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <div class="textCss"></div>
           </div>
         </div>
-      
+
       <div class="form-group">
             <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
                 <span class="star"> *</span>
@@ -56,7 +57,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <div class="textCss"></div>
           </div>
         </div>
-        
         <div class="form-group" *ngIf="!isPartner">
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
             <!-- <span class="star"> *</span> -->
@@ -76,7 +76,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           </label>
           <div class="form-group col-xs-10 col-sm-10" >
             <input type="number" min="0" style="border: none" class="form-control padding-mobile" id="contactsLimit"
-              [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1" 
+              [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1"
               oninput="validity.valid||(value='');" (input)="validteContactsCount(addContactuser.contactsLimit)">
             <div class="textCss"></div>
             <p><strong translate>(Minimum 1) </strong></p>
@@ -88,14 +88,14 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         </label>
         <div class="form-group col-xs-10 col-sm-10">
           <input type="name" style="border: none" class="form-control padding-mobile currency" id="mdfAmount"
-            [(ngModel)]="addContactuser.mdfAmount"  [ngModelOptions]="{standalone: true}" 
-            placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }" 
+            [(ngModel)]="addContactuser.mdfAmount"  [ngModelOptions]="{standalone: true}"
+            placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }"
            >
           <div class="textCss"></div>
         </div>
       </div> -->
         </ng-container>
-        
+
 
         <!-- ------------Legal Basis------------ -->
         <div class="form-group" *ngIf="gdprStatus">
@@ -227,7 +227,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           <!-- <div class="row"> -->
             <div class="col-xs-10 col-sm-10 p0">
               <!-- <int-phone-prefix [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}" placeholder="Enter your mobile no"></int-phone-prefix> -->
-            <input type="email" style="border: none" class="form-control padding-mobile" 
+            <input type="email" style="border: none" class="form-control padding-mobile"
               [(ngModel)]="addContactuser.mobileNumber"  [ngModelOptions]="{standalone: true}"
               placeholder="Enter your mobile no" maxlength="20">
             <div class="textCss"></div>
@@ -266,12 +266,9 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>
-      <!--  <div class="modal-footer" style="border:none" *ngIf="isAssignLeads">
-      <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
-      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
-      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Save</button>
-      <button  *ngIf="isAssignLeads && isUpdateUser" type="submit" class="btn green" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
-    </div>-->
+
+     
+
   </div>
 </div>
 </div>

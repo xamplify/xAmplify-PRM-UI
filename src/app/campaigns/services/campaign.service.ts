@@ -1016,6 +1016,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+
+    listCampaignPipelines(userId: number) {
+        return this.http.get(this.URL + "/pipeline/campaign/" + userId + "/list?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData) .catch(this.handleError);
+    }
+
     listDownloadOrOpenedHistory(pagination:Pagination,viewType:string){
         let url = "";
         if(viewType=="tda"){
@@ -1028,6 +1034,11 @@ export class CampaignService {
     
     viewDownloadHistoryForPartners(pagination:Pagination){
         return this.utilPostPaginationMethod("campaign/viewDownloadedTemplateHistoryForPartner",pagination)
+    }
+
+    getPublicEventCampaignAlias(campaignId:number){
+        return this.http.get(this.URL + "/campaign/getPublicEventCampaignAlias/" + campaignId + "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData) .catch(this.handleError);
     }
     
     private utilPostPaginationMethod(url:string,pagination:Pagination){

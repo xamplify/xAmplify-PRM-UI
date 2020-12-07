@@ -1,8 +1,8 @@
 <div>
-  <div  *ngIf="isLoading" class="image-loader">
-    <img src="assets/images/image-loader.gif" alt="No image" />
+  <div  *ngIf="loading" class="image-loader">
+    <img src="assets/images/image-loader.gif" alt="No image" class="center-image"/>
   </div>
-  <img id="preview" alt="No image" [src]=image [ngStyle]="{visibility:isLoading?'hidden':''}"
-  (load)="hideLoader()" (error)="hideLoader()"/>
+<!--   [ngStyle]="{visibility:loading?'hidden':''}"
+ -->  <img id="preview" alt="No image" [src]=image  (load)="hideLoader()" (error)="hideLoader()"/>
   </div>
   

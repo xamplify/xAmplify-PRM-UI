@@ -93,6 +93,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     modulesDisplayType = new ModulesDisplayType();
     exportObject:any = {};
     templateEmailOpenedAnalyticsAccess = false;
+    modalPopupLoader = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
@@ -140,12 +141,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     listCampaign(pagination: Pagination) {
         this.isloading = true;
+        this.refService.goToTop();
         this.refService.loading(this.httpRequestLoader, true);
         pagination.searchKey = this.searchKey;
         if(this.pagination.teamMemberAnalytics){
             this.pagination.teamMemberId = this.teamMemberId;
         }
-
         //Added by Vivek for Vanity URL
         if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
             this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -597,15 +598,26 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     
     openEventUrlModal(campaign:Campaign){
+        this.modalPopupLoader = true;
+        this.publicEventAliasUrl = "";
+        this.publicEventAlias = "";
         this.copiedLinkCustomResponse = new CustomResponse();
-        this.publicEventAlias = campaign.publicEventAlias;
-        if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {           
-            this.publicEventAliasUrl = this.authenticationService.vanityURLink + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
-          }else{              
-            this.publicEventAliasUrl = this.authenticationService.APP_URL + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
-          }
         $('#public-event-url-modal').modal('show');
-    }
+        this.campaignService.getPublicEventCampaignAlias(campaign.campaignId).
+        subscribe(
+            data =>{
+                this.publicEventAlias = data;
+                if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {           
+                    this.publicEventAliasUrl = this.authenticationService.vanityURLink + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
+                  }else{              
+                    this.publicEventAliasUrl = this.authenticationService.APP_URL + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
+                  }
+                  this.modalPopupLoader = false;
+            },_error =>{
+                this.modalPopupLoader = false;
+                this.copiedLinkCustomResponse = new CustomResponse('ERROR','Please try after sometime',true);
+            });
+        }
     copyUrl(inputElement){
         this.copiedLinkCustomResponse = new CustomResponse();
         inputElement.select();

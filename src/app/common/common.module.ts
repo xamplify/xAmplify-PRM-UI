@@ -72,10 +72,16 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
+
+import { AddLeadComponent } from '../leads/add-lead/add-lead.component';
+//import { AddDealComponent } from '../deals/add-deal/add-deal.component';
+//import { SfDealComponent } from '../deal-registration/sf-deal/sf-deal.component';
+
 import { BeeTemplateUtilComponent } from 'app/util/bee-template-util/bee-template-util.component';
 import { CampaignTemplateDownloadHistoryComponent } from 'app/campaigns/campaign-template-download-history/campaign-template-download-history.component';
 import { ShareLeadsComponent } from './share-leads/share-leads.component';
 import { ImageLoaderComponent } from './image-loader/image-loader.component';
+
 
 
 
@@ -90,9 +96,10 @@ import { ImageLoaderComponent } from './image-loader/image-loader.component';
 		 LandingPageLoaderComponent, DashboardLoaderComponent,ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, 
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
-		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, DatePickerComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
+		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent,
 		ImageLoaderComponent],
+
 
 
     exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,TagInputModule,
@@ -104,8 +111,9 @@ import { ImageLoaderComponent } from './image-loader/image-loader.component';
 		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent, 
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
-		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent,DatePickerComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
+		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent,DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent,ImageLoaderComponent]
+
 
 })
 export class CommonComponentModule { }

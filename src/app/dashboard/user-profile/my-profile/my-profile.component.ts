@@ -26,6 +26,7 @@ import { DealRegistrationService } from '../../../deal-registration/services/dea
 import { DashboardService } from '../../dashboard.service';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../models/gdpr-setting';
+
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { Category } from '../../models/category';
@@ -40,6 +41,10 @@ import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-temp
 
 import { SocialPagerService } from '../../../contacts/services/social-pager.service';
 import { PaginationComponent } from '../../../common/pagination/pagination.component';
+
+import { DragulaService } from 'ng2-dragula';
+import { Pipeline } from '../../models/pipeline';
+import { PipelineStage } from '../../models/pipeline-stage';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -182,17 +187,40 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     paginatedSelectedIds = [];
     isHeaderCheckBoxChecked: boolean = false;
     requiredCfIds = [];
+
+    pipelineModalTitle = "Add a Pipeline";
+    pipelineResponse: CustomResponse = new CustomResponse();
+    pipelineModalResponse: CustomResponse = new CustomResponse();
+    addPipelineLoader: HttpRequestLoader = new HttpRequestLoader();
+    pipeline: Pipeline = new Pipeline();
+    defaultStageIndex: number = 0;  
+    pipelineType: string = 'LEAD';  
+    //pipelines = [];
+    pipelinePagination: Pagination = new Pagination();
+    pipelineSortOption: SortOption = new SortOption();
+    pipelineNameErrorMessage = "";
+    pipelineStageErrorMessage = "";
+    requiredStageMessage = "Required atleast one valid stage.";
+    pipelinePreview = false;
     
     constructor(public videoFileService: VideoFileService,  public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService,
-        private hubSpotService: HubSpotService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
+        public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
+        private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
             PagerService,private renderer:Renderer, private translateService: TranslateService) {
                 this.referenceService.renderer = this.renderer;
                 this.isUser = this.authenticationService.isOnlyUser();     
-                this.pageNumber = this.paginationComponent.numberPerPage[0];   
+                this.pageNumber = this.paginationComponent.numberPerPage[0];  
+                dragulaService.setOptions('pipelineStagesDragula', {})
+                dragulaService.dropModel.subscribe((value) => {
+                    this.onDropModel(value);
+                }); 
     }
+
+    private onDropModel(args) {
+    }
+
     cropperSettings() {
         this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
         this.circleCropperSettings.noFileInput = true;
@@ -397,6 +425,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             if(this.authenticationService.vanityURLEnabled){
                 this.setSubjectLineTooltipText();
             }
+            this.addDefaultPipelineStages();            
         } catch (error) {
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
@@ -1405,7 +1434,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     checkIntegrations(): any {
-        this.dashBoardServiece.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
+        this.dashBoardService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
             if (response.statusCode == 8000) {
                 this.integrateRibbonText = "configured";
                 this.isMarketoProcess = response.data.isProcessing;
@@ -1486,7 +1515,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.activeTabHeader = 'Dashboard Buttons';
         }else if(this.activeTabName=="templates"){
             this.activeTabHeader = 'Your Templates';
+        }else if(this.activeTabName=="leadPipelines"){
+            this.activeTabHeader = this.properties.leadPipelines;
+            this.pipelinePagination = new Pagination();
+            this.listAllPipelines(this.pipelinePagination);
+        }else if(this.activeTabName=="dealPipelines"){
+            this.activeTabHeader = this.properties.dealPipelines;
+            this.pipelinePagination = new Pagination();
+            this.listAllPipelines(this.pipelinePagination);
         }
+
         this.referenceService.goToTop();
     }
 
@@ -1495,6 +1533,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         $('.profile-video').remove();
         $('.h-video').remove();
         this.referenceService.defaulgVideoMethodCalled = false;
+        this.dragulaService.destroy('pipelineStagesDragula');
     }
 
     configHubSpot() {
@@ -1729,7 +1768,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveOrUpdateCategory();
         }
     }
-
 
     listExistingCategoryNames() {
         this.userService.listExistingCategoryNames(this.referenceService.companyId)
@@ -2195,6 +2233,317 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         event.stopPropagation();
     }
+
+    addPipeline() {          
+        this.pipelineModalTitle = "Add a Pipeline"; 
+        $('#addPipelineModalPopup').modal('show');                
+    }
+
+    viewPipeline(pipelineToView: Pipeline) {   
+        let self = this;              
+        this.pipelineModalTitle = "View Pipeline";
+        $('#addPipelineModalPopup').modal('show');
+        this.referenceService.startLoader(this.addPipelineLoader);
+        this.pipelinePreview = true;
+        this.getPipeline(pipelineToView);
+    }
+
+    editPipeline(pipeline: Pipeline) { 
+        this.pipelineModalTitle = "Edit Pipeline";
+        $('#addPipelineModalPopup').modal('show');
+        this.referenceService.startLoader(this.addPipelineLoader);
+        this.getPipeline(pipeline);       
+    }
+
+    getPipeline(pipeline: Pipeline) {
+        let self = this;  
+        this.dashBoardService.getPipeline(pipeline.id, this.loggedInUserId)
+        .subscribe(
+            data => {
+                this.ngxloading = false;
+                if(data.statusCode==200){                   
+                    self.pipeline =  data.data; 
+                    let orderedStages = new Array<PipelineStage>();
+                    self.pipeline.stages.forEach(function (stage, index)  {
+                        if (stage.won === true) {
+                            stage.markAs = "won";
+                        } else if (stage.lost === true) {
+                            stage.markAs = "lost";
+                        } else {
+                            stage.markAs = "markAs"
+                        }                       
+                        orderedStages[stage.displayIndex - 1] = stage;
+                        if (stage.defaultStage === true) {
+                            self.defaultStageIndex = stage.displayIndex - 1;
+                        }
+                       });  
+                       self.pipeline.stages = orderedStages;
+                       self.pipeline.isValidStage =  true;
+                       self.pipeline.isValidName = true;
+                       self.pipeline.isValid = true;
+                } else { 
+                    this.closePipelineModal();
+                    this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
+                }
+                this.referenceService.stopLoader(this.addPipelineLoader);
+            },
+            error => {
+                this.ngxloading = false;
+                },
+            () => { }
+        );
+    }
+
+    closePipelineModal() {
+        $('#addPipelineModalPopup').modal('hide');
+        this.referenceService.stopLoader(this.addPipelineLoader);
+        this.pipelineModalResponse = new CustomResponse();
+        this.pipeline = new Pipeline();
+        this.addDefaultPipelineStages();
+        this.removePipelineNameErrorClass();
+        this.removePipelineStageErrorClass();
+        this.defaultStageIndex = 0;
+        this.pipelineType = 'LEAD';
+        this.pipeline.isValid = false;
+        this.pipeline.isValidStage = false;
+        this.pipeline.isValidName = false;
+        this.pipelinePreview = false;
+    }
+
+    validatePipelineName(name: string) {
+        if ($.trim(name).length > 0) {
+            this.removePipelineNameErrorClass(); 
+            this.pipeline.isValid = this.pipeline.isValidName && this.pipeline.isValidStage;                       
+        } else {
+            this.addPipelineNameErrorMessage(this.requiredMessage);
+        }
+    }
+
+    validateStage(stageName: string){
+        if ($.trim(stageName).length > 0) {
+            this.removePipelineStageErrorClass();
+            this.pipeline.isValid = this.pipeline.isValidName && this.pipeline.isValidStage;            
+        } else {
+            let validStages = false;
+            this.pipeline.stages.forEach(function (stage, index) {
+                if (($.trim(stage.stageName).length > 0)) {
+                    validStages = true;
+                }
+            });
+            if (!validStages) {
+                this.addPipelineStageErrorMessage(this.requiredStageMessage);
+            }            
+        }
+    }
+
+    addPipelineNameErrorMessage(errorMessage: string) {
+        this.pipeline.isValidName = false;
+        this.pipeline.isValid = false;
+        $('#pipelineNameDiv').addClass(this.formErrorClass);
+        this.pipelineNameErrorMessage = errorMessage;
+    }
+
+    addPipelineStageErrorMessage(errorMessage: string) {
+        this.pipeline.isValidStage = false;
+        this.pipeline.isValid = false;
+        $('#pipelineStageDiv').addClass(this.formErrorClass);
+        this.pipelineStageErrorMessage = errorMessage;
+    }
+
+    removePipelineNameErrorClass() {
+        $('#pipelineNameDiv').removeClass(this.formErrorClass);
+        $('#pipelineNameDiv').addClass(this.defaultFormClass);
+        this.pipeline.isValidName = true;
+        this.pipelineResponse = new CustomResponse();
+        this.pipelineNameErrorMessage = "";
+    }
+
+    removePipelineStageErrorClass() {
+        $('#pipelineStageDiv').removeClass(this.formErrorClass);
+        $('#pipelineStageDiv').addClass(this.defaultFormClass);
+        this.pipeline.isValidStage = true;        
+        this.pipelineResponse = new CustomResponse();
+        this.pipelineStageErrorMessage = "";
+
+    }
+
+    pipelineSumbitOnEnter(event: any) {
+        if (event.keyCode == 13 && this.pipeline.isValid) {
+            this.saveOrUpdatePipeline();
+        }
+    }
+
+    saveOrUpdatePipeline() {
+        //this.referenceService.startLoader(this.addPipelineLoader);  
+        let self = this;      
+        this.pipeline.userId = this.loggedInUserId;
+        if (this.activeTabName=="leadPipelines") {
+            this.pipeline.type = "LEAD";
+        } else if (this.activeTabName=="dealPipelines") {
+            this.pipeline.type = "DEAL";
+        }    
+        let removeIndices = new Array();    
+        this.pipeline.stages.forEach(function (stage, index)  {            
+            if (stage.stageName !== undefined && $.trim(stage.stageName).length > 0) {
+                if (stage.markAs === "won") {
+                    stage.won = true;
+                } else if (stage.markAs === "lost") {
+                    stage.lost = true;
+                } else {
+                    stage.won = false;
+                    stage.lost = false;
+                }
+                stage.defaultStage = false;
+            } else {
+                removeIndices.push(index);
+            }            
+           });
+
+           for (let i = removeIndices.length-1; i>=0; i--) {
+                self.pipeline.stages.splice(removeIndices[i], 1);
+           }
+        //    removeIndices.forEach(function(removeIndex, index) {
+        //     self.pipeline.stages.splice(removeIndex, 1);
+        //    });
+           this.pipeline.stages[this.defaultStageIndex].defaultStage = true;
+           console.log(this.pipeline);
+        
+        this.dashBoardService.saveOrUpdatePipeline(this.pipeline)
+        .subscribe(
+            data => {
+                this.ngxloading = false;
+                if(data.statusCode==200){                      
+                    this.closePipelineModal();
+                    this.pipelineResponse = new CustomResponse('SUCCESS', "Pipeline Submitted Successfully", true);
+                    this.listAllPipelines(this.pipelinePagination);              
+                } else if (data.statusCode==500) {
+                    this.pipelineModalResponse = new CustomResponse('ERROR', data.message, true);
+                }
+            },
+            error => {
+                this.ngxloading = false;
+                },
+            () => { }
+        );     
+    }
+
+    addDefaultPipelineStages() {        
+        for(var i = 0; i < 4; i++){
+            this.addStage();
+         }        
+    }
+
+    deleteStage(divIndex: number) {
+        this.pipeline.stages.splice(divIndex, 1);
+    }
+
+    addStage() {
+        let pipelineStage = new PipelineStage();
+        pipelineStage.markAs = "markAs";
+        pipelineStage.canDelete = true;
+        this.pipeline.stages.push(pipelineStage);
+    }
+
+    listAllPipelines(pagination: Pagination) {
+        let type:string;
+        if (this.activeTabName=="leadPipelines") {
+            type = "LEAD";
+        } else if (this.activeTabName=="dealPipelines") {
+            type = "DEAL";
+        }
+        pagination.userId = this.loggedInUserId;
+        pagination.pipelineType = type;
+        this.dashBoardService.listAllPipelines(pagination)
+        .subscribe(
+            response => {
+                this.ngxloading = false;
+               // this.pipelines = response.data; 
+                pagination.totalRecords = response.totalRecords;
+                this.pipelineSortOption.totalRecords = response.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, response.data);
+            },
+            error => {
+                this.ngxloading = false;
+                },
+            () => { }
+        );    
+    }   
+
+    confirmDeletePipeline (pipeline: Pipeline) {
+        try {
+            let self = this;
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
+                type: 'warning',
+                showCancelButton: true,
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then(function () {
+                self.deletePipeline(pipeline);
+            }, function (dismiss: any) {
+                console.log('you clicked on option' + dismiss);
+            });
+        } catch (error) {
+            this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+            this.referenceService.showServerError(this.httpRequestLoader);
+        }
+
+    }
+
+    deletePipeline (pipeline: Pipeline) {
+        pipeline.userId = this.loggedInUserId;
+        this.pipelineResponse = new CustomResponse();
+        this.referenceService.goToTop();
+        this.dashBoardService.deletePipeline(pipeline)
+            .subscribe(
+                (response: any) => {
+                    // this.closeDeleteCategoryModal();
+                    if (response.statusCode == 200) {
+                        let message = pipeline.name + " Deleted Successfully";
+                        this.pipelineResponse = new CustomResponse('SUCCESS', message, true);                        
+                        this.pipelinePagination.pageIndex = 1;
+                        this.listAllPipelines(this.pipelinePagination);
+                    } else if (response.statusCode == 400) {
+                        this.pipelineResponse = new CustomResponse('ERROR', response.message, true); 
+                    }
+                },
+                (error: string) => {
+                    this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+                    this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+                }                
+            );
+    }
+
     
+    /*************************Search********************** */
+    searchPipelines() {
+        this.getAllFilteredResultsPipeline(this.pipelinePagination);
+    }
+
+    pipelinePaginationDropdown(items: any) {
+        this.pipelineSortOption.itemsSize = items;
+        this.getAllFilteredResults(this.pipelinePagination);
+    }
+
+    /************Page************** */
+    setPipelinePage(event: any) {
+        this.pipelineResponse = new CustomResponse();
+        this.customResponse = new CustomResponse();
+        this.pipelinePagination.pageIndex = event.page;
+        this.listAllPipelines(this.pipelinePagination);
+    }
+
+    getAllFilteredResultsPipeline(pagination: Pagination) {
+        this.pipelineResponse = new CustomResponse();
+        this.customResponse = new CustomResponse();
+        this.pipelinePagination.pageIndex = 1;
+        this.pipelinePagination.searchKey = this.pipelineSortOption.searchKey;
+        //this.pipelinePagination = this.utilService.sortOptionValues(this.pipelineSortOption.selectedCategoryDropDownOption, this.pipelinePagination);
+        this.listAllPipelines(this.pipelinePagination);
+    }
+    pipelineEventHandler(keyCode: any) { if (keyCode === 13) { this.searchPipelines(); } }
     
 }

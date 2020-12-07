@@ -44,6 +44,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Category as folder } from 'app/dashboard/models/category';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { Pipeline } from 'app/dashboard/models/pipeline';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -108,6 +109,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     fromEmaiDivClass:string = this.formGroupClass;
     preHeaderDivClass:string = this.formGroupClass;
     messageDivClass:string = this.formGroupClass;
+    leadPipelineClass:string = this.formGroupClass;
+    dealPipelineClass:string = this.formGroupClass;
     campaignType:string = "";
     isCampaignDetailsFormValid:boolean = false;
     channelCampaignFieldName:string = "";
@@ -270,6 +273,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      senderMergeTag:SenderMergeTag = new SenderMergeTag();
      isPushToCrm = false;
 
+     leadPipelines = new Array<Pipeline>();
+     dealPipelines = new Array<Pipeline>();
+
      /************Filter Folder*****************/
     public selectedFolderIds= [];
     public emailTemplateFolders:Array<folder>;
@@ -372,16 +378,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.getCampaignUrls(this.campaign);
             this.contactsPagination.campaignId = this.campaign.campaignId;
             /******************Campaign Details Tab**************************/
-            var campaignNameLength= $.trim(this.campaign.campaignName).length;
-            var fromNameLength = $.trim(this.campaign.fromName).length;
-            var subjectLineLength = $.trim(this.campaign.subjectLine).length;
-            var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
+            // var campaignNameLength= $.trim(this.campaign.campaignName).length;
+            // var fromNameLength = $.trim(this.campaign.fromName).length;
+            // var subjectLineLength = $.trim(this.campaign.subjectLine).length;
+            // var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
             
-            if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0 && this.isValidCrmOption){
-                this.isCampaignDetailsFormValid = true;
-            }else{
-                this.isCampaignDetailsFormValid = false;
-            }
+            // if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0 && this.isValidCrmOption){
+            //     this.isCampaignDetailsFormValid = true;
+            // }else{
+            //     this.isCampaignDetailsFormValid = false;
+            // }
+            this.validateForm();
             /***********Select Video Tab*************************/
             if(this.campaign.partnerVideoSelected || this.isOnlyPartner){
                 this.partnerVideosClass = this.tabClassActive;
@@ -652,6 +659,26 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.listAllTeamMemberEmailIds();
         /***********Load Email Template Filters/LandingPages Filter Data********/
         this.listEmailTemplateOrLandingPageFolders();
+        this.listCampaignPipelines();
+        this.campaign.leadPipelineId = 0;
+        this.campaign.dealPipelineId = 0;
+    }
+
+    listCampaignPipelines() {
+        this.campaignService.listCampaignPipelines(this.loggedInUserId)
+        .subscribe(
+        response => {           
+          if(response.statusCode==200){
+            let data = response.data;  
+            this.leadPipelines = data.leadPipelines;
+            this.dealPipelines = data.dealPipelines;                    
+           }            
+        },
+        error => {
+            this.httpRequestLoader.isServerError = true;
+            },
+        () => { }
+    );
     }
 
     listCategories(){
@@ -767,7 +794,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isValidCampaignName:boolean = true;
      validateForm() {
          var isValid = true;
-         let self = this;
         $('#campaignDetailsForm input[type="text"]').each(function() {
             if ($.trim($(this).val())== '' ){
               isValid = false;
@@ -780,6 +806,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 isValid = true;
             else
                 isValid = false;
+        }
+
+        if (isValid && this.enableLeads && (this.campaign.channelCampaign || this.showMarketingAutomationOption)) {
+            if (this.campaign.leadPipelineId != undefined && this.campaign.leadPipelineId > 0) {
+                isValid =  true;
+            } else {
+                isValid = false;
+            }
+
+            if (this.campaign.dealPipelineId != undefined && this.campaign.dealPipelineId > 0) {
+                isValid = true;
+            } else {
+                isValid = false;
+            }
         }
         
         if(isValid && this.isValidCampaignName){
@@ -800,7 +840,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
             
         }
-        
         console.log("is Valid Form"+this.isCampaignDetailsFormValid);
       }
      validateEmail(emailId:string){
@@ -876,7 +915,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              }else{
                  this.smsTextDivClass = errorClass;
              }
-         }
+         }else if(fieldId=="leadPipelineid"){
+            if(fieldValue>0){
+                this.leadPipelineClass = successClass;
+            }else{
+                this.leadPipelineClass = errorClass;
+            }
+        }
      }
      
      validatePushToCRM(){
@@ -2154,7 +2199,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'smsText':this.smsText,
             'landingPageId':this.selectedLandingPageRow,
             'vanityUrlDomainName':vanityUrlDomainName,
-            'vanityUrlCampaign':vanityUrlCampaign
+            'vanityUrlCampaign':vanityUrlCampaign,
+            'leadPipelineId': this.campaign.leadPipelineId,
+            'dealPipelineId': this.campaign.dealPipelineId,
         };
         return data;
     }

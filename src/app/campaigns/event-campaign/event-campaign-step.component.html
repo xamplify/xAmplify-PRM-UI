@@ -320,6 +320,34 @@ a.disabled {
                                             </div>
 
 
+											<div class="form-group"
+												*ngIf="(!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads)"
+												[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
+												<label class="control-label col-sm-3">Lead Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" [(ngModel)]="eventCampaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
+														placeholder="leadPipelineId" id="leadPipelineId" (change)="validatePipeline();"
+														[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
+                                                        <option [value]="0">Select Pipeline</option>
+                                                        <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                                    </select>
+                                                </div>
+											</div>
+
+											<div class="form-group"
+												*ngIf="(!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads)"
+												[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
+												<label class="control-label col-sm-3">Deal Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" [(ngModel)]="eventCampaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
+														placeholder="dealPipelineId" id="dealPipelineId" (change)="validatePipeline();"
+														[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
+                                                        <option [value]="0">Select Pipeline</option>
+                                                        <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                                    </select>
+                                                </div>
+											</div>
+
 <!-- 						<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads">
 												<label class="control-label col-sm-3">Push Leads To Marketo</label>
 												<div class="col-sm-9">

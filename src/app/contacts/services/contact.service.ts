@@ -226,6 +226,23 @@ export class ContactService {
         .map(( response: any ) => response.json() )
        .catch( this.handleError);
     }
+    
+    saveAsSharedLeadsList( contactListObject: ContactList ): Observable<any> {
+        var requestoptions = new RequestOptions( {
+            body:  contactListObject
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+    
+        var url = this.contactsUrl +  "/save-as-share-leads/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token ;
+
+        return this._http.post( url, options, requestoptions )
+        .map(( response: any ) => response.json() )
+       .catch( this.handleError);
+    }
 
     updateContactList( contactListId: number, users: Array<User> ): Observable<any> {
         var requestoptions = new RequestOptions( {
@@ -619,6 +636,12 @@ export class ContactService {
 
     displaySfForm(dealId:number){
         return this._http.get( this.authenticationService.REST_URL + "/salesforce/ui/formfields/" + this.authenticationService.getUserId()+"/"+ dealId + "?access_token=" +this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+    getSfForm(companyId: number, dealId:number){
+        return this._http.get( this.authenticationService.REST_URL + "/salesforce/ui/form/" + companyId+"/"+ dealId + "?access_token=" +this.authenticationService.access_token)
             .map( this.extractData )
             .catch( this.handleError );
     }
