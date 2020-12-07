@@ -223,21 +223,15 @@ export class AddDealComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
-            self.deal = data.data;
-            if (self.deal.createdForCompanyId > 0) {
-              self.isSalesForceEnabled();
-            }
-            // if (self.deal.campaignId > 0) {
-            //   self.getCampaignDealPipeline();
-            // } else {
-            //   self.getPipelines();
-            // }
+            self.deal = data.data;            
             if (self.deal.associatedContact != undefined) {
                 self.showContactInfo = true;
                 self.contact = self.deal.associatedContact;
             }
-            self.setCloseDate(data);            
-            this.setFieldErrorStates();
+            self.setCloseDate(data); 
+            if (self.deal.createdForCompanyId > 0) {
+              self.isSalesForceEnabled();
+            } 
           }
         },
         error => {
@@ -324,7 +318,8 @@ export class AddDealComponent implements OnInit {
         error => {
           console.log(error);
         },
-        () => {
+        () => {          
+          this.setFieldErrorStates();
           if (!this.showSfForm) {
             this.showDefaultForm = true;                        
             if (this.edit || this.preview) {
