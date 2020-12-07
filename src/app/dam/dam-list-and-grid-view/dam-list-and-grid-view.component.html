@@ -90,9 +90,6 @@
                               <span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
                               <span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName}}</strong></span>
                            </h6>
-                           <h6 class="moreipsis"*ngIf="!isPartnerView && asset?.beeTemplate && asset?.history">
-                              <span translate> Version <strong>{{asset?.versionInString}}</strong></span>
-                           </h6>
                            <h6 class="moreipsis" *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
                               <span  translate> From <strong>{{asset?.vendorCompanyName | slice:0:20}}</strong>
                                  <strong *ngIf="asset?.vendorCompanyName?.length>20">..</strong>
