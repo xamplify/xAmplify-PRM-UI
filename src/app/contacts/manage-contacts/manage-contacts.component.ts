@@ -1095,7 +1095,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             }
         }
 	}
-	
+
     saveSelectedLeads(listName: string, selectedLegalBasisOptions: any) {
         try {
             this.resetResponse();
@@ -1126,7 +1126,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveSelectedLeads()");
         }
     }
-	
+
     saveAssignedLeadsList(userUserListWrapper: UserUserListWrapper) {
         this.loading = true;
         this.contactService.saveAssignedLeadsList(this.userUserListWrapper)
@@ -1672,7 +1672,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					"State": this.contactsByType.listOfAllContacts[i].state,
 					"Country": this.contactsByType.listOfAllContacts[i].country,
 					"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
-					"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+          "Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+          "Total Campaigns": this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
+          "Active Campaigns": this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
+          "Email Opend": this.contactsByType.listOfAllContacts[i].emailOpenedCount,
+          "Clicked Urls": this.contactsByType.listOfAllContacts[i].clickedUrlsCount,
 					// "Notes": this.contactsByType.listOfAllContacts[i].description
 				}
 
@@ -1804,7 +1808,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.saveAsListName = undefined;
 		this.saveAsTypeList = 'manage-contacts';
 	}
-	
+
     saveAsLeadsInputChecking() {
         try {
             const name = this.saveAsListName;
@@ -1829,10 +1833,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAs()");
         }
 	}
-    
+
     saveAsNewLeadsList(contactSelectedListId: number, contactListName: string) {
     	this.loading = true;
-    	
+
     	let contactListObject = new ContactList;
     	contactListObject.name = contactListName;
     	contactListObject.id = contactSelectedListId;
@@ -1840,7 +1844,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     	contactListObject.contactType = 'ASSIGNED_LEADS_LIST';
     	contactListObject.publicList = true;
     	contactListObject.socialNetwork = 'MANUAL';
-    
+
         this.contactService.saveAsSharedLeadsList(contactListObject)
             .subscribe(
             data => {
@@ -1860,7 +1864,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             },
             (error: any) => {
             	this.loading = false;
-           
+
                 this.xtremandLogger.error(error);
             },
             () => this.xtremandLogger.info("saveAsNewLeadsList() finished")
