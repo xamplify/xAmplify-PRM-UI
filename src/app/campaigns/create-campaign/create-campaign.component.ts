@@ -1571,7 +1571,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /*******************************Preview*************************************/
     contactListItems:any[];
       loadUsers(id:number,pagination:Pagination, ListName){
-         //this.loading = true;
+         this.loading = true;
          if(id==undefined){
               id=this.previewContactListId;
           }else{
@@ -1580,8 +1580,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           this.listName = ListName;
           this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
                   (data:any) => {
-                      console.log(data);
-                      //this.loading = false;
                       console.log(pagination);
                       this.contactListItems = data.listOfUsers;
                       console.log(this.contactListItems);
@@ -1617,6 +1615,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                        html+='</table>';
                       $('#users-modal-body').append(html);
                       $('#usersModal').modal({backdrop: 'static', keyboard: false});
+                      this.loading = false;
                   },
                   error => { this.loading = false; },
                   () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )

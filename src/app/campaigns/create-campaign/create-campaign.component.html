@@ -991,7 +991,6 @@
                                 <li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex" translate>Uploaded
                                 </li>
                                 <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',7)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex" translate>Video Co-Branding</li>
-                                <li class="filter" (click)="filterTemplates('PARTNER',8)" [class.emailtemplate-selected]="8== selectedEmailTemplateTypeIndex" *ngIf="!isOnlyPartner && isPartnerToo" translate>Partner</li>
                             </ul>
 
                             <div class="input-icon right pull-right cebp">
@@ -1737,8 +1736,7 @@
                                                                                 Email Co-Branding</li>
                                                                             <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex" translate>
                                                                                 Uploaded</li>
-                                                                            <li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                Partner</li>
+                                                                            
                                                                         </ul>
 
                                                                         <div class="input-icon right pull-right cebp">
@@ -2069,8 +2067,7 @@
                                                                                     Email Co-Branding</li>
                                                                                 <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex" translate>
                                                                                     Uploaded</li>
-                                                                                <li *ngIf="isPartnerToo" class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex" translate>
-                                                                                    Partner</li>
+                                                                                
                                                                             </ul>
     
                                                                             <div class="input-icon right pull-right cebp">
