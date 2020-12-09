@@ -304,7 +304,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 				this.refService.renderer = this.render;
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
-                        console.log(data)
                         this.enableLeads = data.enableLeads;
                         this.isSalesforceIntegrated();
                     });
@@ -602,7 +601,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             dateFormat: 'm/d/Y h:i K',
             time_24hr: false
         } );
-        //this.validatecampaignForm();
         this.isListView = !this.refService.isGridView;
         if(this.campaignType=="video"){
             this.width="20%";
@@ -638,7 +636,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.listCategories(); 
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
-        this.loadPartnerVideos(this.channelVideosPagination);
         this.listActiveSocialAccounts(this.loggedInUserId);
         if(this.isAdd){
            this.loadContacts();
@@ -1571,7 +1568,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /*******************************Preview*************************************/
     contactListItems:any[];
       loadUsers(id:number,pagination:Pagination, ListName){
-         //this.loading = true;
+         this.loading = true;
          if(id==undefined){
               id=this.previewContactListId;
           }else{
@@ -1580,8 +1577,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           this.listName = ListName;
           this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
                   (data:any) => {
-                      console.log(data);
-                      //this.loading = false;
                       console.log(pagination);
                       this.contactListItems = data.listOfUsers;
                       console.log(this.contactListItems);
@@ -1617,6 +1612,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                        html+='</table>';
                       $('#users-modal-body').append(html);
                       $('#usersModal').modal({backdrop: 'static', keyboard: false});
+                      this.loading = false;
                   },
                   error => { this.loading = false; },
                   () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
