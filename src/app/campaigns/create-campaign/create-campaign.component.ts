@@ -304,7 +304,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 				this.refService.renderer = this.render;
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
-                        console.log(data)
                         this.enableLeads = data.enableLeads;
                         this.isSalesforceIntegrated();
                     });
@@ -602,7 +601,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             dateFormat: 'm/d/Y h:i K',
             time_24hr: false
         } );
-        //this.validatecampaignForm();
         this.isListView = !this.refService.isGridView;
         if(this.campaignType=="video"){
             this.width="20%";
@@ -638,7 +636,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.listCategories(); 
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
-        this.loadPartnerVideos(this.channelVideosPagination);
         this.listActiveSocialAccounts(this.loggedInUserId);
         if(this.isAdd){
            this.loadContacts();

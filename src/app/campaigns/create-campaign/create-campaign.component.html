@@ -576,7 +576,6 @@
                                     <div id="home" class="tab-pane fade in active">
                                         <div class="tab" *ngIf="!campaign.createdFromVideos">
                                             <button [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner" translate>My Videos</button>
-                                            <button *ngIf="isPartnerToo" [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab" translate>Partner Videos</button>
                                             <ng-container *ngIf="!campaign.createdFromVideos">
                                                 <div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
                                                     <input type="text" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'myvideos')">

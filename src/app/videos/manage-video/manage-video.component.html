@@ -77,7 +77,10 @@
                          <!-- <th class="text-center">Type</th> -->
                          <th class="text-center" translate>Category</th>
                          <th class="text-center" translate>Upload Date</th>
-                         <th style="width: 20%;" class="text-center" *ngIf="!authenticationService.isSuperAdmin()"><span [hidden]="authenticationService.isOnlyPartner()" translate>Actions</span></th>
+                         <th style="width: 20%;" class="text-center" *ngIf="videoFileService.videoType!='partnerVideos'">
+                          <span [hidden]="authenticationService.isOnlyPartner()" translate>Actions</span></th>
+                          <th style="width: 20%;" class="text-center" *ngIf="videoFileService.videoType=='partnerVideos'">
+                          </th>
                        </tr>
                      </thead>
                      <tbody>
@@ -98,7 +101,7 @@
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier"
                                (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit"> <i class="fa fa-pencil-square-o"></i>
                              </a>
-                             <ng-container *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier">
+                             <ng-container *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
                                 <a *ngIf="videoFile.viewBy!='DRAFT' && videoFile.processed" (click)="campaignRouter(videoFile)" data-toggle="tooltip" data-placement="top" title="Create campaign">
                                   <i class="fa fa-bullhorn"></i>
                                 </a>
@@ -129,9 +132,6 @@
                                   </a>
                               </ng-container>
                             </div>
-                             <div [hidden]="authenticationService.isOnlyPartner()" class="actions-block" *ngIf="videoFileService.videoType==='partnerVideos'" style="position: relative;left: -30px;color: #00a6e8;">
-                               <a  (click)="campaignRouter(videoFile)" data-toggle="tooltip" data-placement="top"  [title]="actionsDescription.video_campaign"> <i class="fa fa-bullhorn"></i> </a>
-                           </div>
                          </td>
                        </tr>
                      </tbody>
@@ -179,7 +179,7 @@
                           (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_edit}}">
                           <i class="fa fa-pencil-square-o"></i>
                         </a>
-                        <span *ngIf="hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier">
+                        <span *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
                             <a *ngIf="videoFile.viewBy!='DRAFT' && videoFile.processed" (click)="campaignRouter(videoFile)"  data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_campaign}}">
                              <i class="fa fa-bullhorn"></i>
                              </a>
@@ -208,11 +208,6 @@
                           <a class="disable" *ngIf="(hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && !videoFile.processed"
                           data-toggle="tooltip" data-placement="top" title="Unavailabel for processing">
                             <i class="fa fa-trash-o" ></i>
-                          </a>
-                        </ng-container>
-                        <ng-container *ngIf="videoFileService.videoType==='partnerVideos'">
-                          <a (click)="campaignRouter(videoFile)" data-toggle="tooltip" title="Create Campaign" [hidden]="authenticationService.isOnlyPartner()">
-                            <i class="fa fa-bullhorn"></i>
                           </a>
                         </ng-container>
                      </div>
