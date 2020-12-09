@@ -46,7 +46,7 @@
                                </ng-container>
                             </ng-template>
                             <span *ngIf="previewCampaignType ==='EVENT' && campaign.campaignScheduleType=='SAVE' || campaign.campaignScheduleType=='NOW'">
-                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchTimeInString"></app-timestamp>                                                                       
+                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchTimeInString"></app-timestamp>
                             </span>
                          </h6>
                       </div>
@@ -117,8 +117,8 @@
                                   <div class="flex-row">
                                      <div class="item__select-box-wrapper">
                                         <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
-                                        <span class="ng-scope"> 
-                                        <a class="item__preview item__preview--image img-container custom" target="_BLANK"> 
+                                        <span class="ng-scope">
+                                        <a class="item__preview item__preview--image img-container custom" target="_BLANK">
                                         <img class="thumb ng-scope" style="width:98px !important" src="{{campaign.emailTemplate.subject}}">
                                         </a>
                                         </span>
@@ -169,7 +169,7 @@
                                      <div class="item__select-box-wrapper">
                                         <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
                                         <span class="ng-scope">
-                                        <a class="item__preview item__preview--image img-container custom" target="_BLANK"> 
+                                        <a class="item__preview item__preview--image img-container custom" target="_BLANK">
                                         <img class="thumb ng-scope" style="width:98px !important" src="{{campaign.landingPage.thumbnailPath}}">
                                         </a>
                                         </span>
@@ -545,12 +545,12 @@
           <i class="fa fa-handshake-o" id="partner-icon"></i>
           </a>
        </ng-container>
-       <ng-container *ngIf="(previewCampaignType==='EVENT') && (campaign.campaignScheduleType === 'NOW')">
-          <a *ngIf="(campaign.campaignScheduleType === 'NOW') ||hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
+       <ng-container *ngIf="(previewCampaignType==='EVENT') && campaign.launched">
+          <a *ngIf="campaign.launched || hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
           data-toggle="tooltip" data-placement="top" title="Analytics">
           <i class="fa fa-line-chart"></i>
           </a>
-          <a *ngIf="((campaign.campaignScheduleType === 'NOW') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)) && !campaign.nurtureCampaign && previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
+          <a *ngIf="(campaign.launched && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)) && !campaign.nurtureCampaign && previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
           (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
           <i class="fa fa-files-o"></i>
           </a>
@@ -562,7 +562,7 @@
           </a>
        </ng-container>
        <!-- <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="auto" title="Preview Campaign"><i class="fa fa-eye mr5"></i></a> -->
-       <a *ngIf=" ( (campaign.campaignType!=='EVENT')  && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) )" 
+       <a *ngIf=" ( (campaign.campaignType!=='EVENT')  && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) )"
        (click)="confirmDeleteCampaign(campaign)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto"
        title="Delete">
        <i class="fa fa-trash-o"> </i></a>
