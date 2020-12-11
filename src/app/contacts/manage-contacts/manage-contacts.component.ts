@@ -436,10 +436,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.loadContactLists(this.pagination);
 							//this.responseMessage = ['SUCCESS', 'your contact List has been deleted successfully.','show'];
 							// this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
-							if (this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
-							} else {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+                            if (this.assignLeads){
+                            	 this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_DELETE_SUCCESS, true);
+                            } else if (this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
+                            } else {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
 							}
 							if (this.pagination.pagedItems.length === 1) {
 								this.pagination.pageIndex = 1;
@@ -1193,7 +1195,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						this.contactsCount();
 						this.contactCountLoad = true;
 						this.listContactsByType(this.contactsByType.selectedCategory);
-						if (this.isPartner) {
+						if(this.assignLeads){
+							this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
+						}else if (this.isPartner) {
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
 						} else {
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
