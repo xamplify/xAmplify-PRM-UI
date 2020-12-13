@@ -44,7 +44,7 @@
 </style>
 
 <div class="page-content" style="overflow: hidden !important;">
-
+    <ngx-loading [show]="pageLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="my-container">
         <ngx-loading [show]="loading || contactService.isLoadingList" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
