@@ -8,16 +8,16 @@
     // Setting this to false will disable console output
 
     /*************Local*******************************/
-    window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
-    window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
-    window.__env.imagesHost = "https://aravind.com/vod/images/";
+   // window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
+   // window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
+   // window.__env.imagesHost = "https://aravind.com/vod/images/";
 
 
     //USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
     /********************Production************************/
-    //window.__env.CLIENT_URL = 'https://xamplify.io/', // xamplify client app server
-    //window.__env.SERVER_URL = 'https://xamp.io/' // xamplify backend production server
-    //window.__env.imagesHost = "https://xamp.io/vod/images/";
+    window.__env.CLIENT_URL = 'https://xamplify.io/', // xamplify client app server
+    window.__env.SERVER_URL = 'https://xamp.io/' // xamplify backend production server
+    window.__env.imagesHost = "https://xamp.io/vod/images/";
 
 
     /*********************QA**********************/
