@@ -456,4 +456,10 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    syncPipeline(pipelineId:number, userId:number){
+        return this.http.get(this.authenticationService.REST_URL + `pipeline/${pipelineId}/sync/${userId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
 }

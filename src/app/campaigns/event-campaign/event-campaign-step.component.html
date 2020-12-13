@@ -319,9 +319,30 @@ a.disabled {
                                                 </div>
                                             </div>
 
+											<div class="form-group" 
+											*ngIf="!salesforceIntegrated && ((!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads))">
+                                                <label class="control-label col-sm-4" translate>Configure Pipelines
+                                                    </label>
+                                                <div class="col-sm-3">
+                                                    <div class="email-options-checkbox-group email-options-notify">
+                                                        <div class="email-options-checkbox clearfix">
+                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                                <switch [status]="" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                                    (statusChange)="configurePipelines()">
+                                                                </switch>
+                                                            </div>
+                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                                <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Configure Pipelines for this Campaign">
+                                                                    <i class="fa fa-question-circle"
+                                                                        style="font-size: 20px;float: left;margin: -18px 0 0 0px;"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-											<div class="form-group"
-												*ngIf="(!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads)"
+											<div class="form-group" *ngIf="isConfigurePipelines"
 												[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 												<label class="control-label col-sm-3">Lead Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
                                                 <div class="col-sm-9">
@@ -334,8 +355,7 @@ a.disabled {
                                                 </div>
 											</div>
 
-											<div class="form-group"
-												*ngIf="(!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads)"
+											<div class="form-group" *ngIf="isConfigurePipelines"
 												[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 												<label class="control-label col-sm-3">Deal Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
                                                 <div class="col-sm-9">

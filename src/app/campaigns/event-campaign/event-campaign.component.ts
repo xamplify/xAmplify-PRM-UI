@@ -215,6 +215,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  isOrgAdminOrOrgAdminTeamMember: boolean;
  leadPipelines = new Array<Pipeline>();
  dealPipelines = new Array<Pipeline>();
+ isConfigurePipelines = false;
+ defaultLeadPipelineId = 0;
+ defaultDealPipelineId = 0;
+ salesforceIntegrated = false;
 
  isValidPipeline = true;
 
@@ -253,6 +257,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
         referenceService.getOrgCampaignTypes(response).subscribe(data=>{
             this.enableLeads = data.enableLeads;
+            this.isSalesforceIntegrated();
             this.completeLoader = false;
         },error =>{
             this.completeLoader = false;
@@ -508,22 +513,74 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
 
   }
 
-  listCampaignPipelines() {
-    this.campaignService.listCampaignPipelines(this.loggedInUserId)
-    .subscribe(
-    response => {
-      if(response.statusCode==200){
-        let data = response.data;
-        this.leadPipelines = data.leadPipelines;
-        this.dealPipelines = data.dealPipelines;
-       }
-    },
-    error => {
-        this.httpRequestLoader.isServerError = true;
-        },
-    () => { }
-);
+  configurePipelines() {
+    this.isConfigurePipelines = !this.isConfigurePipelines;
+    if (!this.isConfigurePipelines) {
+        this.eventCampaign.leadPipelineId = this.defaultLeadPipelineId;
+        this.eventCampaign.dealPipelineId = this.defaultDealPipelineId;
+    }
+    this.validatePipeline();
 }
+
+//   listCampaignPipelines() {
+//     this.campaignService.listCampaignPipelines(this.loggedInUserId)
+//     .subscribe(
+//     response => {
+//       if(response.statusCode==200){
+//         let data = response.data;
+//         this.leadPipelines = data.leadPipelines;
+//         this.dealPipelines = data.dealPipelines;
+//        }
+//     },
+//     error => {
+//         this.httpRequestLoader.isServerError = true;
+//         },
+//     () => { }
+// );
+// }
+
+
+listCampaignPipelines() {
+    if (this.enableLeads) {
+        this.campaignService.listCampaignPipelines(this.loggedInUserId)
+            .subscribe(
+                response => {
+                    if (response.statusCode == 200) {
+                        let data = response.data;
+                        this.leadPipelines = data.leadPipelines;
+                        this.dealPipelines = data.dealPipelines;
+                        if (!this.salesforceIntegrated) {
+                            this.leadPipelines.forEach(pipeline => {
+                                if (pipeline.default) {
+                                    this.defaultLeadPipelineId = pipeline.id;
+                                    this.eventCampaign.leadPipelineId = pipeline.id;
+                                }
+                            });
+
+                            this.dealPipelines.forEach(pipeline => {
+                                if (pipeline.default) {
+                                    this.defaultDealPipelineId = pipeline.id;
+                                    this.eventCampaign.dealPipelineId = pipeline.id;
+                                }
+                            });
+                        } else {
+                            this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                            this.eventCampaign.leadPipelineId = this.leadPipelines[0].id;
+                            this.defaultDealPipelineId = this.dealPipelines[0].id;
+                            this.eventCampaign.dealPipelineId = this.dealPipelines[0].id;
+                        }
+                        
+                    }
+                },
+                error => {
+                    this.httpRequestLoader.isServerError = true;
+                },
+                () => { }
+            );
+    }
+
+}
+
 
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();
@@ -758,7 +815,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
   }
 
   switchStatusChange(){
-    this.isValidPipeline = !this.isValidPipeline;
+    //this.isValidPipeline = !this.isValidPipeline;
     this.clearSelectedContactList();
     this.clearSelectedTemplate();
     this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
@@ -2700,6 +2757,35 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.logger.error(error, "Error in salesforce checkIntegrations()");
         }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
       }
+    }
+
+    isSalesforceIntegrated(): any {
+        this.salesforceIntegrated = false;
+        if (this.enableLeads) {
+            this.loading = true;
+            this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
+                let response = data;
+                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                    this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
+                        let cfResponse = data;
+                        if (cfResponse.statusCode === 200) {
+                            this.salesforceIntegrated = true;
+                        } else if (cfResponse.statusCode === 400) {
+                            swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+                        }
+                        this.listCampaignPipelines();
+                    }, error => {
+                        this.logger.error(error, "Error in salesforce checkIntegrations()");
+                    }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+                    console.log("isPushToSalesforce ::::" + this.pushToCRM);
+                } else {
+                    this.listCampaignPipelines();
+                }
+            }, error => {
+                this.logger.error(error, "Error in salesforce checkIntegrations()");
+            }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+        }
+        this.loading = false;
     }
 
 

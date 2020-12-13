@@ -637,6 +637,9 @@
                                                                        <td>
                                                                             <div class="actions-block override-actions">                                                                                
                                                                                 <ng-container>
+                                                                                    <a *ngIf="pipeline.canSync" data-toggle="tooltip" data-placement="top" title="Synchronize with Salesforce" (click)="syncPipeline(pipeline)">
+                                                                                        <i class="fa fa-refresh"></i>
+                                                                                    </a>
                                                                                     <a data-toggle="tooltip" data-placement="top" title="View" (click)="viewPipeline(pipeline)">
                                                                                         <i class="fa fa-eye"></i>
                                                                                     </a>
@@ -1370,7 +1373,7 @@
                         <span *ngIf="!pipeline.isValidStage" class="required">{{pipelineStageErrorMessage}}</span>
                         <ul id="sortable" [dragula]='"pipelineStagesDragula"' class="list-group" [dragulaModel]='pipeline.stages'>
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
-                                <li class="list-group-item" id="stage{{x}}">
+                                <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
                                     <span class="fa fa-ellipsis-v"></span>
                                     <input type="text" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name" style="width: 260px;
                                     margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)" (keydown)="pipelineSumbitOnEnter($event)">

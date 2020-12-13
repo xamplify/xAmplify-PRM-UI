@@ -7,6 +7,7 @@ export class Pipeline {
     private:boolean;
     canUpdate:boolean;
     canDelete:boolean;
+    canSync:boolean;
     canDeleteStages:boolean;
     preview = false;
     userId:number;
@@ -14,4 +15,5 @@ export class Pipeline {
     isValid = false;
     isValidName = false;
     isValidStage = false;
+    default = false;
 }

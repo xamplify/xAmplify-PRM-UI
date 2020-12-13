@@ -24,6 +24,7 @@ export class Properties {
 
   CONTACT_LIST_DELETE_SUCCESS = "Your contact list has been deleted successfully.";
   CONTACT_LIST_DELETE_ERROR = "An Error occured while deleting your Contact List.";
+  LEAD_LIST_DELETE_SUCCESS = "Your lead list has been deleted successfully.";
 
   CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Your contact list has been synchronized successfully.";
   CONTACT_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Contact List.";
@@ -37,6 +38,7 @@ export class Properties {
 
   CONTACTS_DELETE_SUCCESS = "Your Contacts have been deleted successfully.";
   CONTACTS_DELETE_ERROR = "An error occured while deleting your contacts";
+  LEADS_DELETE_SUCCESS = "Your lead(s) have been deleted successfully.";
 
   LEAD_LIST_UPDATE_SUCCESS = "Your lead list has been updated successfully.";
   CONTACT_SAVE_SUCCESS = "Your contact list has been updated successfully.";

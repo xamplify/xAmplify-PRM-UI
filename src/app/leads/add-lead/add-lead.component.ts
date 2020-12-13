@@ -9,6 +9,7 @@ import { PipelineStage } from 'app/dashboard/models/pipeline-stage';
 import { CustomResponse } from '../../common/models/custom-response';
 import { CountryNames } from '../../common/models/country-names';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
+import { DealsService } from '../../deals/services/deals.service';
 import {Properties} from 'app/common/models/properties';
 declare var swal, $, videojs: any;
 
@@ -16,7 +17,7 @@ declare var swal, $, videojs: any;
   selector: 'app-add-lead',
   templateUrl: './add-lead.component.html',
   styleUrls: ['./add-lead.component.css'],
-  providers: [ HttpRequestLoader, CountryNames,Properties],
+  providers: [ HttpRequestLoader, CountryNames,Properties, DealsService],
 })
 export class AddLeadComponent implements OnInit {
   @Input() public leadId: any;
@@ -46,10 +47,13 @@ export class AddLeadComponent implements OnInit {
   leadModalResponse: CustomResponse = new CustomResponse();
   ngxloading : boolean;
   hasCampaignPipeline = false;
+  salesForceEnabled = false;
+  hasSfPipeline = false;
 
 
   constructor(public properties:Properties,public authenticationService: AuthenticationService, private leadsService: LeadsService,
-    public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames) {
+    public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames, 
+    private dealsService: DealsService) {
             
    }   
 
@@ -60,6 +64,7 @@ export class AddLeadComponent implements OnInit {
     this.lead.createdForCompanyId = 0;
     this.lead.pipelineId = 0;
     this.lead.pipelineStageId = 0;
+    this.isSalesForceEnabled();
     if (this.actionType === "view") {
       this.preview = true;
       this.leadFormTitle = "View Lead";
@@ -74,6 +79,7 @@ export class AddLeadComponent implements OnInit {
       }
     } else if (this.actionType === "add") {
       this.leadFormTitle = "Add a Lead";
+      this.isSalesForceEnabled();
       if (this.campaignId > 0) {
         this.lead.campaignId = this.campaignId;
         this.lead.campaignName = this.campaignName;
@@ -85,6 +91,62 @@ export class AddLeadComponent implements OnInit {
     }
     
     this.getVendorList();
+  }
+
+
+  isSalesForceEnabled() {
+    this.dealsService.isSalesForceEnabled(this.lead.createdForCompanyId, this.loggedInUserId)
+      .subscribe(
+        response => {
+          if (response.statusCode == 200) {
+            this.salesForceEnabled = response.data;
+            if (!this.salesForceEnabled) {
+              if (this.edit || this.preview) {
+                if (this.lead.campaignId > 0) {              
+                  this.getCampaignLeadPipeline();
+                } else {
+                  this.getPipelines();
+                }
+              } else {
+                this.resetPipelines();
+              }
+            } else {
+              this.getSalesforcePipeline();
+            }
+          }
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          
+        });
+  }
+
+  getSalesforcePipeline() {
+    let self = this;    
+    this.leadsService.getSalesforcePipeline(this.lead.createdForCompanyId, this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (data.statusCode == 200) {
+            let salesforcePipeline = data.data;
+            self.lead.pipelineId = salesforcePipeline.id;
+            //self.pipelineIdError = false;
+            self.stages = salesforcePipeline.stages;
+            self.hasSfPipeline = true;
+          } else if (data.statusCode == 404) {
+            self.lead.pipelineId = 0;
+            self.stages = [];
+            self.getPipelines();
+            self.hasSfPipeline = false;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
   }
 
 
@@ -160,6 +222,13 @@ export class AddLeadComponent implements OnInit {
         () => { }
       );
     }
+  }
+
+  onChangeCreatedFor() {
+    //this.validateField('createdForCompanyId',false);
+    if (this.lead.createdForCompanyId > 0) {
+      this.isSalesForceEnabled();                  
+    } 
   }
 
   resetPipelines() {
@@ -240,12 +309,13 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
-            self.lead = data.data;            
-            if (self.lead.campaignId > 0) {              
-              this.getCampaignLeadPipeline();
-            } else {
-              self.getPipelines();
-            }
+            self.lead = data.data; 
+            this.isSalesForceEnabled();          
+            // if (self.lead.campaignId > 0) {              
+            //   this.getCampaignLeadPipeline();
+            // } else {
+            //   self.getPipelines();
+            // }
           }
         },
         error => {
