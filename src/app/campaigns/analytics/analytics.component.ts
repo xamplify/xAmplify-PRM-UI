@@ -855,7 +855,14 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
                   this.enableLeads = data.enableLeads;
                   this.disabled = false;
                 });
-              })
+
+                this.referenceService.getOrgCampaignTypes(response, ).subscribe(data => {
+                  this.enableLeads = data.enableLeads;
+                  this.disabled = false;
+                });
+              });
+
+              
             }else{
                 this.disabled = true;
             }
