@@ -201,7 +201,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    public isZohoRedirectUrlButton: boolean=false;
    public zohoCurrentUser:any;
    public providerName: String = 'zoho';
-
+   pageLoader = false;
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -280,6 +280,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     defaultPartnerList( userId: number ) {
+        this.pageLoader = true;
         try {
             this.contactService.defaultPartnerList( userId )
                 .subscribe(
@@ -808,6 +809,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     }
                     if ( !this.searchKey ) {
                         this.loadAllPartnerInList( pagination.totalRecords );
+                    }else{
+                        this.pageLoader = false;
+
                     }
 
                 },
@@ -825,8 +829,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.contactService.loadUsersOfContactList( this.partnerListId, this.allPartnersPagination ).subscribe(
                 ( data: any ) => {
                     this.contactService.allPartners = data.listOfUsers;
+                    this.pageLoader = false;
                 },
-                error => this.xtremandLogger.error( error ),
+                error => {this.pageLoader = false;this.xtremandLogger.error( error )},
                 () => this.xtremandLogger.info( "MangePartnerComponent loadAllPartnerList() finished" )
             )
         } catch ( error ) {
