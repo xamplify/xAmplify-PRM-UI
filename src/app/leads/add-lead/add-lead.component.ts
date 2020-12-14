@@ -134,6 +134,9 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             let salesforcePipeline = data.data;
+            if (this.lead.pipelineId != undefined && this.lead.pipelineId !== salesforcePipeline.id) {
+              this.lead.pipelineStageId = 0
+            } 
             self.lead.pipelineId = salesforcePipeline.id;
             //self.pipelineIdError = false;
             self.stages = salesforcePipeline.stages;
