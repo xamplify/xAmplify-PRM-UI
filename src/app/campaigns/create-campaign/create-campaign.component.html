@@ -406,8 +406,30 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group" *ngIf="!salesforceIntegrated && ((!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption))">
+                                                <label class="control-label col-sm-4" translate>Configure Pipelines
+                                                    </label>
+                                                <div class="col-sm-3">
+                                                    <div class="email-options-checkbox-group email-options-notify">
+                                                        <div class="email-options-checkbox clearfix">
+                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                                <switch [status]="" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                                    (statusChange)="configurePipelines()">
+                                                                </switch>
+                                                            </div>
+                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                                <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Configure Pipelines for this Campaign">
+                                                                    <i class="fa fa-question-circle"
+                                                                        style="font-size: 20px;float: left;margin: -18px 0 0 0px;"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
-                                              *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
+                                            *ngIf="isConfigurePipelines">
                                                 <label class="control-label col-sm-4">Lead Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
@@ -420,7 +442,7 @@
                                             </div>
                                               
                                             <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px"
-                                                *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
+                                            *ngIf="isConfigurePipelines">
                                                 <label class="control-label col-sm-4">Deal Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
@@ -576,7 +598,6 @@
                                     <div id="home" class="tab-pane fade in active">
                                         <div class="tab" *ngIf="!campaign.createdFromVideos">
                                             <button [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner" translate>My Videos</button>
-                                            <button *ngIf="isPartnerToo" [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab" translate>Partner Videos</button>
                                             <ng-container *ngIf="!campaign.createdFromVideos">
                                                 <div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
                                                     <input type="text" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'myvideos')">
@@ -991,7 +1012,6 @@
                                 <li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex" translate>Uploaded
                                 </li>
                                 <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',7)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex" translate>Video Co-Branding</li>
-                                <li class="filter" (click)="filterTemplates('PARTNER',8)" [class.emailtemplate-selected]="8== selectedEmailTemplateTypeIndex" *ngIf="!isOnlyPartner && isPartnerToo" translate>Partner</li>
                             </ul>
 
                             <div class="input-icon right pull-right cebp">
@@ -1737,8 +1757,7 @@
                                                                                 Email Co-Branding</li>
                                                                             <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex" translate>
                                                                                 Uploaded</li>
-                                                                            <li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                Partner</li>
+                                                                            
                                                                         </ul>
 
                                                                         <div class="input-icon right pull-right cebp">
@@ -2069,8 +2088,7 @@
                                                                                     Email Co-Branding</li>
                                                                                 <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex" translate>
                                                                                     Uploaded</li>
-                                                                                <li *ngIf="isPartnerToo" class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex" translate>
-                                                                                    Partner</li>
+                                                                                
                                                                             </ul>
     
                                                                             <div class="input-icon right pull-right cebp">

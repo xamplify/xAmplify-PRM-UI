@@ -40,7 +40,7 @@
                       <label class="control-label">Lead For<font style="color: #f55d7a"> <strong>*</strong></font></label>
                       <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                         [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId" id="createdForCompanyId"
-                        [disabled]="preview || edit" (ngModelChange)="resetPipelines()">
+                        [disabled]="preview || edit" (ngModelChange)="onChangeCreatedFor()">
                         <option [value]="0">Select Company</option>
                         <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}
                         </option>
@@ -103,7 +103,7 @@
                 
                 <!-- right page -->
                 <div class="col-sm-6 col-xs-12">
-                  <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px" *ngIf="!hasCampaignPipeline">
+                  <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px" *ngIf="!hasCampaignPipeline && !hasSfPipeline">
                     <label class="control-label">Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
                     <select class="form-control" [(ngModel)]="lead.pipelineId" [ngModelOptions]="{standalone: true}"
                       placeholder="pipelineId" id="pipelineId" [disabled]="preview"

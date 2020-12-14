@@ -272,9 +272,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      isLandingPageSwitch = false;
      senderMergeTag:SenderMergeTag = new SenderMergeTag();
      isPushToCrm = false;
+     isConfigurePipelines = false;
 
      leadPipelines = new Array<Pipeline>();
      dealPipelines = new Array<Pipeline>();
+     defaultLeadPipelineId = 0;
+     defaultDealPipelineId = 0;
+    salesforceIntegrated = false;
 
      /************Filter Folder*****************/
     public selectedFolderIds= [];
@@ -602,7 +606,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             dateFormat: 'm/d/Y h:i K',
             time_24hr: false
         } );
-        //this.validatecampaignForm();
         this.isListView = !this.refService.isGridView;
         if(this.campaignType=="video"){
             this.width="20%";
@@ -638,7 +641,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.listCategories(); 
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
-        this.loadPartnerVideos(this.channelVideosPagination);
         this.listActiveSocialAccounts(this.loggedInUserId);
         if(this.isAdd){
            this.loadContacts();
@@ -659,26 +661,50 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.listAllTeamMemberEmailIds();
         /***********Load Email Template Filters/LandingPages Filter Data********/
         this.listEmailTemplateOrLandingPageFolders();
-        this.listCampaignPipelines();
-        this.campaign.leadPipelineId = 0;
-        this.campaign.dealPipelineId = 0;
+        //this.listCampaignPipelines();
+        //this.campaign.leadPipelineId = 0;
+        //this.campaign.dealPipelineId = 0;
     }
 
     listCampaignPipelines() {
-        this.campaignService.listCampaignPipelines(this.loggedInUserId)
-        .subscribe(
-        response => {           
-          if(response.statusCode==200){
-            let data = response.data;  
-            this.leadPipelines = data.leadPipelines;
-            this.dealPipelines = data.dealPipelines;                    
-           }            
-        },
-        error => {
-            this.httpRequestLoader.isServerError = true;
-            },
-        () => { }
-    );
+        if (this.enableLeads) {
+            this.campaignService.listCampaignPipelines(this.loggedInUserId)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            let data = response.data;
+                            this.leadPipelines = data.leadPipelines;
+                            this.dealPipelines = data.dealPipelines;
+                            if (!this.salesforceIntegrated) {
+                                this.leadPipelines.forEach(pipeline => {
+                                    if (pipeline.default) {
+                                        this.defaultLeadPipelineId = pipeline.id;
+                                        this.campaign.leadPipelineId = pipeline.id;
+                                    }
+                                });
+
+                                this.dealPipelines.forEach(pipeline => {
+                                    if (pipeline.default) {
+                                        this.defaultDealPipelineId = pipeline.id;
+                                        this.campaign.dealPipelineId = pipeline.id;
+                                    }
+                                });
+                            } else {
+                                this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                                this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                                this.defaultDealPipelineId = this.dealPipelines[0].id;
+                                this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                            }
+                            
+                        }
+                    },
+                    error => {
+                        this.httpRequestLoader.isServerError = true;
+                    },
+                    () => { }
+                );
+        }
+
     }
 
     listCategories(){
@@ -808,7 +834,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 isValid = false;
         }
 
-        if (isValid && this.enableLeads && (this.campaign.channelCampaign || this.showMarketingAutomationOption)) {
+        if (isValid && this.campaignType!='landingPage' && this.enableLeads && (this.campaign.channelCampaign || this.showMarketingAutomationOption)) {
             if (this.campaign.leadPipelineId != undefined && this.campaign.leadPipelineId > 0) {
                 isValid =  true;
             } else {
@@ -1571,7 +1597,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /*******************************Preview*************************************/
     contactListItems:any[];
       loadUsers(id:number,pagination:Pagination, ListName){
-         //this.loading = true;
+         this.loading = true;
          if(id==undefined){
               id=this.previewContactListId;
           }else{
@@ -1580,8 +1606,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           this.listName = ListName;
           this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
                   (data:any) => {
-                      console.log(data);
-                      //this.loading = false;
                       console.log(pagination);
                       this.contactListItems = data.listOfUsers;
                       console.log(this.contactListItems);
@@ -1617,6 +1641,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                        html+='</table>';
                       $('#users-modal-body').append(html);
                       $('#usersModal').modal({backdrop: 'static', keyboard: false});
+                      this.loading = false;
                   },
                   error => { this.loading = false; },
                   () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
@@ -3242,6 +3267,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      
      this.validatePushToCRM();
     }
+
+    configurePipelines() {
+        this.isConfigurePipelines = !this.isConfigurePipelines;
+        if (!this.isConfigurePipelines) {
+            this.campaign.leadPipelineId = this.defaultLeadPipelineId;
+            this.campaign.dealPipelineId = this.defaultDealPipelineId;
+        }
+    }
     
     pushToCrmRequest(crmName: any, event: any){
        console.log(event.target.checked);
@@ -3306,27 +3339,33 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    }
    
     isSalesforceIntegrated(): any {
-      if(this.enableLeads){ 
-      this.loading = true;
-      this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
-           let response = data;
-           if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-               this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data =>{
-           			let cfResponse = data;
-           			if (cfResponse.statusCode === 400) {
-           				swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
-           			}
-       			},error =>{
-           			this.logger.error(error, "Error in salesforce checkIntegrations()");
-       			}, () => this.logger.log("Integration Salesforce Configuration Checking done"));
-              	console.log("isPushToSalesforce ::::" + this.pushToCRM);
-           } 
-       },error =>{
-           this.logger.error(error, "Error in salesforce checkIntegrations()");
-       }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
-     }
-     this.loading = false;
-   }
+        this.salesforceIntegrated = false;
+        if (this.enableLeads) {
+            this.loading = true;
+            this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
+                let response = data;
+                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                    this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
+                        let cfResponse = data;
+                        if (cfResponse.statusCode === 200) {
+                            this.salesforceIntegrated = true;
+                        } else if (cfResponse.statusCode === 400) {
+                            swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+                        }
+                        this.listCampaignPipelines();
+                    }, error => {
+                        this.logger.error(error, "Error in salesforce checkIntegrations()");
+                    }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+                    console.log("isPushToSalesforce ::::" + this.pushToCRM);
+                } else {
+                    this.listCampaignPipelines();
+                }
+            }, error => {
+                this.logger.error(error, "Error in salesforce checkIntegrations()");
+            }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+        }
+        this.loading = false;
+    }
 
    showFolderFilterPopup(){
     $('#filterPopup').modal('show');

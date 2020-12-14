@@ -21,9 +21,9 @@
 
 
     /*********************QA**********************/
-  //  window.__env.CLIENT_URL = 'https://xamplify.co/';
-  //   window.__env.SERVER_URL =  'https://aravindu.com/';
-  //   window.__env.imagesHost = "https://aravindu.com/vod/images/";
+    window.__env.CLIENT_URL = 'https://xamplify.co/';
+    window.__env.SERVER_URL =  'https://aravindu.com/';
+    window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
     /*************************Release*******************************/
     //window.__env.CLIENT_URL ="https://release.xamplify.io/", // release xamplify client app server

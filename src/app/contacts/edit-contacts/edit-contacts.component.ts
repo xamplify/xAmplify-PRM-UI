@@ -926,10 +926,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 						if (data.statusCode == 200) {
 							//this.getContactsAssocialteCampaigns();
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-							} else {
-								this.showSuccessMessage(data);
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_UPDATE_SUCCESS, true);
+                            } else if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+                            } else {
+                                this.showSuccessMessage(data);
 							}
 							this.openCampaignsPopupForNewlyAddedPartners();
 						} else if (data.statusCode == 418) {
@@ -975,7 +977,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							} else if (data.statusCode == 201) {
 								this.allUsers = this.contactsByType.allContactsCount;
 								console.log("update Contacts ListUsers:" + data);
-								if (!this.isPartner) {
+								if(this.assignLeads){
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
+								}else if (!this.isPartner) {
 									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
 								} else {
 									this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
@@ -1581,10 +1585,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 						if (data.statusCode == 200) {
 							//this.getContactsAssocialteCampaigns();
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-							} else {
-								this.showSuccessMessage(data);
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_UPDATE_SUCCESS, true);
+                            } else if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+                            } else {
+                                this.showSuccessMessage(data);
 							}
 							this.openCampaignsPopupForNewlyAddedPartners();
 						} else if (data.statusCode == 418) {
@@ -2053,7 +2059,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
 								this.allUsers = this.contactsByType.allContactsCount;
 								console.log("update Contacts ListUsers:" + data);
-								if (!this.isPartner) {
+								if(this.assignLeads){
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
+								}else if (!this.isPartner) {
 									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
 								} else {
 									this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
@@ -2125,7 +2133,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactIds.push(this.contactUsersId)
 		this.xtremandLogger.info("contactListId in sweetAlert() " + this.contactIds);
 		let message = '';
-		if (this.isPartner && this.isDefaultPartnerList) {
+		if(this.assignLeads){
+			message = "The lead(s) will be deleted and this action can't be undone.";
+		}else if (this.isPartner && this.isDefaultPartnerList) {
 			message = 'The partner(s) will be deleted from this and all other Partner lists.';
 		} else if (this.isPartner && !this.isDefaultPartnerList) {
 			message = 'This will only delete the partner(s) from this list. To remove the partner(s) completely from your account, please delete the record(s) from the Master List.';

@@ -257,7 +257,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		});
 		asset.expand = !asset.expand;
 		if (asset.expand) {
-			this.historyPagination.campaignId = asset.id;
+			this.historyPagination.campaignId = asset.parentId;
 			this.listAssetsHistory(this.historyPagination);
 		} else {
 			this.historyPagination.campaignId = 0;
@@ -453,7 +453,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.isGridViewHistory = true;
 		this.selectedAssetId = asset.id;
 		this.selectedAssetName = asset.assetName;
-		this.historyPagination.campaignId = asset.id;
+		this.historyPagination.campaignId = asset.parentId;
 		this.listAssetsHistory(this.historyPagination);
 	}
 

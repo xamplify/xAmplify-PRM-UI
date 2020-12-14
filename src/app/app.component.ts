@@ -93,7 +93,7 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     
     
     ngOnInit() {
-        this.versionCheckService.initVersionCheck();
+        //this.versionCheckService.initVersionCheck();
         //QuickSidebar.init();
        // this.getTeamMembersDetails();
         // reloading the same url with in the application
