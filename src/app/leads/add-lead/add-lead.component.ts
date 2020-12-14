@@ -64,7 +64,7 @@ export class AddLeadComponent implements OnInit {
     this.lead.createdForCompanyId = 0;
     this.lead.pipelineId = 0;
     this.lead.pipelineStageId = 0;
-    this.isSalesForceEnabled();
+    //this.isSalesForceEnabled();
     if (this.actionType === "view") {
       this.preview = true;
       this.leadFormTitle = "View Lead";
@@ -79,13 +79,12 @@ export class AddLeadComponent implements OnInit {
       }
     } else if (this.actionType === "add") {
       this.leadFormTitle = "Add a Lead";
-      this.isSalesForceEnabled();
       if (this.campaignId > 0) {
         this.lead.campaignId = this.campaignId;
         this.lead.campaignName = this.campaignName;
         this.lead.associatedUserId = this.selectedContact.userId;
         this.getCreatedForCompanyIdByCampaignId();
-        this.getCampaignLeadPipeline();
+        //this.getCampaignLeadPipeline();
         this.getContactInfo();
       }
     }
@@ -107,8 +106,12 @@ export class AddLeadComponent implements OnInit {
                 } else {
                   this.getPipelines();
                 }
-              } else {
-                this.resetPipelines();
+              } else {                
+                if (this.campaignId > 0) {
+                  this.getCampaignLeadPipeline();
+                } else {
+                  this.resetPipelines();
+                }
               }
             } else {
               this.getSalesforcePipeline();
@@ -187,6 +190,7 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             self.lead.createdForCompanyId = data.data;
+            this.isSalesForceEnabled();
           }
         },
         error => {
