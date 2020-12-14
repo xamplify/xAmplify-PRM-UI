@@ -76,25 +76,35 @@ export class UploadAssetComponent implements OnInit {
 
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
-		if (event.target.files.length > 0) {
-			this.formData.delete("uploadedFile");
+		let files: Array<File>;
+		if ( event.target.files!=undefined ) { files = event.target.files; }
+		else if ( event.dataTransfer.files ) { files = event.dataTransfer.files; }
+		if (files.length > 0) {
+			this.clearPreviousSelectedAsset();
 			this.customResponse = new CustomResponse();
-			let file = event.target.files[0];
+			let file = files[0];
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
 			if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
 			}else{
+				console.log(file);
 				this.formData.append("uploadedFile", file, file['name']);
 				this.uploadedAssetName = file['name'];
 			}
 		}else{
-			this.formData.delete("uploadedFile");
-			$('#uploadedAsset').val('');
-			this.uploadedAssetName  = "";
+			this.clearPreviousSelectedAsset();
 		}
 		this.validateAllFields();
 	}
+
+	clearPreviousSelectedAsset(){
+		this.formData.delete("uploadedFile");
+		$('#uploadedAsset').val('');
+		this.uploadedAssetName  = "";
+	}
+
+
 
 	showAssetErrorMessage(message:string){
 		this.referenceService.goToTop();
@@ -128,7 +138,6 @@ export class UploadAssetComponent implements OnInit {
 		this.invalidThumbnail = false;
 		this.thumbnailErrorMessage = '';
 		if (event.target.files.length > 0) {
-			
 			this.customResponse = new CustomResponse();
 			let file = event.target.files[0];
 			let sizeInKb = file.size / 1024;
@@ -204,7 +213,8 @@ export class UploadAssetComponent implements OnInit {
 
 	validateAllFields() {
 		if(this.isAdd){
-			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription && $('#uploadedAsset').val().length > 0;
+			let uploadedAssetValue = $('#uploadedAsset').val();
+			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0);
 		}else{
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
 		}
