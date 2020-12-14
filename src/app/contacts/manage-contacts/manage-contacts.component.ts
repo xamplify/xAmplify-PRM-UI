@@ -787,12 +787,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	update(user: User) {
-		this.contactCountLoad = true;
-		this.navigateToManageContacts();
-		this.contactsCount();
-		this.showAll = true;
-		this.showEdit = false;
-		$("#pagination").show();
+		    this.contactCountLoad = true;
+	        this.navigateToManageContacts();
+	        this.contactsCount();
+	        this.showAll = true;
+	        this.showEdit = false;
+	        $("#pagination").show();
+            if (this.contactService.deleteUserSucessMessage === true) {
+                if (this.assignLeads) {
+	                   this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_DELETE_SUCCESS, true);
+	               } else if (this.isPartner) {
+                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
+                } else {
+                    this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+                }
+                this.xtremandLogger.info(" delete Success Message in manage contact pape");
+            }
+		  
 	}
 
 	onChangeAllContactUsers(event: Pagination) {
@@ -2197,4 +2208,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 );
         this.loading = false;
     }
+    
+    
 }
