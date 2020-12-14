@@ -926,10 +926,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 						if (data.statusCode == 200) {
 							//this.getContactsAssocialteCampaigns();
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-							} else {
-								this.showSuccessMessage(data);
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_UPDATE_SUCCESS, true);
+                            } else if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+                            } else {
+                                this.showSuccessMessage(data);
 							}
 							this.openCampaignsPopupForNewlyAddedPartners();
 						} else if (data.statusCode == 418) {
@@ -1583,10 +1585,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 						if (data.statusCode == 200) {
 							//this.getContactsAssocialteCampaigns();
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-							} else {
-								this.showSuccessMessage(data);
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_UPDATE_SUCCESS, true);
+                            } else if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+                            } else {
+                                this.showSuccessMessage(data);
 							}
 							this.openCampaignsPopupForNewlyAddedPartners();
 						} else if (data.statusCode == 418) {
