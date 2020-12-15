@@ -1953,6 +1953,10 @@ export class ReferenceService {
 		swal(message1, message2, type);
 	}
 
+	showReAuthenticateMessage(){
+		swal(this.properties.reAuthenticateMessage, "", "info");
+	}
+
 	showSweetAlertSuccessMessage(message: string) {
 		swal({
 			title: message,

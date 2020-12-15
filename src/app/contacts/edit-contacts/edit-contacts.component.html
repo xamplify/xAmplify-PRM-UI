@@ -252,7 +252,7 @@
 											</div>
 										</ng-container>
 								 <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-top: 10px;">
-									<div class="col-xs-2 col-md-2 col-sm-2">
+									<div class="col-xs-2 col-md-2 col-sm-2" *ngIf="selectedAddContactsOption === 8">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: right; cursor: pointer;"
 									data-toggle="modal" data-target="#filterModal">

@@ -79,3 +79,6 @@ img.active {
 	background-color: #0095da;
 	color: white;
 }
+.refresh-margin{
+    margin-right: -5px !important;
+}

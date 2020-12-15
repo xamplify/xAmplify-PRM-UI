@@ -1381,26 +1381,23 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         .subscribe(
                         data => {
                             this.storeLogin = data;
-                            console.log( data );
                             if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                                console.log( "AddContactComponent googleContacts() Authentication Success" );
                                 this.getGoogleContactsUsers();
                                 this.xtremandLogger.info( "called getGoogle contacts method:" );
                             } else {
                                 this.referenceService.callBackURLCondition = 'partners';
                                 localStorage.setItem( "userAlias", data.userAlias )
                                 localStorage.setItem( "currentModule", data.module )
-                                console.log( data.redirectUrl );
-                                console.log( data.userAlias );
                                 window.location.href = "" + data.redirectUrl;
                             }
                         },
                         ( error: any ) => {
                             this.xtremandLogger.error( error );
                             if ( error._body.includes( "JSONObject" ) && error._body.includes( "access_token" ) && error._body.includes( "not found." ) ) {
-                                this.xtremandLogger.errorMessage = 'authentication was not successful, you might have changed the password of social account or other reasons, please unlink your account and reconnect it.';
+                                this.referenceService.showReAuthenticateMessage();
+                            }else{
+                                this.xtremandLogger.errorPage( error );
                             }
-                            this.xtremandLogger.errorPage( error );
                         },
                         () => this.xtremandLogger.log( "AddContactsComponent googleContacts() finished." )
                         );

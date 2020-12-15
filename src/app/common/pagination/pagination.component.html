@@ -6,12 +6,10 @@
   <ng-container *ngIf="pagination.pagedItems.length !== 0">
   <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
   	<select class="form-control margin-top" style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
-      <!-- <ng-container *ngFor="let pageNo of numberPerPage" > -->
       <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
       <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
       <option *ngIf="pagination.totalRecords>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
-      <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
-    <!-- </ng-container> -->
+      <!-- <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option> -->
     </select>
  </div>
 </ng-container>
@@ -19,7 +17,8 @@
 
 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination">
   <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-    <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1"><span><i class="fa fa-angle-double-left"></i><span class="hidden-xs hidden-sm">First</span></span></a>
+    <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1"><span>
+      <i class="fa fa-angle-double-left" aria-hidden="true"></i><span class="hidden-xs hidden-sm">First</span></span></a>
   </li>
   <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
     <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1"><span><i class="fa fa-angle-left"></i><span class="hidden-xs hidden-sm">Previous</span></span></a>
@@ -28,9 +27,11 @@
     <a (click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
   </li>
   <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-    <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages"><span ><span class="hidden-xs hidden-sm">Next</span><i class="fa fa-angle-right"></i></span></a>
+    <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages"><span ><span class="hidden-xs hidden-sm">Next</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
   </li>
   <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}">
-    <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages"><span ><span class="hidden-xs hidden-sm">Last</span><i class="fa fa-angle-double-right"></i></span></a>
+    <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages"><span ><span class="hidden-xs hidden-sm">Last</span>
+      <i class="fa fa-angle-double-right" aria-hidden="true"></i></span></a>
   </li>
 </ul>
