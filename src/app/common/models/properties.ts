@@ -170,5 +170,7 @@ export class Properties {
   VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated succesfully";
   VANITY_URL_ET_DELETE_TEXT = "Email Template deleted succesfully";
   VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT="Error while Updating Email Template";
+
+  reAuthenticateMessage = 'Please unlink  and reconnect your account.';
 }
 

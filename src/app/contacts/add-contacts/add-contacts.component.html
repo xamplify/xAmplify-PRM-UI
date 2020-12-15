@@ -729,7 +729,7 @@
 											</thead>
 											<tbody>
 
-												<ng-container *ngFor="let user of pagedItems">
+												<ng-container *ngFor="let user of pagedItems;let i=index">
 													<tr>
 														<td title="{{user.firstName}}">{{user.firstName | slice:0:30}}
 														<span *ngIf="user.firstName?.length>30">...</span>

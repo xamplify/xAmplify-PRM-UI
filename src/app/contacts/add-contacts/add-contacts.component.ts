@@ -1456,9 +1456,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         ( error: any ) => {
                             this.xtremandLogger.error( error );
                             if ( error._body.includes( "JSONObject" ) && error._body.includes( "access_token" ) && error._body.includes( "not found." ) ) {
-                                this.xtremandLogger.errorMessage = 'authentication was not successful, you might have changed the password of social account or other reasons, please unlink your account and reconnect it.';
-                            }
-                            this.xtremandLogger.errorPage( error );
+                                this.referenceService.showReAuthenticateMessage();
+                            }else{
+								this.xtremandLogger.errorPage( error );
+							}
+                            
                         },
                         () => this.xtremandLogger.log( "AddContactsComponent() googleContacts() finished." )
                         );
@@ -1600,10 +1602,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             // this.socialContact.contacts = this.socialContactUsers;
             if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
                 if ( this.socialContactUsers.length > 0 ) {
-
                     this.askForPermission('googleContacts');
-
-
                 } else
                     this.xtremandLogger.error( "AddContactComponent saveGoogleContacts() Contacts Null Error" );
             }
