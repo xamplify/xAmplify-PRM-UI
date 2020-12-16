@@ -1192,7 +1192,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			});
 			this.xtremandLogger.info(this.invalidRemovableContacts);
 
-			this.contactService.removeInvalidContactListUsers(this.selectedInvalidContactIds)
+			this.contactService.removeInvalidContactListUsers(this.selectedInvalidContactIds, this.assignLeads)
 				.subscribe(
 					data => {
 						data = data;
@@ -1272,7 +1272,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
       this.xtremandLogger.info(contactId);
       const ids = [];
       ids.push(contactId);
-			this.contactService.validateUndelivarableEmailsAddress(ids)
+			this.contactService.validateUndelivarableEmailsAddress(ids, this.assignLeads)
 				.subscribe(
 					data => {
 						if (data.access) {
@@ -1638,25 +1638,29 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	hasAccessForDownloadUndeliverableContacts() {
-		try {
-			this.contactService.hasAccess(this.isPartner)
-				.subscribe(
-					data => {
-						const body = data['_body'];
-						const response = JSON.parse(body);
-						let access = response.access;
-						if (access) {
-              this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
-						//	this.downloadContactTypeList();
-						} else {
-							this.authenticationService.forceToLogout();
-						}
-					}
-				);
-		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
-		}
+    hasAccessForDownloadUndeliverableContacts() {
+        if (this.assignLeads){
+        	this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
+        } else {
+            try {
+                this.contactService.hasAccess(this.isPartner)
+                    .subscribe(
+                    data => {
+                        const body = data['_body'];
+                        const response = JSON.parse(body);
+                        let access = response.access;
+                        if (access) {
+                            this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
+                            //	this.downloadContactTypeList();
+                        } else {
+                            this.authenticationService.forceToLogout();
+                        }
+                    }
+                    );
+            } catch (error) {
+                this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+            }
+        }
   }
 
 
