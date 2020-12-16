@@ -92,13 +92,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   loggedInUserId: number;
   categoryNames: any;
   routerLink: string = "/home/forms/manage";
-  backgroundControllerColor: string;
-  labelControllerColor: string;
-  buttonBackgroundControllerColor: string;
-  buttonValueControllerColor: string;
-  titleControllerColor: string;
-  borderControllerColor: string;
-  pageBackgroundControllerColor: string;
+  //backgroundControllerColor: string;
+  //labelControllerColor: string;
+  //buttonBackgroundControllerColor: string;
+  //buttonValueControllerColor: string;
+  //titleControllerColor: string;
+  //borderControllerColor: string;
+  //pageBackgroundControllerColor: string;
   valueRange: number;
   charactersLeft = 1000;
   cropRounded = false;
@@ -191,27 +191,27 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         if (this.form.showCaptcha === undefined || this.form.showCaptcha === null) {
             this.form.showCaptcha = false;
         }
-        if (this.form.backgroundColor) {
-            this.backgroundControllerColor = this.form.backgroundColor;
-        }
-        if (this.form.labelColor) {
-            this.labelControllerColor = this.form.labelColor;
-        }
-        if (this.form.buttonColor) {
-            this.buttonBackgroundControllerColor = this.form.buttonColor;
-        }
-        if (this.form.buttonValueColor) {
-            this.buttonValueControllerColor = this.form.buttonValueColor;
-        }
-        if (this.form.titleColor) {
-            this.titleControllerColor = this.form.titleColor;
-        }
-        if (this.form.borderColor) {
-            this.borderControllerColor = this.form.borderColor;
-        }
-        if (this.form.pageBackgroundColor) {
-            this.pageBackgroundControllerColor = this.form.pageBackgroundColor;
-        }
+        // if (this.form.backgroundColor) {
+        //     this.backgroundControllerColor = this.form.backgroundColor;
+        // }
+        // if (this.form.labelColor) {
+        //     this.labelControllerColor = this.form.labelColor;
+        // }
+        // if (this.form.buttonColor) {
+        //     this.buttonBackgroundControllerColor = this.form.buttonColor;
+        // }
+        // if (this.form.buttonValueColor) {
+        //     this.buttonValueControllerColor = this.form.buttonValueColor;
+        // }
+        // if (this.form.titleColor) {
+        //     this.titleControllerColor = this.form.titleColor;
+        // }
+        // if (this.form.borderColor) {
+        //     this.borderControllerColor = this.form.borderColor;
+        // }
+        // if (this.form.pageBackgroundColor) {
+        //     this.pageBackgroundControllerColor = this.form.pageBackgroundColor;
+        // }
         if (!this.form.buttonValue) {
             this.form.buttonValue = "Submit";
         }
@@ -577,15 +577,15 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   updatePriceSymbol(columnInfo: ColumnInfo, type: string) {
       let symbol = "";
       if (type == 'Rupee') {
-          symbol = "â‚¹"
+          symbol = "₹"
       } else if (type == 'Dollar') {
           symbol = "$"
       } else if (type == 'Yen') {
-          symbol = " Â¥"
+          symbol = " ¥"
       } else if (type == 'Pound') {
-          symbol = "Â£"
+          symbol = "£"
       } else if (type == 'Euro') {
-          symbol = "â‚¬"
+          symbol = "€"
       }
       columnInfo.priceSymbol = symbol;
   }
@@ -891,29 +891,33 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
           $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
           if (type === "backgroundColor") {
-              this.backgroundControllerColor = event;
+              //this.backgroundControllerColor = event;
               form.backgroundColor = event;
           } else if (type === "labelColor") {
-              this.labelControllerColor = event;
+              //this.labelControllerColor = event;
               form.labelColor = event;
           } else if (type === "buttonColor") {
-              this.buttonBackgroundControllerColor = event;
+              //this.buttonBackgroundControllerColor = event;
               form.buttonColor = event
           } else if (type === "buttonValueColor") {
-              this.buttonValueControllerColor = event;
+              //this.buttonValueControllerColor = event;
               form.buttonValueColor = event
           } else if (type === "titleColor") {
-              this.titleControllerColor = event;
+              //this.titleControllerColor = event;
               form.titleColor = event
           } else if (type === "borderColor") {
-              this.borderControllerColor = event;
+              //this.borderControllerColor = event;
               form.borderColor = event
           } else if (type === "pageBackgroundColor") {
-              this.pageBackgroundControllerColor = event;
+              //this.pageBackgroundControllerColor = event;
               form.pageBackgroundColor = event;
               this.pageBackgroundColor = event;
           }
       } catch (error) { console.log(error); }
+  }
+
+  changePageBackgroundColor(input: string){
+    this.pageBackgroundColor = input;
   }
 
   characterSize() {
