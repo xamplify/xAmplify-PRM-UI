@@ -278,8 +278,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      dealPipelines = new Array<Pipeline>();
      defaultLeadPipelineId = 0;
      defaultDealPipelineId = 0;
-    salesforceIntegrated = false;
-
+     salesforceIntegrated = false;
+     showConfigurePipelines = false;
+     pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
      /************Filter Folder*****************/
     public selectedFolderIds= [];
     public emailTemplateFolders:Array<folder>;
@@ -3339,6 +3340,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    }
    
     isSalesforceIntegrated(): any {
+        this.refService.loading( this.pipelineLoader, true );
         this.salesforceIntegrated = false;
         if (this.enableLeads) {
             this.loading = true;
@@ -3349,6 +3351,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         let cfResponse = data;
                         if (cfResponse.statusCode === 200) {
                             this.salesforceIntegrated = true;
+                            this.showConfigurePipelines = false;
                         } else if (cfResponse.statusCode === 400) {
                             swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
                         }
@@ -3358,9 +3361,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
                     console.log("isPushToSalesforce ::::" + this.pushToCRM);
                 } else {
+                    this.showConfigurePipelines = true;
                     this.listCampaignPipelines();
                 }
+                this.refService.loading( this.pipelineLoader, false );
             }, error => {
+                this.refService.loading( this.pipelineLoader, false );
                 this.logger.error(error, "Error in salesforce checkIntegrations()");
             }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
         }

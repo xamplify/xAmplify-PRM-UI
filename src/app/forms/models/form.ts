@@ -41,6 +41,6 @@ export class Form {
 
     openLinkInNewTab = false;
     formSubmissionUrl = "";
-    isValidFormSubmissionUrl = false;
+    isValidFormSubmissionUrl = true;
 	
 }

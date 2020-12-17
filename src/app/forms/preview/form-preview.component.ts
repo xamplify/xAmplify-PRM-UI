@@ -282,7 +282,7 @@ export class FormPreviewComponent implements OnInit {
               this.addHeaderMessage(response.message, this.successAlertClass);
               this.formSubmitted = true;
               let formSubmissionUrl = this.form.formSubmissionUrl;
-              if(!formSubmissionUrl.startsWith("https://")){
+              if(formSubmissionUrl!=undefined && $.trim(formSubmissionUrl).length>0 && !formSubmissionUrl.startsWith("https://")){
                 formSubmissionUrl = "https://"+formSubmissionUrl;
               }
               let openLinkInNewTab = this.form.openLinkInNewTab;
