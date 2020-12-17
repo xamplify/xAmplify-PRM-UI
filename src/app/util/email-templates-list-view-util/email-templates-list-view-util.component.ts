@@ -345,8 +345,8 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
           this.pagination.emailTemplateType =EmailTemplateType.EMAIL;
       }else if(type=="NONE"){
           this.pagination.emailTemplateType =EmailTemplateType.NONE;
-      }else if(type=="RICH"){
-          this.pagination.emailTemplateType =EmailTemplateType.RICH;
+      }else if(type=="VIDEO"){
+          this.pagination.emailTemplateType =EmailTemplateType.VIDEO;
       }else if(type=="UPLOADED"){
           this.pagination.emailTemplateType =EmailTemplateType.UPLOADED;
       }else if(type=="PARTNER"){

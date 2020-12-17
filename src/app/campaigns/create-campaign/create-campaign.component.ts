@@ -1924,9 +1924,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        if(type=="EMAIL"){
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EMAIL;
            this.selectedEmailTemplateType = EmailTemplateType.EMAIL;
-       }else if(type=="RICH"){
-           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
-           this.selectedEmailTemplateType = EmailTemplateType.RICH;
+       }else if(type=="VIDEO"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO;
+           this.selectedEmailTemplateType = EmailTemplateType.VIDEO;
        }else if(type=="UPLOADED"){
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
            this.selectedEmailTemplateType = EmailTemplateType.UPLOADED;
