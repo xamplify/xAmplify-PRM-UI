@@ -409,7 +409,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           },
           error => {
               this.refService.stopLoader(this.httpRequestLoader);
-              this.logger.errorPage(error)
+              this.logger.errorPage(error);
               },
           () => console.log( "Email Template Saved" )
           );

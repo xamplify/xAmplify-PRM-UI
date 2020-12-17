@@ -382,7 +382,13 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         }else if(type=="VIDEO_CO_BRANDING"){
             this.pagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
         }else if(type=="EVENT_CO_BRANDING"){
-        this.pagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
+            this.pagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
+        }else if(type=="EVENT"){
+            this.pagination.emailTemplateType = EmailTemplateType.EVENT;
+        }else if(type=="MARKETO"){
+            this.pagination.emailTemplateType = EmailTemplateType.MARKETO;
+        }else if(type=="HUBSPOT"){
+            this.pagination.emailTemplateType = EmailTemplateType.HUBSPOT;
         }
         this.selectedTemplateTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;

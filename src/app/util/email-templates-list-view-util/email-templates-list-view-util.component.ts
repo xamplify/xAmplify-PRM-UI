@@ -356,8 +356,10 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
       }else if(type=="VIDEO_CO_BRANDING"){
           this.pagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
       }else if(type=="EVENT_CO_BRANDING"){
-      this.pagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
-      }
+         this.pagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
+      }else if(type=="EVENT"){
+        this.pagination.emailTemplateType = EmailTemplateType.EVENT;
+     }
       this.selectedTemplateTypeIndex = index;//This is to highlight the tab
       this.pagination.pageIndex = 1;
       if(isVideoTemplate){

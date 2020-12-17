@@ -19,7 +19,7 @@
                                   </li>
                                   <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',false,8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video Co-Branding
                                   </li>
-                                  <li class="filter" (click)="filterTemplates('BASIC',false,9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign">Event
+                                  <li class="filter" (click)="filterTemplates('EVENT',false,9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign">Event
                                   </li>
                                   <li class="filter" (click)="filterTemplates('EVENT_CO_BRANDING',false,10)" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex">Event Co-Branding
                                   </li>
