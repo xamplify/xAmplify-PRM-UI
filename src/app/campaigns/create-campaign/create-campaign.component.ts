@@ -3243,7 +3243,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.contactService.getValidUsersCount( this.selectedContactListIds )
                 .subscribe(
                 data => {
-                    data = data;
                     this.validUsersCount = data['validContactsCount'];
                     this.allUsersCount = data['allContactsCount'];
                     console.log( "valid contacts Data:" + data['validContactsCount'] );
