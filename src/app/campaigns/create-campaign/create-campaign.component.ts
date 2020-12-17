@@ -1921,9 +1921,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     filterTemplates(type:string,index:number){
-       if(type=="BASIC"){
-           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
-           this.selectedEmailTemplateType = EmailTemplateType.BASIC;
+       if(type=="EMAIL"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EMAIL;
+           this.selectedEmailTemplateType = EmailTemplateType.EMAIL;
        }else if(type=="RICH"){
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
            this.selectedEmailTemplateType = EmailTemplateType.RICH;
@@ -1954,8 +1954,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
 
     filterReplyTemplates(type:string,index:number,reply:Reply){
-        if(type=="BASIC"){
-            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
+        if(type=="EMAIL"){
+            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EMAIL;
         }else if(type=="REGULAR_CO_BRANDING"){
             reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
         }else if(type=="UPLOADED"){
@@ -1972,8 +1972,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
 
     filterClickTemplates(type:string,index:number,url:Url){
-        if(type=="BASIC"){
-            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
+        if(type=="EMAIL"){
+            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EMAIL;
         }else if(type=="REGULAR_CO_BRANDING"){
             url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
         }else if(type=="UPLOADED"){

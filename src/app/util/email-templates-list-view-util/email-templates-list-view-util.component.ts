@@ -341,8 +341,8 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
   }
 
   filterTemplates(type:string,isVideoTemplate:boolean,index:number){
-      if(type=="BASIC"){
-          this.pagination.emailTemplateType =EmailTemplateType.BASIC;
+      if(type=="EMAIL"){
+          this.pagination.emailTemplateType =EmailTemplateType.EMAIL;
       }else if(type=="NONE"){
           this.pagination.emailTemplateType =EmailTemplateType.NONE;
       }else if(type=="RICH"){
