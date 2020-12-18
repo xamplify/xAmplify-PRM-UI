@@ -21,6 +21,7 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
@@ -205,10 +206,21 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	tempIsZohoSynchronization: any;
 	campaignLoader = false;
 	sharedPartnerDetails: any;
-	selectedListDetails : ContactList;;
+	selectedListDetails : ContactList;
+	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch) {
+		
+		
+		  this.loggedInUserId = this.authenticationService.getUserId();
+	        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+	            this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+	            this.vanityLoginDto.userId = this.loggedInUserId; 
+	            this.vanityLoginDto.vanityUrlFilter = true;
+	         }
+	
 		this.referenceService.renderer = render;
 		let currentUrl = this.router.url;
 		this.model.isPublic = true;
@@ -277,7 +289,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		console.log("ContactRole" + this.hasContactRole);
 
 		this.hasAllAccess = this.referenceService.hasAllAccess();
-		this.loggedInUserId = this.authenticationService.getUserId();
+		//this.loggedInUserId = this.authenticationService.getUserId();
 
 		this.parentInput = {};
 		const currentUser = localStorage.getItem('currentUser');
@@ -303,6 +315,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     loadContactLists(pagination: Pagination) {
+    	pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+    	pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+   
         if (this.assignLeads) {
         	this.loadAssignedLeadsLists(pagination);
         } else {
