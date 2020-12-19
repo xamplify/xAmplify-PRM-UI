@@ -1000,7 +1000,7 @@
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div class="col-xs-12 text-center" style="margin-top: 10px;">
                         <div class="portlet light">
-                            <ul class="mix-filter pull-left" style="padding:0" *ngIf="!campaign.enableCoBrandingLogo">
+                            <!-- <ul class="mix-filter pull-left" style="padding:0" *ngIf="!campaign.enableCoBrandingLogo">
                                 <li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex" *ngIf="!isOnlyPartner" translate>All</li>
                                 <li class="filter" (click)="filterTemplates('EMAIL',2)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex" translate>Email
                                 </li>
@@ -1012,7 +1012,7 @@
                                 <li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex" translate>Uploaded
                                 </li>
                                 <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',7)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex" translate>Video Co-Branding</li>
-                            </ul>
+                            </ul> -->
 
                             <div class="input-icon right pull-right cebp">
                                 <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
@@ -1748,7 +1748,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div>
-                                                                        <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
+                                                                        <!-- <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
                                                                             <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex" translate>
                                                                                 All</li>
                                                                             <li class="filter" (click)="filterReplyTemplates('EMAIL',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex" translate>
@@ -1758,7 +1758,7 @@
                                                                             <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex" translate>
                                                                                 Uploaded</li>
                                                                             
-                                                                        </ul>
+                                                                        </ul> -->
 
                                                                         <div class="input-icon right pull-right cebp">
                                                                             <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
@@ -2080,7 +2080,7 @@
                                                                             </label>
                                                                         </div>
                                                                         <div>
-                                                                            <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
+                                                                            <!-- <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
                                                                                 <li class="filter" (click)="filterClickTemplates('NONE',0,url)" [class.emailtemplate-selected]="0 == url.selectedEmailTemplateTypeIndex" translate>
                                                                                     All</li>
                                                                                 <li class="filter" (click)="filterClickTemplates('EMAIL',1,url)" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex" translate>
@@ -2090,7 +2090,7 @@
                                                                                 <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex" translate>
                                                                                     Uploaded</li>
                                                                                 
-                                                                            </ul>
+                                                                            </ul> -->
     
                                                                             <div class="input-icon right pull-right cebp">
                                                                                 <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
