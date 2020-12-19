@@ -977,10 +977,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     setChannelCampaign(event:any){
         this.campaign.channelCampaign = event;
-       /* if(roles.indexOf(this.roleName.vendorRole)<0){
-            this.selectedContactListIds = [];
-            this.isContactList = false;
-        }*/
         this.contactsPagination.pageIndex = 1;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
@@ -1080,9 +1076,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    loadRegularOrVideoCoBrandedTemplates(){
         if(this.campaignType == "regular"){
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+            this.emailTemplatesPagination.pageIndex = 1;
             this.loadEmailTemplates(this.emailTemplatesPagination);
         }else{
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+            this.emailTemplatesPagination.pageIndex = 1;
             this.loadEmailTemplates(this.emailTemplatesPagination);
         }
     }
