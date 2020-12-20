@@ -377,45 +377,37 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
 
     }
     checkMarketoCredentials(state=false) {
-        this.loading = true;
+        this.importLoading = true;
         this.emailTemplateService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
             if (response.statusCode == 8000) {
                 this.showMarketoForm = false;
                 this.getMarketoEmailTemplates();
                 this.templateError = false;
-                this.loading = false;
-            }
-            else if(state) {
-
-
+            }else if(state) {
                 $("#templateRetrieve").modal('show');
                 this.templateError = false;
-                this.loading = false;
-
+                 this.importLoading = false;
             }
         }, error => {
-
             this.templateError = error;
             $("#templateRetrieve").modal('show');
-            this.loading = false;
+            this.importLoading = false;
         })
     }
     getTemplatesFromMarketo() {
+        this.importLoading = true;
         this.clearValues();
-
         this.checkMarketoCredentials(true);
-
-
-
     }
     getMarketoEmailTemplates(): any {
+        this.importLoading = true;
         this.selectedTemplateTypeIndex = 11;
         this.selectAllTemplates = false;
         this.isSaveHubSpotTemplatesButtonState = false;
         $("#templateRetrieve").modal('hide');
-        this.emailTemplateService.getMarketoEmailTemplates(this.authenticationService.getUserId()).subscribe(response => {
+        this.emailTemplateService.getMarketoEmailTemplates(this.authenticationService.getUserId())
+        .subscribe(response => {
             this.marketoEmailTemplates = response.data;
-
             this.marketoEmailTemplates.map(template => {
                 template.marketoTemplate = true;
                 template.body = template.content;
@@ -503,7 +495,6 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
     setSelectedTemplates(event: any) {
       this.selectedTemplates;
-
       this.saveMarketoTemplatesButtonState();
       let selectedTemps = this.filteredEmailTemplates.filter(i=>i.isSelectedMarketoTemplate);
       if(selectedTemps.length == this.filteredEmailTemplates.length){
@@ -536,7 +527,6 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         let count = 0;
         this.filteredEmailTemplates.forEach(template => {
             if (template.isSelectedMarketoTemplate) {
-
                 count++;
             }
         });
@@ -566,10 +556,8 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             }
 
         });
-        console.log(body);
-        this.emailTemplateService.importMarketoEmailTemplates(this.authenticationService.getUserId(), body).subscribe(response => {
-            console.log(response);
-            // this.router.navigate(["/home/emailtemplates/mange"]);
+        this.emailTemplateService.importMarketoEmailTemplates(this.authenticationService.getUserId(), body).
+        subscribe(response => {
             this.customResponse = new CustomResponse('SUCCESS', response.message, true);
             this.selectAllTemplates = false;
             this.filteredEmailTemplates.map(template => template.isSelectedMarketoTemplate = false);
@@ -578,8 +566,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         },
             (error: string) => {
                 this.logger.error(this.refService.errorPrepender + ":" + error);
-                this.refService.showServerError(this.httpRequestLoader);
-                this.importLoading = false;
+                this.logger.errorPage(error);
             },
             () => this.logger.info("Imported Templates"))
     }
@@ -636,7 +623,6 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     showMarketoTemplates() {
         try {
             this.filteredEmailTemplates = new Array<EmailTemplate>();
-            console.log(this.marketoEmailTemplates)
             for (var i = 0; i < this.marketoEmailTemplates.length; i++) {
                 var isMarketoTemplate = this.marketoEmailTemplates[i].marketoTemplate;
                 if (isMarketoTemplate) {
@@ -644,6 +630,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 }
             }
             this.logger.debug("Showing Marketo Templates size of" + this.filteredEmailTemplates.length);
+            this.importLoading = false;
         } catch (error) {
             var cause = "Error in marketoEmailTemplate() in selectTemplatesComponent";
             this.logger.error(cause + ":" + error);
@@ -653,6 +640,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     //   HubSpot Templates Implementation
 
     getTemplatesFromHubSpot() {
+        this.importLoading = true;
         this.selectAllTemplates = false;
         this.selectedTemplateTypeIndex = 12;
         this.selectedThirdPartyIntegration = "hubspot";
@@ -678,7 +666,8 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                     window.location.href = response.redirectUrl;
                 }
             }
-        })
+            this.importLoading = false;
+        });
     }
 
     showHubSpotEmailtemplatePreview(emailTemplateId: number): any {

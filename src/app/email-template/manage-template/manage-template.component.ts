@@ -367,12 +367,12 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     }
 
     filterTemplates(type:string,isVideoTemplate:boolean,index:number){
-        if(type=="BASIC"){
-            this.pagination.emailTemplateType =EmailTemplateType.BASIC;
+        if(type=="EMAIL"){
+            this.pagination.emailTemplateType =EmailTemplateType.EMAIL;
         }else if(type=="NONE"){
             this.pagination.emailTemplateType =EmailTemplateType.NONE;
-        }else if(type=="RICH"){
-            this.pagination.emailTemplateType =EmailTemplateType.RICH;
+        }else if(type=="VIDEO"){
+            this.pagination.emailTemplateType =EmailTemplateType.VIDEO;
         }else if(type=="UPLOADED"){
             this.pagination.emailTemplateType =EmailTemplateType.UPLOADED;
         }else if(type=="PARTNER"){
@@ -382,7 +382,13 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         }else if(type=="VIDEO_CO_BRANDING"){
             this.pagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
         }else if(type=="EVENT_CO_BRANDING"){
-        this.pagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
+            this.pagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
+        }else if(type=="EVENT"){
+            this.pagination.emailTemplateType = EmailTemplateType.EVENT;
+        }else if(type=="MARKETO"){
+            this.pagination.emailTemplateType = EmailTemplateType.MARKETO;
+        }else if(type=="HUBSPOT"){
+            this.pagination.emailTemplateType = EmailTemplateType.HUBSPOT;
         }
         this.selectedTemplateTypeIndex = index;//This is to highlight the tab
         this.pagination.pageIndex = 1;

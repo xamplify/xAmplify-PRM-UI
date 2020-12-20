@@ -544,7 +544,7 @@
                       </a>
                       <a [class.disabled]="!contactList.emailValidationInd"
                       *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isPartner() ||
-                      (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
+                      (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList  && ((assignLeads && !contactList.assignedToPartner) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST'))"
                       (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
                       data-toggle="tooltip" data-placement="top"
                       title="{{actionsDescription.contact_list_edit}}"
@@ -552,14 +552,14 @@
                         class="fa fa-pencil-square-o"></i>
                       </a> <a [class.disabled]="!contactList.emailValidationInd"
                       *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor  || authenticationService.module.isVendorTier) || contactList.synchronisedList
-                      && (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
+                      || ((contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads)  || (assignLeads && contactList.assignedToPartner))"
                       (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
                       data-toggle="tooltip" data-placement="top"
                       title="{{actionsDescription.contact_list_info}}"
                       data-rel="fancybox-button"> <i
                         class="fa fa-info" style="color: white;"></i>
                       </a> <a data-toggle="tooltip" data-placement="top"
-                      *ngIf="contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads"
+                      *ngIf= "assignLeads || (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
                       title="{{actionsDescription.contact_list_saveAs}}"
                       (click)="saveAsNewList(contactList.id,contactList.name, contactList.publicList)"
                       [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
@@ -568,7 +568,7 @@
                         style="color: white;"></i>
                       </a> <a [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
                       (click)="hasDownLoadAccess(contactList.id, contactList.name)"
-                      *ngIf="contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads"
+                      *ngIf= "assignLeads || (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
                       data-toggle="tooltip" data-placement="top"
                       title="{{actionsDescription.contact_list_download}}"
                       data-rel="fancybox-button"> <i
@@ -587,7 +587,7 @@
                       </ng-container>
                       <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
                       *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId)
-                      || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
+                      || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST'))"
                       (click)="showAlert(contactList.id)" data-toggle="tooltip"
                       data-placement="top"
                       title="{{actionsDescription.contact_list_delete}}"

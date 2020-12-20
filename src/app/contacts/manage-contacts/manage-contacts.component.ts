@@ -21,6 +21,7 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
@@ -205,10 +206,21 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	tempIsZohoSynchronization: any;
 	campaignLoader = false;
 	sharedPartnerDetails: any;
-	selectedListDetails : ContactList;;
+	selectedListDetails : ContactList;
+	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch) {
+		
+		
+		  this.loggedInUserId = this.authenticationService.getUserId();
+	        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+	            this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+	            this.vanityLoginDto.userId = this.loggedInUserId; 
+	            this.vanityLoginDto.vanityUrlFilter = true;
+	         }
+	
 		this.referenceService.renderer = render;
 		let currentUrl = this.router.url;
 		this.model.isPublic = true;
@@ -277,7 +289,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		console.log("ContactRole" + this.hasContactRole);
 
 		this.hasAllAccess = this.referenceService.hasAllAccess();
-		this.loggedInUserId = this.authenticationService.getUserId();
+		//this.loggedInUserId = this.authenticationService.getUserId();
 
 		this.parentInput = {};
 		const currentUser = localStorage.getItem('currentUser');
@@ -303,6 +315,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     loadContactLists(pagination: Pagination) {
+    	pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+    	pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+   
         if (this.assignLeads) {
         	this.loadAssignedLeadsLists(pagination);
         } else {
@@ -1192,7 +1207,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			});
 			this.xtremandLogger.info(this.invalidRemovableContacts);
 
-			this.contactService.removeInvalidContactListUsers(this.selectedInvalidContactIds)
+			this.contactService.removeInvalidContactListUsers(this.selectedInvalidContactIds, this.assignLeads)
 				.subscribe(
 					data => {
 						data = data;
@@ -1272,7 +1287,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
       this.xtremandLogger.info(contactId);
       const ids = [];
       ids.push(contactId);
-			this.contactService.validateUndelivarableEmailsAddress(ids)
+			this.contactService.validateUndelivarableEmailsAddress(ids, this.assignLeads)
 				.subscribe(
 					data => {
 						if (data.access) {
@@ -1638,25 +1653,29 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	hasAccessForDownloadUndeliverableContacts() {
-		try {
-			this.contactService.hasAccess(this.isPartner)
-				.subscribe(
-					data => {
-						const body = data['_body'];
-						const response = JSON.parse(body);
-						let access = response.access;
-						if (access) {
-              this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
-						//	this.downloadContactTypeList();
-						} else {
-							this.authenticationService.forceToLogout();
-						}
-					}
-				);
-		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
-		}
+    hasAccessForDownloadUndeliverableContacts() {
+        if (this.assignLeads){
+        	this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
+        } else {
+            try {
+                this.contactService.hasAccess(this.isPartner)
+                    .subscribe(
+                    data => {
+                        const body = data['_body'];
+                        const response = JSON.parse(body);
+                        let access = response.access;
+                        if (access) {
+                            this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
+                            //	this.downloadContactTypeList();
+                        } else {
+                            this.authenticationService.forceToLogout();
+                        }
+                    }
+                    );
+            } catch (error) {
+                this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+            }
+        }
   }
 
 

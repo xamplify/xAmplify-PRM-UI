@@ -98,7 +98,6 @@ export class HubSpotService {
     // }
 
     importHubSpotTemplates(body: any): Observable<any>{
-        this.logger.info(this.authenticationService.REST_URL + "external/templates/import?access_token=" + this.authenticationService.access_token);
         return this._http.post(this.authenticationService.REST_URL + "external/templates/import?access_token=" + this.authenticationService.access_token,body)
         .map(this.extractData)
         .catch(this.handleError);

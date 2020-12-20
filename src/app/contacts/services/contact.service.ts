@@ -291,17 +291,17 @@ export class ContactService {
            .catch( this.handleErrorDeleteUsers);
     }
 
-    removeInvalidContactListUsers( removeUserIds: Array<number> ): Observable<Object> {
+    removeInvalidContactListUsers( removeUserIds: Array<number>, assignLeads :boolean ): Observable<Object> {
         this.logger.info( removeUserIds );
-        var newUrl = this.contactsUrl + this.authenticationService.getUserId() +"/removeInvalidUsers?access_token=" + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + this.authenticationService.getUserId()+"/"+ assignLeads +"/removeInvalidUsers?access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() );
     }
 
 
-    validateUndelivarableEmailsAddress( validateUserIds: Array<number> ): Observable<any> {
+    validateUndelivarableEmailsAddress( validateUserIds: Array<number>, assignLeads :boolean ): Observable<any> {
         this.logger.info( validateUserIds );
-        var newUrl = this.contactsUrl + "makeContactsValid?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
+        var newUrl = this.contactsUrl + assignLeads +"/makeContactsValid?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
         return this._http.post( newUrl, validateUserIds )
             .map(( response: any ) => response.json() );
     }

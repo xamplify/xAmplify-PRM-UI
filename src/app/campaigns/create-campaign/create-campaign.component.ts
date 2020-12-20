@@ -278,8 +278,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      dealPipelines = new Array<Pipeline>();
      defaultLeadPipelineId = 0;
      defaultDealPipelineId = 0;
-    salesforceIntegrated = false;
-
+     salesforceIntegrated = false;
+	 showConfigurePipelines = false;
+     pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
      /************Filter Folder*****************/
     public selectedFolderIds= [];
     public emailTemplateFolders:Array<folder>;
@@ -976,10 +977,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     setChannelCampaign(event:any){
         this.campaign.channelCampaign = event;
-       /* if(roles.indexOf(this.roleName.vendorRole)<0){
-            this.selectedContactListIds = [];
-            this.isContactList = false;
-        }*/
         this.contactsPagination.pageIndex = 1;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
@@ -1079,9 +1076,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    loadRegularOrVideoCoBrandedTemplates(){
         if(this.campaignType == "regular"){
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+            this.emailTemplatesPagination.pageIndex = 1;
             this.loadEmailTemplates(this.emailTemplatesPagination);
         }else{
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+            this.emailTemplatesPagination.pageIndex = 1;
             this.loadEmailTemplates(this.emailTemplatesPagination);
         }
     }
@@ -1920,12 +1919,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     filterTemplates(type:string,index:number){
-       if(type=="BASIC"){
-           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
-           this.selectedEmailTemplateType = EmailTemplateType.BASIC;
-       }else if(type=="RICH"){
-           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
-           this.selectedEmailTemplateType = EmailTemplateType.RICH;
+       if(type=="EMAIL"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EMAIL;
+           this.selectedEmailTemplateType = EmailTemplateType.EMAIL;
+       }else if(type=="VIDEO"){
+           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO;
+           this.selectedEmailTemplateType = EmailTemplateType.VIDEO;
        }else if(type=="UPLOADED"){
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
            this.selectedEmailTemplateType = EmailTemplateType.UPLOADED;
@@ -1953,8 +1952,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
 
     filterReplyTemplates(type:string,index:number,reply:Reply){
-        if(type=="BASIC"){
-            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
+        if(type=="EMAIL"){
+            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EMAIL;
         }else if(type=="REGULAR_CO_BRANDING"){
             reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
         }else if(type=="UPLOADED"){
@@ -1971,8 +1970,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
 
     filterClickTemplates(type:string,index:number,url:Url){
-        if(type=="BASIC"){
-            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
+        if(type=="EMAIL"){
+            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EMAIL;
         }else if(type=="REGULAR_CO_BRANDING"){
             url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
         }else if(type=="UPLOADED"){
@@ -3242,7 +3241,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.contactService.getValidUsersCount( this.selectedContactListIds )
                 .subscribe(
                 data => {
-                    data = data;
                     this.validUsersCount = data['validContactsCount'];
                     this.allUsersCount = data['allContactsCount'];
                     console.log( "valid contacts Data:" + data['validContactsCount'] );
@@ -3339,6 +3337,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    }
    
     isSalesforceIntegrated(): any {
+	this.refService.loading( this.pipelineLoader, true );
         this.salesforceIntegrated = false;
         if (this.enableLeads) {
             this.loading = true;
@@ -3349,6 +3348,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         let cfResponse = data;
                         if (cfResponse.statusCode === 200) {
                             this.salesforceIntegrated = true;
+							this.showConfigurePipelines = false;
                         } else if (cfResponse.statusCode === 400) {
                             swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
                         }
@@ -3358,9 +3358,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
                     console.log("isPushToSalesforce ::::" + this.pushToCRM);
                 } else {
+					this.showConfigurePipelines = true;
                     this.listCampaignPipelines();
                 }
+			this.refService.loading( this.pipelineLoader, false );
             }, error => {
+			this.refService.loading( this.pipelineLoader, false );
                 this.logger.error(error, "Error in salesforce checkIntegrations()");
             }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
         }
