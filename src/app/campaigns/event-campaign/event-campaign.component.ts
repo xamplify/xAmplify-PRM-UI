@@ -267,7 +267,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         this.completeLoader = false;
     });
     const roles = this.authenticationService.getRoles();
-        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 ;
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 || roles.indexOf(this.roleName.prmRole)>-1 ;
         this.isOrgAdminOrOrgAdminTeamMember = (this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.reDistributeEvent;
         this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
   }
@@ -719,7 +719,7 @@ listCampaignPipelines() {
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
     const roles = this.authenticationService.getRoles();
-    this.isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1;
+    this.isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 || roles.indexOf(this.roleName.prmRole)>-1;
     if(this.isEditCampaign){
        contactListsPagination.editCampaign = true;
        contactListsPagination.campaignId = this.eventCampaign.id;
@@ -800,7 +800,7 @@ listCampaignPipelines() {
   }
   clearSelectedContactList(){
       const roles = this.authenticationService.getRoles();
-      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 ;
+      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 || roles.indexOf(this.roleName.prmRole)>-1 ;
       if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
         this.parternUserListIds = [];
         this.userListIds = [];

@@ -28,6 +28,7 @@ export class Module {
     isPartner:boolean = false;
     isVendorTier = false;
     isMarketing = false;
+	isPrm = false;
 
     isPartnershipEstablishedOnlyWithVendorTier = false;
     
