@@ -51,7 +51,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       { 'labelName': 'Mobile Number', 'labelType': 'text' },
       { 'labelName': 'Date', 'labelType': 'date' },
       { 'labelName': 'Price', 'labelType': 'price' },
-      { 'labelName': 'Upload', 'labelType': 'upload' }
+      { 'labelName': 'Upload', 'labelType': 'upload' },
+      { 'labelName': 'Quiz', 'labelType': 'quiz' }
   ];
   customFields = [
       { 'labelName': 'Single Line Text Field', 'labelType': 'text', 'value': 'Field' },
@@ -468,7 +469,15 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               columnInfo.allDropDownChoicesCount = column.dropDownChoices.length + 1;
           }
 
-      }
+      }else if (columnInfo.labelType === 'quiz') {
+        if (this.isAdd || column.radioButtonChoices == undefined) {
+            columnInfo.radioButtonChoices = this.addDefaultOptions(columnInfo);
+            columnInfo.allRadioButtonChoicesCount = columnInfo.radioButtonChoices.length + 1;
+        } else {
+            columnInfo.radioButtonChoices = column.radioButtonChoices;
+            columnInfo.allRadioButtonChoicesCount = column.radioButtonChoices.length + 1;
+        }
+    }
       this.allItems.push(columnInfo.divId);
       return columnInfo;
   }
@@ -515,7 +524,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           const count = columnInfo.allCheckBoxChoicesCount;
           columnInfo.checkBoxChoices.push(this.constructChoice(count,false));
           columnInfo.allCheckBoxChoicesCount++;
-      } else {
+      }else if (columnInfo.labelType === 'quiz') {
+        columnInfo.radioButtonErrorMessage = "";
+        const count = columnInfo.allRadioButtonChoicesCount;
+        const formOption = this.constructChoice(count,false);
+        columnInfo.radioButtonChoices.push(formOption);
+        columnInfo.allRadioButtonChoicesCount++;
+    } else {
           columnInfo.dropDownErrorMessage = "";
           const count = columnInfo.allDropDownChoicesCount;
           columnInfo.dropDownChoices.push(this.constructChoice(count,false));
@@ -527,7 +542,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
 
   removeChoice(columnInfo: ColumnInfo, index: number, choice: FormOption) {
-      if (columnInfo.labelType === 'radio') {
+      if (columnInfo.labelType === 'radio' || 'quiz') {
           this.removeRadioButtonChoice(columnInfo, index, choice);
       } else if (columnInfo.labelType === "checkbox") {
           this.removeCheckBoxChoice(columnInfo, index, choice);
@@ -557,6 +572,16 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
       }
   }
+
+  selectedChoice(choices: Array<FormOption>, id: string, key: string){
+      choices = $.grep(choices, function (data, index) {
+        if(data[key] == id){
+            data.isChecked = true;
+        }else{
+            data.isChecked = false;
+        }
+    });
+ }
 
   removeDropDownChoice(columnInfo: ColumnInfo, index: number, choice: FormOption) {
       if (columnInfo.dropDownChoices.length === 2) {

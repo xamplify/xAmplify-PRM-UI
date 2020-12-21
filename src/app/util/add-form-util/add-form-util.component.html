@@ -158,6 +158,25 @@
                                                                                     </option>
                                                                                 </select>
                                                                             </ng-container>
+                                                                            <!-- ---------------------------Quiz----------------------------- -->
+                                                                            <ng-container *ngIf="columnInfo.labelType=='quiz' ">
+                                                                                <input type="text" autoComplete="off" maxlength="1000" id="{{columnInfo.labelId}}" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" />
+                                                                            </ng-container>
+                                                                            <br>
+                                                                            <ng-container *ngIf="columnInfo.labelType=='quiz'">
+                                                                                <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                                                                                    <div class="form-check">
+                                                                                        <label class="form-check-label" [style.color]="form.labelColor">
+                                                                                            <input
+                                                                                                type="radio"
+                                                                                                name="{{columnInfo.labelId}}"
+                                                                                                class="form-check-input">
+                                                                                            {{radioButton.name}}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <br>
+                                                                                </ng-container>
+                                                                            </ng-container>
                                                                         </a>
                                                                     </legend>
                                                                 </div>
@@ -210,7 +229,7 @@
                                                         <input type="text" [(ngModel)]="selectedColumn.labelName" class="form-control" (input)="updateHiddenLabelId(selectedColumn)" maxlength="1000" />
                                                     </div>
                                                     <!-- ----------------Filed PlaceHolder Text-------------- -->
-                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea' || selectedColumn.labelType=='number' ">
+                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea' || selectedColumn.labelType=='number'  || selectedColumn.labelType=='quiz'">
                                                         <label class="control-label">Field Placeholder Text</label>
                                                         <input type="text" [(ngModel)]="selectedColumn.placeHolder" class="form-control" maxlength="1000" />
                                                     </div>
@@ -266,13 +285,15 @@
                                                     </div>
                                                 </fieldset>
                                                 <!-- ----------------Radio Buttons/Check Boxes-------------- -->
-                                                <fieldset [attr.class]="selectedColumn.editFormChoiceDivClass" *ngIf="selectedColumn.labelType=='radio' || selectedColumn.labelType=='checkbox' || selectedColumn.labelType=='select'">
+                                                <fieldset [attr.class]="selectedColumn.editFormChoiceDivClass" *ngIf="selectedColumn.labelType=='radio' || selectedColumn.labelType=='checkbox' || selectedColumn.labelType=='select' || selectedColumn.labelType=='quiz'">
                                                     <form class="form-inline">
                                                         <legend>
                                                             <div class="form-group">
                                                                 <label class="control-label" *ngIf="selectedColumn.labelType=='radio'">Radio
                                                                     Button
                                                                     Choices</label>
+                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='quiz'">Quiz
+                                                                    Choices</label><span class="required">*</span>
                                                                 <label class="control-label" *ngIf="selectedColumn.labelType=='checkbox'">Checkbox
                                                                     Choices</label>
                                                                 <label class="control-label" *ngIf="selectedColumn.labelType=='select'">Drop-down
@@ -284,6 +305,24 @@
                                                                     <ng-container *ngFor="let radioButton of selectedColumn.radioButtonChoices;let index=index">
                                                                         <br>
                                                                         <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
+                                                                        <input type="text" class="form-control" [(ngModel)]="radioButton.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
+                                                                        <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-plus"></span>
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,radioButton)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-trash"></span>
+                                                                        </button>
+                                                                        <br>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <!-- ---------------Quiz Radio Button--------------- -->
+                                                                <ng-container *ngIf="selectedColumn.labelType=='quiz'">
+                                                                    <span class="info" *ngIf="selectedColumn.radioButtonErrorMessage?.length>0">{{selectedColumn.radioButtonErrorMessage}}<br></span>
+                                                                    <ng-container *ngFor="let radioButton of selectedColumn.radioButtonChoices;let index=index">
+                                                                        <br>
+                                                                        <input type="radio" name="{{selectedColumn.labelId}}" (click)="selectedChoice(selectedColumn.radioButtonChoices,radioButton.labelId,'labelId')">
                                                                         <input type="text" class="form-control" [(ngModel)]="radioButton.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                                                             <span

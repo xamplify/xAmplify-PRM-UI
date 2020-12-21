@@ -8,5 +8,6 @@ export class FormOption {
     borderColor ="#e5e5e5";
     isValid = true;
     defaultColumn = false;
+    isChecked = false;
 
 }
