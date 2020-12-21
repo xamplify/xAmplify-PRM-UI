@@ -99,6 +99,21 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   //titleControllerColor: string;
   //borderControllerColor: string;
   //pageBackgroundControllerColor: string;
+  backgroundColor: string;
+  labelColor: string;
+  buttonBackgroundColor: string;
+  buttonValueColor: string;
+  titleColor: string;
+  borderColor: string;
+  pageBgColor: string;
+  pageBackgroundColor: string;
+  isValidBackgroundColor= true;
+  isValidLabelColor= true;
+  isValidButtonBackgroundColor= true;
+  isValidButtonValueColor= true;
+  isValidTitleColor= true;
+  isValidBorderColor= true;
+  isValidPageBackgroundColor= true;
   valueRange: number;
   charactersLeft = 1000;
   cropRounded = false;
@@ -144,12 +159,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   formsError = false;
   awsFileKeys: string[] = [];
   formBackgroundImage = "";
-  pageBackgroundColor = "";
   @Input() isMdfForm:boolean;
   @Input() selectedForm:any;
   formHeader = "CREATE FORM";
   siteKey = "";
   formSubmissionUrlErrorMessage = "";
+  colorCodeErrorMessage = 'Enter a valid color code';
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
@@ -191,27 +206,27 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         if (this.form.showCaptcha === undefined || this.form.showCaptcha === null) {
             this.form.showCaptcha = false;
         }
-        // if (this.form.backgroundColor) {
-        //     this.backgroundControllerColor = this.form.backgroundColor;
-        // }
-        // if (this.form.labelColor) {
-        //     this.labelControllerColor = this.form.labelColor;
-        // }
-        // if (this.form.buttonColor) {
-        //     this.buttonBackgroundControllerColor = this.form.buttonColor;
-        // }
-        // if (this.form.buttonValueColor) {
-        //     this.buttonValueControllerColor = this.form.buttonValueColor;
-        // }
-        // if (this.form.titleColor) {
-        //     this.titleControllerColor = this.form.titleColor;
-        // }
-        // if (this.form.borderColor) {
-        //     this.borderControllerColor = this.form.borderColor;
-        // }
-        // if (this.form.pageBackgroundColor) {
-        //     this.pageBackgroundControllerColor = this.form.pageBackgroundColor;
-        // }
+        if (this.form.backgroundColor) {
+            this.backgroundColor = this.form.backgroundColor;
+        }
+        if (this.form.labelColor) {
+            this.labelColor = this.form.labelColor;
+        }
+        if (this.form.buttonColor) {
+            this.buttonBackgroundColor = this.form.buttonColor;
+        }
+        if (this.form.buttonValueColor) {
+            this.buttonValueColor = this.form.buttonValueColor;
+        }
+        if (this.form.titleColor) {
+            this.titleColor = this.form.titleColor;
+        }
+        if (this.form.borderColor) {
+            this.borderColor = this.form.borderColor;
+        }
+        if (this.form.pageBackgroundColor) {
+            this.pageBgColor = this.form.pageBackgroundColor;
+        }
         if (!this.form.buttonValue) {
             this.form.buttonValue = "Submit";
         }
@@ -225,6 +240,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.form.isValid = true;
         this.form.isFormButtonValueValid = true;
         this.form.isValidFormSubmissionUrl = true;
+        this.form.isValidColorCode = true;
         this.listExistingColumns(this.form.formLabelDTOs);
         this.characterSize();
     } else {
@@ -891,33 +907,36 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
           $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
           if (type === "backgroundColor") {
-              //this.backgroundControllerColor = event;
+              this.backgroundColor = event;
               form.backgroundColor = event;
+              this.isValidBackgroundColor = true;
           } else if (type === "labelColor") {
-              //this.labelControllerColor = event;
+              this.labelColor = event;
               form.labelColor = event;
+              this.isValidLabelColor = true;
           } else if (type === "buttonColor") {
-              //this.buttonBackgroundControllerColor = event;
+              this.buttonBackgroundColor = event;
               form.buttonColor = event
+              this.isValidButtonBackgroundColor = true;
           } else if (type === "buttonValueColor") {
-              //this.buttonValueControllerColor = event;
-              form.buttonValueColor = event
+              this.buttonValueColor = event;
+              form.buttonValueColor = event;
+              this.isValidButtonValueColor = true;
           } else if (type === "titleColor") {
-              //this.titleControllerColor = event;
-              form.titleColor = event
+              this.titleColor = event;
+              form.titleColor = event;
+              this.isValidTitleColor = true;
           } else if (type === "borderColor") {
-              //this.borderControllerColor = event;
-              form.borderColor = event
+              this.borderColor = event;
+              form.borderColor = event;
+              this.isValidBorderColor = true;
           } else if (type === "pageBackgroundColor") {
-              //this.pageBackgroundControllerColor = event;
+              this.pageBackgroundColor = event;
               form.pageBackgroundColor = event;
               this.pageBackgroundColor = event;
+              this.isValidPageBackgroundColor = true;
           }
       } catch (error) { console.log(error); }
-  }
-
-  changePageBackgroundColor(input: string){
-    this.pageBackgroundColor = input;
   }
 
   characterSize() {
@@ -1355,5 +1374,72 @@ checkValidForm(){
     this.form.isValid = this.form.isValidFormSubmissionUrl && this.form.isFormButtonValueValid;
 }
 
+checkValidColorCode(colorCode: string, type: string) {
+    if ($.trim(colorCode).length > 0) {
+        if (!this.regularExpressions.COLOR_CODE_PATTERN.test(colorCode)) {
+            this.addColorCodeErrorMessage(type);
+        } else {
+            this.removeColorCodeErrorMessage(colorCode, type);
+        }
+    } else {
+        this.removeColorCodeErrorMessage(colorCode, type);
+    }
+}
+
+private addColorCodeErrorMessage(type: string) {
+    this.form.isValidColorCode = false;
+    if (type === "backgroundColor") {
+        this.form.backgroundColor = "";
+        this.isValidBackgroundColor = false;
+    } else if (type === "labelColor") {
+        this.form.labelColor = "";
+        this.isValidLabelColor = false;
+    } else if (type === "buttonColor") {
+        this.form.buttonColor = "";
+        this.isValidButtonBackgroundColor = false;
+    } else if (type === "buttonValueColor") {
+        this.form.buttonValueColor = "";
+        this.isValidButtonValueColor = false;
+    } else if (type === "titleColor") {
+        this.form.titleColor = "";
+        this.isValidTitleColor = false;
+    } else if (type === "borderColor") {
+        this.form.borderColor = "";
+        this.isValidBorderColor = false;
+    } else if (type === "pageBackgroundColor") {
+        this.form.pageBackgroundColor = "";
+        this.pageBackgroundColor = "";
+        this.isValidPageBackgroundColor = false;
+    }
+}
+
+removeColorCodeErrorMessage(colorCode: string, type: string) {
+    if (type === "backgroundColor") {
+        this.form.backgroundColor = colorCode;
+        this.isValidBackgroundColor = true;
+    } else if (type === "labelColor") {
+        this.form.labelColor = colorCode;
+        this.isValidLabelColor = true;
+    } else if (type === "buttonColor") {
+        this.form.buttonColor = colorCode;
+        this.isValidButtonBackgroundColor = true;
+    } else if (type === "buttonValueColor") {
+        this.form.buttonValueColor = colorCode;
+        this.isValidButtonValueColor = true;
+    } else if (type === "titleColor") {
+        this.form.titleColor = colorCode;
+        this.isValidTitleColor = true;
+    } else if (type === "borderColor") {
+        this.form.borderColor = colorCode;
+        this.isValidBorderColor = true;
+    } else if (type === "pageBackgroundColor") {
+        this.form.pageBackgroundColor = colorCode;
+        this.pageBackgroundColor = colorCode;
+        this.isValidPageBackgroundColor = true;
+    }
+    if (this.isValidBackgroundColor && this.isValidLabelColor && this.isValidButtonBackgroundColor && this.isValidButtonValueColor && this.isValidTitleColor && this.isValidBorderColor && this.isValidPageBackgroundColor) {
+        this.form.isValidColorCode = true;
+    }
+}
 
 }

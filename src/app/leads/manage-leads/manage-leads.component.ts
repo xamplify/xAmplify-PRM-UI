@@ -17,6 +17,7 @@ import { Roles } from '../../core/models/roles';
 import { LeadsService } from '../services/leads.service';
 import { Lead } from '../models/lead';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -49,6 +50,7 @@ export class ManageLeadsComponent implements OnInit {
   counts : any;
   countsLoader = false;
   syncSalesForce = false;
+  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -57,7 +59,15 @@ export class ManageLeadsComponent implements OnInit {
     private dealRegistrationService: DealRegistrationService, private leadsService: LeadsService, 
     public integrationService: IntegrationService) {
 
-      this.loggedInUserId = this.authenticationService.getUserId();
+    this.loggedInUserId = this.authenticationService.getUserId();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    } else {
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
         const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
         userService.getHomeRoles(url)
             .subscribe(
@@ -209,7 +219,7 @@ export class ManageLeadsComponent implements OnInit {
 
   getVendorCounts() {
     this.countsLoader = true;
-    this.leadsService.getCounts(this.loggedInUserId)
+    this.leadsService.getCounts(this.vanityLoginDto)
     .subscribe(
         response => {
             if(response.statusCode==200){
@@ -226,7 +236,7 @@ export class ManageLeadsComponent implements OnInit {
 
   getPartnerCounts() {
     this.countsLoader = true;
-    this.leadsService.getCounts(this.loggedInUserId)
+    this.leadsService.getCounts(this.vanityLoginDto)
     .subscribe(
         response => {
             if(response.statusCode==200){
@@ -244,6 +254,10 @@ export class ManageLeadsComponent implements OnInit {
   showLeads() {
     this.selectedTabIndex = 1;
     this.leadsPagination = new Pagination;
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.leadsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
     this.listLeads(this.leadsPagination);
   }
 

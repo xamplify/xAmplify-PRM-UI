@@ -6,5 +6,6 @@ export class RegularExpressions {
     PHONE_NUMBER_PATTERN = /^[0-9-+]+$/;
     URL_PATTERN = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
     ALPHA_NUMERIC =/^[a-z0-9]+$/;
+    COLOR_CODE_PATTERN = /^#([0-9a-fA-F]{3}){1,2}$/;
 
 }

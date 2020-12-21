@@ -11,6 +11,7 @@ import { CountryNames } from '../../common/models/country-names';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { DealsService } from '../../deals/services/deals.service';
 import {Properties} from 'app/common/models/properties';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -49,17 +50,22 @@ export class AddLeadComponent implements OnInit {
   hasCampaignPipeline = false;
   salesForceEnabled = false;
   hasSfPipeline = false;
+  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 
 
   constructor(public properties:Properties,public authenticationService: AuthenticationService, private leadsService: LeadsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames, 
     private dealsService: DealsService) {
-            
+      this.loggedInUserId = this.authenticationService.getUserId();
+      if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        this.vanityLoginDto.userId = this.loggedInUserId;
+        this.vanityLoginDto.vanityUrlFilter = true;
+      }  
    }   
 
   ngOnInit() {  
-    $('#leadFormModel').modal('show');
-    this.loggedInUserId = this.authenticationService.user.id;
+    $('#leadFormModel').modal('show');    
     this.errorMessage = "";
     this.lead.createdForCompanyId = 0;
     this.lead.pipelineId = 0;
@@ -79,19 +85,48 @@ export class AddLeadComponent implements OnInit {
       }
     } else if (this.actionType === "add") {
       this.leadFormTitle = "Add a Lead";
-      if (this.campaignId > 0) {
-        this.lead.campaignId = this.campaignId;
-        this.lead.campaignName = this.campaignName;
-        this.lead.associatedUserId = this.selectedContact.userId;
-        this.getCreatedForCompanyIdByCampaignId();
-        //this.getCampaignLeadPipeline();
-        this.getContactInfo();
+      if (this.vanityLoginDto.vanityUrlFilter) {
+        this.setCreatedForCompanyId();
+      } else {
+        if (this.campaignId > 0) {
+          this.lead.campaignId = this.campaignId;
+          this.lead.campaignName = this.campaignName;
+          this.lead.associatedUserId = this.selectedContact.userId;
+          this.getCreatedForCompanyIdByCampaignId();
+          //this.getCampaignLeadPipeline();
+          this.getContactInfo();
+        }
       }
     }
     
     this.getVendorList();
   }
 
+  setCreatedForCompanyId() {
+    this.leadsService.getCompanyIdByCompanyProfileName(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+    .subscribe(
+      data => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+        if (data.statusCode == 200) {
+          this.lead.createdForCompanyId = data.data;
+          if (this.campaignId > 0) {
+            this.lead.campaignId = this.campaignId;
+            this.lead.campaignName = this.campaignName;
+            this.lead.associatedUserId = this.selectedContact.userId;
+            this.getCreatedForCompanyIdByCampaignId();
+            //this.getCampaignLeadPipeline();
+            this.getContactInfo();
+          } else {
+            this.isSalesForceEnabled(); 
+          }
+        }
+      },
+      error => {
+        this.httpRequestLoader.isServerError = true;
+      },
+      () => { }
+    );
+    }
 
   isSalesForceEnabled() {
     this.dealsService.isSalesForceEnabled(this.lead.createdForCompanyId, this.loggedInUserId)
