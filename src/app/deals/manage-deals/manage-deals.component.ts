@@ -16,6 +16,7 @@ import { DealRegistrationService } from '../../deal-registration/services/deal-r
 import { Roles } from '../../core/models/roles';
 import { DealsService } from '../services/deals.service';
 import { Deal } from '../models/deal';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -46,6 +47,7 @@ export class ManageDealsComponent implements OnInit {
   companyId = 0;
   counts : any;
   countsLoader = false;
+  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -53,6 +55,15 @@ export class ManageDealsComponent implements OnInit {
     public sortOption: SortOption, public pagerService: PagerService, private userService: UserService,
     private dealRegistrationService: DealRegistrationService, private dealsService: DealsService) {
       this.loggedInUserId = this.authenticationService.getUserId();
+      if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        this.vanityLoginDto.userId = this.loggedInUserId;
+        this.vanityLoginDto.vanityUrlFilter = true;
+      } else {
+        this.vanityLoginDto.userId = this.loggedInUserId;
+        this.vanityLoginDto.vanityUrlFilter = false;
+      }
+
       const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
       userService.getHomeRoles(url)
           .subscribe(
@@ -211,7 +222,7 @@ export class ManageDealsComponent implements OnInit {
 
   getVendorCounts() {
     this.countsLoader = true;
-    this.dealsService.getCounts(this.loggedInUserId)
+    this.dealsService.getCounts(this.vanityLoginDto)
     .subscribe(
         response => {
             if(response.statusCode==200){
@@ -228,7 +239,7 @@ export class ManageDealsComponent implements OnInit {
 
   getPartnerCounts() {
     this.countsLoader = true;
-    this.dealsService.getCounts(this.loggedInUserId)
+    this.dealsService.getCounts(this.vanityLoginDto)
     .subscribe(
         response => {
             if(response.statusCode==200){
@@ -246,6 +257,10 @@ export class ManageDealsComponent implements OnInit {
   showDeals() {
     this.selectedTabIndex = 1;
     this.dealsPagination = new Pagination;
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.dealsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+      this.dealsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
     this.listDeals(this.dealsPagination);
   }
 

@@ -219,6 +219,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  defaultLeadPipelineId = 0;
  defaultDealPipelineId = 0;
  salesforceIntegrated = false;
+ showConfigurePipelines = false;
 
  isValidPipeline = true;
 
@@ -2770,6 +2771,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                         let cfResponse = data;
                         if (cfResponse.statusCode === 200) {
                             this.salesforceIntegrated = true;
+                            this.showConfigurePipelines = false;
                         } else if (cfResponse.statusCode === 400) {
                             swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
                         }
@@ -2779,6 +2781,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
                     console.log("isPushToSalesforce ::::" + this.pushToCRM);
                 } else {
+                    this.showConfigurePipelines = true;
                     this.listCampaignPipelines();
                 }
             }, error => {

@@ -5,6 +5,7 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs";
 import { Pagination } from '../../core/models/pagination';
 import { Lead } from '../models/lead';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
 @Injectable()
 export class LeadsService {
@@ -75,8 +76,14 @@ export class LeadsService {
       .catch(this.handleError);
   }
 
-  getCounts(userId:number) {
-    return this.http.get(this.URL + `/counts/${userId}?access_token=${this.authenticationService.access_token}`)
+  // getCounts(userId:number) {
+  //   return this.http.get(this.URL + `/counts/${userId}?access_token=${this.authenticationService.access_token}`)
+  //   .map(this.extractData)
+  //   .catch(this.handleError);
+  // }
+
+  getCounts(vanityLoginDto:VanityLoginDto) {
+    return this.http.post(this.URL + `/counts?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
   }
@@ -89,6 +96,12 @@ export class LeadsService {
 
   getSalesforcePipeline(createdForCompanyId:number, userId:number) {
     return this.http.get(this.authenticationService.REST_URL + `/pipeline/LEAD/salesforce/${createdForCompanyId}/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getCompanyIdByCompanyProfileName(companyProfileName:string, userId:number) {
+    return this.http.get(this.URL + `vanity/${companyProfileName}/${userId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
   }

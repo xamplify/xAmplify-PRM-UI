@@ -20,6 +20,7 @@ import { User } from 'app/core/models/user';
 import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
 import { SfCustomFieldsDataDTO } from 'app/deal-registration/models/sfcustomfieldsdata';
 import {Properties} from 'app/common/models/properties';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -85,6 +86,7 @@ export class AddDealComponent implements OnInit {
   pipelineStageId: string;
   pipelineStageIdError: boolean = true;
   isDealRegistrationFormValid: boolean = true;
+  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
@@ -92,12 +94,16 @@ export class AddDealComponent implements OnInit {
   constructor(public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService) {
-
+      this.loggedInUserId = this.authenticationService.getUserId();
+      if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        this.vanityLoginDto.userId = this.loggedInUserId;
+        this.vanityLoginDto.vanityUrlFilter = true;
+      }
   }
 
   ngOnInit() {
-    this.utilService.getJSONLocation().subscribe(response => console.log(response))
-    this.loggedInUserId = this.authenticationService.user.id;
+    this.utilService.getJSONLocation().subscribe(response => console.log(response));
     this.deal.createdForCompanyId = 0;
     this.deal.pipelineId = 0;
     this.deal.pipelineStageId = 0;
@@ -105,6 +111,12 @@ export class AddDealComponent implements OnInit {
       this.dealFormTitle = "Add a Deal";
       if (this.leadId > 0) {
         this.getLead(this.leadId);        
+      } else {
+        if (this.vanityLoginDto.vanityUrlFilter) {
+          this.setCreatedForCompanyId();
+        } else {
+  
+        }
       }
     } else if (this.actionType === "view") {
       this.preview = true;
@@ -121,6 +133,23 @@ export class AddDealComponent implements OnInit {
     }
     this.getVendorList();
   }
+
+  setCreatedForCompanyId() {
+    this.leadsService.getCompanyIdByCompanyProfileName(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+    .subscribe(
+      data => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+        if (data.statusCode == 200) {
+          this.deal.createdForCompanyId = data.data;
+          this.isSalesForceEnabled();
+        }
+      },
+      error => {
+        this.httpRequestLoader.isServerError = true;
+      },
+      () => { }
+    );
+    }
 
   getQuestions() {
     this.userService.listFormByCompanyId(this.deal.createdForCompanyId).subscribe(questions => {

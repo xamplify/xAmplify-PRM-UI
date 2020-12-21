@@ -5,6 +5,7 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs";
 import { Pagination } from '../../core/models/pagination';
 import { Deal } from '../models/deal';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
 @Injectable()
 export class DealsService {
@@ -77,8 +78,14 @@ changeDealStatus(deal: Deal) {
  .catch(this.handleError);
 }
 
-getCounts(userId:number) {
-  return this.http.get(this.URL + `/counts/${userId}?access_token=${this.authenticationService.access_token}`)
+// getCounts(userId:number) {
+//   return this.http.get(this.URL + `/counts/${userId}?access_token=${this.authenticationService.access_token}`)
+//   .map(this.extractData)
+//   .catch(this.handleError);
+// }
+
+getCounts(vanityLoginDto:VanityLoginDto) {
+  return this.http.post(this.URL + `/counts?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
   .map(this.extractData)
   .catch(this.handleError);
 }
