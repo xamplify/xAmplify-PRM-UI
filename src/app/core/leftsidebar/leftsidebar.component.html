@@ -128,7 +128,7 @@
 			</a>
 			</li>
 
-			<li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier
+			<li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier || authenticationService.module.isPrm
 	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') ||location.path().includes('forms') || location.path().includes('pages')  }">
                 <a [routerLink]="['./design/add']">
                     <i class="fa fa-paint-brush" aria-hidden="true"></i>
@@ -170,7 +170,7 @@
                 </li>
 
                 <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || 
-                authService.module.isCompanyPartner || isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing )" 
+                authService.module.isCompanyPartner || authenticationService.module.isPrm || isLoggedInAsTeamMember || authService.module.isVendorTier || authenticationService.module.isPrm || authService.module.isMarketing )" 
                 [ngClass]="{'active': location.path().includes('team')}">
                     <a [routerLink]="['./team/add-team']">
                         <i class="fa fa-users" aria-hidden="true"></i>

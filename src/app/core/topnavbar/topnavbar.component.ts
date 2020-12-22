@@ -119,6 +119,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           if (roles.indexOf(this.roleName.marketingRole) > -1){
             this.authenticationService.module.isMarketing = true;
           }
+		if (roles.indexOf(this.roleName.prmRole) > -1){
+            this.authenticationService.module.isPrm = true;
+          }
     }
     }else{
        this.authenticationService.logout();

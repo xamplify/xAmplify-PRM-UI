@@ -251,6 +251,7 @@ export class AuthenticationService {
         const isVendor = roleNames.indexOf(this.roleName.vendorRole) > -1;
         const isMarketingRole = roleNames.indexOf(this.roleName.marketingRole) > -1;
         const isVendorTierRole = roleNames.indexOf(this.roleName.vendorTierRole) > -1;
+		const isPrmRole = roleNames.indexOf(this.roleName.prmRole) > -1;
         /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 &&
          (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
         if (roleNames.length === 1) {
@@ -266,6 +267,12 @@ export class AuthenticationService {
             return "Vendor";
           }else if(isMarketingRole){
             return "Marketing";
+          }else if(isMarketingRole && isPartner){
+            return "Marketing & Partner";
+          }else if(isPrmRole){
+            return "Prm";
+          }else if(isPrmRole && isPartner){
+            return "Prm & Partner";
           }else if(isVendorTierRole){
             return "Vendor Tier";
           }  else if (this.isOnlyPartner()) {
@@ -325,7 +332,7 @@ export class AuthenticationService {
   isVendor() {
     try {
       const roleNames = this.getRoles();
-      if (roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && ( roleNames.indexOf(this.roleName.vendorRole) > -1) ||  roleNames.indexOf(this.roleName.vendorTierRole) > -1)) {
+      if (roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && ( roleNames.indexOf(this.roleName.vendorRole) > -1) ||  roleNames.indexOf(this.roleName.vendorTierRole) > -1 ||  roleNames.indexOf(this.roleName.prmRole) > -1)) {
         return true;
       } else {
         return false;

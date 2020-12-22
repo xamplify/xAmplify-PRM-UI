@@ -75,6 +75,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ||
+ 					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.companyPartnerRole ) > -1) {
@@ -90,6 +91,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isEmailTemplate = true;
                 }
@@ -97,6 +99,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isStats = true;
                 }
@@ -104,6 +107,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isPartner = true;
                 }
@@ -111,6 +115,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isVideo = true;
                 }
@@ -118,6 +123,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.hasOpportunityRole = true;
                 }
@@ -126,6 +132,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         roles.indexOf( this.roleName.orgAdminRole ) < 0 &&
                         roles.indexOf( this.roleName.vendorRole ) < 0 && 
                         roles.indexOf( this.roleName.vendorTierRole )<0 && 
+						 roles.indexOf( this.roleName.prmRole )<0 && 
                         roles.indexOf( this.roleName.marketingRole )<0  ) {
                         this.authService.module.isOnlyPartner = true;
                     }
@@ -140,6 +147,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if (roles.indexOf(this.roleName.vendorTierRole) > -1){
                     this.authService.module.isVendorTier = true;
                 }
+				if(roles.indexOf(this.roleName.prmRole)>-1){
+					this.authService.module.isPrm = true;
+				}
+				if(roles.indexOf(this.roleName.marketingRole)>-1){
+					this.authService.module.isMarketing = true;
+				}
                 
                  if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {
                     this.pagination.pageIndex = 1;
@@ -164,7 +177,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         this.enableLeads = data.enableLeads;
                         this.formAccess = data.form;
                         this.authService.module.hasPartnerLandingPageAccess = data.partnerLandingPage;
-						let anyAdminRole =  roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ||roles.indexOf( this.roleName.vendorTierRole ) > -1  || roles.indexOf( this.roleName.marketingRole ) > -1;
+						let anyAdminRole =  roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ||roles.indexOf( this.roleName.vendorTierRole ) > -1  || roles.indexOf( this.roleName.marketingRole ) > -1|| roles.indexOf( this.roleName.prmRole ) > -1;
 						                        /**********Form**************/
                         if ((anyAdminRole || roles.indexOf( this.roleName.formRole ) > -1 )  && this.formAccess ) {
                             this.authService.module.hasFormAccess = true;

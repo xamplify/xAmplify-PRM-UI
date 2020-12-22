@@ -401,21 +401,21 @@
                         <td *ngIf="!authenticationService.isSuperAdmin()">
                           <div class="actions-block override-actions" *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)">
                             <a
-                            *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole) || authenticationService.isOnlyPartner())
+                            *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || (hasContactRole) || authenticationService.isOnlyPartner())
                             && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner)"
                             data-toggle="tooltip" data-placement="top"
                             (click)="storeListDetails(contactList);authenticationService.isSharePartnerModal = true"
                             title="{{actionsDescription.leads_list_share}}"> <i
                               class="fa fa-share"></i>
                             </a> <a
-                            *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isPartner() ||
+                            *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isPartner() ||
                             (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST'))"
                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
                             data-toggle="tooltip" data-placement="top"
                             title="{{actionsDescription.contact_list_edit}}"> <i
                               class="fa fa-pencil-square-o"></i>
                             </a> <a
-                            *ngIf="!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor  || authenticationService.module.isVendorTier ||
+                            *ngIf="!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier ||
                             contactList.synchronisedList || ((contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads)  || (assignLeads && contactList.assignedToPartner))"
                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                             data-toggle="tooltip" data-placement="top"
@@ -437,12 +437,12 @@
                               *ngIf="contactList.synchronisedList == true || contactList.marketoMasterList == true">
                             <a data-toggle="tooltip" data-placement="top"
                             title="{{actionsDescription.contact_list_synchronize}}"
-                            *ngIf="hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.vanityURLEnabled == true  || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
+                            *ngIf="hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.vanityURLEnabled == true  || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
                             (click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
                             </a>
                             </span> <a
-                            *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner())
+                            *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner())
                             && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST'))"
                             (click)="showAlert(contactList.id)"
                             data-toggle="tooltip" data-placement="top"
@@ -535,7 +535,7 @@
                     <!--  -->
                     <div class="bar"
                       *ngIf="!authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
-                      <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole) || authenticationService.isOnlyPartner())
+                      <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier || (hasContactRole) || authenticationService.isOnlyPartner())
                       && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner)"
                       data-toggle="tooltip" data-placement="top"
                       (click)="storeListDetails(contactList);authenticationService.isSharePartnerModal = true"
@@ -543,7 +543,7 @@
                         class="fa fa-share"></i>
                       </a>
                       <a [class.disabled]="!contactList.emailValidationInd"
-                      *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isPartner() ||
+                      *ngIf="(hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isPartner() ||
                       (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList  && ((assignLeads && !contactList.assignedToPartner) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST'))"
                       (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
                       data-toggle="tooltip" data-placement="top"
@@ -551,7 +551,7 @@
                       data-rel="fancybox-button"> <i
                         class="fa fa-pencil-square-o"></i>
                       </a> <a [class.disabled]="!contactList.emailValidationInd"
-                      *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor  || authenticationService.module.isVendorTier) || contactList.synchronisedList
+                      *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) || contactList.synchronisedList
                       || ((contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads)  || (assignLeads && contactList.assignedToPartner))"
                       (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
                       data-toggle="tooltip" data-placement="top"
@@ -586,7 +586,7 @@
                         </a> 
                       </ng-container>
                       <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
-                      *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId)
+                      *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId)
                       || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST'))"
                       (click)="showAlert(contactList.id)" data-toggle="tooltip"
                       data-placement="top"
@@ -734,7 +734,7 @@
               </div>
               <div class="btn-group pull-right"
                 style="margin-top: 4px; color: #000000;"
-                *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() || authenticationService.isOrgAdminPartner())">
+                *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() || authenticationService.isOrgAdminPartner())">
                 <span class="dropdown-toggle" data-toggle="dropdown"
                   style="color: #FFF; box-shadow: none; margin-top: 8px; float: right;">
                 <i class="fa fa-cog"
