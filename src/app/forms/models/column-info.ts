@@ -26,9 +26,14 @@ export class ColumnInfo {
     priceType="Dollar";
     priceSymbol="$";
     defaultColumn = false;
+    choiceType = "radio";
+    choices: Array<FormOption> = new Array<FormOption>();
+    allChoicesCount = 0;
+    choiceErrorMessage = "";
     /****Edit Form Fields******/
     editFormLabelDivClass = "default-fieldset";
     editFormChoiceDivClass = "default-fieldset";
+    editQuizChoiceDivClass = "default-fieldset";
     sfCustomField:boolean;
     labelLength:string;
 

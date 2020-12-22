@@ -51,15 +51,15 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       { 'labelName': 'Mobile Number', 'labelType': 'text' },
       { 'labelName': 'Date', 'labelType': 'date' },
       { 'labelName': 'Price', 'labelType': 'price' },
-      { 'labelName': 'Upload', 'labelType': 'upload' },
-      { 'labelName': 'Quiz', 'labelType': 'quiz' }
+      { 'labelName': 'Upload', 'labelType': 'upload' }
   ];
   customFields = [
       { 'labelName': 'Single Line Text Field', 'labelType': 'text', 'value': 'Field' },
       { 'labelName': 'Multi Line Text Field', 'labelType': 'textarea', 'value': 'Field' },
       { 'labelName': 'Radio Buttons', 'labelType': 'radio', 'value': 'Field' },
       { 'labelName': 'Checkboxes', 'labelType': 'checkbox', 'value': 'Field' },
-      { 'labelName': 'Drop-down menu', 'labelType': 'select', 'value': 'Field' }
+      { 'labelName': 'Drop-down menu', 'labelType': 'select', 'value': 'Field' },
+      { 'labelName': 'Quiz', 'labelType': 'quiz', 'value': 'Field' }
   ];
   formTitle = "Add Form Details";
   form: Form = new Form();
@@ -166,6 +166,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   siteKey = "";
   formSubmissionUrlErrorMessage = "";
   colorCodeErrorMessage = 'Enter a valid color code';
+  defaultAnswerErrorMessage = "Quiz question without default answer is not allowed";
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
@@ -310,6 +311,15 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   listExistingColumns(list) {
       const self = this;
       $.each(list, function (index: number, column: any) {
+          if (column.labelType == 'quiz') {
+              if (column.radioButtonChoices) {
+                  column.choices = column.radioButtonChoices;
+                  column.choiceType = "radio";
+              } else if (column.checkBoxChoices) {
+                  column.choices = column.checkBoxChoices;
+                  column.choiceType = "checkbox";
+              }
+          }
           const columnInfo = self.setColumns(column, false);
           self.columnInfos.push(columnInfo);
       });
@@ -469,13 +479,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               columnInfo.allDropDownChoicesCount = column.dropDownChoices.length + 1;
           }
 
-      }else if (columnInfo.labelType === 'quiz') {
-        if (this.isAdd || column.radioButtonChoices == undefined) {
-            columnInfo.radioButtonChoices = this.addDefaultOptions(columnInfo);
-            columnInfo.allRadioButtonChoicesCount = columnInfo.radioButtonChoices.length + 1;
+      } else if (columnInfo.labelType === 'quiz') {
+        if (this.isAdd || column.choices == undefined) {
+            columnInfo.choices = this.addDefaultOptions(columnInfo);
+            columnInfo.allChoicesCount = columnInfo.choices.length + 1;
         } else {
-            columnInfo.radioButtonChoices = column.radioButtonChoices;
-            columnInfo.allRadioButtonChoicesCount = column.radioButtonChoices.length + 1;
+            columnInfo.choices = column.choices;
+            columnInfo.allChoicesCount = column.choices.length + 1;
+            columnInfo.choiceType = column.choiceType;
         }
     }
       this.allItems.push(columnInfo.divId);
@@ -525,11 +536,11 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           columnInfo.checkBoxChoices.push(this.constructChoice(count,false));
           columnInfo.allCheckBoxChoicesCount++;
       }else if (columnInfo.labelType === 'quiz') {
-        columnInfo.radioButtonErrorMessage = "";
-        const count = columnInfo.allRadioButtonChoicesCount;
+        columnInfo.choiceErrorMessage = "";
+        const count = columnInfo.allChoicesCount;
         const formOption = this.constructChoice(count,false);
-        columnInfo.radioButtonChoices.push(formOption);
-        columnInfo.allRadioButtonChoicesCount++;
+        columnInfo.choices.push(formOption);
+        columnInfo.allChoicesCount++;
     } else {
           columnInfo.dropDownErrorMessage = "";
           const count = columnInfo.allDropDownChoicesCount;
@@ -542,15 +553,27 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
 
   removeChoice(columnInfo: ColumnInfo, index: number, choice: FormOption) {
-      if (columnInfo.labelType === 'radio' || 'quiz') {
+      if (columnInfo.labelType === 'radio') {
           this.removeRadioButtonChoice(columnInfo, index, choice);
-      } else if (columnInfo.labelType === "checkbox") {
+      } else if (columnInfo.labelType === "quiz") {
+        this.removeQuizChoice(columnInfo, index, choice);
+      }else if (columnInfo.labelType === "checkbox") {
           this.removeCheckBoxChoice(columnInfo, index, choice);
       } else if (columnInfo.labelType === "select") {
           this.removeDropDownChoice(columnInfo, index, choice);
       }
   }
 
+    removeQuizChoice(columnInfo: ColumnInfo, index: number, choice: FormOption) {
+        if (columnInfo.choices.length === 2) {
+            columnInfo.choiceErrorMessage = "Minimum two options required";
+        } else {
+            columnInfo.choiceErrorMessage = "";
+            console.log(choice.labelId);
+            columnInfo.choices = this.referenceService.removeObjectFromArrayList(columnInfo.choices, choice.labelId, 'labelId');
+        }
+        console.log(columnInfo.choices);
+    }
 
   removeRadioButtonChoice(columnInfo: ColumnInfo, index: number, choice: FormOption) {
       if (columnInfo.radioButtonChoices.length === 2) {
@@ -573,12 +596,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       }
   }
 
-  selectedChoice(choices: Array<FormOption>, id: string, key: string){
+  selectedChoice(columnInfo: ColumnInfo, id: string, key: string,isCorrect: boolean){
+      let choices = columnInfo.choices;
       choices = $.grep(choices, function (data, index) {
         if(data[key] == id){
-            data.isChecked = true;
-        }else{
-            data.isChecked = false;
+            data.correct = isCorrect;
+        }else if(columnInfo.choiceType === 'radio' && isCorrect){
+            data.correct = false;
         }
     });
  }
@@ -631,9 +655,17 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       columnInfo.priceSymbol = symbol;
   }
 
+  changeQuizChoiceType(columnInfo: ColumnInfo){
+      let choices = columnInfo.choices;
+      $.each(choices, function(index: number, value: FormOption){
+          value.correct = false;
+      });
+  }
+
   /****************Validate Form*****************/
   validateForm() {
       this.ngxloading = true;
+      this.form.quizForm = false;
       this.removeErrorMessage();
       if (this.columnInfos.length > 0) {
           const requiredFieldsLength = this.columnInfos.filter((item) => item.required === true).length;
@@ -654,15 +686,31 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                   self.validateDuplicateFieldLabels(duplicateFieldLabels, columnInfo);
                   /******validate Duplicate Radio Button/DropDown/CheckBox**************/
                   self.validateDuplicateChoiceLables(columnInfo);
+                  /******validate Quiz Choices**************/
+                  if (columnInfo.labelType === 'quiz') {
+                      self.validateQuizChoices(columnInfo);
+                  }
 
               });
               const invalidLabelDivCount = this.columnInfos.filter((item) => item.editFormLabelDivClass === this.borderErrorClass).length;
               const invalidChoicesDivCount = this.columnInfos.filter((item) => item.editFormChoiceDivClass === this.borderErrorClass).length;
-              const totalCount = invalidLabelDivCount + invalidChoicesDivCount;
+              const invalidQuizChoicesDivCount = this.columnInfos.filter((item) => item.editQuizChoiceDivClass === this.borderErrorClass).length;
+              const totalCount = invalidLabelDivCount + invalidChoicesDivCount + invalidQuizChoicesDivCount;
               if (totalCount == 0 && this.form.isValid) {
                   this.saveOrUpdateForm();
               } else {
-                  this.addErrorMessage(this.duplicateOrEmptyLabelErrorMessage);
+                  let message = "";
+                  if(invalidLabelDivCount != 0 || invalidChoicesDivCount != 0){
+                    message = message + this.duplicateOrEmptyLabelErrorMessage; 
+                  }
+                  if(invalidQuizChoicesDivCount != 0){
+                      if(message){
+                        message = message + '<br>' + this.defaultAnswerErrorMessage;
+                      } else{
+                        message = message + this.defaultAnswerErrorMessage;
+                      }
+                }
+                  this.addErrorMessage(message);
               }
           } else {
               this.addErrorMessage(this.minimumOneColumn);
@@ -673,6 +721,27 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       }
       this.referenceService.goToTop();
   }
+
+    validateQuizChoices(columnInfo: ColumnInfo) {
+        this.form.quizForm = true;
+        let list = columnInfo.choices;
+        if (columnInfo.choiceType === "radio") {
+            columnInfo.radioButtonChoices = list;
+        } else if (columnInfo.choiceType === "checkbox") {
+            columnInfo.checkBoxChoices = list;
+        }
+        let selectedChoicesCount = 0;
+        $.each(list, function (index: number, value: FormOption) {
+            if(value.correct === true){
+                selectedChoicesCount++;
+            }
+        });
+        this.addOrRemoveQuizChoiceError(selectedChoicesCount,columnInfo);
+        const duplicateChoicesLength = this.referenceService.returnDuplicates(list.map(function (a) { return a.hiddenLabelId; })).length;
+        if (duplicateChoicesLength > 0) {
+            this.addOrRemoveChoiceErrorBorder(duplicateChoicesLength, columnInfo);
+        }
+    }
 
   validateDuplicateChoiceLables(columnInfo: ColumnInfo) {
       let list = Array<FormOption>();
@@ -726,6 +795,16 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       const validChoicesCount = list.filter((item) => item.isValid === false).length;
       this.addOrRemoveChoiceErrorBorder(validChoicesCount, columnInfo);
   }
+
+  addOrRemoveQuizChoiceError(count: number, columnInfo: ColumnInfo) {
+    if (count == 0) {
+        columnInfo.editQuizChoiceDivClass = this.borderErrorClass;
+        $('#' + columnInfo.divId).addClass(this.borderErrorClass);
+    } else {
+        columnInfo.editQuizChoiceDivClass = this.borderSuccessClass;
+        $('#' + columnInfo.divId).addClass(this.borderSuccessClass);
+    }
+}
 
   addOrRemoveChoiceErrorBorder(count: number, columnInfo: ColumnInfo) {
       if (count > 0) {

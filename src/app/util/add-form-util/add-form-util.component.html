@@ -159,19 +159,17 @@
                                                                                 </select>
                                                                             </ng-container>
                                                                             <!-- ---------------------------Quiz----------------------------- -->
-                                                                            <ng-container *ngIf="columnInfo.labelType=='quiz' ">
-                                                                                <input type="text" autoComplete="off" maxlength="1000" id="{{columnInfo.labelId}}" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" />
-                                                                            </ng-container>
-                                                                            <br>
                                                                             <ng-container *ngIf="columnInfo.labelType=='quiz'">
-                                                                                <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                                                                                <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                                                                     <div class="form-check">
                                                                                         <label class="form-check-label" [style.color]="form.labelColor">
                                                                                             <input
-                                                                                                type="radio"
+                                                                                                type="{{columnInfo.choiceType}}"
                                                                                                 name="{{columnInfo.labelId}}"
-                                                                                                class="form-check-input">
-                                                                                            {{radioButton.name}}
+                                                                                                class="form-check-input"
+                                                                                                [checked]="choice.correct"
+                                                                                                disabled="true">
+                                                                                            {{choice.name}}
                                                                                         </label>
                                                                                     </div>
                                                                                     <br>
@@ -228,8 +226,16 @@
                                                         <label class="control-label">Field Label</label><span class="required">*</span>
                                                         <input type="text" [(ngModel)]="selectedColumn.labelName" class="form-control" (input)="updateHiddenLabelId(selectedColumn)" maxlength="1000" />
                                                     </div>
+                                                    <!-- ----------------Quiz Options Type-------------- -->
+                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='quiz'">
+                                                        <label class="control-label">Quiz Options Type</label><br>
+                                                        <select class="drop-down-custom" [(ngModel)]="selectedColumn.choiceType" [value]="selectedColumn.choiceType" [ngModelOptions]="{standalone: true}" (change)="changeQuizChoiceType(selectedColumn)">
+                                                            <option value="radio">Radio Buttons</option>
+                                                            <option value="checkbox">Checkboxes</option>
+                                                        </select>
+                                                    </div>
                                                     <!-- ----------------Filed PlaceHolder Text-------------- -->
-                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea' || selectedColumn.labelType=='number'  || selectedColumn.labelType=='quiz'">
+                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea' || selectedColumn.labelType=='number'">
                                                         <label class="control-label">Field Placeholder Text</label>
                                                         <input type="text" [(ngModel)]="selectedColumn.placeHolder" class="form-control" maxlength="1000" />
                                                     </div>
@@ -293,7 +299,7 @@
                                                                     Button
                                                                     Choices</label>
                                                                 <label class="control-label" *ngIf="selectedColumn.labelType=='quiz'">Quiz
-                                                                    Choices</label><span class="required">*</span>
+                                                                    Choices</label>
                                                                 <label class="control-label" *ngIf="selectedColumn.labelType=='checkbox'">Checkbox
                                                                     Choices</label>
                                                                 <label class="control-label" *ngIf="selectedColumn.labelType=='select'">Drop-down
@@ -317,21 +323,25 @@
                                                                         <br>
                                                                     </ng-container>
                                                                 </ng-container>
-                                                                <!-- ---------------Quiz Radio Button--------------- -->
+                                                                <!-- ---------------Quiz Options--------------- -->
                                                                 <ng-container *ngIf="selectedColumn.labelType=='quiz'">
-                                                                    <span class="info" *ngIf="selectedColumn.radioButtonErrorMessage?.length>0">{{selectedColumn.radioButtonErrorMessage}}<br></span>
-                                                                    <ng-container *ngFor="let radioButton of selectedColumn.radioButtonChoices;let index=index">
+                                                                    <span class="info" *ngIf="selectedColumn.choiceErrorMessage?.length>0">{{selectedColumn.choiceErrorMessage}}<br></span>
+                                                                    <ng-container *ngFor="let choice of selectedColumn.choices;let index=index">
                                                                         <br>
-                                                                        <input type="radio" name="{{selectedColumn.labelId}}" (click)="selectedChoice(selectedColumn.radioButtonChoices,radioButton.labelId,'labelId')">
-                                                                        <input type="text" class="form-control" [(ngModel)]="radioButton.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
+                                                                        <input type="{{selectedColumn.choiceType}}" name="{{selectedColumn.labelId}}" disabled="true">
+                                                                        <input type="text" class="form-control" [(ngModel)]="choice.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(choice)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                                                             <span
                                                                                 class="glyphicon glyphicon-plus"></span>
                                                                         </button>
-                                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,radioButton)">
+                                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,choice)">
                                                                             <span
                                                                                 class="glyphicon glyphicon-trash"></span>
                                                                         </button>
+                                                                        <ng-container *ngIf="choice.correct"><i class="fa fa-check-circle check-icon" aria-hidden="true" (click)="selectedChoice(selectedColumn,choice.labelId,'labelId',false)"></i>
+                                                                        </ng-container>
+                                                                        <ng-container *ngIf="!choice.correct"><i class="fa fa-check-circle-o check-icon" aria-hidden="true" (click)="selectedChoice(selectedColumn,choice.labelId,'labelId',true)"></i>
+                                                                        </ng-container>
                                                                         <br>
                                                                     </ng-container>
                                                                 </ng-container>

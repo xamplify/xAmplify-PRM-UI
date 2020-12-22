@@ -159,6 +159,17 @@ export class PreviewPopupComponent implements OnInit {
                             this.pageBackgroundColor = this.form.pageBackgroundColor;
                             this.formBackgroundImage = "";
                         }
+                        $.each(this.form.formLabelDTOs, function(index: number, value: ColumnInfo){
+                            if(value.labelType == 'quiz'){
+                                if(value.radioButtonChoices){
+                                    value.choices = value.radioButtonChoices;
+                                    value.choiceType = "radio";
+                                } else if(value.checkBoxChoices){
+                                    value.choices = value.checkBoxChoices;
+                                    value.choiceType = "checkbox";
+                                }
+                            }
+                        });
                         console.log(data.data);
                         this.formError = false;
                     } else {
