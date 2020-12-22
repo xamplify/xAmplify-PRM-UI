@@ -75,7 +75,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ||
- 					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.companyPartnerRole ) > -1) {
