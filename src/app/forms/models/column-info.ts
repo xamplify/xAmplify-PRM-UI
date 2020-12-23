@@ -26,7 +26,7 @@ export class ColumnInfo {
     priceType="Dollar";
     priceSymbol="$";
     defaultColumn = false;
-    choiceType = "radio";
+    //choiceType = "radio";
     choices: Array<FormOption> = new Array<FormOption>();
     allChoicesCount = 0;
     choiceErrorMessage = "";

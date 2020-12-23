@@ -59,7 +59,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       { 'labelName': 'Radio Buttons', 'labelType': 'radio', 'value': 'Field' },
       { 'labelName': 'Checkboxes', 'labelType': 'checkbox', 'value': 'Field' },
       { 'labelName': 'Drop-down menu', 'labelType': 'select', 'value': 'Field' },
-      { 'labelName': 'Quiz', 'labelType': 'quiz', 'value': 'Field' }
+      { 'labelName': 'Quiz', 'labelType': 'quiz_radio', 'value': 'Field' }
   ];
   formTitle = "Add Form Details";
   form: Form = new Form();
@@ -311,14 +311,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   listExistingColumns(list) {
       const self = this;
       $.each(list, function (index: number, column: any) {
-          if (column.labelType == 'quiz') {
-              if (column.radioButtonChoices) {
-                  column.choices = column.radioButtonChoices;
-                  column.choiceType = "radio";
-              } else if (column.checkBoxChoices) {
-                  column.choices = column.checkBoxChoices;
-                  column.choiceType = "checkbox";
-              }
+          if (column.labelType == 'quiz_radio') {
+              //column.labelType = "quiz"
+              column.choices = column.radioButtonChoices;
+              //column.choiceType = "radio";
+          } else if (column.labelType == 'quiz_checkbox') {
+              //column.labelType = "quiz"
+              column.choices = column.checkBoxChoices;
+              //column.choiceType = "checkbox";
           }
           const columnInfo = self.setColumns(column, false);
           self.columnInfos.push(columnInfo);
@@ -479,14 +479,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               columnInfo.allDropDownChoicesCount = column.dropDownChoices.length + 1;
           }
 
-      } else if (columnInfo.labelType === 'quiz') {
+      } else if (columnInfo.labelType === 'quiz_radio' || columnInfo.labelType === 'quiz_checkbox') {
         if (this.isAdd || column.choices == undefined) {
             columnInfo.choices = this.addDefaultOptions(columnInfo);
             columnInfo.allChoicesCount = columnInfo.choices.length + 1;
         } else {
             columnInfo.choices = column.choices;
             columnInfo.allChoicesCount = column.choices.length + 1;
-            columnInfo.choiceType = column.choiceType;
+            //columnInfo.choiceType = column.choiceType;
         }
     }
       this.allItems.push(columnInfo.divId);
@@ -535,7 +535,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           const count = columnInfo.allCheckBoxChoicesCount;
           columnInfo.checkBoxChoices.push(this.constructChoice(count,false));
           columnInfo.allCheckBoxChoicesCount++;
-      }else if (columnInfo.labelType === 'quiz') {
+      }else if (columnInfo.labelType === 'quiz_radio' || columnInfo.labelType === 'quiz_checkbox') {
         columnInfo.choiceErrorMessage = "";
         const count = columnInfo.allChoicesCount;
         const formOption = this.constructChoice(count,false);
@@ -555,7 +555,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   removeChoice(columnInfo: ColumnInfo, index: number, choice: FormOption) {
       if (columnInfo.labelType === 'radio') {
           this.removeRadioButtonChoice(columnInfo, index, choice);
-      } else if (columnInfo.labelType === "quiz") {
+      } else if (columnInfo.labelType === "quiz_radio" || columnInfo.labelType === "quiz_checkbox") {
         this.removeQuizChoice(columnInfo, index, choice);
       }else if (columnInfo.labelType === "checkbox") {
           this.removeCheckBoxChoice(columnInfo, index, choice);
@@ -601,7 +601,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       choices = $.grep(choices, function (data, index) {
         if(data[key] == id){
             data.correct = isCorrect;
-        }else if(columnInfo.choiceType === 'radio' && isCorrect){
+        }else if(columnInfo.labelType === 'quiz_radio' && isCorrect){
             data.correct = false;
         }
     });
@@ -687,7 +687,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                   /******validate Duplicate Radio Button/DropDown/CheckBox**************/
                   self.validateDuplicateChoiceLables(columnInfo);
                   /******validate Quiz Choices**************/
-                  if (columnInfo.labelType === 'quiz') {
+                  if (columnInfo.labelType === 'quiz_radio' || columnInfo.labelType === 'quiz_checkbox') {
                       self.validateQuizChoices(columnInfo);
                   }
 
@@ -697,6 +697,11 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               const invalidQuizChoicesDivCount = this.columnInfos.filter((item) => item.editQuizChoiceDivClass === this.borderErrorClass).length;
               const totalCount = invalidLabelDivCount + invalidChoicesDivCount + invalidQuizChoicesDivCount;
               if (totalCount == 0 && this.form.isValid) {
+                //   $.each(this.columnInfos, function(index: number, value: ColumnInfo){
+                //       if(value.labelType === 'quiz'){
+                //           value.labelType = value.labelType + "_" +value.choiceType;
+                //       }
+                //   })
                   this.saveOrUpdateForm();
               } else {
                   let message = "";
@@ -725,9 +730,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     validateQuizChoices(columnInfo: ColumnInfo) {
         this.form.quizForm = true;
         let list = columnInfo.choices;
-        if (columnInfo.choiceType === "radio") {
+        if (columnInfo.labelType === "quiz_radio") {
             columnInfo.radioButtonChoices = list;
-        } else if (columnInfo.choiceType === "checkbox") {
+        } else if (columnInfo.labelType === "quiz_checkbox") {
             columnInfo.checkBoxChoices = list;
         }
         let selectedChoicesCount = 0;
