@@ -483,6 +483,7 @@ export class AuthenticationService {
     module.damAccess = false;
     module.isMarketing = false;
     module.isPrm = false;
+    module.showCampaignsAnalyticsDivInDashboard = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;

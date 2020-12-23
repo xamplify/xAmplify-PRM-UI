@@ -28,11 +28,17 @@ export class Module {
     isPartner:boolean = false;
     isVendorTier = false;
     isMarketing = false;
-	isPrm = false;
 
     isPartnershipEstablishedOnlyWithVendorTier = false;
     
     damAccess = false;
     damAccessAsPartner = false;
+
+	isPrm = false;
+	isPrmTeamMember = false;
+	isPrmAndPartner = false;
+    isPrmAndPartnerTeamMember = false;
+    
+    showCampaignsAnalyticsDivInDashboard = false;
 
 }
