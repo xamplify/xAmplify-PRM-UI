@@ -299,7 +299,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.module.damAccess = data.dam;
             this.authService.module.damAccessAsPartner = data.damAccessAsPartner;
             this.authService.module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
-          },
+            let roleDisplayDto = data.roleDisplayDto;
+            this.authService.module.showCampaignsAnalyticsDivInDashboard = roleDisplayDto.showCampaignsAnalyticsDivInDashboard;
+            this.authService.module.isPrm = roleDisplayDto.prm;
+        },
           _error => {
             this.loading = false;
             this.rssFeedAccess = false;

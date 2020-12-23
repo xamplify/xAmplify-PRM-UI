@@ -186,7 +186,7 @@
                 </li>
 
                 <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || 
-                authService.module.isCompanyPartner|| isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing )" 
+                authService.module.isCompanyPartner|| isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing || authService.module.isPrm )" 
                 [ngClass]="{'active': location.path().includes('team')}">
                     <a [routerLink]="['./team/add-team']">
                         <i class="fa fa-users" aria-hidden="true"></i>
