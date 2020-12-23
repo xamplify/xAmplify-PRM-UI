@@ -6,6 +6,7 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { PagerService } from "../../core/services/pager.service";
 import { ContactList } from "../../contacts/models/contact-list";
 import { ReferenceService } from "../../core/services/reference.service";
+import { UserListPaginationWrapper } from "../../contacts/models/userlist-pagination-wrapper";
 
 @Component({
   selector: "app-shared",
@@ -21,6 +22,7 @@ export class SharedComponent implements OnInit {
   sortingName: string = null;
   sortcolumn: string = null;
   sortingOrder: string = null;
+  userListPaginationWrapper : UserListPaginationWrapper = new UserListPaginationWrapper();
 
   sortContactUsers = [
     { name: "Sort By", value: "" },
@@ -75,7 +77,11 @@ export class SharedComponent implements OnInit {
   sharedDetails(pagination: Pagination) {
     //this.pagination.maxResults = 12;
     this.logger.log(pagination);
-    this.contactService.listContactsByType(false,"all", pagination).subscribe(
+    
+    this.userListPaginationWrapper.userList.assignedLeadsList = false;
+    this.userListPaginationWrapper.userList.contactType = 'all';
+    this.userListPaginationWrapper.pagination = pagination;
+    this.contactService.listContactsByType(this.userListPaginationWrapper).subscribe(
       (data: any) => {
         this.allFollowers = data.listOfUsers;
         this.totalRecords = data.totalRecords;

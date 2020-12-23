@@ -261,7 +261,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             }
             else if ( urlType === 'sharedleads' ) {
                 this.sharedLeads = this.router.url.includes( 'sharedleads' ) ? true : ( this.sharedLeads = !this.sharedLeads );
-                this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,true,false, true );
+                this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,false,false, true );
             }
         }
     }

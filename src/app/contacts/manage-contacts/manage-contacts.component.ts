@@ -21,6 +21,7 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
+import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
@@ -34,6 +35,7 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
 export class ManageContactsComponent implements OnInit, AfterViewInit, AfterViewChecked {
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
+    userListPaginationWrapper : UserListPaginationWrapper = new UserListPaginationWrapper();
 
 	assignLeads :boolean = false;
 	public socialContact: SocialContact;
@@ -1362,7 +1364,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	listContactsByType(contactType: string) {
+	listContactsByType(contactType : string) {
+	
 		this.campaignLoader = true;
 		try {
 			this.contactsByType.isLoading = true;
@@ -1377,7 +1380,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.pagination.filterKey = 'isPartnerUserList';
 			this.contactsByType.pagination.filterValue = this.isPartner;
 			this.contactsByType.pagination.criterias = this.criterias;
-			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.pagination)
+			
+			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
+			this.contactListObject = new ContactList;
+			this.contactListObject.contactType = contactType;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.sharedLeads = this.sharedLeads;
+			
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			
+			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
 						this.contactsByType.selectedCategory = contactType;
@@ -1742,7 +1754,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.filterValue = this.isPartner;
 			this.contactsByType.contactPagination.criterias = this.criterias;
 			this.contactsByType.contactPagination.maxResults = totalRecords;
-			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.contactPagination)
+			
+			
+			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+            this.userListPaginationWrapper.userList.contactType = contactType;
+            this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
+            this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
+			
+			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
             this.contactsByType.listOfAllContacts = data.listOfUsers;
