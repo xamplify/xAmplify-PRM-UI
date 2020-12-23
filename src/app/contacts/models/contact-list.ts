@@ -28,4 +28,5 @@ export class ContactList {
     assignedTo: string;
     assignedLeadsList : boolean = false;
     assignedToPartner: boolean =false;
+    sharedLeads : boolean = false;
 }

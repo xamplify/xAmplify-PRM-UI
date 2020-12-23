@@ -74,7 +74,7 @@ export class Pagination {
 
 	redistributingCampaign : boolean = false;
 	parentCampaignId:number = 0;
-
+	sharedLeads : boolean = false;
 
 
 }
