@@ -12,6 +12,7 @@ import { ContactList } from '../../contacts/models/contact-list';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { Properties } from '../../common/models/properties';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var swal, $: any;
 
@@ -23,6 +24,8 @@ declare var swal, $: any;
 
 })
 export class AddMoreReceiversComponent implements OnInit {
+	loggedInUserId: number = 0;
+	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
     listName: any;
     loadingData: boolean;
     title:string="Please Select List(s)";
@@ -64,6 +67,12 @@ export class AddMoreReceiversComponent implements OnInit {
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
           public pagination: Pagination, private pagerService: PagerService,public authenticationService: AuthenticationService,public referenceService:ReferenceService,private contactService:ContactService,public properties:Properties,private renderer:Renderer) {
               this.referenceService.renderer = this.renderer;
+              this.loggedInUserId = this.authenticationService.getUserId();
+              if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+                  this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+                  this.vanityLoginDto.userId = this.loggedInUserId; 
+                  this.vanityLoginDto.vanityUrlFilter = true;
+               }
            }
 
   ngOnInit() {
@@ -122,6 +131,9 @@ export class AddMoreReceiversComponent implements OnInit {
   loadCampaignContacts(contactsPagination:Pagination){
       this.contactListLoader.isHorizontalCss=true;
       this.referenceService.loading(this.contactListLoader, true);
+      this.contactsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.contactsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      
       this.campaignService.getContactListToInvite(this.authenticationService.getUserId(),this.contactsPagination).subscribe(
           (response: any) => {
               console.log(response);
