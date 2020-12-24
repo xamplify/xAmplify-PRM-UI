@@ -1343,6 +1343,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}else if(this.sharedLeads){
                 this.contactListObject.sharedLeads = true; 
             }
+            
+            this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+            this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 
 			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
@@ -1386,6 +1389,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactListObject.contactType = contactType;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
+			this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter; 
+			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 			
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			
