@@ -17,6 +17,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import {ReferenceService} from '../../core/services/reference.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
+import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 
 @Injectable()
 export class ContactService {
@@ -123,14 +124,22 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    listContactsByType(assignLeads:boolean, contactType: string, pagination: Pagination ){
+    listContactsByType(userListPaginationWrapper :  UserListPaginationWrapper){
         let userId = this.authenticationService.user.id;
         userId = this.authenticationService.checkLoggedInUserId(userId);
+        
+        var requestoptions = new RequestOptions( {
+            body:  userListPaginationWrapper
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
 
-        this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
-        return this._http.post( this.contactsUrl + "contacts/"+assignLeads+"?contactType="+ contactType + '&userId='+ userId + "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
+        return this._http.post( this.contactsUrl +"/" +userId+ "/all-contacts/?access_token=" + this.authenticationService.access_token, options, requestoptions )
+            .map(( response: any ) => response.json() )
+       .catch( this.handleError);
     }
 
     loadContactsCount(contactListObject : ContactList) {

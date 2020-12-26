@@ -28,6 +28,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     videos = false;
     contacts = false;
     assignLeads = false;
+    sharedLeads = false;
+    sharedLeadsAccess = false;
     partners = false;
     enableLeads = false;
     enableLeadsByVendor = false;
@@ -90,6 +92,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isEmailTemplate = true;
                 }
@@ -97,6 +100,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isStats = true;
                 }
@@ -104,6 +108,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isPartner = true;
                 }
@@ -111,6 +116,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isVideo = true;
                 }
@@ -118,6 +124,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
+					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.hasOpportunityRole = true;
                 }
@@ -126,6 +133,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         roles.indexOf( this.roleName.orgAdminRole ) < 0 &&
                         roles.indexOf( this.roleName.vendorRole ) < 0 && 
                         roles.indexOf( this.roleName.vendorTierRole )<0 && 
+						 roles.indexOf( this.roleName.prmRole )<0 && 
                         roles.indexOf( this.roleName.marketingRole )<0  ) {
                         this.authService.module.isOnlyPartner = true;
                     }
@@ -140,6 +148,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if (roles.indexOf(this.roleName.vendorTierRole) > -1){
                     this.authService.module.isVendorTier = true;
                 }
+				if(roles.indexOf(this.roleName.prmRole)>-1){
+					this.authService.module.isPrm = true;
+				}
+				if(roles.indexOf(this.roleName.marketingRole)>-1){
+					this.authService.module.isMarketing = true;
+				}
                 
                  if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {
                     this.pagination.pageIndex = 1;
@@ -164,7 +178,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         this.enableLeads = data.enableLeads;
                         this.formAccess = data.form;
                         this.authService.module.hasPartnerLandingPageAccess = data.partnerLandingPage;
-						let anyAdminRole =  roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ||roles.indexOf( this.roleName.vendorTierRole ) > -1  || roles.indexOf( this.roleName.marketingRole ) > -1;
+						let anyAdminRole =  roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ||roles.indexOf( this.roleName.vendorTierRole ) > -1  || roles.indexOf( this.roleName.marketingRole ) > -1|| roles.indexOf( this.roleName.prmRole ) > -1;
 						                        /**********Form**************/
                         if ((anyAdminRole || roles.indexOf( this.roleName.formRole ) > -1 )  && this.formAccess ) {
                             this.authService.module.hasFormAccess = true;
@@ -197,59 +211,63 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { 
-            this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,false, false ); }
+            this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,false, false,false ); }
     }
     openOrCloseTabs( urlType: string ) {
         if ( window.innerWidth < 990 ) {
             if ( urlType === 'emailtemplates' ) {
                 this.emailtemplates = this.router.url.includes( 'emailtemplates' ) ? true : ( this.emailtemplates = !this.emailtemplates );
-                this.clearSubMenuValues( this.emailtemplates, false, false, false, false,false,false,false,false,false ,false);
+                this.clearSubMenuValues( this.emailtemplates, false, false, false, false,false,false,false,false,false ,false, false);
             }
             else if ( urlType === 'contacts' ) {
                 this.contacts = this.router.url.includes( 'contacts' ) ? true : ( this.contacts = !this.contacts );
-                this.clearSubMenuValues( false, false, false, this.contacts, false,false,false,false,false,false,false );
+                this.clearSubMenuValues( false, false, false, this.contacts, false,false,false,false,false,false,false, false );
             }
             else if ( urlType === 'partners' ) {
                 this.partners = this.router.url.includes( 'partners' ) ? true : ( this.partners = !this.partners );
-                this.clearSubMenuValues( false, false, false, false, this.partners,false,false,false,false,false,false );
+                this.clearSubMenuValues( false, false, false, false, this.partners,false,false,false,false,false,false, false );
             }
             else if ( urlType === 'campaigns' ) {
                 this.campaigns = this.router.url.includes( 'campaigns' ) ? true : ( this.campaigns = !this.campaigns );
-                this.clearSubMenuValues( false, this.campaigns, false, false, false,false,false,false,false,false,false );
+                this.clearSubMenuValues( false, this.campaigns, false, false, false,false,false,false,false,false,false, false );
             }
             else if ( urlType === 'content' ) {
                 this.videos = this.router.url.includes( 'content' ) ? true : ( this.videos = !this.videos );
-                this.clearSubMenuValues( false, false, this.videos, false, false,false,false,false,false,false,false );
+                this.clearSubMenuValues( false, false, this.videos, false, false,false,false,false,false,false,false, false );
             }
             else if(urlType ==='forms') {
                 this.videos = this.router.url.includes('forms') ? true: (this.forms = !this.forms);
-                this.clearSubMenuValues(false,false,false,false,false,this.forms,false,false,false,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,this.forms,false,false,false,false,false, false); 
             }
             else if(urlType ==='landing-pages') {
                 this.videos = this.router.url.includes('forms') ? true: (this.landingPages = !this.landingPages);
-                this.clearSubMenuValues(false,false,false,false,false,false,this.landingPages,false,false,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,false,this.landingPages,false,false,false,false, false); 
             }
             else if(urlType ==='mdf') {
                 this.mdf = this.router.url.includes('mdf') ? true: (this.mdf = !this.mdf);
-                this.clearSubMenuValues(false,false,false,false,false,false,false,this.mdf,false,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,false,false,this.mdf,false,false,false, false); 
             }
             else if(urlType ==='dam') {
                 this.dam = this.router.url.includes('dam') ? true: (this.dam = !this.dam);
-                this.clearSubMenuValues(false,false,false,false,false,false,false,false,this.dam,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,false,false,false,this.dam,false,false, false); 
             }
             else if ( urlType === 'assignleads' ) {
                 this.assignLeads = this.router.url.includes( 'assignleads' ) ? true : ( this.assignLeads = !this.assignLeads );
-                this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,true,false );
+                this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,true,false, false );
             }
             else if(urlType ==='deals') {
                 this.deals = this.router.url.includes('deals') ? true: (this.deals = !this.deals);
-                this.clearSubMenuValues(false,false,false,false,false,false,false,false,false,false,this.deals); 
+                this.clearSubMenuValues(false,false,false,false,false,false,false,false,false,false,this.deals, false); 
+            }
+            else if ( urlType === 'sharedleads' ) {
+                this.sharedLeads = this.router.url.includes( 'sharedleads' ) ? true : ( this.sharedLeads = !this.sharedLeads );
+                this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,false,false, true );
             }
         }
     }
-    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners,forms,landingPages,mdf,dam, assignLeads, deals) {
+    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners,forms,landingPages,mdf,dam, assignLeads, deals, sharedLeads) {
         this.emailtemplates = emailTemplate; this.campaigns = campaigs; this.videos = videos; this.contacts = contacts; this.partners = partners;
-        this.forms = forms;this.landingPages = landingPages;this.mdf = mdf;this.dam = dam;this.assignLeads=assignLeads;
+        this.forms = forms;this.landingPages = landingPages;this.mdf = mdf;this.dam = dam;this.assignLeads=assignLeads;this.sharedLeads=sharedLeads;
         this.deals = deals;
     }
     logout() {
@@ -276,11 +294,15 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.contactsCount = data.contactsCount;
             this.damAccess = data.dam;
             this.shareLeadsAccess = data.shareLeads;
+            this.sharedLeadsAccess = data.sharedLeads;
             this.damAccessAsPartner = data.damAccessAsPartner;
             this.authService.module.damAccess = data.dam;
             this.authService.module.damAccessAsPartner = data.damAccessAsPartner;
             this.authService.module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
-          },
+            let roleDisplayDto = data.roleDisplayDto;
+            this.authService.module.showCampaignsAnalyticsDivInDashboard = roleDisplayDto.showCampaignsAnalyticsDivInDashboard;
+            this.authService.module.isPrm = roleDisplayDto.prm;
+        },
           _error => {
             this.loading = false;
             this.rssFeedAccess = false;

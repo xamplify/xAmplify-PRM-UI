@@ -146,31 +146,34 @@ setDashboardAsDefaultPage(event: any) {
 
 /*******************Top 4 Campaigns Releated Code************************** */
 getUserCampaignReport() {
-  this.referenceService.loading(this.topFourCampaignsLoader,true);
-  this.referenceService.loading(this.emailStatisticsLoader,true);
-  this.topFourLoading = true;  
-  this.campaignService.getUserCampaignReportForVanityURL(this.dashboardAnalyticsDto)
-      .subscribe(
-          data => {
-              this.userCampaignReport = data['userCampaignReport'];
-              this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
-          },
-          error => { 
-             this.topFourLoading = false;
-             this.xtremandLogger.error(error); 
+  if(this.authenticationService.module.showCampaignsAnalyticsDivInDashboard){
+    this.referenceService.loading(this.topFourCampaignsLoader,true);
+    this.referenceService.loading(this.emailStatisticsLoader,true);
+    this.topFourLoading = true;  
+    this.campaignService.getUserCampaignReportForVanityURL(this.dashboardAnalyticsDto)
+        .subscribe(
+            data => {
+                this.userCampaignReport = data['userCampaignReport'];
+                this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
             },
-          () => {
-              this.xtremandLogger.info('Finished getUserCampaignReport()');
-              this.topFourLoading = false;
-              if (this.userCampaignReport == null) {
-                  this.userCampaignReport = new CampaignReport();
-                  this.userCampaignReport.userId = this.loggedInUserId;
-                  this.userCampaignReport.campaignReportOption = 'RECENT';
-              }
-              this.setLaunchedCampaignsChild(this.userCampaignReport);
-              this.listCampaignInteractionsData(this.loggedInUserId, this.userCampaignReport.campaignReportOption);
-          }
-      );
+            error => { 
+               this.topFourLoading = false;
+               this.xtremandLogger.error(error); 
+              },
+            () => {
+                this.xtremandLogger.info('Finished getUserCampaignReport()');
+                this.topFourLoading = false;
+                if (this.userCampaignReport == null) {
+                    this.userCampaignReport = new CampaignReport();
+                    this.userCampaignReport.userId = this.loggedInUserId;
+                    this.userCampaignReport.campaignReportOption = 'RECENT';
+                }
+                this.setLaunchedCampaignsChild(this.userCampaignReport);
+                this.listCampaignInteractionsData(this.loggedInUserId, this.userCampaignReport.campaignReportOption);
+            }
+        );
+  }  
+  
 }
 
 setLaunchedCampaignsChild(userCampaignReport: CampaignReport) {

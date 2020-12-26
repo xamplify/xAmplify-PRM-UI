@@ -147,14 +147,14 @@
        </div>
        <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isEmailTemplate"></div>
 
-       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isCampaign">
+       <div class="flex" *ngIf="(authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isCampaign) && authenticationService.module.showCampaignsAnalyticsDivInDashboard">
          <div class="col-sm-6 col-xs-12 block" style="right: -52px; position: relative;">
            <div class="text-block">
              <h1 class="text-left" style="color: #827596" translate>Campaigns</h1>
              <p class="left-side">{{welcome_text.campaigns}}</p>
              <div class="text-left">
                <button *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember" class="btn btn-xs color3" [routerLink]="['/home/campaigns/select']" translate>Create campaigns</button>
-               <button *ngIf="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember" class="btn btn-xs color3" [routerLink]="['/home/campaigns/partner/all']" translate>Create campaigns</button>
+               <button *ngIf="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember" class="btn btn-xs color3" [routerLink]="['/home/campaigns/partner/all']" translate>Redistribute campaigns</button>
                <button type="button" class="btn btn-xs color3-invert" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
              </div>
            </div>

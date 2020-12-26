@@ -1266,7 +1266,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   
   showSelectedListType(){
       const roles = this.authenticationService.getRoles();
-      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 ;
+      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 || roles.indexOf(this.roleName.prmRole)>-1 ;
       let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
       if(isOrgAdmin){
           this.channelCampaignFieldName = "To Recipient";

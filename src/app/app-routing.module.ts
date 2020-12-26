@@ -61,6 +61,7 @@ export const routes: Routes = [
             { path: 'rss', loadChildren: 'app/social/rss/rss.module#RssModule' },
             { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
             { path: 'assignleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
+            { path: 'sharedleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
             { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule', data: { preload: false } },
             { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule', data: { preload: false } },
             { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },

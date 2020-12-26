@@ -21,6 +21,7 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
+import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
@@ -34,6 +35,7 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
 export class ManageContactsComponent implements OnInit, AfterViewInit, AfterViewChecked {
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
+    userListPaginationWrapper : UserListPaginationWrapper = new UserListPaginationWrapper();
 
 	assignLeads :boolean = false;
 	public socialContact: SocialContact;
@@ -207,6 +209,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	campaignLoader = false;
 	sharedPartnerDetails: any;
 	selectedListDetails : ContactList;
+	sharedLeads : boolean = false;
 	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -224,27 +227,34 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.referenceService.renderer = render;
 		let currentUrl = this.router.url;
 		this.model.isPublic = true;
-		if (currentUrl.includes('home/assignleads')) {
-			this.isPartner = false;
+		
+
+        if (currentUrl.includes('home/sharedleads')) {
+            this.isPartner = false;
+            this.assignLeads = false;
+            this.sharedLeads = true;
+            this.checkingContactTypeName = "Shared Lead"
+        } else if (currentUrl.includes('home/assignleads')) {
+            this.isPartner = false;
             this.assignLeads = true;
-             this.checkingContactTypeName = "Lead"
-		}else if (currentUrl.includes('home/contacts')) {
-			this.isPartner = false;
-			this.module = 'contacts';
-			this.checkingContactTypeName = "Contact"
-		} else {
-			this.isPartner = true;
-			this.checkingContactTypeName = "Partner"
-			this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Vertical (ASC)', 'value': 'vertical-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Vertical (DESC)', 'value': 'vertical-DESC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Region (ASC)', 'value': 'region-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Region (DESC)', 'value': 'region-DESC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Partner type (ASC)', 'value': 'partnerType-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Category (ASC)', 'value': 'category-ASC', 'for': 'contacts' });
-			this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC', 'for': 'contacts' });
+            this.checkingContactTypeName = "Lead"
+        } else if (currentUrl.includes('home/contacts')) {
+            this.isPartner = false;
+            this.module = 'contacts';
+            this.checkingContactTypeName = "Contact"
+        } else {
+            this.isPartner = true;
+            this.checkingContactTypeName = "Partner"
+            this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Vertical (ASC)', 'value': 'vertical-ASC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Vertical (DESC)', 'value': 'vertical-DESC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Region (ASC)', 'value': 'region-ASC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Region (DESC)', 'value': 'region-DESC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Partner type (ASC)', 'value': 'partnerType-ASC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Category (ASC)', 'value': 'category-ASC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC', 'for': 'contacts' });
 		}
 
 		this.showAll = true;
@@ -326,6 +336,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 this.referenceService.loading(this.httpRequestLoader, true);
                 this.pagination.filterKey = 'isPartnerUserList';
                 this.pagination.filterValue = this.isPartner;
+                if(this.sharedLeads){
+                    pagination.sharedLeads = this.sharedLeads;
+                } 
                 this.contactService.loadContactLists(pagination)
                     .subscribe(
                     (data: any) => {
@@ -1327,7 +1340,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.contactListObject.isPartnerUserList = this.isPartner;
             if (this.assignLeads) {
                 this.contactListObject.assignedLeadsList = true
-			}
+			}else if(this.sharedLeads){
+                this.contactListObject.sharedLeads = true; 
+            }
+            
+            this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+            this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 
 			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
@@ -1349,7 +1367,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	listContactsByType(contactType: string) {
+	listContactsByType(contactType : string) {
+	
 		this.campaignLoader = true;
 		try {
 			this.contactsByType.isLoading = true;
@@ -1364,7 +1383,18 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.pagination.filterKey = 'isPartnerUserList';
 			this.contactsByType.pagination.filterValue = this.isPartner;
 			this.contactsByType.pagination.criterias = this.criterias;
-			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.pagination)
+			
+			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
+			this.contactListObject = new ContactList;
+			this.contactListObject.contactType = contactType;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.sharedLeads = this.sharedLeads;
+			this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter; 
+			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+			
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			
+			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
 						this.contactsByType.selectedCategory = contactType;
@@ -1729,7 +1759,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.filterValue = this.isPartner;
 			this.contactsByType.contactPagination.criterias = this.criterias;
 			this.contactsByType.contactPagination.maxResults = totalRecords;
-			this.contactService.listContactsByType(this.assignLeads, contactType, this.contactsByType.contactPagination)
+			
+			
+			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+            this.userListPaginationWrapper.userList.contactType = contactType;
+            this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
+            this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
+			
+			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
             this.contactsByType.listOfAllContacts = data.listOfUsers;

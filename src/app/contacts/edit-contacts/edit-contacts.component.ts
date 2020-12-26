@@ -215,6 +215,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	mdfAccess: boolean = false;
 	processingPartnersLoader = false;
 	contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
+	sharedLeads : boolean = false;
 
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
@@ -226,7 +227,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactsByType.selectedCategory = "all";
 		this.sourceType = this.authenticationService.getSource();
 		let currentUrl = this.router.url;
-        if (currentUrl.includes('home/assignleads')) {
+		
+        if (currentUrl.includes('home/sharedleads')) {
+            this.isPartner = false;
+            this.assignLeads = false;
+            this.sharedLeads = true;
+            this.checkingContactTypeName = "Shared Lead"
+        } else if (currentUrl.includes('home/assignleads')) {
             this.isPartner = false;
             this.assignLeads = true;
             this.showAddOptions = true;

@@ -118,6 +118,22 @@
 							translate>Manage Leads</span>
 					</a></li>
 				</ul></li>
+				
+						<li
+				*ngIf="authService.user.hasCompany && sharedLeadsAccess"
+				[ngClass]="{'active': location.path().includes('sharedleads')}"><a
+				href="javascript:;" (click)="openOrCloseTabs('sharedleads')"> <i
+					class="fa fa-id-badge" aria-hidden="true"></i> <span class="title"
+					translate>Shared Leads</span> <span class="arrow "></span> <span
+					class="selected"></span>
+			</a>
+				<ul class="sub-menu"
+					[ngStyle]="{'display': contacts? 'block': 'none' }">
+					<li><a [routerLink]="['./sharedleads/manage']"> <i
+							class="fa fa-list" aria-hidden="true"></i> <span class="title"
+							translate>Leads Content</span>
+					</a></li>
+				</ul></li>
 
 			<li
 				*ngIf="authService.module.hasPartnerLandingPageAccess && (authService.module.isCompanyPartner || authService.isPartnerTeamMember)"
@@ -128,7 +144,7 @@
 			</a>
 			</li>
 
-			<li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier
+			<li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier || authService.module.isPrm
 	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') ||location.path().includes('forms') || location.path().includes('pages')  }">
                 <a [routerLink]="['./design/add']">
                     <i class="fa fa-paint-brush" aria-hidden="true"></i>
@@ -170,7 +186,7 @@
                 </li>
 
                 <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || 
-                authService.module.isCompanyPartner || isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing )" 
+                authService.module.isCompanyPartner|| isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing || authService.module.isPrm )" 
                 [ngClass]="{'active': location.path().includes('team')}">
                     <a [routerLink]="['./team/add-team']">
                         <i class="fa fa-users" aria-hidden="true"></i>
