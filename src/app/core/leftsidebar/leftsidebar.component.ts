@@ -92,7 +92,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
-					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isEmailTemplate = true;
                 }
@@ -116,7 +115,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
                     roles.indexOf( this.roleName.marketingRole ) > -1 ||
-					roles.indexOf( this.roleName.prmRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isVideo = true;
                 }
@@ -178,7 +176,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         this.enableLeads = data.enableLeads;
                         this.formAccess = data.form;
                         this.authService.module.hasPartnerLandingPageAccess = data.partnerLandingPage;
-						let anyAdminRole =  roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ||roles.indexOf( this.roleName.vendorTierRole ) > -1  || roles.indexOf( this.roleName.marketingRole ) > -1|| roles.indexOf( this.roleName.prmRole ) > -1;
+						let anyAdminRole =  roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ||roles.indexOf( this.roleName.vendorTierRole ) > -1  || roles.indexOf( this.roleName.marketingRole ) > -1;
 						                        /**********Form**************/
                         if ((anyAdminRole || roles.indexOf( this.roleName.formRole ) > -1 )  && this.formAccess ) {
                             this.authService.module.hasFormAccess = true;

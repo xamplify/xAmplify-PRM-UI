@@ -144,7 +144,7 @@
 			</a>
 			</li>
 
-			<li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier || authService.module.isPrm
+			<li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier
 	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') ||location.path().includes('forms') || location.path().includes('pages')  }">
                 <a [routerLink]="['./design/add']">
                     <i class="fa fa-paint-brush" aria-hidden="true"></i>
