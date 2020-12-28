@@ -88,15 +88,15 @@
 											<span *ngIf="!croppedImage">
 											 <span
 												*ngIf="!companyLogoImageUrlPath" style="color: #f55d7a;">*
-													Please upload company logo</span>
-											</span> 
-													
+													Please upload your company logo</span>
+											</span>
+
 													<span
 												*ngIf="(squareData | json) == '{}'"> <img
 												*ngIf="!companyLogoImageUrlPath"
 												src="assets/images/company-profile-logo.png"
 												class="profile-image img-grid" alt=""></span>
-												
+
 												 <span
 												*ngIf="croppedImage; else showImage"> <img class="img-grid"
 												[src]="croppedImage">
@@ -162,18 +162,18 @@
 										<h4><span class="f-w-600">Plan Type:</span>&nbsp;BASIC</h4>
 										<button class="btn btn-warning" disabled="disabled" [routerLink]="['/home/upgrade']">UPGRADE &nbsp;&nbsp;<i class="fa fa-caret-right"></i></button> -->
 
-										
-									<!-- Fav Icon -->									
+
+									<!-- Fav Icon -->
 									<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<hr class="divider" />
 									<label class="control-label">Upload Fav Icon</label>
 									<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="openFavIconFileId()">
-									<input id="favIconId" style="display: none;" type="file" accept="image/x-icon" (change)="processFavIconFile($event)">										
-									<span *ngIf="!companyFavIconPath; else showFavIconImage"> 
+									<input id="favIconId" style="display: none;" type="file" accept="image/x-icon" (change)="processFavIconFile($event)">
+									<span *ngIf="!companyFavIconPath; else showFavIconImage">
 										<img
 										*ngIf="!companyFavIconPath"
 										src="assets/images/company-profile-logo.png"
-										class="profile-image img-grid" alt=""></span>											
+										class="profile-image img-grid" alt=""></span>
 
 									<ng-template #showFavIconImage> <img class="img-grid"
 										*ngIf="companyFavIconPath"
@@ -182,10 +182,10 @@
 										<a class="btn btn-primary1 profile-pic"
 										data-toggle="tooltip" data-placement="top">
 										&nbsp;&nbsp;
-										<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px" aria-hidden="true"></i></a>										
+										<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px" aria-hidden="true"></i></a>
 									</div>
 								</div>
-										<!-- Bg Image -->									
+										<!-- Bg Image -->
 									<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<hr class="divider" />
 									<label class="control-label">Upload Background Image</label>
@@ -196,7 +196,7 @@
 												*ngIf="!companyBgImagePath"
 												src="assets/images/company-profile-logo.png"
 												class="profile-image img-grid" alt=""></span>
-												
+
 												 <span
 												*ngIf="croppedImageForBgImage; else showBgImage"> <img class="img-grid"
 												[src]="croppedImageForBgImage" alt="">
@@ -207,7 +207,7 @@
 												(error)="errorHandler($event)" alt=""> </ng-template>
 												 <a class="btn btn-primary1 profile-pic" (click)="bgImageClick()"
 												  data-toggle="tooltip" data-placement="top" title="upload 2:1 ratio logo !">
-												   &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true" style="font-size:25px;padding-top:10px"></i></a>											
+												   &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true" style="font-size:25px;padding-top:10px"></i></a>
 										</div>
 									</div>
 
@@ -341,7 +341,7 @@
 						</div>
 						<div class="col-sm-9 col-xs-12" style="padding-left: 2px;">
 							<!-- ---Start Of Admin Panel -->
-							<div class="portlet light" 
+							<div class="portlet light"
 							style="padding-left: 17px!important;padding-right: 17px!important;border-radius: 4px!important;border: 1px solid #eaeaea!important;padding-bottom: 48px!important;">
 							<div class="row" *ngIf="isFromAdminPanel">
 								<div class="col-xs-12 col-md-12 col-lg-12">
@@ -426,7 +426,7 @@
 								</div>
 								</div>
 								<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
-								<div class="col-md-6 col-lg-6">	
+								<div class="col-md-6 col-lg-6">
 									<div class="form-group" [attr.class]="emailIdDivClass">
 										<label class="control-label" translate> Company Email</label> <input
 											type="email" id="emailId" name="emailId"
@@ -465,7 +465,7 @@
 								</div>
 								<div class="col-md-6 col-lg-6"style="padding-left: 0px;">
 								<div class="form-group" [attr.class]="websiteDivClass">
-									<label class="control-label" translate>Company Url <font
+									<label class="control-label" translate>Company URL <font
 										style="color: #f55d7a"><b>*</b></font></label> <input type="text"
 										id="website" name="website" placeholder="WebSite"
 										maxlength="240" class="form-control"
@@ -505,9 +505,9 @@
 										<label class="control-label" translate>Select Login Screen Direction <font
 											style="color: #f55d7a"><b>*</b></font></label>
 											<select  [ngModelOptions]="{standalone: true}" [(ngModel)]="companyProfile.loginScreenDirection" class="form-control">
-                                                <option [ngValue]="undefined" disabled selected> Select Login Screen Direction </option>                                                
+                                                <option [ngValue]="undefined" disabled selected> Select Login Screen Direction </option>
                                                 <option *ngFor="let direction of allLoginScreenDirectionsList">{{direction}}</option>
-                                                </select>																				
+                                                </select>
 									</div>
 								</div>
 								<div class="col-md-6 col-lg-6" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
@@ -517,17 +517,17 @@
 									   <div>
 										<switch [status]="companyProfile.showVendorCompanyLogo"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
 											(statusChange)="setVendorLogoEnabled($event)">
-											</switch>																			
+											</switch>
 										</div>
 										<div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
 											<span style="cursor: pointer;color: #54a7e9;">
 												<i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right" title="{{vendorLogoTooltipText}}" style="font-size: 20px;float: left;margin: 8px 0 0 15px;" aria-hidden="true"></i>
 										</span>
-										</div>																					
+										</div>
 									</div>
 								</div>
 
-								
+
 
 								<!-- <div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled">
 									<div class="form-group">
@@ -539,7 +539,7 @@
 												(error)="errorHandler($event)">
 									</div>
 								</div>
-								
+
 								<div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled">
 									<div class="form-group">
 										<label class="control-label" translate>Upload Background Image</label>
@@ -550,8 +550,8 @@
 												(error)="errorHandler($event)">
 									</div>
 								</div> -->
-								
-								
+
+
 
 								<!-- <div class="form-group">
 								<label class="control-label">About Us</label>
@@ -673,7 +673,7 @@
 						</div>
 						<!-- End of col-xs-6 -->
 					</div>
-					
+
 				</form>
 			</div>
 		</div>
