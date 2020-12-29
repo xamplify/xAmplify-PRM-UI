@@ -38,7 +38,7 @@
                     <input type="text" class="form-control" placeholder="Search..." name="query">
                     <span class="input-group-btn">
 					<a href="javascript:;" class="btn submit">
-                        <i class="icon-magnifier" routerLink="./dashboard/extra_search"></i></a>
+                        <i class="icon-magnifier" routerLink="./dashboard/extra_search" aria-hidden="true"></i></a>
 					</span>
                 </div>
             </form>
@@ -56,45 +56,32 @@
 						</button>
 					</li>
 
-                    <!-- 	<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 5px;">
-						<button class="btn btn-primary" [routerLink]="['/home/campaigns/select']">
-							<span class="hidden-xs">Create Campaign</span>
-							<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
-						</button>
-					</li> -->
-
-                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled">
-
-                        <!-- <button class="btn btn-primary pull-right" style="margin-top: 17px; margin-right: 5px;"
-						(click)="openRequestAsVendorModal()">Refer a vendor</button> -->
+                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
                         <div class="btn-group refer-vendor-button">
                             <button  (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
                             <button [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
-                            <i class="fa fa-line-chart" data-toggle="tooltip" data-original-title="" title=""></i></button>
+                            <i class="fa fa-line-chart" data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                         </div>
                     </li>
-                    <!-- 	<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany && !authenticationService.isPartnerTeamMember" style="margin-top: 17px;margin-right: 5px;">
-						refService.hasCompany
-						<button class="btn btn-primary" [routerLink]="['/home/videos']">
-							<span class="hidden-xs">Upload Content</span>
-							<i class="fa fa-upload" data-toggle="tooltip"></i>
-						</button>
-					</li> -->
                     <li style="margin-top: 17px;margin-right: 5px;" *ngIf="(refService.hasAllAccess()
 										|| authenticationService.module.hasSocialStatusRole
 										|| authenticationService.module.isOrgAdmin
-										|| authenticationService.module.isVendor ||  authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && refService.socialCampaign && !authenticationService.isPartnerTeamMember">
-                        <!-- *ngIf="refService.hasCompany" -->
+                                        || authenticationService.module.isVendor || 
+                                         authenticationService.module.isPrm  || 
+                                         authenticationService.module.isVendorTier) 
+                                         && authenticationService.user.hasCompany 
+                                         && !authenticationService.isOnlyUser() && 
+                                         !authenticationService.isPartnerTeamMember">
                         <button class="btn btn-primary" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
 							<span class="hidden-xs" translate>Update Status</span>
-							<i class="fa fa-share" data-toggle="tooltip"></i>
+							<i class="fa fa-share" data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
                     </li>
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                         <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <i class="icon-bell" style="color: #0095da;"></i>
+                            <i class="icon-bell" style="color: #0095da;" aria-hidden="true"></i>
                             <span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default" style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>
                         </a>
                         <ul class="dropdown-menu">
@@ -205,7 +192,7 @@
                                 <a [routerLink]="['/home/social/manage/all']" translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                             </li>
 
-                            <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && (!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember)">
+                            <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
                                 <li *ngIf="currentUrl.endsWith('welcome') && authenticationService.user.hasCompany">
                                     <a [routerLink]="['/home/dashboard']" translate>
                                         <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>

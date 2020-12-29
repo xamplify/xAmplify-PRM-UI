@@ -300,6 +300,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             let roleDisplayDto = data.roleDisplayDto;
             this.authService.module.showCampaignsAnalyticsDivInDashboard = roleDisplayDto.showCampaignsAnalyticsDivInDashboard;
             this.authService.module.isPrm = roleDisplayDto.prm;
+            this.authService.module.isPrmTeamMember = roleDisplayDto.prmTeamMember;
+            this.authService.module.isPrmAndPartner = roleDisplayDto.prmAndPartner;
+            this.authService.module.isPrmAndPartnerTeamMember = roleDisplayDto.prmAndPartnerTeamMember;
         },
           _error => {
             this.loading = false;

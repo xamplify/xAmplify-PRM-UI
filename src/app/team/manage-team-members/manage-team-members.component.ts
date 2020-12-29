@@ -622,12 +622,12 @@ export class ManageTeamMembersComponent implements OnInit {
 				let headersRow = this.fileUtil
 					.getHeaderArray(csvRecordsArray);
 				let headers = headersRow[0].split(',');
-
 				let partnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==4;
 				let vendorTierPartnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==2 && this.partnershipEstablishedOnlyWithVendorTier ; 
 				let vendorCsvHeadersMatched = (this.superiorRole== "Vendor" ||  this.superiorRole=="Vendor Tier" || (this.superiorRole=="Vendor Tier & Partner" && this.partnershipEstablishedOnlyWithVendorTier)) && headers.length==8;
 				let vendorAndPartnerOrOrgAdminCsvHeadersMatched = ((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" ||  (this.superiorRole=="Vendor Tier & Partner" && !this.partnershipEstablishedOnlyWithVendorTier)) &&  headers.length==9);
-				if(partnerCsvHeadersMatched || vendorCsvHeadersMatched || vendorAndPartnerOrOrgAdminCsvHeadersMatched || vendorTierPartnerCsvHeadersMatched){
+				let prmCsvHeadersMatched = this.superiorRole == 'Prm' && headers.length == 5;
+				if(partnerCsvHeadersMatched || vendorCsvHeadersMatched || vendorAndPartnerOrOrgAdminCsvHeadersMatched || vendorTierPartnerCsvHeadersMatched || prmCsvHeadersMatched){
 					if (this.validateHeaders(headers)) {
 						this.readCsvData(csvRecordsArray, headersRow.length);
 					} else {
@@ -662,6 +662,9 @@ export class ManageTeamMembersComponent implements OnInit {
 			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS");
          }else if((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" || (this.superiorRole=="Vendor Tier & Partner" && !this.partnershipEstablishedOnlyWithVendorTier ))){
 			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS" && headers[8] == "CONTACTS");
+		 }else if(this.superiorRole=="Prm"){
+			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" &&  headers[2] == "SOCIAL SHARE" && headers[3] == "STATS" && headers[4] == "PARTNERS");
+
 		 }
 	}
 
