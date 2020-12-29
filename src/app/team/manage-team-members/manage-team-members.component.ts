@@ -229,7 +229,7 @@ export class ManageTeamMembersComponent implements OnInit {
 			let length = $('#' + tableId + ' .module-checkbox-' + index + ':checked').length;
 			if(this.moduleNames.length>3){
 				/**********Vendor/Org Admin Team Members******/
-				let allSelected = (this.contactsAccess && length == 7) || (!this.contactsAccess && length == 6);
+				let allSelected = (this.contactsAccess && length == 7) || (!this.contactsAccess && length == 6) ||(!this.contactsAccess && length == 3) ;
 				if(allSelected){
 					team.all = true;
 					this.setAllRoles(team);
