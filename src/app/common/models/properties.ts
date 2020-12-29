@@ -84,7 +84,7 @@ export class Properties {
   FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
 
   SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for our account activation email.";
-  ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please login to complete your company profile.';
+  ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
   SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
   ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
   WRONG_EMAIL_ADDRESS = "We couldn't find your account. Please check that you've entered the correct email address and try again.";
@@ -134,7 +134,7 @@ export class Properties {
 
   xclientId: "6639d69f-523f-44ca-b809-a00daa26b367";
   xclientSecret: "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
-  
+
   serverErrorMessage = "Oops! Something went wrong.Please try after sometime";
 
   /****************** SAML Security *********************/
@@ -160,7 +160,7 @@ export class Properties {
 
   /********Error Messages************* */
   roleUpdatedMessage = "Your role has been changed.Please login again.";
-  
+
   /****************** Vanity Relates *********************/
   VANITY_URL_ERROR1 = "You are not associated to vendor company";
   VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added succesfully";

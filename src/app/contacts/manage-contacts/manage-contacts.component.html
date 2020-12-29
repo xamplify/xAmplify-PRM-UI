@@ -743,9 +743,9 @@
                   style="font-size: 14px; float: right"></i>
                 </span>
                 <ul class="dropdown-menu pull-right">
-                  <li *ngIf="contactsByType.selectedCategory == 'all'"><a
+                  <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads"><a
                     (click)="saveAs()" translate> Save As </a></li>
-                  <li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
+                  <li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads"><a
                     id="delete_button" (click)="invalidContactsShowAlert()" translate>
                     Delete </a>
                   </li>
@@ -753,7 +753,7 @@
                     id="validate_email_button" (click)="validateUndeliverableContacts()" translate>
                     Mark as valid email(s) </a></li> -->
                   <li>
-                    <a id="delete_button"
+                    <a id="delete_button"  *ngIf="!sharedLeads"
                       (click)="hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a>
                   </li>
                 </ul>
@@ -797,7 +797,7 @@
                       <th scope="col" class="text-center">Campaign Analytics</th>
 					  </ng-container>
                       <th *ngIf="contactsByType.selectedCategory == 'non-active'"></th>
-                      <th *ngIf="contactsByType.selectedCategory == 'invalid'">Actions</th>
+                      <th *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -853,7 +853,7 @@
                           </h5>
                         </td>
                         <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{contact.unsubscribedReason}}</td>
-                        <td *ngIf="contactsByType.selectedCategory =='invalid'">
+                        <td *ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
                           <span class="markas" (click)="validateUndeliverableContacts(contact.id)">Mark as valid</span>
                         </td>
                         <td  align="center" *ngIf="isPartner">

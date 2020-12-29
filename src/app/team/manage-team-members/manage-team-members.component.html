@@ -202,7 +202,7 @@
                   <th class="rest-header" scope="" translate>
                     <i class="fa fa-ban" aria-hidden="true"></i><br>Enabled
                   </th>
-                  <th class="rest-header" scope="" translate>
+                  <th class="rest-header" scope="" translate *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember">
                       <i class="fa fa-line-chart" aria-hidden="true"></i><br>Analytics
                   </th>
                   <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0" translate>
@@ -292,7 +292,7 @@
                 </switch>
           </td>
         <!-- -Analytics--- -->
-        <td>
+        <td *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember">
             <a class="btn-btn-primay" (click)="goToCampaignAnalytics(teamMember.teamMemberId)">
                 <i class="fa fa-line-chart" aria-hidden="true"></i>
             </a>

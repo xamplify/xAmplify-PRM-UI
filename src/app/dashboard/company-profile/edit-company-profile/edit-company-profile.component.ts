@@ -179,7 +179,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     squareDataForBgImage:any;
     croppedImageForBgImage: any = '';
     bgImageChangedEvent: any = '';
-    allLoginScreenDirectionsList:string[] = [];    
+    allLoginScreenDirectionsList:string[] = [];  
+    prm = false;  
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -1594,5 +1595,20 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           this.errorUploadCropper = true;
           this.showCropper = false;
         }
+      }
+
+      setModulesByRole(){
+          let roleId =  $('#selectedRole option:selected').val();
+          this.prm = roleId==20;
+          if(this.prm){
+            this.campaignAccess.emailCampaign = false;
+            this.campaignAccess.videoCampaign = false;
+            this.campaignAccess.videoCampaign = false;
+            this.campaignAccess.socialCampaign = false;
+            this.campaignAccess.eventCampaign = false;
+            this.campaignAccess.formBuilder = false;
+            this.campaignAccess.landingPage = false;
+            this.campaignAccess.landingPageCampaign = false;
+          }
       }
 }

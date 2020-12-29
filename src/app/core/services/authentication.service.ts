@@ -483,6 +483,9 @@ export class AuthenticationService {
     module.damAccess = false;
     module.isMarketing = false;
     module.isPrm = false;
+    module.isPrmTeamMember = false;
+    module.isPrmAndPartner = false;
+    module.isPrmAndPartnerTeamMember = false;
     module.showCampaignsAnalyticsDivInDashboard = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;

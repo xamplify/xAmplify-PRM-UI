@@ -107,5 +107,18 @@ export class ModuleAccessComponent implements OnInit {
       this.customResponse = new CustomResponse('Error', "Something went wrong while adding default mdf form.", true);
     });
   }
+
+  setModulesByRole(){
+    if(this.roleId==20){
+      this.campaignAccess.emailCampaign = false;
+      this.campaignAccess.videoCampaign = false;
+      this.campaignAccess.videoCampaign = false;
+      this.campaignAccess.socialCampaign = false;
+      this.campaignAccess.eventCampaign = false;
+      this.campaignAccess.formBuilder = false;
+      this.campaignAccess.landingPage = false;
+      this.campaignAccess.landingPageCampaign = false;
+    }
+  }
   
 }

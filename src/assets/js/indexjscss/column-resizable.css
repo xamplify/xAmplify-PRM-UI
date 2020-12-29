@@ -29,7 +29,8 @@ span.ui-column-resizer {
 }
 
 .moreipsis {
-	position: relative;
+  position: relative;
+  line-height: 16px;
 }
 
 .moreipsis:before {

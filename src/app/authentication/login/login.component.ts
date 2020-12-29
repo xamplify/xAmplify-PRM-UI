@@ -148,7 +148,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   redirectTo(user: User) {
     this.loading = false;
     const roles = user.roles;
-
     if (this.authenticationService.isSuperAdmin()) {
       this.router.navigate(['/home/dashboard/admin-report']);
     } else if (user.hasCompany || roles.length === 1) {
@@ -191,9 +190,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     module.isCompanyPartner = false;
     module.hasSocialStatusRole = false;
     module.isVendor = false;
-	module.isVendorTier = false;
-	module.isMarketing = false;
-	module.isPrm = false;
+	  module.isVendorTier = false;
+    module.isMarketing = false;
+    module.isPrm = false;
+    module.isPrmTeamMember = false;
+    module.isPrmAndPartner = false;
+    module.isPrmAndPartnerTeamMember = false;
     module.isAddingPartnersAccess = false;
     this.authenticationService.isAddedByVendor = false;
     this.authenticationService.isPartnerTeamMember = false;
