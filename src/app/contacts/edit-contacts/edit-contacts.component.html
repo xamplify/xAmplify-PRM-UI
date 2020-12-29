@@ -827,7 +827,7 @@
 										<!-- <li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
 													id="validate_email_button" (click)="validateUndeliverableContacts()" translate>
 													Mark as valid email(s) </a></li> -->
-										<li *ngIf="!sharedLeads"><a id="export_button"
+										<li *ngIf="!sharedLeads || (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"><a id="export_button"
 										(click) = "hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a></li>
 									</ul>
 								</div>
