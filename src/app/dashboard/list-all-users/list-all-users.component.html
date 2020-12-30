@@ -32,14 +32,15 @@
      <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
        <div>
          <div class="table-responsive">
-           <table class='table tgrid'>
+           <table class='table tgrid' aria-describedby="all-Approved-users">
              <thead>
                <tr>
-                 <th style="width: 20%;">NAME</th>
-                 <th class='text-center'>COMPANY</th>
-                 <th class='text-center'>Role</th>
-                 <th class='text-center'>Created Time</th>
-                  <th class='text-center'>Login</th>
+                 <th style="width: 20%;" scope="col">NAME</th>
+                 <th class='text-center' scope="col">COMPANY</th>
+                 <th class='text-center' scope="col">Role</th>
+                 <th class='text-center' scope="col">Created Time</th>
+                  <th class='text-center' scope="col">Login</th>
+                  <th class='text-center' scope="col">Logout</th>
                </tr>
              </thead>
              <tbody>
@@ -49,14 +50,19 @@
                      <app-user-info [userInfo]="request" [isFromAdminList]="true">
                      </app-user-info>
                    </td>
-                   <td align="center">{{request.companyName}}</td>
-                   <td align="center">{{request.roleName}}</td>
-                   <td align="center">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
+                   <td align="center" scope="col">{{request.companyName}}</td>
+                   <td align="center" scope="col">{{request.roleName}}</td>
+                   <td align="center" scope="col">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
                    <td id="center" class="xAmpColor">
                      <a (click)="loginAs(request)">
                       <button class="btn btn-primary">Login as </button>
                     </a>
                   </td>
+                  <td id="center" class="xAmpColor">
+                    <a (click)="confirmLogout(request)">
+                     <button class="btn btn-danger">Logout</button>
+                   </a>
+                 </td>
                  </tr>
                </ng-container>
              </tbody>
