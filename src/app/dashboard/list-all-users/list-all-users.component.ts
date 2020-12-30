@@ -186,4 +186,49 @@ logout(result: any){
     );
 }
 
+confirmLogoutForAll(){
+  try {
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "This will remove all access token for all users",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, remove it!'
+
+    }).then(function () {
+      self.logoutAllUsers();
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+  } catch (error) {
+    this.referenceService.showSweetAlertErrorMessage("Unable to confirmLogout().Please try after sometime");
+  }
+}
+
+logoutAllUsers(){
+  this.loading = true;
+  this.dashboardService.revokeAccessTokensForAll()
+    .subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let message = response.message;
+        if(statusCode==200){
+          this.referenceService.showSweetAlertSuccessMessage(message);
+          this.authenticationService.revokeAccessToken();
+        }else{
+          this.referenceService.showSweetAlertFailureMessage(message);
+        }
+        this.loading = false;
+      },
+      (_error: any) => {
+        this.referenceService.showSweetAlertErrorMessage("Unable to Logout All Users.Please try after sometime");
+        this.loading = false;
+      },
+      () => this.logger.info('Finished logout()')
+    );
+}
+
 }

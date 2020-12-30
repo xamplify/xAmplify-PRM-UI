@@ -40,7 +40,9 @@
                  <th class='text-center' scope="col">Role</th>
                  <th class='text-center' scope="col">Created Time</th>
                   <th class='text-center' scope="col">Login</th>
-                  <th class='text-center' scope="col">Logout</th>
+                  <th class='text-center' scope="col" (click)="confirmLogoutForAll()">
+                    <a (click)="confirmLogoutForAll()">Logout</a>
+                  </th>
                </tr>
              </thead>
              <tbody>

@@ -312,7 +312,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.contactsCount = false;
             let statusCode = JSON.parse(error['status']);
             if(statusCode==401){
-                this.authService.tokenExpired();
+                this.authService.revokeAccessToken();
             }
           },
           () => {

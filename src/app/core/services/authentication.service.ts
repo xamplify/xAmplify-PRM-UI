@@ -580,7 +580,7 @@ export class AuthenticationService {
     this.logout();
   }
 
-  tokenExpired(){
+  revokeAccessToken(){
     let self = this;
     swal(
 			{

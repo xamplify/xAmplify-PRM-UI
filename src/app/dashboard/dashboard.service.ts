@@ -468,4 +468,10 @@ export class DashboardService {
         .catch(this.handleError);
     }
 
+    revokeAccessTokensForAll(){
+        return this.http.get(this.authenticationService.REST_URL + `url/revokeAccessTokensForAll?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
 }
