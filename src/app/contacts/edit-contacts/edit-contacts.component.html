@@ -173,7 +173,7 @@
 										<i class="fa fa-edit"></i>List of {{checkingContactTypeName}}s
 									</div>
 
-									<div class="color-grey" style="margin-top:4px">
+									<div class="color-grey" style="margin-top:4px" *ngIf="!sharedLeads">
 											<div *ngIf="!isSynchronizationList">
 											<!-- disabling cancel button condition
 											[disabled]="selectedAddContactsOption == 8 && !clickBoard"  -->
@@ -816,7 +816,7 @@
 										<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>
 										Undeliverable {{checkingContactTypeName}} List</span>
 								</div>
-								<div class="btn-group pull-right"
+								<div class="btn-group pull-right" *ngIf="!sharedLeads"
 									style="margin-top: 4px; color: #000000;">
 									<span class="dropdown-toggle" data-toggle="dropdown" style="color: #FFF; box-shadow:none; margin-top: 8px; float:right;">
 										<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
