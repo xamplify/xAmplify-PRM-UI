@@ -193,8 +193,8 @@
         </div>
       </div>
       <!---------Analytics----------->
-      <div class="divider" *ngIf="authenticationService.isVendor() &&  (!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()"></div>
-      <div class="flex" *ngIf=" !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier &&(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember)">
+      <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()"></div>
+      <div class="flex" *ngIf=" !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="  !authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember && authenticationService.module.isCampaign">
           <img src="../../../assets/images/welcome/analytics.png" style="height: 200px;" alt="">
         </div>
