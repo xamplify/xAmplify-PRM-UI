@@ -1999,18 +1999,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             data => {
                 this.ngxloading = false;
                 if(data.statusCode==200){
-                    this.modulesDisplayViewcustomResponse = new CustomResponse('SUCCESS',data.message,true);
+                    this.referenceService.showSweetAlertSuccessMessage(data.message);
  					localStorage.setItem('defaultDisplayType',selectedValue);
                 }else{
                     this.updateDisplayViewError = true;
-                    this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                    this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
                 }
             },
             error => {
                 this.updateDisplayViewError = true;
                 this.ngxloading = false;
-                this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-                },
+                this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+            },
             () => { }
         );
     }

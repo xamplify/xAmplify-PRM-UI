@@ -714,9 +714,6 @@
                                     <!-- PRIVACY SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'settings'}">
                                        <div class="container">
-                                            <div id="custom-response-div">
-                                                <app-response-message *ngIf="modulesDisplayViewcustomResponse.isVisible" [customResponse]="modulesDisplayViewcustomResponse"></app-response-message>
-                                            </div>
                                             <label class="container-checkbox-xamplify" translate>List View
                                                 <input type="radio"  name="moduleDisplayType"  
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]}}" 

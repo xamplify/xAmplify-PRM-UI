@@ -3,7 +3,7 @@ import { Properties } from '../../common/models/properties';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
-
+import { DashboardService } from '../../dashboard/dashboard.service';
 import { UserDefaultPage } from '../../core/models/user-default-page';
 import { DashboardReport } from '../../core/models/dashboard-report';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -61,13 +61,14 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     logedInCustomerCompanyName: string;
     sourceType = "";
     videoFile:any;
-
+    welcomePageItems: any;
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
         private referenceService: ReferenceService,
         public properties: Properties, public xtremandLogger:XtremandLogger,
-        public sanitizer:DomSanitizer, public videoFileService: VideoFileService
+        public sanitizer:DomSanitizer, public videoFileService: VideoFileService,
+        private dashboardService:DashboardService
     ) {
       this.sourceType = this.authenticationService.getSource();
         this.dashboardReport = new DashboardReport();
@@ -158,11 +159,33 @@ export class WelcomeComponent implements OnInit, OnDestroy {
           this.loggedInUserId = this.authenticationService.getUserId();
         this.getDefaultPage(this.loggedInUserId);
         this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
+        this.getWelcomePageItems();
       }catch(error){ console.log(error);this.xtremandLogger.error(error);
         this.xtremandLogger.errorPage(error);}
   }
     ngOnDestroy(){
       $('#myModal').modal('hide');
+    }
+
+    getWelcomePageItems(){
+      let vanityUrlPostDto = {};
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            vanityUrlPostDto['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
+            vanityUrlPostDto['vanityUrlFilter'] = true;
+        }
+        vanityUrlPostDto['userId'] = this.authenticationService.getUserId();
+        this.dashboardService.getWelcomePageItems(vanityUrlPostDto)
+        .subscribe(
+          data => {
+           this.welcomePageItems = data;
+        },
+          error => {
+           this.xtremandLogger.errorPage(error);
+          },
+          () => {
+            
+          }
+        );
     }
 
 }
