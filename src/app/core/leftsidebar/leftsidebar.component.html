@@ -1,10 +1,9 @@
 <!-- BEGIN SIDEBAR -->
 <ng-container *ngIf="!refService.loaderFromAdmin">
 <div class="page-sidebar-wrapper" *ngIf="(authService.user.hasCompany || authService.isOnlyUser()) && !(authService.isSuperAdmin())">
-    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
     <div class="page-sidebar navbar-collapse collapse">
-        <!-- BEGIN SIDEBAR MENU -->
+        <app-lefside-navigation-loader *ngIf="loading"></app-lefside-navigation-loader>
+        <ng-container *ngIf="!loading">
         <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" [ngClass]="{'page-sidebar-menu-closed':refService.isSidebarClosed}" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li [ngClass]="{'active': location.path().includes('dashboard')}">
                 <a [routerLink]="['/home/dashboard/default']"  [class.disabled]="!authService.user.hasCompany ?true:null">
@@ -378,6 +377,7 @@
              </li> 
          </ng-container>
         </ul>
+    </ng-container>
         <!-- END SIDEBAR MENU -->
     </div>
 </div>
