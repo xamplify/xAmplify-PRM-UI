@@ -43,13 +43,16 @@
    <div class="page-bar page-bar-shadow">
     <app-module-analytics></app-module-analytics>
    </div>
-
     <!------------Dashbaord Button Carusel---------------------->    
-    <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
+   <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
    <app-vendor-activity-analytics></app-vendor-activity-analytics>
-   <div class="page-bar page-bar-shadow" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
-     <div class="col-xs-12">
-       <!--Partners-->
+   <app-modal-popup-loader *ngIf="welcomePageItemsLoader"></app-modal-popup-loader>
+   <div style="position: relative; top:-10px;">
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !welcomePageItemsLoader "></app-response-message>
+  </div>
+   <div class="page-bar page-bar-shadow" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !welcomePageItemsLoader && !customResponse.isVisible">
+    <div class="col-xs-12">
+      <!--Partners-->
       <ng-container *ngIf="sourceType!='ALLBOUND' && welcomePageItems?.showPartners">
       <div class="flex">
         <div  class="col-sm-6 col-xs-12 block">
@@ -184,7 +187,6 @@
          </div>
         <div class="divider"></div>
       </ng-container>
-
         <!---Social Accounts-->
         <ng-container *ngIf="welcomePageItems?.showSocialAccounts">
        <div class="flex">
@@ -207,7 +209,7 @@
        </div>
        <div class="divider"></div>
       </ng-container>
-  <!---Analytics---->
+    <!---Analytics---->
       <ng-container *ngIf="welcomePageItems?.showAnalytics">
        <div class="flex">
        <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='left'">

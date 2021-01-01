@@ -9,6 +9,7 @@ import { DashboardReport } from '../../core/models/dashboard-report';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VideoFileService } from '../../videos/services/video-file.service';
+import { CustomResponse } from '../../common/models/custom-response';
 
 declare var $:any;
 
@@ -62,6 +63,8 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     sourceType = "";
     videoFile:any;
     welcomePageItems: any;
+    welcomePageItemsLoader = false;
+    customResponse:CustomResponse = new CustomResponse();
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
@@ -168,6 +171,8 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }
 
     getWelcomePageItems(){
+      this.customResponse = new CustomResponse();
+      this.welcomePageItemsLoader = true;
       let vanityUrlPostDto = {};
         if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
             vanityUrlPostDto['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
@@ -177,10 +182,12 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.dashboardService.getWelcomePageItems(vanityUrlPostDto)
         .subscribe(
           data => {
+            this.welcomePageItemsLoader = false;
            this.welcomePageItems = data;
         },
-          error => {
-           this.xtremandLogger.errorPage(error);
+        _error => {
+          this.welcomePageItemsLoader = false;
+            this.customResponse = new CustomResponse('ERROR',this.properties.unableToShowWelcomePageItems,true);
           },
           () => {
             

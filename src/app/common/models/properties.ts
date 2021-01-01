@@ -172,5 +172,7 @@ export class Properties {
   VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT="Error while Updating Email Template";
 
   reAuthenticateMessage = 'Please unlink  and reconnect your account.';
+
+  unableToShowWelcomePageItems = "Error! We are unable to show welcome items now. Please give us some time.";
 }
 
