@@ -118,11 +118,10 @@
        </div>
        <div class="divider"></div>
        </ng-container>
-
-       <ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
-       <div class="divider" *ngIf=" !authenticationService.isPartnerTeamMember && (authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.module.isContact)"></div>
-       <div class="flex" *ngIf=" !authenticationService.isPartnerTeamMember  &&(authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isEmailTemplate)">
-       <div class="col-sm-6 col-xs-12 block image-block">
+       <!----Templates----->
+       <ng-container *ngIf="welcomePageItems?.showTemplates">
+       <div class="flex">
+       <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.templatesImagePosition=='left'">
            <img style="height: 200px;" alt="" src="../../../assets/images/welcome/img-templates.png">
          </div>
          <div class="col-sm-6 col-xs-12 block">
@@ -130,37 +129,43 @@
              <h1 class="text-left" style="color: #FBB23E" translate>Templates</h1>
              <p class="left-side">{{welcome_text.templates}}</p>
              <div class="text-left">
-               <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" translate>Create templates</button>
-               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/manage']" translate>View templates</button>
+               <button  class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" translate>Create templates</button>
                <button type="button" class="btn btn-xs color4-invert" data-toggle="modal" (click)="showHowToVideo(createEmailTemplateUrl,'Templates')" translate>Tell me how</button>
              </div>
            </div>
          </div>
+         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.templatesImagePosition=='right'" >
+          <img style="height: 200px;" alt="" src="../../../assets/images/welcome/img-templates.png">
+        </div>
        </div>
+       <div class="divider"></div>
     </ng-container>
-    <ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
-       <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isEmailTemplate"></div>
-       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isCampaign">
+    <!----Campaigns----->
+    <ng-container *ngIf="welcomePageItems?.showCampaigns">
+       <div class="flex">
+        <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='left'">
+          <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
+        </div>
          <div class="col-sm-6 col-xs-12 block" style="right: -52px; position: relative;">
            <div class="text-block">
              <h1 class="text-left" style="color: #827596" translate>Campaigns</h1>
              <p class="left-side">{{welcome_text.campaigns}}</p>
              <div class="text-left">
-               <button *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember" class="btn btn-xs color3" [routerLink]="['/home/campaigns/select']" translate>Create campaigns</button>
-               <button *ngIf="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember" class="btn btn-xs color3" [routerLink]="['/home/campaigns/partner/all']" translate>Create campaigns</button>
+               <button  class="btn btn-xs color3" [routerLink]="['/home/campaigns/select']" translate>Create campaigns</button>
                <button type="button" class="btn btn-xs color3-invert" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
              </div>
            </div>
          </div>
-         <div class="col-sm-6 col-xs-12 block image-block">
+         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='right'">
            <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
          </div>
        </div>
+       <div class="divider"></div>
        </ng-container>
-       <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isCampaign"></div>
-       <div class="flex" *ngIf="  authenticationService.loggedInUserRole!='Team Member' && (authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()||
-       								authenticationService.isOrgAdmin())">
-           <div class="col-sm-6 col-xs-12 block image-block">
+       <!--Team Members------>
+       <ng-container *ngIf="welcomePageItems?.showTeamMembers">
+       <div class="flex">
+           <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.teamMembersImagePosition=='left'" >
              <img src="../../../assets/images/welcome/img-members.png" alt="" style="max-width: 100%;height: 202px;margin-top: -10px;">
            </div>
            <div class="col-sm-6 col-xs-12 block">
@@ -173,10 +178,17 @@
                    </div>
                  </div>
                </div>
+               <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.teamMembersImagePosition=='right'">
+                <img src="../../../assets/images/welcome/img-members.png" alt="" style="max-width: 100%;height: 202px;margin-top: -10px;">
+              </div>
          </div>
-        <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| authenticationService.isOrgAdmin()"></div>
-       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember">
-         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember">
+        <div class="divider"></div>
+      </ng-container>
+
+        <!---Social Accounts-->
+        <ng-container *ngIf="welcomePageItems?.showSocialAccounts">
+       <div class="flex">
+         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.socialAccountsImagePosition=='left'">
            <img class="" style="float: left !important; " alt="" src="../../../assets/images/welcome/img-social.png">
          </div>
          <div class="col-sm-6 col-xs-12 block" style="position: relative; right: -40px;">
@@ -189,17 +201,20 @@
              </div>
            </div>
          </div>
-         <div class="col-sm-6 col-xs-12 block image-block" [hidden]="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember">
+         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.socialAccountsImagePosition=='right'">
            <img  src="../../../assets/images/welcome/img-social.png" alt=""  style="height: 208px;;">
          </div>
        </div>
-       <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()"></div>
+       <div class="divider"></div>
+      </ng-container>
+  <!---Analytics---->
+      <ng-container *ngIf="welcomePageItems?.showAnalytics">
        <div class="flex">
-       <div class="col-sm-6 col-xs-12 block image-block" *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember && authenticationService.module.isCampaign">
+       <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='left'">
            <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
          </div>
-         <div class="col-sm-6 col-xs-12 block"  [ngStyle]="{'right':authenticationService.module.isVideo ? '-45px' : '0px' }">
-           <div class="text-block" [class.text-left-analytics]="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember">
+         <div class="col-sm-6 col-xs-12 block">
+           <div class="text-block">
              <h1 style="color: #00B3B3" class="text-left" translate>Analytics</h1>
              <p class="left-side">{{welcome_text.analytics}}</p>
              <div  class="text-left">
@@ -208,10 +223,12 @@
              </div>
            </div>
          </div>
-         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember || !authenticationService.module.isCampaign">
-           <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;" [ngStyle]="authenticationService.isOnlyPartner() && {'float': 'right'}">
+         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='right'">
+           <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
          </div>
        </div>
+       <div class="divider"></div>
+      </ng-container>
      </div>
    </div>
    <app-scroll-top></app-scroll-top>
