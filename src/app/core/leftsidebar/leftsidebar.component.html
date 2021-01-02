@@ -178,11 +178,13 @@
                         </a>
                         <li>
                             <li>
-                                <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
-                                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                                    <span class="title" translate>Create Campaign</span>
-                                </a>
+                                <ng-container *ngIf="!authService.module.isPrm && !authService.module.isPrmTeamMember && !authService.module.isPrmAndPartner && !authService.module.isPrmAndPartnerTeamMember ">
+                                    <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
+                                        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                        <span class="title" translate>Create Campaign</span>
+                                    </a>
 
+                                </ng-container>
                             </li>
                             <li>
                                 <a [routerLink]="['./campaigns/manage']">
