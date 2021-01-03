@@ -734,7 +734,9 @@
               </div>
               <div class="btn-group pull-right"
                 style="margin-top: 4px; color: #000000;"
-                *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() || authenticationService.isOrgAdminPartner())">
+                *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  ||
+                 authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
+                  authenticationService.isOrgAdminPartner()) && !sharedLeads">
                 <span class="dropdown-toggle" data-toggle="dropdown"
                   style="color: #FFF; box-shadow: none; margin-top: 8px; float: right;">
                 <i class="fa fa-cog"
@@ -743,7 +745,7 @@
                   style="font-size: 14px; float: right"></i>
                 </span>
                 <ul class="dropdown-menu pull-right">
-                  <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads"><a
+                  <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads "><a
                     (click)="saveAs()" translate> Save As </a></li>
                   <li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads"><a
                     id="delete_button" (click)="invalidContactsShowAlert()" translate>

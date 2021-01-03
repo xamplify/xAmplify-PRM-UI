@@ -325,8 +325,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     loadContactLists(pagination: Pagination) {
-    	pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
-    	pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
    
         if (this.assignLeads) {
         	this.loadAssignedLeadsLists(pagination);
@@ -338,6 +336,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 this.pagination.filterValue = this.isPartner;
                 if(this.sharedLeads){
                     pagination.sharedLeads = this.sharedLeads;
+                    pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+                    pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
                 } 
                 this.contactService.loadContactLists(pagination)
                     .subscribe(

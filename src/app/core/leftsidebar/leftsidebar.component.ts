@@ -304,12 +304,16 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.module.isPrmAndPartner = roleDisplayDto.prmAndPartner;
             this.authService.module.isPrmAndPartnerTeamMember = roleDisplayDto.prmAndPartnerTeamMember;
         },
-          _error => {
+          error => {
             this.loading = false;
             this.rssFeedAccess = false;
             this.mdfAccess = false;
             this.mdfAccessAsPartner = false;
             this.authService.contactsCount = false;
+            let statusCode = JSON.parse(error['status']);
+            if(statusCode==401){
+                this.authService.revokeAccessToken();
+            }
           },
           () => {
             this.loading = false;

@@ -1,10 +1,9 @@
 <!-- BEGIN SIDEBAR -->
 <ng-container *ngIf="!refService.loaderFromAdmin">
 <div class="page-sidebar-wrapper" *ngIf="(authService.user.hasCompany || authService.isOnlyUser()) && !(authService.isSuperAdmin())">
-    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
     <div class="page-sidebar navbar-collapse collapse">
-        <!-- BEGIN SIDEBAR MENU -->
+        <app-lefside-navigation-loader *ngIf="loading"></app-lefside-navigation-loader>
+        <ng-container *ngIf="!loading">
         <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" [ngClass]="{'page-sidebar-menu-closed':refService.isSidebarClosed}" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li [ngClass]="{'active': location.path().includes('dashboard')}">
                 <a [routerLink]="['/home/dashboard/default']"  [class.disabled]="!authService.user.hasCompany ?true:null">
@@ -119,7 +118,16 @@
 					</a></li>
 				</ul></li>
 				
-						<li
+					<li
+				*ngIf="authService.user.hasCompany && sharedLeadsAccess"
+				[ngClass]="{'active': location.path().includes('sharedleads')}">
+				<a [routerLink]="['./sharedleads/manage']"> <i class="fa fa-id-badge"
+					aria-hidden="true"></i> <span class="title" translate>Shared Leads</span>
+					<span class="arrow "></span> <span class="selected"></span>
+			</a>
+			</li>
+				
+<!-- 						<li
 				*ngIf="authService.user.hasCompany && sharedLeadsAccess"
 				[ngClass]="{'active': location.path().includes('sharedleads')}"><a
 				href="javascript:;" (click)="openOrCloseTabs('sharedleads')"> <i
@@ -133,7 +141,7 @@
 							class="fa fa-list" aria-hidden="true"></i> <span class="title"
 							translate>Leads Content</span>
 					</a></li>
-				</ul></li>
+				</ul></li> -->
 
 			<li
 				*ngIf="authService.module.hasPartnerLandingPageAccess && (authService.module.isCompanyPartner || authService.isPartnerTeamMember)"
@@ -170,11 +178,13 @@
                         </a>
                         <li>
                             <li>
-                                <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
-                                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                                    <span class="title" translate>Create Campaign</span>
-                                </a>
+                                <ng-container *ngIf="!authService.module.isPrm && !authService.module.isPrmTeamMember && !authService.module.isPrmAndPartner && !authService.module.isPrmAndPartnerTeamMember ">
+                                    <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
+                                        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                        <span class="title" translate>Create Campaign</span>
+                                    </a>
 
+                                </ng-container>
                             </li>
                             <li>
                                 <a [routerLink]="['./campaigns/manage']">
@@ -369,6 +379,7 @@
              </li> 
          </ng-container>
         </ul>
+    </ng-container>
         <!-- END SIDEBAR MENU -->
     </div>
 </div>

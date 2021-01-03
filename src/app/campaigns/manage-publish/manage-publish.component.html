@@ -353,7 +353,7 @@
                                 <li *ngIf="!campaign.launched">
                                   <ng-container *ngIf="!campaign.launched">
                                     <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-                                    || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" translate>
+                                    || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" translate>
                                     <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
                                     </a>
                                   </ng-container>
@@ -370,15 +370,15 @@
                                       <i class="fa fa-reply-all" style="width: 30px;"></i>
                                       Add Workflows
                                       </a> -->
-                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
+                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
                                     (click)="openEventUrlModal(campaign)" title="Copy Public Event Url" translate>
                                     <i class="fa fa-link" style="width: 30px;" aria-hidden="true"></i> Copy Url
                                     </a>
-                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
+                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
                                     (click)="sendEventEmail(campaign)" title="Send Preview Email" translate>
                                     <i class="fa fa-envelope" style="width: 30px;" aria-hidden="true"></i> Send Preview Email
                                     </a>
-                                    <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                                    <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
                                     title="Invite More" translate>
                                     <i class="fa fa-users" style="width: 30px;" aria-hidden="true"></i> Invite More
                                     </a>
@@ -395,15 +395,15 @@
                                   </a>
                                 </li>
                                 <section *ngIf="!campaign.showCancelButton">
-                                  <li *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted">
-                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm ||  authenticationService.module.isVendorTier" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" translate> <i class="fa fa-trash-o" style="width: 30px;" aria-hidden="true">
+                                  <li *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner  ||  authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted">
+                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||  authenticationService.module.isVendorTier" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" translate> <i class="fa fa-trash-o" style="width: 30px;" aria-hidden="true">
                                     </i>Delete
                                     </a>
                                   </li>
                                 </section>
                                 <section *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted ">
-                                  <li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier">
-                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier" data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId,campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
+                                  <li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier">
+                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier" data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId,campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
                                     )" translate>
                                     <i class="fa fa-ban" style="width: 30px;" aria-hidden="true"></i> Cancel Event
                                     </a>
@@ -503,18 +503,18 @@
                                 <li *ngIf="!campaign.launched">
                                   <ng-container *ngIf="!campaign.launched">
                                     <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-                                    || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" translate>
+                                    || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" translate>
                                     <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
                                     </a>
                                   </ng-container>
                                 </li>
                                 <ng-container *ngIf="campaign.launched">
                                   <li *ngIf="campaign.launched">
-                                    <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports" translate>
+                                    <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports" translate>
                                     <i class="fa fa-line-chart" style="width: 30px;" aria-hidden="true"></i> Campaign based reports
                                     </a>
                                     <!---Copy Campaign List View-->
-                                    <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0" data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" translate>
+                                    <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0" data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" translate>
                                     <i class="fa fa-files-o" style="width: 30px;" aria-hidden="true"></i> Copy Campaign
                                     </a>
                                     <!---Add Workflows List View-->
@@ -523,15 +523,15 @@
                                       <i class="fa fa-reply-all" style="width: 30px;"></i>
                                       Add Workflows
                                       </a> -->
-                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
+                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
                                     (click)="openEventUrlModal(campaign)" title="Copy Public Event Url" translate>
                                     <i class="fa fa-link" style="width: 30px;" aria-hidden="true"></i> Copy Url
                                     </a>
-                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
+                                    <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted" data-rel="fancybox-button"
                                     (click)="sendEventEmail(campaign)" title="Send Preview Email" translate>
                                     <i class="fa fa-envelope" style="width: 30px;" aria-hidden="true"></i> Send Preview Email
                                     </a>
-                                    <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                                    <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
                                     title="Invite More" translate>
                                     <i class="fa fa-users" style="width: 30px;" aria-hidden="true"></i> Invite More
                                     </a>
@@ -549,14 +549,14 @@
                                 </li>
                                 <section *ngIf="!campaign.showCancelButton">
                                   <li *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor ||  authenticationService.module.isVendorTier || authenticationService.module.isPrm">
-                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm" (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" translate> <i class="fa fa-trash-o" style="width: 30px;" aria-hidden="true">
+                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember " (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)" data-rel="fancybox-button" translate> <i class="fa fa-trash-o" style="width: 30px;" aria-hidden="true">
                                     </i>Delete
                                     </a>
                                   </li>
                                 </section>
                                 <section *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted  ">
-                                  <li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm">
-                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm" data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId, campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
+                                  <li *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
+                                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember" data-toggle="modal" data-target="#cancelEventModal" title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId, campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
                                     )" translate>
                                     <i class="fa fa-ban" style="width: 30px;" aria-hidden="true"></i> Cancel Event
                                     </a>
@@ -682,7 +682,7 @@
                             <!--Buttons Start Here-->
                             <ng-container *ngIf="!campaign.launched">
                               <a [class.disablednew]="!campaign.hasAccess" *ngIf="(hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
-                              || (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Edit Campaign">
+                              || (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Edit Campaign">
                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                               </a>
                             </ng-container>
@@ -693,7 +693,7 @@
                                 </a>
                                 <span class="badge" id="notification-list">{{campaign.formsCount}}</span>
                               </ng-container>
-                              <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign  && !campaign.eventStarted" data-rel="fancybox-button"
+                              <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign  && !campaign.eventStarted" data-rel="fancybox-button"
                               (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
                               <i class="fa fa-link" aria-hidden="true"></i>
                               </a>
@@ -701,7 +701,7 @@
                                 data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
                                 <i class="fa fa-reply-all"></i>
                                 </a> -->
-                              <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                              <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
                               title="Invite More">
                               <i class="fa fa-users" aria-hidden="true"></i>
                               </a>
@@ -736,7 +736,7 @@
                               data-placement="top" title="Preview">
                             <i class="fa fa-eye mr5" aria-hidden="true"></i>
                             </a>
-                            <a *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted"
+                            <a *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted"
                             (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
                             data-toggle="tooltip" data-placement="top"
                             title="Delete Campaign">
@@ -744,7 +744,7 @@
                             </a>
                             </span>
                             <span  [class.disablednew]="!campaign.hasAccess" *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted&& !campaign.eventStarted">
-                            <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm"
+                            <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember"
                             data-toggle="tooltip" data-placement="top"
                             title="Cancel Event" data-rel="fancybox-button"
                             (click)="getCancelEventDetails(campaign.campaignId, campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner

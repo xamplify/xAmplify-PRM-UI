@@ -490,22 +490,28 @@ export class AuthenticationService {
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;
-    try {
-      swal.close();
-    } catch (error) {
-      console.log(error);
-    }
+   
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
+        this.closeSwal();
         window.location.href = "https://"+window.location.hostname+"/login";
       }else{
         if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
           window.location.href = 'https://www.xamplify.com/';
         } else {
+          this.closeSwal();
           this.router.navigate(['/'])
         }
       }
+    }
+  }
+
+  closeSwal(){
+    try {
+      swal.close();
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -572,6 +578,23 @@ export class AuthenticationService {
   forceToLogout() {
     this.sessinExpriedMessage = "Your role has been changed. Please login again.";
     this.logout();
+  }
+
+  revokeAccessToken(){
+    let self = this;
+    swal(
+			{
+				title: 'Your token is expried.We are redirecting you to login page.',
+				text: "Please Wait...",
+				showConfirmButton: false,
+				imageUrl: "assets/images/loader.gif",
+				allowOutsideClick:false
+			}
+		);
+    setTimeout(function () {
+      location.reload();
+      self.logout();
+    }, 5000);
   }
 
   checkPartnerAccess(userId: number) {
