@@ -87,6 +87,8 @@ export class AuthenticationService {
   loginScreenDirection: string = 'Center';
   vendorTierTeamMember: boolean = false;
   contactsCount = false;
+  leftSideMenuLoader = false;
+  partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -490,7 +492,7 @@ export class AuthenticationService {
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;
-   
+    this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){

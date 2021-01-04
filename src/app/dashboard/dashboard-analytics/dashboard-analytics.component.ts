@@ -67,7 +67,6 @@ export class DashboardAnalyticsComponent implements OnInit {
    }
 
   ngOnInit() {
-    //let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
     let companyProfileName = this.authenticationService.companyProfileName;
     if(companyProfileName!=undefined){
         this.vendorCompanyProfileName = companyProfileName;
@@ -76,22 +75,23 @@ export class DashboardAnalyticsComponent implements OnInit {
     if(currentUser!=undefined){
       this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
     }
-    this.loggedInUserId = this.authenticationService.getUserId();
-    this.getDefaultPage(this.loggedInUserId);
-    this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-    this.getUserCampaignReport();
-    
-    Metronic.init();
-    Layout.init();
-    Demo.init();
-    QuickSidebar.init();
-    Index.init();
-    Index.initDashboardDaterange();
-    Index.initCharts();
-    Index.initChat();
-    Tasks.initDashboardWidget();
-    //this.listVendorsByLoggedInUserId(this.loggedInUserId);
-    this.xtremandLogger.log(this.authenticationService.getRoles());
+    if(!this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner){
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this.getDefaultPage(this.loggedInUserId);
+        this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+        this.getUserCampaignReport();
+        
+        Metronic.init();
+        Layout.init();
+        Demo.init();
+        QuickSidebar.init();
+        Index.init();
+        Index.initDashboardDaterange();
+        Index.initCharts();
+        Index.initChat();
+        Tasks.initDashboardWidget();
+        this.xtremandLogger.log(this.authenticationService.getRoles());
+    }
   }
 
   getDefaultPage(userId: number) {

@@ -72,7 +72,7 @@
         margin: 2px;
     }
 </style>
-
+<ng-container *ngIf="!authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
 <ng-container *ngIf="!referenceService.loaderFromAdmin">
 <div class="page-content" *ngIf="authenticationService.isOnlyUser()">
     <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
@@ -956,3 +956,4 @@
         <div id="heat-map-data" style="max-width: 100%; min-height: auto; cursor: pointer"></div>
     </div>
 </div>
+</ng-container>

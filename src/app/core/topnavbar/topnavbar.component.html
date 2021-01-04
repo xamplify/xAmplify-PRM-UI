@@ -56,7 +56,8 @@
 						</button>
 					</li>
 
-                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
+                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
+                    &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                         <div class="btn-group refer-vendor-button">
                             <button  (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
                             <button [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
@@ -169,7 +170,7 @@
 
                     <li class="dropdown dropdown-user top-menu-bar" id="headerdropDownLi">
                         <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img class="img-circle" src="{{model.profilePicutrePath}}" (error)="errorHandler($event)" />
+                            <img alt="" class="img-circle" src="{{model.profilePicutrePath}}" (error)="errorHandler($event)" />
                             <span class="username username-hide-on-mobile">
 								{{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
                         </a>
@@ -179,7 +180,6 @@
                                 </a>
                             </li>
                             <li *ngIf="(!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin() && authenticationService.superiorRole != 'Partner') || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
-                                <!-- *ngIf="(authenticationService.module.isOrgAdmin || isUser)" -->
                                 <a [routerLink]="['/home/dashboard/edit-company-profile']" translate> <i class="fa fa-building-o"></i> Company Profile
                                 </a>
                             </li>
@@ -193,7 +193,7 @@
                                 <a [routerLink]="['/home/social/manage/all']" translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                             </li>
 
-                            <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
+                            <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                                 <li *ngIf="currentUrl.endsWith('welcome') && authenticationService.user.hasCompany">
                                     <a [routerLink]="['/home/dashboard']" translate>
                                         <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>

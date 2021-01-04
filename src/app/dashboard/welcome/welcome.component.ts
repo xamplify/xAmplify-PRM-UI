@@ -73,7 +73,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         public sanitizer:DomSanitizer, public videoFileService: VideoFileService,
         private dashboardService:DashboardService
     ) {
-      this.sourceType = this.authenticationService.getSource();
+       this.sourceType = this.authenticationService.getSource();
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);

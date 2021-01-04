@@ -1725,26 +1725,41 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
-				var object = {
-					"First Name": this.contactsByType.listOfAllContacts[i].firstName,
-					"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
-					"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
-					"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
-					"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
-					"Address": this.contactsByType.listOfAllContacts[i].address,
-					"City": this.contactsByType.listOfAllContacts[i].city,
-					"State": this.contactsByType.listOfAllContacts[i].state,
-					"Country": this.contactsByType.listOfAllContacts[i].country,
-					"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
-          "Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
-          "Total Campaigns": this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
-          "Active Campaigns": this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
-          "Email Opend": this.contactsByType.listOfAllContacts[i].emailOpenedCount,
-          "Clicked Urls": this.contactsByType.listOfAllContacts[i].clickedUrlsCount,
-					// "Notes": this.contactsByType.listOfAllContacts[i].description
+				if(!this.authenticationService.module.isPrm && !this.authenticationService.module.isPrmTeamMember && !this.authenticationService.module.isPrmAndPartner && !this.authenticationService.module.isPrmAndPartnerTeamMember){
+					var object = {
+						"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+						"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+						"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+						"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+						"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+						"Address": this.contactsByType.listOfAllContacts[i].address,
+						"City": this.contactsByType.listOfAllContacts[i].city,
+						"State": this.contactsByType.listOfAllContacts[i].state,
+						"Country": this.contactsByType.listOfAllContacts[i].country,
+						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
+						  "Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+						  "Total Campaigns": this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
+						  "Active Campaigns": this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
+						  "Email Opend": this.contactsByType.listOfAllContacts[i].emailOpenedCount,
+						  "Clicked Urls": this.contactsByType.listOfAllContacts[i].clickedUrlsCount,
+					}
+					this.downloadDataList.push(object);
+				}else{
+					let object = {
+						"First Name": this.contactsByType.listOfAllContacts[i].firstName,
+						"Last Name": this.contactsByType.listOfAllContacts[i].lastName,
+						"Company": this.contactsByType.listOfAllContacts[i].contactCompany,
+						"Job Title": this.contactsByType.listOfAllContacts[i].jobTitle,
+						"Email Id": this.contactsByType.listOfAllContacts[i].emailId,
+						"Address": this.contactsByType.listOfAllContacts[i].address,
+						"City": this.contactsByType.listOfAllContacts[i].city,
+						"State": this.contactsByType.listOfAllContacts[i].state,
+						"Country": this.contactsByType.listOfAllContacts[i].country,
+						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
+						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+					}
+					this.downloadDataList.push(object);
 				}
-
-				this.downloadDataList.push(object);
 			}
 			this.referenceService.isDownloadCsvFile = true;
 		} catch (error) {
