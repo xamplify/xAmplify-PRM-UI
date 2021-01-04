@@ -67,15 +67,15 @@ export class DashboardAnalyticsComponent implements OnInit {
    }
 
   ngOnInit() {
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if(companyProfileName!=undefined){
+        this.vendorCompanyProfileName = companyProfileName;
+    }
+    const currentUser = localStorage.getItem( 'currentUser' );
+    if(currentUser!=undefined){
+      this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
+    }
     if(!this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner){
-        let companyProfileName = this.authenticationService.companyProfileName;
-        if(companyProfileName!=undefined){
-            this.vendorCompanyProfileName = companyProfileName;
-        }
-        const currentUser = localStorage.getItem( 'currentUser' );
-        if(currentUser!=undefined){
-          this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
-        }
         this.loggedInUserId = this.authenticationService.getUserId();
         this.getDefaultPage(this.loggedInUserId);
         this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);

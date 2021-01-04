@@ -13,6 +13,16 @@
  }
  </style>
  <div class="page-content">
+   <ng-container *ngIf="authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner" >
+      <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+        <div class="col-xs-12 col-sm-6">
+          <h4 style="margin: 0.3em 0;color: #00a6e8;font-weight: 400;">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+        </div>
+      </div>
+      <div class="page-bar portlet light border-radius-0 shadow">
+        <img src="assets/images/prm-partner.png" alt="">
+      </div>
+   </ng-container>
    <ng-container *ngIf="!authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner" >
     <div class="page-bar p0" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
       <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
