@@ -53,6 +53,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     shareLeadsAccess = false;
     damAccessAsPartner = false;
     deals: boolean;
+    partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -65,7 +66,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     updateLeftSideBar( location: Location ) {
         this.location = location;
         try {
-
             const roles = this.authService.getRoles();
             if ( roles ) {
                 if(roles.indexOf(this.roleName.companyPartnerRole) > -1) {
@@ -303,9 +303,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.module.isPrmTeamMember = roleDisplayDto.prmTeamMember;
             this.authService.module.isPrmAndPartner = roleDisplayDto.prmAndPartner;
             this.authService.module.isPrmAndPartnerTeamMember = roleDisplayDto.prmAndPartnerTeamMember;
+            this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = data.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
+            this.authService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner =this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
         },
           error => {
             this.loading = false;
+            this.authService.leftSideMenuLoader = false;
             this.rssFeedAccess = false;
             this.mdfAccess = false;
             this.mdfAccessAsPartner = false;
@@ -317,6 +320,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
           },
           () => {
             this.loading = false;
+            this.authService.leftSideMenuLoader = false;
           }
         );
     }

@@ -15,7 +15,10 @@
       </div>
   </div>
 </div>
-<div class="page-content" *ngIf="!isOnlyUser">
+<div class="page-content" *ngIf="authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+
+</div>
+<div class="page-content" *ngIf="!isOnlyUser && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
    <ng-container *ngIf="!ngxLoading">
@@ -173,7 +176,6 @@
 <app-social-accounts-analytics></app-social-accounts-analytics>
 
 </div>
-
 
 <!-- Customize Campaign Modal -->
 <div class="modal right fade" id="customizeCampaignModal" tabindex="-1" role="dialog" aria-labelledby="customizeCampaignModalLabel">

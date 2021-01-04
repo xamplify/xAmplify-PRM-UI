@@ -501,6 +501,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
+						this.authenticationService.leftSideMenuLoader = true;
                         this.isUpdateChaged = true;
                         this.message = data.message;
                         this.getUserByUserName(this.authenticationService.user.emailId);
@@ -545,6 +546,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
                             self.homeComponent.getTeamMembersDetails();
+							
                         }, 3000);
                     },
                     error => { this.ngxloading = false;

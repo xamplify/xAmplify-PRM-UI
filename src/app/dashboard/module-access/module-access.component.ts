@@ -118,6 +118,9 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.formBuilder = false;
       this.campaignAccess.landingPage = false;
       this.campaignAccess.landingPageCampaign = false;
+      this.campaignAccess.shareLeads = false;
+      this.campaignAccess.allBoundSource = false;
+      this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
     }
   }
   
