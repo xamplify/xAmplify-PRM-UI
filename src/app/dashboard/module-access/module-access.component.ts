@@ -78,7 +78,7 @@ export class ModuleAccessComponent implements OnInit {
       this.customResponse = new CustomResponse('Error', "Something went wrong.", true);
     },
     ()=>{
-        if(this.campaignAccess.mdf){
+        if(this.campaignAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible){
           this.addDefaultMdfForm();
         }else{
           this.showSuccessMessage();

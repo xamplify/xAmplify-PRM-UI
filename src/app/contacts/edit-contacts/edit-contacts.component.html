@@ -740,8 +740,11 @@
 																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner)">
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
- 																<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')">
-                                                                <i class="fa fa-bullhorn" aria-hidden="true"></i></a>
+
+																<ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
+																	<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')">
+																		<i class="fa fa-bullhorn" aria-hidden="true"></i></a>
+																</ng-container>
                                                                 <a *ngIf="authenticationService.module.isCampaign && !assignLeads && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') "   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
                                                                 <i class="fa fa-line-chart" aria-hidden="true"></i></a>
                                                             </div>
