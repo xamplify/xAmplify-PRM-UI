@@ -1,13 +1,16 @@
 <!-- BEGIN PAGE CONTENT-->
 <div class="page-bar">
 	<ul class="page-breadcrumb">
-		<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter" translate>Home</a> <i
-			class="fa fa-angle-right"></i></li>
+		<li><i class="fa fa-home" aria-hidden="true"></i> 
+			<a [routerLink]="refService.homeRouter" translate>Home</a>
+			 <i	class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
 		<li><a (click)="refresh()" translate> Manage {{checkingContactTypeName}}s
 				</a></li>
-		<li><a (click)="backToEditContacts()" translate><i
-				class="fa fa-angle-right"> </i>Edit {{checkingContactTypeName}}s</a></li>
-		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right">
+		<li>
+			<a (click)="backToEditContacts()" translate>
+				<i	class="fa fa-angle-right" aria-hidden="true"> </i>Edit {{checkingContactTypeName}}s</a></li>
+		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right" aria-hidden="true">
 		</i>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">{{contactsByType.selectedCategory}}
 		   {{checkingContactTypeName}}s</span>
@@ -43,7 +46,6 @@
 								(click)="saveAs(false)">
 								<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
-									<!-- <span *ngIf="!isDefaultPartnerList">List</span> -->
 									</span>
 									</span>
 									<span *ngIf="isDefaultPartnerList"
@@ -61,16 +63,15 @@
 									<button class="btn-block dashboard-stat blue" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
 										(click)="backToEditContacts()">
 										<div class="visual">
-											<!-- <i class="fa fa-users"></i> -->
 											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'all' ? '#white' : '#ccc' }"
-               										 *ngIf="contactsByType.selectedCategory == 'all'" ></i>
+               										 *ngIf="contactsByType.selectedCategory == 'all'" aria-hidden="true"></i>
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.allContactsCount}}</div>
 											<div class="desc" style="font-size:20px; color: #FFFFFF;" translate>All <!-- {{checkingContactTypeName}}s --></div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #3480b5; color: white" translate>
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
 												</a>
 												</span>
 									</button>
@@ -1204,9 +1205,13 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
-                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
-
+				<ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && authenticationService.module.isPrmAndPartnerTeamMember">
+					<h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
+					<h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
+					</ng-container>
+					<ng-container *ngIf="authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
+						<h4 class="modal-title popup-header-title-font" translate>Partners</h4>
+					</ng-container>
             </div>
             <div class="modal-body">
                 <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
