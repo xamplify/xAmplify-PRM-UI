@@ -13,17 +13,6 @@
  }
  </style>
  <div class="page-content">
-   <ng-container *ngIf="authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner" >
-      <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
-        <div class="col-xs-12 col-sm-6">
-          <h4 style="margin: 0.3em 0;color: #00a6e8;font-weight: 400;">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
-        </div>
-      </div>
-      <div class="page-bar portlet light border-radius-0 shadow">
-        <img src="assets/images/prm-partner.png" alt="">
-      </div>
-   </ng-container>
-   <ng-container *ngIf="!authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner" >
     <div class="page-bar p0" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
       <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
                'alert-danger': userDefaultPage.responseType == 'ERROR'}">
@@ -61,7 +50,7 @@
     <div style="position: relative; top:-10px;">
      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !welcomePageItemsLoader "></app-response-message>
    </div>
-    <div class="page-bar page-bar-shadow" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !welcomePageItemsLoader && !customResponse.isVisible &&welcomePageItems?.showItems">
+    <div class="page-bar page-bar-shadow" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !welcomePageItemsLoader && !customResponse.isVisible">
      <div class="col-xs-12">
        <!--Partners-->
        <ng-container *ngIf="sourceType!='ALLBOUND' && welcomePageItems?.showPartners">
@@ -185,7 +174,7 @@
             <div class="col-sm-6 col-xs-12 block">
                   <div class="text-block">
                     <h1 class="text-left" style="color: #00B3B3" translate>Team members</h1>
-                    <p class="left-side">{{welcome_text.teamMember}}</p>
+                    <p class="left-side">Add team members to make content and campaign management a group effort</p>
                     <div class="text-left">
                       <button class="btn btn-xs color2" [routerLink]="['/home/team/add-team']" translate>Add team member</button>
                       <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addTeamMemberUrl,'Team members')" translate>Tell me how</button>
@@ -245,7 +234,6 @@
       </div>
     </div>
     <app-scroll-top></app-scroll-top>
-   </ng-container>
  </div>
 
  <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" [welcomeVideoFile]="welcomeVideoInfo" (notifyParent)="closeModal($event)"></app-preview-video>
