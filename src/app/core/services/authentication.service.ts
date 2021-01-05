@@ -570,7 +570,7 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser !== undefined && currentUser != null) {
       let roles = JSON.parse(currentUser)['roles'];
-      let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2 || role.roleId===18 || role.roleId===19);
+      let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2 || role.roleId===18 || role.roleId===19 || role.roleId==20);
       if (rolesExists.length > 0) {
         return true;
       }
