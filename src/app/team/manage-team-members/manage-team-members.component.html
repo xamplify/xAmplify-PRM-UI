@@ -38,8 +38,8 @@
 <div class="row">
   <div class="clearfix">
     <section class="clearfix">
-      <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
-        <div class="col-xs-6 col-sm-2 hidden-xs">
+      <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier ">
+        <div class="col-xs-6 col-sm-2 hidden-xs" *ngIf="!partnershipEstablishedWithPrmAndLoggedInAsPartner">
             <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;" *ngIf="!isAddTeamMember && !isUploadCsv">
                 <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>
                 <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
@@ -56,7 +56,7 @@
                 <h6 style="font-size:14px" translate>Add Team Member</h6>
             </button>
         </div>
-        <div *ngIf="csvFilePath?.length>0" class="col-xs-12 col-sm-3 hidden-xs pull-right" style="text-align:right">
+        <div *ngIf="csvFilePath?.length>0 && !partnershipEstablishedWithPrmAndLoggedInAsPartner" class="col-xs-12 col-sm-3 hidden-xs pull-right" style="text-align:right">
             <a class="btn btn-success" (click)="downloadEmptyCsv()" download translate>Download CSV Template</a>
         </div>
       </ng-container>
@@ -192,7 +192,7 @@
                 </button>
                 <h4 class="user-permission-min-width" translate>
                     <img src="assets/images/user-permission.png" alt="No Image Found" class="user-permission-img" >
-                    User & Permissions
+                    {{textString}}
                 </h4>
                  </th>
                  <th *ngFor="let module of teamMemberModules" scope="">
@@ -202,10 +202,10 @@
                   <th class="rest-header" scope="" translate>
                     <i class="fa fa-ban" aria-hidden="true"></i><br>Enabled
                   </th>
-                  <th class="rest-header" scope="" translate *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember">
+                  <th class="rest-header" scope="" translate *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !partnershipEstablishedWithPrmAndLoggedInAsPartner">
                       <i class="fa fa-line-chart" aria-hidden="true"></i><br>Analytics
                   </th>
-                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0" translate>
+                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0 && !partnershipEstablishedWithPrmAndLoggedInAsPartner" translate>
                     <i class="fa fa-save" aria-hidden="true"></i><br>Update
                 </th>
                   <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0" translate>
@@ -292,13 +292,13 @@
                 </switch>
           </td>
         <!-- -Analytics--- -->
-        <td *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember">
+        <td *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !partnershipEstablishedWithPrmAndLoggedInAsPartner">
             <a class="btn-btn-primay" (click)="goToCampaignAnalytics(teamMember.teamMemberId)">
                 <i class="fa fa-line-chart" aria-hidden="true"></i>
             </a>
         </td>
         <!-- -Edit--- -->
-        <td>
+        <td *ngIf="!partnershipEstablishedWithPrmAndLoggedInAsPartner">
           <a [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'" (click)="updateTeamMember(teamMember,i)">
             <i class="fa fa-save" aria-hidden="true"></i>
           </a>
