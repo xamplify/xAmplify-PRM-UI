@@ -16,7 +16,7 @@
             </ul>
           </div>
           <div class="col-xs-12 col-sm-6 col-lg-6 p0">
-            <ul class="mix-filter p0 m0" style="float: right" *ngIf="isCompanyPartner && isVendor && !allApisLoader">
+            <ul class="mix-filter p0 m0" style="float: right" *ngIf="!authenticationService.vanityURLEnabled && isCompanyPartner && isVendor && !allApisLoader">
               <li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
             						margin-top: 5px;" *ngIf="isCompanyPartner" translate>Partner View </li>
               <li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
@@ -106,12 +106,22 @@
       <div class="row">
         <div class="col-md-12">
           <div class="tabbable tabbable-custom tabbable-noborder" id="header">
-            <div class="tab-content">
+            <div class="tab-content" *ngIf="!showCampaignDeals">
               <div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
                 <app-response-message class="pg8" [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible"></app-response-message>
                 <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
                   <div class="btn-group pull-right">
-                    <a *ngIf="isPartnerVersion || isOrgAdmin" (click)="addDeal()">
+                    <ng-container class='m10'>
+                      <span data-placement="bottom" (click)="listView = true" class="btn btn-xs hidden-xs l-g-view"
+                        data-toggle="tooltip" [class.disabled]="listView" title="List View">
+                        <i aria-hidden="true" class="fa fa-th-list p10"></i>
+                      </span>
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                        title="Campaign View" [class.disabled]="!listView" (click)="listView = false">
+                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
+                      </span>
+                    </ng-container>
+                    <a *ngIf="isPartnerVersion || isOrgAdmin" (click)="addDeal()" style="padding-left: 11px;">
                       <button class="btn btn-primary" translate>
                         <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
                       </button>
@@ -134,25 +144,25 @@
                 </div>
               </div>
               <div class="row" id="box" *ngIf="httpRequestLoader.isServerError" translate>
-                Please contact admin for 'Leads'
+                Please contact admin for 'Deals'
               </div>
               <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
               </app-list-loader>
               <section class='m10'
-                *ngIf="dealsSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-
+                *ngIf="listView && dealsSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+              
                 <div class="table-responsive">
                   <table class='table tgrid table-hover table-sm' aria-describedby="dealTable">
                     <thead>
                       <tr>
-                        <th class="center-aligned" translate>Deal Details</th>                        
+                        <th class="center-aligned" translate>Deal Details</th>
                         <th class="center" translate>Added By</th>
                         <th class="center" translate>Status</th>
                         <th style="width: 18%; text-align:right" translate>Actions</th>
                       </tr>
-
+              
                     </thead>
-
+              
                     <tbody>
                       <ng-container *ngFor='let deal of dealsPagination.pagedItems; let i=index'>
                         <tr>
@@ -162,25 +172,25 @@
                             </div>
                             <div>
                               <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
-                                <span  style="color: #5b9bd1;">{{deal.createdForCompanyName | slice:0:30}}
+                                <span style="color: #5b9bd1;">{{deal.createdForCompanyName | slice:0:30}}
                                   <span *ngIf="deal.createdForCompanyName?.length>30">...</span>
-                                </span>  
-                              </h5> 
+                                </span>
+                              </h5>
                             </div>
                             <div>
                               <h5 *ngIf="isPartnerVersion && deal?.campaignId > 0"><b>Campaign:</b>
-                                <span  style="color: #5b9bd1;">{{deal.campaignName | slice:0:30}}
+                                <span style="color: #5b9bd1;">{{deal.campaignName | slice:0:30}}
                                   <span *ngIf="deal.campaignName?.length>30">...</span>
-                                </span>  
+                                </span>
                               </h5>
                               <h5 *ngIf="isVendorVersion && deal?.parentCampaignId > 0"><b>Campaign:</b>
-                                <span  style="color: #5b9bd1;">{{deal.parentCampaignName | slice:0:30}}
+                                <span style="color: #5b9bd1;">{{deal.parentCampaignName | slice:0:30}}
                                   <span *ngIf="deal.campaignName?.length>30">...</span>
-                                </span>  
-                              </h5> 
+                                </span>
+                              </h5>
                             </div>
-                                                        
-                          </td>                          
+              
+                          </td>
                           <td style="width: 20%;">
                             <h5 *ngIf="!isPartnerVersion">{{deal.createdByCompanyName | slice:0:30}}
                               <span *ngIf="deal.createdByCompanyName?.length>30">...</span>
@@ -197,13 +207,13 @@
                               <app-timestamp [isOnlyDate]="false" [dateAndTime]="deal.createdTime">
                               </app-timestamp>
                             </h5>
-                          </td>                          
-                          <td style="width: 10%;"> 
+                          </td>
+                          <td style="width: 10%;">
                             <select class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal)"
                               style="width: 135px">
                               <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
                             </select>
-                            
+              
                           </td>
                           <td style="width: 30%;">
                             <div class="actions-block override-actions">
@@ -211,65 +221,275 @@
                                 <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
                                   <i class="fa fa-eye mr5" aria-hidden="true"></i>
                                 </a>
-                                <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" id="deal">
+                                <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
+                                  id="deal">
                                   <i class="fa fa-edit mr5" aria-hidden="true"></i>
                                 </a>
-                                <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)" title="Delete Deal" id="deal">
+                                <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
+                                  title="Delete Deal" id="deal">
                                   <i class="fa fa-trash mr5" aria-hidden="true"></i>
                                 </a>
                               </ng-container>
                             </div>
                             <!-- <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"
-                              id="deal">
-                              <span class="circled-number" style="height: 40px;width:40px">
-                                <i class="fa fa-eye mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                              </span>
-                            </a>
-                            <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" style="margin-top: 10px"
-                              id="deal">
-                              <span class="circled-number" style="height: 40px;width:40px">
-                                <i class="fa fa-edit mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                              </span>
-                            </a>   -->
+                                            id="deal">
+                                            <span class="circled-number" style="height: 40px;width:40px">
+                                              <i class="fa fa-eye mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                            </span>
+                                          </a>
+                                          <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" style="margin-top: 10px"
+                                            id="deal">
+                                            <span class="circled-number" style="height: 40px;width:40px">
+                                              <i class="fa fa-edit mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                            </span>
+                                          </a>   -->
                             <!-- <a *ngIf="lead.campaignId" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
-                              <span class="circled-number"  style="height: 40px;width:40px">
-                                <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                              </span>
-                            </a> 
-                            <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                              <span class="circled-number" style="height: 40px;width:40px">
-                                <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
-                                  style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
-                              </span>
-                            </a> -->
+                                            <span class="circled-number"  style="height: 40px;width:40px">
+                                              <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                            </span>
+                                          </a> 
+                                          <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
+                                            <span class="circled-number" style="height: 40px;width:40px">
+                                              <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
+                                                style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
+                                            </span>
+                                          </a> -->
                             <!-- <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)" title="Delete Deal" style="margin-top: 10px"
-                              id="deal">
-                              <span class="circled-number" style="height: 40px;width:40px">
-                                <i class="fa fa-trash mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                              </span> 
-                            </a> -->                                                       
+                                            id="deal">
+                                            <span class="circled-number" style="height: 40px;width:40px">
+                                              <i class="fa fa-trash mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                            </span> 
+                                          </a> -->
                           </td>
                         </tr>
-
+              
                       </ng-container>
                     </tbody>
-
+              
                   </table>
+                </div>
+              
+                <!-- --------------------Pagination0-------------------- -->
+                <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.pagedItems.length !== 0" class="pg8">
+                  <app-pagination [pagination]="dealsPagination" (notifyParent)="setDealsPage($event)"
+                    (notifyParentDropDown)="listDeals($event)"></app-pagination>
+                </div>
+                <!-- End of 24 -->
+                <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading"
+                  class="alert alert-info">
+                  <strong translate>No Deals Found.</strong>
                 </div>
 
               </section>
-              <!-- --------------------Pagination0-------------------- -->
-              <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.pagedItems.length !== 0" class="pg8">
-                <app-pagination [pagination]="dealsPagination" (notifyParent)="setDealsPage($event)"
-                  (notifyParentDropDown)="listDeals($event)"></app-pagination>
-              </div>
-              <!-- End of 24 -->
-              <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+              <div *ngIf="listView && !httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="alert alert-info">
                 <strong translate>No Deals Found.</strong>
+              </div>
+              
+              <!-- -------------------- Campaign Level View -------------------- -->
+              <section class='m10'
+                *ngIf="!listView && campaignSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+      
+                <div class="table-responsive">
+                  <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
+                    <thead>
+                      <tr>
+                        <th class="center-aligned" translate></th>
+                        <th class="center" translate>Campaign Name</th>
+                        <th class="center" translate>Launched On</th>
+                        <th class="center">Count</th>
+                      </tr>
+      
+                    </thead>
+      
+                    <tbody>
+                      <ng-container *ngFor='let campaign of campaignPagination.pagedItems; let i=index'>
+                        <tr>
+                          <td style="width: 10%;" class="hidden-xs">
+                            <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" src="assets/images/video-email.png"
+                              style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                            <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.png"
+                              style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                            <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 " src="assets/images/social-campaign.png"
+                              style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                            <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.png"
+                              style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                            <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 "
+                              src="assets/images/landing-page.png" style="height: 50px;"
+                              alt="{{campaign.campaignType}} Campaign">
+                          </td>
+                          <td>
+                            <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaign}}">
+                              {{campaign.campaign|
+                              slice:0:25}}
+                              <span *ngIf="campaign.campaign?.length>25">...</span>
+                            </h4>
+                          </td>
+                          <td class="center hidden-xs">
+                            <span align="right">
+                              <strong translate>Launched On</strong>
+                            </span>
+                            <span align="right" title="Upload Date">
+                              <strong>
+                                <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchTimeInString">
+                                </app-timestamp>
+                              </strong>
+                            </span>
+                          </td>
+                          <td>
+                            <a data-toggle="tooltip" data-placement="top" title="Number of Leads" style="cursor: default">
+                              <span class="circled-number"><strong>{{campaign.leadsCount}}</strong></span>
+                            </a>
+      
+                            <a *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top"
+                              title="View leads for this campaign">
+                              <span class="circled-number">
+                                <i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
+                                  aria-hidden="true"></i>
+                              </span>
+                            </a>
+
+                            <a *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" 
+                              title="View leads/deals for this campaign">
+                              <span class="circled-number">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                              </span>
+                            </a>
+      
+                          </td>
+                        </tr>
+      
+                        <!-- -------------------- Partners List -------------------- -->
+                        <tr [ngClass]="{'hidden': !campaign.expand}">
+                          <td colspan="8" style="padding-right: 0px !important;">
+                            <div class="row" *ngIf="showPartnerList" style="width: 100%;">
+                              <div class="col-xs-12 p5" *ngIf="showPartnerList" style="padding-right: 0px !important">
+                                <div class="portlet light">
+                                  <div class="portlet-title">
+                                    <div class="caption">
+                                      <span class="caption-subject font-red-sunglo uppercase">Partners</span>
+                                    </div>
+                                    <div class="inputs" align="right" style="float: right; display: flex;">
+                                      <!-- <div style="float: left;">
+                                              <select class="form-control" [(ngModel)]="sortOption.leadPartnerSortOption" (ngModelChange)="sortPartners($event)" style="position: relative;right: -3px;"
+                                              *ngIf="isCampaignByLeads">
+                                                <option *ngFor="let option of sortOption.leadPartnersSortDropDown" [ngValue]="option">{{option.name}}</option>
+                                              </select>
+                                              <select class="form-control" [(ngModel)]="sortOption.dealsPartnerSortOption" (ngModelChange)="sortPartners($event)" style="position: relative;right: -3px;"
+                                              *ngIf="!isCampaignByLeads">
+                                                <option *ngFor="let option of sortOption.dealPartnersSortDropDown" [ngValue]="option">{{option.name}}</option>
+                                              </select>
+                                            </div> -->
+                                      <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
+                                        <div class="input-icon right" style="position: relative;right: -11px;">
+                                          <input type="text" style="height:34px;" class="form-control"
+                                            [(ngModel)]="partnerSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                            placeholder="Search for a Partner"
+                                            (keypress)="searchPartnersKeyPress($event.keyCode)">
+                                          <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                            *ngIf="partnerSortOption.searchKey"
+                                            (click)="partnerSortOption.searchKey=''"></button>
+                                          <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i
+                                              class="fa fa-search"></i></button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row" id="box" *ngIf="httpRequestLoader.isServerError">
+                                    Please contact admin for "Campaings"
+                                  </div>
+                                  <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                                  </app-list-loader>
+                                  <div class="portlet-body table-responsive" style="overflow: hidden;"
+                                    *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError && partnerSortOption.totalRecords > 0">
+                                    <div class="table-responsive">
+                                      <table class="table tgrid">
+                                        <thead>
+                                          <tr>
+                                            <th class="center-aligned">Partner</th>
+                                            <th class="center">#Deals Count</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <ng-container *ngFor="let item of partnerPagination.pagedItems;let i=index">
+                                            <tr>
+                                              <td>
+                                                <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true"
+                                                  [isPartnerInfo]="true"></app-user-info>
+                                              </td>
+                                              <td>
+                                                <a (click)="showCampaignDealsByPartner(item)" data-toggle="tooltip"
+                                                  data-placement="top" title="Number Of Leads">
+                                                  <span class="circled-number"><b>{{item.dealsCount}}</b></span>
+                                                </a>
+                                              </td>
+                                            </tr>
+                                          </ng-container>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                    <div *ngIf="!httpRequestLoader.isLoading && partnerPagination.pagedItems.length !== 0"
+                                      class="pg8">
+                                      <app-pagination [pagination]="partnerPagination"
+                                        (notifyParent)="setPartnersPage($event)"
+                                        (notifyParentDropDown)="listPartners($event)"></app-pagination>
+                                    </div>
+                                    <!-- End of 24 -->
+                                    <div *ngIf="!httpRequestLoader.isLoading && campaignPagination.totalRecords==0"
+                                      class="alert alert-info">
+                                      <strong translate>No Partners Found.</strong>
+                                    </div>
+                                  </div>
+                                  <div *ngIf="!httpRequestLoader.isLoading && partnerSortOption.totalRecords==0" class="alert alert-info">
+                                    <strong translate>No Partners Found.</strong>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+      
+                      </ng-container>
+                    </tbody>
+      
+                  </table>
+                </div>
+      
+                <div *ngIf="!httpRequestLoader.isLoading && campaignPagination.pagedItems.length !== 0" class="pg8">
+                  <app-pagination [pagination]="campaignPagination" (notifyParent)="setCampaignsPage($event)"
+                    (notifyParentDropDown)="listCampaigns($event)"></app-pagination>
+                </div>
+                <!-- End of 24 -->
+                <div *ngIf="!httpRequestLoader.isLoading && campaignPagination.totalRecords==0" class="alert alert-info">
+                  <strong translate>No Campaigns Found.</strong>
+                </div>
+              </section>
+              <div *ngIf="!listView && !httpRequestLoader.isLoading && campaignSortOption.totalRecords==0" class="alert alert-info">
+                <strong translate>No Campaigns Found.</strong>
               </div>
 
             </div>
-          </div><!-- End Of Tab Content -->
+
+            <!-- -----------------------------Campaign View - Leads List-------------------------------------- -->
+            <div class="tab-content" *ngIf="showCampaignDeals">
+              <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible">
+              </app-response-message>
+              <div class="caption col-xs-10 col-md-10" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px
+                ;font-size: 18px;font-weight: 600">
+                Campaign: <span class="caption-subject font-red-sunglo uppercase" style="padding-left: 5px; padding-right: 15px;"
+                  translate>{{selectedCampaignName}}</span>
+                  <span *ngIf="selectedPartnerCompanyName !== ''"> Partner: <span class="caption-subject font-red-sunglo uppercase" style="padding-left: 5px; padding-right: 15px;"
+                    translate>{{selectedPartnerCompanyName}}</span></span>
+               
+              </div>
+      
+              <a (click)="closeCampaignDeals()" class="pull-right close-circle"
+                style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+                <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+              <app-manage-campaign-deals [partnerCompanyId]="selectedPartnerCompanyId" [campaignId]="selectedCampaignId"
+              [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey">
+              </app-manage-campaign-deals>
+            </div>
+          </div>
         </div>
       </div>
     </div>

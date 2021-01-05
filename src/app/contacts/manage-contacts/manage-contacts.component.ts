@@ -1153,6 +1153,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     this.contactListObject.name = listName;
                     this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
                     this.contactListObject.socialNetwork = "MANUAL";
+                    this.contactListObject.publicList = true;
                     this.userUserListWrapper.users = this.allselectedUsers;
                     this.userUserListWrapper.userList = this.contactListObject;
                     this.saveAssignedLeadsList(this.userUserListWrapper);
@@ -1805,6 +1806,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		try {
 			this.saveAsTypeList = 'manage-all-contacts';
 			this.saveAsListName = '';
+			this.selectedLegalBasisOptions = [];
 			this.saveAsError = '';
 			$('#saveAsModal').modal('show');
 		} catch (error) {

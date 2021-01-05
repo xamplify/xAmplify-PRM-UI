@@ -88,6 +88,12 @@ export class LeadsService {
     .catch(this.handleError);
   }
 
+  getViewType(vanityLoginDto:VanityLoginDto) {
+    return this.http.post(this.URL + `/view/type?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   syncLeadsWithSalesforce(userId:number) {
     return this.http.get(this.authenticationService.REST_URL + `/salesforce/${userId}/leads/sync?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
@@ -104,6 +110,30 @@ export class LeadsService {
     return this.http.get(this.URL + `vanity/${companyProfileName}/${userId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
+  }
+
+  listCampaignsForVendor(pagination: Pagination) {
+    return this.http.post(this.URL + `campaign/list/v?access_token=${this.authenticationService.access_token}`, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  listPartnersForCampaign(pagination: Pagination) {
+    return this.http.post(this.URL + `campaign/partner/list/v?access_token=${this.authenticationService.access_token}`, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  listCampaignLeads(pagination: Pagination) {
+    return this.http.post(this.URL + `campaign/lead/list?access_token=${this.authenticationService.access_token}`, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  listCampaignsForPartner(pagination: Pagination) {
+    return this.http.post(this.URL + `campaign/list/p?access_token=${this.authenticationService.access_token}`, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   private extractData(res: Response) {

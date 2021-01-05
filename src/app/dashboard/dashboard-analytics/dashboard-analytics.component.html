@@ -15,17 +15,7 @@
       </div>
   </div>
 </div>
-<div class="page-content" *ngIf="authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
-        <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
-          <div class="col-xs-12 col-sm-6">
-            <h4 style="margin: 0.3em 0;color: #00a6e8;font-weight: 400;">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
-          </div>
-        </div>
-        <div class="page-bar portlet light border-radius-0 shadow">
-          <img src="assets/images/prm-partner.png" alt="">
-        </div>
-</div>
-<div class="page-content" *ngIf="!isOnlyUser && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+<div class="page-content" *ngIf="!isOnlyUser">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
    <ng-container *ngIf="!ngxLoading">
@@ -63,12 +53,10 @@
 
 <!------------Dashbaord Button Carusel---------------------->
 <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
-
-
 <!------------Vendor Activity---------------------->
 <app-vendor-activity-analytics></app-vendor-activity-analytics >
 <!---Top 4 Campaigns--------->
-<div class="row" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.module.showCampaignsAnalyticsDivInDashboard">
+<div class="row" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier &&  !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && authenticationService.module.showCampaignsAnalyticsDivInDashboard">
     <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
        <div class="portlet-title">
@@ -174,9 +162,6 @@
                 <app-email-stats-analytics></app-email-stats-analytics>
             </div>
         </div>
-
-
-
     </div><!--End of page bar-->
  </div><!--End of row-->
  

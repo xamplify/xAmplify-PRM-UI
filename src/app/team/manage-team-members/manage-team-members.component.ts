@@ -85,6 +85,8 @@ export class ManageTeamMembersComponent implements OnInit {
 	errorMessage: string;
 	isLoggedInThroughVanityUrl = false;
 	partnershipEstablishedOnlyWithVendorTier = false;
+	partnershipEstablishedWithPrmAndLoggedInAsPartner = false;
+	textString = "";
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -125,6 +127,12 @@ export class ManageTeamMembersComponent implements OnInit {
 							this.isOnlyPartner = this.superiorRole == "Partner";
 							this.csvFilePath = response.csvFilePath;
 							this.partnershipEstablishedOnlyWithVendorTier = response.partnershipEstablishedOnlyWithVendorTier;
+							this.partnershipEstablishedWithPrmAndLoggedInAsPartner = response.partnershipEstablishedWithPrmAndLoggedInAsPartner;
+							if(this.partnershipEstablishedWithPrmAndLoggedInAsPartner){
+								this.textString = "Users";
+							}else{
+								this.textString = "User & Permissions";
+							}
 						} else {
 							this.showUIError("Please pass the userId as input");
 						}
