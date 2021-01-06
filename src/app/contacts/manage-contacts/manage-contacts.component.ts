@@ -1429,11 +1429,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.contactsCount();
 							this.contactCountLoad = true;
 							this.listContactsByType(this.contactsByType.selectedCategory);
-							if (this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
-							} else {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
-							}
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_EMAIL_VALIDATE_SUCCESS, true);
+                            } else if (this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+                            } else {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
+                            }
 						} else {
 							this.authenticationService.forceToLogout();
 						}
