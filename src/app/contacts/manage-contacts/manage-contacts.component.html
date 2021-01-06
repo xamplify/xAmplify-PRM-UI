@@ -553,7 +553,7 @@
                       </a> <a [class.disabled]="!contactList.emailValidationInd"
                       *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) || contactList.synchronisedList
                       || ((contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads)  || (assignLeads && contactList.assignedToPartner))"
-                      (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
+                      (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                       data-toggle="tooltip" data-placement="top"
                       title="{{actionsDescription.contact_list_info}}"
                       data-rel="fancybox-button"> <i
