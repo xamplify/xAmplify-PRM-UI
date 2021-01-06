@@ -1,0 +1,43 @@
+#forms-list {
+    padding-right: 0px !important;
+}
+
+#search {
+    margin-right: 35px;
+}
+
+#search-icon {
+    position: relative;
+    right: -11px;
+}
+
+#search-text {
+    height: 34px;
+}
+
+#bottom-right {
+    float: right;
+}
+
+#right {
+    float: right;
+    margin-bottom: 10px;
+}
+
+#left {
+    float: left;
+}
+
+.button-padding {
+    padding: 7px 14px;
+    font-size: 14px;
+    border-width: 0;
+}
+
+.vertical-center {
+    /* display: flex;*/
+    align-items: center;
+    justify-content: center;
+    display: block;
+    margin: 10px 100px 0px 100px;
+}

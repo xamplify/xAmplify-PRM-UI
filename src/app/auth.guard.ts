@@ -25,6 +25,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     damUrl = 'dam';
     leadsUrl = 'leads';
     dealsUrl = 'deal';
+    lmsUrl = 'lms';
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -153,6 +154,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
          if(url.indexOf(this.dealsUrl)>-1){
             return this.authorizeUrl(roles, url, this.dealsUrl);
          }
+         if(url.indexOf(this.lmsUrl)>-1){
+            return this.authorizeUrl(roles, url, this.lmsUrl);
+         }
       }catch(error){ console.log('error'+error);}
     }
 
@@ -235,6 +239,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         } else if(urlType==this.leadsUrl){
             return true;
         } else if(urlType==this.dealsUrl){
+            return true;
+        } else if(urlType==this.lmsUrl){
             return true;
         }
         else if(urlType==this.landingPagesUrl){

@@ -9,6 +9,7 @@ import { Pagination } from '../models/pagination';
 import { UserService } from '../services/user.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import {UtilService} from '../../core/services/util.service';
+import { LmsRoutingModule } from 'app/lms/lms-routing.module';
 
 declare var window: any;
 
@@ -51,6 +52,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     shareLeadsAccess = false;
     damAccessAsPartner = false;
     deals: boolean;
+    lms= false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -197,60 +199,64 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { 
-            this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,false, false ); }
+            this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,false, false ,false); }
     }
     openOrCloseTabs( urlType: string ) {
         if ( window.innerWidth < 990 ) {
             if ( urlType === 'emailtemplates' ) {
                 this.emailtemplates = this.router.url.includes( 'emailtemplates' ) ? true : ( this.emailtemplates = !this.emailtemplates );
-                this.clearSubMenuValues( this.emailtemplates, false, false, false, false,false,false,false,false,false ,false);
+                this.clearSubMenuValues( this.emailtemplates, false, false, false, false,false,false,false,false,false ,false,false);
             }
             else if ( urlType === 'contacts' ) {
                 this.contacts = this.router.url.includes( 'contacts' ) ? true : ( this.contacts = !this.contacts );
-                this.clearSubMenuValues( false, false, false, this.contacts, false,false,false,false,false,false,false );
+                this.clearSubMenuValues( false, false, false, this.contacts, false,false,false,false,false,false,false,false );
             }
             else if ( urlType === 'partners' ) {
                 this.partners = this.router.url.includes( 'partners' ) ? true : ( this.partners = !this.partners );
-                this.clearSubMenuValues( false, false, false, false, this.partners,false,false,false,false,false,false );
+                this.clearSubMenuValues( false, false, false, false, this.partners,false,false,false,false,false,false,false );
             }
             else if ( urlType === 'campaigns' ) {
                 this.campaigns = this.router.url.includes( 'campaigns' ) ? true : ( this.campaigns = !this.campaigns );
-                this.clearSubMenuValues( false, this.campaigns, false, false, false,false,false,false,false,false,false );
+                this.clearSubMenuValues( false, this.campaigns, false, false, false,false,false,false,false,false,false ,false);
             }
             else if ( urlType === 'content' ) {
                 this.videos = this.router.url.includes( 'content' ) ? true : ( this.videos = !this.videos );
-                this.clearSubMenuValues( false, false, this.videos, false, false,false,false,false,false,false,false );
+                this.clearSubMenuValues( false, false, this.videos, false, false,false,false,false,false,false,false ,false);
             }
             else if(urlType ==='forms') {
                 this.videos = this.router.url.includes('forms') ? true: (this.forms = !this.forms);
-                this.clearSubMenuValues(false,false,false,false,false,this.forms,false,false,false,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,this.forms,false,false,false,false,false,false); 
             }
             else if(urlType ==='landing-pages') {
                 this.videos = this.router.url.includes('forms') ? true: (this.landingPages = !this.landingPages);
-                this.clearSubMenuValues(false,false,false,false,false,false,this.landingPages,false,false,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,false,this.landingPages,false,false,false,false,false); 
             }
             else if(urlType ==='mdf') {
                 this.mdf = this.router.url.includes('mdf') ? true: (this.mdf = !this.mdf);
-                this.clearSubMenuValues(false,false,false,false,false,false,false,this.mdf,false,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,false,false,this.mdf,false,false,false,false); 
             }
             else if(urlType ==='dam') {
                 this.dam = this.router.url.includes('dam') ? true: (this.dam = !this.dam);
-                this.clearSubMenuValues(false,false,false,false,false,false,false,false,this.dam,false,false); 
+                this.clearSubMenuValues(false,false,false,false,false,false,false,false,this.dam,false,false,false); 
             }
             else if ( urlType === 'assignleads' ) {
                 this.assignLeads = this.router.url.includes( 'assignleads' ) ? true : ( this.assignLeads = !this.assignLeads );
-                this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,true,false );
+                this.clearSubMenuValues( false, false, false, false, false,false,false,false,false,true,false,false);
             }
             else if(urlType ==='deals') {
                 this.deals = this.router.url.includes('deals') ? true: (this.deals = !this.deals);
-                this.clearSubMenuValues(false,false,false,false,false,false,false,false,false,false,this.deals); 
+                this.clearSubMenuValues(false,false,false,false,false,false,false,false,false,false,this.deals,false); 
+            }
+            else if(urlType ==='lms') {
+                this.deals = this.router.url.includes('lms') ? true: (this.lms = !this.lms);
+                this.clearSubMenuValues(false,false,false,false,false,false,false,false,false,false,false,this.lms); 
             }
         }
     }
-    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners,forms,landingPages,mdf,dam, assignLeads, deals) {
+    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners,forms,landingPages,mdf,dam, assignLeads, deals, lms) {
         this.emailtemplates = emailTemplate; this.campaigns = campaigs; this.videos = videos; this.contacts = contacts; this.partners = partners;
         this.forms = forms;this.landingPages = landingPages;this.mdf = mdf;this.dam = dam;this.assignLeads=assignLeads;
-        this.deals = deals;
+        this.deals = deals;this.lms = lms;
     }
     logout() {
         this.authService.logout();

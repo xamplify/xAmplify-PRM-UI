@@ -1,187 +1,178 @@
 <!-- BEGIN SIDEBAR -->
 <ng-container *ngIf="!refService.loaderFromAdmin">
-<div class="page-sidebar-wrapper" *ngIf="(authService.user.hasCompany || authService.isOnlyUser()) && !(authService.isSuperAdmin())">
-    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-    <div class="page-sidebar navbar-collapse collapse">
-        <!-- BEGIN SIDEBAR MENU -->
-        <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" [ngClass]="{'page-sidebar-menu-closed':refService.isSidebarClosed}" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-            <li [ngClass]="{'active': location.path().includes('dashboard')}">
-                <a [routerLink]="['/home/dashboard/default']"  [class.disabled]="!authService.user.hasCompany ?true:null">
-                   
-                    <i class="icon-home" aria-hidden="true"></i>
-                    <span class="title" translate>Account Dashboard</span>                    
-                    <span class="selected"></span>
-                </a>
-            </li>
+    <div class="page-sidebar-wrapper" *ngIf="(authService.user.hasCompany || authService.isOnlyUser()) && !(authService.isSuperAdmin())">
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+        <div class="page-sidebar navbar-collapse collapse">
+            <!-- BEGIN SIDEBAR MENU -->
+            <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" [ngClass]="{'page-sidebar-menu-closed':refService.isSidebarClosed}" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                <li [ngClass]="{'active': location.path().includes('dashboard')}">
+                    <a [routerLink]="['/home/dashboard/default']" [class.disabled]="!authService.user.hasCompany ?true:null">
 
-            <li *ngIf="authService.user.hasCompany && authService.module.isPartner && sourceType!='ALLBOUND'" [ngClass]="{'active': location.path().includes('partners')}">
-                <a href="javascript:;" (click)="openOrCloseTabs('partners')">
-                    <i class="fa fa-handshake-o" aria-hidden="true"></i>
-                    <span class="title" translate>Partners</span>
-                    <span class="arrow "></span>
-                    <span class="selected"></span>
-                </a>
-                <ul class="sub-menu" [ngStyle]="{'display': partners? 'block': 'none' }" >
-                    <li>
-                        <a [routerLink]="['./partners/add']">
-                            <i class="fa fa-users" aria-hidden="true"></i>
-                            <span class="title" translate>Onboarding Partners</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['./partners/manage']">
-                            <i class="fa fa-list" aria-hidden="true"></i>
-                            <span class="title" translate>Manage Partners</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <li *ngIf="authService.user.hasCompany && authService.module.isPartner && sourceType=='ALLBOUND'" [ngClass]="{'active': location.path().includes('partners')}">
-                <a [routerLink]="['./partners/manage']">
-                    <i class="fa fa-handshake-o" aria-hidden="true"></i>
-                    <span class="title" translate>Manage Partners</span>
-                    <span class="arrow "></span>
-                    <span class="selected"></span>
-                </a>
-            </li>
-
-            <li *ngIf="authService.user.hasCompany && authService.module.isVideo" [ngClass]="{'active': location.path().includes('content') || location.path().includes('content')}">
-                <a href="javascript:;" (click)="openOrCloseTabs('content')">
-                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                    <span class="title" translate>Content</span>
-                    <span class="arrow "></span>
-                    <span class="selected"></span>
-                </a>
-                <ul class="sub-menu" [ngStyle]="{'display': videos? 'block': 'none' }">
-                    <li>
-                        <a [routerLink]="['/home/content/upload']">
-                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                            <span class="title" translate>Upload Content</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['./content/videos']">
-                            <i class="fa fa-file-video-o" aria-hidden="true"></i>
-                            <span class="title" translate>Manage Videos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['./content/manage']">
-                            <i class="fa fa-list" aria-hidden="true"></i>
-                            <span class="title" translate>Manage Content</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <li *ngIf="authService.user.hasCompany && (authService.module.isContact)" [ngClass]="{'active': location.path().includes('contacts')}">
-                <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
-                    <i class="fa fa-id-card" aria-hidden="true"></i>
-                    <span class="title" translate>Contacts</span>
-                    <span class="arrow "></span>
-                    <span class="selected"></span>
-                </a>
-                <ul class="sub-menu" [ngStyle]="{'display': contacts? 'block': 'none' }">
-                    <li>
-                        <a [routerLink]="['./contacts/add']">
-                            <i class="fa fa-users" aria-hidden="true"></i>
-                            <span class="title" translate>Add Contacts</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['./contacts/manage']">
-                            <i class="fa fa-list" aria-hidden="true"></i>
-                            <span class="title" translate>Manage Contacts</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-				<li
-				*ngIf="authService.user.hasCompany && shareLeadsAccess"
-				[ngClass]="{'active': location.path().includes('assignleads')}"><a
-				href="javascript:;" (click)="openOrCloseTabs('assignLeads')"> <i
-					class="fa fa-id-badge" aria-hidden="true"></i> <span class="title"
-					translate>Share Leads</span> <span class="arrow "></span> <span
-					class="selected"></span>
-			</a>
-				<ul class="sub-menu"
-					[ngStyle]="{'display': contacts? 'block': 'none' }">
-					<li><a [routerLink]="['./assignleads/add']"> <i
-							class="fa fa-users" aria-hidden="true"></i> <span class="title"
-							translate>Add Leads</span>
-					</a></li>
-					<li><a [routerLink]="['./assignleads/manage']"> <i
-							class="fa fa-list" aria-hidden="true"></i> <span class="title"
-							translate>Manage Leads</span>
-					</a></li>
-				</ul></li>
-
-			<li
-				*ngIf="authService.module.hasPartnerLandingPageAccess && (authService.module.isCompanyPartner || authService.isPartnerTeamMember)"
-				[ngClass]="{'active': location.path().includes('landing-pages')}">
-				<a [routerLink]="['./pages/partner']"> <i class="fa fa-wpforms"
-					aria-hidden="true"></i> <span class="title" translate>Pages</span>
-					<span class="arrow "></span> <span class="selected"></span>
-			</a>
-			</li>
-
-			<li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier
-	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') ||location.path().includes('forms') || location.path().includes('pages')  }">
-                <a [routerLink]="['./design/add']">
-                    <i class="fa fa-paint-brush" aria-hidden="true"></i>
-                    <span class="title" translate>Design</span>
-                    <span class="arrow "></span>
-                    <span class="selected"></span>
-                </a>
-            </li>
-
-
-            <li *ngIf="authService.user.hasCompany && authService.module.isCampaign" [ngClass]="{'active': location.path().includes('campaigns')}">
-                <a href="javascript:;" (click)="openOrCloseTabs('campaigns')">
-                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                    <span class="title" translate>Campaign </span>
-                    <span class="arrow "></span>
-                    <span class="selected"></span>
-                </a>
-                <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
-                    <li>
-                        <a *ngIf="authService.module.isReDistribution || authService.isShowRedistribution" [routerLink]="['./campaigns/partner/all']">
-                            <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                            <span class="title" translate>Redistribute Campaign</span>
-                        </a>
-                        <li>
-                            <li>
-                                <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
-                                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                                    <span class="title" translate>Create Campaign</span>
-                                </a>
-
-                            </li>
-                            <li>
-                                <a [routerLink]="['./campaigns/manage']">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="title" translate>Manage Campaigns</span>
-                                </a>
-                            </li>
-                </ul>
+                        <i class="icon-home" aria-hidden="true"></i>
+                        <span class="title" translate>Account Dashboard</span>
+                        <span class="selected"></span>
+                    </a>
                 </li>
 
-                <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || 
-                authService.module.isCompanyPartner || isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing )" 
-                [ngClass]="{'active': location.path().includes('team')}">
-                    <a [routerLink]="['./team/add-team']">
-                        <i class="fa fa-users" aria-hidden="true"></i>
-                        <span class="title" translate>Team</span>
+                <li *ngIf="authService.user.hasCompany && authService.module.isPartner && sourceType!='ALLBOUND'" [ngClass]="{'active': location.path().includes('partners')}">
+                    <a href="javascript:;" (click)="openOrCloseTabs('partners')">
+                        <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                        <span class="title" translate>Partners</span>
+                        <span class="arrow "></span>
+                        <span class="selected"></span>
+                    </a>
+                    <ul class="sub-menu" [ngStyle]="{'display': partners? 'block': 'none' }">
+                        <li>
+                            <a [routerLink]="['./partners/add']">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span class="title" translate>Onboarding Partners</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['./partners/manage']">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                <span class="title" translate>Manage Partners</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li *ngIf="authService.user.hasCompany && authService.module.isPartner && sourceType=='ALLBOUND'" [ngClass]="{'active': location.path().includes('partners')}">
+                    <a [routerLink]="['./partners/manage']">
+                        <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                        <span class="title" translate>Manage Partners</span>
                         <span class="arrow "></span>
                         <span class="selected"></span>
                     </a>
                 </li>
 
-				<!-- ------Leads------ -->
-                <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('leads')}">
+                <li *ngIf="authService.user.hasCompany && authService.module.isVideo" [ngClass]="{'active': location.path().includes('content') || location.path().includes('content')}">
+                    <a href="javascript:;" (click)="openOrCloseTabs('content')">
+                        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                        <span class="title" translate>Content</span>
+                        <span class="arrow "></span>
+                        <span class="selected"></span>
+                    </a>
+                    <ul class="sub-menu" [ngStyle]="{'display': videos? 'block': 'none' }">
+                        <li>
+                            <a [routerLink]="['/home/content/upload']">
+                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                <span class="title" translate>Upload Content</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['./content/videos']">
+                                <i class="fa fa-file-video-o" aria-hidden="true"></i>
+                                <span class="title" translate>Manage Videos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['./content/manage']">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                <span class="title" translate>Manage Content</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li *ngIf="authService.user.hasCompany && (authService.module.isContact)" [ngClass]="{'active': location.path().includes('contacts')}">
+                    <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
+                        <i class="fa fa-id-card" aria-hidden="true"></i>
+                        <span class="title" translate>Contacts</span>
+                        <span class="arrow "></span>
+                        <span class="selected"></span>
+                    </a>
+                    <ul class="sub-menu" [ngStyle]="{'display': contacts? 'block': 'none' }">
+                        <li>
+                            <a [routerLink]="['./contacts/add']">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span class="title" translate>Add Contacts</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['./contacts/manage']">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                <span class="title" translate>Manage Contacts</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li *ngIf="authService.user.hasCompany && shareLeadsAccess" [ngClass]="{'active': location.path().includes('assignleads')}">
+                    <a href="javascript:;" (click)="openOrCloseTabs('assignLeads')"> <i class="fa fa-id-badge" aria-hidden="true"></i> <span class="title" translate>Share Leads</span> <span class="arrow "></span> <span class="selected"></span>
+                    </a>
+                    <ul class="sub-menu" [ngStyle]="{'display': contacts? 'block': 'none' }">
+                        <li>
+                            <a [routerLink]="['./assignleads/add']"> <i class="fa fa-users" aria-hidden="true"></i> <span class="title" translate>Add Leads</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['./assignleads/manage']"> <i class="fa fa-list" aria-hidden="true"></i> <span class="title" translate>Manage Leads</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li *ngIf="authService.module.hasPartnerLandingPageAccess && (authService.module.isCompanyPartner || authService.isPartnerTeamMember)" [ngClass]="{'active': location.path().includes('landing-pages')}">
+                    <a [routerLink]="['./pages/partner']"> <i class="fa fa-wpforms" aria-hidden="true"></i> <span class="title" translate>Pages</span>
+                        <span class="arrow "></span> <span class="selected"></span>
+                    </a>
+                </li>
+
+                <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier
+	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') ||location.path().includes('forms') || location.path().includes('pages')  }">
+                    <a [routerLink]="['./design/add']">
+                        <i class="fa fa-paint-brush" aria-hidden="true"></i>
+                        <span class="title" translate>Design</span>
+                        <span class="arrow "></span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+
+
+                <li *ngIf="authService.user.hasCompany && authService.module.isCampaign" [ngClass]="{'active': location.path().includes('campaigns')}">
+                    <a href="javascript:;" (click)="openOrCloseTabs('campaigns')">
+                        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                        <span class="title" translate>Campaign </span>
+                        <span class="arrow "></span>
+                        <span class="selected"></span>
+                    </a>
+                    <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
+                        <li>
+                            <a *ngIf="authService.module.isReDistribution || authService.isShowRedistribution" [routerLink]="['./campaigns/partner/all']">
+                                <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                <span class="title" translate>Redistribute Campaign</span>
+                            </a>
+                            <li>
+                                <li>
+                                    <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
+                                        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                        <span class="title" translate>Create Campaign</span>
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a [routerLink]="['./campaigns/manage']">
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                        <span class="title" translate>Manage Campaigns</span>
+                                    </a>
+                                </li>
+                    </ul>
+                    </li>
+
+                    <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || 
+                authService.module.isCompanyPartner || isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing )" [ngClass]="{'active': location.path().includes('team')}">
+                        <a [routerLink]="['./team/add-team']">
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                            <span class="title" translate>Team</span>
+                            <span class="arrow "></span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+
+                    <!-- ------Leads------ -->
+                    <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('leads')}">
                     <a [routerLink]="['./leads/manage']">
                         <i class="fa fa-user-circle" aria-hidden="true"></i>
                         <span class="title" translate>Leads</span>
@@ -189,9 +180,9 @@
                         <span class="selected"></span>
                     </a>
                 </li> -->
-                
-                <!-- ------Deals------ -->
-                <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deal')}">
+
+                    <!-- ------Deals------ -->
+                    <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deal')}">
                     <a [routerLink]="['./deal/manage']">
                         <i class="fa fa-tags" aria-hidden="true"></i>
                         <span class="title" translate>Deals</span>
@@ -200,8 +191,8 @@
                     </a>
                 </li> -->
 
-                <!-- ------Deal Registration------ -->
-                <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deals')}">
+                    <!-- ------Deal Registration------ -->
+                    <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deals')}">
                     <a [routerLink]="['./deals/manage']">
                         <i class="fa fa-usd" aria-hidden="true"></i>
                         <span class="title" translate>Opportunities</span>
@@ -209,152 +200,175 @@
                         <span class="selected"></span>
                     </a>
                 </li> -->
-                <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deal') || location.path().includes('leads')}">
-                    <a href="javascript:;" (click)="openOrCloseTabs('deals')">
-                        <i class="fa fa-money" aria-hidden="true"></i>
-                        <span class="title" translate>Opportunities</span>
-                        <span class="arrow"></span>
-                        <span class="selected"></span>
-                    </a>
-                    <ul class="sub-menu" [ngStyle]="{'display': deals? 'block': 'none' }" >
-                        <li>
-                            <a [routerLink]="['/home/leads/']">
-                                <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                <span class="title" translate>Manage Leads</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a [routerLink]="['/home/deal/']">
-                                <i class="fa fa-tags" aria-hidden="true"></i>
-                                <span class="title" translate>Manage Deals</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- ------RSS------ -->
-                 <li *ngIf="rssFeedAccess">
-                    <a [routerLink]="['/home/rss/']">
-                    <i class="fa fa-rss" aria-hidden="true"></i>
-                    <span class="title">Social Feeds</span>
-                    <span class="arrow "></span>
-                    </a>
-                 </li> 
-                 <!-- ------MDF------ -->
-                 <ng-container *ngIf="mdfAccess && !mdfAccessAsPartner">
-                    <li  [ngClass]="{'active': location.path().includes('mdf')}">
-                        <a href="javascript:;" (click)="openOrCloseTabs('mdf')">
-                            <i class="fa fa-dollar" aria-hidden="true"></i>
-                            <span class="title" translate>MDF</span>
+                    <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deal') || location.path().includes('leads')}">
+                        <a href="javascript:;" (click)="openOrCloseTabs('deals')">
+                            <i class="fa fa-money" aria-hidden="true"></i>
+                            <span class="title" translate>Opportunities</span>
                             <span class="arrow"></span>
                             <span class="selected"></span>
                         </a>
-                        <ul class="sub-menu" [ngStyle]="{'display': mdf? 'block': 'none' }" >
+                        <ul class="sub-menu" [ngStyle]="{'display': deals? 'block': 'none' }">
                             <li>
-                                <a [routerLink]="['/home/mdf/']">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="title" translate>Manage MDF Details</span>
+                                <a [routerLink]="['/home/leads/']">
+                                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                    <span class="title" translate>Manage Leads</span>
                                 </a>
                             </li>
                             <li>
-                                <a [routerLink]="['/home/mdf/requests']">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="title" translate>Manage MDF Requests</span>
+                                <a [routerLink]="['/home/deal/']">
+                                    <i class="fa fa-tags" aria-hidden="true"></i>
+                                    <span class="title" translate>Manage Deals</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                 </ng-container>
-                 <!--Partner View Only-->
-                 <ng-container *ngIf="mdfAccessAsPartner && !mdfAccess">
-                    <li>
-                        <a [routerLink]="['/home/mdf/requests/p']">
-                        <i class="fa fa-dollar" aria-hidden="true"></i>
-                        <span class="title">MDF</span>
-                        <span class="arrow"></span>
-                        </a>
-                     </li> 
-                 </ng-container>
 
-                 <ng-container *ngIf="mdfAccess && mdfAccessAsPartner">
-                    <li  [ngClass]="{'active': location.path().includes('mdf')}">
-                        <a href="javascript:;" (click)="openOrCloseTabs('mdf')">
-                            <i class="fa fa-dollar" aria-hidden="true"></i>
-                            <span class="title" translate>MDF</span>
+                    <!-- ------RSS------ -->
+                    <li *ngIf="rssFeedAccess">
+                        <a [routerLink]="['/home/rss/']">
+                            <i class="fa fa-rss" aria-hidden="true"></i>
+                            <span class="title">Social Feeds</span>
+                            <span class="arrow "></span>
+                        </a>
+                    </li>
+                    <!-- ------MDF------ -->
+                    <ng-container *ngIf="mdfAccess && !mdfAccessAsPartner">
+                        <li [ngClass]="{'active': location.path().includes('mdf')}">
+                            <a href="javascript:;" (click)="openOrCloseTabs('mdf')">
+                                <i class="fa fa-dollar" aria-hidden="true"></i>
+                                <span class="title" translate>MDF</span>
+                                <span class="arrow"></span>
+                                <span class="selected"></span>
+                            </a>
+                            <ul class="sub-menu" [ngStyle]="{'display': mdf? 'block': 'none' }">
+                                <li>
+                                    <a [routerLink]="['/home/mdf/']">
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                        <span class="title" translate>Manage MDF Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]="['/home/mdf/requests']">
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                        <span class="title" translate>Manage MDF Requests</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ng-container>
+                    <!--Partner View Only-->
+                    <ng-container *ngIf="mdfAccessAsPartner && !mdfAccess">
+                        <li>
+                            <a [routerLink]="['/home/mdf/requests/p']">
+                                <i class="fa fa-dollar" aria-hidden="true"></i>
+                                <span class="title">MDF</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+                    </ng-container>
+
+                    <ng-container *ngIf="mdfAccess && mdfAccessAsPartner">
+                        <li [ngClass]="{'active': location.path().includes('mdf')}">
+                            <a href="javascript:;" (click)="openOrCloseTabs('mdf')">
+                                <i class="fa fa-dollar" aria-hidden="true"></i>
+                                <span class="title" translate>MDF</span>
+                                <span class="arrow"></span>
+                                <span class="selected"></span>
+                            </a>
+                            <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': mdf? 'block': 'none' }">
+                                <li>
+                                    <a [routerLink]="['/home/mdf/']">
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                        <span class="title" translate>Manage MDF Details</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]="['/home/mdf/requests']">
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                        <span class="title" translate>Manage MDF Requests</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]="['/home/mdf/requests/p']">
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                        <span class="title" translate>Manage MDF Requests (Partner)</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ng-container>
+                    <!------DAM----------->
+                    <!---Vendor And Partner-->
+                    <ng-container *ngIf="damAccess && damAccessAsPartner">
+                        <li [ngClass]="{'active': location.path().includes('dam')}">
+                            <a href="javascript:;" (click)="openOrCloseTabs('dam')">
+                                <i class="fa fa-th-large" aria-hidden="true"></i>
+                                <span class="title" translate>DAM</span>
+                                <span class="arrow"></span>
+                                <span class="selected"></span>
+                            </a>
+                            <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': dam? 'block': 'none' }">
+                                <li>
+                                    <a [routerLink]="['/home/dam/manage']">
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                        <span class="title" translate>Manage My Assets</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]="['/home/dam/shared']">
+                                        <i class="fa fa-list" aria-hidden="true"></i>
+                                        <span class="title" translate>Manage Shared Assets</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ng-container>
+                    <!--Only Dam Acess As Vendor-->
+                    <ng-container *ngIf="damAccess && !damAccessAsPartner">
+                        <li>
+                            <a [routerLink]="['/home/dam/manage']">
+                                <i class="fa fa-th-large" aria-hidden="true"></i>
+                                <span class="title">DAM</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+                    </ng-container>
+                    <!--Only Dam Acess As Partner-->
+                    <ng-container *ngIf="!damAccess && damAccessAsPartner">
+                        <li>
+                            <a [routerLink]="['/home/dam/shared']">
+                                <i class="fa fa-th-large" aria-hidden="true"></i>
+                                <span class="title">DAM</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+                    </ng-container>
+                    <!------LMS----------->
+                    <li [ngClass]="{'active': location.path().includes('lms')}">
+                        <a href="javascript:;" (click)="openOrCloseTabs('lms')">
+                            <i class="fa fa-th-large" aria-hidden="true"></i>
+                            <span class="title" translate>LMS</span>
                             <span class="arrow"></span>
                             <span class="selected"></span>
                         </a>
-                        <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': mdf? 'block': 'none' }" >
+                        <ul class="sub-menu" [ngStyle]="{'display': lms? 'block': 'none' }">
                             <li>
-                                <a [routerLink]="['/home/mdf/']">
+                                <a [routerLink]="['/home/lms/add']">
                                     <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="title" translate>Manage MDF Details</span>
+                                    <span class="title" translate>Add Learning Track</span>
                                 </a>
                             </li>
                             <li>
-                                <a [routerLink]="['/home/mdf/requests']">
+                                <a [routerLink]="['/home/lms/manage']">
                                     <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="title" translate>Manage MDF Requests</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a [routerLink]="['/home/mdf/requests/p']">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
-                                    <span class="title" translate>Manage MDF Requests (Partner)</span>
+                                    <span class="title" translate>Manage Learning Tracks</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                 </ng-container>
-         <!------DAM----------->
-         <!---Vendor And Partner-->
-         <ng-container *ngIf="damAccess && damAccessAsPartner">
-            <li  [ngClass]="{'active': location.path().includes('dam')}">
-                <a href="javascript:;" (click)="openOrCloseTabs('dam')">
-                    <i class="fa fa-th-large" aria-hidden="true"></i>
-                    <span class="title" translate>DAM</span>
-                    <span class="arrow"></span>
-                    <span class="selected"></span>
-                </a>
-                <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': dam? 'block': 'none' }" >
-                    <li>
-                        <a [routerLink]="['/home/dam/manage']">
-                            <i class="fa fa-list" aria-hidden="true"></i>
-                            <span class="title" translate>Manage My Assets</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/home/dam/shared']">
-                            <i class="fa fa-list" aria-hidden="true"></i>
-                            <span class="title" translate>Manage Shared Assets</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-         </ng-container>
-         <!--Only Dam Acess As Vendor-->
-         <ng-container *ngIf="damAccess && !damAccessAsPartner">
-            <li>
-                <a [routerLink]="['/home/dam/manage']">
-                <i class="fa fa-th-large" aria-hidden="true"></i>
-                <span class="title">DAM</span>
-                <span class="arrow"></span>
-                </a>
-             </li> 
-         </ng-container>
-        <!--Only Dam Acess As Partner-->
-        <ng-container *ngIf="!damAccess && damAccessAsPartner">
-            <li>
-                <a [routerLink]="['/home/dam/shared']">
-                <i class="fa fa-th-large" aria-hidden="true"></i>
-                <span class="title">DAM</span>
-                <span class="arrow"></span>
-                </a>
-             </li> 
-         </ng-container>
-        </ul>
-        <!-- END SIDEBAR MENU -->
+            </ul>
+            <!-- END SIDEBAR MENU -->
+        </div>
     </div>
-</div>
 
 </ng-container>
