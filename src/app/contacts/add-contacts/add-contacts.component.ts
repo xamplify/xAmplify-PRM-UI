@@ -2949,7 +2949,9 @@ salesForceVanityAuthentication() {
             this.partnerEmails();
             this.socialContactImage();
             this.hideModal();
-            this.loadContactListsNames();
+            if (!this.assignLeads) {
+                this.loadContactListsNames();
+            }
 
           if (localStorage.getItem('vanityUrlFilter')) {
 				localStorage.removeItem('vanityUrlFilter');
