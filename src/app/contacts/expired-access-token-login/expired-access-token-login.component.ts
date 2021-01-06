@@ -23,6 +23,11 @@ ngOnInit()
  {
     let providerName = this.route.snapshot.params['socialProvider'];
     let zohoCurrentUser = this.route.snapshot.params['zohoCurrentUser'];
+
+	//let googleCurrentUser = this.route.snapshot.params['googleCurrentUser'];
+	
+	//let parentWindowUserId = this.route.snapshot.params['userId'];
+	
     let vanityUrlDomainName = this.route.snapshot.params['vud'];
     let accessToken = this.route.snapshot.params['accessToken'];
     let currentModule = this.route.snapshot.params['module'];
@@ -31,11 +36,14 @@ ngOnInit()
     localStorage.setItem('vanityUrlDomain',vanityUrlDomainName);
     localStorage.setItem('access_token',accessToken);
     localStorage.setItem('currentUser',zohoCurrentUser);
-    
+
+	//localStorage.setItem('currentUser',googleCurrentUser);
+    localStorage.setItem('vanityUrlFilter','true');
 
 
     this.authenticationService.access_token = accessToken;
     this.authenticationService.vanityURLEnabled == true;
+	
 
     if(redirectUrl)
     {
@@ -44,6 +52,10 @@ ngOnInit()
     else if(providerName == "zoho"){
       this.zohoAuth();
     }
+
+	else if(providerName == "google"){
+      this.googleAuth();
+    } 
  
 }
   public zohoAuth(){
@@ -52,6 +64,25 @@ ngOnInit()
         (data: any) => {
             localStorage.setItem("userAlias", data.userAlias);
             localStorage.setItem("currentModule", data.module);
+            localStorage.setItem("statusCode", data.statusCode);
+            window.location.href = "" + data.redirectUrl;
+          },
+          (error: any) => {
+            console.error(error);
+            this.referenceService.showSweetAlertServerErrorMessage();
+        },
+        () => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
+        );
+  }
+
+public googleAuth()
+  {
+   
+    this.contactService.googleLogin(this.currentModule)
+    .subscribe(
+        (data: any) => {
+            localStorage.setItem("userAlias", data.userAlias);
+            localStorage.setItem("module", data.module);
             localStorage.setItem("statusCode", data.statusCode);
             window.location.href = "" + data.redirectUrl;
           },

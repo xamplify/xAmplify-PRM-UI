@@ -1970,10 +1970,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 							this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
 							this.selectedInvalidContactIds.length = 0;
-							if (this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
-							} else {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
+							
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_EMAIL_VALIDATE_SUCCESS, true);
+                            } else if (this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+                            } else {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
 							}
 						} else {
 							this.authenticationService.forceToLogout();
@@ -2003,11 +2006,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								$('#row_' + value).remove();
 								console.log(index + "value" + value);
 							});
-							//this.setResponseDetails('SUCCESS', 'your contacts has been deleted successfully');
-							this.invalidDeleteSuccessMessage = true;
-							//this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
-							this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
-							this.contactsByType.invalidContactsCount = data.invalidUsers;
+							//this.invalidDeleteSuccessMessage = true;
+							if(this.assignLeads){
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
+	                        }else if (this.isPartner) {
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+	                        } else {
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
+	                        }
+							
+							this.checkingLoadContactsCount = true;
+                            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                            this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+							
 							this.selectedInvalidContactIds.length = 0;
 						} else {
 							this.authenticationService.forceToLogout();

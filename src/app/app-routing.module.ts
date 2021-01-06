@@ -40,6 +40,10 @@ import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/sam
 import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
 import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-token-login/expired-access-token-login.component';
+import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanity-add-contacts.component';
+import { HubmarketoVanityAddContactsComponent } from './contacts/hubmarketo-vanity-add-contacts/hubmarketo-vanity-add-contacts.component';
+import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
+
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },    
@@ -84,6 +88,9 @@ export const routes: Routes = [
     { path: ':social/login', component: SocialLoginComponent },
     { path: ':social/callback', component: SocialCallbackComponent },
     { path: 'v/:socialProvider/:userId/:vud', component: VanitySocialLoginComponent },
+	{ path: 'syn/:socialProvider/:currentModule/:currentUser', component: VanitySynchronizeContactsComponent },
+	{ path: 'v/:socialProvider/:currentUser', component: VanityAddContactsComponent },
+	{ path: 'e/:socialProvider/:hubSpotRedirectURL/:currentUser', component: HubmarketoVanityAddContactsComponent },
     { path: 'e/:socialProvider/:userId/:vud/:accessToken/:zohoCurrentUser/:module', component: ExpiredAccessTokenLoginComponent },
     { path: 'share/:alias', component: ShareVideoComponent },
     { path: 'embed/:alias', component: ShareVideoComponent },

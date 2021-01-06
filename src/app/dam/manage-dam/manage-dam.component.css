@@ -12,3 +12,11 @@
     float: left;
     text-align: left !important;
 }
+
+#uploadDamButton{
+    border-radius: 3px !important;
+}
+
+#right{
+    margin-top: 2px !important;
+}

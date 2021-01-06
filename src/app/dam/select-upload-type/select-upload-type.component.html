@@ -1,12 +1,28 @@
 <div class="page-content">
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="page-bar">
-      <ul class="page-breadcrumb">
-          <li><i class="fa fa-home" aria-hidden="true">
-          </i>
-           <a translate>Home</a> 
-           <i class="fa fa-angle-right" aria-hidden="true"></i></li>
-          <li><a translate>Select Upload Type</a></li>
-      </ul>
+    <div class="col-md-12 col-lg-12">
+        <div class="row">
+          <div class="col-md-6 col-lg-6 text-left">
+            <ul class="page-breadcrumb">
+              <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </li>
+              <li><a (click)="goToManageDam()" translate>DAM</a>  
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </li>
+              <li><a translate>Upload / Design</a></li>
+            </ul>
+          </div>
+          <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
+            <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
+              <a class="close-circle" (click)="goToManageDam()"  title="Close">
+              <i class="fa fa-times" aria-hidden="true"></i>
+              </a> 
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
   <!-- End of page-bar -->
   <div class="row">
@@ -15,37 +31,49 @@
           <div class="portlet light">
               <div class="portlet-title">
                   <div class="caption" translate>
-                      <i class="fa fa-cogs" aria-hidden="true"></i>Create a Design
+                      <i class="fa fa-cogs" aria-hidden="true"></i>Upload Asset / Design PDF
                   </div>
               </div>
               <div class="portlet-body">
                   <div class="row" style="margin-top: 20px;">
-                      <ng-container>
-                          <div class="col-md-4">
+                    <div class="col-xs-2"></div>
+                          <div class="col-md-4" title="Click To Upload">
                               <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
                                   <div class="portlet-body">
                                       <div class="img1">
-                                          <img alt="Templates" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/email-design.png">
+                                          <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/upload-dam.jpg">
                                       </div>
                                       <div class="text">
-                                          <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Templates
-                                          </h4>
-                                          <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;" translate>
-                                              For use in email, video and event campaigns.
-                                          </p>
-                                      </div>
-                                      <div class="text">
-                                          <h5>
-                                              <a [routerLink]="['../../emailtemplates/select']">
-                                                <i class="glyphicon glyphicon-edit"></i>&nbsp;
-                               <span class="design-name" translate>Design Templates</span></a>
-                                          </h5>
-                                      </div>
-                                   
+                                        <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Upload File
+                                        </h4>
+                                        <h5>
+                                            <a (click)="goToUpload()">
+                                              <i class="glyphicon glyphicon-upload" aria-hidden="true"></i>&nbsp;
+                                                  <span class="design-name" translate>Upload</span></a>
+                                        </h5>
+                                    </div>
                                   </div>
                               </div>
                           </div>
-                      </ng-container>
+                          <div class="col-md-4" title="Click To Design Template">
+                            <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
+                                <div class="portlet-body">
+                                    <div class="img1">
+                                        <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/content/pdfs.png">
+                                    </div>
+                                    <div class="text">
+                                        <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Design PDF
+                                        </h4>
+                                        <h5>
+                                            <a (click)="addAsset()">
+                                              <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
+                                                  <span class="design-name" translate>Design</span></a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-2"></div>
                   </div>
               </div>
           </div>

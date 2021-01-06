@@ -18,15 +18,13 @@ import { LeadsService } from '../services/leads.service';
 import { Lead } from '../models/lead';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
-import { Campaign } from 'app/campaigns/models/campaign';
-import {Properties} from 'app/common/models/properties';
 declare var swal, $, videojs: any;
 
 @Component({
   selector: 'app-manage-leads',
   templateUrl: './manage-leads.component.html',
   styleUrls: ['./manage-leads.component.css'],
-  providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue, Properties],
+  providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue],
 })
 export class ManageLeadsComponent implements OnInit {
   loggedInUserId: number = 0;
@@ -45,9 +43,7 @@ export class ManageLeadsComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadFormTitle = "Lead";
   actionType = "add";
-  leadId = 0;
-  showLeadForm = false;
-  showDealForm = false;
+  leadId = 0;  
   leadsResponse: CustomResponse = new CustomResponse();
   counts : any;
   countsLoader = false;
@@ -64,6 +60,8 @@ export class ManageLeadsComponent implements OnInit {
   selectedPartnerCompanyName = "";
   showPartnerList = false;
   showCampaignLeads = false;
+  showLeadForm = false;
+  showDealForm = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -426,11 +424,6 @@ export class ManageLeadsComponent implements OnInit {
   
   closeLeadModal() {  
     this.showLeadForm = false;
-    // if (this.isVendorVersion) {
-    //   this.getVendorCounts();
-    // } else if (this.isPartnerVersion) {
-    //   this.getPartnerCounts();
-    // }
     this.showLeads();
   }
 
@@ -461,11 +454,6 @@ export class ManageLeadsComponent implements OnInit {
   showSubmitLeadSuccess() {  
     this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
     this.showLeadForm = false;
-    // if (this.isVendorVersion) {
-    //   this.getVendorCounts();
-    // } else if (this.isPartnerVersion) {
-    //   this.getPartnerCounts();
-    // }
     this.showLeads();
   }
 
@@ -484,7 +472,7 @@ export class ManageLeadsComponent implements OnInit {
   viewLead(lead: Lead) {        
     //this.leadFormTitle = "View Lead";
    // $('#leadFormModel').modal('show');    
-    this.showLeadForm = true;   
+    this.showLeadForm = true; 
     this.actionType = "view";
     this.leadId = lead.id;
     
@@ -493,7 +481,7 @@ export class ManageLeadsComponent implements OnInit {
   editLead(lead: Lead) {           
     //this.leadFormTitle = "Edit Lead";
     //$('#leadFormModel').modal('show'); 
-    this.showLeadForm = true;  
+    this.showLeadForm = true; 
     this.actionType = "edit";
     this.leadId = lead.id;
   }
@@ -666,6 +654,8 @@ showCampaignLeadsByPartner(partner: any) {
 closeCampaignLeads() {
   this.showCampaignLeads = false; 
   this.selectedPartnerCompanyId = 0;
+  this.listLeads(this.leadsPagination);
+  this.listCampaigns(this.campaignPagination);
 }
 
 showOwnCampaignLeads() {
@@ -674,6 +664,29 @@ showOwnCampaignLeads() {
     this.selectedPartnerCompanyName = "";
     this.showCampaignLeads = true;          
   }
+}
+
+viewCampaignLeadForm(leadId: any) {   
+  this.showLeadForm = true;  
+  this.actionType = "view";
+  this.leadId = leadId;
+  
+}
+
+editCampaignLeadForm(leadId: any) {  
+  this.showLeadForm = true; 
+  this.actionType = "edit";
+  this.leadId = leadId;
+}
+
+refreshCounts() {
+  this.getCounts();
+}
+
+registerDealForm(leadId: any) {
+  this.showDealForm = true;
+  this.actionType = "add";
+  this.leadId = leadId;
 }
  
 }

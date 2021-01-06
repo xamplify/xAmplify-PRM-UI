@@ -1,16 +1,17 @@
 <div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
-  <app-response-message class="pg8" [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible"></app-response-message>
+  <app-response-message class="pg8" [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible">
+  </app-response-message>
   <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
     <div class="btn-group pull-right">
-     
+
       <div class="inputs" align="right" style="float: right">
         <div class="portlet-input input-inline" style="display: table-cell;">
           <div class="input-icon right" style="position: relative;right: -11px;">
             <input type="text" class="form-control" [(ngModel)]="dealsSortOption.searchKey"
               [ngModelOptions]="{standalone: true}" placeholder="Search"
               (keypress)="dealEventHandler($event.keyCode)">
-            <button class="glyphicon glyphicon-remove search-box-item-clear"
-              *ngIf="dealsSortOption.searchKey" (click)="dealsSortOption.searchKey=''"></button>
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="dealsSortOption.searchKey"
+              (click)="dealsSortOption.searchKey=''"></button>
             <button type="submit" class="search-box-item-click" (click)="searchDeals()">
               <i class="fa fa-search" aria-hidden="true"></i>
             </button>
@@ -109,34 +110,34 @@
                 </ng-container>
               </div>
               <!-- <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"
-                              id="deal">
-                              <span class="circled-number" style="height: 40px;width:40px">
-                                <i class="fa fa-eye mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                              </span>
-                            </a>
-                            <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" style="margin-top: 10px"
-                              id="deal">
-                              <span class="circled-number" style="height: 40px;width:40px">
-                                <i class="fa fa-edit mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                              </span>
-                            </a>   -->
+                            id="deal">
+                            <span class="circled-number" style="height: 40px;width:40px">
+                              <i class="fa fa-eye mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                            </span>
+                          </a>
+                          <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" style="margin-top: 10px"
+                            id="deal">
+                            <span class="circled-number" style="height: 40px;width:40px">
+                              <i class="fa fa-edit mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                            </span>
+                          </a>   -->
               <!-- <a *ngIf="lead.campaignId" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
-                              <span class="circled-number"  style="height: 40px;width:40px">
-                                <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                              </span>
-                            </a> 
-                            <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                              <span class="circled-number" style="height: 40px;width:40px">
-                                <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
-                                  style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
-                              </span>
-                            </a> -->
+                            <span class="circled-number"  style="height: 40px;width:40px">
+                              <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                            </span>
+                          </a> 
+                          <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
+                            <span class="circled-number" style="height: 40px;width:40px">
+                              <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
+                                style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
+                            </span>
+                          </a> -->
               <!-- <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)" title="Delete Deal" style="margin-top: 10px"
-                              id="deal">
-                              <span class="circled-number" style="height: 40px;width:40px">
-                                <i class="fa fa-trash mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                              </span> 
-                            </a> -->
+                            id="deal">
+                            <span class="circled-number" style="height: 40px;width:40px">
+                              <i class="fa fa-trash mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                            </span> 
+                          </a> -->
             </td>
           </tr>
 

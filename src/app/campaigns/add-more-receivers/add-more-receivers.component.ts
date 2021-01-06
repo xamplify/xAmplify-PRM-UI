@@ -138,7 +138,7 @@ export class AddMoreReceiversComponent implements OnInit {
           (response: any) => {
               console.log(response);
               let data = response.data;
-              this.campaignContactLists = data.listOfUserLists;
+              this.campaignContactLists = data.list;
               console.log(this.campaignContactLists);
               contactsPagination.totalRecords = data.totalRecords;
               if(contactsPagination.filterBy!=null){
