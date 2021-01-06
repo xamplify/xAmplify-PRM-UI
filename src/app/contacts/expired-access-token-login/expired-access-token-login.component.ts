@@ -50,7 +50,7 @@ ngOnInit()
       window.location.href = "" + redirectUrl;
     }
     else if(providerName == "zoho"){
-      this.zohoAuth();
+      this.zohoAuth(this.currentModule);
     }
 
 	else if(providerName == "google"){
@@ -58,8 +58,8 @@ ngOnInit()
     } 
  
 }
-  public zohoAuth(){
-    this.contactService.checkingZohoAuthentication(this.currentModule)
+  public zohoAuth(currentModule: string){
+    this.contactService.checkingZohoAuthentication(currentModule)
     .subscribe(
         (data: any) => {
             localStorage.setItem("userAlias", data.userAlias);
