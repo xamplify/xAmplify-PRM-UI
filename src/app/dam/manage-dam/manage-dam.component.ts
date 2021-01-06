@@ -21,10 +21,7 @@ export class ManageDamComponent implements OnInit {
 		this.isPartnerView = this.router.url.indexOf('/shared')>-1;
 	}
 
-	addAsset() {
-		this.loading = true;
-		this.referenceService.goToRouter("/home/dam/add");
-	}
+	
 
 	viewPublishedContent(){
 		this.referenceService.showSweetAlertInfoMessage();
