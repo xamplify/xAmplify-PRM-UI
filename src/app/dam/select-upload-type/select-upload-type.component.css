@@ -28,10 +28,9 @@ h5 {
 .img-responsive,
 .thumbnail a>img,
 .thumbnail>img {
-    padding-top: 65px;
+    padding-top: 30px;
     display: block;
     max-width: 112px;
-    height: auto;
 }
 
 .para1 {

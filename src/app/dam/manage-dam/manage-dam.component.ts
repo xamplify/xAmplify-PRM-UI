@@ -36,7 +36,8 @@ export class ManageDamComponent implements OnInit {
 	}
 
 	goToUploadComponent(){
-		this.referenceService.goToRouter("/home/dam/upload");
+		this.loading = true;
+		this.referenceService.goToRouter("/home/dam/select");
 	}
 	goToDam(){
 		this.loading = true;
