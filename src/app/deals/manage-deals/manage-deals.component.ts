@@ -36,10 +36,10 @@ export class ManageDealsComponent implements OnInit {
   enableLeads = false;
   isVendorVersion = true;
   isPartnerVersion = false;
-  selectedTabIndex = 1;
-  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  selectedTabIndex = 1;  
   dealsPagination: Pagination;
   dealsSortOption: SortOption = new SortOption();
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   showDealForm = false;
   dealsResponse: CustomResponse = new CustomResponse();
   actionType = "add";
