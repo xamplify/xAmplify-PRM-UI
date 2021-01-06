@@ -32,6 +32,7 @@ export class ContactService {
     salesforceListViewContact: SalesforceListViewContact;
     isContactModalPopup = false;
     socialProviderName = "";
+	vanitySocialProviderName: string;
     pagination: Pagination;
     allPartners: User[];
     partnerListName: string;
@@ -46,6 +47,7 @@ export class ContactService {
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
+	hubSpotContactUrl = this.authenticationService.REST_URL + 'hubSpot';
     constructor( private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
         console.log( logger );
     }
@@ -468,6 +470,13 @@ export class ContactService {
     salesforceLogin(currentModule: any) {
         this.logger.info( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
         return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&module=" + currentModule)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+	hubSpotLogin(currentModule: any) {
+        this.logger.info( this.hubSpotContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
+        return this._http.get( this.hubSpotContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&module=" + currentModule)
             .map( this.extractData )
             .catch( this.handleError );
     }

@@ -73,13 +73,17 @@ import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-err
 import {NoCacheHeadersInterceptor} from './core/no-cache-provider';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';*/
 import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-token-login/expired-access-token-login.component';
+import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanity-add-contacts.component';
+import { HubmarketoVanityAddContactsComponent } from './contacts/hubmarketo-vanity-add-contacts/hubmarketo-vanity-add-contacts.component';
+import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
 
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
                    CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
                ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS,
-         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent,VanitySocialLoginComponent, DomainErrorComponent,ExpiredAccessTokenLoginComponent
+         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent,VanitySocialLoginComponent, DomainErrorComponent,ExpiredAccessTokenLoginComponent,
+		VanityAddContactsComponent,HubmarketoVanityAddContactsComponent,VanitySynchronizeContactsComponent
                ],
    
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
