@@ -27,7 +27,6 @@ export class SocialLoginComponent implements OnInit {
 	}
 	/* if blocks for google and sales force are added by ajay to call backend apis to get required redirect urls for authentication */
 	login(providerName: string) {
-		alert('in social-login.component.ts first login block')
 		if (providerName == 'google') {
 			let currentModule = "";
 			if (this.assignLeads) {
@@ -59,7 +58,6 @@ export class SocialLoginComponent implements OnInit {
 				);
 
 		} else if (providerName == 'salesforce') {
-			alert('in social-login.component.ts salesforce elseif block')
 			let currentModule = "";
 			if (this.assignLeads) {
 				currentModule = 'leads'
@@ -86,7 +84,6 @@ export class SocialLoginComponent implements OnInit {
 		}
 
 		else {
-			alert('in social-login.component.ts last else block social serverice login ')
 			this.socialService.login(providerName)
 				.subscribe(
 					result => {
@@ -103,7 +100,6 @@ export class SocialLoginComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		alert('in social-login.component.ts ngoninit')
 		try {
 			const providerName = this.route.snapshot.params['social'];
 			this.login(providerName);
