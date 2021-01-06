@@ -119,14 +119,14 @@
         </div>
       </div>
 
+      <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
       <!-- -----------------------------Leads List-------------------------------------- -->
-      <div class="row">
+      <div class="row" *ngIf="!showLeadForm">
         <div class="col-md-12">
           <div class="tabbable tabbable-custom tabbable-noborder" id="header">
             <div class="tab-content" *ngIf="!showCampaignLeads">
               <div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
-                <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible">
-                </app-response-message>
+                
                 <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
                   <div class="btn-group pull-right" style="width: max-content;">
                     <ng-container class='m10'>
@@ -517,12 +517,17 @@
                 style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
                 <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
               <app-manage-campaign-leads [partnerCompanyId]="selectedPartnerCompanyId" [campaignId]="selectedCampaignId"
-              [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey">
+              [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
+              (viewCampaignLeadForm)="viewCampaignLeadForm($event)" (editCampaignLeadForm)="editCampaignLeadForm($event)" 
+              (registerDealForm)="registerDealForm($event)" (refreshCounts)="refreshCounts()">
               </app-manage-campaign-leads>
             </div>
           </div>
         </div><!-- End Of Tab Content -->
       </div>
+
+      <app-modal-popup-loader *ngIf="showLeadForm"> </app-modal-popup-loader>
+      
       </div>
 
       

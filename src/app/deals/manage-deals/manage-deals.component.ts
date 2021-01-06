@@ -587,6 +587,8 @@ export class ManageDealsComponent implements OnInit {
   closeCampaignDeals() {
     this.showCampaignDeals = false; 
     this.selectedPartnerCompanyId = 0;
+    this.listDeals(this.dealsPagination);
+    this.listCampaigns(this.campaignPagination);
   }
   
   showOwnCampaignDeals() {
@@ -595,6 +597,22 @@ export class ManageDealsComponent implements OnInit {
       this.selectedPartnerCompanyName = "";
       this.showCampaignDeals = true;          
     }
+  }
+
+  viewCampaignDealForm(dealId: any) {
+    this.showDealForm = true;   
+    this.actionType = "view";
+    this.dealId = dealId;
+  }
+
+  editCampaignDealForm(dealId: any) {
+    this.showDealForm = true;   
+    this.actionType = "edit";
+    this.dealId = dealId;
+  }
+
+  refreshCounts() {
+    this.getCounts();
   }
 
 }
