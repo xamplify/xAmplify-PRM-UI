@@ -308,7 +308,9 @@ export class AddMoreReceiversComponent implements OnInit {
         $('#usersModal').modal({backdrop: 'static', keyboard: false});
        if(id==undefined){
             id=this.previewContactListId;
-        }else{
+        }else if(id==0){
+        	id = this.previewContactListId ;
+        } else{
             this.previewContactListId = id;
         }
         this.listName = ListName;

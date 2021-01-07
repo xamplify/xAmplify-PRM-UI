@@ -171,8 +171,10 @@ export class SaveAsComponent implements OnInit {
                   this.loading = false;
                   if (data.statusCode === 401) {
                       this.saveAsError = data.message;
+                      this.editContactsComponent.selectedContactForSave = [];
                   } else if (data.statusCode === 402) {
                       this.saveAsError = data.message;
+                      this.editContactsComponent.selectedContactForSave = [];
                   } else {
                       $('#saveAsModal').modal('hide');
                       this.saveAsError = '';
