@@ -11,7 +11,7 @@
               <li><a (click)="goToManageDam()" translate>DAM</a>  
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
               </li>
-              <li><a translate>Upload / Design</a></li>
+              <li><a translate>Design/Upload</a></li>
             </ul>
           </div>
           <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
@@ -29,19 +29,14 @@
       <div class="col-md-12">
           <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
           <div class="portlet light">
-              <div class="portlet-title">
-                  <div class="caption" translate>
-                      <i class="fa fa-cogs" aria-hidden="true"></i>Upload Asset / Design PDF
-                  </div>
-              </div>
               <div class="portlet-body">
                   <div class="row" style="margin-top: 20px;">
                     <div class="col-xs-2"></div>
-                          <div class="col-md-4" title="Click To Upload">
+                          <div class="col-md-4" title="Click To Upload" (click)="goToUpload()">
                               <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
                                   <div class="portlet-body">
                                       <div class="img1">
-                                          <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/upload-dam.jpg">
+                                          <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/upload-dam-icons.png">
                                       </div>
                                       <div class="text">
                                         <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Upload File
@@ -55,11 +50,11 @@
                                   </div>
                               </div>
                           </div>
-                          <div class="col-md-4" title="Click To Design Template">
+                          <div class="col-md-4" title="Click To Design Template" (click)="addAsset()">
                             <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
                                 <div class="portlet-body">
                                     <div class="img1">
-                                        <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/content/pdfs.png">
+                                        <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img image-center" src="assets/images/design-dam.png">
                                     </div>
                                     <div class="text">
                                         <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Design PDF

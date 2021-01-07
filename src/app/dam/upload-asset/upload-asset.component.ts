@@ -286,6 +286,20 @@ export class UploadAssetComponent implements OnInit {
 		this.previewPath = "";
 	}
 
+	goToSelect(){
+		this.loading = true;
+		this.referenceService.goToRouter("home/dam/select");
+	}
+
+	closeCircle(){
+		this.loading = true;
+		if(this.isAdd){
+			this.referenceService.goToRouter("home/dam/select");
+		}else{
+			this.referenceService.goToRouter("home/dam/manage");
+		}
+	}
+
 
 
 }
