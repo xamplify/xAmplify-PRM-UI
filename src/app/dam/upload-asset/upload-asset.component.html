@@ -114,25 +114,29 @@
                     </div>
                 </div>
                 </ng-container>
-                <div class="col-md-12 col-lg-12 ">
-                  <div class="form-group">
-                    <label class="control-label col-sm-3" translate>Name
-                    <span class="required">*</span>
-                    </label>
-                    <div class="col-sm-8">
-                      <input type="text" maxlength="255" class="form-control" [(ngModel)]="damUploadPostDto.assetName"  [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
-                      <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                  <div class="col-md-6 col-lg-6 col-xs-6">
+                    <div class="form-group">
+                      <label class="control-label col-sm-3" translate>Name
+                      <span class="required">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <input type="text" maxlength="255" class="form-control" [(ngModel)]="damUploadPostDto.assetName"  [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
+                        <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12 col-lg-12">
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                  <div class="col-md-6 col-lg-6 col-xs-6">
                   <div class="form-group">
                     <label class="control-label col-sm-3" translate>Description
                     <span class="required">*</span>
                     </label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-9">
                       <textarea class="form-control" rows="7"  [(ngModel)]="damUploadPostDto.description"  [ngModelOptions]="{standalone: true}"  placeholder="Enter Description" maxlength="5000" (input)="validateForm('description')"></textarea>
                     </div>
+                  </div>
                   </div>
                 </div>
               </div>
