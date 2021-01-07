@@ -3294,7 +3294,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			$('#filterModal').modal('hide');
 			$('#saveAsEditModal').modal('hide');
 
-			if (this.selectedAddContactsOption != 8 && this.router.url !== '/login' && !this.isDuplicateEmailId) {
+			if (this.selectedAddContactsOption != 8 && this.router.url !== '/login' && !this.isDuplicateEmailId && !this.isSegmentation) {
 				let self = this;
 				swal({
 					title: 'Are you sure?',
