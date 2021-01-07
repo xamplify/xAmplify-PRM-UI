@@ -915,8 +915,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.loading = false;
             if ( data.statusCode === 401 ) {
                 this.customResponse = new CustomResponse( 'ERROR',  data.message , true );
+                this.socialUsers=[];
             }else if ( data.statusCode === 402 ) {
                 this.customResponse = new CustomResponse( 'ERROR',  data.message + '<br>' + data.data, true );
+                this.socialUsers=[];
             }else{
             	this.selectedAddContactsOption = 8;
                 this.xtremandLogger.info( "update Contacts ListUsers:" + data );
