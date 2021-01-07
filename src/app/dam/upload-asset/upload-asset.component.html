@@ -8,7 +8,9 @@
             <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
               <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
-            <li><a (click)="goToManageDam()" translate>Manage DAM</a>  
+            <li>
+              <a *ngIf="isAdd" (click)="goToSelect()" translate>Design/Upload</a>
+              <a *ngIf="!isAdd" (click)="goToManageDam()" translate>Manage</a>    
               <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li><a translate>{{headerText}}</a></li>
@@ -16,7 +18,7 @@
         </div>
         <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
           <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
-            <a class="close-circle" (click)="goToManageDam()"  title="Close">
+            <a class="close-circle" (click)="closeCircle()"  title="Close">
             <i class="fa fa-times" aria-hidden="true"></i>
             </a> 
           </div>
@@ -136,7 +138,7 @@
               </div>
           </div>
           <div class="footer">
-          <button class="btn btn-info" id="right" style="margin-right: 108px;"  type="button"  (click)="goToManageDam();" translate>Cancel</button>
+          <button class="btn btn-info" id="right" style="margin-right: 108px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
           <button [disabled]="!isValidForm"  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadOrUpdate()" translate>{{submitButtonText}}</button>
           </div>
           </form>

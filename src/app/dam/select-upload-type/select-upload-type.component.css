@@ -28,9 +28,15 @@ h5 {
 .img-responsive,
 .thumbnail a>img,
 .thumbnail>img {
-    padding-top: 30px;
+    padding-top: 13px;
     display: block;
-    max-width: 112px;
+    max-width: 200px;
+}
+
+.image-center{
+    padding-top: 60px;
+    display: block;
+    max-width: 100px;
 }
 
 .para1 {
