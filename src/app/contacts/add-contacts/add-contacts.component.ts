@@ -1418,8 +1418,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     googleContacts() {
         try {
             if(this.loggedInThroughVanityUrl){
-                //this.referenceService.showSweetAlertInfoMessage();
-				this.googleVanityAuthentication();
+                this.referenceService.showSweetAlertInfoMessage();
+			//	this.googleVanityAuthentication();
 
             }else{
                 if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
@@ -2345,8 +2345,8 @@ googleVanityAuthentication() {
     salesforceContacts() {
         try {
             if(this.loggedInThroughVanityUrl){
-                //this.referenceService.showSweetAlertInfoMessage();
-				this.salesForceVanityAuthentication();
+                this.referenceService.showSweetAlertInfoMessage();
+				//this.salesForceVanityAuthentication();
             }else{
                 if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
                     this.contactType = "";
@@ -3173,8 +3173,8 @@ salesForceVanityAuthentication() {
     checkingMarketoContactsAuthentication() {
         try {
             if(this.loggedInThroughVanityUrl){
-               // this.referenceService.showSweetAlertInfoMessage();
-				this.vanityCheckingMarketoContactsAuthentication();
+                this.referenceService.showSweetAlertInfoMessage();
+				//this.vanityCheckingMarketoContactsAuthentication();
 
             }else{
                 if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
@@ -3697,8 +3697,8 @@ vanityCheckingMarketoContactsAuthentication(){
 
     checkingHubSpotContactsAuthentication(){
         if(this.loggedInThroughVanityUrl){
-            //this.referenceService.showSweetAlertInfoMessage();
-			  this.hubSpotVanityAuthentication();
+            this.referenceService.showSweetAlertInfoMessage();
+			  //this.hubSpotVanityAuthentication();
         }else{
             if(this.selectedAddContactsOption == 8){
                 this.hubSpotService.configHubSpot().subscribe(data => {
