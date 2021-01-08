@@ -54,6 +54,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     damAccessAsPartner = false;
     deals: boolean;
     partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
+    partnershipEstablishedOnlyWithPrm = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -305,6 +306,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.module.isPrmAndPartnerTeamMember = roleDisplayDto.prmAndPartnerTeamMember;
             this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = data.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
             this.authService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner =this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
+            this.partnershipEstablishedOnlyWithPrm = data.partnershipEstablishedOnlyWithPrm;
+            this.authService.partnershipEstablishedOnlyWithPrm = this.partnershipEstablishedOnlyWithPrm;
         },
           error => {
             this.loading = false;
