@@ -15,9 +15,9 @@
 
     //USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
     /********************Production************************/
-    //window.__env.CLIENT_URL = 'https://xamplify.io/', // xamplify client app server
-    //window.__env.SERVER_URL = 'https://xamp.io/' // xamplify backend production server
-    //window.__env.imagesHost = "https://xamp.io/vod/images/";
+    window.__env.CLIENT_URL = 'https://xamplify.io/', // xamplify client app server
+    window.__env.SERVER_URL = 'https://xamp.io/' // xamplify backend production server
+    window.__env.imagesHost = "https://xamp.io/vod/images/";
 
 
     /*********************QA**********************/

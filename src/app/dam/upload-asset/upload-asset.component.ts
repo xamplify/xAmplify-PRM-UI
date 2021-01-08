@@ -77,13 +77,17 @@ export class UploadAssetComponent implements OnInit {
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
 		let files: Array<File>;
-		if ( event.target.files!=undefined ) { files = event.target.files; }
-		else if ( event.dataTransfer.files ) { files = event.dataTransfer.files; }
+		if ( event.target.files!=undefined ) {
+			 files = event.target.files; 
+		}else if ( event.dataTransfer.files ) { 
+			files = event.dataTransfer.files;
+	 	}
 		if (files.length > 0) {
 			this.formData.delete("uploadedFile");
 			this.uploadedAssetName  = "";
 			this.customResponse = new CustomResponse();
 			let file = files[0];
+			console.log(file);
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
 			if(sizeInKb>maxFileSizeInKb){

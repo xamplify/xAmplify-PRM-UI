@@ -43,5 +43,6 @@ export class Form {
     formSubmissionUrl = "";
     isValidFormSubmissionUrl = true;
     isValidColorCode = true;
+
 	
 }
