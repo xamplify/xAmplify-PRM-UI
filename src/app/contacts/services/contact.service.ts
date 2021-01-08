@@ -17,6 +17,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import {ReferenceService} from '../../core/services/reference.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
+import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 
 @Injectable()
 export class ContactService {
@@ -31,6 +32,7 @@ export class ContactService {
     salesforceListViewContact: SalesforceListViewContact;
     isContactModalPopup = false;
     socialProviderName = "";
+	vanitySocialProviderName: string;
     pagination: Pagination;
     allPartners: User[];
     partnerListName: string;
@@ -45,6 +47,7 @@ export class ContactService {
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
+	hubSpotContactUrl = this.authenticationService.REST_URL + 'hubSpot';
     constructor( private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
         console.log( logger );
     }
@@ -123,14 +126,22 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    listContactsByType(assignLeads:boolean, contactType: string, pagination: Pagination ){
+    listContactsByType(userListPaginationWrapper :  UserListPaginationWrapper){
         let userId = this.authenticationService.user.id;
         userId = this.authenticationService.checkLoggedInUserId(userId);
+        
+        var requestoptions = new RequestOptions( {
+            body:  userListPaginationWrapper
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
 
-        this.logger.info( "ContactService listContactsByType():  contactType=" + contactType );
-        return this._http.post( this.contactsUrl + "contacts/"+assignLeads+"?contactType="+ contactType + '&userId='+ userId + "&access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
+        return this._http.post( this.contactsUrl +"/" +userId+ "/all-contacts/?access_token=" + this.authenticationService.access_token, options, requestoptions )
+            .map(( response: any ) => response.json() )
+       .catch( this.handleError);
     }
 
     loadContactsCount(contactListObject : ContactList) {
@@ -291,17 +302,17 @@ export class ContactService {
            .catch( this.handleErrorDeleteUsers);
     }
 
-    removeInvalidContactListUsers( removeUserIds: Array<number> ): Observable<Object> {
+    removeInvalidContactListUsers( removeUserIds: Array<number>, assignLeads :boolean ): Observable<Object> {
         this.logger.info( removeUserIds );
-        var newUrl = this.contactsUrl + this.authenticationService.getUserId() +"/removeInvalidUsers?access_token=" + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + this.authenticationService.getUserId()+"/"+ assignLeads +"/removeInvalidUsers?access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() );
     }
 
 
-    validateUndelivarableEmailsAddress( validateUserIds: Array<number> ): Observable<any> {
+    validateUndelivarableEmailsAddress( validateUserIds: Array<number>, assignLeads :boolean ): Observable<any> {
         this.logger.info( validateUserIds );
-        var newUrl = this.contactsUrl + "makeContactsValid?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
+        var newUrl = this.contactsUrl + assignLeads +"/makeContactsValid?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
         return this._http.post( newUrl, validateUserIds )
             .map(( response: any ) => response.json() );
     }
@@ -459,6 +470,13 @@ export class ContactService {
     salesforceLogin(currentModule: any) {
         this.logger.info( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
         return this._http.get( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&module=" + currentModule)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+	hubSpotLogin(currentModule: any) {
+        this.logger.info( this.hubSpotContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
+        return this._http.get( this.hubSpotContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&module=" + currentModule)
             .map( this.extractData )
             .catch( this.handleError );
     }

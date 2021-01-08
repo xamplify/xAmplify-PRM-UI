@@ -1061,28 +1061,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
         this.pagination.maxResults = 12;
         try {
-            this.loggedInUserId = this.authenticationService.getUserId();
-            this.getDefaultPage(this.loggedInUserId);
-            this.getUserCampaignReport(this.loggedInUserId);
-            this.getEmailActionCount(this.loggedInUserId);
-            this.emailWatchedCount(this.loggedInUserId);
-            this.getCountriesTotalViewsData();
-            this.getCampaignsHeatMapData();
-            this.getVideoStatesSparklineChartsInfo(30);
-
-            Metronic.init();
-            Layout.init();
-            Demo.init();
-            QuickSidebar.init();
-            Index.init();
-            Index.initDashboardDaterange();
-            Index.initCharts();
-            Index.initChat();
-            Tasks.initDashboardWidget();
-            this.listActiveSocialAccounts(this.loggedInUserId);
-            this.genderDemographics(this.loggedInUserId);
-
-            this.xtremandLogger.log(this.authenticationService.getRoles());
+            if(!this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner){
+                this.loggedInUserId = this.authenticationService.getUserId();
+                this.getDefaultPage(this.loggedInUserId);
+                this.getUserCampaignReport(this.loggedInUserId);
+                this.getEmailActionCount(this.loggedInUserId);
+                this.emailWatchedCount(this.loggedInUserId);
+                this.getCountriesTotalViewsData();
+                this.getCampaignsHeatMapData();
+                this.getVideoStatesSparklineChartsInfo(30);
+                Metronic.init();
+                Layout.init();
+                Demo.init();
+                QuickSidebar.init();
+                Index.init();
+                Index.initDashboardDaterange();
+                Index.initCharts();
+                Index.initChat();
+                Tasks.initDashboardWidget();
+                this.listActiveSocialAccounts(this.loggedInUserId);
+                this.genderDemographics(this.loggedInUserId);
+            }
         } catch (err) {
             this.xtremandLogger.log(err);
         }

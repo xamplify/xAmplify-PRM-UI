@@ -49,7 +49,7 @@ export class AddCustomFeedsComponent implements OnInit {
   isloading = false;
   addCollectionError = false;
   addCollectionErrorMessage: string;
-  constructor(private socialService:SocialService,private videoFileService:VideoFileService,private authenticationService:AuthenticationService,public pagerService:PagerService,private router: Router, public videoUtilService: VideoUtilService,
+  constructor(private socialService:SocialService,private videoFileService:VideoFileService,public authenticationService:AuthenticationService,public pagerService:PagerService,private router: Router, public videoUtilService: VideoUtilService,
     private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
     public referenceService: ReferenceService) {
     this.resetCustomResponse();

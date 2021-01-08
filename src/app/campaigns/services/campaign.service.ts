@@ -1016,6 +1016,13 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+getActiveAndTotalCampaignsCount(companyId:number,userId:number){
+        let url = this.URL + "campaign/getTotalAndActiveCampaigns/"+companyId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     listCampaignPipelines(userId: number) {
         return this.http.get(this.URL + "/pipeline/campaign/" + userId + "/list?access_token=" + this.authenticationService.access_token)

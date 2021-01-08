@@ -1,0 +1,10 @@
+.register_deal{
+    margin-top: 10px;
+    padding: 2px;
+    border: 1px solid #529de1;
+    background-color: #eeeeee;
+}
+
+.register_deal:hover{
+    background-color: #ffffff;
+}

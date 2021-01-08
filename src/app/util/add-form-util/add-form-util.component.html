@@ -413,7 +413,7 @@
         <div class="modal-content">
             <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
-                <button type="button" *ngIf="form.isFormButtonValueValid && form.isValidFormSubmissionUrl" class="close-circle" (click)="closeFormDesignModal()">
+                <button type="button" *ngIf="form.isFormButtonValueValid&&form.isValidFormSubmissionUrl && form.isValidColorCode" class="close-circle" (click)="closeFormDesignModal()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
                 <h4 class="modal-title text-left">Design Your Form</h4>
@@ -426,16 +426,25 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Title Color</label>
-                                        <input class="form-control" [value]="form.titleColor" [(ngModel)]="form.titleColor" style="margin-bottom: 10px;padding-left: 40px;" />
+                                        <input class="form-control" [value]="titleColor" [(ngModel)]="titleColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(titleColor,'titleColor')" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.titleColor" [style.background]="form.titleColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'titleColor')" [cpPosition]="'bottom'" readonly></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Border Color</label>
-                                        <input class="form-control" [value]="form.borderColor" [(ngModel)]="form.borderColor" style="padding-left: 40px;" />
+                                        <input class="form-control" [value]="borderColor" [(ngModel)]="borderColor" style="padding-left: 40px;" (input)="checkValidColorCode(borderColor,'borderColor')" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.borderColor" [style.background]="form.borderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'borderColor')" [cpPosition]="'bottom'"
                                             readonly></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 group">
+                                        <span *ngIf="!isValidTitleColor" class="required" style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <span *ngIf="!isValidBorderColor" class="required" style="padding-left:
+                                                                40px;">{{colorCodeErrorMessage}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -445,7 +454,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Background Color(Form)</label>
-                                        <input class="form-control" [value]="form.backgroundColor" [(ngModel)]="form.backgroundColor" style="margin-bottom: 10px;padding-left: 40px;" />
+                                        <input class="form-control" [value]="backgroundColor" [(ngModel)]="backgroundColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(backgroundColor,'backgroundColor')" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.backgroundColor" [style.background]="form.backgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')" [cpPosition]="'bottom'"
                                             readonly></span>
                                     </div>
@@ -453,8 +462,16 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Label Color</label>
-                                        <input class="form-control" [value]="form.labelColor" [(ngModel)]="form.labelColor" style="padding-left: 40px;" />
+                                        <input class="form-control" [value]="labelColor" [(ngModel)]="labelColor" style="padding-left: 40px;" (input)="checkValidColorCode(labelColor,'labelColor')" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.labelColor" [style.background]="form.labelColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'labelColor')" [cpPosition]="'bottom'" readonly></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <span *ngIf="!isValidBackgroundColor" class="required" style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <span *ngIf="!isValidLabelColor" class="required" style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -464,18 +481,25 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Button Background Color</label>
-                                        <input class="form-control" [value]="form.buttonColor" [(ngModel)]="form.buttonColor" style="padding-left: 40px;" />
+                                        <input class="form-control" [value]="buttonBackgroundColor" [(ngModel)]="buttonBackgroundColor" style="padding-left: 40px;" (input)="checkValidColorCode(buttonBackgroundColor,'buttonColor')" maxlength="7" />
                                         <span class="input-group-addon color-pick-1" [(colorPicker)]="form.buttonColor" [style.background]="form.buttonColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonColor')" [cpPosition]="'bottom'"
                                             readonly></span>
-
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Button Value Color</label>
-                                        <input class="form-control" [value]="form.buttonValueColor" [(ngModel)]="form.buttonValueColor" style="padding-left: 40px;" />
+                                        <input class="form-control" [value]="buttonValueColor" [(ngModel)]="buttonValueColor" style="padding-left: 40px;" (input)="checkValidColorCode(buttonValueColor,'buttonValueColor')" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonValueColor" [style.background]="form.buttonValueColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonValueColor')" [cpPosition]="'bottom'"
                                             readonly></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <span *ngIf="!isValidButtonBackgroundColor" class="required" style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <span *ngIf="!isValidButtonValueColor" class="required" style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -577,9 +601,14 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Background Color</label>
-                                        <input class="form-control" [value]="form.pageBackgroundColor" [(ngModel)]="form.pageBackgroundColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="changePageBackgroundColor(form.pageBackgroundColor)" />
+                                        <input class="form-control" [value]="pageBgColor" [(ngModel)]="pageBgColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(pageBgColor,'pageBackgroundColor')" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.pageBackgroundColor" [style.background]="form.pageBackgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'pageBackgroundColor')"
                                             [cpPosition]="'top'" readonly></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+                                        <span *ngIf="!isValidPageBackgroundColor" class="required" style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -691,7 +720,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                <button type="submit" [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl || !form.isValidColorCode" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
             </div>
         </div>
     </div>

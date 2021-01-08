@@ -9,7 +9,6 @@ authenticationService.isVendor() || authenticationService.isVendorPartner() || a
         <app-box-loader [countLoader]=4 *ngIf="socialAccountsLoader.isLoading"></app-box-loader>
           <div class="clearfix" *ngIf="!socialAccountsLoader.isLoading">
               <section *ngFor="let socialConnection of socialConnections">
-                  <!--  [class.disabled]="!hasSocialStatusRole?true:null" -->
                   <div class="col-xs-12 col-sm-6 col-md-4 p10">
                       <div class="dashboard-stat2 m0" style="height: 130px;">
                           <div class="display">

@@ -42,5 +42,7 @@ export class Form {
     openLinkInNewTab = false;
     formSubmissionUrl = "";
     isValidFormSubmissionUrl = true;
+    isValidColorCode = true;
+
 	
 }

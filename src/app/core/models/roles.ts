@@ -17,5 +17,6 @@ export class Roles {
   landingPageRole = 'ROLE_LANDING_PAGE';
   marketingRole = 'ROLE_MARKETING';
   vendorTierRole = 'ROLE_VENDOR_TIER';
+  prmRole = 'ROLE_PRM';
 
 }

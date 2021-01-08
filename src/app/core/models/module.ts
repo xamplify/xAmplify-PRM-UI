@@ -34,4 +34,11 @@ export class Module {
     damAccess = false;
     damAccessAsPartner = false;
 
+	isPrm = false;
+	isPrmTeamMember = false;
+	isPrmAndPartner = false;
+    isPrmAndPartnerTeamMember = false;
+    
+    showCampaignsAnalyticsDivInDashboard = false;
+
 }

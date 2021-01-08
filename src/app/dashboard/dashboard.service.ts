@@ -409,6 +409,15 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    getWelcomePageItems(vanityUrlPostDto:any) {
+        const url = this.authenticationService.REST_URL+'dashboard/views/getWelcomePageItems?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url,vanityUrlPostDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+
  
 
     private extractData(res: Response) {
@@ -458,6 +467,18 @@ export class DashboardService {
 
     syncPipeline(pipelineId:number, userId:number){
         return this.http.get(this.authenticationService.REST_URL + `pipeline/${pipelineId}/sync/${userId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    revokeAccessTokenByUserId(userId:number){
+        return this.http.get(this.authenticationService.REST_URL + `url/revokeAccessTokenByUserId/${userId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    revokeAccessTokensForAll(){
+        return this.http.get(this.authenticationService.REST_URL + `url/revokeAccessTokensForAll?access_token=${this.authenticationService.access_token}`)
         .map(this.extractData)
         .catch(this.handleError);
     }

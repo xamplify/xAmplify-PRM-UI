@@ -105,7 +105,11 @@ export class AddDamComponent implements OnInit {
     if (this.isPartnerView) {
       this.referenceService.goToRouter("/home/dam/shared");
     } else {
-      this.referenceService.goToRouter("/home/dam/manage");
+      if(this.isAdd){
+        this.referenceService.goToRouter("/home/dam/select");
+      }else{
+        this.referenceService.goToRouter("/home/dam/manage");
+      }
     }
   }
 

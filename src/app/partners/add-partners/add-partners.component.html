@@ -676,19 +676,21 @@
                                                     <td align="center">
                                                         <div class="actions-block override-actions">
                                                             <a id="envolope_{{i}}" *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
-                                                                <i class="fa fa-envelope"></i>
+                                                                <i class="fa fa-envelope" aria-hidden="true"></i>
                                                             </a>
                                                             <a id="edit_{{i}}" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_edit}}" (click)="editUserDetails(contact)">
-                                                                <i class="fa fa-pencil-square-o"></i>
+                                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                             </a>
                                                             <a id="delete_{{i}}" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_delete}}" (click)="deleteUserShowAlert(contact.id)">
-                                                                <i class="fa fa-trash-o" style="color:#ff0000"></i>
+                                                                <i class="fa fa-trash-o" style="color:#ff0000" aria-hidden="true"></i>
                                                             </a>
-                                                            <a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.send_campaigns}}" (click)="addCampaigns(contact)">
-                                                                <i class="fa fa-bullhorn"></i>
-                                                            </a>
+                                                            <ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
+                                                                <a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.send_campaigns}}" (click)="addCampaigns(contact)">
+                                                                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                                                </a>
+                                                            </ng-container>
                                                             <a *ngIf="authenticationService.module.isCampaign" data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
-                                                                <i class="fa fa-line-chart"></i>
+                                                                <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
                                                     </td>
@@ -1241,9 +1243,13 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
+                <ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && authenticationService.module.isPrmAndPartnerTeamMember">
                 <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
                 <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
-
+                </ng-container>
+                <ng-container *ngIf="authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
+                    <h4 class="modal-title popup-header-title-font" translate>Partners</h4>
+                </ng-container>
             </div>
             <div class="modal-body">
                 <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">

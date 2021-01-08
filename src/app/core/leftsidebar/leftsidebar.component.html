@@ -1,10 +1,9 @@
 <!-- BEGIN SIDEBAR -->
 <ng-container *ngIf="!refService.loaderFromAdmin">
 <div class="page-sidebar-wrapper" *ngIf="(authService.user.hasCompany || authService.isOnlyUser()) && !(authService.isSuperAdmin())">
-    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
     <div class="page-sidebar navbar-collapse collapse">
-        <!-- BEGIN SIDEBAR MENU -->
+        <app-lefside-navigation-loader *ngIf="loading || authService.leftSideMenuLoader"></app-lefside-navigation-loader>
+        <ng-container *ngIf="!loading && !authService.leftSideMenuLoader">
         <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" [ngClass]="{'page-sidebar-menu-closed':refService.isSidebarClosed}" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li [ngClass]="{'active': location.path().includes('dashboard')}">
                 <a [routerLink]="['/home/dashboard/default']"  [class.disabled]="!authService.user.hasCompany ?true:null">
@@ -76,7 +75,7 @@
                 </ul>
             </li>
 
-            <li *ngIf="authService.user.hasCompany && (authService.module.isContact)" [ngClass]="{'active': location.path().includes('contacts')}">
+            <li *ngIf="authService.user.hasCompany && authService.module.isContact && !partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner" [ngClass]="{'active': location.path().includes('contacts')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
                     <i class="fa fa-id-card" aria-hidden="true"></i>
                     <span class="title" translate>Contacts</span>
@@ -118,9 +117,18 @@
 							translate>Manage Leads</span>
 					</a></li>
 				</ul></li>
-
+				
+					<li
+				*ngIf="authService.user.hasCompany && sharedLeadsAccess"
+				[ngClass]="{'active': location.path().includes('sharedleads')}">
+				<a [routerLink]="['./sharedleads/manage']"> <i class="fa fa-id-badge"
+					aria-hidden="true"></i> <span class="title" translate>Shared Leads</span>
+					<span class="arrow "></span> <span class="selected"></span>
+			</a>
+			</li>
+				
 			<li
-				*ngIf="authService.module.hasPartnerLandingPageAccess && (authService.module.isCompanyPartner || authService.isPartnerTeamMember)"
+				*ngIf="!partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && authService.module.hasPartnerLandingPageAccess && (authService.module.isCompanyPartner || authService.isPartnerTeamMember)"
 				[ngClass]="{'active': location.path().includes('landing-pages')}">
 				<a [routerLink]="['./pages/partner']"> <i class="fa fa-wpforms"
 					aria-hidden="true"></i> <span class="title" translate>Pages</span>
@@ -139,7 +147,7 @@
             </li>
 
 
-            <li *ngIf="authService.user.hasCompany && authService.module.isCampaign" [ngClass]="{'active': location.path().includes('campaigns')}">
+            <li *ngIf="authService.user.hasCompany && authService.module.isCampaign && !partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner" [ngClass]="{'active': location.path().includes('campaigns')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('campaigns')">
                     <i class="fa fa-bullhorn" aria-hidden="true"></i>
                     <span class="title" translate>Campaign </span>
@@ -154,11 +162,13 @@
                         </a>
                         <li>
                             <li>
-                                <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
-                                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                                    <span class="title" translate>Create Campaign</span>
-                                </a>
+                                <ng-container *ngIf="!authService.module.isPrm && !authService.module.isPrmTeamMember && !authService.module.isPrmAndPartner && !authService.module.isPrmAndPartnerTeamMember ">
+                                    <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
+                                        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                        <span class="title" translate>Create Campaign</span>
+                                    </a>
 
+                                </ng-container>
                             </li>
                             <li>
                                 <a [routerLink]="['./campaigns/manage']">
@@ -170,7 +180,7 @@
                 </li>
 
                 <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || 
-                authService.module.isCompanyPartner || isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing )" 
+                authService.module.isCompanyPartner|| isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing || authService.module.isPrm )" 
                 [ngClass]="{'active': location.path().includes('team')}">
                     <a [routerLink]="['./team/add-team']">
                         <i class="fa fa-users" aria-hidden="true"></i>
@@ -180,43 +190,24 @@
                     </a>
                 </li>
 
-				<!-- ------Leads------ -->
-                <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('leads')}">
-                    <a [routerLink]="['./leads/manage']">
-                        <i class="fa fa-user-circle" aria-hidden="true"></i>
-                        <span class="title" translate>Leads</span>
-                        <span class="arrow "></span>
-                        <span class="selected"></span>
-                    </a>
-                </li> -->
-                
-                <!-- ------Deals------ -->
-                <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deal')}">
-                    <a [routerLink]="['./deal/manage']">
-                        <i class="fa fa-tags" aria-hidden="true"></i>
-                        <span class="title" translate>Deals</span>
-                        <span class="arrow "></span>
-                        <span class="selected"></span>
-                    </a>
-                </li> -->
-
                 <!-- ------Deal Registration------ -->
-                <!-- <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deals')}">
-                    <a [routerLink]="['./deals/manage']">
-                        <i class="fa fa-usd" aria-hidden="true"></i>
-                        <span class="title" translate>Opportunities</span>
-                        <span class="arrow "></span>
-                        <span class="selected"></span>
+                <li *ngIf="authService.user.hasCompany && authService.enableLeads && 
+                (partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner || authService.module.isPrm || authService.module.isPrmTeamMember)" [ngClass]="{'active': location.path().includes('deal')}">
+                    <a [routerLink]="['/home/deal/']">
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <span class="title">Opportunities</span>
+                    <span class="arrow"></span>
+                    <span class="selected"></span>
                     </a>
-                </li> -->
-                <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deal') || location.path().includes('leads')}">
-                    <a href="javascript:;" (click)="openOrCloseTabs('deals')">
+                 </li> 
+                <li *ngIf="authService.user.hasCompany && authService.enableLeads && !partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && !authService.module.isPrm && !authService.module.isPrmTeamMember" [ngClass]="{'active': (location.path().includes('deal') || location.path().includes('leads') && !location.path().includes('assign') && !location.path().includes('shared')) }">
+                    <a href="javascript:;" (click)="openOrCloseTabs('deal')">
                         <i class="fa fa-money" aria-hidden="true"></i>
                         <span class="title" translate>Opportunities</span>
                         <span class="arrow"></span>
                         <span class="selected"></span>
                     </a>
-                    <ul class="sub-menu" [ngStyle]="{'display': deals? 'block': 'none' }" >
+                    <ul class="sub-menu" [ngStyle]="{'display': deal? 'block': 'none' }" >
                         <li>
                             <a [routerLink]="['/home/leads/']">
                                 <i class="fa fa-user-circle" aria-hidden="true"></i>
@@ -233,11 +224,12 @@
                 </li>
 
                 <!-- ------RSS------ -->
-                 <li *ngIf="rssFeedAccess">
+                 <li *ngIf="rssFeedAccess" [ngClass]="{'active': location.path().includes('rss')}">
                     <a [routerLink]="['/home/rss/']">
                     <i class="fa fa-rss" aria-hidden="true"></i>
                     <span class="title">Social Feeds</span>
                     <span class="arrow "></span>
+                     <span class="selected"></span>
                     </a>
                  </li> 
                  <!-- ------MDF------ -->
@@ -267,11 +259,12 @@
                  </ng-container>
                  <!--Partner View Only-->
                  <ng-container *ngIf="mdfAccessAsPartner && !mdfAccess">
-                    <li>
+                    <li [ngClass]="{'active': location.path().includes('mdf')}">
                         <a [routerLink]="['/home/mdf/requests/p']">
                         <i class="fa fa-dollar" aria-hidden="true"></i>
                         <span class="title">MDF</span>
                         <span class="arrow"></span>
+                        <span class="selected"></span>
                         </a>
                      </li> 
                  </ng-container>
@@ -334,25 +327,28 @@
          </ng-container>
          <!--Only Dam Acess As Vendor-->
          <ng-container *ngIf="damAccess && !damAccessAsPartner">
-            <li>
+            <li [ngClass]="{'active': location.path().includes('dam')}">
                 <a [routerLink]="['/home/dam/manage']">
                 <i class="fa fa-th-large" aria-hidden="true"></i>
                 <span class="title">DAM</span>
                 <span class="arrow"></span>
+                <span class="selected"></span>
                 </a>
              </li> 
          </ng-container>
         <!--Only Dam Acess As Partner-->
         <ng-container *ngIf="!damAccess && damAccessAsPartner">
-            <li>
+            <li [ngClass]="{'active': location.path().includes('dam')}">
                 <a [routerLink]="['/home/dam/shared']">
                 <i class="fa fa-th-large" aria-hidden="true"></i>
                 <span class="title">DAM</span>
                 <span class="arrow"></span>
+                <span class="selected"></span>
                 </a>
              </li> 
          </ng-container>
         </ul>
+    </ng-container>
         <!-- END SIDEBAR MENU -->
     </div>
 </div>

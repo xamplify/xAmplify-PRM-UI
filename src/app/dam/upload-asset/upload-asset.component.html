@@ -5,10 +5,12 @@
       <div class="row">
         <div class="col-md-6 col-lg-6 text-left">
           <ul class="page-breadcrumb">
-            <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a>
+            <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
               <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
-            <li><a (click)="goToManageDam()" translate>Manage DAM</a>  
+            <li>
+              <a *ngIf="isAdd" (click)="goToSelect()" translate>Design/Upload</a>
+              <a *ngIf="!isAdd" (click)="goToManageDam()" translate>Manage</a>    
               <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li><a translate>{{headerText}}</a></li>
@@ -16,7 +18,7 @@
         </div>
         <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
           <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
-            <a class="close-circle" (click)="goToManageDam()"  title="Close">
+            <a class="close-circle" (click)="closeCircle()"  title="Close">
             <i class="fa fa-times" aria-hidden="true"></i>
             </a> 
           </div>
@@ -112,31 +114,35 @@
                     </div>
                 </div>
                 </ng-container>
-                <div class="col-md-12 col-lg-12 ">
-                  <div class="form-group">
-                    <label class="control-label col-sm-3" translate>Name
-                    <span class="required">*</span>
-                    </label>
-                    <div class="col-sm-8">
-                      <input type="text" maxlength="255" class="form-control" [(ngModel)]="damUploadPostDto.assetName"  [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
-                      <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                  <div class="col-md-6 col-lg-6 col-xs-6">
+                    <div class="form-group">
+                      <label class="control-label col-sm-3" translate>Name
+                      <span class="required">*</span>
+                      </label>
+                      <div class="col-sm-9">
+                        <input type="text" maxlength="255" class="form-control" [(ngModel)]="damUploadPostDto.assetName"  [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
+                        <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12 col-lg-12">
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                  <div class="col-md-6 col-lg-6 col-xs-6">
                   <div class="form-group">
                     <label class="control-label col-sm-3" translate>Description
                     <span class="required">*</span>
                     </label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-9">
                       <textarea class="form-control" rows="7"  [(ngModel)]="damUploadPostDto.description"  [ngModelOptions]="{standalone: true}"  placeholder="Enter Description" maxlength="5000" (input)="validateForm('description')"></textarea>
                     </div>
+                  </div>
                   </div>
                 </div>
               </div>
           </div>
           <div class="footer">
-          <button class="btn btn-info" id="right" style="margin-right: 108px;"  type="button"  (click)="goToManageDam();" translate>Cancel</button>
+          <button class="btn btn-info" id="right" style="margin-right: 108px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
           <button [disabled]="!isValidForm"  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadOrUpdate()" translate>{{submitButtonText}}</button>
           </div>
           </form>

@@ -75,9 +75,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 						this.router.navigate(["/home/dashboard"]);
 					}
 				}, (error: any) => {
-					this.stopLoaders();
-					this.xtremandLogger.log(error);
-					this.xtremandLogger.errorPage(error);
+					this.showErrorPage(error);
 				},
 				() => {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
@@ -117,8 +115,6 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.campaignService.analyticsByUserId(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
-				this.totalCampaignsCount = data.totalCampaignsCount;
-				this.activeCampaignsCount = data.activeCampaignsCount;
 				pagination.totalRecords = data.totalRecords;
 				this.campaignAnalytics = data.campaignAnalytics;
 				$.each(data.campaignAnalytics,function(index:number,campaign:any){
@@ -151,11 +147,31 @@ export class UserCampaignsListUtilComponent implements OnInit {
 			this.circleAlphabet = emailId.slice(0,1);
 		  }
 		}, error => {
-		  this.stopLoaders();
-		  this.xtremandLogger.log(error);
-		  this.xtremandLogger.errorPage(error);
-		});
+			this.showErrorPage(error);
+		},
+		() => {
+			this.getActiveAndTotalCampaignsCount();
+		}
+		);
 	  }
+
+	getActiveAndTotalCampaignsCount(){
+		this.tilesLoader = true;
+		this.campaignService.getActiveAndTotalCampaignsCount(this.loggedInUserCompanyId,this.pagination.userId).subscribe((result: any) => {
+		  let data = result.data;
+		  this.totalCampaignsCount = data.totalCampaignsCount;
+		  this.activeCampaignsCount = data.activeCampaignsCount;
+		  this.tilesLoader = false;
+		}, error => {
+		  this.showErrorPage(error);
+		});
+	}
+
+showErrorPage(error:any){
+	this.stopLoaders();
+	this.xtremandLogger.log(error);
+	this.xtremandLogger.errorPage(error);
+}
 
 
 	 /********************Pagaination&Search Code*****************/

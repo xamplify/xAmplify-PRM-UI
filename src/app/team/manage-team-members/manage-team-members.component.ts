@@ -85,6 +85,8 @@ export class ManageTeamMembersComponent implements OnInit {
 	errorMessage: string;
 	isLoggedInThroughVanityUrl = false;
 	partnershipEstablishedOnlyWithVendorTier = false;
+	partnershipEstablishedWithPrmAndLoggedInAsPartner = false;
+	textString = "";
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -125,6 +127,12 @@ export class ManageTeamMembersComponent implements OnInit {
 							this.isOnlyPartner = this.superiorRole == "Partner";
 							this.csvFilePath = response.csvFilePath;
 							this.partnershipEstablishedOnlyWithVendorTier = response.partnershipEstablishedOnlyWithVendorTier;
+							this.partnershipEstablishedWithPrmAndLoggedInAsPartner = response.partnershipEstablishedWithPrmAndLoggedInAsPartner;
+							if(this.partnershipEstablishedWithPrmAndLoggedInAsPartner){
+								this.textString = "Users";
+							}else{
+								this.textString = "User & Permissions";
+							}
 						} else {
 							this.showUIError("Please pass the userId as input");
 						}
@@ -229,7 +237,7 @@ export class ManageTeamMembersComponent implements OnInit {
 			let length = $('#' + tableId + ' .module-checkbox-' + index + ':checked').length;
 			if(this.moduleNames.length>3){
 				/**********Vendor/Org Admin Team Members******/
-				let allSelected = (this.contactsAccess && length == 7) || (!this.contactsAccess && length == 6);
+				let allSelected = (this.contactsAccess && length == 7) || (!this.contactsAccess && length == 6) ||(!this.contactsAccess && length == 3) ;
 				if(allSelected){
 					team.all = true;
 					this.setAllRoles(team);
@@ -622,12 +630,12 @@ export class ManageTeamMembersComponent implements OnInit {
 				let headersRow = this.fileUtil
 					.getHeaderArray(csvRecordsArray);
 				let headers = headersRow[0].split(',');
-
 				let partnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==4;
 				let vendorTierPartnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==2 && this.partnershipEstablishedOnlyWithVendorTier ; 
 				let vendorCsvHeadersMatched = (this.superiorRole== "Vendor" ||  this.superiorRole=="Vendor Tier" || (this.superiorRole=="Vendor Tier & Partner" && this.partnershipEstablishedOnlyWithVendorTier)) && headers.length==8;
 				let vendorAndPartnerOrOrgAdminCsvHeadersMatched = ((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" ||  (this.superiorRole=="Vendor Tier & Partner" && !this.partnershipEstablishedOnlyWithVendorTier)) &&  headers.length==9);
-				if(partnerCsvHeadersMatched || vendorCsvHeadersMatched || vendorAndPartnerOrOrgAdminCsvHeadersMatched || vendorTierPartnerCsvHeadersMatched){
+				let prmCsvHeadersMatched = this.superiorRole == 'Prm' && headers.length == 5;
+				if(partnerCsvHeadersMatched || vendorCsvHeadersMatched || vendorAndPartnerOrOrgAdminCsvHeadersMatched || vendorTierPartnerCsvHeadersMatched || prmCsvHeadersMatched){
 					if (this.validateHeaders(headers)) {
 						this.readCsvData(csvRecordsArray, headersRow.length);
 					} else {
@@ -662,6 +670,9 @@ export class ManageTeamMembersComponent implements OnInit {
 			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS");
          }else if((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" || (this.superiorRole=="Vendor Tier & Partner" && !this.partnershipEstablishedOnlyWithVendorTier ))){
 			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS" && headers[8] == "CONTACTS");
+		 }else if(this.superiorRole=="Prm"){
+			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" &&  headers[2] == "SOCIAL SHARE" && headers[3] == "STATS" && headers[4] == "PARTNERS");
+
 		 }
 	}
 

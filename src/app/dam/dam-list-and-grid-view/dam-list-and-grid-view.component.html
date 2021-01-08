@@ -90,6 +90,9 @@
                               <span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
                               <span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName}}</strong></span>
                            </h6>
+                           <h6 class="moreipsis"*ngIf="!isPartnerView && asset?.beeTemplate">
+                              <span translate> Version <strong>{{asset?.versionInString}}</strong></span>
+                           </h6>
                            <h6 class="moreipsis" *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
                               <span  translate> From <strong>{{asset?.vendorCompanyName | slice:0:20}}</strong>
                                  <strong *ngIf="asset?.vendorCompanyName?.length>20">..</strong>
@@ -149,7 +152,7 @@
                                  <thead>
                                     <tr>
                                        <th colspan="2" style="width: 35%" id="border-bottom">
-                                          <span class="gridHeader" translate>Asset Details (Versions)</span>
+                                          <span class="gridHeader" translate>Asset Details</span>
                                        </th>
                                        <th class="text-center" scope="row" translate>Type</th>
                                        <th class="text-center" scope="row" translate>Created On</th>
@@ -251,6 +254,9 @@
                            <h6 title="{{asset?.displayName}}" translate>
                                By <strong>{{asset?.displayName | slice:0:17}}</strong>
                                <span *ngIf="asset?.displayName?.length>17">..</span>
+                           </h6>
+                           <h6 class="moreipsis"*ngIf="!isPartnerView && asset?.beeTemplate">
+                              <span translate> Version <strong>{{asset?.versionInString}}</strong></span>
                            </h6>
                            <h6  *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
                               By <strong>{{asset?.vendorCompanyName | slice:0:17}}</strong>
