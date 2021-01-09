@@ -220,7 +220,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     getOrgCampaignTypes() {
         this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
             data => {
-                console.log(data);
                 this.setCampaignAccessValues(data.video, data.regular, data.social, data.event,data.landingPageCampaign,data.partnerLandingPage);
             });
     }
@@ -229,7 +228,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
                 (result: any) => {
                     if (result !== "") {
-                        console.log(result);
                         this.refService.companyId = result;
                         this.getOrgCampaignTypes();
                     }
@@ -257,8 +255,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.setViewType('Folder-Grid');
             }else{
                 this.refService.manageRouter = true;
-                if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
-                else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
+                if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember || this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember) {
+                     this.setCampaignAccessValues(true, true, true, true,false,false) 
+                }else { 
+                    if (!this.refService.companyId) { 
+                        this.getCompanyIdByUserId(); 
+                    }else { 
+                         this.getOrgCampaignTypes();
+                     }
+                 }
                 
                 this.pagination.maxResults = 12;
                 this.categoryId = this.route.snapshot.params['categoryId'];

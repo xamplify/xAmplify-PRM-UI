@@ -237,8 +237,14 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
               this.pagination.teamMemberAnalytics = false;
           }
           this.refService.manageRouter = true;
-          if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
-          else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
+          if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember || this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember) {
+               this.setCampaignAccessValues(true, true, true, true,false,false) 
+            }else { 
+                if (!this.refService.companyId) { this.getCompanyIdByUserId(); 
+                } else { 
+                    this.getOrgCampaignTypes(); 
+                }
+             }
           this.pagination.maxResults = 12;
           if(this.folderListViewInput!=undefined){
 			this.categoryId = this.folderListViewInput['categoryId'];

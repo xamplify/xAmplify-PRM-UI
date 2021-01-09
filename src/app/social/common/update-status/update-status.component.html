@@ -268,7 +268,7 @@
 								<i class="fa fa-image" aria-hidden="true"></i>
 								<input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
 							</label>
-							<span *ngIf="!authenticationService.module.isPrm &&!authenticationService.module.isPrmTeamMember" class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
+							<span *ngIf="!authenticationService.module.isPrm &&!authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-video-camera" aria-hidden="true"></i>
 							</span>
 							<span *ngIf="showRssFeed" class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
