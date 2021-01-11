@@ -157,6 +157,7 @@ export class Properties {
   samlSettings = "Allbound SAML Settings";
   leadPipelines = "Lead Pipelines";
   dealPipelines = "Deal Pipelines";
+  tags = "Tags";
 
   /********Error Messages************* */
   roleUpdatedMessage = "Your role has been changed.Please login again.";
