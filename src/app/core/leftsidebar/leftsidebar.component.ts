@@ -308,6 +308,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner =this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
             this.partnershipEstablishedOnlyWithPrm = data.partnershipEstablishedOnlyWithPrm;
             this.authService.partnershipEstablishedOnlyWithPrm = this.partnershipEstablishedOnlyWithPrm;
+            this.authService.folders = data.folders;
         },
           error => {
             this.loading = false;

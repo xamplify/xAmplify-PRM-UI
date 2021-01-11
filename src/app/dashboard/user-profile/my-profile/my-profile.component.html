@@ -116,7 +116,7 @@
                                         &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"  (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings | translate}}</a>
                             </li>
-                            <li  [ngClass]="{'active-tab': activeTabName == 'categories'}" class="hidden-xs">
+                            <li *ngIf="authenticationService.folders"  [ngClass]="{'active-tab': activeTabName == 'categories'}" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}" (click)="activateTab('categories');clearCustomResponse()">{{properties.folders | translate}}</a>
                             </li>
                             <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" class="hidden-xs" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
@@ -129,25 +129,8 @@
                                 <a (click)="activateTab('templates');clearCustomResponse()" translate>
                                      Your Templates </a>
                             </li>
-
                         </ng-container>
-
-                           <!--  <li *ngIf="(authenticationService.isOrgAdmin())">
-                                <a [class.disabled]="authenticationService.isSuperAdmin()">
-                                    <div class="col-xs-2 p0"><i class="icon-settings"></i></div>
-                                    <div class="col-xs-5 p0">
-                                        <h4 class="m0">Enable/Disable</h4>
-                                        <h6 class='bold'>(Org Admin)</h6>
-                                    </div>
-                                    <div class="col-xs-5">
-                                        <label class="switch" style="top: -8px;left: 20px;">
-                                            <input type="checkbox" [(ngModel)]="status" (change)="changeStatus()"
-                                                id="status">
-                                            <span class="slider round" style="margin:0px !important"></span>
-                                        </label>
-                                    </div>
-                                </a>
-                            </li> -->
+                          
                         </ul>
                     </div>
                     <!-- END MENU -->
@@ -958,7 +941,7 @@
                                                                     <span>{{category.name}}</span>
                                                                 </h4>
                                                                 <h6 class="moreipsis">
-                                                                    <span translate> Created By <b>{{category.createdBy}}</b></span>
+                                                                    <span translate> Created By <strong>{{category.createdBy}}</strong></span>
                                                                 </h6>
                                                             </td>
                                                             <td class="text-center">
@@ -973,28 +956,33 @@
                                                                 <div class="actions-block override-actions">
                                                                     <ng-container *ngIf="category.defaultCategory">
                                                                         <a data-placement="top" class="disabled-event" title="Default Folder Can't Be Edited">
-                                                                            <i class="fa fa-pencil-square-o disabled-event"></i>
+                                                                            <i class="fa fa-pencil-square-o disabled-event" aria-hidden="true"></i>
                                                                         </a>
                                                                         <a id="template-delete" class="disabled-event" data-placement="top" title="Default Folder Can't Be Deleted">
-                                                                            <i class="fa fa-trash-o disabled-event"></i>
+                                                                            <i class="fa fa-trash-o disabled-event" aria-hidden="true"></i>
                                                                         </a>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="!category.defaultCategory">
                                                                         <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="getCategoryById(category)">
-                                                                            <i class="fa fa-pencil-square-o"></i>
+                                                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                                         </a>
                                                                         <a id="template-delete" (click)="confirmDeleteCategory(category)" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                            <i class="fa fa-trash-o"></i>
+                                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                                         </a>
                                                                     </ng-container>
-                                                                    <a *ngIf="categoryPagination.previewAccess" data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewItems(category)">
-                                                                        <i class="fa fa-eye"></i>
-                                                                    </a>
-
-                                                                    <a *ngIf="!categoryPagination.previewAccess" title="You do not have permission to preview">
-                                                                        <i class="fa fa-eye disabled-event"></i>
-                                                                    </a>
-
+                                                                    <ng-container *ngIf="category?.count>0">
+                                                                        <a *ngIf="categoryPagination.previewAccess" data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewItems(category)">
+                                                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                        </a>
+                                                                        <a *ngIf="!categoryPagination.previewAccess" title="You do not have permission to preview">
+                                                                            <i class="fa fa-eye disabled-event" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="category?.count==0">
+                                                                        <a data-toggle="tooltip" data-placement="top" title="Nothing To Preview">
+                                                                            <i class="fa fa-eye  disabled-event" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    </ng-container>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -1016,7 +1004,7 @@
                                         <div class="portlet-title" *ngIf="!folderPreviewLoader.isLoading">
                                             <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">{{categoryPreviewItem.categoryName}}</h4>
                                             <a class="close-circle pull-right" (click)="isFolderPreview=false">
-                                                <i class="fa fa-times"></i>
+                                                <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
                                         </div>
                                         <br>
@@ -1029,23 +1017,23 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr *ngFor="let item of categoryPreviewItem.items" [className]="(item?.previewAccess  && item.moduleItemsCount>0)  ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(categoryPreviewItem.categoryId,item)" >
-                                                        <td>
-                                                            <h5 class="xamplify-folder-banner">{{item.moduleName}}</h5>
-                                                            <img class="img-class-list" src="{{item.moduleIcon}}">
-                                                        </td>
-                                                        <td>
-                                                            <div  class="override-actions">
-                                                                <a  [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'">
-                                                                   <span *ngIf="item.previewAccess" class="circled-number" (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></span>
-                                                                   <span *ngIf="!item.previewAccess" class="circled-number xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></span>
-                                                                </a>
-                                                            </div >
-                                                        </td> 
-                                                    </tr>
-
+                                                    <ng-container *ngFor="let item of categoryPreviewItem.items:let i=index">
+                                                        <tr  [className]="(item?.previewAccess  && item.moduleItemsCount>0)  ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(categoryPreviewItem.categoryId,item)" >
+                                                            <td>
+                                                                <h5 class="xamplify-folder-banner">{{item.moduleName}}</h5>
+                                                                <img class="img-class-list" src="{{item.moduleIcon}}" alt="">
+                                                            </td>
+                                                            <td>
+                                                                <div  class="override-actions">
+                                                                    <a  [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'">
+                                                                       <span *ngIf="item.previewAccess" class="circled-number" (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></span>
+                                                                       <span *ngIf="!item.previewAccess" class="circled-number xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></span>
+                                                                    </a>
+                                                                </div >
+                                                            </td> 
+                                                        </tr>
+                                                    </ng-container>
                                                 </tbody>
-
                                             </table>
 
                                         </div>
