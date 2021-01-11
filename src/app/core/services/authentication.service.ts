@@ -254,7 +254,7 @@ export class AuthenticationService {
         const isVendor = roleNames.indexOf(this.roleName.vendorRole) > -1;
         const isMarketingRole = roleNames.indexOf(this.roleName.marketingRole) > -1;
         const isVendorTierRole = roleNames.indexOf(this.roleName.vendorTierRole) > -1;
-		const isPrmRole = roleNames.indexOf(this.roleName.prmRole) > -1;
+		    const isPrmRole = roleNames.indexOf(this.roleName.prmRole) > -1;
         /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 &&
          (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
         if (roleNames.length === 1) {
@@ -268,11 +268,11 @@ export class AuthenticationService {
             return "Orgadmin";
           } else if (isVendor) {
             return "Vendor";
-          }else if(isMarketingRole){
+          }else if(isMarketingRole && !isPartner){
             return "Marketing";
           }else if(isMarketingRole && isPartner){
             return "Marketing & Partner";
-          }else if(isPrmRole){
+          }else if(isPrmRole && !isPartner){
             return "Prm";
           }else if(isPrmRole && isPartner){
             return "Prm & Partner";
