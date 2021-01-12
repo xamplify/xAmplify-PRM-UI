@@ -90,6 +90,7 @@ export class AuthenticationService {
   leftSideMenuLoader = false;
   partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
   partnershipEstablishedOnlyWithPrm = false;
+  folders = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -495,6 +496,7 @@ export class AuthenticationService {
 	  this.contactsCount = false;
     this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     this.partnershipEstablishedOnlyWithPrm = false;
+    this.folders = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
@@ -505,7 +507,7 @@ export class AuthenticationService {
           window.location.href = 'https://www.xamplify.com/';
         } else {
           this.closeSwal();
-          this.router.navigate(['/'])
+          this.router.navigate(['/']);
         }
       }
     }
