@@ -2662,8 +2662,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             return null;
         } catch (error) { console.log('empty tag'); }
     }
+
+    public validatorsTag = [this.startsWithAt];
+
     validateTags(event: Event) {
-        console.log(this.tagNames.length)
         this.tag.isValid = true;
         if (this.tag.id > 0 && this.tagNames.length == 1) {
             return false;
@@ -2671,7 +2673,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             return true;
         }
     }
-    public validatorsTag = [this.startsWithAt];
 
     addTag() {
         this.isAddTag = true;
@@ -2679,7 +2680,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tagModalTitle = 'Enter Tag Details';
         this.tagButtonSubmitText = "Save";
         this.tagNames = [];
-        this.tag.isValid = true;
         $('#addTagModalPopup').modal('show');
     }
 
@@ -2690,7 +2690,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.removeTagErrorClass();
         this.tagResponse = new CustomResponse();
         this.isAddTag = false;
-        this.tag.isValid = true;
     }
 
     addTagErrorMessage(errorMessage: string) {
@@ -2702,7 +2701,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tag.isValid = true;
         this.tagResponse = new CustomResponse();
         this.tagErrorMessage = "";
-
     }
 
     saveOrUpdateTag() {

@@ -15,6 +15,10 @@ import { ColumnInfo } from '../../forms/models/column-info';
 import { DomSanitizer } from "@angular/platform-browser";
 import { EnvService } from 'app/env.service'
 import { UtilService } from '../../core/services/util.service';
+import { Tag } from 'app/dashboard/models/tag'
+import { UserService } from '../../core/services/user.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+
 
 declare var $, CKEDITOR: any;
 @Component({
@@ -40,12 +44,19 @@ export class AddLmsComponent implements OnInit {
   siteKey = "";
   selectedFormData: Array<Form> = [];
   selectedFormId: number;
-  constructor(private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public lmsService: LmsService, private router: Router, public sortOption: SortOption, public pagerService: PagerService, public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService) {
+  selectedTags: number[]= [];
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  loggedInUserId= 0;
+  tags: Array<Tag> = new Array<Tag>();
+  tagPagination: Pagination = new Pagination();
+  constructor(public userService: UserService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public lmsService: LmsService, private router: Router, public sortOption: SortOption, public pagerService: PagerService, public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService) {
     this.siteKey = this.envService.captchaSiteKey;
+    this.loggedInUserId = this.authenticationService.getUserId();
+    this.listTags(this.tagPagination);
   }
 
   ngOnInit() {
-
+    
   }
   ngOnDestroy() {
 
@@ -172,6 +183,37 @@ selectedForm(form: any, event) {
       this.selectedFormId = null;
       this.selectedFormData = [];
   }
+}
+
+updateSelectedTags(tag: Tag,event: any){
+    if (event.target.checked) {
+      this.selectedTags.push(tag.id);
+    } else {
+      this.selectedTags.splice($.inArray(tag.id), 1);
+    }
+    console.log(this.selectedTags)
+  }
+
+  listTags(pagination: Pagination) {
+    if (this.referenceService.companyId > 0) {
+        pagination.userId = this.loggedInUserId;
+        this.referenceService.startLoader(this.httpRequestLoader);
+        this.userService.getTags(pagination)
+            .subscribe(
+                response => {
+                    const data = response.data;
+                    this.tags = data.tags;
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                },
+                (error: any) => {
+                    this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                },
+                () => this.logger.info('Finished listTags()')
+            );
+    } else {
+        this.customResponse = new CustomResponse('ERROR', 'Unable to get Tags.', true);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+    }
 }
 
 }
