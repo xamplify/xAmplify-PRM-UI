@@ -1017,8 +1017,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <ng-container *ngFor="let item of categoryPreviewItem.items:let i=index">
-                                                        <tr  [className]="(item?.previewAccess  && item.moduleItemsCount>0)  ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(categoryPreviewItem.categoryId,item)" >
+                                                        <tr *ngFor="let item of categoryPreviewItem.items;let i=index"  [className]="(item?.previewAccess  && item.moduleItemsCount>0)  ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(categoryPreviewItem.categoryId,item)" >
                                                             <td>
                                                                 <h5 class="xamplify-folder-banner">{{item.moduleName}}</h5>
                                                                 <img class="img-class-list" src="{{item.moduleIcon}}" alt="">
@@ -1032,10 +1031,8 @@
                                                                 </div >
                                                             </td> 
                                                         </tr>
-                                                    </ng-container>
                                                 </tbody>
                                             </table>
-
                                         </div>
                                     </ng-container>
                                     
