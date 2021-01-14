@@ -87,6 +87,7 @@ export class ManageTeamMembersComponent implements OnInit {
 	partnershipEstablishedOnlyWithVendorTier = false;
 	partnershipEstablishedWithPrmAndLoggedInAsPartner = false;
 	textString = "";
+	workInProgress = false;
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -110,6 +111,7 @@ export class ManageTeamMembersComponent implements OnInit {
 			this.teamMemberService.listTeamMemberModules(input)
 				.subscribe(
 					data => {
+						this.workInProgress = false;
 						let response = data.data;
 						if (data.statusCode == 200) {
 							this.teamMemberModules = response.modules;
@@ -133,7 +135,9 @@ export class ManageTeamMembersComponent implements OnInit {
 							}else{
 								this.textString = "User & Permissions";
 							}
-						} else {
+						} else if(data.statusCode==404) {
+							this.workInProgress = true;
+						}else{
 							this.showUIError("Please pass the userId as input");
 						}
 					},

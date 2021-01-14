@@ -1,4 +1,4 @@
- <div class="page-content" [style.background-color]="referenceService.pageContnetBgColor" [class.ml0]="authenticationService.isSuperAdmin()">
+ <div class="page-content" *ngIf="!workInProgress" [style.background-color]="referenceService.pageContnetBgColor" [class.ml0]="authenticationService.isSuperAdmin()">
   <div class="page-bar">
     <ul class="page-breadcrumb">
         <li *ngIf="!authenticationService.isSuperAdmin()">
@@ -340,7 +340,11 @@
   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   </div>
 </div>
-
+<div class="page-content" *ngIf="workInProgress">
+  <div class="alert alert-info">
+    <strong>Work In Progress</strong>
+  </div>
+</div>
 
 <!-- Delete Team Member Modal Popup -->
   <div class="modal fade right" id="delete-team-member-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
