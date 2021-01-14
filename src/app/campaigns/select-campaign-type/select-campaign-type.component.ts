@@ -7,7 +7,6 @@ import { Roles } from '../../core/models/roles';
 import { CampaignService } from '../services/campaign.service';
 import { UserService } from 'app/core/services/user.service';
 import { CampaignAccess } from '../models/campaign-access';
-import { HomeComponent } from 'app/core/home/home.component';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { CustomResponse } from 'app/common/models/custom-response';
 
@@ -16,7 +15,7 @@ declare var Metronic, Layout , Demo,TableManaged,swal:any;
     selector: 'app-select-campaign',
     templateUrl: './select-campaign-type-component.html',
     styleUrls: ['../../../assets/css/pricing-table.css'],
-    providers: [HomeComponent,CampaignAccess]
+    providers: [CampaignAccess]
   })
 
 export class SelectCampaignTypeComponent implements OnInit{
@@ -26,26 +25,19 @@ export class SelectCampaignTypeComponent implements OnInit{
     hasSocialStatusRole = false;
     isOrgAdmin = false;
     isSocialCampaignAccess = true;
-    isOnlyPartner = false;
     changeClass = 'col-xs-12';
     videoCampaign = false;
     emailCampaign = false;
     socialCampaign = false;
     eventCampaign = false;
     customResponse:CustomResponse = new CustomResponse();
+    loading = true;
+    companyIdError = false;
+    loggedInUserCompanyId: number = 0;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     constructor(private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService,
-      public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess,
-      public homeComponent:HomeComponent){
-        this.logger.info("select-campaign-type constructor loaded");
-        let roles = this.authenticationService.getRoles();
-        if(roles.indexOf(this.roleName.socialShare)>-1|| roles.indexOf(this.roleName.allRole)>-1){
-            this.hasSocialStatusRole = true;
-        }
-        if(roles.indexOf(this.roleName.orgAdminRole)>-1){
-            this.isOrgAdmin = true;
-        }
-        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+      public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess){
+       
     }
    cssClassChange(){
       const countOfTrues = [this.campaignAccess.videoCampaign,this.campaignAccess.emailCampaign, this.campaignAccess.socialCampaign, this.campaignAccess.eventCampaign
@@ -58,7 +50,7 @@ export class SelectCampaignTypeComponent implements OnInit{
 
     }
     getOrgCampaignTypes(){
-      this.campaignService.getOrgCampaignTypes( this.refService.companyId).subscribe(
+      this.campaignService.getOrgCampaignTypes(this.loggedInUserCompanyId).subscribe(
       data=>{
         this.campaignAccess.videoCampaign = data.video;
         this.campaignAccess.emailCampaign = data.regular;
@@ -68,28 +60,38 @@ export class SelectCampaignTypeComponent implements OnInit{
         this.campaignAccess.landingPageCampaign = data.landingPageCampaign;
         this.refService.smsCampaign = data.sms;
         this.cssClassChange();
+        this.loading = false;
+      },(error:any)=>{
+        this.logger.errorPage(error); 
       });
     }
     getCompanyIdByUserId(){
-      try {
-        this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
-          (result: any) => {
-            if (result !== "") {
-              console.log(result);
-              this.refService.companyId = result;
-              this.getOrgCampaignTypes();
-            }
-          }, (error: any) => { console.log(error); }
-        );
-      } catch (error) { console.log(error);  }
+      this.loading = true;
+      this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
+        (result: any) => {
+          if (result !== "") {
+            this.loggedInUserCompanyId = result;
+          }
+        }, (error: any) => {
+          this.logger.log(error);
+          this.logger.errorPage(error); 
+        },
+        ()=>{
+          if(this.loggedInUserCompanyId>0){
+            this.companyIdError = false;
+            this.refService.companyId = this.loggedInUserCompanyId;
+            this.getOrgCampaignTypes();
+          }else{
+            this.companyIdError = true;
+            this.loading = false;
+          }
+          
+        }
+      );
      }
     ngOnInit() {
         try{
-            Metronic.init();
-            Layout.init();
-            Demo.init();
-            TableManaged.init();
- 		this.getCompanyIdByUserId(); 
+ 		      this.getCompanyIdByUserId(); 
         }catch(error){
             this.logger.error("error in select-campaign-type ngOnInit()", error);
         }

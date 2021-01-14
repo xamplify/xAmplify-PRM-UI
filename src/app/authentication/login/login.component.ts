@@ -97,18 +97,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
     this.authenticationService.login(authorization, body, userName).subscribe(result => {
       if (localStorage.getItem('currentUser')) {
-        // if user is coming from login
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.xtremandLogger.log(currentUser);
         this.xtremandLogger.log(currentUser.hasCompany);
         localStorage.removeItem('isLogout');
         this.redirectTo(currentUser);
-        // if user is coming from any link
-        // if (this.authenticationService.redirectUrl) {
-        //     this.router.navigate([this.authenticationService.redirectUrl]);
-        //     this.authenticationService.redirectUrl = null;
-        // }          
-
       } else {
         this.loading = false;
         this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
@@ -204,6 +197,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     module.isOnlyPartner = false;
     module.isReDistribution = false;
     this.authenticationService.isShowRedistribution = false;
+    this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
+    this.authenticationService.partnershipEstablishedOnlyWithPrm = false;
   }
 
   ngOnInit() {
@@ -218,7 +213,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.router.navigate( ['/vanity-domain-error'] );
             return;
           }
-          
           this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
           this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
           if (result.companyBgImagePath) {

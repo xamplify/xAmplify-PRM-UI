@@ -1821,11 +1821,10 @@ export class ReferenceService {
 	}
 
 	scrollSmoothToDiv(elementId: string) {
-		const scrollingElement = (document.scrollingElement || document.body)
 		$("#" + elementId).animate({ scrollTop: document.body.scrollHeight }, 500);
 	}
-	getOrgCampaignTypes(userId: any) {
-		return this.http.get(this.authenticationService.REST_URL + `campaign/access/${userId}?access_token=${this.authenticationService.access_token}`)
+	getOrgCampaignTypes(companyId: any) {
+		return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}`)
 			.map(this.extractData)
 			.catch(this.handleError);
 	}

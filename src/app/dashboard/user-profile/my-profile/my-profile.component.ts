@@ -352,6 +352,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					this.roleNames = "OrgAdmin";
 				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0) {
 					this.roleNames = "Marketing";
+				}else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 20).length !== 0) {
+					this.roleNames = "PRM";
 				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
 					this.roleNames = "Partner";
 				}
