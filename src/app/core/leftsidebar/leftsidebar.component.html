@@ -191,8 +191,8 @@
                 </li>
 
                 <!-- ------Deal Registration------ -->
-                <li *ngIf="authService.user.hasCompany && authService.enableLeads && 
-                (partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner || partnershipEstablishedOnlyWithPrm || authService.module.isPrm || authService.module.isPrmTeamMember)" [ngClass]="{'active': location.path().includes('deal')}">
+                <li *ngIf="authService.user.hasCompany && authService.enableLeads && opportunityDeals
+                " [ngClass]="{'active': location.path().includes('deal')}">
                     <a [routerLink]="['/home/deal/']">
                     <i class="fa fa-money" aria-hidden="true"></i>
                     <span class="title">Opportunities</span>
@@ -200,7 +200,7 @@
                     <span class="selected"></span>
                     </a>
                  </li> 
-                <li *ngIf="authService.user.hasCompany && authService.enableLeads && !partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && !partnershipEstablishedOnlyWithPrm && !authService.module.isPrm && !authService.module.isPrmTeamMember" [ngClass]="{'active': (location.path().includes('deal') || location.path().includes('leads') && !location.path().includes('assign') && !location.path().includes('shared')) }">
+                <li *ngIf="authService.user.hasCompany && authService.enableLeads && opportunityLeadsAndDeals" [ngClass]="{'active': (location.path().includes('deal') || location.path().includes('leads') && !location.path().includes('assign') && !location.path().includes('shared')) }">
                     <a href="javascript:;" (click)="openOrCloseTabs('deal')">
                         <i class="fa fa-money" aria-hidden="true"></i>
                         <span class="title" translate>Opportunities</span>
