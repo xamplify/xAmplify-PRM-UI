@@ -226,3 +226,11 @@ span.ui-column-resizer {
   height: auto !important;
 }
 
+.hidden{
+    display: none !important;
+}
+
+.min-h{
+    height: 102px !important;
+}
+
