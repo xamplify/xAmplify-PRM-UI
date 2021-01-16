@@ -791,7 +791,7 @@
                       <th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs" translate>Reason</th>
                       <th class="text-center" *ngIf="(contactsByType.selectedCategory == 'non-active' && isPartner) || contactsByType.selectedCategory == 'unsubscribe'" translate>ACTIONS</th>
                       <th *ngIf="contactsByType.selectedCategory !== 'invalid'"></th>
-                      <ng-container *ngIf=" authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid' &&  !assignLeads">
+                      <ng-container *ngIf="authenticationService.module.isCampaign && ((!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) || !isPartner)&& contactsByType.selectedCategory != 'invalid' &&  !assignLeads">
                       <th scope="col" class="text-center">Total Campaigns</th>
                       <th scope="col" class="text-center">Active Campaigns</th>
                       <th scope="col" class="text-center">Email Opened</th>
@@ -881,7 +881,7 @@
                           </div>
 						</td>
 						<td></td>
-						<ng-container *ngIf="authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid' &&  !assignLeads">
+						<ng-container *ngIf="authenticationService.module.isCampaign && ((!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) || !isPartner) && contactsByType.selectedCategory != 'invalid' &&  !assignLeads">
 							<td class="text-center">
                 <div>
                   <button class="btn btn-default btn-xs re-distributed-high-level">
