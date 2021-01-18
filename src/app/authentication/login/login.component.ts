@@ -51,15 +51,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (sessionExpiredMessage != "") {
       this.setCustomeResponse("ERROR", sessionExpiredMessage);
     }
+    let serverStoppedMessage = this.authenticationService.serviceStoppedMessage;
+    if (serverStoppedMessage != "") {
+      this.setCustomeResponse("ERROR", serverStoppedMessage);
+    }
   }
 
   public login() {
+    this.authenticationService.reloadLoginPage = false;
     try {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if (currentUser != undefined) {
         this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
       } else {
         this.authenticationService.sessinExpriedMessage = "";
+        this.authenticationService.serviceStoppedMessage = "";
         this.loading = true;
         this.resendActiveMail = false;
         if (!this.model.username || !this.model.password) {
@@ -204,34 +210,40 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     try {
       this.mainLoader = true;
-      if (this.vanityURLService.isVanityURLEnabled()) {
-        this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
-          this.vanityURLEnabled = result.enableVanityURL;               
-          this.authenticationService.v_companyName = result.companyName;
-          this.authenticationService.vanityURLink = result.vanityURLink;
-          if(!this.vanityURLEnabled){
-            this.router.navigate( ['/vanity-domain-error'] );
-            return;
-          }
-          this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
-          this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
-          if (result.companyBgImagePath) {
-            this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
-          } else {
-            this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
-          }
-          this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-          this.authenticationService.loginScreenDirection = result.loginScreenDirection;
-          this.vanityURLService.setVanityURLTitleAndFavIcon();
-        }, error => {
-          console.log(error);
-        });
-      } else {
-        this.isNotVanityURL = true;        
+      if(this.authenticationService.reloadLoginPage){
+        this.authenticationService.reloadLoginPage = false;
+        location.reload();
+      }else{
+        if (this.vanityURLService.isVanityURLEnabled()) {
+          this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
+            this.vanityURLEnabled = result.enableVanityURL;               
+            this.authenticationService.v_companyName = result.companyName;
+            this.authenticationService.vanityURLink = result.vanityURLink;
+            if(!this.vanityURLEnabled){
+              this.router.navigate( ['/vanity-domain-error'] );
+              return;
+            }
+            this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
+            this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
+            if (result.companyBgImagePath) {
+              this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
+            } else {
+              this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+            }
+            this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
+            this.authenticationService.loginScreenDirection = result.loginScreenDirection;
+            this.vanityURLService.setVanityURLTitleAndFavIcon();
+          }, error => {
+            console.log(error);
+          });
+        } else {
+          this.isNotVanityURL = true;        
+        }
+        this.cleaningLeftSidebar();
+        this.authenticationService.navigateToDashboardIfUserExists();
+        setTimeout(() => { this.mainLoader = false; }, 900);
       }
-      this.cleaningLeftSidebar();
-      this.authenticationService.navigateToDashboardIfUserExists();
-      setTimeout(() => { this.mainLoader = false; }, 900);
+      
     } catch (error) { this.xtremandLogger.error('error' + error) }
   }
   ngOnDestroy() {

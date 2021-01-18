@@ -97,6 +97,8 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
         let data = result.data;
         pagination.totalRecords = data.totalRecords;
         pagination = this.pagerService.getPagedItems(pagination, data.list);
+      }else{
+        this.router.navigate(['/404']);
       }
       this.loading = false;
       this.referenceService.loading(this.listLoader, false);
