@@ -12,7 +12,6 @@ import { AuthGuard } from '../auth.guard';
 import { SlimLoadingBarModule, SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { CopyrightComponent } from './copyright/copyright.component';
 import { CKEditorModule } from "ng2-ckeditor";
-
 @NgModule({
     imports: [CKEditorModule, CommonModule, RouterModule, SharedModule, SlimLoadingBarModule.forRoot()],
     declarations: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent,NotificationsComponent],

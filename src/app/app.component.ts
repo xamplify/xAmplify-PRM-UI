@@ -104,8 +104,9 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
             if (evt instanceof NavigationEnd) {
                 this.router.navigated = false;
                 let currentUrl = evt.url;
-                console.log("current Url:-"+currentUrl);
                 let loginUrl = currentUrl.indexOf('/login')>-1;
+                let logoutUrl = currentUrl.indexOf('/logout')>-1;
+                let expiredUrl = currentUrl.indexOf('/expired')>-1;
                 let emptyUrl = currentUrl.indexOf('-/')>-1;
                 let formUrl = currentUrl.indexOf('f/')>-1;
                 let signUpUrl = currentUrl.indexOf('signup/')>-1;
@@ -140,16 +141,12 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
                 let exculdeUrls =  ( !loginUrl && !emptyUrl && !signUpUrl && !forgotPasswordUrl && !userLockUrl && !registerUrl &&  !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
                                   !shareUrl && !showCampaignVideoUrl &&  !showCampaignEmail &&  !companyPageUrl && !partnerPageUrl && !logeUrl &&
                                   !unsubscribeUrl && !serviceUnavailableUrl && !accessDeniedUrl &&   !rsvpUrl && !smsShowCampaignUrl && !showEventCampaignUrl &&
-                                  !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl && !samlSecurityUrl
+                                  !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl && !samlSecurityUrl && !logoutUrl && !expiredUrl
                                   );
 
                  if(exculdeUrls){
                   this.logoutFromAllTabs();
-                 }else{
-                  console.log("Will not be logged out");
                  }
-                 
-               
                 window.scrollTo(0, 0);
             }
             this.navigationInterceptor(evt);

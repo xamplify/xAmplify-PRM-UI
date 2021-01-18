@@ -79,6 +79,7 @@ export class AuthenticationService {
   vendorRoleHash = "";
   partnerRoleHash = "";
   sessinExpriedMessage = "";
+  serviceStoppedMessage = "";
   private userLoggedIn = new Subject<boolean>();
   pagination: Pagination = new Pagination();
   userPreferredLanguage: string;
@@ -91,6 +92,7 @@ export class AuthenticationService {
   partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
   partnershipEstablishedOnlyWithPrm = false;
   folders = false;
+  reloadLoginPage = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -588,6 +590,13 @@ export class AuthenticationService {
 
   revokeAccessToken(){
     let self = this;
+    this.showTokenExpiredSweetAlert();
+    setTimeout(function () {
+      self.logout();
+    }, 5000);
+  }
+
+  showTokenExpiredSweetAlert(){
     swal(
 			{
 				title: 'Your token is expried.We are redirecting you to login page.',
@@ -597,11 +606,8 @@ export class AuthenticationService {
 				allowOutsideClick:false
 			}
 		);
-    setTimeout(function () {
-      location.reload();
-      self.logout();
-    }, 5000);
   }
+
 
   checkPartnerAccess(userId: number) {
     return this.http.get(this.REST_URL + "admin/hasPartnerAccess/" + userId + "?access_token=" + this.access_token, "")
