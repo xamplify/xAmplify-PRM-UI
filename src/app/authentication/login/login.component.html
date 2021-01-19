@@ -68,12 +68,8 @@
 			<h4>Or login with</h4>
 			<ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of socialProviders">
-					<li>
-
+					<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
 						<a class="social-icon-color {{socialProvider.iconName}}" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)"></a>
-
-				
-
 					</li>
 				</ng-container>
 			</ul>
