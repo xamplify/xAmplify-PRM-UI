@@ -25,7 +25,7 @@
                     </div>
                     <div class=" row " style="padding-bottom: 10px;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                            <input style="width: 80%;height: 35px;" placeholder="Add title ">
+                            <input class="form-control" placeholder="Add title ">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px;">
@@ -49,15 +49,30 @@
                                 <span class="caption-subject font-blue-madison bold uppercase">Tags</span>
                             </div>
                         </div>
-                        <div style="overflow-y: scroll;">
+                        <div class="scroller">
                             <div *ngFor="let tag of tags">
                                 <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input"
-                                    (click)="updateSelectedTags(tag,$event)">
-                                {{tag.tagName}}
-                            </label>
+                                    <input type="checkbox" class="form-check-input"
+                                        (click)="updateSelectedTags(tag,$event)">
+                                    {{tag.tagName}}
+                                </label>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <div class="portlet light">
+                        <div class="portlet-title tabbable-line">
+                            <div class="caption caption-md">
+                                <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                                <span class="caption-subject font-blue-madison bold uppercase">Folder</span>
+                            </div>
+                        </div>
+                        <select class="form-control">
+                            <option *ngFor="let category of categoryNames" [ngValue]="category.id" data-toggle="tooltip" data-placement="top" title="{{category.name}}">
+                                {{category.name | slice: 0: 25}}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>

@@ -46,7 +46,7 @@ import { DragulaService } from 'ng2-dragula';
 import { Pipeline } from '../../models/pipeline';
 import { PipelineStage } from '../../models/pipeline-stage';
 
-import { Tag } from '../../models/tag'
+import { TagsComponent } from '../../tags/tags.component'
 declare var swal, $, videojs: any;
 
 @Component({
@@ -55,7 +55,7 @@ declare var swal, $, videojs: any;
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/phone-number-plugin.css'],
-    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
+    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent, TagsComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -204,24 +204,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     pipelineStageErrorMessage = "";
     requiredStageMessage = "Required atleast one valid stage.";
     pipelinePreview = false;
-
-    tag: Tag = new Tag();
-    isAddTag = false;
-    addTagLoader: HttpRequestLoader = new HttpRequestLoader();
     tagPagination: Pagination = new Pagination();
-    tagSortOption: SortOption = new SortOption();
-    tagResponse: CustomResponse = new CustomResponse();
-    tagButtonSubmitText = "Save";
-    tagModalTitle = "Enter Folder Details";
-    tagErrorMessage = "";
-    tagNames:string[] = [];
     
     constructor(public videoFileService: VideoFileService,  public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
         private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-            PagerService,private renderer:Renderer, private translateService: TranslateService) {
+            PagerService,private renderer:Renderer, private translateService: TranslateService, public tagsComponent: TagsComponent) {
                 this.referenceService.renderer = this.renderer;
                 this.isUser = this.authenticationService.isOnlyUser();     
                 this.pageNumber = this.paginationComponent.numberPerPage[0];  
@@ -1538,8 +1528,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.listAllPipelines(this.pipelinePagination);
         }else if(this.activeTabName=="tags"){
             this.activeTabHeader = this.properties.tags;
-            this.tagPagination = new Pagination();
-            this.listTags(this.tagPagination);        }
+            this.tagsComponent.ngOnInit();
+       }
 
         this.referenceService.goToTop();
     }
@@ -2587,229 +2577,5 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.listAllPipelines(this.pipelinePagination);
     }
     pipelineEventHandler(keyCode: any) { if (keyCode === 13) { this.searchPipelines(); } }
-
-    /***************Tags*************** */
-    listTags(pagination: Pagination) {
-        if (this.referenceService.companyId > 0) {
-            pagination.userId = this.loggedInUserId;
-            this.referenceService.startLoader(this.httpRequestLoader);
-            this.userService.getTags(pagination)
-                .subscribe(
-                    response => {
-                        const data = response.data;
-                        pagination.totalRecords = data.totalRecords;
-                        this.categorySortOption.totalRecords = data.totalRecords;
-                        $.each(data.tags, function (_index: number, tag: any) {
-                            tag.displayTime = new Date(tag.createdDateInUTCString);
-                        });
-                        pagination = this.pagerService.getPagedItems(pagination, data.tags);
-                        this.referenceService.stopLoader(this.httpRequestLoader);
-                    },
-                    (error: any) => {
-                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-                    },
-                    () => this.logger.info('Finished listTags()')
-                );
-        } else {
-            this.customResponse = new CustomResponse('ERROR', 'Unable to get Tags.', true);
-            this.referenceService.stopLoader(this.httpRequestLoader);
-        }
-    }
-
-     /********************Pagaination&Search Code*****************/
-
-    /*************************Sort********************** */
-    tagSortBy(text: any) {
-        this.tagSortOption.selectedTagDropDownOption = text;
-        this.getAllTagsFilteredResults(this.tagPagination);
-    }
-
-
-    /*************************Search********************** */
-    searchTags() {
-        this.getAllTagsFilteredResults(this.tagPagination);
-    }
-
-    tagPaginationDropdown(items: any) {
-        this.tagSortOption.itemsSize = items;
-        this.getAllTagsFilteredResults(this.tagPagination);
-    }
-
-    /************Page************** */
-    setTagPage(event: any) {
-        this.tagResponse = new CustomResponse();
-        this.customResponse = new CustomResponse();
-        this.tagPagination.pageIndex = event.page;
-        this.listTags(this.tagPagination);
-    }
-
-    getAllTagsFilteredResults(pagination: Pagination) {
-        this.tagResponse = new CustomResponse();
-        this.customResponse = new CustomResponse();
-        this.tagPagination.pageIndex = 1;
-        this.tagPagination.searchKey = this.tagSortOption.searchKey;
-        this.tagPagination = this.utilService.sortOptionValues(this.tagSortOption.selectedTagDropDownOption, this.tagPagination);
-        this.listTags(this.tagPagination);
-    }
-    tagEventHandler(keyCode: any) { if (keyCode === 13) { this.searchTags(); } }
-
-    public startsWithAt(control: FormControl) {
-        try {
-            let checkTag: string;
-            if (control.value.charAt(0) === ' ' && checkTag.length === 0) {
-                return { 'startsWithAt': true };
-            }
-            return null;
-        } catch (error) { console.log('empty tag'); }
-    }
-
-    public validatorsTag = [this.startsWithAt];
-
-    validateTags(event: Event) {
-        this.tag.isValid = true;
-        if (this.tag.id > 0 && this.tagNames.length == 1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    addTag() {
-        this.isAddTag = true;
-        this.tag = new Tag();
-        this.tagModalTitle = 'Enter Tag Details';
-        this.tagButtonSubmitText = "Save";
-        this.tagNames = [];
-        $('#addTagModalPopup').modal('show');
-    }
-
-    closeTagModal() {
-        $('#addTagModalPopup').modal('hide');
-        this.referenceService.stopLoader(this.addTagLoader);
-        this.tag = new Tag();
-        this.removeTagErrorClass();
-        this.tagResponse = new CustomResponse();
-        this.isAddTag = false;
-    }
-
-    addTagErrorMessage(errorMessage: string) {
-        this.tag.isValid = false;
-        this.tagErrorMessage = errorMessage;
-    }
-
-    removeTagErrorClass() {
-        this.tag.isValid = true;
-        this.tagResponse = new CustomResponse();
-        this.tagErrorMessage = "";
-    }
-
-    saveOrUpdateTag() {
-        this.referenceService.startLoader(this.addTagLoader);
-        if(this.tag.id > 0){
-            this.tag.updatedBy = this.loggedInUserId;
-            this.tag.tagName = this.tagNames[0]['value'];
-        }else{
-            this.tag.createdBy = this.loggedInUserId;
-            var list = [];
-            $.each(this.tagNames, function(index: number, val: any){
-                list.push(val['value']);
-            });
-            console.log(list)
-            this.tag.tagNames = list;
-        }
-        this.userService.saveOrUpdateTag(this.tag)
-            .subscribe(
-                (result: any) => {
-                    this.closeTagModal();
-                    if(result.access){
-                        this.referenceService.stopLoader(this.addTagLoader);
-                        this.tagResponse = new CustomResponse('SUCCESS', result.message, true);
-                        this.tagPagination = new Pagination();
-                        this.listTags(this.tagPagination);
-                    }else{
-                        this.authenticationService.forceToLogout();
-                    }
-                   
-                },
-                (error: string) => {
-                    this.referenceService.stopLoader(this.addTagLoader);
-                    let statusCode = JSON.parse(error['status']);
-                    if (statusCode == 409 || statusCode == 400) {
-                        this.addTagErrorMessage(JSON.parse(error['_body']).message);
-                    } else {
-                        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
-                    }
-                });
-    }
-
-
-    getTagById(tag: Tag) {
-            this.tag = tag;
-            this.tagNames = [];
-            this.tagNames.push(tag.tagName);
-            this.isAddTag = false;
-            this.tag.isValid = true;
-            this.tagButtonSubmitText = "Update";
-            this.tagModalTitle = 'Edit Tag Details';
-            $('#addTagModalPopup').modal('show');
-    }
-
-
-    /***********Delete**************/
-    confirmDeleteTag(tag: Tag) {
-            try {
-                let self = this;
-                swal({
-                    title: 'Are you sure?',
-                    text: "You won't be able to undo this action!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    swalConfirmButtonColor: '#54a7e9',
-                    swalCancelButtonColor: '#999',
-                    confirmButtonText: 'Yes, delete it!'
-
-                }).then(function () {
-                    self.deleteTagById(tag);
-                }, function (dismiss: any) {
-                    console.log('you clicked on option' + dismiss);
-                });
-            } catch (error) {
-                this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
-                this.referenceService.showServerError(this.httpRequestLoader);
-            }
-
-    }
-
-    deleteTagById(tag: Tag) {
-        this.tagResponse = new CustomResponse();
-        tag.userId = this.loggedInUserId;
-        tag.tagIds = [tag.id];
-        this.referenceService.loading(this.httpRequestLoader, true);
-        this.referenceService.goToTop();
-        this.userService.deleteTag(tag)
-            .subscribe(
-                (response: any) => {
-                    if (response.access) {
-                        if (response.statusCode == 200) {
-                            this.tagResponse = new CustomResponse('SUCCESS', response.message, true);
-                            this.tagPagination.pageIndex = 1;
-                            this.listTags(this.tagPagination);
-                        }
-                    } else {
-                        this.authenticationService.forceToLogout();
-                    }
-                },
-                (error: string) => {
-                    this.referenceService.stopLoader(this.addTagLoader);
-                    let statusCode = JSON.parse(error['status']);
-                    if (statusCode == 400) {
-                        this.addTagErrorMessage(JSON.parse(error['_body']).message);
-                    } else {
-                        this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-                        this.tagResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
-                    }
-                });
-    }
-
     
 }

@@ -123,7 +123,7 @@
                                      Your Templates </a>
                                     </li>
                                     <li [ngClass]="{'active-tab': activeTabName == 'tags'}" class="hidden-xs">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}" (click)="activateTab('tags');clearCustomResponse()">{{properties.tags | translate}}</a>
+                                        <a (click)="activateTab('tags');clearCustomResponse()">{{properties.tags | translate}}</a>
                                     </li>
                                 </ng-container>
 
@@ -1050,106 +1050,10 @@
                                         <!-- END Categories TAB -->
 
 
-<!-- Tags -->
-<div class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}">
-    <app-response-message class="pg8" [customResponse]="tagResponse" *ngIf="tagResponse.isVisible">
-    </app-response-message>
-    <div class="portlet-title" style="border-bottom: none;">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-lg-12">
-                <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-                    <button class="add-button-xamplify" (click)="addTag()" translate>Create a Tag</button>
-                </div>
-                <div class="col-xs-12 col-sm-7 col-lg-7 p0">
-                    <div class="page-toolbar">
-                        <div class="btn-group pull-right">
-                            <div class="inputs float-right" style="display: inline-flex;">
-                                <div id="left">
-                                    <select class="form-control" [(ngModel)]="tagSortOption.selectedTagDropDownOption"
-                                        (ngModelChange)="tagSortBy($event)">
-                                        <option *ngFor="let option of tagSortOption.tagSortDropDownOptions"
-                                            [ngValue]="option">
-                                            {{option.name}}</option>
-                                    </select>
-                                </div>
-                                <div class="portlet-input input-inline" id="search-div">
-                                    <div class="input-icon right" id="icon">
-                                        <input type="text" id="sort-text" class="form-control"
-                                            [(ngModel)]="tagSortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                                            placeholder="search..." (keypress)="tagEventHandler($event.keyCode)">
-                                        <button class="glyphicon glyphicon-remove search-box-item-clear"
-                                            *ngIf="tagSortOption.searchKey"
-                                            (click)="tagSortOption.searchKey='';searchTags();"></button>
-                                        <button type="submit" class="search-box-item-click" (click)="searchTags()">
-                                            <i class="fa fa-search" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-    <ng-container *ngIf="!httpRequestLoader.isLoading">
-        <div class="table-responsive">
-            <table class='table tgrid table-hover table-sm' id="tag-list" *ngIf="tagPagination.pagedItems?.length>0">
-                <thead>
-                    <tr>
-                        <th class="text-center" style="width: 40%" id="border-bottom">
-                            <span class="ui-column-resizer gray"
-                                (mousedown)="referenceService.onMouseDown($event,'tag-list',2)"> </span>
-                            <span class="gridHeader" translate>Name</span>
-                        </th>
-                        <th class="text-center" id="border-bottom" translate>Created On</th>
-                        <th class="text-center float-right" id="border-bottom">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let tag of tagPagination.pagedItems ;let i =index" id="TagList_{{tag.id}}">
-                        <td>
-                            <h4 class="moreipsis" title="{{tag.name}}">
-                                <span>{{tag.tagName}}</span>
-                            </h4>
-                            <h6 class="moreipsis">
-                                <span translate> Created By <b>{{tag.displayName}}</b></span>
-                            </h6>
-                        </td>
-                        <td class="text-center">
-                            <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
-                                [dateAndTime]="tag.displayTime">
-                            </app-timestamp>
-                            <span *ngIf="referenceService.isSafariBrowser()">{{tag.displayTime}}</span>
-                        </td>
-                        <td>
-                            <div class="actions-block override-actions">
-                                <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="getTagById(tag)">
-                                    <i class="fa fa-pencil-square-o"></i>
-                                </a>
-                                <a id="template-delete" (click)="confirmDeleteTag(tag)" data-toggle="tooltip"
-                                    data-placement="top" title="Delete">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </ng-container>
-    <div *ngIf="tagPagination.pagedItems.length !== 0" class="pg8">
-        <app-pagination [pagination]="tagPagination" (notifyParent)="setTagPage($event)"
-            (notifyParentDropDown)="listTags($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-    </div>
-    <!-- End of 24 -->
-    <div *ngIf="tagPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-        <strong translate>No Tags Found.</strong>
-    </div>
-</div>
-<!-- END Tags TAB -->
+                                        <!-- Tags -->
+                                        <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
+
+                                        <!-- END Tags TAB -->
 
 
                                         <!--video default player settings-->
@@ -1495,36 +1399,6 @@
             <div class="modal-footer" *ngIf="!pipelinePreview">
                 <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading" class="btn green-haze" (click)="saveOrUpdatePipeline()">Submit</button>
                 <!-- <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading " class="btn green-haze" (click)="saveOrUpdatePipeline()">Submit</button> -->
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!------------------------------Add/Edit Tag----------->
-<div class="modal fade right" id="addTagModalPopup" tabindex="-1" role="dialog" aria-labelledby="addTagModalPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-circle" (click)="closeTagModal()">
-                    <i class="fa fa-times"></i>
-                </button>
-                <h4 class="modal-title text-center">{{tagModalTitle}}</h4>
-            </div>
-            <div class="modal-body">
-                <app-dashboard-loader *ngIf="addTagLoader.isLoading"></app-dashboard-loader>
-                <ng-container *ngIf="!addTagLoader.isLoading">
-                    <span *ngIf="!tag.isValid" class="required">{{tagErrorMessage}}</span>
-                    <div class="form-group" id="tagNamesDiv">
-                        <label>Name <font class="required">*</font></label>
-                        <tag-input [(ngModel)]="tagNames"  [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'"
-                        [validators]="validatorsTag" (keydown)="validateTags($event)" required></tag-input>
-                       <div *ngIf="tagNames.length===0 || tagNames===null" style="color:red" translate>Please add a tag and press enter</div>         
-                    </div>
-                </ng-container>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" [disabled]="!tag.isValid || addTagLoader.isLoading " class="btn green-haze" (click)="saveOrUpdateTag()">{{tagButtonSubmitText}}</button>
             </div>
         </div>
     </div>

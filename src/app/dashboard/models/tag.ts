@@ -6,7 +6,8 @@ export class Tag {
     updatedBy: number;
     tagIds:number[] = [];
     displayTime: Date;
-    isValid= false;
+    isTagNameValid= false;
     userId: number;
+    isValid= false;
 
 }

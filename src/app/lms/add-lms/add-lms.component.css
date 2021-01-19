@@ -41,3 +41,9 @@
     display: block;
     margin: 10px 100px 0px 100px;
 }
+
+.scroller {
+    height: 200px;
+    padding: 10px;
+    overflow: auto;
+}
