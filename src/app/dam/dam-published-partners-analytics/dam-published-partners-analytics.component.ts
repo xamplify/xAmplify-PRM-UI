@@ -30,11 +30,13 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   listLoader:HttpRequestLoader = new HttpRequestLoader();
   damId:number = 0;
   selectedAssetName: any;
+  initLoader = false;
    constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
+    this.initLoader = true;
     this.loading = true;
     this.damId = parseInt(this.route.snapshot.params['damId']);
     this.referenceService.loading(this.listLoader, true);
@@ -101,6 +103,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
         this.router.navigate(['/404']);
       }
       this.loading = false;
+      this.initLoader = false;
       this.referenceService.loading(this.listLoader, false);
     }, error => {
       this.loading = false;
@@ -142,6 +145,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   stopLoaders() {
     this.loading = false;
     this.referenceService.loading(this.listLoader, false);
+    this.initLoader = false;
   }
 
 
