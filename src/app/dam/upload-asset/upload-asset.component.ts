@@ -46,6 +46,7 @@ export class UploadAssetComponent implements OnInit {
 	showCropper: boolean;
 	showDefaultLogo = false;
 	uploadedThumbnailName = "";
+	initLoader = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
 	ngOnInit() {
 		this.isAdd = this.router.url.indexOf('/upload') > -1;
@@ -60,13 +61,20 @@ export class UploadAssetComponent implements OnInit {
 
 	getAssetDetailsById(selectedAssetId: number) {
 		this.formLoader = true;
+		this.initLoader = true;
 		this.damService.getAssetDetailsById(selectedAssetId).
 			subscribe(
 				(result: any) => {
-					this.damUploadPostDto = result.data;
-					this.validateForm('assetName');
-					this.validateForm('description');
-					this.formLoader = false;
+					if(result.statusCode==200){
+						this.damUploadPostDto = result.data;
+						this.validateForm('assetName');
+						this.validateForm('description');
+						this.formLoader = false;
+						this.initLoader = false;
+					}else{
+						this.referenceService.goToPageNotFound();
+					}
+					
 				}, (error: any) => {
 					this.xtremandLogger.errorPage(error);
 				}
