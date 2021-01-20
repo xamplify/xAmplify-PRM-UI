@@ -37,11 +37,13 @@ export class DamAnalyticsComponent implements OnInit {
   damId:number = 0;
   selecteAssetDetails:any;
   selectedAssetName = "";
+  initLoader = false;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
+    this.initLoader = true;
     this.callApis();
   }
 
@@ -49,8 +51,42 @@ export class DamAnalyticsComponent implements OnInit {
     this.startLoaders();
     this.vendorView = this.router.url.indexOf('vda')>-1;
     this.pagination.campaignId = parseInt(this.route.snapshot.params['damPartnerId']);
-    this.damId = parseInt(this.route.snapshot.params['damId'])
-    this.getTilesInfo();
+    this.damId = parseInt(this.route.snapshot.params['damId']);
+    if(this.vendorView){
+      this.checkDamAndPartnerId();
+    }else{
+      this.checkDamPartnerId();
+    }
+   
+  }
+
+  checkDamPartnerId(){
+    this.referenceService.goToTop();
+		this.startLoaders();
+		this.damService.checkDamPartnerId(this.pagination.campaignId).subscribe((result: any) => {
+			if (result.statusCode === 200) {
+        this.getTilesInfo();
+			}else{
+        this.referenceService.goToPageNotFound();
+      }
+		}, error => {
+			this.xtremandLogger.log(error);
+			this.xtremandLogger.errorPage(error);
+		});
+  }
+
+  checkDamAndPartnerId(){
+    this.referenceService.goToTop();
+		this.damService.checkDamIdAndPartnerId(this.damId,this.pagination.campaignId).subscribe((result: any) => {
+			if (result.statusCode === 200) {
+        this.getTilesInfo();
+			}else{
+        this.referenceService.goToPageNotFound();
+      }
+		}, error => {
+			this.xtremandLogger.log(error);
+			this.xtremandLogger.errorPage(error);
+		});
   }
 
   getTilesInfo(){
@@ -146,7 +182,8 @@ export class DamAnalyticsComponent implements OnInit {
 	stopLoaders() {
 		this.loading = false;
 		this.tilesLoader = false;
-		this.referenceService.loading(this.analyticsLoader, false);
+    this.referenceService.loading(this.analyticsLoader, false);
+    this.initLoader = false;
   }
   goBack(){
     this.loading = true;

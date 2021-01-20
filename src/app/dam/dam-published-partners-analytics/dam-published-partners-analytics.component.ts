@@ -100,7 +100,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
         pagination.totalRecords = data.totalRecords;
         pagination = this.pagerService.getPagedItems(pagination, data.list);
       }else{
-        this.router.navigate(['/404']);
+        this.referenceService.goToPageNotFound();
       }
       this.loading = false;
       this.initLoader = false;

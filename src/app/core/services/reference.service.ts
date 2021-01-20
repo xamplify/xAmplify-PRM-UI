@@ -2102,6 +2102,9 @@ export class ReferenceService {
 	goToRouter(url: string) {
 		this.router.navigate([url]);
 	}
+	goToPageNotFound(){
+		this.router.navigate(['/404']);
+	}
 
 	filterSelectedColumnsFromArrayList(list: any, columnName: string) {
 		return list.map(function (e: any) { return e[columnName]; });
