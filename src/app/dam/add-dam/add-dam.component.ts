@@ -6,7 +6,6 @@ import { DamPostDto } from '../models/dam-post-dto';
 import { DamService } from '../services/dam.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
-import { ErrorResponse } from 'app/util/models/error-response';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
@@ -91,6 +90,8 @@ export class AddDamComponent implements OnInit {
           this.goToManageSectionWithError();
         }
         this.ngxloading = false;
+      }else{
+        this.referenceService.goToPageNotFound();
       }
     }, error => {
       this.xtremandLogger.log(error);

@@ -28,7 +28,7 @@ export class HttpService extends Http {
     this.pendingRequests++;
     return observable
       .do((res: Response) => {
-        
+        console.log("http service:"+res);
       }, (err: any) => {
         let status = err['status'];
         if(status==0 && !this.router.url.includes('/login')){
