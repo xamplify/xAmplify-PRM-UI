@@ -230,7 +230,7 @@ export class MdfRequestTimelineComponent implements OnInit {
 
   downloadFile(document:any){
     let alias = document.filePathAlias;
-    window.open(this.authenticationService.REST_URL+"url/"+alias);
+    window.open(this.authenticationService.REST_URL+"mdf/download/"+alias+"?access_token="+this.authenticationService.access_token);
   }
 
 }
