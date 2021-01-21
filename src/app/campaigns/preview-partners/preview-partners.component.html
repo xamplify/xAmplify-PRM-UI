@@ -1,4 +1,8 @@
 <div class="page-content">
+  <ng-container *ngIf="initLoader">
+   <app-modal-popup-loader></app-modal-popup-loader>
+  </ng-container>
+  <ng-container *ngIf="!initLoader">
    <div class="page-bar">
       <ul class="page-breadcrumb">
          <li *ngIf="!authenticationService.isSuperAdmin()">
@@ -158,5 +162,7 @@
          </div>
       </div>
    </div>
+   </ng-container>
+   
    <app-scroll-top></app-scroll-top>
 </div>
