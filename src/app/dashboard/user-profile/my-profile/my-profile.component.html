@@ -30,8 +30,8 @@
     <!-- BEGIN PAGE CONTENT-->
     <div class="row" *ngIf="!editXamplifyDefaultTemplate">
         <div class="col-md-12">
-            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-            </app-response-message>
+            <!-- <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message> -->
             <!-- BEGIN PROFILE SIDEBAR -->
             <div class="profile-sidebar" style="width:250px;" *ngIf="userData">
                 <!-- PORTLET MAIN -->
@@ -201,10 +201,11 @@
                                 </div>
                             </div>
                             <div class="portlet-body clearfix">
+                                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                                </app-response-message>
                                 <div class="tab-content">
-                                    <!-- removed id="tab_1_1" from below code -->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'personalInfo'}">
-                                        <form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
+                                        <form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()" aria-labelledby="personal-info-form">
                                             <div class="form-group">
                                                 <label class="control-label" translate>First Name</label>
                                                 <span class="star"> *</span>
@@ -214,16 +215,12 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label" translate>Last Name</label>
-                                                <!-- <span class="star"> *</span> -->
                                                 <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName" maxlength="50">
                                                 <div *ngIf="formErrors.lastName" class="alert alert-danger">
                                                     {{ formErrors.lastName }}</div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label" translate>Mobile Number</label>
-                                                <!-- <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
-                                                    <int-phone-prefix placeholder="Mobile Number" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                                                </fieldset> -->
                                                 <input type="text" maxlength="20" class="form-control" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}">
                                                 <div *ngIf="formErrors.mobileNumber" class="alert alert-danger">
                                                     {{ formErrors.mobileNumber }}</div>
@@ -268,41 +265,25 @@
 
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'dealTypes'}">
                                         <app-response-message [customResponse]="customResponseForm" *ngIf="customResponseForm.isVisible"></app-response-message>
-
-                                        <form role="form">
-
-                                            <!-- <div class="form-group">
-												<label class="control-label">Form Name</label>
-												<input type="text" placeholder="Form Name" class="form-control" [(ngModel)]="form.name" [ngModelOptions]="{standalone: true}"
-												 required (input)="validateDealForm(form)" />
-												 <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
-											</div> -->
+                                        <form role="form" aria-labelledby="form-label">
                                             <div class="col-xs-12" *ngIf="false">
-
                                                 <div *ngFor="let question of defaultQuestions;let i=index">
-
                                                     <div class="form-group" *ngIf="i <=8 " class="col-xs-6" style="padding: 10px">
-
                                                         <input type="text" placeholder="question" class="form-control" value="{{question}}" [disabled]="true" />
-                                                        <!-- <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div> -->
                                                     </div>
                                                     <div class="form-group" *ngIf="i>8" class="col-xs-6" style="padding: 10px">
-
                                                         <input type="text" placeholder="question" class="form-control" value="{{question}}" [disabled]="true" />
-                                                        <!-- <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div> -->
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-12">
                                                 <div class="form-group">
                                                     <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px" (click)="addQuestion()" *ngIf="questions.length==0">
-                                                        <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add your questions
+                                                        <i class="fa fa-plus-square p0" aria-hidden="true" style="margin: 0 5px;"></i> Add your questions
                                                     </a>
                                                 </div>
                                             </div>
                                             <div class="col-xs-12">
-
-
                                                 <div *ngFor="let question of questions;let i=index">
                                                     <div class="portlet light dashboard-stat2">
                                                         <div class="portlet-title custom-change-css" style="border-bottom: 0px">
@@ -734,13 +715,13 @@
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
                                         </app-dashboard-loader>
+                                        <app-response-message [customResponse]="gdprCustomResponse" *ngIf="gdprCustomResponse.isVisible"></app-response-message>
                                         <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                             <table class="table table-light" style="border:0px!important;background-color:transparent!important">
                                                 <tbody>
                                                     <fieldset>
                                                         <legend>GDPR</legend>
                                                         <tr class="col-md-12 col-lg-12">
-                                                            <!--style="border: 1px solid #ddd;"-->
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
                                                                     <h5 class="f-w-600" id="text-color-my-profile" translate>Our GDPR settings are designed to assist you in complying with the EU's General Data Protection Regulations. This includes:
@@ -752,7 +733,7 @@
                                                                   
                                                                     <h5 id="text-color-my-profile">
                                                                         <a class="link" href="https://www.xamplify.com/privacy-policy/" taget="_blank" translate>Privacy & consent</a>&nbsp; |
-                                                                        <a class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank" translate>Cookies & tracking</a> &nbsp;
+                                                                        <a rel="noopener noreferrer" class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank" translate>Cookies & tracking</a> &nbsp;
                                                                     </h5>
                                                                     <h5 id="text-color-my-profile" translate>
                                                                         <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
