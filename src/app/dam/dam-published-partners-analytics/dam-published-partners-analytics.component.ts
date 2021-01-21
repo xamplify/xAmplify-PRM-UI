@@ -31,6 +31,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   damId:number = 0;
   selectedAssetName: any;
   initLoader = false;
+  statusCode=200;
    constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -75,14 +76,20 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.loading = true;
     this.referenceService.loading(this.listLoader, true);
     this.damService.getAssetDetailsById(this.damId).subscribe((result: any) => {
-      let data = result.data;
-      this.selectedAssetName = data.assetName;
+      this.statusCode = result.statusCode;
+      if(this.statusCode==200){
+        let data = result.data;
+        this.selectedAssetName = data.assetName;
+      }else{
+        this.referenceService.goToPageNotFound();
+      }
+      
     }, error => {
       this.loading = false;
       this.xtremandLogger.log(error);
       this.xtremandLogger.errorPage(error);
     }, ()=>{
-      if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
+      if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0 && this.statusCode==200) {
         this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
         this.pagination.formId = this.damId;
         this.listPartners(this.pagination);

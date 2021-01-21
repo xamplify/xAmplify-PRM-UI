@@ -4,6 +4,7 @@ declare var swal: any;
 @Injectable()
 export class ClearChunkFile implements ErrorHandler {
   handleError(error: any): void {
+    console.log(error);
     let message = error.message;
     console.log("chunk"+message);
     if (message!=undefined && message!="" && message.indexOf('failed') > -1) {
