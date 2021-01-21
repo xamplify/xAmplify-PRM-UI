@@ -133,6 +133,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	sfRedirectURL: string;
 	/*****************GDPR************************** */
 	gdprSetting: GdprSetting = new GdprSetting();
+	gdprCustomResponse : CustomResponse = new CustomResponse();
 	gdprSettingLoaded = false;
 	category: Category = new Category();
 	categoryPagination: Pagination = new Pagination();
@@ -795,6 +796,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 									res => {
 										this.ngxloading = false;
 										this.authenticationService.userProfile = res;
+										this.userData.hasPassword = this.authenticationService.userProfile.hasPassword;
 										this.translateService.use(res.preferredLanguage);
 										this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).id;
 										this.authenticationService.beeLanguageCode = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).beeId;
@@ -1668,7 +1670,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			.subscribe(
 				data => {
 					this.gdprSetting.isExists = true;
-					this.customResponse = new CustomResponse('SUCCESS', 'Your settings have been saved.', true);
+					this.gdprCustomResponse = new CustomResponse('SUCCESS', 'Your settings have been saved.', true);
 					this.referenceService.stopLoader(this.httpRequestLoader);
 				},
 				(error: any) => {
@@ -1676,10 +1678,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					if (status == 409) {
 						const body = error['_body'];
 						const response = JSON.parse(body);
-						this.customResponse = new CustomResponse('ERROR', response.message, true);
+						this.gdprCustomResponse = new CustomResponse('ERROR', response.message, true);
 						this.referenceService.stopLoader(this.httpRequestLoader);
 					} else {
-						this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+						this.gdprCustomResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
 					}
 				},
 				() => this.logger.info('Finished saveGdprSetting()')
@@ -1695,11 +1697,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			.subscribe(
 				data => {
 					this.gdprSetting.isExists = true;
-					this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+					this.gdprCustomResponse = new CustomResponse('SUCCESS', data.message, true);
 					this.referenceService.stopLoader(this.httpRequestLoader);
 				},
 				(error: any) => {
-					this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+					this.gdprCustomResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
 				},
 				() => this.logger.info('Finished updateGdprSetting()')
 			);

@@ -88,5 +88,7 @@ export class Campaign {
     showRegisterLeadButton = false;
     leadPipelineId: number;
     dealPipelineId: number;
+    viewInBrowserTag = true;
+    unsubscribeLink = true;
 
 }

@@ -249,6 +249,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
      //ENABLE or DISABLE LEADS
      enableLeads : boolean;
+     salesEnablement = false;
      smsService = false;
      enableSMS:boolean;
      smsText: any;
@@ -307,16 +308,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 
                 this.vanityUrlService.isVanityURLEnabled();
 				this.refService.renderer = this.render;
-                refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
+                refService.getCompanyIdByUserId(this.authenticationService.getUserId()).
+                subscribe(response=>{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
-                        console.log(data)
                         this.enableLeads = data.enableLeads;
+                        this.salesEnablement = data.salesEnablement;
                         this.isSalesforceIntegrated();
                     });
                 })
-                authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
-                   this.enableSMS = response.data;
-                })
+               
         this.logger.info("create-campaign-component constructor loaded");
         $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
         /*  CKEDITOR.config.width = 500;
@@ -980,21 +980,35 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.contactsPagination.pageIndex = 1;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
+        this.setSalesEnablementOptions(event);
         if(event){
             this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();
             if(this.campaignType!='landingPage'){
                 this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
-           // this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
-          //  this.checkSalesforceIntegration();
         }else{
             this.loadContacts();
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
             
         }
+    }
+    
+    setSalesEnablementOptions(channelCampaign:boolean){
+        if(channelCampaign){
+            this.campaign.viewInBrowserTag = false;
+            this.campaign.unsubscribeLink = false;
+        }
+    }
+
+    setViewInBrowser(event:any){
+        this.campaign.viewInBrowserTag = event;
+    }
+
+    setUnsubscribeLink(event:any){
+        this.campaign.unsubscribeLink = event;
     }
 
     clearSelectedContactList(){
@@ -2226,6 +2240,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'vanityUrlCampaign':vanityUrlCampaign,
             'leadPipelineId': this.campaign.leadPipelineId,
             'dealPipelineId': this.campaign.dealPipelineId,
+            'viewInBrowserTag':this.campaign.viewInBrowserTag,
+            'unsubscribeLink':this.campaign.unsubscribeLink
         };
         return data;
     }
