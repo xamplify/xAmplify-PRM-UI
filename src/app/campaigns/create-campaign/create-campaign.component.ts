@@ -45,6 +45,7 @@ import { Category as folder } from 'app/dashboard/models/category';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { Pipeline } from 'app/dashboard/models/pipeline';
+import { UserService } from 'app/core/services/user.service';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -294,7 +295,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     folderCustomResponse:CustomResponse = new CustomResponse();
     showMarketingAutomationOption = false;
     THROUGH_PARTNER_MESSAGE: string;
-
+    isGdprEnabled = false;                          
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -303,7 +304,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
                 private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
-				private render:Renderer,private vanityUrlService:VanityURLService
+				private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService
             ){
                 
                 this.vanityUrlService.isVanityURLEnabled();
@@ -620,7 +621,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                      this.isLandingPage = true;
                      this.isCampaignDraftEmailTemplate = true;
                  }
-
              }
              this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
          }else{
@@ -638,7 +638,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  this.isLandingPageSwitch = false;
              }
          }
-
         this.listCategories(); 
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
@@ -654,7 +653,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                }else{
                    this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
                }
-   
            }
         }else{
             this.loadContacts();
@@ -665,6 +663,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         //this.listCampaignPipelines();
         //this.campaign.leadPipelineId = 0;
         //this.campaign.dealPipelineId = 0;
+        this.gdprEnabled();
+    }
+
+     gdprEnabled(){
+         this.loading = true;
+         this.userService.isGdprEnabled(this.loggedInUserId).subscribe(
+            data =>{
+                this.isGdprEnabled = data;
+                this.loading = false;
+            },_error =>{
+                this.loading = false;
+            }
+         );
     }
 
     listCampaignPipelines() {
@@ -1000,6 +1011,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         if(channelCampaign){
             this.campaign.viewInBrowserTag = false;
             this.campaign.unsubscribeLink = false;
+        }else{
+            this.campaign.viewInBrowserTag = true;
+            this.campaign.unsubscribeLink = this.isGdprEnabled;
         }
     }
 
