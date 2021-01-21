@@ -1,5 +1,9 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
+   <ng-container *ngIf="initLoader">
+      <app-modal-popup-loader></app-modal-popup-loader>
+   </ng-container>
+   <ng-container *ngIf="!initLoader">
     <div class="page-bar">
         <ul class="page-breadcrumb">
            <li>
@@ -143,4 +147,6 @@
        </div>
     </div>
  </div>
+</ng-container>
+ 
 </div>

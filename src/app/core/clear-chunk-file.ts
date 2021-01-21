@@ -21,12 +21,6 @@ export class ClearChunkFile implements ErrorHandler {
         window.location.reload();
       }, 5000);
 
-    }else{
-      swal({
-        title: message,
-        type: 'error',
-        allowOutsideClick: false
-      });
     }
   }
 }

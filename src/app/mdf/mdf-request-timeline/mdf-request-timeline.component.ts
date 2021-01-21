@@ -38,11 +38,13 @@ export class MdfRequestTimelineComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   pagination:Pagination = new Pagination();
   changeRequest:string = "";
+  initLoader = false;
   constructor(public documentListLoader: HttpRequestLoader,private pagerService:PagerService,private mdfService: MdfService,private route: ActivatedRoute,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) { 
 	    this.loggedInUserId = this.authenticationService.getUserId();
 }
 
   ngOnInit() {
+    this.initLoader = true;
     this.startLoaders();
     this.requestId = parseInt(this.route.snapshot.params['requestId']);
     this.role = this.route.snapshot.params['role'];
@@ -96,8 +98,7 @@ export class MdfRequestTimelineComponent implements OnInit {
           });
           this.stopLoaders();
         }else if(result.statusCode==404){
-          this.goBack();
-          this.referenceService.showSweetAlertErrorMessage("Invalid Request");
+          this.referenceService.goToPageNotFound();
         }
       }, error => {
         this.xtremandLogger.log(error);
@@ -138,6 +139,7 @@ export class MdfRequestTimelineComponent implements OnInit {
     this.loading = false;
     this.timeLineLoader = false;
     this.headerLoader = false;
+    this.initLoader = false;
   }
 
   listDocuments(pagination: Pagination) {
