@@ -33,7 +33,7 @@ export class HttpService extends Http {
         let status = err['status'];
         if(status==0 && !this.router.url.includes('/login')){
           this.router.navigate(['/logout']);
-        }else if(status==401){
+        }else if(status==401 && !this.router.url.includes('/login') ){
           this.router.navigate(['/expired']);
         }
 
