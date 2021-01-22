@@ -47,6 +47,9 @@
                   <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign" translate>Page</li>
                   <li class="filter" style="display: none;" translate>Own Template</li>
                 </ul>
+                
+                
+                
                 <div class="page-toolbar col-xs-12 col-sm-12 col-md-7" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                   <div class="row btn-group pull-right">
                     <div class="col-xs-2 col-sm-4 col-md-5 p0">
@@ -89,6 +92,7 @@
                         </select>
                       </div>
                     </div>
+                   
                     <div class="col-xs-5 col-sm-4 col-md-4" style="padding-right: 0px;">
                       <div class="portlet-input input-inline input-small">
                         <div class="input-icon" style="position:relative;right: -11px;">
@@ -97,6 +101,9 @@
                           <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search" aria-hidden="true"></i></button>
                         </div>
                       </div>
+                      <a style = "margin-top:5px;"  *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
+									<i class="fa fa-download margin" aria-hidden="true"></i>
+								</a>
                     </div>
                   </div>
                 </div>

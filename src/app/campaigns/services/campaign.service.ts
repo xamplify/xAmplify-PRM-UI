@@ -1070,6 +1070,14 @@ getActiveAndTotalCampaignsCount(companyId:number,userId:number){
     private handleError(error: any) {
         return Observable.throw(error);
     }
+    
+    downloadCampaignHighLevelAnalytics(userId: number, pagination:Pagination) {
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        let url = this.URL + "campaign/"+userId+"/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 
 }
