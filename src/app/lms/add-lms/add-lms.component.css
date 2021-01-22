@@ -47,3 +47,51 @@
     padding: 10px;
     overflow: auto;
 }
+
+.button-align {
+    list-style: none;
+    margin-block-end: 0em;
+    margin-block-start: 0em;
+    padding-inline-start: 0px;
+}
+
+.tab-content-align {
+    list-style: none;
+    margin-block-end: 0em;
+    margin-block-start: 0em;
+    padding-inline-start: 0px;
+}
+
+.label {
+    font-weight: 600;
+    color: #777;
+}
+
+.select-box {
+    width: 60%;
+    height: 35px;
+    padding: 6px 12px;
+}
+
+.text-box {
+    width: 60%;
+    height: 35px;
+    padding: 6px 12px;
+}
+
+#drag-div {
+    cursor: move;
+}
+
+#form-div:hover {
+    /* cursor: pointer; */
+    cursor: move;
+}
+
+.inline {
+    display: inline-flex;
+}
+
+.padding {
+    padding: 10px 10px 0px 10px;
+}

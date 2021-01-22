@@ -49,7 +49,6 @@ export class TagsComponent implements OnInit {
 
   /***************Tags*************** */
   listTags(pagination: Pagination) {
-    if (this.referenceService.companyId > 0) {
       pagination.userId = this.loggedInUserId;
       this.referenceService.startLoader(this.httpRequestLoader);
       this.userService.getTags(pagination)
@@ -69,10 +68,6 @@ export class TagsComponent implements OnInit {
           },
           () => this.logger.info('Finished listTags()')
         );
-    } else {
-      this.customResponse = new CustomResponse('ERROR', 'Unable to get Tags.', true);
-      this.referenceService.stopLoader(this.httpRequestLoader);
-    }
   }
 
   /********************Pagaination&Search Code*****************/
