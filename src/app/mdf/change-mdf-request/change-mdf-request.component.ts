@@ -39,12 +39,13 @@ export class ChangeMdfRequestComponent implements OnInit {
   errorResponses: Array<ErrorResponse> = new Array<ErrorResponse>();
   errorFieldNames:Array<string> = new Array<string>();
   showMdfAmountPopup = false;
+  initLoader = false;
   constructor(private mdfService: MdfService,private route: ActivatedRoute,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
-
    }
 
   ngOnInit() {
+    this.initLoader = true;
     this.loading = true;
     this.pageLoader = true;
     this.requestId = parseInt(this.route.snapshot.params['requestId']);
@@ -87,8 +88,7 @@ export class ChangeMdfRequestComponent implements OnInit {
           this.mdfRequestOwner = result.map.mdfRequestOwner;
           this.partnerManager = result.map.partnerManager;
         }else if(result.statusCode==404){
-          this.goToManageMdfRequests();
-          this.referenceService.showSweetAlertErrorMessage("Invalid Request");
+          this.referenceService.goToPageNotFound();
         }
        this.stopLoaders();
       }, error => {
@@ -104,6 +104,7 @@ export class ChangeMdfRequestComponent implements OnInit {
     this.loading = false;
     this.pageLoader = false;
     this.modalPopupLoader = false;
+    this.initLoader = false;
   }
 
   goToManageMdfRequests(){

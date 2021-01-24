@@ -84,25 +84,30 @@
     
 </style>
 <div class="page-content">
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="page-bar">
         <ul class="page-breadcrumb">
-            <li><i class="fa fa-home"></i>
+            <li><i class="fa fa-home" aria-hidden="true"></i>
                  <a [routerLink]="refService.homeRouter" translate>Home</a> 
-                 <i class="fa fa-angle-right"></i></li>
+                 <i class="fa fa-angle-right" aria-hidden="true"></i></li>
             <li><a translate>Select Campaign</a></li>
         </ul>
     </div>
     <!-- End of page-bar -->
-
-    <div class="row">
+    <div  *ngIf="companyIdError">
+        <h5 class="required">Something went wrong.Please try after sometime</h5>
+    </div>
+    <div class="row" *ngIf="!companyIdError">
         <div class="col-md-12">
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-            <div class="portlet light" style="padding-left: 30px !important;padding-right: 30px !important;">
+            <div  class="portlet light" style="padding-left: 30px !important;padding-right: 30px !important;">
+                <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
+                <ng-container *ngIf="!loading">
                 <div class="portlet-title">
                     <div class="caption" translate>
-                        <i class="fa fa-cogs"></i>Create a campaign <small style="font-size: 12px" translate>Which type of campaign would you like to create?</small>
+                        <i class="fa fa-cogs" aria-hidden="true"></i>Create a campaign <small style="font-size: 12px" translate>Which type of campaign would you like to create?</small>
                     </div>
                     <div>
                         <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
@@ -122,11 +127,11 @@
                                 <div class="box-content">
                                     <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
-                                        <li translate><i class="fa fa-list"></i> Provide campaign details</li>
-                                        <li translate><i class="fa fa-video-camera"></i> Select a video <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-users"></i> Select Recipients <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-envelope"></i> Select an e-mail template <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-rocket"></i> Preview and Launch</li>
+                                        <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
+                                        <li translate><i class="fa fa-video-camera"  aria-hidden="true"></i> Select a video <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-users"  aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-envelope"  aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-rocket"  aria-hidden="true"></i> Preview and Launch</li>
                                     </ul>
                                 </div>
 
@@ -146,11 +151,11 @@
                                 <div class="box-content">
                                     <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
-                                        <li translate><i class="fa fa-list"></i> Provide campaign details</li>
+                                        <li translate><i class="fa fa-list"  aria-hidden="true"></i> Provide campaign details</li>
 
-                                        <li translate><i class="fa fa-users"></i> Select Recipients <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-envelope"></i> Select an e-mail template <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-rocket"></i> Preview and Launch</li>
+                                        <li translate><i class="fa fa-users"  aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-envelope"  aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-rocket"  aria-hidden="true"></i> Preview and Launch</li>
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
@@ -169,9 +174,9 @@
                                 <div class="box-content" style="position: absolute !important;width: 99% !important;height: 193px !important;left: 2px !important;">
                                     <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
-                                        <li translate><i class="fa fa-list"></i> Provide campaign details</li>
-                                        <li translate><i class="fa fa-users"></i> Select Recipients <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-rocket"></i> Preview and Launch</li>
+                                        <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
+                                        <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch</li>
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
@@ -190,10 +195,10 @@
                                 <div class="box-content">
                                     <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
-                                        <li translate><i class="fa fa-list"></i> Provide campaign details</li>
-                                        <li translate><i class="fa fa-users"></i> Select Recipients <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-envelope"></i> Select an e-mail template <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-rocket"></i> Preview and Launch</li>
+                                        <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
+                                        <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-envelope" aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch</li>
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
@@ -214,10 +219,10 @@
                                 <div class="box-content">
                                     <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
-                                        <li translate><i class="fa fa-list"></i> Provide campaign details</li>
-                                        <li translate><i class="fa fa-users"></i> Select Recipients <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-envelope"></i> Select a  page <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-rocket"></i> Preview and Launch</li>
+                                        <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
+                                        <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-envelope" aria-hidden="true"></i> Select a  page <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch</li>
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
@@ -227,8 +232,11 @@
                         </div>
                     </div>
                 </div>
+                </ng-container>
+                
             </div>
         </div>
     </div>
 </div>
+
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>

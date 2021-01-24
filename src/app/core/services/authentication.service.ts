@@ -79,6 +79,7 @@ export class AuthenticationService {
   vendorRoleHash = "";
   partnerRoleHash = "";
   sessinExpriedMessage = "";
+  serviceStoppedMessage = "";
   private userLoggedIn = new Subject<boolean>();
   pagination: Pagination = new Pagination();
   userPreferredLanguage: string;
@@ -89,6 +90,9 @@ export class AuthenticationService {
   contactsCount = false;
   leftSideMenuLoader = false;
   partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
+  partnershipEstablishedOnlyWithPrm = false;
+  folders = false;
+  reloadLoginPage = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -253,7 +257,7 @@ export class AuthenticationService {
         const isVendor = roleNames.indexOf(this.roleName.vendorRole) > -1;
         const isMarketingRole = roleNames.indexOf(this.roleName.marketingRole) > -1;
         const isVendorTierRole = roleNames.indexOf(this.roleName.vendorTierRole) > -1;
-		const isPrmRole = roleNames.indexOf(this.roleName.prmRole) > -1;
+		    const isPrmRole = roleNames.indexOf(this.roleName.prmRole) > -1;
         /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 &&
          (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
         if (roleNames.length === 1) {
@@ -267,11 +271,11 @@ export class AuthenticationService {
             return "Orgadmin";
           } else if (isVendor) {
             return "Vendor";
-          }else if(isMarketingRole){
+          }else if(isMarketingRole && !isPartner){
             return "Marketing";
           }else if(isMarketingRole && isPartner){
             return "Marketing & Partner";
-          }else if(isPrmRole){
+          }else if(isPrmRole && !isPartner){
             return "Prm";
           }else if(isPrmRole && isPartner){
             return "Prm & Partner";
@@ -493,6 +497,8 @@ export class AuthenticationService {
     this.enableLeads = false;
 	  this.contactsCount = false;
     this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
+    this.partnershipEstablishedOnlyWithPrm = false;
+    this.folders = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
@@ -503,7 +509,7 @@ export class AuthenticationService {
           window.location.href = 'https://www.xamplify.com/';
         } else {
           this.closeSwal();
-          this.router.navigate(['/'])
+          this.router.navigate(['/']);
         }
       }
     }
@@ -584,6 +590,13 @@ export class AuthenticationService {
 
   revokeAccessToken(){
     let self = this;
+    this.showTokenExpiredSweetAlert();
+    setTimeout(function () {
+      self.logout();
+    }, 5000);
+  }
+
+  showTokenExpiredSweetAlert(){
     swal(
 			{
 				title: 'Your token is expried.We are redirecting you to login page.',
@@ -593,11 +606,8 @@ export class AuthenticationService {
 				allowOutsideClick:false
 			}
 		);
-    setTimeout(function () {
-      location.reload();
-      self.logout();
-    }, 5000);
   }
+
 
   checkPartnerAccess(userId: number) {
     return this.http.get(this.REST_URL + "admin/hasPartnerAccess/" + userId + "?access_token=" + this.access_token, "")

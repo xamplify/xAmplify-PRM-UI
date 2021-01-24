@@ -499,6 +499,13 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    previewAndDeletePartnersAccess(campaignId:number) {
+        const url = this.URL + "campaign/previewAndDeletePartnersAccess/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     deletePartner(partner:any) {
         const url = this.URL + "campaign/delete-campaign-partner?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, partner)
@@ -1028,7 +1035,7 @@ getActiveAndTotalCampaignsCount(companyId:number,userId:number){
         return this.http.get(this.URL + "/pipeline/campaign/" + userId + "/list?access_token=" + this.authenticationService.access_token)
             .map(this.extractData) .catch(this.handleError);
     }
-
+    
     listDownloadOrOpenedHistory(pagination:Pagination,viewType:string){
         let url = "";
         if(viewType=="tda"){
@@ -1063,6 +1070,6 @@ getActiveAndTotalCampaignsCount(companyId:number,userId:number){
     private handleError(error: any) {
         return Observable.throw(error);
     }
-
+    
 
 }

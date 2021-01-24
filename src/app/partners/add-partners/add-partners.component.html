@@ -689,7 +689,7 @@
                                                                     <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                                                 </a>
                                                             </ng-container>
-                                                            <a *ngIf="authenticationService.module.isCampaign" data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
+                                                            <a *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
                                                                 <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                             </a>
                                                         </div>

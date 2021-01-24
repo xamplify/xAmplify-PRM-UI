@@ -45,6 +45,7 @@ import { Category as folder } from 'app/dashboard/models/category';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { Pipeline } from 'app/dashboard/models/pipeline';
+import { UserService } from 'app/core/services/user.service';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -249,6 +250,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
      //ENABLE or DISABLE LEADS
      enableLeads : boolean;
+     salesEnablement = false;
      smsService = false;
      enableSMS:boolean;
      smsText: any;
@@ -279,7 +281,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      defaultLeadPipelineId = 0;
      defaultDealPipelineId = 0;
      salesforceIntegrated = false;
-     showConfigurePipelines = false;
+	 showConfigurePipelines = false;
      pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
      /************Filter Folder*****************/
     public selectedFolderIds= [];
@@ -293,7 +295,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     folderCustomResponse:CustomResponse = new CustomResponse();
     showMarketingAutomationOption = false;
     THROUGH_PARTNER_MESSAGE: string;
-
+    isGdprEnabled = false;                          
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -302,21 +304,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
                 private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
-				private render:Renderer,private vanityUrlService:VanityURLService
+				private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService
             ){
                 
                 this.vanityUrlService.isVanityURLEnabled();
 				this.refService.renderer = this.render;
-                refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
+                refService.getCompanyIdByUserId(this.authenticationService.getUserId()).
+                subscribe(response=>{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
-                        console.log(data)
                         this.enableLeads = data.enableLeads;
+                        this.salesEnablement = data.salesEnablement;
                         this.isSalesforceIntegrated();
                     });
                 })
-                authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
-                   this.enableSMS = response.data;
-                })
+               
         this.logger.info("create-campaign-component constructor loaded");
         $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
         /*  CKEDITOR.config.width = 500;
@@ -620,7 +621,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                      this.isLandingPage = true;
                      this.isCampaignDraftEmailTemplate = true;
                  }
-
              }
              this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
          }else{
@@ -638,7 +638,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  this.isLandingPageSwitch = false;
              }
          }
-
         this.listCategories(); 
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
@@ -654,7 +653,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                }else{
                    this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
                }
-   
            }
         }else{
             this.loadContacts();
@@ -665,6 +663,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         //this.listCampaignPipelines();
         //this.campaign.leadPipelineId = 0;
         //this.campaign.dealPipelineId = 0;
+        this.gdprEnabled();
+    }
+
+     gdprEnabled(){
+         this.loading = true;
+         this.userService.isGdprEnabled(this.loggedInUserId).subscribe(
+            data =>{
+                this.isGdprEnabled = data;
+                this.loading = false;
+            },_error =>{
+                this.loading = false;
+            }
+         );
     }
 
     listCampaignPipelines() {
@@ -980,21 +991,41 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.contactsPagination.pageIndex = 1;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
+        this.setSalesEnablementOptions(event);
         if(event){
             this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();
             if(this.campaignType!='landingPage'){
                 this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
-           // this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
-          //  this.checkSalesforceIntegration();
         }else{
             this.loadContacts();
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
             
         }
+    }
+    
+    setSalesEnablementOptions(channelCampaign:boolean){
+        if(this.campaignType=='regular'){
+            if(channelCampaign){
+                this.campaign.viewInBrowserTag = false;
+                this.campaign.unsubscribeLink = false;
+            }else{
+                this.campaign.viewInBrowserTag = true;
+                this.campaign.unsubscribeLink = this.isGdprEnabled;
+            }
+        }
+        
+    }
+
+    setViewInBrowser(event:any){
+        this.campaign.viewInBrowserTag = event;
+    }
+
+    setUnsubscribeLink(event:any){
+        this.campaign.unsubscribeLink = event;
     }
 
     clearSelectedContactList(){
@@ -2226,6 +2257,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'vanityUrlCampaign':vanityUrlCampaign,
             'leadPipelineId': this.campaign.leadPipelineId,
             'dealPipelineId': this.campaign.dealPipelineId,
+            'viewInBrowserTag':this.campaign.viewInBrowserTag,
+            'unsubscribeLink':this.campaign.unsubscribeLink
         };
         return data;
     }
@@ -3337,6 +3370,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    }
    
     isSalesforceIntegrated(): any {
+	this.refService.loading( this.pipelineLoader, true );
         this.salesforceIntegrated = false;
         if (this.enableLeads) {
             this.loading = true;
@@ -3347,7 +3381,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         let cfResponse = data;
                         if (cfResponse.statusCode === 200) {
                             this.salesforceIntegrated = true;
-							              this.showConfigurePipelines = false;
+							this.showConfigurePipelines = false;
                         } else if (cfResponse.statusCode === 400) {
                             swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
                         }
@@ -3357,12 +3391,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
                     console.log("isPushToSalesforce ::::" + this.pushToCRM);
                 } else {
-					      this.showConfigurePipelines = true;
+					this.showConfigurePipelines = true;
                     this.listCampaignPipelines();
                 }
 			this.refService.loading( this.pipelineLoader, false );
             }, error => {
-			      this.refService.loading( this.pipelineLoader, false );
+			this.refService.loading( this.pipelineLoader, false );
                 this.logger.error(error, "Error in salesforce checkIntegrations()");
             }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
         }

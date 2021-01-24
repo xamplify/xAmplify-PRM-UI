@@ -87,6 +87,12 @@
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr> -->
 							<ng-container *ngIf="roleId!=20">
+								<tr>
+									<th scope="row">Sales Enablement</th>
+									<td><input  type="checkbox"
+											[(ngModel)]="campaignAccess.salesEnablement"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
 							<tr>
 								<th scope="row">Email Campaign</th>
 								<td><input  type="checkbox"

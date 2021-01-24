@@ -20,14 +20,16 @@ export class SocialLoginComponent implements OnInit {
 	checkingContactTypeName: string;
 	assignLeads: boolean = false;
 	public storeLogin: any;
+	isLoggedInVanityUrl: any;
 
 	constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService,
 		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService
 	) {
+		this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');
 	}
 	/* if blocks for google and sales force are added by ajay to call backend apis to get required redirect urls for authentication */
 	login(providerName: string) {
-		if (providerName == 'google') {
+		if (providerName == 'google' && this.isLoggedInVanityUrl == 'true') {
 			let currentModule = "";
 			if (this.assignLeads) {
 				currentModule = 'leads';
@@ -57,7 +59,7 @@ export class SocialLoginComponent implements OnInit {
 					() => this.xtremandLogger.log("AddContactsComponent() googleContacts() finished.")
 				);
 
-		} else if (providerName == 'salesforce') {
+		} else if (providerName == 'salesforce' && this.isLoggedInVanityUrl == 'true') {
 			let currentModule = "";
 			if (this.assignLeads) {
 				currentModule = 'leads'

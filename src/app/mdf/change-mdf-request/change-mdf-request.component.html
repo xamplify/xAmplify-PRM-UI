@@ -1,9 +1,13 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
+   <ng-container *ngIf="initLoader">
+      <app-modal-popup-loader></app-modal-popup-loader>
+   </ng-container>
+   <ng-container *ngIf="!initLoader">
    <div class="page-bar">
       <ul class="page-breadcrumb">
          <li><i class="fa fa-home" aria-hidden="true"></i> 
-            <a translate>Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <a [routerLink]="referenceService.homeRouter"  translate>Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
          <li><a (click)="goToManageMdfRequests()" translate>Manage MDF Requests</a>  <i class="fa fa-angle-right" aria-hidden="true"></i></li>
          <li><a translate>Change Request</a></li>
@@ -120,7 +124,7 @@
                                  <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                                     <div class="row">
                                        <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                                          <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                                          <a class="dashboard-stat dashboard-stat-lighter green-soft min-h">
                                              <div class="visual">
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
@@ -129,13 +133,13 @@
                                                 <div class="desc" style="font-size: 13px;">Total MDF Balance</div>
                                              </div>
                                              <span class="morePadding">
-                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                                          <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
                                           <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
                                           </span>
                                           </a>
                                        </div>
                                        <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                                          <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                                          <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h">
                                              <div class="visual">
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
@@ -144,13 +148,13 @@
                                                 <div class="desc" style="font-size: 13px;">Total Used Balance</div>
                                              </div>
                                              <span class="morePadding">
-                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view
+                                          <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view
                                           <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
                                           </span>
                                           </a>
                                        </div>
                                        <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                                          <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                                          <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h">
                                              <div class="visual">
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
@@ -159,7 +163,7 @@
                                                 <div class="desc" style="font-size: 13px;">Total Available Balance</div>
                                              </div>
                                              <span class="morePadding">
-                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view
+                                          <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view
                                           <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
                                           </span>
                                           </a>
@@ -279,6 +283,8 @@
          </div>
       </div>
    </div>
+   </ng-container>
+   
 </div>
 <!--Change Request Modal Pop Up------->
 <div id="changeRequestModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">

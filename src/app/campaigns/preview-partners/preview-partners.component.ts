@@ -38,12 +38,14 @@ export class PreviewPartnersComponent implements OnInit {
     templateDownloadPartners = false;
     templateEmailOpenedPartners = false;
     viewType = "";
+    initLoader = false;
     constructor(public properties: Properties,public route: ActivatedRoute,private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService,public sortOption:SortOption) {
         this.loggedInUserId = this.authenticationService.getUserId();
     }
     ngOnInit() {
+        this.initLoader = true;
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.templateDownloadPartners = this.router.url.indexOf('/tda') > -1;
         this.templateEmailOpenedPartners = this.router.url.indexOf('/teoa') > -1;
@@ -54,7 +56,24 @@ export class PreviewPartnersComponent implements OnInit {
         }else{
             this.viewType = "plc";
         }
-        this.listPartners(this.partnersPagination);
+        this.previewAndDeletePartnersAccess();
+    }
+
+
+    previewAndDeletePartnersAccess(){
+        this.campaignService.previewAndDeletePartnersAccess(this.campaignId).
+        subscribe(
+            data=>{
+                if(data.statusCode==200){
+                    this.listPartners(this.partnersPagination);
+                }else{
+                    this.refService.goToPageNotFound();
+                }
+            },error=>{
+                this.logger.errorPage( error );
+            }
+
+        );
     }
     listPartners(pagination: Pagination ) {
         this.refService.goToTop();
@@ -67,6 +86,7 @@ export class PreviewPartnersComponent implements OnInit {
                 this.partnersList = data.campaignPartners;
                 pagination = this.pagerService.getPagedItems( pagination, data.campaignPartners );
                 this.refService.loading( this.campaignPartnerLoader, false );
+                this.initLoader = false;
             },
             error => {
                 this.logger.errorPage( error );

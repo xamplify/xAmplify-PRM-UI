@@ -8,11 +8,12 @@ import { DamPostDto } from '../models/dam-post-dto';
 import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
+import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class DamService {
   URL = this.authenticationService.REST_URL + "dam/";
-  constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
+  constructor(private http: HttpClient, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
   list(pagination: Pagination) {
     return this.utilPostListMethod("list", pagination);
@@ -92,7 +93,7 @@ export class DamService {
   }
 
   deletePartner(id: number) {
-    return this.http.get(this.URL + "deletePartner/" + id + "?access_token=" + this.authenticationService.access_token, "")
+    return this.http.get(this.URL + "deletePartner/" + id + "?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -121,6 +122,18 @@ export class DamService {
 
   listDamAnalytics(pagination: Pagination) {
     return this.utilPostListMethod("listDamAnalytics", pagination);
+  }
+  
+  checkDamIdAndPartnerId(damId:number,damPartnerId:number){
+    return this.http.get(this.URL  + "checkDamAndPartnerId/"+damId+"/"+damPartnerId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  checkDamPartnerId(damPartnerId:number){
+    return this.http.get(this.URL  + "checkDamPartnerId/"+damPartnerId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   uploadOrUpdate(formData: FormData, damUploadPostDto: DamUploadPostDto, isAdd: boolean) {
@@ -156,7 +169,7 @@ export class DamService {
   }
 
   extractData(res: Response) {
-    let body = res.json();
+    let body = res;
     return body || {};
   }
 
