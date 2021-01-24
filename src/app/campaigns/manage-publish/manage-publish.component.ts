@@ -775,63 +775,23 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     
     downloadCampaignHighLevelAnalytics() {
-        this.refService.loading(this.httpRequestLoader, true);
+    	 let param = null;
+         if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+             param = {
+                 'userId': this.loggedInUserId,
+                 'vendorCompanyProfileName': this.authenticationService.companyProfileName,
+                 'vanityUrlFilter': true
+             };
+         } else {
+             param = {
+                 'userId': this.loggedInUserId,
+                 'vanityUrlFilter': false,
+                 'vendorCompanyProfileName':null
 
-        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-            this.pagination.vanityUrlFilter = true;
-            this.pagination.userId = this.loggedInUserId;
-        }
-
-        this.campaignService.downloadCampaignHighLevelAnalytics(this.loggedInUserId, this.pagination)
-            .subscribe(
-            		   data =>  
-            		   this.downloadFile(data, "Campaigns-High-Level-Analytics.csv"),
-            		   error => {
-            			   this.refService.loading(this.httpRequestLoader, false);
-                           this.logger.errorPage(error);
-                       },
-                       () => this.logger.info("Finished downloadCampaignHighLevelAnalytics()")
-            );
+             };
+         }
+         let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
+         this.refService.post(param, completeUrl);
     }
-    
-    downloadFile(data: any, name: any) {
-        let parsedResponse = data.text();
-        let blob = new Blob([parsedResponse], { type: 'text/csv' });
-        let url = window.URL.createObjectURL(blob);
-
-        if (navigator.msSaveOrOpenBlob) {
-          navigator.msSaveBlob(blob, 'download.csv');
-        } else {
-          let a = document.createElement('a');
-          a.href = url;
-          a.download =  name ;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        }
-        window.URL.revokeObjectURL(url);
-        this.refService.loading(this.httpRequestLoader, false);
-        //this.isLeadListDownloadProcessing = false;
-      }
-    
-    /*downloadFile(data: any, name: any) {
-    	this.refService.loading(this.httpRequestLoader, false);
-        let parsedResponse = data.text();
-        let blob = new Blob([parsedResponse], { type: 'text/csv' });
-        let url = window.URL.createObjectURL(blob);
-
-        if (navigator.msSaveOrOpenBlob) {
-            navigator.msSaveBlob(blob, 'UserList.csv');
-        } else {
-            let a = document.createElement('a');
-            a.href = url;
-            a.download = name ;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-        window.URL.revokeObjectURL(url);
-    }*/
 
 }

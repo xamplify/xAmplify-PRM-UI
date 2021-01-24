@@ -1035,7 +1035,7 @@ getActiveAndTotalCampaignsCount(companyId:number,userId:number){
         return this.http.get(this.URL + "/pipeline/campaign/" + userId + "/list?access_token=" + this.authenticationService.access_token)
             .map(this.extractData) .catch(this.handleError);
     }
-
+    
     listDownloadOrOpenedHistory(pagination:Pagination,viewType:string){
         let url = "";
         if(viewType=="tda"){
@@ -1071,13 +1071,5 @@ getActiveAndTotalCampaignsCount(companyId:number,userId:number){
         return Observable.throw(error);
     }
     
-    downloadCampaignHighLevelAnalytics(userId: number, pagination:Pagination) {
-        userId = this.authenticationService.checkLoggedInUserId(userId);
-        let url = this.URL + "campaign/"+userId+"/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
-        return this.http.post(url, pagination)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
 
 }
