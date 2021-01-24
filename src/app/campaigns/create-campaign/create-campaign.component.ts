@@ -1008,13 +1008,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     setSalesEnablementOptions(channelCampaign:boolean){
-        if(channelCampaign){
-            this.campaign.viewInBrowserTag = false;
-            this.campaign.unsubscribeLink = false;
-        }else{
-            this.campaign.viewInBrowserTag = true;
-            this.campaign.unsubscribeLink = this.isGdprEnabled;
+        if(this.campaignType=='regular'){
+            if(channelCampaign){
+                this.campaign.viewInBrowserTag = false;
+                this.campaign.unsubscribeLink = false;
+            }else{
+                this.campaign.viewInBrowserTag = true;
+                this.campaign.unsubscribeLink = this.isGdprEnabled;
+            }
         }
+        
     }
 
     setViewInBrowser(event:any){

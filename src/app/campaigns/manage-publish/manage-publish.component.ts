@@ -773,5 +773,25 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
         
     }
+    
+    downloadCampaignHighLevelAnalytics() {
+    	 let param = null;
+         if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+             param = {
+                 'userId': this.loggedInUserId,
+                 'vendorCompanyProfileName': this.authenticationService.companyProfileName,
+                 'vanityUrlFilter': true
+             };
+         } else {
+             param = {
+                 'userId': this.loggedInUserId,
+                 'vanityUrlFilter': false,
+                 'vendorCompanyProfileName':null
+
+             };
+         }
+         let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
+         this.refService.post(param, completeUrl);
+    }
 
 }
