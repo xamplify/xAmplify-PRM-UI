@@ -123,7 +123,7 @@
                         <span class="ui-column-resizer gray" (mousedown)="refService.onMouseDown($event,'manage-campaign-list',2)"> </span>
                         <span class="gridHeader" translate>Campaign</span>
                       </th>
-                      <th class="center" translate scope="col" style="width: 60%; min-width: 790px;"></th>
+                      <th class="center" translate scope="col" style="width: 50%; min-width: 532px;"></th>
                     <!--   <th class="center" translate scope="col"></th> -->
                       <!-- <th class="center" translate scope="col"></th>
                       <th class="center" translate scope="col"></th> -->
@@ -240,7 +240,7 @@
                       
                       <td>
                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-                      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0">
+                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                         <button class="btn btn-default btn-xs re-distributed-high-level">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -251,7 +251,7 @@
                           </div>
                         </button>
                         </div>                      
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                         <button class="btn btn-default btn-xs re-distributed-high-level">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -261,7 +261,7 @@
                           </div>
                         </button>
                         </div>                        
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                          <button class="btn btn-default btn-xs re-distributed-high-level">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -271,7 +271,7 @@
                           </div>
                         </button>
                         </div>                        
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                        <button class="btn btn-default btn-xs re-distributed-high-level">
                             <div class="portlet-body text-center">
                               <h6 class="custom-font-size">
@@ -282,7 +282,12 @@
                             </div>
                           </button>
                         </div>                        
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0">
+                                        
+                                        
+                      </div>
+                      
+                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+                       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                        <button class="btn btn-default btn-xs re-distributed-high-level">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -292,7 +297,7 @@
                           </div>
                         </button>
                         </div>                       
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0"  *ngIf="campaign.campaignType.indexOf('REGULAR')>-1 ||campaign.campaignType.indexOf('VIDEO')>-1 || campaign.campaignType.indexOf('LANDINGPAGE')>-1 ">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"  *ngIf="campaign.campaignType.indexOf('REGULAR')>-1 ||campaign.campaignType.indexOf('VIDEO')>-1 || campaign.campaignType.indexOf('LANDINGPAGE')>-1 ">
                      <button class="btn btn-default btn-xs re-distributed-high-level">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -301,8 +306,8 @@
                             <span class="custom-font-weight">Clicked URL</span>
                           </div>
                         </button>
-                        </div>                        
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0"  *ngIf="campaign.campaignType.indexOf('EVENT') >-1">
+                        </div>        
+                       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"  *ngIf="campaign.campaignType.indexOf('EVENT') >-1">
                             <button class="btn btn-default btn-xs re-distributed-high-level">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -312,7 +317,7 @@
                           </div>
                         </button>
                         </div>
-                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0" *ngIf="campaign.campaignType.indexOf('SOCIAL') >-1 && !campaign.nurtureCampaign">
+                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.campaignType.indexOf('SOCIAL') >-1 && !campaign.nurtureCampaign">
                        <button class="btn btn-default btn-xs re-distributed-high-level">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -321,11 +326,8 @@
                             <span class="custom-font-weight">Redistributed</span>
                           </div>
                         </button>
-                        </div>                     
-                      </div>
-                      
-                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0" *ngIf="campaign.campaignType.indexOf('EVENT') >-1">
+                        </div> 
+                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.campaignType.indexOf('EVENT') >-1">
                          <button class="btn btn-default btn-xs re-distributed-high-level">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -335,7 +337,7 @@
                           </div>
                         </button>
                         </div>                        
-                       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0" *ngIf="campaign.campaignType.indexOf('EVENT') < 0 && campaign.campaignType.indexOf('SOCIAL') < 0">
+                       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.campaignType.indexOf('EVENT') < 0 && campaign.campaignType.indexOf('SOCIAL') < 0">
                        <button class="btn btn-default btn-xs re-distributed-high-level">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -345,7 +347,7 @@
                           </div>
                         </button>
                         </div>                        
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0" *ngIf="campaign.campaignType.indexOf('VIDEO')>-1" >
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.campaignType.indexOf('VIDEO')>-1" >
                             <button class="btn btn-default btn-xs re-distributed-high-level">
                             <div class="portlet-body text-center">
                               <h6 class="custom-font-size">
@@ -355,7 +357,7 @@
                             </div>
                           </button>
                         </div>                 
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                          <button class="btn btn-default btn-xs re-distributed-high-level">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -365,7 +367,7 @@
                           </div>
                         </button>
                         </div>
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                       <button class="btn btn-default btn-xs re-distributed-high-level">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
@@ -375,7 +377,7 @@
                           </div>
                         </button>
                         </div>
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 p0">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                         <button class="btn btn-default btn-xs re-distributed-high-level">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
