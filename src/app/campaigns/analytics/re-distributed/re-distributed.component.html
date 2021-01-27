@@ -2,15 +2,16 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
       <li *ngIf="!authenticationService.isSuperAdmin()">
-        <i class="fa fa-home"></i>
+        <i class="fa fa-home" aria-hidden="true"></i>
         <a [routerLink]="referenceService.homeRouter">Home</a>
-        <i class="fa fa-angle-right"></i>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li *ngIf="authenticationService.isSuperAdmin()">
-      	<i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+      	<i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
       <li>
        <li>
-      		<a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i>
+          <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
       	</li>
       <li>
         <a>Partner Campaigns</a>
@@ -40,7 +41,6 @@
                 <table class="table tgrid">
                   <thead>
                   <tr>
-                    <!-- <th>partner Company Name</th> -->
                     <th style="float: left;margin-left: 70px;">Partners</th>
                     <th class="center-aligned">Campaign Name</th>
                      <th class="center-aligned">Redistributed On</th>

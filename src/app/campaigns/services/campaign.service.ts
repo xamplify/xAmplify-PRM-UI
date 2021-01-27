@@ -11,6 +11,7 @@ import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var swal, $, Promise: any;
 @Injectable()
@@ -502,6 +503,26 @@ export class CampaignService {
     previewAndDeletePartnersAccess(campaignId:number) {
         const url = this.URL + "campaign/previewAndDeletePartnersAccess/"+campaignId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    parentAndRedistributedCampaignAccess(campaignId:number) {
+        const url = this.URL + "campaign/parentAndRedistributedCampaignAccess/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getCampaignTypes(){
+        let vanityLoginDto = new VanityLoginDto();
+        vanityLoginDto.userId = this.authenticationService.getUserId(); 
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+			vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+			vanityLoginDto.vanityUrlFilter = true;
+		 }
+        const url = this.URL + "campaign/getCampaignTypes?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url,vanityLoginDto)
             .map(this.extractData)
             .catch(this.handleError);
     }

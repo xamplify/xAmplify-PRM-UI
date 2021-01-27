@@ -9,16 +9,16 @@
   <div class="page-bar">
     <ul class="page-breadcrumb">
       <li>
-        <i class="fa fa-home"></i>
+        <i class="fa fa-home" aria-hidden="true"></i>
         <a [routerLink]="referenceService.homeRouter" translate>Home</a>
-        <i class="fa fa-angle-right"></i>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li *ngIf="role === 'Vendor'">
         <a [routerLink]="['/home/dashboard/vendors']" translate>Campaigns From Vendor</a>
       </li>
       <li *ngIf="role === 'Vendor'">
         <a [routerLink]="['/home/dashboard/vendors']" translate>Your Vendors</a>
-        <i class="fa fa-angle-right"></i>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li *ngIf="role === 'Vendor'">
         <a translate>Campaigns</a>
@@ -39,11 +39,11 @@
             <ul class="mix-filter col-xs-12 col-sm-12 col-md-6 p0 m0" *ngIf="!this.modulesDisplayType.isFolderGridView && !this.modulesDisplayType.isFolderListView">
               <li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType" translate>
               All</li>
-              <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType" translate>Email</li>
-              <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType" translate>Video</li>
-              <li class="filter" *ngIf="referenceService.socialCampaignTabAccess" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType" translate>Social
+              <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType" *ngIf="campaignAccess.emailCampaign" translate>Email</li>
+              <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType" *ngIf="campaignAccess.videoCampaign" translate>Video</li>
+              <li class="filter"  (click)="filterCampaigns('social')" [class.active]="'social' == campaignType" *ngIf="campaignAccess.socialCampaign" translate>Social
               </li>
-              <li class="filter" *ngIf="referenceService.eventCampaignTabAccess" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType" translate>Event</li>
+              <li class="filter"  (click)="filterCampaigns('event')" [class.active]="'event' == campaignType" *ngIf="campaignAccess.eventCampaign"  translate>Event</li>
               <li class="filter" style="display: none;" translate>Own Template</li>
             </ul>
             <div class="page-toolbar col-xs-12 col-sm-12 col-md-6"  *ngIf="!this.modulesDisplayType.isFolderGridView && !this.modulesDisplayType.isFolderListView">
