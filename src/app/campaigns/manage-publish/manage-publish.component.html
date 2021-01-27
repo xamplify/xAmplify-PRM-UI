@@ -10,7 +10,7 @@
           <a [routerLink]="refService.homeRouter" translate>Home</a>
           <i class="fa fa-angle-right" aria-hidden="true"></i>
         </li>
-        <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i>
+        <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right" aria-hidden="true"></i>
         </li>
         <li *ngIf="pagination.teamMemberAnalytics">
           <a routerLink="/home/team/add-team" translate>Team</a>
@@ -40,7 +40,7 @@
                   Video</li>
                   <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" *ngIf="campaignAccess.socialCampaign" translate>
                   Social</li>
-                  <li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="(campaignAccess.eventCampaign || refService.eventCampaignTabAccess)" translate>Event
+                  <li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="campaignAccess.eventCampaign" translate>Event
                   </li>
                   <li class="filter" (click)="filterCampaigns('SMS',5)" [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign" translate>SMS
                   </li>

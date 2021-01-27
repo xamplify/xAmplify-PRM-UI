@@ -200,65 +200,54 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   checkLastElement(i: any) {
       if (this.pagination.pagedItems.length > 2 && (i === (this.pagination.pagedItems.length - 1) || i === this.pagination.pagedItems.length - 2)) { this.isLastElement = true; } else { this.isLastElement = false; }
   }
-  getOrgCampaignTypes() {
-      this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
-          data => {
-              console.log(data);
-              this.setCampaignAccessValues(data.video, data.regular, data.social, data.event,data.landingPageCampaign,data.partnerLandingPage);
-          });
-  }
-  getCompanyIdByUserId() {
-      try {
-          this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
-              (result: any) => {
-                  if (result !== "") {
-                      console.log(result);
-                      this.refService.companyId = result;
-                      this.getOrgCampaignTypes();
-                  }
-              }, (error: any) => { console.log(error); }
-          );
-      } catch (error) { console.log(error); }
-  }
-  setCampaignAccessValues(video: any, regular: any, social: any, event: any,landingPageCampaign:boolean,partnerLandingPage:boolean) {
-      this.campaignAccess.videoCampaign = video;
-      this.campaignAccess.emailCampaign = regular;
-      this.campaignAccess.socialCampaign = social;
-      this.campaignAccess.eventCampaign = event;
-      this.campaignAccess.landingPageCampaign = landingPageCampaign;
-      this.campaignAccess.partnerLandingPage  = partnerLandingPage;
-  }
+ 
+  
   ngOnInit() {
       try {
-          this.teamMemberId = this.route.snapshot.params['teamMemberId'];
-          if(this.teamMemberId!=undefined){
-              this.pagination.teamMemberAnalytics = true;
-          }else{
-              this.pagination.teamMemberAnalytics = false;
-          }
-          this.refService.manageRouter = true;
-          if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember || this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember) {
-               this.setCampaignAccessValues(true, true, true, true,false,false) 
-            }else { 
-                if (!this.refService.companyId) { this.getCompanyIdByUserId(); 
-                } else { 
-                    this.getOrgCampaignTypes(); 
-                }
-             }
-          this.pagination.maxResults = 12;
-          if(this.folderListViewInput!=undefined){
-			this.categoryId = this.folderListViewInput['categoryId'];
-			}
-          if(this.categoryId!=undefined){
-              this.pagination.categoryId = this.categoryId;
-              this.pagination.categoryType = 'c';
-          }
-          this.listCampaign(this.pagination);
-    
+            this.getCampaignTypes();
       } catch (error) {
           this.logger.error("error in manage-publish-component init() ", error);
       }
   }
+
+  getCampaignTypes(){
+    this.isloading = true;
+    this.refService.loading(this.httpRequestLoader, true);
+      this.campaignService.getCampaignTypes().subscribe(
+          response=>{
+            let campaignAccess = response.data;
+            this.campaignAccess.emailCampaign = campaignAccess.regular;
+            this.campaignAccess.videoCampaign = campaignAccess.video;
+            this.campaignAccess.socialCampaign = campaignAccess.social;
+            this.campaignAccess.eventCampaign = campaignAccess.event;
+            this.campaignAccess.landingPageCampaign = campaignAccess.page;
+          },_error=>{
+            this.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
+            this.isloading = false;
+            this.refService.loading(this.httpRequestLoader, false);
+          },()=>{
+            this.isloading = false;
+            this.refService.loading(this.httpRequestLoader, false);
+            this.teamMemberId = this.route.snapshot.params['teamMemberId'];
+            if(this.teamMemberId!=undefined){
+                this.pagination.teamMemberAnalytics = true;
+            }else{
+                this.pagination.teamMemberAnalytics = false;
+            }
+            this.refService.manageRouter = true;
+            this.pagination.maxResults = 12;
+            if(this.folderListViewInput!=undefined){
+              this.categoryId = this.folderListViewInput['categoryId'];
+              }
+            if(this.categoryId!=undefined){
+                this.pagination.categoryId = this.categoryId;
+                this.pagination.categoryType = 'c';
+            }
+            this.listCampaign(this.pagination);
+          }
+      );
+  }
+
   updateEvent(campaign: any) {
       this.router.navigate(['/home/campaigns/event-update/' + campaign.campaignId])
   }

@@ -20,6 +20,7 @@ import {AddMoreReceiversComponent} from 'app/campaigns/add-more-receivers/add-mo
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { CampaignTemplateDownloadHistoryComponent } from 'app/campaigns/campaign-template-download-history/campaign-template-download-history.component';
+import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 
 declare var $,swal: any;
 
@@ -27,7 +28,7 @@ declare var $,swal: any;
   selector: 'app-redistribute-campaigns-list-view-util',
   templateUrl: './redistribute-campaigns-list-view-util.component.html',
   styleUrls: ['./redistribute-campaigns-list-view-util.component.css','../../campaigns/partner-campaigns/partner-campaigns.component.css'],
-  providers: [Pagination, HttpRequestLoader,LandingPageService]
+  providers: [Pagination, HttpRequestLoader,LandingPageService,CampaignAccess]
 })
 export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDestroy {
 
@@ -78,7 +79,8 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewInput:any;
   socialAccountsLoader  =false;
-    socialCampaign: any;
+  socialCampaign: any;
+  campaignAccess:CampaignAccess = new CampaignAccess();
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
       public referenceService: ReferenceService, private socialService: SocialService,
@@ -107,7 +109,6 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
 
   listCampaign(pagination: Pagination) {
       this.referenceService.startLoader(this.httpRequestLoader);
-     
       if ( this.role == "Vendor" ) {
           pagination.filterValue = this.referenceService.vendorDetails.id;
           pagination.filterKey = "customerId";
@@ -168,19 +169,39 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
 
   ngOnInit() {
       try {
-        this.pagination.pageIndex = 1;
-         this.campaignType = "all";
-        if(this.folderListViewInput!=undefined){
-          this.categoryId = this.folderListViewInput['categoryId'];
-          }
-        if(this.categoryId!=undefined){
-            this.pagination.categoryId = this.categoryId;
-            this.pagination.categoryType = 'c';
-        }
-        this.listCampaign(this.pagination);
+        this.getCampaignTypes();
       } catch (error) {
           this.xtremandLogger.error("error in partner-campaigns.component.ts init() ", error);
       }
+  }
+
+  getCampaignTypes(){
+    this.referenceService.startLoader(this.httpRequestLoader);
+      this.campaignService.getCampaignTypes().subscribe(
+        response=>{
+            let campaignAccess = response.data;
+            this.campaignAccess.emailCampaign = campaignAccess.regular;
+            this.campaignAccess.videoCampaign = campaignAccess.video;
+            this.campaignAccess.socialCampaign = campaignAccess.social;
+            this.campaignAccess.eventCampaign = campaignAccess.event;
+            this.campaignAccess.landingPageCampaign = campaignAccess.page;
+        },_error=>{
+            this.referenceService.showSweetAlertErrorMessage("Unable to fetch campaign types");
+            this.referenceService.stopLoader(this.httpRequestLoader);
+        },()=>{
+            this.referenceService.stopLoader(this.httpRequestLoader);
+            this.pagination.pageIndex = 1;
+            this.campaignType = "all";
+           if(this.folderListViewInput!=undefined){
+             this.categoryId = this.folderListViewInput['categoryId'];
+             }
+           if(this.categoryId!=undefined){
+               this.pagination.categoryId = this.categoryId;
+               this.pagination.categoryType = 'c';
+           }
+           this.listCampaign(this.pagination);
+        }
+      );
   }
  
   filterCampaigns(type: string) {

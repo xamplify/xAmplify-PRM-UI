@@ -23,7 +23,7 @@
                                     Video</li>
                                 <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" *ngIf="campaignAccess.socialCampaign">
                                     Social</li>
-                                <li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="(campaignAccess.eventCampaign || refService.eventCampaignTabAccess)">Event
+                                <li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="campaignAccess.eventCampaign">Event
                                 </li>
                                 <li class="filter" (click)="filterCampaigns('SMS',5)" [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign">SMS
                                 </li>

@@ -19,13 +19,15 @@ import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receiver
 import { CampaignTemplateDownloadHistoryComponent } from '../campaign-template-download-history/campaign-template-download-history.component';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {Properties} from 'app/common/models/properties';
+import { CampaignAccess } from '../models/campaign-access';
+
 declare var $,swal: any;
 
 @Component({
     selector: 'app-partner-campaigns',
     templateUrl: './partner-campaigns.component.html',
     styleUrls: ['./partner-campaigns.component.css'],
-    providers: [Pagination, HttpRequestLoader,LandingPageService,Properties]
+    providers: [Pagination, HttpRequestLoader,LandingPageService,Properties,CampaignAccess]
 })
 export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngxloading: boolean;
@@ -76,7 +78,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     modulesDisplayType = new ModulesDisplayType();
     socialCampaign: any;
     socialAccountsLoader: boolean;
-
+    campaignAccess:CampaignAccess = new CampaignAccess();
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
@@ -195,35 +197,57 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 
     ngOnInit() {
         try {
-            if(this.router.url.endsWith('/')){
-                this.setViewType('Folder-Grid');
-            }else{
-                this.pagination.pageIndex = 1;
-                this.campaignType = this.route.snapshot.params['type'];
-                this.categoryId = this.route.snapshot.params['categoryId'];
-                if(this.categoryId!=undefined){
-                    this.pagination.categoryId = this.categoryId;
-                    this.pagination.categoryType = 'c';
-                }
-                let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
-                if(showList || this.campaignType!="all"){
-                    if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
-                        this.modulesDisplayType.isListView = true;
-                        this.modulesDisplayType.isGridView = false;
-                    }
-                    this.modulesDisplayType.isFolderListView = false;
-                    this.modulesDisplayType.isFolderGridView = false;
-                    this.listCampaign(this.pagination);
-                }else if(this.modulesDisplayType.isFolderGridView){
-                    this.setViewType('Folder-Grid');
-                }else if(this.modulesDisplayType.isFolderListView){
-                    this.setViewType('Folder-List');
-                }
-            }
-           
+            this.getCampaignTypes();
         } catch (error) {
             this.xtremandLogger.error("error in partner-campaigns.component.ts init() ", error);
         }
+    }
+
+    getCampaignTypes(){
+        this.ngxloading = true;
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.campaignService.getCampaignTypes().subscribe(
+            response=>{
+                let campaignAccess = response.data;
+                this.campaignAccess.emailCampaign = campaignAccess.regular;
+                this.campaignAccess.videoCampaign = campaignAccess.video;
+                this.campaignAccess.socialCampaign = campaignAccess.social;
+                this.campaignAccess.eventCampaign = campaignAccess.event;
+                this.campaignAccess.landingPageCampaign = campaignAccess.page;
+            },_error=>{
+                this.referenceService.showSweetAlertErrorMessage("Unable to fetch campaign types");
+                this.ngxloading = false;
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },()=>{
+                this.ngxloading = false;
+                this.referenceService.loading(this.httpRequestLoader, false);
+                if(this.router.url.endsWith('/')){
+                    this.setViewType('Folder-Grid');
+                }else{
+                    this.pagination.pageIndex = 1;
+                    this.campaignType = this.route.snapshot.params['type'];
+                    this.categoryId = this.route.snapshot.params['categoryId'];
+                    if(this.categoryId!=undefined){
+                        this.pagination.categoryId = this.categoryId;
+                        this.pagination.categoryType = 'c';
+                    }
+                    let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
+                    if(showList || this.campaignType!="all"){
+                        if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                            this.modulesDisplayType.isListView = true;
+                            this.modulesDisplayType.isGridView = false;
+                        }
+                        this.modulesDisplayType.isFolderListView = false;
+                        this.modulesDisplayType.isFolderGridView = false;
+                        this.listCampaign(this.pagination);
+                    }else if(this.modulesDisplayType.isFolderGridView){
+                        this.setViewType('Folder-Grid');
+                    }else if(this.modulesDisplayType.isFolderListView){
+                        this.setViewType('Folder-List');
+                    }
+                }
+            }
+        );
     }
    
     filterCampaigns(type: string) {

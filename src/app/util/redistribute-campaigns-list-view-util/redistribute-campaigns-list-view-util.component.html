@@ -16,11 +16,11 @@
           <ul class="mix-filter col-xs-12 col-sm-12 col-md-6 p0 m0">
             <li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">
             All</li>
-            <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email</li>
-            <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
-            <li class="filter" *ngIf="referenceService.socialCampaignTabAccess" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social
+            <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType" *ngIf="campaignAccess.emailCampaign">Email</li>
+            <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType" *ngIf="campaignAccess.videoCampaign">Video</li>
+            <li class="filter"  (click)="filterCampaigns('social')" [class.active]="'social' == campaignType" *ngIf="campaignAccess.socialCampaign">Social
             </li>
-            <li class="filter" *ngIf="referenceService.eventCampaignTabAccess" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType">Event</li>
+            <li class="filter"  (click)="filterCampaigns('event')" [class.active]="'event' == campaignType" *ngIf="campaignAccess.eventCampaign">Event</li>
             <li class="filter" style="display: none;">Own Template</li>
           </ul>
           <div class="page-toolbar col-xs-12 col-sm-12 col-md-6">
