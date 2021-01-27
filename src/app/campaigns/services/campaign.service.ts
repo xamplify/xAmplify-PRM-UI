@@ -506,6 +506,13 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    parentAndRedistributedCampaignAccess(campaignId:number) {
+        const url = this.URL + "campaign/parentAndRedistributedCampaignAccess/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     deletePartner(partner:any) {
         const url = this.URL + "campaign/delete-campaign-partner?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, partner)
