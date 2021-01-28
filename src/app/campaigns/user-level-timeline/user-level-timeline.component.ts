@@ -55,12 +55,26 @@ export class UserLevelTimelineComponent implements OnInit {
 		}
     this.selectedUserId = parseInt(this.route.snapshot.params['userId']);
     this.campaignId = parseInt(this.route.snapshot.params['campaignId']);
-	let analyticsCampaignIdParam = this.route.snapshot.params['analyticsCampaignId'];
-	if(analyticsCampaignIdParam!=undefined){
-		this.analyticsCampaignId = parseInt(analyticsCampaignIdParam);
-	}
-    this.getUserLevelTimeLineSeriesData();
+	  let analyticsCampaignIdParam = this.route.snapshot.params['analyticsCampaignId'];
+    if(analyticsCampaignIdParam!=undefined){
+      this.analyticsCampaignId = parseInt(analyticsCampaignIdParam);
+    }
+    this.validateCampaignIdAndUserId(this.campaignId,this.selectedUserId);
   }
+
+  validateCampaignIdAndUserId(campaignId:number,userId:number){
+		this.campaignService.validateCampaignIdAndUserId(campaignId,userId).subscribe(
+			response=>{
+				if(response.statusCode==200){
+					this.getUserLevelTimeLineSeriesData();
+				}else{
+					this.referenceService.goToPageNotFound();
+				}
+			},error=>{
+				this.xtremandLogger.errorPage(error);
+			}
+		);
+	}
 
   getUserLevelTimeLineSeriesData(){
     this.loading = true;
