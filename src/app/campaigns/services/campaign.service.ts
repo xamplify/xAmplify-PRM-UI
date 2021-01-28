@@ -500,8 +500,8 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    previewAndDeletePartnersAccess(campaignId:number) {
-        const url = this.URL + "campaign/previewAndDeletePartnersAccess/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+    checkCampaignIdAccess(campaignId:number) {
+        const url = this.URL + "campaign/checkCampaignIdAccess/"+campaignId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
@@ -1044,7 +1044,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-getActiveAndTotalCampaignsCount(companyId:number,userId:number){
+   getActiveAndTotalCampaignsCount(companyId:number,userId:number){
         let url = this.URL + "campaign/getTotalAndActiveCampaigns/"+companyId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url, "")
             .map(this.extractData)
@@ -1073,6 +1073,17 @@ getActiveAndTotalCampaignsCount(companyId:number,userId:number){
 
     getPublicEventCampaignAlias(campaignId:number){
         return this.http.get(this.URL + "/campaign/getPublicEventCampaignAlias/" + campaignId + "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData) .catch(this.handleError);
+    }
+
+    validateCampaignIdAndUserId(campaignId:number,userId:number){
+        return this.http.get(this.URL + "/campaign/validateCampaignIdAndUserId/" + campaignId + "/"+userId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData) .catch(this.handleError);
+    }
+
+    validatePartnerOrContactIdForCampaignAnalytics(partnerOrContactId:number,userType:string){
+        let userId = this.authenticationService.getUserId();
+        return this.http.get(this.URL + "/campaign/validatePartnerOrContactIdForCampaignAnalytics/" + partnerOrContactId + "/"+userId+"/"+userType+"?access_token=" + this.authenticationService.access_token)
         .map(this.extractData) .catch(this.handleError);
     }
     

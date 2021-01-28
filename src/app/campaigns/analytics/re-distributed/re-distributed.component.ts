@@ -31,7 +31,7 @@ export class ReDistributedComponent implements OnInit {
       
   }
   checkCampaignIdAccess(){
-    this.campaignService.previewAndDeletePartnersAccess(this.campaignId).
+    this.campaignService.checkCampaignIdAccess(this.campaignId).
     subscribe(
         data=>{
             if(data.statusCode==200){
