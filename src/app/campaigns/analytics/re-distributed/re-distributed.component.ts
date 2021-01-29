@@ -7,6 +7,9 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { SortOption } from '../../../core/models/sort-option';
 import { ReferenceService } from '../../../core/services/reference.service';
+import { CampaignService } from 'app/campaigns/services/campaign.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+
 declare var $:any;
 @Component({
   selector: 'app-re-distributed',
@@ -19,13 +22,29 @@ export class ReDistributedComponent implements OnInit {
    campaignId:number = 0;
     pagination: Pagination = new Pagination();
     searchKey:string = "";
-   constructor(public route: ActivatedRoute,public partnerService:ParterService,public referenceService:ReferenceService,
-          public httpRequestLoader:HttpRequestLoader,public pagerService:PagerService,public authenticationService:AuthenticationService,public router: Router) { }
+   constructor(private campaignService:CampaignService,public route: ActivatedRoute,public partnerService:ParterService,public referenceService:ReferenceService,
+          public httpRequestLoader:HttpRequestLoader,public pagerService:PagerService,public authenticationService:AuthenticationService,public router: Router,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
       this.campaignId = this.route.snapshot.params['campaignId'];
-      this.listRedistributedCampaigns();
+      this.checkCampaignIdAccess();
+      
   }
+  checkCampaignIdAccess(){
+    this.campaignService.checkCampaignIdAccess(this.campaignId).
+    subscribe(
+        data=>{
+            if(data.statusCode==200){
+              this.listRedistributedCampaigns();
+            }else{
+                this.referenceService.goToPageNotFound();
+            }
+        },error=>{
+            this.xtremandLogger.errorPage( error );
+        }
+
+    );
+}
 
   listRedistributedCampaigns(){
       this.referenceService.loading(this.httpRequestLoader, true );

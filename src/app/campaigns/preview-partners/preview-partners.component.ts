@@ -56,12 +56,12 @@ export class PreviewPartnersComponent implements OnInit {
         }else{
             this.viewType = "plc";
         }
-        this.previewAndDeletePartnersAccess();
+        this.checkCampaignIdAccess();
     }
 
 
-    previewAndDeletePartnersAccess(){
-        this.campaignService.previewAndDeletePartnersAccess(this.campaignId).
+    checkCampaignIdAccess(){
+        this.campaignService.checkCampaignIdAccess(this.campaignId).
         subscribe(
             data=>{
                 if(data.statusCode==200){

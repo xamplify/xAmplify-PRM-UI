@@ -1,26 +1,33 @@
 <div class="page-content">
+    <ng-container *ngIf="pageLoader">
+      <app-modal-popup-loader></app-modal-popup-loader>
+    </ng-container>
+    <ng-container *ngIf="!pageLoader">
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
-                <i class="fa fa-home"></i>
+                <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
-                <i class="fa fa-angle-right"></i>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li *ngIf="authenticationService.isSuperAdmin()">
-                <i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+                <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
             <li>
                 <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='Campaign'">
-                    <a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
+                    <a (click)="goToCampaignAnalytics()">Campaign Analytics</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </li>
                 <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='Campaign&LandingPage'">
-                    <a routerLink="{{routerLink}}">Manage Pages</a><i class="fa fa-angle-right"></i>
+                    <a routerLink="{{routerLink}}">Manage Pages</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </li>
                 <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='PartnerLandingPage'">
-                    <a [routerLink]="['/home/pages/partner']">Manage Pages</a><i class="fa fa-angle-right"></i>
+                    <a [routerLink]="['/home/pages/partner']">Manage Pages</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </li>
                 <li>
                     <a>Page Analytics</a>
-                    <span *ngIf="partnerEmailId?.length>0"><b>({{partnerEmailId}})</b></span>
+                    <span *ngIf="partnerEmailId?.length>0"><strong>({{partnerEmailId}})</strong></span>
                 </li>
         </ul>
     </div>
@@ -30,7 +37,7 @@
             <div class="portlet light">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-globe"></i>
+                        <i class="fa fa-globe" aria-hidden="true"></i>
                         <span class="caption-subject">Viewership Map</span>
                     </div>
                 </div>
@@ -45,7 +52,7 @@
             <div class="portlet light">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="icon-bar-chart font-green-sharp hide"></i>
+                        <i class="icon-bar-chart font-green-sharp hide" aria-hidden="true"></i>
                         <span class="caption-subject font-green-sharp uppercase">Page Views</span>
                     </div>
                     <div class="panel-title pull-right" *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
@@ -89,6 +96,8 @@
             </div>
         </div>
     </div>
+    </ng-container>
+    
 </div>
 <ng-template #estimateTemplate let-xtreme="analyticsData">
     <ng-container *ngIf="xtreme!=null">
@@ -123,12 +132,12 @@
 
                 <app-list-loader *ngIf="xtreme.loader.isLoading"></app-list-loader>
                 <div class="portlet-body" *ngIf="!xtreme.loader.isLoading">
-                    <table class="table tgrid">
+                    <table class="table tgrid" aria-describedby="page-analytics">
                         <thead>
                             <tr>
-                                <th>Date & Time</th>
-                                <th>Location</th>
-                                <th>Device</th>
+                                <th scope="row">Date & Time</th>
+                                <th scope="row">Location</th>
+                                <th scope="row">Device</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -161,7 +170,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closeModal()">
-            <i class="fa fa-times"></i>
+            <i class="fa fa-times" aria-hidden="true"></i>
           </button>
                 <ng-container *ngIf="barChartPopUp">
                     <h4 class="modal-title text-center uppercase">Page Statistics By {{videoUtilService.timePeriod}}</h4>
