@@ -77,7 +77,11 @@ export class LandingPageAnalyticsComponent implements OnInit {
             this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
             this.landingPageAnalyticsPostDto.partnerId = this.partnerId;
             this.pagination.partnerId = this.partnerId;
-            this.validateCampaignId();
+            if(this.partnerId!=undefined){
+                this.validateCampaignIdAndUserId();
+            }else{
+                this.validateCampaignId();
+            }
         }else if(this.landingPageId!=undefined){
             this.pagination.landingPageId = this.landingPageId;
             this.pagination.campaignId = 0;
@@ -99,19 +103,34 @@ export class LandingPageAnalyticsComponent implements OnInit {
         
     }
 
-    validateCampaignId(){
-        this.campaignService.checkCampaignIdAccess(this.campaignId).
+    validateCampaignIdAndUserId(){
+        this.campaignService.validateCampaignIdAndUserId(this.campaignId,this.partnerId).
         subscribe(
             response=>{
-                if(response.statusCode==200){
-                    this.loadAnalytics();
-                }else{
-                    this.referenceService.goToPageNotFound();
-                }
+                this.loadAnalyticsOrNavigateToPageNotFound(response);
             },error=>{
                 this.logger.errorPage(error);
             }
         );
+    }
+
+    validateCampaignId(){
+        this.campaignService.checkCampaignIdAccess(this.campaignId).
+        subscribe(
+            response=>{
+                this.loadAnalyticsOrNavigateToPageNotFound(response);
+            },error=>{
+                this.logger.errorPage(error);
+            }
+        );
+    }
+
+    loadAnalyticsOrNavigateToPageNotFound(response){
+        if(response.statusCode==200){
+            this.loadAnalytics();
+        }else{
+            this.referenceService.goToPageNotFound();
+        }
     }
 
     loadAnalytics(){
