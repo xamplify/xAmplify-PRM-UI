@@ -221,7 +221,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
             data => {
                 if (data.access) {
                     if (this.pagination.totalAttendees) {
-                        window.open(this.authenticationService.REST_URL + "campaign/ectl/" + this.pagination.campaignId + "/" + this.isTotalAttendees + "?access_token=" + this.authenticationService.access_token);
+                        window.open(this.authenticationService.REST_URL + "campaign/download/ectl/" + this.pagination.campaignId + "/" + this.isTotalAttendees + "?access_token=" + this.authenticationService.access_token);
                     } else if (this.campaignFormAnalyticsDownload) {
                         window.open(this.authenticationService.REST_URL + "form/download/cfa/" + this.alias + "/" + this.pagination.campaignId + "/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token);
                     }
