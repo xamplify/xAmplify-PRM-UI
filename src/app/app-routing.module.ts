@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { AuthGuard } from './auth.guard';
-
+import { AuthGuardService } from './auth-guard.service';
 import { AppCustomPreloader } from './app-routing-loader';
-
 import { HomeComponent } from './core/home/home.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
