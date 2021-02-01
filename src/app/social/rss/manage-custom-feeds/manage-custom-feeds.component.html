@@ -189,11 +189,11 @@
 															(click)="editFeed(feed)"> <i
 															class="fa fa-pencil-square-o" aria-hidden="true"></i>
 														</a> <a *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
-															data-placement="top" title="Publish"
+															data-placement="top" title="Share"
 															(click)="publishFeed(feed)"> <i class="fa fa-upload"
 															aria-hidden="true"></i>
 														</a> <a data-toggle="tooltip" data-placement="top"
-															title="Share" (click)="shareFeed(feed)"> <i
+															title="Publish" (click)="shareFeed(feed)"> <i
 															class="fa fa-share" aria-hidden="true"></i>
 														</a>
 														<a *ngIf="selectedType!='p'" data-toggle="tooltip" 
@@ -213,7 +213,7 @@
 											<div class="col-md-8 col-lg-8" style = "padding: 0px;">
 												<div>
 													<span *ngIf="feed.publishToPartners">
-														Published on: {{feed.publishTime}}</span>
+														Shared on: {{feed.publishTime}}</span>
 													<span *ngIf="!feed.publishToPartners && selectedType!='p'"
 														>Last updated on: {{feed.lastUpdatedDate}}</span> 
 												</div>
@@ -221,7 +221,7 @@
 											<div class="col-md-4 col-lg-4" style = "padding: 0px;">
 												<div class="text-right">
 													<span *ngIf="feed.publishToPartners && selectedType!='p'"
-														class="published-banner uppercase">Published</span>
+														class="published-banner uppercase">Shared</span>
 												</div>
 											</div>
 										</div>
@@ -304,7 +304,7 @@
                                 <thead>
                                     <tr >
                                         <th class="text-center" style="min-width: 200px;" translate>Partner</th>
-                                        <th class="text-center" style="min-width: 200px;" translate>Total Shares</th>
+                                        <th class="text-center" style="min-width: 200px;" translate>Total Publishes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -322,7 +322,7 @@
 										[hidden]="loading"></app-pagination>
 								</div>
 								<div *ngIf="analyticsPagination.pagedItems.length === 0" class="text-center">
-								This feed is not yet shared by any partner.
+								This feed is not yet published by any partner.
 								</div>
 							</div>
 							<div class="modal-footer" style="border: none">
