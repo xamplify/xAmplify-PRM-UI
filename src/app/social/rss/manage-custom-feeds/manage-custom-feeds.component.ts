@@ -191,13 +191,13 @@ export class ManageCustomFeedsComponent implements OnInit {
 		let confirmButtonText = "";
 		let successMessage = "";
 		if (isPublished) {
-			message = "This feed will be UnPublished";
-			confirmButtonText = "Yes, UnPublish it!";
-			successMessage = "Feed UNPUBLISHED successfully";
+			message = "This feed will be Unshared";
+			confirmButtonText = "Yes, Unshare it!";
+			successMessage = "Feed Unshared successfully";
 		} else {
-			message = "This feed will be Published";
-			confirmButtonText = "Yes, Publish it!";
-			successMessage = "Feed PUBLISHED successfully";
+			message = "This feed will be Shared";
+			confirmButtonText = "Yes, Share it!";
+			successMessage = "Feed Shared successfully";
 		}
 		let self = this;
 		swal({
