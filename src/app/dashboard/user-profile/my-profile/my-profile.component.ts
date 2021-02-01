@@ -345,20 +345,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 			this.getUserByUserName(this.currentUser.userName);
 			this.cropperSettings();
-			this.roleNames = this.authenticationService.loggedInUserRole;
-			if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member") {
-				if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0) {
-					this.roleNames = "Vendor";
-				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0) {
-					this.roleNames = "OrgAdmin";
-				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0) {
-					this.roleNames = "Marketing";
-				}else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 20).length !== 0) {
-					this.roleNames = "PRM";
-				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
-					this.roleNames = "Partner";
-				}
-			}
+			
 			// this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
 			this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
@@ -400,7 +387,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.activeTabHeader = this.properties.personalInfo;
 			}
 			this.customConstructorCall();
-			console.log(this.authenticationService.user);
 			this.geoLocation();
 			this.videoUtilService.normalVideoJsFiles();
 			// const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -434,8 +420,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (this.authenticationService.vanityURLEnabled) {
 				this.setSubjectLineTooltipText();
 			}
+			this.getRoles();
 			this.addDefaultPipelineStages();
-
 			window.addEventListener('message', function(e) {
 				if (e.data == 'isHubSpotAuth') {
 					localStorage.setItem('isHubSpotAuth', 'yes');
@@ -450,6 +436,38 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
+	}
+
+	getRoles(){
+		this.ngxloading = true;
+		this.userService.getRoles(this.authenticationService.getUserId())
+      .subscribe(
+      response => {
+           if(response.statusCode==200){
+              this.authenticationService.loggedInUserRole = response.data.role;
+              this.roleNames = this.authenticationService.loggedInUserRole;
+			if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member") {
+				if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0) {
+					this.roleNames = "Vendor";
+				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0) {
+					this.roleNames = "OrgAdmin";
+				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0) {
+					this.roleNames = "Marketing";
+				}else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 20).length !== 0) {
+					this.roleNames = "PRM";
+				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
+					this.roleNames = "Partner";
+				}
+			}
+           }else{
+               this.authenticationService.loggedInUserRole = 'User';
+		   }
+		   this.ngxloading = false;
+      },
+      error => {this.logger.errorPage(error)},
+      () => this.logger.log('Finished')
+      );
+		
 	}
 
 	ngAfterViewInit() {
