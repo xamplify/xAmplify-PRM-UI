@@ -70,20 +70,19 @@ import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-logi
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
 import { NoCacheHeadersInterceptor } from './core/no-cache-provider';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-token-login/expired-access-token-login.component';
 import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanity-add-contacts.component';
-import { HubmarketoVanityAddContactsComponent } from './contacts/hubmarketo-vanity-add-contacts/hubmarketo-vanity-add-contacts.component';
 import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
 import {ClearChunkFile} from 'app/core/clear-chunk-file';
 import { ErrorHandler } from '@angular/core';
+import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
 
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
         CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
         , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
-        LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent, ExpiredAccessTokenLoginComponent,
-        VanityAddContactsComponent, HubmarketoVanityAddContactsComponent, VanitySynchronizeContactsComponent
+        LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
+        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent
     ],
 
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,

@@ -18,6 +18,7 @@ import 'rxjs/add/observable/throw';
 import {ReferenceService} from '../../core/services/reference.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Injectable()
 export class ContactService {
@@ -41,6 +42,7 @@ export class ContactService {
     publicList : boolean;
     assignedToPartner : boolean;
     contactType:string
+	
 
     url = this.authenticationService.REST_URL + "admin/";
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
@@ -52,6 +54,8 @@ export class ContactService {
         console.log( logger );
     }
 
+	
+	
     loadUsersOfContactList( contactListId: number, pagination: Pagination ) {
     	//pagination.criterias = criterias;
 
@@ -351,6 +355,13 @@ export class ContactService {
             .catch( this.handleError );
     }
 
+   googleVanityLogin(currentModule: any) {
+        this.logger.info( this.googleContactsUrl + "authorizeLogin?access_token=" + this.authenticationService.access_token );
+        return this._http.post( this.googleContactsUrl + "authorizeLogin?userId=" + localStorage.getItem('vanityUserId') +"&module=" + currentModule, "")
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     getGoogleContacts( socialContact: SocialContact ) {
         this.logger.info( "get google contacts :" + socialContact );
         //this.successMessage = true;
@@ -404,6 +415,12 @@ export class ContactService {
 
     checkingZohoAuthentication(module: string) {
         return this._http.get( this.authenticationService.REST_URL + "zohoOauth/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId()+"&module="+module)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+	 checkingZohoVanityAuthentication(module: string) {
+        return this._http.get( this.authenticationService.REST_URL + "zohoOauth/authorizeLogin?userId=" + localStorage.getItem('vanityUserId') + "&module=" + module)
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -474,6 +491,15 @@ export class ContactService {
             .catch( this.handleError );
     }
 
+	salesforceVanityLogin(currentModule: any) {
+        this.logger.info( this.salesforceContactUrl + "/authorizeLogin?&userId=" + localStorage.getItem('vanityUserId') );
+        return this._http.get( this.salesforceContactUrl + "/authorizeLogin?userId=" + localStorage.getItem('vanityUserId') +"&module=" + currentModule)
+            .map( this.extractData )
+            .catch( this.handleError );
+
+	}
+
+
 	hubSpotLogin(currentModule: any) {
         this.logger.info( this.hubSpotContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );
         return this._http.get( this.hubSpotContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() +"&module=" + currentModule)
@@ -489,10 +515,21 @@ export class ContactService {
                 let denied = param['denied'];
                 queryParam = "?code=" + code;
             });*/
-        this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'currentModule' ) );
-        return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'currentModule' ) )
+		let loggedInThroughVanityUrl = localStorage.getItem('vanityUrlFilter');
+		if(loggedInThroughVanityUrl == 'true')
+		{
+			 this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) );
+			 return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) )
             .map( this.extractData )
             .catch( this.handleError );
+		}
+		else{
+			 this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'currentModule' ) );
+			 return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'currentModule' ) )
+            .map( this.extractData )
+            .catch( this.handleError );
+		}
+       
     }
 
     /*salesforceCallback(): Observable<String> {

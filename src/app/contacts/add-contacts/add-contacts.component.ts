@@ -1420,8 +1420,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     googleContacts() {
         try {
             if(this.loggedInThroughVanityUrl){
-                this.referenceService.showSweetAlertInfoMessage();
-			//	this.googleVanityAuthentication();
+             //   this.referenceService.showSweetAlertInfoMessage();
+			      this.googleVanityAuthentication();
 
             }else{
                 if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
@@ -1483,8 +1483,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
 
-googleVanityAuthentication() {
-
+	googleVanityAuthentication() {
 		this.noOptionsClickError = false;
 		this.xtremandLogger.info("addContactComponent googlecontacts() login:");
 		this.socialContact.firstName = '';
@@ -1498,7 +1497,7 @@ googleVanityAuthentication() {
 		this.socialContact.alias = '';
 		this.socialContact.socialNetwork = "GOOGLE";
 		this.contactService.socialProviderName = 'google';
-		this.contactService.vanitySocialProviderName = 'google'; //added for vanity url authentication
+		this.contactService.vanitySocialProviderName = 'google';
 		this.xtremandLogger.info("socialContacts" + this.socialContact.socialNetwork);
 		let currentModule = "";
 		if (this.assignLeads) {
@@ -1525,10 +1524,11 @@ googleVanityAuthentication() {
 						console.log(data.userAlias);
 						this.googleCurrentUser = localStorage.getItem('currentUser');
 						const encodedData = window.btoa(this.googleCurrentUser);
-						//const encodedUrl = window.btoa(data.redirectUrl);
+						const encodedUrl = window.btoa(data.redirectUrl);
+						let vanityUserId = JSON.parse(this.googleCurrentUser)['userId'];
 						let url = null;
 						if(data.redirectUrl){
-								url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + currentModule + "/" + encodedData ;
+								url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/"+ null ;
 
 						}else{
 								url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
@@ -2347,8 +2347,8 @@ googleVanityAuthentication() {
     salesforceContacts() {
         try {
             if(this.loggedInThroughVanityUrl){
-                this.referenceService.showSweetAlertInfoMessage();
-				//this.salesForceVanityAuthentication();
+                //this.referenceService.showSweetAlertInfoMessage();
+				this.salesForceVanityAuthentication();
             }else{
                 if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
                     this.contactType = "";
@@ -2397,8 +2397,7 @@ salesForceVanityAuthentication() {
 			this.noOptionsClickError = false;
 			this.socialContact.socialNetwork = "salesforce";
 			this.contactService.socialProviderName = 'salesforce';
-			this.contactService.socialProviderName = 'salesforce';
-			this.contactService.vanitySocialProviderName = 'salesforce'
+			this.contactService.vanitySocialProviderName = 'salesforce'; //Added by ajay for setting up social provider name when authenticating from vanity
 			this.xtremandLogger.info("socialContacts" + this.socialContact.socialNetwork);
 			let currentModule = "";
 			if (this.assignLeads) {
@@ -2417,17 +2416,18 @@ salesForceVanityAuthentication() {
 							console.log("AddContactComponent salesforce() Authentication Success");
 							this.checkingPopupValues();
 						} else {
-							localStorage.setItem("userAlias", data.userAlias);
-							localStorage.setItem("currentModule", data.module);
+							localStorage.setItem("userAlias", data.userAlias)
+							localStorage.setItem("currentModule", data.module)
 							localStorage.setItem('vanityUrlFilter', 'true');
 							console.log(data.redirectUrl);
 							console.log(data.userAlias);
 							this.salesForceCurrentUser = localStorage.getItem('currentUser');
-							const encodedData = window.btoa(this.salesForceCurrentUser);
-							let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
+							let vanityUserId = JSON.parse(this.salesForceCurrentUser)['userId'];
+							let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null ;
 							var x = screen.width / 2 - 700 / 2;
 							var y = screen.height / 2 - 450 / 2;
 							window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,addressbar=noresizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+
 						}
 					},
 					(error: any) => {
@@ -2921,6 +2921,7 @@ salesForceVanityAuthentication() {
 
 
 	ngAfterViewChecked() {
+
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
@@ -2929,14 +2930,11 @@ salesForceVanityAuthentication() {
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isZohoAuth');
-
 		if (tempCheckGoogleAuth == 'yes' && !this.isPartner) {
 			this.router.navigate(['/home/contacts/add']);
-
 		}
 		else if (tempCheckSalesForceAuth == 'yes' && !this.isPartner) {
 			this.router.navigate(['/home/contacts/add']);
-
 		}
 		else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
 			this.router.navigate(['/home/contacts/add']);
@@ -2955,7 +2953,7 @@ salesForceVanityAuthentication() {
                 this.loadContactListsNames();
             }
 
-          if (localStorage.getItem('vanityUrlFilter')) {
+         	if (localStorage.getItem('vanityUrlFilter')) {
 				localStorage.removeItem('vanityUrlFilter');
 				if (this.contactService.vanitySocialProviderName == 'google') {
 					this.getGoogleContactsUsers();
@@ -2966,7 +2964,11 @@ salesForceVanityAuthentication() {
 				} else if (this.contactService.vanitySocialProviderName == 'zoho' || this.socialContactType == "zoho") {
 					this.zohoShowModal();
 					this.contactService.socialProviderName = "nothing";
-				}
+				}/*else if(this.contactService.vanitySocialProviderName == 'hubspot'){
+					this.showHubSpotModal();
+					this.contactService.socialProviderName = "nothing";
+					this.contactService.vanitySocialProviderName = 'nothing';
+				}*/
 			}
 			else if (this.contactService.socialProviderName == 'google') {
 				this.getGoogleContactsUsers();
@@ -2980,6 +2982,11 @@ salesForceVanityAuthentication() {
 				this.zohoShowModal();
 				this.contactService.socialProviderName = "nothing";
 			}
+			/*else if(this.contactService.vanitySocialProviderName = 'hubspot'){
+				this.showHubSpotModal();
+				this.contactService.socialProviderName = "nothing";
+				this.contactService.vanitySocialProviderName = 'nothing';
+			}*/
 
             this.contactListName = '';
             $( "#Gfile_preview" ).hide();
@@ -3021,7 +3028,9 @@ salesForceVanityAuthentication() {
             localStorage.setItem("isZohoSynchronization", "no");
         }
 		
-		window.addEventListener('message', function(e) {
+			window.addEventListener('message', function(e) {
+				console.log('received message:  ' + e.data, e);
+				
 				if (e.data == 'isGoogleAuth') {
 					localStorage.setItem('isGoogleAuth', 'yes');
 				}
@@ -3175,8 +3184,8 @@ salesForceVanityAuthentication() {
     checkingMarketoContactsAuthentication() {
         try {
             if(this.loggedInThroughVanityUrl){
-                this.referenceService.showSweetAlertInfoMessage();
-				//this.vanityCheckingMarketoContactsAuthentication();
+                //this.referenceService.showSweetAlertInfoMessage();
+				this.vanityCheckingMarketoContactsAuthentication();
 
             }else{
                 if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
@@ -3273,6 +3282,7 @@ vanityCheckingMarketoContactsAuthentication(){
 			this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
 		}
 	}
+
 
     validateMarketoContacts(socialUsers: any)
     {
@@ -3699,8 +3709,8 @@ vanityCheckingMarketoContactsAuthentication(){
 
     checkingHubSpotContactsAuthentication(){
         if(this.loggedInThroughVanityUrl){
-            this.referenceService.showSweetAlertInfoMessage();
-			  //this.hubSpotVanityAuthentication();
+            //this.referenceService.showSweetAlertInfoMessage();
+			  this.hubSpotVanityAuthentication();
         }else{
             if(this.selectedAddContactsOption == 8){
                 this.hubSpotService.configHubSpot().subscribe(data => {
@@ -3723,32 +3733,35 @@ vanityCheckingMarketoContactsAuthentication(){
 
     }
 
-		hubSpotVanityAuthentication() {
-				this.contactService.vanitySocialProviderName = 'hubspot';
-				if (this.selectedAddContactsOption == 8) {
-					this.hubSpotService.configHubSpot().subscribe(data => {
-						let response = data;
-						let providerName = 'salesforce'
-						if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-							this.xtremandLogger.info("isAuthorize true");
-							this.showHubSpotModal();
-						}
-						else {
-							if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-								this.loggedInUserId = this.authenticationService.getUserId();
-								this.hubSpotCurrentUser = localStorage.getItem('currentUser');
-								let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.hubSpotCurrentUser;
-								var x = screen.width / 2 - 700 / 2;
-								var y = screen.height / 2 - 450 / 2;
-								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,addressbar=noresizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
-		
-							}
-						}
-					}, (error: any) => {
-						this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
-					}, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
+	hubSpotVanityAuthentication() {
+		this.contactService.vanitySocialProviderName = 'hubspot';
+		if (this.selectedAddContactsOption == 8) {
+			this.hubSpotService.configHubSpot().subscribe(data => {
+				let response = data;
+				let providerName = 'salesforce'
+				if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+					this.xtremandLogger.info("isAuthorize true");
+					this.showHubSpotModal();
 				}
-			}
+				else {
+					if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+						this.loggedInUserId = this.authenticationService.getUserId();
+						this.hubSpotCurrentUser = localStorage.getItem('currentUser');
+						let vanityUserId = JSON.parse(this.googleCurrentUser)['userId'];
+						//let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.hubSpotCurrentUser;
+						let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null ;
+
+						var x = screen.width / 2 - 700 / 2;
+						var y = screen.height / 2 - 450 / 2;
+						window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,addressbar=noresizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+
+					}
+				}
+			}, (error: any) => {
+				this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
+			}, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
+		}
+	}
 
     showHubSpotModal() {
         $( '#ContactHubSpotModal' ).modal( 'show' );
@@ -4080,63 +4093,62 @@ vanityCheckingMarketoContactsAuthentication(){
         }
     }
 
-    zohoVanityUrlAuthentication() {
-        localStorage.removeItem('isZohoSynchronization');
-        this.zohoPopupLoader = true;
-                this.authenticationService.vanityURLEnabled == true;
-				let providerName = 'zoho';
-                this.zohoErrorResponse = new CustomResponse();
-                let selectedOption = $("select.opts:visible option:selected ").val();
-                if(selectedOption=="DEFAULT"){
-                    this.zohoErrorResponse = new CustomResponse('ERROR','Please select atleast one option',true);
-                    this.zohoPopupLoader = false;
-                }
-                else{
-                    if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
-                        this.contactService.checkingZohoAuthentication(this.module)
-                            .subscribe(
-                                (data: any) => {
-                                    this.storeLogin = data;
-                                    if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-                                        let self = this;
-                                        self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
-                                        if (this.selectedZohoDropDown == "contact") {
-                                            this.zohoPopupLoader = false;
-                                            this.getZohoContactsUsingOAuth2();
-                                        }
-                                        if (this.selectedZohoDropDown == "lead") {
-                                            this.zohoPopupLoader = false;
-                                            this.getZohoLeadsUsingOAuth2();
-                                        }
+	zohoVanityUrlAuthentication() {
+		localStorage.removeItem('isZohoSynchronization');
+		this.zohoPopupLoader = true;
+		this.authenticationService.vanityURLEnabled == true;
+		this.contactService.vanitySocialProviderName = 'zoho';
+		this.zohoErrorResponse = new CustomResponse();
+		let providerName = 'zoho';
+		let selectedOption = $("select.opts:visible option:selected ").val();
+		if (selectedOption == "DEFAULT") {
+			this.zohoErrorResponse = new CustomResponse('ERROR', 'Please select atleast one option', true);
+			this.zohoPopupLoader = false;
+		}
+		else {
+			if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
+				this.contactService.checkingZohoAuthentication(this.module)
+					.subscribe(
+						(data: any) => {
+							this.storeLogin = data;
+							if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+								let self = this;
+								self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
+								if (this.selectedZohoDropDown == "contact") {
+									this.zohoPopupLoader = false;
+									this.getZohoContactsUsingOAuth2();
+								}
+								if (this.selectedZohoDropDown == "lead") {
+									this.zohoPopupLoader = false;
+									this.getZohoLeadsUsingOAuth2();
+								}
 
-                                    } else {
-                                        this.zohoPopupLoader = false;
-                                        localStorage.setItem("userAlias", data.userAlias)
-                                        localStorage.setItem("currentModule", data.module);
-                                        localStorage.setItem("statusCode", data.statusCode);
-                                       // window.location.href = "" + data.redirectUrl;
+							} else {
+								this.zohoPopupLoader = false;
+								localStorage.setItem("userAlias", data.userAlias)
+								localStorage.setItem("currentModule", data.module);
+								localStorage.setItem("statusCode", data.statusCode);
+								localStorage.setItem('vanityUrlFilter', 'true');
+								this.loggedInUserId = this.authenticationService.getUserId();
+								this.zohoCurrentUser = localStorage.getItem('currentUser');
+								let vanityUserId = JSON.parse(this.zohoCurrentUser)['userId'];
 
-                                       this.loggedInUserId = this.authenticationService.getUserId();
+								let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null ;
+								var x = screen.width / 2 - 700 / 2;
+								var y = screen.height / 2 - 450 / 2;
+								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+							}
+						},
+						(error: any) => {
+							this.zohoPopupLoader = false;
+							this.referenceService.showSweetAlertServerErrorMessage();
+						},
+						() => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
+					)
+			}
+		}
 
-                                       this.zohoCurrentUser = localStorage.getItem('currentUser');
-                                       let url = this.authenticationService.APP_URL+"e/"+providerName+"/"+this.loggedInUserId+"/"+window.location.hostname+"/"+this.authenticationService.access_token+"/"+this.zohoCurrentUser+"/"+this.module;
-                                       var x = screen.width/2 - 700/2;
-                                       var y = screen.height/2 - 450/2;
-                                        window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
-
-
-                                    }
-                                },
-                                (error: any) => {
-                                    this.zohoPopupLoader = false;
-                                    this.referenceService.showSweetAlertServerErrorMessage();
-                                },
-                                () => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
-                            )
-                    }
-                }
-
-    }
+	}
 
 
 
