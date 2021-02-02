@@ -20,6 +20,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { Pagination } from '../../core/models/pagination';
 import { TranslateService } from '@ngx-translate/core';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -639,7 +640,6 @@ export class AuthenticationService {
 
   extractData(res: Response) {
     let body = res.json();
-    console.log(body);
     return body || {};
   }
 
@@ -658,4 +658,19 @@ export class AuthenticationService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  getUrls() {
+    let vanityLoginDto = new VanityLoginDto();
+    if(this.companyProfileName !== undefined && this.companyProfileName !== ''){
+			vanityLoginDto.vendorCompanyProfileName = this.companyProfileName;
+			vanityLoginDto.vanityUrlFilter = true;
+     }
+     vanityLoginDto.userId = this.getUserId();
+    return this.http.post(this.REST_URL + "admin/getUrls?access_token=" + this.access_token,vanityLoginDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  
+  
 }
