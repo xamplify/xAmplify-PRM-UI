@@ -537,6 +537,37 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         )
     } catch (error) { this.hasClientError = true; this.xtremandLogger.error('error' + error); }
   }
+  
+  getCampaignHighLevelAnalytics(campaignId: number){
+	    try {
+	        this.loading = true;
+	        this.campaignService.getCampaignHighLevelAnalytics(campaignId, this.loggedInUserId)
+	          .subscribe(
+	            response => {
+	            	this.campaignReport.emailSentCount = response.data.totalEmailsSent;
+	            	this.campaignReport.totalRecipients = response.data.totalRecipients;
+	            	this.campaignReport.delivered = response.data.delivered;
+	            	this.campaignReport.unsubscribed = response.data.unsubscribed;
+	            	this.campaignReport.softBounce = response.data.softBounce;
+	            	this.campaignReport.hardBounce = response.data.hardBounce;
+	            	this.campaignReport.clickthroughRate = response.data.clickthroughRate;
+	            	this.campaignReport.emailClickedCount = response.data.emailClicked;
+	            	this.campaignReport.openRate = response.data.openRate;
+	            	this.campaignReport.activeRecipients = response.data.activeRecipients;
+	            	this.campaignReport.unsubscribed = response.data.unsubscribed;
+	            	this.campaignReport.pagesClicked = response.data.pagesClicked;
+	            	this.campaignReport.totalAttendeesCount = response.data.totalAttendeesCount;
+	              /*this.campaignReport.emailOpenCount = data["email_opened_count"];
+	              this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
+	              
+	              this.campaignReport.dataShareClickedUrlsCountForVendor = data['dataShareClickedUrlsCountForVendor'];*/
+	              this.loading = false;
+	            },
+	            error => console.log(error),
+	            () => console.log()
+	          )
+	      } catch (error) { this.hasClientError = true; this.xtremandLogger.error('error' + error); }
+  }
 
   getCampaignWatchedUsersCount(campaignId: number) {
     try {
@@ -2215,6 +2246,7 @@ checkParentAndRedistributedCampaignAccess(){
         this.emailActionListPagination.pageIndex = 1;
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.getCampaignById(this.campaignId);
+        this.getCampaignHighLevelAnalytics(this.campaignId);
         this.getEmailLogCountByCampaign(this.campaignId);
         this.pagination.pageIndex = 1;
         if (this.isTimeLineView === true) {

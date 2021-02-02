@@ -178,6 +178,13 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getCampaignHighLevelAnalytics(campaignId: number, userId:number){
+    	userId = this.authenticationService.checkLoggedInUserId(userId);
+    	 return this.http.get(this.URL + 'campaign/'+ campaignId+'/' + userId +'/highlevel-analytics/?access_token=' + this.authenticationService.access_token)
+         .map(this.extractData)
+         .catch(this.handleError);
+    }
 
     getEmailSentCount(campaignId: number) {
         return this.http.get(this.URL + 'emails_sent_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
