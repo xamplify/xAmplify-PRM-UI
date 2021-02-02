@@ -14,7 +14,6 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 })
 export class SocialLoginComponent implements OnInit {
 	error: string;
-	parentWindowUserId: number;
 	isPartner: boolean;
 	module: string;
 	checkingContactTypeName: string;
@@ -23,11 +22,9 @@ export class SocialLoginComponent implements OnInit {
 	isLoggedInVanityUrl: any;
 
 	constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService,
-		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService
-	) {
-		this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');
-	}
-	/* if blocks for google and sales force are added by ajay to call backend apis to get required redirect urls for authentication */
+		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService) {
+			this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');
+		}
 	login(providerName: string) {
 		if (providerName == 'google' && this.isLoggedInVanityUrl == 'true') {
 			let currentModule = "";
@@ -36,18 +33,13 @@ export class SocialLoginComponent implements OnInit {
 			} else {
 				currentModule = 'contacts';
 			}
-			this.parentWindowUserId = this.authenticationService.getUserId();
-			this.contactService.googleLogin(currentModule)
+			this.contactService.googleVanityLogin(currentModule)
 				.subscribe(
 					data => {
 						this.storeLogin = data;
-						console.log(data);
 						localStorage.setItem("userAlias", data.userAlias);
 						localStorage.setItem("currentModule", data.module);
-						console.log(data.redirectUrl);
-						console.log(data.userAlias);
 						window.location.href = "" + data.redirectUrl;
-
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -59,24 +51,41 @@ export class SocialLoginComponent implements OnInit {
 					() => this.xtremandLogger.log("AddContactsComponent() googleContacts() finished.")
 				);
 
-		} else if (providerName == 'salesforce' && this.isLoggedInVanityUrl == 'true') {
+		}
+		else if (providerName == 'salesforce' && this.isLoggedInVanityUrl == 'true') {
 			let currentModule = "";
 			if (this.assignLeads) {
 				currentModule = 'leads'
 			} else {
 				currentModule = 'contacts'
 			}
-			this.contactService.salesforceLogin(currentModule)
+			this.contactService.salesforceVanityLogin(currentModule)
 				.subscribe(
 					data => {
-						this.storeLogin = data;
-						console.log(data);
 						localStorage.setItem("userAlias", data.userAlias)
 						localStorage.setItem("currentModule", data.module)
-						console.log(data.redirectUrl);
-						console.log(data.userAlias);
 						window.location.href = "" + data.redirectUrl;
-
+					},
+					(error: any) => {
+						this.xtremandLogger.error(error);
+					},
+					() => this.xtremandLogger.log("addContactComponent salesforceContacts() login finished.")
+				);
+		}
+		
+		else if (providerName == 'zoho' && this.isLoggedInVanityUrl == 'true') {
+			let currentModule = "";
+			if (this.assignLeads) {
+				currentModule = 'leads'
+			} else {
+				currentModule = 'contacts'
+			}
+			this.contactService.checkingZohoVanityAuthentication(currentModule)
+				.subscribe(
+					data => {
+						localStorage.setItem("userAlias", data.userAlias)
+						localStorage.setItem("currentModule", data.module)
+						window.location.href = "" + data.redirectUrl;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);

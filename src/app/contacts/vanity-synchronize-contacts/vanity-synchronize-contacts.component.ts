@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ContactService } from '../services/contact.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
@@ -12,32 +11,27 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 })
 export class VanitySynchronizeContactsComponent implements OnInit {
 
-	constructor(private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService,
-		public contactService: ContactService, public xtremandLogger: XtremandLogger) { }
+	constructor(private router: Router, private route: ActivatedRoute, public contactService: ContactService, public xtremandLogger: XtremandLogger) { }
 
 	public storeLogin: any;
 	ngOnInit() {
 		let providerName = this.route.snapshot.params['socialProvider'];
-		let currentUser = this.route.snapshot.params['currentUser'];
-		let currentModule = this.route.snapshot.params['currentModule'];
-		const decodedData = window.atob(currentUser);
-		localStorage.setItem('currentUser', decodedData);
+		let vanityUserId = this.route.snapshot.params['vanityUserId'];
+		let vanityUserAlias = this.route.snapshot.params['vanityUserAlias'];
+		localStorage.setItem('vanityUserAlias', vanityUserAlias);
+		let vanityCurrentModule = this.route.snapshot.params['currentModule'];
+		localStorage.setItem('vanityCurrentModule', vanityCurrentModule);
+		localStorage.setItem('vanityUserId', vanityUserId);
 		localStorage.setItem('vanityUrlFilter', 'true');
-		this.authenticationService.access_token = JSON.parse(decodedData)['accessToken'];
-		if (currentModule != null && providerName == 'google') {
-			this.contactService.googleLogin(currentModule)
+		
+		if (vanityCurrentModule != null && providerName == 'google') {
+			this.contactService.googleVanityLogin(vanityCurrentModule)
 				.subscribe(
 					data => {
 						this.storeLogin = data;
 						console.log(data);
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
 							console.log("AddContactComponent googleContacts() Authentication Success");
-							/*this.xtremandLogger.info("called getGoogle contacts method:");
-							localStorage.setItem("userAlias", data.userAlias);
-							localStorage.setItem("currentModule", data.module);
-							console.log(data.redirectUrl);
-							console.log(data.userAlias);
-							window.location.href = "" + data.redirectUrl;*/
 						} else {
 							localStorage.setItem("userAlias", data.userAlias);
 							localStorage.setItem("currentModule", data.module);
@@ -57,8 +51,8 @@ export class VanitySynchronizeContactsComponent implements OnInit {
 					},
 					() => this.xtremandLogger.log("AddContactsComponent() googleContacts() finished.")
 				);
-		}else if(currentModule != null && providerName == 'salesforce'){
-				this.contactService.salesforceLogin(currentModule)
+		}else if(vanityCurrentModule != null && providerName == 'salesforce'){
+				this.contactService.salesforceVanityLogin(vanityCurrentModule)
 				.subscribe(
 					data => {
 						this.storeLogin = data;

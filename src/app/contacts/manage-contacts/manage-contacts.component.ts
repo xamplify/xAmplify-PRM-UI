@@ -207,7 +207,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	public statusCodeFromAddContacts: any;
 	public isCalledZohoSycronization = false;
 	public zohoCurrentUrl: any;
-	public isZohoSynchronizationThroughVanity
 	public zohoCurrentUser: any;
 	tempIsZohoSynchronization: any;
 	campaignLoader = false;
@@ -609,7 +608,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 
-	googleContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+		googleContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
 		try {
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 			if (this.contactLists != undefined) {
@@ -636,24 +635,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
 							console.log("AddContactComponent googleContacts() Authentication Success");
 							this.syncronizeContactList(contactListId, socialNetwork);
-							localStorage.setItem('isZohoSynchronization', 'no');
-							localStorage.removeItem('isZohoSynchronization');
 						} else {
-							localStorage.setItem("userAlias", data.userAlias)
-							console.log(data.redirectUrl);
-							console.log(data.userAlias);
-							//window.location.href = "" + data.redirectUrl;
-							localStorage.setItem('isZohoSynchronization', 'no');
-                            localStorage.removeItem('isZohoSynchronization');
-							this.salesForceCurrentUser = localStorage.getItem('currentUser');
-							const encodedData = window.btoa(this.salesForceCurrentUser);
-							let url = null;
-							if (this.loggedInThroughVanityUrl) {
-								url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + currentModule + "/" + encodedData;
+							let currentUser = localStorage.getItem('currentUser');
+							let vanityUserId = JSON.parse(currentUser)['userId'];
+							if (this.loggedInThroughVanityUrl)
+							{
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + currentModule;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
-							} else {
+							} else 
+							{
 								window.location.href = "" + data.redirectUrl;
 							}
 						}
@@ -685,18 +677,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					(data: any) => {
 						swal.close();
 						if (data.statusCode == 402) {
-							// this.checkSyncCode = data.statusCode;
-							//  localStorage.setItem("checkSyncCode", data.statusCode);
 							this.customResponse = new CustomResponse('INFO', data.message, true);
-							localStorage.setItem('isZohoSynchronization', 'no');
-							localStorage.removeItem('isZohoSynchronization');
 						} else {
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true);
 							this.loadContactLists(this.pagination);
 							this.contactsCount();
-							localStorage.setItem('isZohoSynchronization', 'no');
-							localStorage.setItem('statusCode', '201');
-							localStorage.removeItem('isZohoSynchronization');
 						}
 
 					},
@@ -711,19 +696,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	remveZohoAuthenticationLocalStorageValues() {
-		//  localStorage.removeItem('contactListIdZoho');
-		//  localStorage.removeItem('socialNetworkZoho');
-		localStorage.removeItem("isZohoSynchronization");
-
-	}
 
 
+	
 	zohoContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
-
-		/*  localStorage.removeItem('contactListIdZoho');
-		  localStorage.removeItem('socialNetworkZoho');
-		  localStorage.removeItem('isZohoSynchronization'); */
 		try {
 			this.resetResponse();
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
@@ -739,27 +715,24 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.checkingZohoSyncAuthentication()
 				.subscribe(
 					(data: any) => {
-						this.xtremandLogger.info(data);
-						this.storeLogin = data;
-						if (data.statusCode == 402) {
+						if (data.statusCode == 402)
+						{
 							swal.close();
-							// this.customResponse = new CustomResponse( 'INFO', data.message, true );
 							this.iszohoAccessTokenExpired = true;
 							this.zohoExpiredAccessTokenMessage = data.message;
 							this.contactListIdZoho = contactListId;
 							this.contactListIdZoho = localStorage.setItem("contactListIdZoho", this.contactListIdZoho);
 							this.socialNetworkZoho = localStorage.setItem("socialNetworkZoho", socialNetwork);
-							localStorage.removeItem('isZohoSynchronization');
 						}
-						else {
+						else
+						{
 							this.syncronizeContactList(contactListId, socialNetwork);
-							//  this.remveZohoAuthenticationLocalStorageValues();
 						}
-						//   this.remveZohoAuthenticationLocalStorageValues();
 					},
 					(error: any) => {
 						var body = error['_body'];
-						if (body != "") {
+						if (body != "")
+						{
 							var response = JSON.parse(body);
 							if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!") {
 								this.customResponse = new CustomResponse('INFO', response.message, true);
@@ -771,8 +744,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.xtremandLogger.errorPage(error);
 						}
 						console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-						this.remveZohoAuthenticationLocalStorageValues();
-
 					},
 					() => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
 				)
@@ -804,24 +775,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				.subscribe(
 					data => {
 						this.storeLogin = data;
-						console.log(data);
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-							console.log("AddContactComponent salesforce() Authentication Success");
 							this.syncronizeContactList(contactListId, socialNetwork);
-							localStorage.setItem('isZohoSynchronization', 'no');
-							localStorage.removeItem('isZohoSynchronization');
 						} else {
-							localStorage.setItem("userAlias", data.userAlias)
-							console.log(data.redirectUrl);
-							console.log(data.userAlias);
-							//window.location.href = "" + data.redirectUrl;
-							localStorage.setItem('isZohoSynchronization', 'no');
-                            localStorage.removeItem('isZohoSynchronization');
-							this.salesForceCurrentUser = localStorage.getItem('currentUser');
-							const encodedData = window.btoa(this.salesForceCurrentUser);
-							let url = null;
-							if (this.loggedInThroughVanityUrl) {
-								url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + currentModule + "/" + encodedData;
+							let currentUser = localStorage.getItem('currentUser');
+							let vanityUserId = JSON.parse(currentUser)['userId'];
+							if (this.loggedInThroughVanityUrl)
+							{
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + currentModule;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
@@ -835,8 +796,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						this.xtremandLogger.errorPage(error);
 					},
 					() => this.xtremandLogger.log("addContactComponent salesforceContacts() login finished.")
+
 				);
-		} catch (error) {
+
+		}
+		catch (error) {
 			this.xtremandLogger.error(error, "ManageContactsComponent", "SynchronizationSalesforceList()");
 		}
 	}
@@ -865,24 +829,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				.subscribe(
 					data => {
 						this.storeLogin = data;
-						console.log(data);
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-							console.log("AddContactComponent salesforce() Authentication Success");
 							this.syncronizeContactList(contactListId, socialNetwork);
-							localStorage.setItem('isZohoSynchronization', 'no');
-							localStorage.removeItem('isZohoSynchronization');
 						} else {
-							localStorage.setItem("userAlias", data.userAlias)
-							console.log(data.redirectUrl);
-							console.log(data.userAlias);
-							//window.location.href = "" + data.redirectUrl;
-							localStorage.setItem('isZohoSynchronization', 'no');
-							localStorage.removeItem('isZohoSynchronization');
-							this.salesForceCurrentUser = localStorage.getItem('currentUser');
-							const encodedData = window.btoa(this.salesForceCurrentUser);
-							let url = null;
+							let currentUser = localStorage.getItem('currentUser');
+							let vanityUserId = JSON.parse(currentUser)['userId'];
 							if (this.loggedInThroughVanityUrl) {
-								url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + currentModule + "/" + encodedData;
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + currentModule;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
@@ -2298,16 +2251,21 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
+		localStorage.removeItem('isZohoAuth');
 
 		if (tempCheckGoogleAuth == 'yes' && !this.isPartner) {
 			this.googleContactsSynchronizationAuthentication(this.contactListIdForSyncLocal, this.socialNetworkForSyncLocal);
+			tempCheckGoogleAuth = 'no';
 		}
 
 		else if (tempCheckSalesForceAuth == 'yes' && !this.isPartner) {
 			this.salesforceContactsSynchronizationAuthentication(this.contactListIdForSyncLocal, this.socialNetworkForSyncLocal);
+			tempCheckSalesForceAuth = 'no';
+
 		}
 		else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
 			this.router.navigate(['/home/contacts/add']);
+			tempCheckHubSpotAuth = 'no';
 		}
 		
 		else if (tempIsZohoSynchronization == 'yes' && !this.isPartner) {
@@ -2317,6 +2275,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.isCalledZohoSycronization = true;
 				this.iszohoAccessTokenExpired = false;
 				this.zohoContactsSynchronizationAuthentication(this.contactListIdZoho, this.socialNetworkZoho);
+				tempIsZohoSynchronization = 'no';
 			}
 		}
 	}
@@ -2337,7 +2296,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.checkTermsAndConditionStatus();
 			this.getLegalBasisOptions();
 
-		window.addEventListener('message', function(e) {
+			window.addEventListener('message', function(e) {
 				console.log('received message:  ' + e.data, e);
 				if (e.data == 'isGoogleAuth') {
 					localStorage.setItem('isGoogleAuth', 'yes');
@@ -2348,8 +2307,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				else if (e.data == 'isHubSpotAuth') {
 					localStorage.setItem('isHubSpotAuth', 'yes');
 				}
-				else {
-					localStorage.setItem('isZohoSynchronization', 'yes');
+				else if (e.data == 'isZohoAuth') {
+					localStorage.setItem('isZohoAuth', 'yes');
 				}
 
 			}, false);
@@ -2382,8 +2341,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	zohoAuthenticationThroughExpiredAccessTokenMessage(providerName: string) {
 		this.zohoCurrentUser = localStorage.getItem('currentUser');
-		this.module = 'contacts';
-		let url = this.authenticationService.APP_URL + "e/" + providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.authenticationService.access_token + "/" + this.zohoCurrentUser + "/" + this.module;
+		let vanityUserId = JSON.parse(this.zohoCurrentUser)['userId'];
+		let userAlias = localStorage.getItem('userAlias');
+		let module = 'contacts';
+
+		let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + userAlias + "/" + module +"/"+ null ;
+
 		var x = screen.width / 2 - 700 / 2;
 		var y = screen.height / 2 - 450 / 2;
 		window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");

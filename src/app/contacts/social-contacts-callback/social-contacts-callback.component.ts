@@ -56,7 +56,7 @@ export class SocialContactsCallbackComponent implements OnInit {
                     localStorage.removeItem( "userAlias" );
                     localStorage.removeItem( "currentModule" );
                     this.xtremandLogger.info( "result: " + result );
-					/* if blocks are edited by ajay to differentiate vanity and send a message to parent window */
+
                     if ( this.callbackName == 'google' ) {
 						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 						if(vanityUrlFilter == 'true'){
@@ -132,7 +132,6 @@ export class SocialContactsCallbackComponent implements OnInit {
                         localStorage.removeItem("currentModule");
 						this.router.navigate(['/home/dashboard/myprofile']);
 						
-						/* added if blocks for sending a message to parent window */
 						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 						if(type == 'hubspot' && vanityUrlFilter == 'true'){
 							var message = "isHubSpotAuth";
@@ -160,12 +159,12 @@ export class SocialContactsCallbackComponent implements OnInit {
         }
     }
 
-	/* added postingMessageToParentWindow method by ajay */
 	postingMessageToParentWindow(message: string){
 			let trargetWindow = window.opener;
             trargetWindow.postMessage(message,"*");
             localStorage.removeItem('vanityUrlDomain');
 			localStorage.removeItem('vanityUrlFilter');
+			localStorage.removeItem('vanityUserId');
             self.close();
 	}
 

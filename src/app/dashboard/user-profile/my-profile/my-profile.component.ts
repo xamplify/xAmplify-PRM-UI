@@ -1595,13 +1595,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.dragulaService.destroy('pipelineStagesDragula');
 	}
 
-	configHubSpot() {
-	  	if (this.loggedInThroughVanityUrl) {
+configHubSpot() {
+		if (this.loggedInThroughVanityUrl) {
 			let providerName = 'hubspot';
 			let hubSpotCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(hubSpotCurrentUser);
-			const redirectURL = window.btoa(this.hubSpotRedirectURL);
-			let url = this.authenticationService.APP_URL + "e/" + providerName + "/" + redirectURL + "/" + encodedData;
+			let vanityUserId = JSON.parse(hubSpotCurrentUser)['userId'];
+			let redirectURL = window.btoa(this.hubSpotRedirectURL);
+			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
 			var x = screen.width / 2 - 700 / 2;
 			var y = screen.height / 2 - 450 / 2;
 			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
@@ -1611,14 +1611,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	configSalesforce() {
+configSalesforce() {
 		if (this.loggedInThroughVanityUrl) {
 			let providerName = 'salesforce';
 			let salesforceCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(salesforceCurrentUser);
-			const redirectURL = window.btoa(this.sfRedirectURL);
-
-			let url = this.authenticationService.APP_URL + "e/" + providerName + "/" + redirectURL + "/" + encodedData;
+			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
+			let redirectURL = window.btoa(this.sfRedirectURL);
+			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
 			var x = screen.width / 2 - 700 / 2;
 			var y = screen.height / 2 - 450 / 2;
 			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
