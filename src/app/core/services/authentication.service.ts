@@ -671,6 +671,19 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
+  validateUrl(url:string){
+    let angularUrlInput = {};
+    if(this.companyProfileName !== undefined && this.companyProfileName !== ''){
+			angularUrlInput['vendorCompanyProfileName'] = this.companyProfileName;
+			angularUrlInput['vanityUrlFilter'] = true;
+     }
+     angularUrlInput['userId'] = this.getUserId();
+     angularUrlInput['url'] = url;
+    return this.http.post(this.REST_URL + "admin/validateUrl?access_token=" + this.access_token,angularUrlInput)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   
   
 }

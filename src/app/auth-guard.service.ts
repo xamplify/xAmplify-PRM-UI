@@ -26,10 +26,8 @@ export class AuthGuardService implements CanActivate {
         this.authenticationService.user.campaignAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
         this.getUserByUserName(userName);
         return new Promise((resolve, reject) => {
-          this.authenticationService.getUrls().subscribe((response) => {
-            let result = response;
-            let url = state.url;
-            if(result.indexOf(url)>-1){
+          this.authenticationService.validateUrl(state.url).subscribe((response) => {
+            if(response.access){
               resolve(true);
             }else{
               this.referenceService.goToPageNotFound();
@@ -41,9 +39,6 @@ export class AuthGuardService implements CanActivate {
         this.authenticationService.logout();
         return false;
       }
-
-
-  
   }
 
 
