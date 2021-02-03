@@ -80,16 +80,6 @@ export class DashboardAnalyticsComponent implements OnInit {
         this.getDefaultPage(this.loggedInUserId);
         this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.getUserCampaignReport();
-        
-        Metronic.init();
-        Layout.init();
-        Demo.init();
-        QuickSidebar.init();
-        Index.init();
-        Index.initDashboardDaterange();
-        Index.initCharts();
-        Index.initChat();
-        Tasks.initDashboardWidget();
         this.xtremandLogger.log(this.authenticationService.getRoles());
     }
   }
