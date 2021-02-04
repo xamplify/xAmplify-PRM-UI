@@ -6,6 +6,7 @@ import { ManageLmsComponent } from './manage-lms/manage-lms.component';
 export const routes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "add", component: AddLmsComponent },
+  { path: "edit", component: AddLmsComponent },
   { path: "manage", component: ManageLmsComponent },
 ];
 @NgModule({

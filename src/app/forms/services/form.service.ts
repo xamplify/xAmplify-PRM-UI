@@ -128,6 +128,12 @@ export class FormService {
 
     }
     
+    quizList( pagination: Pagination ): Observable<any> {
+        return this.http.post( this.URL + "quiz-list?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     private extractData( res: Response ) {
         const body = res.json();
         return body || {};
