@@ -143,20 +143,6 @@ export class TwitterAnalyticsComponent implements OnInit {
             $( '.pulse4' ).pulsate( { speed: 2500 });
             $( '.pulse5' ).pulsate( { pause: 1000 });
             $( '.pulse6' ).pulsate( { onHover: true });
-
-            Metronic.init(); // init metronic core componets
-            Layout.init(); // init layout
-            Demo.init(); // init demo features
-            QuickSidebar.init(); // init quick sidebar
-            Index.init();
-            Index.initDashboardDaterange();
-            Index.initJQVMAP(); // init index page's custom scripts
-            Index.initCalendar(); // init index page's custom scripts
-            Index.initCharts(); // init index page's custom scripts
-            Index.initChat();
-            Index.initMiniCharts();
-            Tasks.initDashboardWidget();
-
         } catch ( err ) {
             console.log( err );
         }

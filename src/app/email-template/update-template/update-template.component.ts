@@ -276,10 +276,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         try {
-            Metronic.init();
-            Layout.init();
-            Demo.init();
-            TableManaged.init();
         } catch (errr) { }
     }
 

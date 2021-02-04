@@ -3230,11 +3230,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				form.append('userListId', this.selectedContactListId);
 				return { fileItem, form }
 			};
-
-			Metronic.init(); // init metronic core components
-			Layout.init(); // init current layout
-			Demo.init(); // init demo features
-			Portfolio.init();
 			/********Check Gdpr Settings******************/
 			this.checkTermsAndConditionStatus();
 		}

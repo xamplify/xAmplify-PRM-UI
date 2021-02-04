@@ -600,9 +600,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
   
 
   ngOnInit(){
-        Metronic.init();
-        Layout.init();
-        Demo.init();
         flatpickr( '.flatpickr',{
             enableTime: true,
             dateFormat: 'm/d/Y h:i K',

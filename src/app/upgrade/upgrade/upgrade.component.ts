@@ -15,9 +15,6 @@ export class UpgradeComponent implements OnInit {
 
   ngOnInit(){
       try{
-           Metronic.init();
-           Layout.init();
-           Demo.init();
       }
       catch(err){
       console.log("err");

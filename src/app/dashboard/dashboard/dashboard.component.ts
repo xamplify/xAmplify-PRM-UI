@@ -1070,15 +1070,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.getCountriesTotalViewsData();
                 this.getCampaignsHeatMapData();
                 this.getVideoStatesSparklineChartsInfo(30);
-                Metronic.init();
-                Layout.init();
-                Demo.init();
-                QuickSidebar.init();
-                Index.init();
-                Index.initDashboardDaterange();
-                Index.initCharts();
-                Index.initChat();
-                Tasks.initDashboardWidget();
                 this.listActiveSocialAccounts(this.loggedInUserId);
                 this.genderDemographics(this.loggedInUserId);
             }

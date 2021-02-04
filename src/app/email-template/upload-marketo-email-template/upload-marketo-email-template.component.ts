@@ -299,10 +299,6 @@ export class UploadMarketoEmailTemplateComponent implements OnInit {
       else if (this.router.url.includes("marketo")) {
         this.thirdPartyEmailTemplate = "Marketo";
       }
-      Metronic.init();
-      Layout.init();
-      Demo.init();
-      TableManaged.init();
       this.ckeConfig = {
         allowedContent: true,
       };
