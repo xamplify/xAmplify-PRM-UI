@@ -26,7 +26,7 @@ export class AuthGuardService implements CanActivate {
         this.authenticationService.user.campaignAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
         this.getUserByUserName(userName);
         return new Promise((resolve, reject) => {
-          this.authenticationService.validateUrl(state.url).subscribe((response) => {
+          this.authenticationService.authorizeUrl(state.url).subscribe((response) => {
             if(response.access){
               resolve(true);
             }else{
