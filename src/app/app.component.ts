@@ -10,13 +10,10 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 
 import { Idle, DEFAULT_INTERRUPTSOURCES, IdleExpiry, LocalStorageExpiry } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
-
-import { RouteConfigLoadEnd } from "@angular/router";
-import { RouteConfigLoadStart } from "@angular/router";
-import { Event as RouterEvent } from "@angular/router";
+import { RouteConfigLoadStart,GuardsCheckStart,GuardsCheckEnd,RouteConfigLoadEnd,Event as RouterEvent } from "@angular/router";
 import {VersionCheckService} from "app/version-check/version-check.service";
 
-declare var QuickSidebar, $: any;
+declare var $: any;
 
 @Component({
     selector: 'app-root',
@@ -31,13 +28,26 @@ export class AppComponent implements OnInit, AfterViewInit {
   timedOut = false;
   lastPing?: Date = null;
   title = 'angular-idle-timeout';
-	public isShowingRouteLoadIndicator: boolean;
+  public isShowingRouteLoadIndicator: boolean;
+  public showLoaderForAuthGuard:boolean;
   sessionExpireMessage = "Your session has timed out. Please login again.";
   xamplifygif = "assets/images/xamplify-icon.gif";
    
 constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive, private titleService: Title,public userService: UserService,public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router,private referenceService:ReferenceService) {
       //this.checkIdleState(idle,keepalive);
+    this.addLoaderForAuthGuardService();
 		this.addLoaderForLazyLoadingModules(router);
+    }
+
+    addLoaderForAuthGuardService(){
+      this.router.events.subscribe(event => {
+        if (event instanceof GuardsCheckStart) {
+          this.showLoaderForAuthGuard = true;
+        }     
+        if (event instanceof GuardsCheckEnd) {
+          this.showLoaderForAuthGuard = false;
+        } 
+      });
     }
 
 	addLoaderForLazyLoadingModules(router:Router){
@@ -94,9 +104,6 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     
     ngOnInit() {
         //this.versionCheckService.initVersionCheck();
-        //QuickSidebar.init();
-       // this.getTeamMembersDetails();
-        // reloading the same url with in the application
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
         };

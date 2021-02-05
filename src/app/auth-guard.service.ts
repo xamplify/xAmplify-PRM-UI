@@ -33,6 +33,19 @@ export class AuthGuardService implements CanActivate {
               this.referenceService.goToPageNotFound();
               resolve(false);
             }
+             },error=>{
+              let statusCode = JSON.parse(error['status']);
+              if(statusCode==0){
+                this.referenceService.goToRouter('logout');
+                resolve(false);
+              }else if(statusCode==401){
+                this.referenceService.goToRouter('expired');
+                resolve(false);
+              }
+              else{
+                this.xtremandLogger.errorPage(error);
+                resolve(false);
+              }
              })
            });
       } else {
