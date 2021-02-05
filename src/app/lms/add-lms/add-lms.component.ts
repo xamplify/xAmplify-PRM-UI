@@ -123,10 +123,10 @@ export class AddLmsComponent implements OnInit {
     this.listQuizForms(this.quizFormPagination);
     this.getCompanyId();
     this.listGroups(new Pagination());
-    dragulaService.setOptions('asset-options', {})
-    dragulaService.dropModel.subscribe((value) => {
-      this.onDropModel(value);
-    });
+    dragulaService.setOptions('form-options', {})
+      dragulaService.dropModel.subscribe((value) => {
+          this.onDropModel(value);
+      });
     if (this.lmsService.learningTrack == undefined) {
       this.selectedPartnerCompanies.push(new LmsDto());
       this.selectedAssets.push(new LmsDto());
@@ -180,7 +180,8 @@ export class AddLmsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.dragulaService.destroy('asset-options');
+    this.dragulaService.destroy('form-options');
+    this.lmsService.learningTrack = undefined;
   }
 
   private onDropModel(args) {
@@ -192,7 +193,7 @@ export class AddLmsComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.formPagination.userId = this.loggedInUserId;
     this.listForms(this.formPagination);
-    $('#forms-list-1').modal('show');
+    $('#formsList').modal('show');
   }
 
   listForms(pagination: Pagination) {
@@ -496,23 +497,15 @@ export class AddLmsComponent implements OnInit {
       });
   }
 
-  updateDescription(form: any, event) {
-  //   if (event.target.checked) {
-  //     this.selectedFormId = form.id;
-  //     this.selectedFormData = [];
-  //     this.selectedFormData.push(form);
-  //   } else {
-  //     this.selectedFormId = null;
-  //     this.selectedFormData = [];
-  //   }
-
-  if (CKEDITOR != undefined) {
-    for (var instanceName in CKEDITOR.instances) {
-      CKEDITOR.instances[instanceName].updateElement();
-      this.learningTrack.description = CKEDITOR.instances[instanceName].getData();
+  updateDescription(form: Form, event) {
+    if (CKEDITOR != undefined) {
+      for (var instanceName in CKEDITOR.instances) {
+        CKEDITOR.instances[instanceName].updateElement();
+        this.learningTrack.description = CKEDITOR.instances[instanceName].getData();
+      }
     }
-  }
-
+    this.learningTrack.description = this.learningTrack.description + "<b><a href = " + form.ailasUrl + ">" + form.name + "</a>";
+    $('#formsList').modal('hide');
   }
 
   updateSelectedTags(tag: Tag, event: any) {
@@ -717,7 +710,7 @@ export class AddLmsComponent implements OnInit {
         description = CKEDITOR.instances[instanceName].getData();
       }
     }
-    if(description.length < 1){
+    if(description.length < 1 && this.learningTrack.description.length < 1){
       this.addErrorMessage("description","description can not be empty");
     } else{
       this.removeErrorMessage("description")

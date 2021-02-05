@@ -21,7 +21,7 @@ export class LmsService {
   saveOrUpdate(learningTrack: LearningTrack) {
     let url = this.URL;
     if(learningTrack.id > 0){
-      url = url + "/update"
+      url = url + "/edit"
     } else{
       url = url + "/save"
     }
@@ -56,6 +56,12 @@ export class LmsService {
 
   getById(id: number) {
     return this.http.get(this.URL + "/" + id + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  deleteById(learningTrack: LearningTrack) {
+    return this.http.post(this.URL + "/delete?access_token=" + this.authenticationService.access_token, learningTrack)
       .map(this.extractData)
       .catch(this.handleError);
   }

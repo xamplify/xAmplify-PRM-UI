@@ -13,6 +13,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
+import { LearningTrack } from '../models/learningTrack';
 
 
 declare var swal, $: any;
@@ -33,8 +34,7 @@ export class ManageLmsComponent implements OnInit {
   modulesDisplayType = new ModulesDisplayType();
   exportObject: any = {};
   categoryId: number = 0;
-  isPartner: boolean = false;
-
+  isPartnerView: boolean = false;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public lmsService: LmsService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
@@ -42,8 +42,10 @@ export class ManageLmsComponent implements OnInit {
     this.pagination.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
     if (this.router.url.indexOf('/manage') > -1) {
       this.showFolderView = true;
+      this.isPartnerView = false;
     } else {
       this.showFolderView = false;
+      this.isPartnerView = true;
     }
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
@@ -148,14 +150,14 @@ export class ManageLmsComponent implements OnInit {
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.pagination.vanityUrlFilter = true;
     }
-    this.lmsService.list(pagination, this.isPartner).subscribe(
+    this.lmsService.list(pagination, this.isPartnerView).subscribe(
       (response: any) => {
         const data = response.data;
         if (response.statusCode == 200) {
           pagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
           $.each(data.data, function (index, learningTrack) {
-            learningTrack.createdDateString = new Date(learningTrack.createdDateString);
+            learningTrack.createdDateString = new Date(learningTrack.createdTime);
           });
           pagination = this.pagerService.getPagedItems(pagination, data.data);
         }
@@ -214,10 +216,57 @@ export class ManageLmsComponent implements OnInit {
         this.logger.errorPage(error);
         this.referenceService.showServerError(this.httpRequestLoader);
         this.referenceService.stopLoader(this.httpRequestLoader);
+      });
+  }
 
-      }
-    )
+  confirmDelete(id: number) {
+    try {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes, delete it!'
 
+      }).then(function () {
+        self.delete(id);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    } catch (error) {
+      this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+      this.referenceService.showServerError(this.httpRequestLoader);
+    }
+  }
+
+  delete(id: number) {
+    let learningTrack: LearningTrack = new LearningTrack();
+    learningTrack.id = id;
+    learningTrack.userId = this.loggedInUserId;
+    this.customResponse = new CustomResponse();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.goToTop();
+    this.lmsService.deleteById(learningTrack).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          this.referenceService.showInfo("Learning track Deleted Successfully", "");
+          const message = response.message;
+          this.customResponse = new CustomResponse('SUCCESS', "Learning track Deleted Successfully", true);
+          this.pagination.pageIndex = 1;
+          this.listLearningTracks(this.pagination);
+        } else {
+          swal("Please Contact Admin!", response.message, "error");
+        }
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      },
+      (error: string) => {
+        this.logger.errorPage(error);
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      });
   }
 
 }

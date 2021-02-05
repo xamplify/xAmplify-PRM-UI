@@ -8,6 +8,7 @@ export const routes: Routes = [
   { path: "add", component: AddLmsComponent },
   { path: "edit", component: AddLmsComponent },
   { path: "manage", component: ManageLmsComponent },
+  { path: "shared", component: ManageLmsComponent },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

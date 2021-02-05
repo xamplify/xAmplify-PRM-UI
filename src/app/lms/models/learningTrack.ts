@@ -8,7 +8,7 @@ export class LearningTrack {
     slug:string
     userId:number;
     featuredImage:string;
-    published:boolean;
+    published:boolean = false;
     quizId:number;
     contentIds:Array<number> = new Array<number>();
     groupIds:Array<number> = new Array<number>();
@@ -25,5 +25,7 @@ export class LearningTrack {
     groups:Array<any> = new Array<any>();
     tags:Array<Tag> = new Array<Tag>();
     category:any;
+    canUpdate:boolean = false;
+    canDelete:boolean = false;
 
 }
