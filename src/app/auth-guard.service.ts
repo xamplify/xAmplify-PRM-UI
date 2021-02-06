@@ -25,29 +25,35 @@ export class AuthGuardService implements CanActivate {
         this.authenticationService.user.hasCompany = JSON.parse(currentUser)['hasCompany'];
         this.authenticationService.user.campaignAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
         this.getUserByUserName(userName);
-        return new Promise((resolve, reject) => {
-          this.authenticationService.authorizeUrl(state.url).subscribe((response) => {
-            if(response.access){
-              resolve(true);
-            }else{
-              this.referenceService.goToPageNotFound();
-              resolve(false);
-            }
-             },error=>{
-              let statusCode = JSON.parse(error['status']);
-              if(statusCode==0){
-                this.referenceService.goToRouter('logout');
-                resolve(false);
-              }else if(statusCode==401){
-                this.referenceService.goToRouter('expired');
+        let url = state.url;
+        if(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember()){
+          return true;
+        }else{
+          return new Promise((resolve, reject) => {
+            this.authenticationService.authorizeUrl(state.url).subscribe((response) => {
+              if(response.access){
+                resolve(true);
+              }else{
+                this.referenceService.goToPageNotFound();
                 resolve(false);
               }
-              else{
-                this.xtremandLogger.errorPage(error);
-                resolve(false);
-              }
-             })
-           });
+               },error=>{
+                let statusCode = JSON.parse(error['status']);
+                if(statusCode==0){
+                  this.referenceService.goToRouter('logout');
+                  resolve(false);
+                }else if(statusCode==401){
+                  this.referenceService.goToRouter('expired');
+                  resolve(false);
+                }
+                else{
+                  this.xtremandLogger.errorPage(error);
+                  resolve(false);
+                }
+               })
+             });
+        }
+        
       } else {
         this.authenticationService.logout();
         return false;

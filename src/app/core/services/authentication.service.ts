@@ -671,15 +671,20 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
-  authorizeUrl(url:string){
+  authorizeUrl(url: string) {
     let angularUrlInput = {};
-    if(this.companyProfileName !== undefined && this.companyProfileName !== ''){
-			angularUrlInput['vendorCompanyProfileName'] = this.companyProfileName;
-			angularUrlInput['vanityUrlFilter'] = true;
-     }
-     angularUrlInput['userId'] = this.getUserId();
-     angularUrlInput['url'] = url;
-    return this.http.post(this.REST_URL + "admin/authorizeUrl?access_token=" + this.access_token,angularUrlInput)
+    let browserUrl = window.location.hostname;
+    //let browserUrl = "tga.xamplify.com";
+    if (!browserUrl.includes("release") && !browserUrl.includes("192.168")) {
+      let domainName = browserUrl.split('.');
+      if (domainName.length > 2) {
+        angularUrlInput['vendorCompanyProfileName'] = domainName[0];
+        angularUrlInput['vanityUrlFilter'] = true;
+      }
+    }
+    angularUrlInput['userId'] = this.getUserId();
+    angularUrlInput['url'] = url;
+    return this.http.post(this.REST_URL + "admin/authorizeUrl?access_token=" + this.access_token, angularUrlInput)
       .map(this.extractData)
       .catch(this.handleError);
   }
