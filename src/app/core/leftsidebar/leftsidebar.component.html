@@ -347,6 +347,35 @@
                 </a>
              </li> 
          </ng-container>
+        <!------LMS----------->
+         <li [ngClass]="{'active': location.path().includes('lms')}">
+            <a href="javascript:;" (click)="openOrCloseTabs('lms')">
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                <span class="title" translate>LMS</span>
+                <span class="arrow"></span>
+                <span class="selected"></span>
+            </a>
+            <ul class="sub-menu" [ngStyle]="{'display': lms? 'block': 'none' }">
+                <li>
+                    <a [routerLink]="['/home/lms/add']">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        <span class="title" translate>Add Learning Track</span>
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="['/home/lms/manage']">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <span class="title" translate>Manage Learning Tracks</span>
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="['/home/lms/shared']">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <span class="title" translate>Manage Shared Learning Tracks</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
         </ul>
     </ng-container>
         <!-- END SIDEBAR MENU -->
