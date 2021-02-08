@@ -55,9 +55,10 @@
 				  </tbody>
 				</table>
 			  </div>
-			  
-			  <app-response-message [customResponse]="customResponse"
-			  *ngIf="customResponse.isVisible"></app-response-message>
+			  <div class="table-responsive">
+				<app-response-message [customResponse]="customResponse"
+				*ngIf="customResponse.isVisible"></app-response-message>
+			  </div>
 			<fieldset style="margin: 20px 2px;">
 				<legend>Module Access</legend>
 				<app-modal-popup-loader *ngIf="moduleLoader"></app-modal-popup-loader>
