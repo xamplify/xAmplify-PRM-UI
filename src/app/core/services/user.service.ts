@@ -24,6 +24,7 @@ export class UserService {
     CATEGORIES_URL = this.URL + 'category/';
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
+    TAG_URL = this.URL + 'tag/';
     
     constructor(
         private http: Http,
@@ -362,8 +363,27 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    
+    getTags(pagination: Pagination) {
+        return this.http.post(this.authenticationService.REST_URL + "tag/getTagsByCompanyId?access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
+    saveOrUpdateTag(tag: any) {
+        let url = this.TAG_URL + "save";
+        if (tag.id > 0) {
+            url = this.TAG_URL + "update";
+        }
+        return this.http.post(url + "?access_token=" + this.authenticationService.access_token, tag)
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    deleteTag(tag: any){
+        return this.http.post(this.TAG_URL+"delete?access_token=" + this.authenticationService.access_token, tag)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private handleServerError(error: any) {
         return Observable.throw(error);

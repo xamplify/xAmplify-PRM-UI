@@ -158,6 +158,23 @@
                                                                                     </option>
                                                                                 </select>
                                                                             </ng-container>
+                                                                            <!-- ---------------------------Quiz----------------------------- -->
+                                                                            <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
+                                                                                <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
+                                                                                    <div class="form-check">
+                                                                                        <label class="form-check-label" [style.color]="form.labelColor">
+                                                                                            <input
+                                                                                                type="{{columnInfo.labelType.split('_')[1]}}"
+                                                                                                name="{{columnInfo.labelId}}"
+                                                                                                class="form-check-input"
+                                                                                                [checked]="choice.correct"
+                                                                                                disabled="true">
+                                                                                            {{choice.name}}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <br>
+                                                                                </ng-container>
+                                                                            </ng-container>
                                                                         </a>
                                                                     </legend>
                                                                 </div>
@@ -209,8 +226,16 @@
                                                         <label class="control-label">Field Label</label><span class="required">*</span>
                                                         <input type="text" [(ngModel)]="selectedColumn.labelName" class="form-control" (input)="updateHiddenLabelId(selectedColumn)" maxlength="1000" />
                                                     </div>
+                                                    <!-- ----------------Quiz Options Type-------------- -->
+                                                    <div class="form-group" *ngIf="selectedColumn.labelType.split('_')[0]=='quiz'">
+                                                        <label class="control-label">Quiz Options Type</label><br>
+                                                        <select class="drop-down-custom" [(ngModel)]="selectedColumn.labelType" [ngModelOptions]="{standalone: true}" (change)="changeQuizChoiceType(selectedColumn)">
+                                                            <option value="quiz_radio">Radio Buttons</option>
+                                                            <option value="quiz_checkbox">Checkboxes</option>
+                                                        </select>
+                                                    </div>
                                                     <!-- ----------------Filed PlaceHolder Text-------------- -->
-                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea' || selectedColumn.labelType=='number' ">
+                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea' || selectedColumn.labelType=='number'">
                                                         <label class="control-label">Field Placeholder Text</label>
                                                         <input type="text" [(ngModel)]="selectedColumn.placeHolder" class="form-control" maxlength="1000" />
                                                     </div>
@@ -223,7 +248,7 @@
                                                                     <ng-container *ngIf="type=='Rupee'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
-                                                                            ₹</option>
+                                                                            â‚¹</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='Dollar'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
@@ -233,17 +258,17 @@
                                                                     <ng-container *ngIf="type=='Yen'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
-                                                                            ¥</option>
+                                                                            Â¥</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='Pound'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
-                                                                            £</option>
+                                                                            Â£</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='Euro'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
-                                                                            €</option>
+                                                                            â‚¬</option>
                                                                     </ng-container>
                                                                 </ng-container>
                                                             </select>
@@ -266,12 +291,14 @@
                                                     </div>
                                                 </fieldset>
                                                 <!-- ----------------Radio Buttons/Check Boxes-------------- -->
-                                                <fieldset [attr.class]="selectedColumn.editFormChoiceDivClass" *ngIf="selectedColumn.labelType=='radio' || selectedColumn.labelType=='checkbox' || selectedColumn.labelType=='select'">
+                                                <fieldset [attr.class]="selectedColumn.editFormChoiceDivClass" *ngIf="selectedColumn.labelType=='radio' || selectedColumn.labelType=='checkbox' || selectedColumn.labelType=='select' || selectedColumn.labelType.split('_')[0]=='quiz'">
                                                     <form class="form-inline">
                                                         <legend>
                                                             <div class="form-group">
                                                                 <label class="control-label" *ngIf="selectedColumn.labelType=='radio'">Radio
                                                                     Button
+                                                                    Choices</label>
+                                                                <label class="control-label" *ngIf="selectedColumn.labelType.split('_')[0]=='quiz'">Quiz
                                                                     Choices</label>
                                                                 <label class="control-label" *ngIf="selectedColumn.labelType=='checkbox'">Checkbox
                                                                     Choices</label>
@@ -293,6 +320,28 @@
                                                                             <span
                                                                                 class="glyphicon glyphicon-trash"></span>
                                                                         </button>
+                                                                        <br>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <!-- ---------------Quiz Options--------------- -->
+                                                                <ng-container *ngIf="selectedColumn.labelType.split('_')[0]=='quiz'">
+                                                                    <span class="info" *ngIf="selectedColumn.choiceErrorMessage?.length>0">{{selectedColumn.choiceErrorMessage}}<br></span>
+                                                                    <ng-container *ngFor="let choice of selectedColumn.choices;let index=index">
+                                                                        <br>
+                                                                        <input type="{{selectedColumn.labelType.split('_')[1]}}" name="{{selectedColumn.labelId}}" disabled="true">
+                                                                        <input type="text" class="form-control" [(ngModel)]="choice.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(choice)" maxlength="1000">
+                                                                        <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-plus"></span>
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,choice)">
+                                                                            <span
+                                                                                class="glyphicon glyphicon-trash"></span>
+                                                                        </button>
+                                                                        <ng-container *ngIf="choice.correct"><i class="fa fa-check-circle check-icon" aria-hidden="true" (click)="selectedChoice(selectedColumn,choice.labelId,'labelId',false)"></i>
+                                                                        </ng-container>
+                                                                        <ng-container *ngIf="!choice.correct"><i class="fa fa-check-circle-o check-icon" aria-hidden="true" (click)="selectedChoice(selectedColumn,choice.labelId,'labelId',true)"></i>
+                                                                        </ng-container>
                                                                         <br>
                                                                     </ng-container>
                                                                 </ng-container>
