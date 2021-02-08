@@ -121,7 +121,13 @@ export class FormPreviewComponent implements OnInit {
             if (!this.isSubmittedAgain) {
               this.saveLocationDetails(this.form);
             }
-
+            $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
+              if (value.labelType == 'quiz_radio') {
+                  value.choices = value.radioButtonChoices;
+              } else if (value.labelType == 'quiz_checkbox') {
+                  value.choices = value.checkBoxChoices;
+              }
+          });
           } else {
             this.hasFormExists = false;
             this.addHeaderMessage("Oops! This form does not exists.", this.errorAlertClass);
@@ -268,7 +274,7 @@ export class FormPreviewComponent implements OnInit {
         const formField = new FormSubmitField();
         formField.id = field.id;
         formField.value = $.trim(field.value);
-        if (field.labelType === "checkbox") {
+        if (field.labelType === "checkbox" || field.labelType === "quiz_checkbox") {
           formField.dropdownIds = field.value;
           formField.value = "";
         }
@@ -339,6 +345,21 @@ export class FormPreviewComponent implements OnInit {
       columnInfo.value.push(formOption.id);
     } else {
       columnInfo.value.splice($.inArray(formOption.id, columnInfo.value), 1);
+    }
+  }
+
+  updateQuizModel(columnInfo: ColumnInfo, formOption: FormOption, event: any) {
+    if(columnInfo.labelType.split('_')[1] === 'checkbox'){
+      if (columnInfo.value === undefined) {
+        columnInfo.value = Array<number>();
+      }
+      if (event.target.checked) {
+        columnInfo.value.push(formOption.id);
+      } else {
+        columnInfo.value.splice($.inArray(formOption.id, columnInfo.value), 1);
+      }
+    } else if(columnInfo.labelType.split('_')[1] === 'radio'){
+      columnInfo.value = formOption.id;
     }
   }
 

@@ -109,6 +109,21 @@
 														{{dropDownValue.name}}</option>
 												</select>
                                         </ng-container>
+                                        <!-- ---------------------------Quiz----------------------------- -->
+                                        <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
+                                            <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
+                                                <div class="form-check">
+                                                    <label class="form-check-label" [style.color]="form.labelColor">
+															<input type="{{columnInfo.labelType.split('_')[1]}}"
+																name="{{columnInfo.labelId}}" class="form-check-input"
+																[checked]="choice.isChecked" class="form-check-input"
+																(click)="updateQuizModel(columnInfo,choice,$event)">
+															{{choice.name}}
+														</label>
+                                                </div>
+                                                <br>
+                                            </ng-container>
+                                        </ng-container>
                                     </div>
                                 </ng-container>
                                 <div *ngIf="form.showCaptcha">

@@ -49,6 +49,7 @@ import { DashboardButtonsComponent } from './dashboard-buttons/dashboard-buttons
 import { DashboardButtonsCarouselComponent } from './dashboard-buttons-carousel/dashboard-buttons-carousel.component';
 import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-templates/vanity-email-templates.component';
 import { ModuleAccessComponent } from './module-access/module-access.component';
+import { TagsComponent } from './tags/tags.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -73,7 +74,8 @@ import { ModuleAccessComponent } from './module-access/module-access.component';
         DashboardButtonsComponent,        
         DashboardButtonsCarouselComponent, 
         VanityEmailTemplatesComponent,
-        ModuleAccessComponent       
+        ModuleAccessComponent,
+        TagsComponent       
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

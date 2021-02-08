@@ -383,18 +383,16 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
   }
   
   getTemplateById(emailTemplate:EmailTemplate){
+    this.ngxloading = true;
     this.emailTemplateService.getById( emailTemplate.id )
       .subscribe(
       ( data: any ) => {
-          console.log( data );
           emailTemplate.body = data.body;
           this.showPreview(emailTemplate);
       },
-      error => console.error( error ),
-      () => {
-          console.log( 'loadContacts() finished' );
-      }
-      );
+      error => {
+        this.logger.errorPage(error);
+     });
   }
   
   showPreview(emailTemplate:EmailTemplate){
@@ -438,7 +436,8 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
                   }
 
               },
-              error => {this.ngxloading = false; this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
+              error => {
+                  this.ngxloading = false; this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
               () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
 
   }
