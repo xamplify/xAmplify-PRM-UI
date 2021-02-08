@@ -504,7 +504,7 @@ export class AddLmsComponent implements OnInit {
         this.learningTrack.description = CKEDITOR.instances[instanceName].getData();
       }
     }
-    this.learningTrack.description = this.learningTrack.description + "<b><a href = " + form.ailasUrl + ">" + form.name + "</a>";
+    this.learningTrack.description = this.learningTrack.description + "<b><a href = " + form.ailasUrl + "target='_blank'>" + form.name + "</a>";
     $('#formsList').modal('hide');
   }
 

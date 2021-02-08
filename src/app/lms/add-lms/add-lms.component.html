@@ -34,11 +34,9 @@
                         <label class="label">Link</label>
                         <font class="required">*</font>
                         <div class="input-group prefix">
-                            <a class="inline" href="{{linkPrefix + learningTrack.slug}}">
-                                <span class="input-group-addon" style="pointer-events: none;min-width: auto;">
-                                    {{linkPrefix}}
-                                </span>
-                            </a>
+                            <span class="input-group-addon" style="min-width: auto;">
+                                <a class="inline" href="{{linkPrefix + learningTrack.slug}}" target="_blank" [ngClass]="{'isDisabled' : isAdd}">{{linkPrefix}}</a>
+                            </span>
                             <input class="select-box inline form-control" [(ngModel)]="learningTrack.slug" maxlength="100" (input)="updateSlug('slug')">
                         </div>
                         <span *ngIf="!isSlugValid" class="required">{{slugErrorMessage}}</span>
@@ -79,20 +77,18 @@
                                     <font class="required">*</font>
                                     <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='selectedAssets'>
                                         <ng-container *ngFor="let selectedAsset of selectedAssets;let i=index">
-                                            <div id="form-div">
-                                                <legend>
-                                                    <a id="drag-div">
-                                                        <div class="padding">
-                                                            <input class="select-box inline" [value]="selectedAsset.assetName" disabled="disabled" (input)="validateAssets()">
-                                                            <button class="btn btn-primary" type="button" (click)="openAssetPopup(i)">Select
-                                                                Asset</button>
-                                                            <button class="btn btn-primary" type="button" (click)="clearAsset(i); validateAssets()">Clear</button>
-                                                            <button type="button" class="btn btn-danger btn-xs" (click)="removeAsset(i); validateAssets()">
-                                                                <span class="glyphicon glyphicon-trash"></span>
-                                                            </button>
-                                                        </div>
-                                                    </a>
-                                                </legend>
+                                            <div style="cursor: move;">
+                                                <a id="drag-div">
+                                                    <div class="padding">
+                                                        <input class="select-box inline" [value]="selectedAsset.assetName" disabled="disabled" (input)="validateAssets()">
+                                                        <button class="btn btn-primary" type="button" (click)="openAssetPopup(i)">Select
+                                                            Asset</button>
+                                                        <button class="btn btn-primary" type="button" (click)="clearAsset(i); validateAssets()">Clear</button>
+                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeAsset(i); validateAssets()">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </div>
+                                                </a>
                                             </div>
                                         </ng-container>
                                     </div>

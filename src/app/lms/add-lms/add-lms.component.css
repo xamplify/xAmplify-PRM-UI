@@ -442,3 +442,10 @@ label {
     max-width: 218px !important;
     height: 118px !important;
 }
+
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
