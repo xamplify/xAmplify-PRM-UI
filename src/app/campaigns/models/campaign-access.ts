@@ -21,4 +21,5 @@ export class CampaignAccess {
   shareLeads = false;
   campaignPartnerTemplateOpenedAnalytics = false;
   salesEnablement = false;
+  lms = false;
 }

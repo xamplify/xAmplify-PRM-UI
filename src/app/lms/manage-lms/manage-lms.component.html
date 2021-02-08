@@ -33,16 +33,6 @@
                                     <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
                                         <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                     </span>
-                                    <!-- <ng-container *ngIf="(pagination.categoryId==0 || pagination.categoryId=='undefined') && showFolderView">
-                                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('Folder-Grid')">
-                                            <i class="fa fa-folder p10" aria-hidden="true"></i>
-                                        </span>
-                                        <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                                            <img src="assets/images/folder-list.png"
-                                                class="folder-list-image-custom-css" />
-                                        </span>
-                                    </ng-container> -->
-
                                     <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                 </ng-container>
@@ -74,7 +64,7 @@
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive">
-                            <table class='table tgrid table-hover table-sm' id="manage-lms-list-table" *ngIf="pagination.pagedItems?.length>0">
+                            <table class='table tgrid table-hover table-sm' id="manage-lms-list-table" *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
                                 <thead>
                                     <tr>
                                         <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
@@ -88,7 +78,7 @@
                                             <span class="gridHeader" translate>Learning Track</span>
                                         </th>
 
-                                        <th class="hidden-xs text-center" translate>Created On</th>
+                                        <th class="hidden-xs text-center" translate scope="col">Created On</th>
                                         <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width" translate>Actions</th>
                                         <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner" translate>Actions</th>
                                     </tr>
@@ -100,13 +90,13 @@
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}">
-                                                <span><b>{{learningTrack.title}}</b></span>
+                                                <span><strong>{{learningTrack.title}}</strong></span>
                                             </h4>
                                             <h6 class="moreipsis" title="{{learningTrack.category.name}}">
-                                                <span translate> Folder <b>{{learningTrack.category.name}}</b></span>
+                                                <span translate> Folder <strong>{{learningTrack.category.name}}</strong></span>
                                             </h6>
                                             <h6 class="moreipsis" title="{{learningTrack.createdByName}}">
-                                                <span translate> Created By <b>{{learningTrack.createdByName}}</b></span>
+                                                <span translate> Created By <strong>{{learningTrack.createdByName}}</strong></span>
                                             </h6>
                                             <h6 *ngIf="learningTrack.published" class="view-banner" style="background-color: #5cb85c;" translate>Published</h6>
                                         </td>
@@ -117,13 +107,13 @@
                                         <td id="actions-row">
                                             <div class="actions-block override-actions custom-width-icon">
                                                 <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(learningTrack.id)">
-                                                    <i class="fa fa-pencil-square-o"></i>
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
-                                                <a data-toggle="tooltip" data-placement="top" title="Preview">
-                                                    <i class="fa fa-eye"></i>
+                                                <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a>
                                                 <a *ngIf="" data-toggle="tooltip" data-placement="top" title="Copy Link">
-                                                    <i class="fa fa-clipboard"></i>
+                                                    <i class="fa fa-clipboard" aria-hidden="true"></i>
                                                 </a>
                                                 <!-- <ng-container *ngIf="">
                                                     <a class="cursor">
@@ -147,7 +137,7 @@
                                                     </ng-container>
                                                 </ng-container> -->
                                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" id="template-delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(learningTrack.id)">
-                                                    <i class="fa fa-trash-o"></i>
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                         </td>
@@ -167,17 +157,17 @@
                             </h4>
                             <div>
                                 <h6 title="{{learningTrack.category.name}}" translate>
-                                    Folder <b>{{learningTrack.category.name | slice:0:17}}</b>
+                                    Folder <strong>{{learningTrack.category.name | slice:0:17}}</strong>
                                     <span *ngIf="learningTrack.category.name?.length>17">..</span>
                                 </h6>
                                 <h6 translate>
-                                    Created On <b>
+                                    Created On <strong>
                                         <app-timestamp [isOnlyDate]="true"
                                             [dateAndTime]="learningTrack.createdDateString"> </app-timestamp>
-                                    </b>
+                                    </strong>
                                 </h6>
                                 <h6 title="{{learningTrack.createdByName}}" translate>
-                                    By <b>{{learningTrack.createdByName | slice:0:17}}</b>
+                                    By <strong>{{learningTrack.createdByName | slice:0:17}}</strong>
                                     <span *ngIf="learningTrack.createdByName?.length>17">..</span>
                                 </h6>
                             </div>
@@ -186,13 +176,13 @@
                             </div>
                             <div class="bar">
                                 <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(learningTrack.id)">
-                                    <i class="fa fa-pencil-square-o"></i>
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
-                                <a data-toggle="tooltip" data-placement="top" title="Preview">
-                                    <i class="fa fa-eye"></i>
+                                <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <a *ngIf="" data-toggle="tooltip" data-placement="top" title="Copy Link">
-                                    <i class="fa fa-clipboard"></i>
+                                    <i class="fa fa-clipboard" aria-hidden="true"></i>
                                 </a>
                                 <!-- <ng-container *ngIf="">
                                     <a class="cursor">
@@ -218,7 +208,7 @@
                                     </ng-container>
                                 </ng-container> -->
                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
-                                    <i class="fa fa-trash-o"></i>
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </div>

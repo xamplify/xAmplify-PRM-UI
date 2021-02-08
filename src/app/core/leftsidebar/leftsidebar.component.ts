@@ -58,6 +58,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     opportunityLeadsAndDeals = false;
     opportunityDeals = false;
     lms = false;
+    lmsAccess = false;
+    lmsAccessAsPartner = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -302,6 +304,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.partnershipEstablishedOnlyWithPrm = data.partnershipEstablishedOnlyWithPrm;
             this.authService.partnershipEstablishedOnlyWithPrm = this.partnershipEstablishedOnlyWithPrm;
             this.authService.folders = data.folders;
+            this.lmsAccess = data.lms;
+            this.lmsAccessAsPartner = data.lmsAccessAsPartner;
         },
           error => {
             this.loading = false;

@@ -269,4 +269,8 @@ export class ManageLmsComponent implements OnInit {
       });
   }
 
+  previewLms(){
+    this.referenceService.showSweetAlertInfoMessage();
+  }
+
 }
