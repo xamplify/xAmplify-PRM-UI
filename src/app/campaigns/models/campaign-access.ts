@@ -20,4 +20,5 @@ export class CampaignAccess {
   roleId:number = 0;
   shareLeads = false;
   campaignPartnerTemplateOpenedAnalytics = false;
+  salesEnablement = false;
 }

@@ -175,8 +175,8 @@
 
 
                                             <div class="form-group" *ngIf="!isOnlyPartner">
-                                                <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}"><b translate>Through Partner
-                                                        </b></label>
+                                                <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}"><strong translate>Through Partner
+                                                        </strong></label>
                                                 <label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}" translate>Through Partner
                                                     </label>
                                                 <div class="col-sm-8">
@@ -188,7 +188,7 @@
                                                                 </switch>
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}"><b>{{channelCampaignFieldName | translate}}</b></label>
+                                                                <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}"><strong>{{channelCampaignFieldName | translate}}</strong></label>
                                                                 <label *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">{{channelCampaignFieldName | translate}}</label>
                                                                 <span style="cursor: pointer;color: #54a7e9;">
                                                                     <i class="fa fa-question-circle" data-html="true"
@@ -201,7 +201,36 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <ng-container *ngIf="campaignType=='regular' && !campaign.channelCampaign && salesEnablement">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" translate>View In Browser</label>
+                                                <div class="col-sm-8">
+                                                    <switch class="pull-left" [status]="campaign?.viewInBrowserTag" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                        (statusChange)="setViewInBrowser($event)">
+                                                    </switch>
+                                                    <span style="cursor: pointer;color: #54a7e9;">
+                                                        <i class="fa fa-question-circle" data-toggle="tooltip"
+                                                            data-placement="top" aria-hidden="true"
+                                                            title="Show / Hide View In Browser Tag"
+                                                            style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" *ngIf="isGdprEnabled">
+                                                <label class="control-label col-sm-4" translate>Unsubscribe Link</label>
+                                                <div class="col-sm-8">
+                                                    <switch class="pull-left" [status]="campaign?.unsubscribeLink" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                        (statusChange)="setUnsubscribeLink($event)">
+                                                    </switch>
+                                                    <span style="cursor: pointer;color: #54a7e9;">
+                                                        <i class="fa fa-question-circle" data-toggle="tooltip"
+                                                            data-placement="top" aria-hidden="true"
+                                                            title="Show / Hide Unsubscribe Link"
+                                                            style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </ng-container>
                                             <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
                                                 <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
                                                 <div class="col-sm-8">
@@ -210,7 +239,7 @@
                                                     </switch>
                                                     <span style="cursor: pointer;color: #54a7e9;">
                                                         <i class="fa fa-question-circle" data-toggle="tooltip"
-                                                            data-placement="top"
+                                                            data-placement="top" aria-hidden="true"
                                                             title="Enable your Partner's logo to be displayed in redistributed campaigns"
                                                             style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
                                                     </span>
@@ -224,7 +253,7 @@
                                                         (statusChange)="setPartnerEmailNotification($event)">
                                                     </switch>
                                                     <span style="cursor: pointer;color: #54a7e9;">
-														<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Send email notifications to your partners about your campaign" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+														<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your partners about your campaign" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
 													</span>
 
                                                 </div>
@@ -252,9 +281,9 @@
                                             </div>
                                             <div class="form-group" [attr.class]="fromEmaiDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>From Email
-                                                    <font style="color: red">
-                                                        <b>*</b>
-                                                    </font>
+                                                    <span style="color: red">
+                                                        <strong>*</strong>
+                                                    </span>
                                                 </label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" style="width: 100%" (change)="setFromName()">
@@ -270,8 +299,8 @@
                                           
 
                                             <div class="form-group" [attr.class]="preHeaderDivClass" *ngIf="campaignType!='sms'">
-                                                <label class="control-label col-sm-4" translate>Pre Header<font
-                                                        style="color: red"><b>*</b></font></label>
+                                                <label class="control-label col-sm-4" translate>Pre Header<span
+                                                        style="color: red"><strong>*</strong></span></label>
                                                 <div class="col-sm-8">
                                                     <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" />
                                                 </div>
@@ -1517,11 +1546,11 @@
                                                                 <div class="icon-border">
                                                                     <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
-                                                                <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor ||authenticationService.module.isVendorTier">
+                                                                <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor ||authenticationService.module.isVendorTier || authenticationService.module.isPrm">
                                                                     <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
                                                                         Partner List(s)</ng-container>
                                                                 </ng-container>
-                                                                <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor && !authenticationService.module.isVendorTier">
+                                                                <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor && !authenticationService.module.isVendorTier &&  !authenticationService.module.isPrm">
                                                                     <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
                                                                         Contact List(s)</ng-container>
                                                                 </ng-container>

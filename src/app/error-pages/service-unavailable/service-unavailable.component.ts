@@ -14,7 +14,6 @@ export class ServiceUnavailableComponent implements OnInit {
   constructor(public referenceService:ReferenceService, public authenticationService:AuthenticationService, public router:Router) { }
 
   ngOnInit() {
-    console.log("service unavailable component");
     this.authenticationService.logout();
     
   }

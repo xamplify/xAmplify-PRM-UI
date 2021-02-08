@@ -46,6 +46,7 @@ export class UploadAssetComponent implements OnInit {
 	showCropper: boolean;
 	showDefaultLogo = false;
 	uploadedThumbnailName = "";
+	initLoader = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
 	ngOnInit() {
 		this.isAdd = this.router.url.indexOf('/upload') > -1;
@@ -60,13 +61,20 @@ export class UploadAssetComponent implements OnInit {
 
 	getAssetDetailsById(selectedAssetId: number) {
 		this.formLoader = true;
+		this.initLoader = true;
 		this.damService.getAssetDetailsById(selectedAssetId).
 			subscribe(
 				(result: any) => {
-					this.damUploadPostDto = result.data;
-					this.validateForm('assetName');
-					this.validateForm('description');
-					this.formLoader = false;
+					if(result.statusCode==200){
+						this.damUploadPostDto = result.data;
+						this.validateForm('assetName');
+						this.validateForm('description');
+						this.formLoader = false;
+						this.initLoader = false;
+					}else{
+						this.referenceService.goToPageNotFound();
+					}
+					
 				}, (error: any) => {
 					this.xtremandLogger.errorPage(error);
 				}
@@ -77,13 +85,17 @@ export class UploadAssetComponent implements OnInit {
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
 		let files: Array<File>;
-		if ( event.target.files!=undefined ) { files = event.target.files; }
-		else if ( event.dataTransfer.files ) { files = event.dataTransfer.files; }
+		if ( event.target.files!=undefined ) {
+			 files = event.target.files; 
+		}else if ( event.dataTransfer.files ) { 
+			files = event.dataTransfer.files;
+	 	}
 		if (files.length > 0) {
 			this.formData.delete("uploadedFile");
 			this.uploadedAssetName  = "";
 			this.customResponse = new CustomResponse();
 			let file = files[0];
+			console.log(file);
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
 			if(sizeInKb>maxFileSizeInKb){
@@ -284,6 +296,20 @@ export class UploadAssetComponent implements OnInit {
 	closePreview() {
 		this.previewItems = false;
 		this.previewPath = "";
+	}
+
+	goToSelect(){
+		this.loading = true;
+		this.referenceService.goToRouter("home/dam/select");
+	}
+
+	closeCircle(){
+		this.loading = true;
+		if(this.isAdd){
+			this.referenceService.goToRouter("home/dam/select");
+		}else{
+			this.referenceService.goToRouter("home/dam/manage");
+		}
 	}
 
 

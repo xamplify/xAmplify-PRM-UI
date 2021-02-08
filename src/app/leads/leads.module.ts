@@ -7,14 +7,13 @@ import { LeadsRoutingModule } from './leads-routing.module';
 import { LeadsService } from './services/leads.service';
 import { DealsService } from '../deals/services/deals.service';
 import { ManageLeadsComponent } from './manage-leads/manage-leads.component';
-
-
+import { ManageCampaignLeadsComponent } from './manage-campaign-leads/manage-campaign-leads.component';
 
 @NgModule({
   imports: [
      CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, LeadsRoutingModule
   ],
-  declarations: [ManageLeadsComponent],
+  declarations: [ManageLeadsComponent, ManageCampaignLeadsComponent],
   providers: [LeadsService, DealsService]
 })
 export class LeadsModule { }

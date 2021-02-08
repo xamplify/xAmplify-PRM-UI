@@ -10,13 +10,10 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 
 import { Idle, DEFAULT_INTERRUPTSOURCES, IdleExpiry, LocalStorageExpiry } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
-
-import { RouteConfigLoadEnd } from "@angular/router";
-import { RouteConfigLoadStart } from "@angular/router";
-import { Event as RouterEvent } from "@angular/router";
+import { RouteConfigLoadStart,GuardsCheckStart,GuardsCheckEnd,RouteConfigLoadEnd,Event as RouterEvent } from "@angular/router";
 import {VersionCheckService} from "app/version-check/version-check.service";
 
-declare var QuickSidebar, $: any;
+declare var $: any;
 
 @Component({
     selector: 'app-root',
@@ -31,13 +28,26 @@ export class AppComponent implements OnInit, AfterViewInit {
   timedOut = false;
   lastPing?: Date = null;
   title = 'angular-idle-timeout';
-	public isShowingRouteLoadIndicator: boolean;
+  public isShowingRouteLoadIndicator: boolean;
+  public showLoaderForAuthGuard:boolean;
   sessionExpireMessage = "Your session has timed out. Please login again.";
   xamplifygif = "assets/images/xamplify-icon.gif";
    
 constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive, private titleService: Title,public userService: UserService,public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router,private referenceService:ReferenceService) {
       //this.checkIdleState(idle,keepalive);
+    this.addLoaderForAuthGuardService();
 		this.addLoaderForLazyLoadingModules(router);
+    }
+
+    addLoaderForAuthGuardService(){
+      this.router.events.subscribe(event => {
+        if (event instanceof GuardsCheckStart) {
+          this.showLoaderForAuthGuard = true;
+        }     
+        if (event instanceof GuardsCheckEnd) {
+          this.showLoaderForAuthGuard = false;
+        } 
+      });
     }
 
 	addLoaderForLazyLoadingModules(router:Router){
@@ -94,9 +104,6 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     
     ngOnInit() {
         //this.versionCheckService.initVersionCheck();
-        //QuickSidebar.init();
-       // this.getTeamMembersDetails();
-        // reloading the same url with in the application
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
         };
@@ -104,8 +111,9 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
             if (evt instanceof NavigationEnd) {
                 this.router.navigated = false;
                 let currentUrl = evt.url;
-                console.log("current Url:-"+currentUrl);
                 let loginUrl = currentUrl.indexOf('/login')>-1;
+                let logoutUrl = currentUrl.indexOf('/logout')>-1;
+                let expiredUrl = currentUrl.indexOf('/expired')>-1;
                 let emptyUrl = currentUrl.indexOf('-/')>-1;
                 let formUrl = currentUrl.indexOf('f/')>-1;
                 let signUpUrl = currentUrl.indexOf('signup/')>-1;
@@ -140,16 +148,12 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
                 let exculdeUrls =  ( !loginUrl && !emptyUrl && !signUpUrl && !forgotPasswordUrl && !userLockUrl && !registerUrl &&  !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
                                   !shareUrl && !showCampaignVideoUrl &&  !showCampaignEmail &&  !companyPageUrl && !partnerPageUrl && !logeUrl &&
                                   !unsubscribeUrl && !serviceUnavailableUrl && !accessDeniedUrl &&   !rsvpUrl && !smsShowCampaignUrl && !showEventCampaignUrl &&
-                                  !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl && !samlSecurityUrl
+                                  !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl && !samlSecurityUrl && !logoutUrl && !expiredUrl
                                   );
 
                  if(exculdeUrls){
                   this.logoutFromAllTabs();
-                 }else{
-                  console.log("Will not be logged out");
                  }
-                 
-               
                 window.scrollTo(0, 0);
             }
             this.navigationInterceptor(evt);

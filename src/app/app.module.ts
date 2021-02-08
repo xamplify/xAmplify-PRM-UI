@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { Router } from '@angular/router';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { LoadingModule } from 'ngx-loading';
@@ -64,56 +64,60 @@ import { DownloadTemplateComponent } from './campaigns/download-template/downloa
 import { IntegrationService } from './core/services/integration.service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
 import { VanityURLService } from './vanity-url/services/vanity.url.service';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
-
-/*
-import {NoCacheHeadersInterceptor} from './core/no-cache-provider';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';*/
-import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-token-login/expired-access-token-login.component';
+import { NoCacheHeadersInterceptor } from './core/no-cache-provider';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanity-add-contacts.component';
+import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
+import {ClearChunkFile} from 'app/core/clear-chunk-file';
+import { ErrorHandler } from '@angular/core';
+import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
 
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
-                   CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
-               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS,
-         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent,VanitySocialLoginComponent, DomainErrorComponent,ExpiredAccessTokenLoginComponent
-               ],
-   
+        CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
+        , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
+        LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
+        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent
+    ],
+
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule, NgIdleKeepaliveModule.forRoot(),
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule, LoadingModule, CommonComponentModule, NgIdleKeepaliveModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
-              provide: TranslateLoader,
-              useFactory: HttpLoaderFactory,
-              deps: [HttpClient]
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
             }
-          })],
+        })],
 
     providers: [{
         provide: Http,
         useFactory: httpService,
-        deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
+        deps: [XHRBackend, RequestOptions, SlimLoadingBarService,Router]
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
-    /*{
+    {
         provide: HTTP_INTERCEPTORS,
         useClass: NoCacheHeadersInterceptor,
         multi: true
-      },*/
-        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
-        TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService,
+    },
+	{provide: ErrorHandler, useClass: ClearChunkFile},
+        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService, RssService,
+        TwitterService, FacebookService, XtremandLogger, VideoUtilService, ParterService,
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
         VanityURLService],
     bootstrap: [AppComponent]
 
 })
 export class AppModule { }
 
-export function httpService(backend: XHRBackend, options: RequestOptions, slimLoadingBarService: SlimLoadingBarService) {
-    return new HttpService(backend, options, slimLoadingBarService);
+export function httpService(backend: XHRBackend, options: RequestOptions, slimLoadingBarService: SlimLoadingBarService,router:Router) {
+    return new HttpService(backend, options, slimLoadingBarService,router);
 }
 
 // AoT requires an exported function for factories

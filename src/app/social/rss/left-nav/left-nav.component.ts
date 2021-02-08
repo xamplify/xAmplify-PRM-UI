@@ -23,21 +23,32 @@ export class LeftNavComponent implements OnInit {
   customFeedCollections: Array<any>;
   vendorFeedsCount = 0;
   vendorFeedsExpand = false;
+  isVendorVanityUrl = false;
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isloading = true;
+    
     this.authenticationService.getRoleDetails(this.loggedInUserId)
     .subscribe(
       data => {
         this.isloading = false;
         if(!data.partner && !data.partnerTeamMember){
           this.showFeeds = true;
-          this.getCollections();
-          let isOrgAdminAndPartner = data.orgAdminAndPartner;
-          let isVendorAndPartner = data.vendorAndPartner;
-          let isOrgAdminAndPartnerTeamMember  = data.orgAdminAndPartnerTeamMember;
-          let isVendorAndPartnerTeamMember = data.vendorAndPartnerTeamMember;
-          this.showVendorFeeds = isOrgAdminAndPartner ||isVendorAndPartner || isOrgAdminAndPartnerTeamMember ||isVendorAndPartnerTeamMember;
+          this.getCollections(); //rss collections
+
+          const roles = this.authenticationService.getRoles();
+          if (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember) {
+            this.showVendorFeeds = true;
+          } else {
+            this.showVendorFeeds = false;
+          }
+
+         
+          // let isOrgAdminAndPartner = data.orgAdminAndPartner;
+          // let isVendorAndPartner = data.vendorAndPartner;
+          // let isOrgAdminAndPartnerTeamMember  = data.orgAdminAndPartnerTeamMember;
+          // let isVendorAndPartnerTeamMember = data.vendorAndPartnerTeamMember;
+          // this.showVendorFeeds = isOrgAdminAndPartner ||isVendorAndPartner || isOrgAdminAndPartnerTeamMember ||isVendorAndPartnerTeamMember;
           this.listAllCustomFeedCollections();
           this.getVendorFeedsCount();
           if(this.showVendorFeeds){
@@ -45,8 +56,12 @@ export class LeftNavComponent implements OnInit {
           }
         }else{
           this.showFeeds = false;
-          this.showVendorFeeds = true;
-          this.listAllVendors();
+          this.showVendorFeeds = true;          
+          if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+            this.isVendorVanityUrl = true;
+          } else {
+            this.listAllVendors();
+          }
           //this.listAllCustomFeedCollections();
         }
       },
@@ -153,6 +168,6 @@ export class LeftNavComponent implements OnInit {
   }
 
   goToVendorFeeds(vendorCompanyId:number,type:string){
-    this.router.navigate(['/home/rss/manage-custom-feed/'+type+"/"+vendorCompanyId]);
+    this.router.navigate(['/home/rss/manage-custom-feed/'+type+"/vendor/"+vendorCompanyId]);
   }
 }

@@ -999,10 +999,11 @@
 							<span class="glyphicon glyphicon-triangle-right"></span>If you decide to relink your account, you will need to reenter your credentials.
 						</h4>
 						
-						<h4 style="margin-left: 20px;" translate>
+						<h4 style="margin-left: 20px;" translate *ngIf="!assignLeads">
 							<span class="glyphicon glyphicon-triangle-right"></span>Would you like to delete associated contact lists?<input
 							 type="checkbox" [(ngModel)]="isUnLinkSocialNetwork" [ngModelOptions]="{standalone: true}">
 						</h4>
+						
 						<button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()" translate>
 							Unlink Account
 						</button>

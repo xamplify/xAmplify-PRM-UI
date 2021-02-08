@@ -284,6 +284,12 @@ export class UserService {
             .catch(this.handleServerError);
     }
 
+    isGdprEnabled(userId: number) {
+        return this.http.get(this.GDPR_SETTING_URL + "isGdprEnabled/" + userId + "?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
     getCategories(pagination: Pagination) {
         return this.http.post(this.CATEGORIES_URL + "listAll?access_token=" + this.authenticationService.access_token, pagination)
             .map(this.extractData)

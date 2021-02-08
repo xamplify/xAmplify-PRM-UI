@@ -98,10 +98,10 @@
                          </td>
                          <td *ngIf="!authenticationService.isSuperAdmin()">
                            <div class="actions-block override-actions" *ngIf="videoFileService.videoType==='myVideos'">
-                             <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier"
+                             <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier"
                                (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit"> <i class="fa fa-pencil-square-o"></i>
                              </a>
-                             <ng-container *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
+                             <ng-container *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
                                 <a *ngIf="videoFile.viewBy!='DRAFT' && videoFile.processed" (click)="campaignRouter(videoFile)" data-toggle="tooltip" data-placement="top" title="Create campaign">
                                   <i class="fa fa-bullhorn"></i>
                                 </a>
@@ -119,7 +119,7 @@
                              <a class="disable" *ngIf="videoFile.viewBy=='DRAFT'" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
                                <i class="fa fa-line-chart"></i>
                              </a>
-                             <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_delete" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
+                             <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_delete" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)">
                                <i class="fa fa-trash-o"></i>
                              </a>
                              </ng-container>
@@ -127,7 +127,7 @@
                                   <a class="disable" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
                                     <i class="fa fa-line-chart"></i>
                                   </a>
-                                  <a class="disable" data-toggle="tooltip" data-placement="left" title="Unavailable for processing" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier">
+                                  <a class="disable" data-toggle="tooltip" data-placement="left" title="Unavailable for processing" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier">
                                     <i class="fa fa-trash-o"></i>
                                   </a>
                               </ng-container>
@@ -175,11 +175,11 @@
                    <div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
                      <div >
                       <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
-                        <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier"
+                        <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier"
                           (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_edit}}">
                           <i class="fa fa-pencil-square-o"></i>
                         </a>
-                        <span *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
+                        <span *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
                             <a *ngIf="videoFile.viewBy!='DRAFT' && videoFile.processed" (click)="campaignRouter(videoFile)"  data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_campaign}}">
                              <i class="fa fa-bullhorn"></i>
                              </a>
@@ -201,11 +201,11 @@
                           </a>
                       </ng-container>
                         <ng-container *ngIf="videoFileService.videoType==='myVideos'">
-                          <a *ngIf="(hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && videoFile.processed" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
+                          <a *ngIf="(hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && videoFile.processed" (click)="deleteVideoAlert(videoFile.alias,i ,videoFile.title)"
                           data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_delete}}">
                             <i class="fa fa-trash-o" ></i>
                           </a>
-                          <a class="disable" *ngIf="(hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && !videoFile.processed"
+                          <a class="disable" *ngIf="(hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && !videoFile.processed"
                           data-toggle="tooltip" data-placement="top" title="Unavailabel for processing">
                             <i class="fa fa-trash-o" ></i>
                           </a>

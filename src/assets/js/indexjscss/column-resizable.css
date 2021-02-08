@@ -29,7 +29,8 @@ span.ui-column-resizer {
 }
 
 .moreipsis {
-	position: relative;
+  position: relative;
+  line-height: 16px;
 }
 
 .moreipsis:before {
@@ -223,5 +224,13 @@ span.ui-column-resizer {
 
 .auto-height{
   height: auto !important;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.min-h{
+    height: 102px !important;
 }
 

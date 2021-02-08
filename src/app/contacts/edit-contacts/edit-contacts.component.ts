@@ -215,6 +215,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	mdfAccess: boolean = false;
 	processingPartnersLoader = false;
 	contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
+	sharedLeads : boolean = false;
 
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
@@ -226,7 +227,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactsByType.selectedCategory = "all";
 		this.sourceType = this.authenticationService.getSource();
 		let currentUrl = this.router.url;
-        if (currentUrl.includes('home/assignleads')) {
+		
+        if (currentUrl.includes('home/sharedleads')) {
+            this.isPartner = false;
+            this.assignLeads = false;
+            this.sharedLeads = true;
+            this.checkingContactTypeName = "Shared Lead"
+        } else if (currentUrl.includes('home/assignleads')) {
             this.isPartner = false;
             this.assignLeads = true;
             this.showAddOptions = true;
@@ -1963,10 +1970,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 							this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
 							this.selectedInvalidContactIds.length = 0;
-							if (this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
-							} else {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
+							
+                            if (this.assignLeads) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_EMAIL_VALIDATE_SUCCESS, true);
+                            } else if (this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+                            } else {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
 							}
 						} else {
 							this.authenticationService.forceToLogout();
@@ -1996,11 +2006,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								$('#row_' + value).remove();
 								console.log(index + "value" + value);
 							});
-							//this.setResponseDetails('SUCCESS', 'your contacts has been deleted successfully');
-							this.invalidDeleteSuccessMessage = true;
-							//this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
-							this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
-							this.contactsByType.invalidContactsCount = data.invalidUsers;
+							//this.invalidDeleteSuccessMessage = true;
+							if(this.assignLeads){
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
+	                        }else if (this.isPartner) {
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+	                        } else {
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
+	                        }
+							
+							this.checkingLoadContactsCount = true;
+                            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                            this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+							
 							this.selectedInvalidContactIds.length = 0;
 						} else {
 							this.authenticationService.forceToLogout();
@@ -3212,11 +3230,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				form.append('userListId', this.selectedContactListId);
 				return { fileItem, form }
 			};
-
-			Metronic.init(); // init metronic core components
-			Layout.init(); // init current layout
-			Demo.init(); // init demo features
-			Portfolio.init();
 			/********Check Gdpr Settings******************/
 			this.checkTermsAndConditionStatus();
 		}
@@ -3276,7 +3289,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			$('#filterModal').modal('hide');
 			$('#saveAsEditModal').modal('hide');
 
-			if (this.selectedAddContactsOption != 8 && this.router.url !== '/login' && !this.isDuplicateEmailId) {
+			if (this.selectedAddContactsOption != 8 && this.router.url !== '/login' && !this.isDuplicateEmailId && !this.isSegmentation) {
 				let self = this;
 				swal({
 					title: 'Are you sure?',

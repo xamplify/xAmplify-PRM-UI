@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { AddContactsComponent } from './add-contacts/add-contacts.component';
 import { SocialContactsCallbackComponent } from './social-contacts-callback/social-contacts-callback.component';
-
-import { EditContactsComponent } from './edit-contacts/edit-contacts.component';
 import { ManageContactsComponent } from './manage-contacts/manage-contacts.component';
 
 

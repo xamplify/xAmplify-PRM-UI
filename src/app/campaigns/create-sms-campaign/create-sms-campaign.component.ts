@@ -460,9 +460,6 @@ export class CreateSmsCampaignComponent implements OnInit,OnDestroy{
   eventUrlHandler(keyCode: any, url:any) {  if (keyCode === 13) {  this.searchClickEmailTemplate(url); } }
 
   ngOnInit(){
-        Metronic.init();
-        Layout.init();
-        Demo.init();
         flatpickr( '.flatpickr',{
             enableTime: true,
             dateFormat: 'm/d/Y h:i K',

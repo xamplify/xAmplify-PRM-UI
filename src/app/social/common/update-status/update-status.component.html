@@ -3,22 +3,12 @@
 	<div class="page-bar rounded-0 margin-bottom-10px">
 		<ul class="page-breadcrumb">
 			<li>
-				<i class="fa fa-home"></i>
+				<i class="fa fa-home" aria-hidden="true"></i>
 				<a [routerLink]="referenceService.homeRouter">Home</a>
 			</li>
 	  <li *ngIf="location.includes('/social/update-status')" style="color: #808680;">
-		<i class="fa fa-angle-right"></i>
+		<i class="fa fa-angle-right" aria-hidden="true"></i>
 		Update Status</li>
-      <!-- <ng-container *ngIf="location.includes('/campaigns/social') && !authenticationService.isOnlyPartner()">
-      <li style="color: #808680;"><a  [routerLink]="['/home/campaigns/select']">Select Campaign</a></li>
-      <i class="fa fa-angle-right color-bread" ></i>
-      <li class="color-bread"><a>Create Campaign</a></li>
-      </ng-container>
-      <ng-container *ngIf="authenticationService.isOnlyPartner()">
-          <a style="color: #808680;" [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
-            <i class="fa fa-angle-right"></i>
-          <li class="color-bread"><a> Redistribute Campaign</a></li>
-      </ng-container> -->
 		</ul>
 	</div>
 	<div class="row" [hidden]="isRedirectEnabled">
@@ -32,29 +22,29 @@
 <ul class="list-group m0 p0">
 	<li class="list-group-item p10" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
 		<div (click)="toggleSelectAll()">
-			<i class="fa fa-square-o" *ngIf="!isAllSelected"></i>
-			<i class="fa fa-check-square" *ngIf="isAllSelected"></i>
-			<span class="ml10">Select All <b *ngIf="selectedAccounts > 0">({{selectedAccounts}})</b></span>
+			<i class="fa fa-square-o" *ngIf="!isAllSelected" aria-hidden="true"></i>
+			<i class="fa fa-check-square" *ngIf="isAllSelected" aria-hidden="true"></i>
+			<span class="ml10">Select All <strong *ngIf="selectedAccounts > 0">({{selectedAccounts}})</strong></span>
 		</div>
 	</li>
 	<li *ngFor="let socialStatusProvider of socialStatusProviders; let i = index" (click)="toggleSocialStatusProvider(socialStatusProvider)"
 		class="list-group-item profile-box" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}">
 		<div class="profile-selected">
-			<i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected"></i>
-			<i class="fa fa-check-square" *ngIf="socialStatusProvider.selected"></i>
+			<i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected" aria-hidden="true"></i>
+			<i class="fa fa-check-square" *ngIf="socialStatusProvider.selected" aria-hidden="true"></i>
 		</div>
 		<div class="profile-image-box">
-			<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-			<img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
+			<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+			<img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png" alt="">
 		</div>
 		<div class="profile-name">
 				<h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
 					class="heading-primary">
-					<b>{{socialStatusProvider.socialConnection.profileName}}</b>
+					<strong>{{socialStatusProvider.socialConnection.profileName}}</strong>
 				</h5>
 				<h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
 					class="heading-primary">
-					<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
+					<strong>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</strong>
 				</h5>
 				<h6 class="m0">
 					{{socialStatusProvider.socialConnection.source | titlecase}}
@@ -69,7 +59,6 @@
 </ul>
 
 <div class="text-center mt10">
-	<!--<button class="btn btn-sm btn-primary" data-target="#connectAccountsModal" data-toggle="modal">Add Accounts</button>-->
 	<button class="btn btn-sm btn-primary" data-target="#manageAccountsModal" data-toggle="modal">Manage Accounts</button>
 </div>
 			</div>
@@ -89,7 +78,7 @@
 
 		<div class="col-md-9 col-sm-12" *ngIf='socialStatusProviders?.length === 0'>
 			<div class='alert alert-info'>
-				<h4 class='m0 bold'><i class="fa fa-exclamation-circle pr10"></i> You have not added any social accounts.</h4>
+				<h4 class='m0 bold'><i class="fa fa-exclamation-circle pr10" aria-hidden="true"></i> You have not added any social accounts.</h4>
 			</div>
 		</div>
 		<div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatusProviders?.length === 0}" id="us-right">
@@ -279,7 +268,7 @@
 								<i class="fa fa-image" aria-hidden="true"></i>
 								<input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
 							</label>
-							<span class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
+							<span *ngIf="!authenticationService.module.isPrm &&!authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-video-camera" aria-hidden="true"></i>
 							</span>
 							<span *ngIf="showRssFeed" class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">

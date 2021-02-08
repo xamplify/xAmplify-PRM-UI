@@ -47,12 +47,15 @@ export class CreateMdfRequestComponent implements OnInit {
   mdfAmountTiles:MdfAmountTiles = new MdfAmountTiles();
   saveMdfRequestDto:SaveMdfRequest = new SaveMdfRequest();
   duplicateTitle = false;
+  initLoader = false;
+  statusCode = 200;
   constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties,private formService:FormService) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
 
   ngOnInit() {
     this.loading = true;
+    this.initLoader = true;
     this.tilesLoader = true;
     this.formLoader = true;
     this.vendorCompanyId = this.route.snapshot.params['vendorCompanyId'];
@@ -84,7 +87,6 @@ export class CreateMdfRequestComponent implements OnInit {
       () => {
         if(this.loggedInUserCompanyId!=undefined && this.loggedInUserCompanyId>0){
           this.getTilesInfo();
-          this.showMdfForm();
         }
       }
     );
@@ -95,11 +97,22 @@ export class CreateMdfRequestComponent implements OnInit {
     this.tilesLoader = true;
     this.mdfService.getPartnerMdfAmountTilesInfo(this.vendorCompanyId,this.loggedInUserCompanyId).subscribe((result: any) => {
     this.tilesLoader = false;
-    this.mdfAmountTiles = result.data;
+    this.statusCode = result.statusCode;
+    if(this.statusCode==200){
+      this.mdfAmountTiles = result.data;
+    }else{
+      this.referenceService.goToPageNotFound();
+    }
     }, error => {
     this.xtremandLogger.log(error);
     this.xtremandLogger.errorPage(error);
-    });
+    },
+    ()=>{
+      if(this.statusCode==200){
+        this.showMdfForm();
+      }
+    }
+    );
   }
 
   showMdfForm(){
@@ -114,6 +127,7 @@ export class CreateMdfRequestComponent implements OnInit {
       }
       this.loading = false;
       this.formLoader = false;
+      this.initLoader = false;
     }, error => {
       this.xtremandLogger.log(error);
     this.xtremandLogger.errorPage(error);

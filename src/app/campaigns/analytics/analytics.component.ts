@@ -201,7 +201,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.isOnlyPartner = this.authenticationService.isOnlyPartner();
       this.campaign = new Campaign();
       this.selectedRow.emailId = "";
-      if (this.referenceService.isFromTopNavBar) {
+     /* if (this.referenceService.isFromTopNavBar) {
         const object = {
           "campaignId": this.referenceService.topNavBarNotificationDetails.campaignId,
           "userId": this.referenceService.topNavBarNotificationDetails.userId,
@@ -209,7 +209,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         }
         this.isTimeLineView = false;
         this.userTimeline(object);
-      }
+      }*/
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
   showTimeline() {
@@ -536,6 +536,37 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           () => console.log()
         )
     } catch (error) { this.hasClientError = true; this.xtremandLogger.error('error' + error); }
+  }
+  
+  getCampaignHighLevelAnalytics(campaignId: number){
+	    try {
+	        this.loading = true;
+	        this.campaignService.getCampaignHighLevelAnalytics(campaignId, this.loggedInUserId)
+	          .subscribe(
+	            response => {
+	            	this.campaignReport.emailSentCount = response.data.totalEmailsSent;
+	            	this.campaignReport.totalRecipients = response.data.totalRecipients;
+	            	this.campaignReport.delivered = response.data.delivered;
+	            	this.campaignReport.unsubscribed = response.data.unsubscribed;
+	            	this.campaignReport.softBounce = response.data.softBounce;
+	            	this.campaignReport.hardBounce = response.data.hardBounce;
+	            	this.campaignReport.clickthroughRate = response.data.clickthroughRate;
+	            	this.campaignReport.emailClickedCount = response.data.emailClicked;
+	            	this.campaignReport.openRate = response.data.openRate;
+	            	this.campaignReport.activeRecipients = response.data.activeRecipients;
+	            	this.campaignReport.unsubscribed = response.data.unsubscribed;
+	            	this.campaignReport.pagesClicked = response.data.pagesClicked;
+	            	this.campaignReport.totalAttendeesCount = response.data.totalAttendeesCount;
+	              /*this.campaignReport.emailOpenCount = data["email_opened_count"];
+	              this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
+	              
+	              this.campaignReport.dataShareClickedUrlsCountForVendor = data['dataShareClickedUrlsCountForVendor'];*/
+	              this.loading = false;
+	            },
+	            error => console.log(error),
+	            () => console.log()
+	          )
+	      } catch (error) { this.hasClientError = true; this.xtremandLogger.error('error' + error); }
   }
 
   getCampaignWatchedUsersCount(campaignId: number) {
@@ -2197,19 +2228,39 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     try {
-      this.mainLoader = true;
-      this.downloadTypeName = this.paginationType = 'campaignViews';
-      this.emailActionListPagination.pageIndex = 1;
-      this.campaignId = this.route.snapshot.params['campaignId'];
-      this.getCampaignById(this.campaignId);
-      this.getEmailLogCountByCampaign(this.campaignId);
-      this.pagination.pageIndex = 1;
-      if (this.isTimeLineView === true) {
-        this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
-      }
-      setTimeout(() => { this.mainLoader = false; }, 3000);
-    } catch (error) { this.hasClientError = true; this.mainLoader = false; this.xtremandLogger.error('error' + error); }
+     this.checkParentAndRedistributedCampaignAccess();
+    } catch (error) { 
+      this.hasClientError = true; 
+      this.mainLoader = false; 
+      this.xtremandLogger.error('error' + error); 
+    }
   }
+
+checkParentAndRedistributedCampaignAccess(){
+  this.mainLoader = true;
+  let campaignId= this.route.snapshot.params['campaignId'];
+  this.campaignService.parentAndRedistributedCampaignAccess(campaignId).subscribe
+  ( data =>{
+      if(data.statusCode==200){
+        this.downloadTypeName = this.paginationType = 'campaignViews';
+        this.emailActionListPagination.pageIndex = 1;
+        this.campaignId = this.route.snapshot.params['campaignId'];
+        this.getCampaignById(this.campaignId);
+        this.getCampaignHighLevelAnalytics(this.campaignId);
+        this.getEmailLogCountByCampaign(this.campaignId);
+        this.pagination.pageIndex = 1;
+        if (this.isTimeLineView === true) {
+          this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+        }
+        setTimeout(() => { this.mainLoader = false; }, 3000);
+      }else{
+        this.referenceService.goToPageNotFound();
+      }
+  },error=>{
+    this.xtremandLogger.errorPage( error );
+  });
+}
+
   ngOnDestroy() {
     this.paginationType = '';
     this.contactListDeleteError = false;
@@ -2835,7 +2886,7 @@ goToCampaignAnaltyics(item:any){
   this.loading = true;
   let prefixUrl = "/home/campaigns/user-campaigns/";
   let suffixUrl =  item.userId+"/b"+"/"+item.campaignId;
-  if(item.channelCampaign){
+  if(this.campaign.channelCampaign){
     this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
   }else{
     this.referenceService.goToRouter(prefixUrl + "/c/" + suffixUrl);

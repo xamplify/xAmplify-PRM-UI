@@ -6,6 +6,8 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/finally';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { Http, XHRBackend, RequestOptions, Request, RequestOptionsArgs, Response } from '@angular/http';
+import { Router } from '@angular/router';
+
 declare var $: any;
 
 @Injectable()
@@ -13,7 +15,7 @@ export class HttpService extends Http {
   public pendingRequests: number = 0;
   public showLoading: boolean = false;
 
-  constructor(backend: XHRBackend, defaultOptions: RequestOptions, private slimLoadingBarService: SlimLoadingBarService) {
+  constructor(backend: XHRBackend, defaultOptions: RequestOptions, private slimLoadingBarService: SlimLoadingBarService,private router:Router) {
     super(backend, defaultOptions);
   }
 
@@ -22,15 +24,19 @@ export class HttpService extends Http {
   }
 
   intercept(observable: Observable<Response>): Observable<Response> {
-    // console.log('In the intercept routine..');
     this.turnOnModal();
-    // console.log('slimLoadingBarService : ' + this.slimLoadingBarService.height + 'pendingRequests' + this.pendingRequests);
     this.pendingRequests++;
     return observable
       .do((res: Response) => {
-        console.log('Response: ' + res);
+        console.log("http service:"+res);
       }, (err: any) => {
-        console.log('Caught error: ' + err);
+        let status = err['status'];
+        if(status==0 && !this.router.url.includes('/login')){
+          this.router.navigate(['/logout']);
+        }else if(status==401 && !this.router.url.includes('/login') ){
+          this.router.navigate(['/expired']);
+        }
+
       })
       .finally(() => {
         this.turnOffModal();
@@ -40,7 +46,6 @@ export class HttpService extends Http {
     if (!this.showLoading) {
       this.showLoading = true;
       this.slimLoadingBarService.start(() => {
-        console.log('Loading complete');
       });
     }
     this.showLoading = true;
@@ -52,7 +57,6 @@ export class HttpService extends Http {
     if (this.pendingRequests <= 0) {
       if (this.showLoading) {
         this.slimLoadingBarService.complete();
-        console.log('Turned off modal');
       }
       this.showLoading = false;
     }

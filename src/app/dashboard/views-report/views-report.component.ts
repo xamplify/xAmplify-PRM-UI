@@ -295,10 +295,6 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.loadVideos(this.pagination);
-            Metronic.init();
-            Layout.init();
-            Demo.init();
-            QuickSidebar.init();
         } catch (err) { }
     }
     ngOnDestroy() {

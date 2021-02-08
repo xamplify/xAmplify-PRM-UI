@@ -24,11 +24,13 @@ export class MdfDetailsTimelineComponent implements OnInit {
   mdfDetailsTimeLineHistory:Array<MdfDetailsTimeLine> = new Array<MdfDetailsTimeLine>();
   tilesLoader = false;
   tileClass = "col-sm-3 col-xs-6 col-lg-3 col-md-3";
+  initLoader = false;
   constructor(private mdfService: MdfService,private route: ActivatedRoute,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router) { 
     this.loggedInUserId = this.authenticationService.getUserId();
 }
 
   ngOnInit() {
+    this.initLoader = true;
     this.startLoaders();
     this.mdfDetailsId = parseInt(this.route.snapshot.params['mdfDetailsId']);
     this.getCompanyId();
@@ -65,11 +67,10 @@ export class MdfDetailsTimelineComponent implements OnInit {
       $.each(this.mdfDetailsTimeLineHistory,function(_index,mdfDetailsTimeLine:MdfDetailsTimeLine){
         mdfDetailsTimeLine.displayTime = new Date(mdfDetailsTimeLine.createdTimeInUTCString);
       });
+      this.stopLoaders();
     }else{
-      
+      this.referenceService.goToPageNotFound();
     }
-    this.stopLoaders();
-     
     }, error => {
       this.xtremandLogger.log(error);
     this.xtremandLogger.errorPage(error);
@@ -85,6 +86,7 @@ export class MdfDetailsTimelineComponent implements OnInit {
   }
 
    stopLoaders(){
+     this.initLoader = false;
     this.tilesLoader = false;
     this.loading = false;
     this.mdfAmountDetailsLoader = false;

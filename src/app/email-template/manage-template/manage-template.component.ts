@@ -413,18 +413,16 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     }
     
     getTemplateById(emailTemplate:EmailTemplate){
+        this.ngxloading = true;
     	this.emailTemplateService.getById( emailTemplate.id )
         .subscribe(
         ( data: any ) => {
-            console.log( data );
             emailTemplate.body = data.body;
             this.showPreview(emailTemplate);
         },
-        error => console.error( error ),
-        () => {
-            console.log( 'loadContacts() finished' );
-        }
-        );
+        error => {
+           this.logger.errorPage(error);
+        });
     }
     
     showPreview(emailTemplate:EmailTemplate){

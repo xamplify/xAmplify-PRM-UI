@@ -14,6 +14,7 @@
                         </div>
                         
                         <br>
+                        <span *ngIf="!isVendorVanityUrl" >
                         <div class="heading-top" *ngFor="let vendor of vendors" style="border-bottom: solid 1px white;">
                             <a (click)="goToVendorFeeds(vendor.companyId,'p')" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
                                 {{vendor.companyName}} 
@@ -21,12 +22,13 @@
                                 <br>
                             </a>
                         </div>
+                        </span>
                     </ng-container>
                     <br>
                 <!--All Feeds---->
                 <ng-container *ngIf="showFeeds">
                     <hr>
-                    <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">FEEDS</h4>
+                    <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">YOUR FEEDS</h4>
                     <div class="heading-top" style="border-bottom: solid 1px white;">
                     <a (click)="goToAllCustomFeeds('v', 0)" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
                         All Feeds <span class="circled-number" id="vpc">{{vendorFeedsCount}}</span>

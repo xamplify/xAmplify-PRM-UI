@@ -61,8 +61,42 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		if(this.userType=="pa" || this.userType=="pm"){
 			this.userType = "p";
 		}
-		this.getCompanyId();
+		if(this.analyticsCampaignId!=undefined){
+			this.validateCampaignIdAndUserId(this.analyticsCampaignId,this.pagination.userId);
+		}else{
+			this.validatePartnerOrContactIdForCampaignAnalytics();
+		}
 	}
+
+	validatePartnerOrContactIdForCampaignAnalytics(){
+		this.campaignService.validatePartnerOrContactIdForCampaignAnalytics(this.pagination.userId,this.userType).
+		subscribe(
+			response=>{
+				if(response.statusCode==200){
+					this.getCompanyId();
+				}else{
+					this.referenceService.goToPageNotFound();
+				}
+			},error=>{
+				this.xtremandLogger.errorPage(error);
+			}
+		)
+	}
+
+	validateCampaignIdAndUserId(campaignId:number,userId:number){
+		this.campaignService.validateCampaignIdAndUserId(campaignId,userId).subscribe(
+			response=>{
+				if(response.statusCode==200){
+					this.getCompanyId();
+				}else{
+					this.referenceService.goToPageNotFound();
+				}
+			},error=>{
+				this.xtremandLogger.errorPage(error);
+			}
+		);
+	}
+
 	getCompanyId() {
 		if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
 			this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(

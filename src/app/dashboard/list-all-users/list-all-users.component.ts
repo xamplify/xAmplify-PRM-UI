@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
-declare var  $: any;
+declare var  $,swal: any;
 
 
 @Component({
@@ -141,6 +141,94 @@ loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean,userId:number) {
 logoutAsTeamMember() {
   let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
   this.loginAsTeamMember(adminEmailId, true,1);
+}
+confirmLogout(result: any) {
+  try {
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "This will remove the access token for this user",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, remove it!'
+
+    }).then(function () {
+      self.logout(result);
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+  } catch (error) {
+    this.referenceService.showSweetAlertErrorMessage("Unable to confirmLogout().Please try after sometime");
+  }
+}
+
+logout(result: any){
+  this.loading = true;
+  this.dashboardService.revokeAccessTokenByUserId(result.userId)
+    .subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let message = response.message;
+        if(statusCode==200){
+          this.referenceService.showSweetAlertSuccessMessage(message);
+        }else{
+          this.referenceService.showSweetAlertFailureMessage(message);
+        }
+        this.loading = false;
+      },
+      (_error: any) => {
+        this.referenceService.showSweetAlertErrorMessage("Unable to Logout.Please try after sometime");
+        this.loading = false;
+      },
+      () => this.logger.info('Finished logout()')
+    );
+}
+
+confirmLogoutForAll(){
+  try {
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "This will remove all access token for all users",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, remove it!'
+
+    }).then(function () {
+      self.logoutAllUsers();
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+  } catch (error) {
+    this.referenceService.showSweetAlertErrorMessage("Unable to confirmLogout().Please try after sometime");
+  }
+}
+
+logoutAllUsers(){
+  this.loading = true;
+  this.dashboardService.revokeAccessTokensForAll()
+    .subscribe(
+      response => {
+        let statusCode = response.statusCode;
+        let message = response.message;
+        if(statusCode==200){
+          this.referenceService.showSweetAlertSuccessMessage(message);
+          this.authenticationService.revokeAccessToken();
+        }else{
+          this.referenceService.showSweetAlertFailureMessage(message);
+        }
+        this.loading = false;
+      },
+      (_error: any) => {
+        this.referenceService.showSweetAlertErrorMessage("Unable to Logout All Users.Please try after sometime");
+        this.loading = false;
+      },
+      () => this.logger.info('Finished logout()')
+    );
 }
 
 }

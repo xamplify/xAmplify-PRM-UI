@@ -1821,11 +1821,10 @@ export class ReferenceService {
 	}
 
 	scrollSmoothToDiv(elementId: string) {
-		const scrollingElement = (document.scrollingElement || document.body)
 		$("#" + elementId).animate({ scrollTop: document.body.scrollHeight }, 500);
 	}
-	getOrgCampaignTypes(userId: any) {
-		return this.http.get(this.authenticationService.REST_URL + `campaign/access/${userId}?access_token=${this.authenticationService.access_token}`)
+	getOrgCampaignTypes(companyId: any) {
+		return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}`)
 			.map(this.extractData)
 			.catch(this.handleError);
 	}
@@ -2102,6 +2101,12 @@ export class ReferenceService {
 
 	goToRouter(url: string) {
 		this.router.navigate([url]);
+	}
+	goToPageNotFound(){
+		this.router.navigate(['/404']);
+	}
+	goToDashboard(){
+		this.router.navigate(['/home/dashboard']);
 	}
 
 	filterSelectedColumnsFromArrayList(list: any, columnName: string) {

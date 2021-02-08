@@ -10,6 +10,7 @@ import { LandingPageService } from '../services/landing-page.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
 import {LandingPageAnalyticsPostDto} from '../../landing-pages/models/landing-page-analytics-post-dto';
+import {CampaignService} from 'app/campaigns/services/campaign.service';
 declare var  $,swal: any;
 
 @Component({
@@ -47,14 +48,16 @@ export class LandingPageAnalyticsComponent implements OnInit {
     partnerEmailId:string = "";
     managePagesRouterLink = "/home/pages/manage";
     routerLink = "";
+    pageLoader = false;
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
-        public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService ) {
+        public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService,private campaignService:CampaignService) {
         this.daySort = this.videoUtilService.sortMonthDates[3];
         this.pagination.userId = this.authenticationService.getUserId();
     }
 
     ngOnInit() {
+        this.pageLoader = true;
         this.landingPageId = this.route.snapshot.params['landingPageId'];
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.landingPageAlias = this.route.snapshot.params['alias'];
@@ -74,12 +77,18 @@ export class LandingPageAnalyticsComponent implements OnInit {
             this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
             this.landingPageAnalyticsPostDto.partnerId = this.partnerId;
             this.pagination.partnerId = this.partnerId;
+            if(this.partnerId!=undefined){
+                this.validateCampaignIdAndUserId();
+            }else{
+                this.validateCampaignId();
+            }
         }else if(this.landingPageId!=undefined){
             this.pagination.landingPageId = this.landingPageId;
             this.pagination.campaignId = 0;
             this.landingPageAnalyticsPostDto.analyticsTypeString = "Campaign&LandingPage";
             this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
             this.landingPageAnalyticsPostDto.landingPageId = this.landingPageId;
+            this.loadAnalytics();
         }else{
             this.pagination.landingPageAlias = this.landingPageAlias;
             this.pagination.campaignId = 0;
@@ -89,8 +98,42 @@ export class LandingPageAnalyticsComponent implements OnInit {
             this.landingPageAnalyticsPostDto.analyticsTypeString = "PartnerLandingPage";
             this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
             this.landingPageAnalyticsPostDto.landingPageAlias = this.landingPageAlias;
-            
+            this.loadAnalytics();
         }
+        
+    }
+
+    validateCampaignIdAndUserId(){
+        this.campaignService.validateCampaignIdAndUserId(this.campaignId,this.partnerId).
+        subscribe(
+            response=>{
+                this.loadAnalyticsOrNavigateToPageNotFound(response);
+            },error=>{
+                this.logger.errorPage(error);
+            }
+        );
+    }
+
+    validateCampaignId(){
+        this.campaignService.checkCampaignIdAccess(this.campaignId).
+        subscribe(
+            response=>{
+                this.loadAnalyticsOrNavigateToPageNotFound(response);
+            },error=>{
+                this.logger.errorPage(error);
+            }
+        );
+    }
+
+    loadAnalyticsOrNavigateToPageNotFound(response){
+        if(response.statusCode==200){
+            this.loadAnalytics();
+        }else{
+            this.referenceService.goToPageNotFound();
+        }
+    }
+
+    loadAnalytics(){
         this.pagination.loader = this.httpRequestLoader;
         this.listAnalytics(this.pagination);
         this.landingPageAnalyticsContext = {'analyticsData':this.pagination};
@@ -153,6 +196,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
                 }
                 this.referenceService.loading(pagination.loader, false );
+                this.pageLoader = false;
             },
             ( error: any ) => {this.closeModal();this.logger.errorPage( error ); } );
     

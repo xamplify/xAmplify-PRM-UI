@@ -75,17 +75,22 @@ export class SendCampaignsComponent implements OnInit {
   }
 
   openPopUpForNewlyAddedPartnersOrContacts(partnerOrContactListId:number,users:any,type:string){
-    if(type=="Contact" && this.isLoggedInThroughVanityUrl){
-      this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-      this.pagination.vanityUrlFilter = true;
+    let notPrmCompany = !this.authenticationService.module.isPrm && !this.authenticationService.module.isPrmTeamMember
+                        && !this.authenticationService.module.isPrmAndPartner && !this.authenticationService.module.isPrmAndPartnerTeamMember;
+    if(notPrmCompany){
+      if(type=="Contact" && this.isLoggedInThroughVanityUrl){
+        this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        this.pagination.vanityUrlFilter = true;
+      }
+      $('#sendCampaignsPopup').modal('show');
+        this.pagination.partnerId = 0;
+        this.newlyAddedPartners = users;
+        this.pagination.userListId = partnerOrContactListId;
+        this.type = type;
+        this.newEmailIdsAreAdded = true;
+        this.listCampaigns(this.pagination);
     }
-    $('#sendCampaignsPopup').modal('show');
-      this.pagination.partnerId = 0;
-      this.newlyAddedPartners = users;
-      this.pagination.userListId = partnerOrContactListId;
-      this.type = type;
-      this.newEmailIdsAreAdded = true;
-      this.listCampaigns(this.pagination);
+    
     
   }
 

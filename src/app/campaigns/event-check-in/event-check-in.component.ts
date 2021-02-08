@@ -47,7 +47,11 @@ export class EventCheckInComponent implements OnInit {
                 ( response: any ) => {
                     const data = response.data;
                     this.statusCode = response.statusCode;
-                    this.exportingObject['publicEventAlias'] = data;
+                    if(this.statusCode==200){
+                        this.exportingObject['publicEventAlias'] = data;
+                    }else{
+                        this.referenceService.goToPageNotFound();
+                    }
                     this.referenceService.loading( this.httpRequestLoader, false );
                 },
                 ( error: any ) => { this.referenceService.showSweetAlert( this.properties.serverErrorMessage, "", "error" ); this.referenceService.loading( this.httpRequestLoader, false ); } );

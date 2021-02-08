@@ -78,7 +78,7 @@ export class ModuleAccessComponent implements OnInit {
       this.customResponse = new CustomResponse('Error', "Something went wrong.", true);
     },
     ()=>{
-        if(this.campaignAccess.mdf){
+        if(this.campaignAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible){
           this.addDefaultMdfForm();
         }else{
           this.showSuccessMessage();
@@ -106,6 +106,23 @@ export class ModuleAccessComponent implements OnInit {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('Error', "Something went wrong while adding default mdf form.", true);
     });
+  }
+
+  setModulesByRole(){
+    if(this.roleId==20){
+      this.campaignAccess.emailCampaign = false;
+      this.campaignAccess.videoCampaign = false;
+      this.campaignAccess.videoCampaign = false;
+      this.campaignAccess.socialCampaign = false;
+      this.campaignAccess.eventCampaign = false;
+      this.campaignAccess.formBuilder = false;
+      this.campaignAccess.landingPage = false;
+      this.campaignAccess.landingPageCampaign = false;
+      this.campaignAccess.shareLeads = false;
+      this.campaignAccess.allBoundSource = false;
+      this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
+      this.campaignAccess.salesEnablement = false;
+    }
   }
   
 }

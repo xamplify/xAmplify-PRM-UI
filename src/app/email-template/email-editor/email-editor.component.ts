@@ -13,10 +13,6 @@ export class EmailEditorComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-	  Metronic.init(); 
-      Layout.init();
-      Demo.init();
-      ComponentsEditors.init();  
     }
 
 }

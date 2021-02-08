@@ -85,5 +85,16 @@ export class CampaignReport {
     allPartnersAdditionalCount: number = 0;
 
     activeRecipientsPercentage:any;
+    
+    activeRecipients : string;
+    totalRecipients: string;
+    pagesClicked: string;
+    hardBounce: string;
+    softBounce: string;
+    unsubscribed: string;
+    delivered: string;
+    openRate: string;
+    clickthroughRate: string;
+    socialRedistributed: string;
 
 }

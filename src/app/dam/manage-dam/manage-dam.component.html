@@ -8,9 +8,11 @@
          </li>
          <li><a (click)="goToDam()" translate>DAM</a></li>
       </ul>
-      <div class="edit-mdf-form-margin" id="right">
-         <button *ngIf="!isPartnerView" class="add-button-xamplify" (click)="goToUploadComponent()"  translate>Upload</button>
-         <button *ngIf="authenticationService.module.damAccess && !isPartnerView" class="add-button-xamplify" (click)="addAsset()" translate>Design Template</button>
+      <div  id="right">
+         <button id="uploadDamButton" *ngIf="!isPartnerView" class="btn btn-primary" (click)="goToUploadComponent()"  translate>
+            <span class="hidden-xs" translate>Design / Upload</span>
+            <i class="fa fa-upload" data-toggle="tooltip" aria-hidden="true"></i>
+         </button>
      </div>
    </div>
    <!---Component Comes here-->

@@ -1,10 +1,14 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
+   <ng-container *ngIf="initLoader">
+      <app-modal-popup-loader></app-modal-popup-loader>
+   </ng-container>
+   <ng-container *ngIf="!initLoader">
     <div class="page-bar">
         <ul class="page-breadcrumb">
            <li>
               <i class="fa fa-home" aria-hidden="true"></i> 
-              <a translate>Home</a> 
+              <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
               <i class="fa fa-angle-right" aria-hidden="true"></i>
            </li>
            <li>
@@ -57,7 +61,7 @@
                         </div>
                      </div>
                      <div title="Click to see details" class="{{tileClass}}">
-                        <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
@@ -66,13 +70,13 @@
                               <div class="desc">Total MDF Balance</div>
                            </div>
                            <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
                         <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
                         </span>
                         </a>
                      </div>
                      <div title="Click to see details" class="{{tileClass}}">
-                        <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
@@ -81,13 +85,13 @@
                               <div class="desc">Total Used Balance</div>
                            </div>
                            <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
                         <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
                         </span>
                         </a>
                      </div>
                      <div title="Click to see details" class="{{tileClass}}">
-                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
@@ -96,7 +100,7 @@
                               <div class="desc">Total Available Balance</div>
                            </div>
                            <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
                         <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
                         </span>
                         </a>
@@ -143,4 +147,6 @@
        </div>
     </div>
  </div>
+</ng-container>
+ 
 </div>

@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild,Renderer } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Renderer } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
 import { UserService } from '../../../core/services/user.service';
@@ -35,7 +35,7 @@ import { CategoryPreviewItem } from '../../models/category-preview-item';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from '../../../core/models/sort-option';
 import { PagerService } from '../../../core/services/pager.service';
-import {ModulesDispalyType} from "app/dashboard/models/modules-dispaly-type.enum";
+import { ModulesDispalyType } from "app/dashboard/models/modules-dispaly-type.enum";
 import { TranslateService } from '@ngx-translate/core';
 import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
 
@@ -45,1003 +45,1059 @@ import { PaginationComponent } from '../../../common/pagination/pagination.compo
 import { DragulaService } from 'ng2-dragula';
 import { Pipeline } from '../../models/pipeline';
 import { PipelineStage } from '../../models/pipeline-stage';
-
-import { TagsComponent } from '../../tags/tags.component'
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 declare var swal, $, videojs: any;
 
 @Component({
-    selector: 'app-my-profile',
-    templateUrl: './my-profile.component.html',
-    styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
-        '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
-        '../../../../assets/css/phone-number-plugin.css'],
-    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent, TagsComponent],
+	selector: 'app-my-profile',
+	templateUrl: './my-profile.component.html',
+	styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+		'../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
+		'../../../../assets/css/phone-number-plugin.css'],
+	providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
-    defaultVideoPlayer: DefaultVideoPlayer;
-    tempDefaultVideoPlayerSettings: any;
-    videoJSplayer: any;
-    videoUrl: string;
-    updatePasswordForm: FormGroup;
-    defaultPlayerForm: FormGroup;
-    status = true;
-    updatePasswordSuccess = false;
-    profileUploadSuccess = false;
-    userProfileImage = "assets/images/icon-user-default.png";
-    userData: User;
-    parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
-    className = "form-control ng-touched ng-dirty ng-valid";
-    compPlayerColor: string;
-    compControllerColor: string;
-    valueRange: number;
-    profilePictueError = false;
-    profilePictureErrorMessage = "";
-    active = false;
-    isPlayed = false;
-    hasVideoRole = false;
-    loggedInUserId = 0;
-    tempPlayerColor: string;
-    tempControllerColor: string;
-    isPlayerSettingUpdated = false;
-    hasAllAccess = false;
-    hasCompany: boolean;
-    orgAdminCount = 0;
-    infoMessage = "";
-    currentUser: any;
-    roles: string[] = [];
-    isOnlyPartnerRole = false;
-    logoImageUrlPath: string;
-    fullScreenMode = false;
-    logoLink = '';
-    ngxloading: boolean;
-    roleNames = "";
-    customResponse: CustomResponse = new CustomResponse();
-    hasClientErrors = false;
+	defaultVideoPlayer: DefaultVideoPlayer;
+	tempDefaultVideoPlayerSettings: any;
+	videoJSplayer: any;
+	videoUrl: string;
+	updatePasswordForm: FormGroup;
+	defaultPlayerForm: FormGroup;
+	status = true;
+	updatePasswordSuccess = false;
+	profileUploadSuccess = false;
+	userProfileImage = "assets/images/icon-user-default.png";
+	userData: User;
+	parentModel = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
+	className = "form-control ng-touched ng-dirty ng-valid";
+	compPlayerColor: string;
+	compControllerColor: string;
+	valueRange: number;
+	profilePictueError = false;
+	profilePictureErrorMessage = "";
+	active = false;
+	isPlayed = false;
+	hasVideoRole = false;
+	loggedInUserId = 0;
+	tempPlayerColor: string;
+	tempControllerColor: string;
+	isPlayerSettingUpdated = false;
+	hasAllAccess = false;
+	hasCompany: boolean;
+	orgAdminCount = 0;
+	infoMessage = "";
+	currentUser: any;
+	roles: string[] = [];
+	isOnlyPartnerRole = false;
+	logoImageUrlPath: string;
+	fullScreenMode = false;
+	logoLink = '';
+	ngxloading: boolean;
+	roleNames = "";
+	customResponse: CustomResponse = new CustomResponse();
+	hasClientErrors = false;
 
-    dealForms: DealForms[] = [];
-    form = new DealForms();
-    questions: DealQuestions[] = [];
-    question: DealQuestions;
-    dealtype: DealType;
-    dealtypes: DealType[] = [];
-    formSubmiteState = true;
-    dealSubmiteState = true;
-    submitButtonText = "Save Form";
-    dealButtonText = "Save Deals";
-    validateForm: boolean;
-    selectedForm: DealForms;
-    defaultQuestions: string[] = ["Campaign Name", "Company", "First Name", "Last Name", "Title ", "Email ", "Phone Number", "Deal Type", "Website", "Lead Address",
-        "Lead City", "Lead State/Province", "Lead Postal Code", "Lead Country", "Opportunity Amount", "Estimated Close date"];
-    isListFormSection: boolean;
-    customResponseForm: CustomResponse = new CustomResponse();
+	dealForms: DealForms[] = [];
+	form = new DealForms();
+	questions: DealQuestions[] = [];
+	question: DealQuestions;
+	dealtype: DealType;
+	dealtypes: DealType[] = [];
+	formSubmiteState = true;
+	dealSubmiteState = true;
+	submitButtonText = "Save Form";
+	dealButtonText = "Save Deals";
+	validateForm: boolean;
+	selectedForm: DealForms;
+	defaultQuestions: string[] = ["Campaign Name", "Company", "First Name", "Last Name", "Title ", "Email ", "Phone Number", "Deal Type", "Website", "Lead Address",
+		"Lead City", "Lead State/Province", "Lead Postal Code", "Lead Country", "Opportunity Amount", "Estimated Close date"];
+	isListFormSection: boolean;
+	customResponseForm: CustomResponse = new CustomResponse();
 
 
-    circleCropperSettings: CropperSettings;
-    circleData: any;
-    cropRounded = false;
-    loadingcrop = false;
-    errorUploadCropper = false;
-    integrationTabIndex = 0;
-    @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
-    integrateRibbonText: string;
+	circleCropperSettings: CropperSettings;
+	circleData: any;
+	cropRounded = false;
+	loadingcrop = false;
+	errorUploadCropper = false;
+	integrationTabIndex = 0;
+	@ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
+	integrateRibbonText: string;
 
-    hubSpotRibbonText: string;
-    hubSpotRedirectURL: string;
-    activeTabName: string = "";
-    activeTabHeader:string = "";
-    sfRibbonText: string;
-    sfRedirectURL: string;
-    /*****************GDPR************************** */
-    gdprSetting: GdprSetting = new GdprSetting();
-    gdprSettingLoaded = false;
-    category: Category = new Category();
-    categoryPagination: Pagination = new Pagination();
-    categorySortOption: SortOption = new SortOption();
-    isAddCategory = false;
-    categoryModalTitle = "Enter Folder Details";
-    formErrorClass = "form-group form-error";
-    defaultFormClass = "form-group";
-    categoryNameErrorMessage = "";
-    requiredMessage = "Required";
-    duplicateLabelMessage = "Already exists";
-    addCategoryLoader: HttpRequestLoader = new HttpRequestLoader();
-    categoryResponse: CustomResponse = new CustomResponse();
-    existingCategoryNames: string[] = [];
-    existingCategoryName: any;
-    categoyButtonSubmitText = "Save";
-    categoryNames:string[] = [];
-    isDeleteCategory: any;
-    selectedCategoryIdForTransferItems = 0;
-    exisitingCategories = new Array<Category>();
-    isOnlyPartner = false;
-    isPartnerTeamMember = false;
-    isFolderPreview = false;
-    folderPreviewLoader: HttpRequestLoader = new HttpRequestLoader();
-    hasItems = false;
-    categoryPreviewItem  = new CategoryPreviewItem();
+	hubSpotRibbonText: string;
+	hubSpotRedirectURL: string;
+	activeTabName: string = "";
+	activeTabHeader: string = "";
+	sfRibbonText: string;
+	sfRedirectURL: string;
+	/*****************GDPR************************** */
+	gdprSetting: GdprSetting = new GdprSetting();
+	gdprCustomResponse : CustomResponse = new CustomResponse();
+	gdprSettingLoaded = false;
+	category: Category = new Category();
+	categoryPagination: Pagination = new Pagination();
+	categorySortOption: SortOption = new SortOption();
+	isAddCategory = false;
+	categoryModalTitle = "Enter Folder Details";
+	formErrorClass = "form-group form-error";
+	defaultFormClass = "form-group";
+	categoryNameErrorMessage = "";
+	requiredMessage = "Required";
+	duplicateLabelMessage = "Already exists";
+	addCategoryLoader: HttpRequestLoader = new HttpRequestLoader();
+	categoryResponse: CustomResponse = new CustomResponse();
+	existingCategoryNames: string[] = [];
+	existingCategoryName: any;
+	categoyButtonSubmitText = "Save";
+	categoryNames: string[] = [];
+	isDeleteCategory: any;
+	selectedCategoryIdForTransferItems = 0;
+	exisitingCategories = new Array<Category>();
+	isOnlyPartner = false;
+	isPartnerTeamMember = false;
+	isFolderPreview = false;
+	folderPreviewLoader: HttpRequestLoader = new HttpRequestLoader();
+	hasItems = false;
+	categoryPreviewItem = new CategoryPreviewItem();
 	ModuleDisplayTypeEnum = ModulesDispalyType;
-    modulesDisplayTypeString = ModulesDispalyType[ModulesDispalyType.LIST];
-    modulesDisplayTypeError = false;
-    modulesDisplayTypeList = [];
-    modulesDisplayViewcustomResponse: CustomResponse = new CustomResponse();
-    updateDisplayViewError = false;
+	modulesDisplayTypeString = ModulesDispalyType[ModulesDispalyType.LIST];
+	modulesDisplayTypeError = false;
+	modulesDisplayTypeList = [];
+	modulesDisplayViewcustomResponse: CustomResponse = new CustomResponse();
+	updateDisplayViewError = false;
 
-    isUser = false;
+	isUser = false;
 
-    preferredLangFilePath: string;
-    languagesList: any = [];    
-    preferredLanguage:string;    
-    editXamplifyDefaultTemplate = false;
-    xamplifyDefaultTemplate:VanityEmailTempalte;
-    subjectLineTooltipText:string;
-    isMarketoProcess: boolean;
-    
-    sfCustomFieldsResponse: any;
-    selectedCustomFieldIds = [];
-    customFieldsResponse: CustomResponse = new CustomResponse();
-    sfcfPager: any = {};
-    sfcfPagedItems: any[];
-    pageSize: number = 12;
-    pageNumber: any;
-    sfcfMasterCBClicked = false;
-    selectedCfIds = [];
-    paginatedSelectedIds = [];
-    isHeaderCheckBoxChecked: boolean = false;
-    requiredCfIds = [];
+	preferredLangFilePath: string;
+	languagesList: any = [];
+	preferredLanguage: string;
+	editXamplifyDefaultTemplate = false;
+	xamplifyDefaultTemplate: VanityEmailTempalte;
+	subjectLineTooltipText: string;
+	isMarketoProcess: boolean;
 
-    pipelineModalTitle = "Add a Pipeline";
-    pipelineResponse: CustomResponse = new CustomResponse();
-    pipelineModalResponse: CustomResponse = new CustomResponse();
-    addPipelineLoader: HttpRequestLoader = new HttpRequestLoader();
-    pipeline: Pipeline = new Pipeline();
-    defaultStageIndex: number = 0;  
-    pipelineType: string = 'LEAD';  
-    //pipelines = [];
-    pipelinePagination: Pagination = new Pagination();
-    pipelineSortOption: SortOption = new SortOption();
-    pipelineNameErrorMessage = "";
-    pipelineStageErrorMessage = "";
-    requiredStageMessage = "Required atleast one valid stage.";
-    pipelinePreview = false;
-    tagPagination: Pagination = new Pagination();
-    
-    constructor(public videoFileService: VideoFileService,  public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
-        public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
-        public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
-        private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-            PagerService,private renderer:Renderer, private translateService: TranslateService, public tagsComponent: TagsComponent) {
-                this.referenceService.renderer = this.renderer;
-                this.isUser = this.authenticationService.isOnlyUser();     
-                this.pageNumber = this.paginationComponent.numberPerPage[0];  
-                dragulaService.setOptions('pipelineStagesDragula', {})
-                dragulaService.dropModel.subscribe((value) => {
-                    this.onDropModel(value);
-                }); 
-    }
+	sfCustomFieldsResponse: any;
+	selectedCustomFieldIds = [];
+	customFieldsResponse: CustomResponse = new CustomResponse();
+	sfcfPager: any = {};
+	sfcfPagedItems: any[];
+	pageSize: number = 12;
+	pageNumber: any;
+	sfcfMasterCBClicked = false;
+	selectedCfIds = [];
+	paginatedSelectedIds = [];
+	isHeaderCheckBoxChecked: boolean = false;
+	requiredCfIds = [];
 
-    private onDropModel(args) {
-    }
+	pipelineModalTitle = "Add a Pipeline";
+	pipelineResponse: CustomResponse = new CustomResponse();
+	pipelineModalResponse: CustomResponse = new CustomResponse();
+	addPipelineLoader: HttpRequestLoader = new HttpRequestLoader();
+	pipeline: Pipeline = new Pipeline();
+	defaultStageIndex: number = 0;
+	pipelineType: string = 'LEAD';
+	//pipelines = [];
+	pipelinePagination: Pagination = new Pagination();
+	pipelineSortOption: SortOption = new SortOption();
+	pipelineNameErrorMessage = "";
+	pipelineStageErrorMessage = "";
+	requiredStageMessage = "Required atleast one valid stage.";
+	pipelinePreview = false;
 
-    cropperSettings() {
-        this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
-        this.circleCropperSettings.noFileInput = true;
-        this.circleData = {};
-    }
-    isEmpty(obj) {
-        return Object.keys(obj).length === 0;
-    }
-    closeModal() {
-        this.cropRounded = !this.cropRounded;
-        this.circleData = {};
-    }
-    fileChangeEvent() { this.cropRounded = false; $('#cropProfileImage').modal('show'); }
-    uploadProfileImage() {
-        this.loadingcrop = true;
-        let fileObj: any;
-        fileObj = this.utilService.convertBase64ToFileObject(this.circleData.image);
-        fileObj = this.utilService.blobToFile(fileObj);
-        console.log(fileObj);
-        this.fileUploadCode(fileObj);
-    }
-    fileUploadCode(fileObj: File) {
-        this.userService.saveUserProfileLogo(fileObj).subscribe(
-            (response: any) => {
-                const imageFilePath = response;
-                this.userProfileImage = this.parentModel.profilePicutrePath = imageFilePath['message'];
-                this.profileUploadSuccess = true;
-                this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
-                this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
-                this.loadingcrop = false;
-                this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED, true);
-                $('#cropProfileImage').modal('hide');
-                this.closeModal();
-            },
-            (error) => { console.log(error); $('#cropProfileImage').modal('hide'); this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true); },
-            () => { this.loadingcrop = false; $('#cropProfileImage').modal('hide'); });
-    }
-    fileChangeListener($event, cropperComp: ImageCropperComponent) {
-        this.cropper = cropperComp;
-        const image: any = new Image();
-        const file: File = $event.target.files[0];
-        const isSupportfile: any = file.type;
-        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
-            this.errorUploadCropper = false;
-            const myReader: FileReader = new FileReader();
-            const that = this;
-            myReader.onloadend = function (loadEvent: any) {
-                image.src = loadEvent.target.result;
-                that.cropper.setImage(image);
-            };
-            myReader.readAsDataURL(file);
-        } else { this.errorUploadCropper = true; }
-    }
-    videojsCall() {
-        this.customResponse = new CustomResponse();
-        if (!this.videoJSplayer && !this.isOnlyPartnerRole) {
-            const self = this;
-            const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
-            this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
-                {
-                    html5: {
-                        hls: {
-                            overrideNative: overrideNativeValue
-                        },
-                        nativeVideoTracks: !overrideNativeValue,
-                        nativeAudioTracks: !overrideNativeValue,
-                        nativeTextTracks: !overrideNativeValue
-                    }
-                },
-                { "controls": true, "autoplay": false, "preload": "auto" },
-                function () {
-                    const document: any = window.document;
-                    this.ready(function () {
-                        $('.vjs-big-play-button').css('display', 'block');
-                        self.isPlayed = false;
-                    });
-                    this.on('play', function () {
-                        self.isPlayed = true;
-                        $('.vjs-big-play-button').css('display', 'none');
-                    });
-                    this.on('pause', function () {
-                        self.isPlayed = true;
-                        $('.vjs-big-play-button').css('display', 'none');
-                    });
-                    this.on('fullscreenchange', function () {
-                        const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                        const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                        if (event === 'FullscreenOn') {
-                            self.fullScreenMode = true;
-                            $('#profile_video_player').append($('#overlay-logo').show());
-                        } else if (event === 'FullscreenOff') {
-                            self.fullScreenMode = false;
-                        }
-                    });
-                });
-            this.defaultVideoSettings();
-            this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
-            if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
-            setTimeout(() => { this.videoJSplayer.play(); this.videoJSplayer.pause(); }, 1);
-        } else {
-            this.logger.log('you already initialized the videojs');
-        }
-    }
-    imageUpload(event) { $('#' + event).click(); }
-    clearCustomResponse() { this.customResponse = new CustomResponse(); }
-    errorHandler(event: any) { event.target.src = 'assets/images/icon-user-default.png'; }
-    customConstructorCall() {
-        if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) { this.router.navigateByUrl(this.referenceService.homeRouter); }
-        try {
-            if (this.authenticationService.isSuperAdmin()) {
-                this.userData = this.authenticationService.venorMyProfileReport;
-            } else {
-                this.userData = this.authenticationService.userProfile;
-            }
-            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            this.getUserByUserName(this.currentUser.userName);
-            this.cropperSettings();
-            this.roleNames = this.authenticationService.loggedInUserRole;
-            if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member"){                
-                if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0){
-                    this.roleNames = "Vendor";
-                }else if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0){
-                    this.roleNames ="OrgAdmin";
-                }else if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0){
-                    this.roleNames ="Marketing";
-                }else if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !==0){
-                    this.roleNames = "Partner";
-                }
-            }
-            // this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	/*******************VANITY******************* */
+	loggedInThroughVanityUrl = false;
+	public hubSpotCurrentUser: any;
 
-            this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
-            console.log(this.videoUtilService.videoTempDefaultSettings);
-            this.loggedInUserId = this.authenticationService.getUserId();
-            this.hasAllAccess = this.referenceService.hasAllAccess();
-            this.hasVideoRole = this.authenticationService.hasVideoRole();
-            if (this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) {
-                this.hasVideoRole = false;
-            }
-            this.hasCompany = this.authenticationService.user.hasCompany;
-            this.callActionSwitch.size = 'normal';
-            this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
-            if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
-                this.router.navigateByUrl(this.referenceService.homeRouter);
-            } else {
-                console.log(this.userData);
-                this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
-                if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
-                    this.userProfileImage = this.userData.profileImagePath;
-                    this.parentModel.profilePicutrePath = this.userData.profileImagePath;
-                }
-            }
-            this.initializeForm();
-            this.checkIntegrations();
-        } catch (error) {
-            this.hasClientErrors = true;
-            this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
-        }
-    }
+	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
+		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
+		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
+		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
+		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
+			PagerService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService) {
+		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.referenceService.renderer = this.renderer;
+		this.isUser = this.authenticationService.isOnlyUser();
+		this.pageNumber = this.paginationComponent.numberPerPage[0];
+		dragulaService.setOptions('pipelineStagesDragula', {})
+		dragulaService.dropModel.subscribe((value) => {
+			this.onDropModel(value);
+		});
+	}
 
-    ngOnInit() {
-        try {
-            if (this.referenceService.integrationCallBackStatus) {
-                this.activeTabName = 'integrations';
-                this.activeTabHeader = this.properties.integrations;
-            } else {
-                this.activeTabName = 'personalInfo';
-                this.activeTabHeader = this.properties.personalInfo;
-            }
-            this.customConstructorCall();
-            console.log(this.authenticationService.user);
-            this.geoLocation();
-            this.videoUtilService.normalVideoJsFiles();
-            // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            // this.getUserByUserName(currentUser.userName);
-            if (!this.referenceService.isMobileScreenSize()) {
-                this.isGridView(this.authenticationService.getUserId());
-            }
-            else { this.referenceService.isGridView = true; }
+	private onDropModel(args) {
+	}
+
+	cropperSettings() {
+		this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
+		this.circleCropperSettings.noFileInput = true;
+		this.circleData = {};
+	}
+	isEmpty(obj) {
+		return Object.keys(obj).length === 0;
+	}
+	closeModal() {
+		this.cropRounded = !this.cropRounded;
+		this.circleData = {};
+	}
+	fileChangeEvent() { this.cropRounded = false; $('#cropProfileImage').modal('show'); }
+	uploadProfileImage() {
+		this.loadingcrop = true;
+		let fileObj: any;
+		fileObj = this.utilService.convertBase64ToFileObject(this.circleData.image);
+		fileObj = this.utilService.blobToFile(fileObj);
+		console.log(fileObj);
+		this.fileUploadCode(fileObj);
+	}
+	fileUploadCode(fileObj: File) {
+		this.userService.saveUserProfileLogo(fileObj).subscribe(
+			(response: any) => {
+				const imageFilePath = response;
+				this.userProfileImage = this.parentModel.profilePicutrePath = imageFilePath['message'];
+				this.profileUploadSuccess = true;
+				this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
+				this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
+				this.loadingcrop = false;
+				this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED, true);
+				$('#cropProfileImage').modal('hide');
+				this.closeModal();
+			},
+			(error) => { console.log(error); $('#cropProfileImage').modal('hide'); this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true); },
+			() => { this.loadingcrop = false; $('#cropProfileImage').modal('hide'); });
+	}
+	fileChangeListener($event, cropperComp: ImageCropperComponent) {
+		this.cropper = cropperComp;
+		const image: any = new Image();
+		const file: File = $event.target.files[0];
+		const isSupportfile: any = file.type;
+		if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+			this.errorUploadCropper = false;
+			const myReader: FileReader = new FileReader();
+			const that = this;
+			myReader.onloadend = function(loadEvent: any) {
+				image.src = loadEvent.target.result;
+				that.cropper.setImage(image);
+			};
+			myReader.readAsDataURL(file);
+		} else { this.errorUploadCropper = true; }
+	}
+	videojsCall() {
+		this.customResponse = new CustomResponse();
+		if (!this.videoJSplayer && !this.isOnlyPartnerRole) {
+			const self = this;
+			const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
+			this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
+				{
+					html5: {
+						hls: {
+							overrideNative: overrideNativeValue
+						},
+						nativeVideoTracks: !overrideNativeValue,
+						nativeAudioTracks: !overrideNativeValue,
+						nativeTextTracks: !overrideNativeValue
+					}
+				},
+				{ "controls": true, "autoplay": false, "preload": "auto" },
+				function() {
+					const document: any = window.document;
+					this.ready(function() {
+						$('.vjs-big-play-button').css('display', 'block');
+						self.isPlayed = false;
+					});
+					this.on('play', function() {
+						self.isPlayed = true;
+						$('.vjs-big-play-button').css('display', 'none');
+					});
+					this.on('pause', function() {
+						self.isPlayed = true;
+						$('.vjs-big-play-button').css('display', 'none');
+					});
+					this.on('fullscreenchange', function() {
+						const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+						const event = state ? 'FullscreenOn' : 'FullscreenOff';
+						if (event === 'FullscreenOn') {
+							self.fullScreenMode = true;
+							$('#profile_video_player').append($('#overlay-logo').show());
+						} else if (event === 'FullscreenOff') {
+							self.fullScreenMode = false;
+						}
+					});
+				});
+			this.defaultVideoSettings();
+			this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
+			if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
+			setTimeout(() => { this.videoJSplayer.play(); this.videoJSplayer.pause(); }, 1);
+		} else {
+			this.logger.log('you already initialized the videojs');
+		}
+	}
+	imageUpload(event) { $('#' + event).click(); }
+	clearCustomResponse() { this.customResponse = new CustomResponse(); }
+	errorHandler(event: any) { event.target.src = 'assets/images/icon-user-default.png'; }
+	customConstructorCall() {
+		if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) { this.router.navigateByUrl(this.referenceService.homeRouter); }
+		try {
+			if (this.authenticationService.isSuperAdmin()) {
+				this.userData = this.authenticationService.venorMyProfileReport;
+			} else {
+				this.userData = this.authenticationService.userProfile;
+			}
+			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+			this.getUserByUserName(this.currentUser.userName);
+			this.cropperSettings();
+			
+			// this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+			this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
+			console.log(this.videoUtilService.videoTempDefaultSettings);
+			this.loggedInUserId = this.authenticationService.getUserId();
+			this.hasAllAccess = this.referenceService.hasAllAccess();
+			this.hasVideoRole = this.authenticationService.hasVideoRole();
+			if (this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) {
+				this.hasVideoRole = false;
+			}
+			this.hasCompany = this.authenticationService.user.hasCompany;
+			this.callActionSwitch.size = 'normal';
+			this.videoUrl = this.authenticationService.MEDIA_URL + "profile-video/Birds0211512666857407_mobinar.m3u8";
+			if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
+				this.router.navigateByUrl(this.referenceService.homeRouter);
+			} else {
+				console.log(this.userData);
+				this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
+				if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
+					this.userProfileImage = this.userData.profileImagePath;
+					this.parentModel.profilePicutrePath = this.userData.profileImagePath;
+				}
+			}
+			this.initializeForm();
+			this.checkIntegrations();
+		} catch (error) {
+			this.hasClientErrors = true;
+			this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
+		}
+	}
+
+	ngOnInit() {
+		try {
+			if (this.referenceService.integrationCallBackStatus) {
+				this.activeTabName = 'integrations';
+				this.activeTabHeader = this.properties.integrations;
+			} else {
+				this.activeTabName = 'personalInfo';
+				this.activeTabHeader = this.properties.personalInfo;
+			}
+			this.customConstructorCall();
+			this.geoLocation();
+			this.videoUtilService.normalVideoJsFiles();
+			// const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+			// this.getUserByUserName(currentUser.userName);
+			if (!this.referenceService.isMobileScreenSize()) {
+				this.isGridView(this.authenticationService.getUserId());
+			}
+			else { this.referenceService.isGridView = true; }
 			this.getModulesDisplayDefaultView();
-            this.validateUpdatePasswordForm();
-            this.validateUpdateUserProfileForm();
-            this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
-            this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-            this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
-            if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
-                if (!this.authenticationService.isOnlyPartner()) {
-                    this.getOrgAdminsCount(this.loggedInUserId);
-                    this.getVideoDefaultSettings();
-                    this.defaultVideoSettings();
-                }
-                this.referenceService.isDisabling = false;
-                this.status = true;
-            } else {
-                this.referenceService.isDisabling = true;
-                if (this.authenticationService.isCompanyAdded) {
-                    this.status = true;
-                } else {
-                    this.status = false;
-                }
-            }
-            if(this.authenticationService.vanityURLEnabled){
-                this.setSubjectLineTooltipText();
-            }
-            this.addDefaultPipelineStages();            
-        } catch (error) {
-            this.hasClientErrors = true;
-            this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
-            this.authenticationService.logout();
-        }
-    }
+			this.validateUpdatePasswordForm();
+			this.validateUpdateUserProfileForm();
+			this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
+			this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+			this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
+			if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
+				if (!this.authenticationService.isOnlyPartner()) {
+					this.getOrgAdminsCount(this.loggedInUserId);
+					this.getVideoDefaultSettings();
+					this.defaultVideoSettings();
+				}
+				this.referenceService.isDisabling = false;
+				this.status = true;
+			} else {
+				this.referenceService.isDisabling = true;
+				if (this.authenticationService.isCompanyAdded) {
+					this.status = true;
+				} else {
+					this.status = false;
+				}
+			}
+			if (this.authenticationService.vanityURLEnabled) {
+				this.setSubjectLineTooltipText();
+			}
+			this.getRoles();
+			this.addDefaultPipelineStages();
+			window.addEventListener('message', function(e) {
+				if (e.data == 'isHubSpotAuth') {
+					localStorage.setItem('isHubSpotAuth', 'yes');
+				}
+				else if (e.data == 'isSalesForceAuth') {
+					localStorage.setItem('isSalesForceAuth', 'yes');
+				}
+			}, false);
 
-    ngAfterViewInit() {
-        try {
-            if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany() && !this.authenticationService.isOnlyPartner()) {
-                this.defaultVideoSettings();
-                if (this.referenceService.defaultPlayerSettings !== undefined) {
-                    if (this.referenceService.defaultPlayerSettings.transparency === null) {
-                        this.referenceService.defaultPlayerSettings.transparency = 100;
-                        this.referenceService.defaultPlayerSettings.controllerColor = '#456';
-                        this.referenceService.defaultPlayerSettings.playerColor = '#879';
-                    }
-                    this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
-                    if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
-                }
-            }
-        } catch (error) {
-            this.hasClientErrors = true;
-            this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
-        }
-    }
-    getUserByUserName(userName: string) {
-        try {
-            this.authenticationService.getUserByUserName(userName)
-                .subscribe(
-                    data => {
-                        this.userData = data;
-                        this.authenticationService.userProfile = data;                        
-                    },
-                    error => { console.log(error); this.router.navigate(['/su']) },
-                    () => { }
-                );
-        } catch (error) { console.log('error' + error); }
-    }
-    updatePassword() {
-        this.ngxloading = true;
-        console.log(this.updatePasswordForm.value);
-        var userPassword = {
-            'oldPassword': this.updatePasswordForm.value.oldPassword,
-            'newPassword': this.updatePasswordForm.value.newPassword,
-            'userId': this.loggedInUserId
-        }
-        if (this.updatePasswordForm.value.oldPassword === this.updatePasswordForm.value.newPassword) {
-            this.customResponse = new CustomResponse('ERROR', 'Your new password cannot be the same as your current password', true);
-            this.ngxloading = false;
-        } else {
-            this.userService.updatePassword(userPassword)
-                .subscribe(
-                    data => {
-                        const body = data;
-                        if (body !== "") {
-                            this.ngxloading = false;
-                            var response = body;
-                            var message = response.message;
-                            if (message == "Wrong Password") {
-                                this.formErrors['oldPassword'] = message;
-                                if (this.className == "form-control ng-touched ng-dirty ng-invalid") {
-                                    this.className = "form-control ng-dirty ng-invalid ng-touched";
-                                } else if (this.className = "form-control ng-dirty ng-invalid ng-touched") {
-                                    this.className = "form-control ng-touched ng-dirty ng-invalid";
-                                } else {
-                                    this.className = "form-control ng-touched ng-dirty ng-valid";
-                                }
-                            } else if (response.message == "Password Updated Successfully") {
-                                this.ngxloading = false;
-                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PASSWORD_UPDATED, true);
-                                this.userData.hasPassword = true;
-                                this.updatePasswordForm.reset();
-                            } else {
-                                this.ngxloading = false;
-                                this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + data);
-                            }
+		} catch (error) {
+			this.hasClientErrors = true;
+			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
+			this.authenticationService.logout();
+		}
+	}
 
-                        } else {
-                            this.ngxloading = false;
-                            this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + data);
-                        }
-                    },
-                    error => {
-                        this.ngxloading = false;
-                        this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + error);
-                    },
-                    () => console.log("Done")
-                );
-        }
-        return false;
-    }
+	getRoles(){
+		this.ngxloading = true;
+		this.userService.getRoles(this.authenticationService.getUserId())
+      .subscribe(
+      response => {
+           if(response.statusCode==200){
+              this.authenticationService.loggedInUserRole = response.data.role;
+              this.roleNames = this.authenticationService.loggedInUserRole;
+			if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member") {
+				if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0) {
+					this.roleNames = "Vendor";
+				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0) {
+					this.roleNames = "OrgAdmin";
+				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0) {
+					this.roleNames = "Marketing";
+				}else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 20).length !== 0) {
+					this.roleNames = "PRM";
+				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
+					this.roleNames = "Partner";
+				}
+			}
+           }else{
+               this.authenticationService.loggedInUserRole = 'User';
+		   }
+		   this.ngxloading = false;
+      },
+      error => {this.logger.errorPage(error)},
+      () => this.logger.log('Finished')
+      );
+		
+	}
 
-    checkPassword(event: any) {
-        var password = event.target.value;
-        if (password != "") {
-            var user = { 'oldPassword': password, 'userId': this.loggedInUserId };
-            this.userService.comparePassword(user)
-                .subscribe(
-                    data => {
-                        if (data != "") {
-                            const response = data;
-                            const message = response.message;
-                            this.formErrors['oldPassword'] = message;
-                        } else {
-                            this.logger.error(this.referenceService.errorPrepender + " checkPassword():" + data);
-                        }
-                    },
-                    error => {
-                        this.logger.error(this.referenceService.errorPrepender + " checkPassword():" + error);
-                    },
-                    () => console.log("Done")
-                );
-        }
-        return false;
-    }
+	ngAfterViewInit() {
+		try {
+			if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany() && !this.authenticationService.isOnlyPartner()) {
+				this.defaultVideoSettings();
+				if (this.referenceService.defaultPlayerSettings !== undefined) {
+					if (this.referenceService.defaultPlayerSettings.transparency === null) {
+						this.referenceService.defaultPlayerSettings.transparency = 100;
+						this.referenceService.defaultPlayerSettings.controllerColor = '#456';
+						this.referenceService.defaultPlayerSettings.playerColor = '#879';
+					}
+					this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
+					if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
+				}
+			}
+		} catch (error) {
+			this.hasClientErrors = true;
+			this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
+		}
+	}
 
-    validateUpdatePasswordForm() {
-        var passwordRegex = this.regularExpressions.PASSWORD_PATTERN;
-        this.updatePasswordForm = this.fb.group({
-            'oldPassword': [null],
-            'newPassword': [null, [Validators.required, Validators.minLength(6), Validators.pattern(passwordRegex)]],
-            'confirmNewPassword': [null, [Validators.required]],
-        }, {
-            validator: matchingPasswords('newPassword', 'confirmNewPassword')
-        }
+	ngAfterViewChecked() {
+		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
+		localStorage.removeItem('isHubSpotAuth');
+		localStorage.removeItem('isSalesForceAuth');
 
-        );
+		if (tempCheckHubSpotAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
+		else if (tempCheckSalesForceAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
 
-        this.updatePasswordForm.valueChanges
-            .subscribe(data => this.onUpdatePasswordFormValueChanged(data));
+	}
+	getUserByUserName(userName: string) {
+		try {
+			this.authenticationService.getUserByUserName(userName)
+				.subscribe(
+					data => {
+						this.userData = data;
+						this.authenticationService.userProfile = data;
+					},
+					error => { console.log(error); this.router.navigate(['/su']) },
+					() => { }
+				);
+		} catch (error) { console.log('error' + error); }
+	}
+	updatePassword() {
+		this.ngxloading = true;
+		console.log(this.updatePasswordForm.value);
+		var userPassword = {
+			'oldPassword': this.updatePasswordForm.value.oldPassword,
+			'newPassword': this.updatePasswordForm.value.newPassword,
+			'userId': this.loggedInUserId
+		}
+		if (this.updatePasswordForm.value.oldPassword === this.updatePasswordForm.value.newPassword) {
+			this.customResponse = new CustomResponse('ERROR', 'Your new password cannot be the same as your current password', true);
+			this.ngxloading = false;
+		} else {
+			this.userService.updatePassword(userPassword)
+				.subscribe(
+					data => {
+						const body = data;
+						if (body !== "") {
+							this.ngxloading = false;
+							var response = body;
+							var message = response.message;
+							if (message == "Wrong Password") {
+								this.formErrors['oldPassword'] = message;
+								if (this.className == "form-control ng-touched ng-dirty ng-invalid") {
+									this.className = "form-control ng-dirty ng-invalid ng-touched";
+								} else if (this.className = "form-control ng-dirty ng-invalid ng-touched") {
+									this.className = "form-control ng-touched ng-dirty ng-invalid";
+								} else {
+									this.className = "form-control ng-touched ng-dirty ng-valid";
+								}
+							} else if (response.message == "Password Updated Successfully") {
+								this.ngxloading = false;
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.PASSWORD_UPDATED, true);
+								this.userData.hasPassword = true;
+								this.updatePasswordForm.reset();
+							} else {
+								this.ngxloading = false;
+								this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + data);
+							}
 
-        this.onUpdatePasswordFormValueChanged(); // (re)set validation messages now
-    }
+						} else {
+							this.ngxloading = false;
+							this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + data);
+						}
+					},
+					error => {
+						this.ngxloading = false;
+						this.logger.error(this.referenceService.errorPrepender + " updatePassword():" + error);
+					},
+					() => console.log("Done")
+				);
+		}
+		return false;
+	}
+
+	checkPassword(event: any) {
+		var password = event.target.value;
+		if (password != "") {
+			var user = { 'oldPassword': password, 'userId': this.loggedInUserId };
+			this.userService.comparePassword(user)
+				.subscribe(
+					data => {
+						if (data != "") {
+							const response = data;
+							const message = response.message;
+							this.formErrors['oldPassword'] = message;
+						} else {
+							this.logger.error(this.referenceService.errorPrepender + " checkPassword():" + data);
+						}
+					},
+					error => {
+						this.logger.error(this.referenceService.errorPrepender + " checkPassword():" + error);
+					},
+					() => console.log("Done")
+				);
+		}
+		return false;
+	}
+
+	validateUpdatePasswordForm() {
+		var passwordRegex = this.regularExpressions.PASSWORD_PATTERN;
+		this.updatePasswordForm = this.fb.group({
+			'oldPassword': [null],
+			'newPassword': [null, [Validators.required, Validators.minLength(6), Validators.pattern(passwordRegex)]],
+			'confirmNewPassword': [null, [Validators.required]],
+		}, {
+			validator: matchingPasswords('newPassword', 'confirmNewPassword')
+		}
+
+		);
+
+		this.updatePasswordForm.valueChanges
+			.subscribe(data => this.onUpdatePasswordFormValueChanged(data));
+
+		this.onUpdatePasswordFormValueChanged(); // (re)set validation messages now
+	}
 
 
-    onUpdatePasswordFormValueChanged(data?: any) {
-        if (!this.updatePasswordForm) { return; }
-        const form = this.updatePasswordForm;
+	onUpdatePasswordFormValueChanged(data?: any) {
+		if (!this.updatePasswordForm) { return; }
+		const form = this.updatePasswordForm;
 
-        for (const field in this.formErrors) {
-            // clear previous error message (if any)
-            this.formErrors[field] = '';
-            const control = form.get(field);
+		for (const field in this.formErrors) {
+			// clear previous error message (if any)
+			this.formErrors[field] = '';
+			const control = form.get(field);
 
-            if (control && control.dirty && !control.valid) {
-                const messages = this.validationMessages[field];
-                for (const key in control.errors) {
-                    this.formErrors[field] += messages[key] + ' ';
-                }
-            }
-        }
-    }
+			if (control && control.dirty && !control.valid) {
+				const messages = this.validationMessages[field];
+				for (const key in control.errors) {
+					this.formErrors[field] += messages[key] + ' ';
+				}
+			}
+		}
+	}
 
 
-    formErrors = {
-        'oldPassword': '',
-        'newPassword': '',
-        'confirmNewPassword': '',
-        'firstName': '',
-        'lastName': '',
-        'mobileNumber': '',
-        'interests': '',
-        'occupation': '',
-        'description': '',
-        'websiteUrl': '',
-        'companyName': '',
-        'preferredLanguage': ''
-    };
+	formErrors = {
+		'oldPassword': '',
+		'newPassword': '',
+		'confirmNewPassword': '',
+		'firstName': '',
+		'lastName': '',
+		'mobileNumber': '',
+		'interests': '',
+		'occupation': '',
+		'description': '',
+		'websiteUrl': '',
+		'companyName': '',
+		'preferredLanguage': ''
+	};
 
-    validationMessages = {
-        'oldPassword': {
-            'required': 'Old Password is required.'
-        },
-        'newPassword': {
-            'required': 'New Password is required.',
-            'minlength': 'Minimum 6 Characters',
-            'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
-        },
-        'confirmNewPassword': {
-            'required': 'Confirm Password is required.'
-        },
-        'firstName': {
-            'required': 'First Name required.',
-            'whitespace': 'Invalid Data',
-            'minlength': 'First Name must be at least 3 characters long.',
-            'maxlength': 'First Name cannot be more than 50 characters long.',
-            'pattern': 'Invalid Name'
-        },
-        'lastName': {
-            'required': 'Last Name required.',
-            'whitespace': 'Invalid Data',
-            'minlength': 'Last Name must be at least 3 characters long.',
-            'maxlength': 'Last Name cannot be more than 50 characters long.',
-            'pattern': 'Invalid Name'
-        },
-        'mobileNumber': {
-            'required': 'Mobile Number required.',
-            'minlength': '',
-            /* 'maxlength': 'Mobile should be 10 digit.',*/
-            'pattern': 'Mobile Numbe should be 10 digits and only contain numbers.'
+	validationMessages = {
+		'oldPassword': {
+			'required': 'Old Password is required.'
+		},
+		'newPassword': {
+			'required': 'New Password is required.',
+			'minlength': 'Minimum 6 Characters',
+			'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
+		},
+		'confirmNewPassword': {
+			'required': 'Confirm Password is required.'
+		},
+		'firstName': {
+			'required': 'First Name required.',
+			'whitespace': 'Invalid Data',
+			'minlength': 'First Name must be at least 3 characters long.',
+			'maxlength': 'First Name cannot be more than 50 characters long.',
+			'pattern': 'Invalid Name'
+		},
+		'lastName': {
+			'required': 'Last Name required.',
+			'whitespace': 'Invalid Data',
+			'minlength': 'Last Name must be at least 3 characters long.',
+			'maxlength': 'Last Name cannot be more than 50 characters long.',
+			'pattern': 'Invalid Name'
+		},
+		'mobileNumber': {
+			'required': 'Mobile Number required.',
+			'minlength': '',
+			/* 'maxlength': 'Mobile should be 10 digit.',*/
+			'pattern': 'Mobile Numbe should be 10 digits and only contain numbers.'
 
-        },
-        'interests': {
-            'required': 'Interests required.',
-            'whitespace': 'Invalid Data',
-            'minlength': 'interest be at least 3 characters long.',
-            'maxlength': 'interest cannot be more than 50 characters long.',
-            'pattern': 'Only Characters Allowed'
-        },
-        'occupation': {
-            'required': 'Title required.',
-            'whitespace': 'Invalid Data',
-            'minlength': 'Title be at least 3 characters long.',
-            'maxlength': 'Title cannot be more than 50 characters long.',
-            'pattern': 'Only Characters Allowed'
-        },
-        'description': {
-            'required': 'About required.',
-            'whitespace': 'Invalid Data',
-            'minlength': 'description be at least 3 characters long.',
-            'maxlength': 'description cannot be more than 250 characters long.'
-        },
-        'websiteUrl': {
-            'required': 'WebsiteUrl required.',
-            'pattern': 'Invalid Url Pattern'
-        }
-    };
+		},
+		'interests': {
+			'required': 'Interests required.',
+			'whitespace': 'Invalid Data',
+			'minlength': 'interest be at least 3 characters long.',
+			'maxlength': 'interest cannot be more than 50 characters long.',
+			'pattern': 'Only Characters Allowed'
+		},
+		'occupation': {
+			'required': 'Title required.',
+			'whitespace': 'Invalid Data',
+			'minlength': 'Title be at least 3 characters long.',
+			'maxlength': 'Title cannot be more than 50 characters long.',
+			'pattern': 'Only Characters Allowed'
+		},
+		'description': {
+			'required': 'About required.',
+			'whitespace': 'Invalid Data',
+			'minlength': 'description be at least 3 characters long.',
+			'maxlength': 'description cannot be more than 250 characters long.'
+		},
+		'websiteUrl': {
+			'required': 'WebsiteUrl required.',
+			'pattern': 'Invalid Url Pattern'
+		}
+	};
 
-    /*******************Update User Profile*************************************/
-    geoLocation() {
-        try {
-            this.videoFileService.getJSONLocation()
-                .subscribe(
-                    (data: any) => {
-                        if (this.userData.mobileNumber == "" || this.userData.mobileNumber == undefined) {
-                            for (let i = 0; i < this.countryNames.countriesMobileCodes.length; i++) {
-                                if (data.countryCode == this.countryNames.countriesMobileCodes[i].code) {
-                                    this.userData.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
-                                    break;
-                                }
-                            }
-                        }
-                    })
-        } catch (error) {
-            console.error(error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation");
-        }
-    }
+	/*******************Update User Profile*************************************/
+	geoLocation() {
+		try {
+			this.videoFileService.getJSONLocation()
+				.subscribe(
+					(data: any) => {
+						if (this.userData.mobileNumber == "" || this.userData.mobileNumber == undefined) {
+							for (let i = 0; i < this.countryNames.countriesMobileCodes.length; i++) {
+								if (data.countryCode == this.countryNames.countriesMobileCodes[i].code) {
+									this.userData.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
+									break;
+								}
+							}
+						}
+					})
+		} catch (error) {
+			console.error(error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation");
+		}
+	}
 
-    updateUserProfileForm: FormGroup;
-    validateUpdateUserProfileForm() {
-        var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
-        var mobileNumberPatternRegEx = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
-        // var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
-        var charWithCommaRegEx = /^(?!.*?([A-D]).*?\1)[A-D](?:,[A-D])*$/;
-        this.updateUserProfileForm = this.fb.group({
-            'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-            'lastName': [this.userData.lastName],
-            // 'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-             //'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.pattern(mobileNumberPatternRegEx)])],
-            'mobileNumber': [this.userData.mobileNumber],
-            'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-            'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-            'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(250)])],
-            'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]],
-            'preferredLanguage':[this.userData.preferredLanguage],
-        });
+	updateUserProfileForm: FormGroup;
+	validateUpdateUserProfileForm() {
+		var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
+		var mobileNumberPatternRegEx = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
+		// var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
+		var charWithCommaRegEx = /^(?!.*?([A-D]).*?\1)[A-D](?:,[A-D])*$/;
+		this.updateUserProfileForm = this.fb.group({
+			'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
+			'lastName': [this.userData.lastName],
+			// 'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
+			//'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.pattern(mobileNumberPatternRegEx)])],
+			'mobileNumber': [this.userData.mobileNumber],
+			'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+			'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+			'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(250)])],
+			'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]],
+			'preferredLanguage': [this.userData.preferredLanguage],
+		});
 
-        this.updateUserProfileForm.valueChanges
-            .subscribe(data => this.onUpdateUserProfileFormValueChanged(data));
+		this.updateUserProfileForm.valueChanges
+			.subscribe(data => this.onUpdateUserProfileFormValueChanged(data));
 
-        this.onUpdateUserProfileFormValueChanged(); // (re)set validation messages now
-    }
+		this.onUpdateUserProfileFormValueChanged(); // (re)set validation messages now
+	}
 
-    onUpdateUserProfileFormValueChanged(data?: any) {
-        if (!this.updateUserProfileForm) { return; }
-        const form = this.updateUserProfileForm;
+	onUpdateUserProfileFormValueChanged(data?: any) {
+		if (!this.updateUserProfileForm) { return; }
+		const form = this.updateUserProfileForm;
 
-        for (const field in this.formErrors) {
-            // clear previous error message (if any)
-            this.formErrors[field] = '';
-            const control = form.get(field);
+		for (const field in this.formErrors) {
+			// clear previous error message (if any)
+			this.formErrors[field] = '';
+			const control = form.get(field);
 
-            if (control && control.dirty && !control.valid) {
-                const messages = this.validationMessages[field];
-                for (const key in control.errors) {
-                    this.formErrors[field] += messages[key] + ' ';
-                }
-            }
-        }
-    }
+			if (control && control.dirty && !control.valid) {
+				const messages = this.validationMessages[field];
+				for (const key in control.errors) {
+					this.formErrors[field] += messages[key] + ' ';
+				}
+			}
+		}
+	}
 
-    firstNameValue(name: string) {
-        this.userData.displayName = name;
-    }
-    occupationValue(occupation: string) {
-        this.userData.occupation = occupation;
-    }
+	firstNameValue(name: string) {
+		this.userData.displayName = name;
+	}
+	occupationValue(occupation: string) {
+		this.userData.occupation = occupation;
+	}
 
-    updateUserProfile() {
-        console.log(this.updateUserProfileForm.value);
-        this.referenceService.goToTop();
-        this.ngxloading = true;
+	updateUserProfile() {
+		console.log(this.updateUserProfileForm.value);
+		this.referenceService.goToTop();
+		this.ngxloading = true;
 
-        if (this.userData.mobileNumber) {
-            if (this.userData.mobileNumber.length > 6) {
-                this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
-            } else {
-                this.updateUserProfileForm.value.mobileNumber = ""
-            }
-        }
+		if (this.userData.mobileNumber) {
+			if (this.userData.mobileNumber.length > 6) {
+				this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
+			} else {
+				this.updateUserProfileForm.value.mobileNumber = ""
+			}
+		}
 
-        this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
-            .subscribe(
-                data => {
-                    if (data !== "") {
-                        const response = data;
-                        const message = response.message;
-                        if (message === "User Updated") {
-                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_UPDATED, true);
-                            this.userData = this.updateUserProfileForm.value;
-                            this.userData.displayName = this.updateUserProfileForm.value.firstName;
-                            this.userData.emailId = this.authenticationService.user.emailId;
-                            this.parentModel.displayName = this.updateUserProfileForm.value.firstName;
-                            this.referenceService.topNavBarUserDetails.displayName = this.parentModel.displayName;
-                            this.userService.getUserByUserName(this.authenticationService.user.emailId).
-                                subscribe(
-                                    res => {
-                                        this.ngxloading = false;
-                                        this.authenticationService.userProfile = res;
-                                        this.translateService.use(res.preferredLanguage);
-                                        this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).id;
-                                        this.authenticationService.beeLanguageCode = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).beeId;
-                                    },
-                                    error => { this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error) },
-                                    () => console.log("Finished")
-                                );
-                        } else {
-                            this.ngxloading = false;
-                            this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + data);
-                        }
-                    } else {
-                        this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + data);
-                    }
-                },
-                error => {
-                    this.ngxloading = false;
-                    this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error);
-                },
-                () => console.log("Done")
-            );
-        return false;
-    }
+		this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
+			.subscribe(
+				data => {
+					if (data !== "") {
+						const response = data;
+						const message = response.message;
+						if (message === "User Updated") {
+							this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_UPDATED, true);
+							this.userData = this.updateUserProfileForm.value;
+							this.userData.displayName = this.updateUserProfileForm.value.firstName;
+							this.userData.emailId = this.authenticationService.user.emailId;
+							this.parentModel.displayName = this.updateUserProfileForm.value.firstName;
+							this.referenceService.topNavBarUserDetails.displayName = this.parentModel.displayName;
+							this.userService.getUserByUserName(this.authenticationService.user.emailId).
+								subscribe(
+									res => {
+										this.ngxloading = false;
+										this.authenticationService.userProfile = res;
+										this.userData.hasPassword = this.authenticationService.userProfile.hasPassword;
+										this.translateService.use(res.preferredLanguage);
+										this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).id;
+										this.authenticationService.beeLanguageCode = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).beeId;
+									},
+									error => { this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error) },
+									() => console.log("Finished")
+								);
+						} else {
+							this.ngxloading = false;
+							this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + data);
+						}
+					} else {
+						this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + data);
+					}
+				},
+				error => {
+					this.ngxloading = false;
+					this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error);
+				},
+				() => console.log("Done")
+			);
+		return false;
+	}
 
-    readURL(input: any) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e: any) {
-                $('#blah')
-                    .attr('src', e.target.result)
-                    .width(150)
-                    .height(200);
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    hideDiv(divId: string) {
-        $('#' + divId).hide(600);
-    }
-    getVideoDefaultSettings() {
-        this.userService.getVideoDefaultSettings().subscribe(
-            (result: any) => {
-                this.active = true;
-                const response = result;
-                console.log(response);
-                this.referenceService.defaultPlayerSettings = response;
-                this.tempDefaultVideoPlayerSettings = response;
-                this.defaultVideoPlayer = response;
-                this.compControllerColor = response.controllerColor;
-                this.compPlayerColor = response.playerColor;
-                this.valueRange = response.transparency;
-                this.tempControllerColor = response.controllerColor;
-                this.tempPlayerColor = response.playerColor;
-                if (!response.controllerColor && !response.playerColor && !response.transparency) {
-                    this.compControllerColor = '#cccccc'; this.valueRange = 100; this.tempControllerColor = '#cccccc'; this.tempPlayerColor = '#ffffff';
-                }
-                this.logoImageUrlPath = response.brandingLogoUri = response.companyProfile.companyLogoPath;
-                this.logoLink = response.brandingLogoDescUri = response.companyProfile.website;
-                this.defaultPlayerbuildForm();
-                if (this.isPlayerSettingUpdated === true) {
-                    this.videoUtilService.videoTempDefaultSettings = response;
-                }
-            },
-            (error: any) => { console.log('error' + error); }
-        );
-    }
-    enableVideoController(event: any) {
-        if (this.isPlayed === false) {
-            this.videoJSplayer.play();
-            this.videoJSplayer.pause();
-        }
-        this.defaultVideoPlayer.enableVideoController = event;
-        if (event === true) {
-            $('.video-js .vjs-control-bar').show();
-        } else { $('.video-js .vjs-control-bar').hide(); }
-    }
-    defaultVideoControllers() {
-        if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
-            $('.video-js .vjs-control-bar').hide();
-        } else { $('.video-js .vjs-control-bar').show(); }
-    }
-    changeControllerColor(event: any, enableVideoController: boolean) {
-        try {
-            this.defaultVideoPlayer.controllerColor = event;
-            this.compControllerColor = event;
-            if (enableVideoController) {
-                const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
-                $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
-            }
-        } catch (error) { console.log(error); }
-    }
-    changePlayerColor(event: any) {
-        this.defaultVideoPlayer.playerColor = event;
-        this.compPlayerColor = event;
-        $('.video-js .vjs-play-progress').css('background-color', this.defaultVideoPlayer.playerColor);
-        $('.video-js .vjs-big-play-button').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
-        $('.video-js .vjs-play-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
-        $('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
-        $('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.defaultVideoPlayer.playerColor + '!important');
-        $('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
-        $('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
-        $('.video-js .vjs-volume-panel').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
-    }
-    transperancyControllBar(value: any) {
-        this.valueRange = value;
-        const color: any = this.defaultVideoPlayer.controllerColor;
-        const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
-        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
-    }
-    defaulttransperancyControllBar(value: any) {
-        const color: any = this.referenceService.defaultPlayerSettings.controllerColor;
-        const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
-        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
-    }
-    allowLikes(event: any) {
-        this.defaultVideoPlayer.allowLikes = event;
-    }
-    allowComments(event: any) {
-        this.defaultVideoPlayer.allowComments = event;
-    }
-    enableSettings(event: any) {
-        this.defaultVideoPlayer.enableSettings = event;
-    }
-    enableCasting(event: any) {
-        this.defaultVideoPlayer.enableCasting = event;
-    }
-    allowSharing(event: any) {
-        this.defaultVideoPlayer.allowSharing = event;
-    }
-    enableEmbed(event: any) {
-        this.defaultVideoPlayer.allowEmbed = event;
-    }
-    enable360Video(event: any) {
-        this.defaultVideoPlayer.is360video = event;
-    }
-    changeFullscreen(event: any) {
-        this.defaultVideoPlayer.allowFullscreen = event;
-        if (this.defaultVideoPlayer.allowFullscreen === false) {
-            $('.video-js .vjs-fullscreen-control').hide();
-        } else { $('.video-js .vjs-fullscreen-control').show(); }
-    }
-    defaultVideoSettings() {
-        if (this.referenceService.defaultPlayerSettings !== null && this.referenceService.defaultPlayerSettings !== undefined) {
-            console.log('default settings called');
-            console.log(this.referenceService.defaultPlayerSettings);
-            console.log(this.referenceService.defaultPlayerSettings.playerColor);
+	readURL(input: any) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e: any) {
+				$('#blah')
+					.attr('src', e.target.result)
+					.width(150)
+					.height(200);
+			};
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+	hideDiv(divId: string) {
+		$('#' + divId).hide(600);
+	}
+	getVideoDefaultSettings() {
+		this.userService.getVideoDefaultSettings().subscribe(
+			(result: any) => {
+				this.active = true;
+				const response = result;
+				console.log(response);
+				this.referenceService.defaultPlayerSettings = response;
+				this.tempDefaultVideoPlayerSettings = response;
+				this.defaultVideoPlayer = response;
+				this.compControllerColor = response.controllerColor;
+				this.compPlayerColor = response.playerColor;
+				this.valueRange = response.transparency;
+				this.tempControllerColor = response.controllerColor;
+				this.tempPlayerColor = response.playerColor;
+				if (!response.controllerColor && !response.playerColor && !response.transparency) {
+					this.compControllerColor = '#cccccc'; this.valueRange = 100; this.tempControllerColor = '#cccccc'; this.tempPlayerColor = '#ffffff';
+				}
+				this.logoImageUrlPath = response.brandingLogoUri = response.companyProfile.companyLogoPath;
+				this.logoLink = response.brandingLogoDescUri = response.companyProfile.website;
+				this.defaultPlayerbuildForm();
+				if (this.isPlayerSettingUpdated === true) {
+					this.videoUtilService.videoTempDefaultSettings = response;
+				}
+			},
+			(error: any) => { console.log('error' + error); }
+		);
+	}
+	enableVideoController(event: any) {
+		if (this.isPlayed === false) {
+			this.videoJSplayer.play();
+			this.videoJSplayer.pause();
+		}
+		this.defaultVideoPlayer.enableVideoController = event;
+		if (event === true) {
+			$('.video-js .vjs-control-bar').show();
+		} else { $('.video-js .vjs-control-bar').hide(); }
+	}
+	defaultVideoControllers() {
+		if (this.referenceService.defaultPlayerSettings.enableVideoController === false) {
+			$('.video-js .vjs-control-bar').hide();
+		} else { $('.video-js .vjs-control-bar').show(); }
+	}
+	changeControllerColor(event: any, enableVideoController: boolean) {
+		try {
+			this.defaultVideoPlayer.controllerColor = event;
+			this.compControllerColor = event;
+			if (enableVideoController) {
+				const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
+				$('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+			}
+		} catch (error) { console.log(error); }
+	}
+	changePlayerColor(event: any) {
+		this.defaultVideoPlayer.playerColor = event;
+		this.compPlayerColor = event;
+		$('.video-js .vjs-play-progress').css('background-color', this.defaultVideoPlayer.playerColor);
+		$('.video-js .vjs-big-play-button').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+		$('.video-js .vjs-play-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+		$('.video-js .vjs-volume-menu-button').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+		$('.video-js .vjs-volume-level').css('cssText', 'background-color:' + this.defaultVideoPlayer.playerColor + '!important');
+		$('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+		$('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+		$('.video-js .vjs-volume-panel').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+	}
+	transperancyControllBar(value: any) {
+		this.valueRange = value;
+		const color: any = this.defaultVideoPlayer.controllerColor;
+		const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
+		$('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+	}
+	defaulttransperancyControllBar(value: any) {
+		const color: any = this.referenceService.defaultPlayerSettings.controllerColor;
+		const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
+		$('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+	}
+	allowLikes(event: any) {
+		this.defaultVideoPlayer.allowLikes = event;
+	}
+	allowComments(event: any) {
+		this.defaultVideoPlayer.allowComments = event;
+	}
+	enableSettings(event: any) {
+		this.defaultVideoPlayer.enableSettings = event;
+	}
+	enableCasting(event: any) {
+		this.defaultVideoPlayer.enableCasting = event;
+	}
+	allowSharing(event: any) {
+		this.defaultVideoPlayer.allowSharing = event;
+	}
+	enableEmbed(event: any) {
+		this.defaultVideoPlayer.allowEmbed = event;
+	}
+	enable360Video(event: any) {
+		this.defaultVideoPlayer.is360video = event;
+	}
+	changeFullscreen(event: any) {
+		this.defaultVideoPlayer.allowFullscreen = event;
+		if (this.defaultVideoPlayer.allowFullscreen === false) {
+			$('.video-js .vjs-fullscreen-control').hide();
+		} else { $('.video-js .vjs-fullscreen-control').show(); }
+	}
+	defaultVideoSettings() {
+		if (this.referenceService.defaultPlayerSettings !== null && this.referenceService.defaultPlayerSettings !== undefined) {
+			console.log('default settings called');
+			console.log(this.referenceService.defaultPlayerSettings);
+			console.log(this.referenceService.defaultPlayerSettings.playerColor);
 
-            if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
-                this.referenceService.defaultPlayerSettings.playerColor = '#454';
-                this.referenceService.defaultPlayerSettings.controllerColor = '#234';
-                this.referenceService.defaultPlayerSettings.transparency = 100;
-            }
-            $('.video-js').css('color', this.referenceService.defaultPlayerSettings.playerColor);
-            $('.video-js .vjs-play-progress').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
-            $('.video-js .vjs-volume-level').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
-            if (this.referenceService.defaultPlayerSettings.controllerColor === '#fff') {
-                const event = '#fbfbfb';
-                $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + event + '!important');
-            } else { $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.referenceService.defaultPlayerSettings.controllerColor + '!important'); }
-            if (this.referenceService.defaultPlayerSettings.allowFullscreen === false) {
-                $('.video-js .vjs-fullscreen-control').hide();
-            } else { $('.video-js .vjs-fullscreen-control').show(); }
+			if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
+				this.referenceService.defaultPlayerSettings.playerColor = '#454';
+				this.referenceService.defaultPlayerSettings.controllerColor = '#234';
+				this.referenceService.defaultPlayerSettings.transparency = 100;
+			}
+			$('.video-js').css('color', this.referenceService.defaultPlayerSettings.playerColor);
+			$('.video-js .vjs-play-progress').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
+			$('.video-js .vjs-volume-level').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
+			if (this.referenceService.defaultPlayerSettings.controllerColor === '#fff') {
+				const event = '#fbfbfb';
+				$('.video-js .vjs-control-bar').css('cssText', 'background-color:' + event + '!important');
+			} else { $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.referenceService.defaultPlayerSettings.controllerColor + '!important'); }
+			if (this.referenceService.defaultPlayerSettings.allowFullscreen === false) {
+				$('.video-js .vjs-fullscreen-control').hide();
+			} else { $('.video-js .vjs-fullscreen-control').show(); }
 
-        }
-    }
-    UpdatePlayerSettingsValues() {
-        this.ngxloading = true;
-        this.isPlayerSettingUpdated = true;
-        this.defaultVideoPlayer.playerColor = this.compPlayerColor;
-        this.defaultVideoPlayer.controllerColor = this.compControllerColor;
-        this.defaultVideoPlayer.transparency = this.valueRange;
-        this.userService.updatePlayerSettings(this.defaultVideoPlayer)
-            .subscribe((result: any) => {
-                this.ngxloading = false;
-                this.customResponse = new CustomResponse('SUCCESS', this.properties.DEFAULT_PLAYER_SETTINGS, true);
-                if (!this.authenticationService.isOnlyPartner()) { this.getVideoDefaultSettings(); }
-            },
-                (error: any) => { console.error('error in update player setting api'); }
-            );
-    }
-    resetForm() {
-        console.log(this.referenceService.defaultPlayerSettings);
-        console.log(this.videoUtilService.videoTempDefaultSettings);
-        this.compControllerColor = this.videoUtilService.videoTempDefaultSettings.controllerColor;
-        this.compPlayerColor = this.videoUtilService.videoTempDefaultSettings.playerColor;
-        this.valueRange = this.videoUtilService.videoTempDefaultSettings.transparency;
-        this.defaultVideoPlayer.allowFullscreen = this.videoUtilService.videoTempDefaultSettings.allowFullscreen;
-        this.defaultVideoPlayer.allowComments = this.videoUtilService.videoTempDefaultSettings.allowComments;
-        this.defaultVideoPlayer.allowEmbed = this.videoUtilService.videoTempDefaultSettings.allowEmbed;
-        this.defaultVideoPlayer.is360video = this.videoUtilService.videoTempDefaultSettings.is360video;
-        this.defaultVideoPlayer.allowLikes = this.videoUtilService.videoTempDefaultSettings.allowLikes;
-        this.defaultVideoPlayer.allowSharing = this.videoUtilService.videoTempDefaultSettings.allowSharing;
-        this.defaultVideoPlayer.enableCasting = this.videoUtilService.videoTempDefaultSettings.enableCasting;
-        this.defaultVideoPlayer.enableSettings = this.videoUtilService.videoTempDefaultSettings.enableSettings;
-        this.defaultVideoPlayer.enableVideoController = this.videoUtilService.videoTempDefaultSettings.enableVideoController;
-        this.changeControllerColor(this.compControllerColor, this.defaultVideoPlayer.enableVideoController);
-        this.changePlayerColor(this.compPlayerColor);
-        this.transperancyControllBar(this.valueRange);
-        if (this.defaultVideoPlayer.enableVideoController === false) {
-            $('.video-js .vjs-control-bar').hide();
-        } else { $('.video-js .vjs-control-bar').show(); }
-    }
-    defaultPlayerbuildForm() {
-        this.defaultPlayerForm = this.fb.group({
-            'enableVideoController': [this.defaultVideoPlayer.enableVideoController],
-            'playerColor': [this.defaultVideoPlayer.playerColor],
-            'controllerColor': [this.defaultVideoPlayer.controllerColor],
-            'transparency': [this.defaultVideoPlayer.transparency],
-            'allowSharing': [this.defaultVideoPlayer.allowSharing],
-            'enableSettings': [this.defaultVideoPlayer.enableSettings],
-            'allowFullscreen': [this.defaultVideoPlayer.allowFullscreen],
-            'allowComments': [this.defaultVideoPlayer.allowComments],
-            'allowLikes': [this.defaultVideoPlayer.allowLikes],
-            'enableCasting': [this.defaultVideoPlayer.enableCasting],
-            'allowEmbed': [this.defaultVideoPlayer.allowEmbed],
-            'is360video': [this.defaultVideoPlayer.is360video],
-            'brandingLogoUri': [this.defaultVideoPlayer.brandingLogoUri]
-        });
-        this.defaultPlayerForm.valueChanges.subscribe((data: any) => this.onDefaultPlayerValueChanged(data));
-        this.onDefaultPlayerValueChanged();
-    }
+		}
+	}
+	UpdatePlayerSettingsValues() {
+		this.ngxloading = true;
+		this.isPlayerSettingUpdated = true;
+		this.defaultVideoPlayer.playerColor = this.compPlayerColor;
+		this.defaultVideoPlayer.controllerColor = this.compControllerColor;
+		this.defaultVideoPlayer.transparency = this.valueRange;
+		this.userService.updatePlayerSettings(this.defaultVideoPlayer)
+			.subscribe((result: any) => {
+				this.ngxloading = false;
+				this.customResponse = new CustomResponse('SUCCESS', this.properties.DEFAULT_PLAYER_SETTINGS, true);
+				if (!this.authenticationService.isOnlyPartner()) { this.getVideoDefaultSettings(); }
+			},
+				(error: any) => { console.error('error in update player setting api'); }
+			);
+	}
+	resetForm() {
+		console.log(this.referenceService.defaultPlayerSettings);
+		console.log(this.videoUtilService.videoTempDefaultSettings);
+		this.compControllerColor = this.videoUtilService.videoTempDefaultSettings.controllerColor;
+		this.compPlayerColor = this.videoUtilService.videoTempDefaultSettings.playerColor;
+		this.valueRange = this.videoUtilService.videoTempDefaultSettings.transparency;
+		this.defaultVideoPlayer.allowFullscreen = this.videoUtilService.videoTempDefaultSettings.allowFullscreen;
+		this.defaultVideoPlayer.allowComments = this.videoUtilService.videoTempDefaultSettings.allowComments;
+		this.defaultVideoPlayer.allowEmbed = this.videoUtilService.videoTempDefaultSettings.allowEmbed;
+		this.defaultVideoPlayer.is360video = this.videoUtilService.videoTempDefaultSettings.is360video;
+		this.defaultVideoPlayer.allowLikes = this.videoUtilService.videoTempDefaultSettings.allowLikes;
+		this.defaultVideoPlayer.allowSharing = this.videoUtilService.videoTempDefaultSettings.allowSharing;
+		this.defaultVideoPlayer.enableCasting = this.videoUtilService.videoTempDefaultSettings.enableCasting;
+		this.defaultVideoPlayer.enableSettings = this.videoUtilService.videoTempDefaultSettings.enableSettings;
+		this.defaultVideoPlayer.enableVideoController = this.videoUtilService.videoTempDefaultSettings.enableVideoController;
+		this.changeControllerColor(this.compControllerColor, this.defaultVideoPlayer.enableVideoController);
+		this.changePlayerColor(this.compPlayerColor);
+		this.transperancyControllBar(this.valueRange);
+		if (this.defaultVideoPlayer.enableVideoController === false) {
+			$('.video-js .vjs-control-bar').hide();
+		} else { $('.video-js .vjs-control-bar').show(); }
+	}
+	defaultPlayerbuildForm() {
+		this.defaultPlayerForm = this.fb.group({
+			'enableVideoController': [this.defaultVideoPlayer.enableVideoController],
+			'playerColor': [this.defaultVideoPlayer.playerColor],
+			'controllerColor': [this.defaultVideoPlayer.controllerColor],
+			'transparency': [this.defaultVideoPlayer.transparency],
+			'allowSharing': [this.defaultVideoPlayer.allowSharing],
+			'enableSettings': [this.defaultVideoPlayer.enableSettings],
+			'allowFullscreen': [this.defaultVideoPlayer.allowFullscreen],
+			'allowComments': [this.defaultVideoPlayer.allowComments],
+			'allowLikes': [this.defaultVideoPlayer.allowLikes],
+			'enableCasting': [this.defaultVideoPlayer.enableCasting],
+			'allowEmbed': [this.defaultVideoPlayer.allowEmbed],
+			'is360video': [this.defaultVideoPlayer.is360video],
+			'brandingLogoUri': [this.defaultVideoPlayer.brandingLogoUri]
+		});
+		this.defaultPlayerForm.valueChanges.subscribe((data: any) => this.onDefaultPlayerValueChanged(data));
+		this.onDefaultPlayerValueChanged();
+	}
 
-    onDefaultPlayerValueChanged(data?: any) {
-        if (!this.defaultPlayerForm) { return; }
-        const form = this.defaultPlayerForm;
-        for (const field in this.formErrors) {
-            this.formErrors[field] = '';
-            const control = form.get(field);
-            if (control && control.dirty && !control.valid) {
-                const messages = this.validationMessages[field];
-                for (const key in control.errors) {
-                    this.formErrors[field] += messages[key] + ' ';
-                }
-            }
-        }
-    }
+	onDefaultPlayerValueChanged(data?: any) {
+		if (!this.defaultPlayerForm) { return; }
+		const form = this.defaultPlayerForm;
+		for (const field in this.formErrors) {
+			this.formErrors[field] = '';
+			const control = form.get(field);
+			if (control && control.dirty && !control.valid) {
+				const messages = this.validationMessages[field];
+				for (const key in control.errors) {
+					this.formErrors[field] += messages[key] + ' ';
+				}
+			}
+		}
+	}
 
-    isGridView(userId: number) {
-        this.userService.isGridView(userId)
-            .subscribe(
-                data => {
-                    this.callActionSwitch.isGridView = data;
-                },
-                error => console.log(error),
-                () => { }
-            );
-    }
+	isGridView(userId: number) {
+		this.userService.isGridView(userId)
+			.subscribe(
+				data => {
+					this.callActionSwitch.isGridView = data;
+				},
+				error => console.log(error),
+				() => { }
+			);
+	}
 
-    setGridView(isGridView: boolean) {
-        this.ngxloading = true;
-        this.userService.setGridView(this.authenticationService.getUserId(), isGridView)
-            .subscribe(
-                data => {
-                    this.ngxloading = false;
-                    this.referenceService.isGridView = isGridView;
-                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PROCESS_REQUEST_SUCCESS, true);
-                },
-                error => {
-                    this.ngxloading = false;
-                    console.log(error);
-                    this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);
-                },
-                () => { }
-            );
-    }
+	setGridView(isGridView: boolean) {
+		this.ngxloading = true;
+		this.userService.setGridView(this.authenticationService.getUserId(), isGridView)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					this.referenceService.isGridView = isGridView;
+					this.customResponse = new CustomResponse('SUCCESS', this.properties.PROCESS_REQUEST_SUCCESS, true);
+				},
+				error => {
+					this.ngxloading = false;
+					console.log(error);
+					this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);
+				},
+				() => { }
+			);
+	}
 
-    changeStatus() {
-        $('#org-admin-info').hide();
-        if (!($('#status').is(":checked"))) {
-            if (this.currentUser.roles.length > 1) {
-                this.status = true;
-                $('#status').prop("checked", true);
-                let self = this;
-                swal({
-                    title: 'Are you sure?',
-                    text: 'Once you change status,it cannot be undone.',
-                    showCancelButton: true,
-                    confirmButtonColor: '#54a7e9',
-                    cancelButtonColor: '#999',
-                    confirmButtonText: 'Yes',
-                    showLoaderOnConfirm: true,
-                    allowOutsideClick: false,
-                    cancelButtonText: 'No'
+	changeStatus() {
+		$('#org-admin-info').hide();
+		if (!($('#status').is(":checked"))) {
+			if (this.currentUser.roles.length > 1) {
+				this.status = true;
+				$('#status').prop("checked", true);
+				let self = this;
+				swal({
+					title: 'Are you sure?',
+					text: 'Once you change status,it cannot be undone.',
+					showCancelButton: true,
+					confirmButtonColor: '#54a7e9',
+					cancelButtonColor: '#999',
+					confirmButtonText: 'Yes',
+					showLoaderOnConfirm: true,
+					allowOutsideClick: false,
+					cancelButtonText: 'No'
                     /*     preConfirm: () => {
                              if(self.orgAdminCount>1){
                                  $('a').addClass('disabled');
@@ -1054,1528 +1110,1545 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
                              }
                          }*/
-                }).then(function () {
-                    if (self.orgAdminCount > 1) {
-                        $('a').addClass('disabled');
-                        self.referenceService.isDisabling = true;
-                        self.disableOrgAdmin();
-                    } else {
-                        self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
-                        $('#org-admin-info').show(600);
-                        swal.close();
+				}).then(function() {
+					if (self.orgAdminCount > 1) {
+						$('a').addClass('disabled');
+						self.referenceService.isDisabling = true;
+						self.disableOrgAdmin();
+					} else {
+						self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
+						$('#org-admin-info').show(600);
+						swal.close();
+
+					}
+				}, function(dismiss: any) {
+					console.log('you clicked on option' + dismiss);
+				});
+
+			}
+		} else {
+			this.router.navigate(["/home/dashboard/edit-company-profile"]);
+		}
+	}
+
+	getOrgAdminsCount(userId: number) {
+		this.userService.getOrgAdminsCount(userId)
+			.subscribe(
+				data => {
+					this.orgAdminCount = data;
+				},
+				error => {
+					this.logger.errorPage(error);
+				},
+				() => this.logger.info("Finished getOrgAdminsCount()")
+			);
+
+	}
+
+	disableOrgAdmin() {
+		this.userService.disableOrgAdmin(this.loggedInUserId)
+			.subscribe(
+				data => {
+					const response = data;
+					if (response.statusCode == 1048) {
+						$('a').removeClass('disabled');
+						this.referenceService.isDisabling = false;
+						$('#status').prop("checked", true);
+						this.status = false;
+						this.referenceService.userProviderMessage = this.properties.ACCOUNT_DEACTIVATE_SUCCESS;
+						this.authenticationService.logout();
+						this.router.navigate(["/login"]);
+					}
+				},
+				error => {
+					this.logger.errorPage(error);
+					$('a').removeClass('disabled');
+				},
+				() => this.logger.info("Finished enableOrDisableOrgAdmin()")
+			);
+	}
+
+
+	//Forms section
+
+	initializeForm() {
+
+		this.userService.listForm(this.loggedInUserId).subscribe(result => {
+
+			console.log(result)
+			if (result.length > 0) {
+				this.form = result[0];
+				this.questions = result;
+				let index = 1;
+				this.questions = this.questions.map(q => {
+					q.divId = 'question-' + index++;
+					return q;
+				});
+				this.submitButtonText = "Update Questions";
+
+			} else {
+				this.questions = [];
+				this.submitButtonText = "Save Questions";
+			}
+
+			this.submitBUttonStateChange();
+		})
+		this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+
+			this.dealtypes = dealTypes.data;
 
-                    }
-                }, function (dismiss: any) {
-                    console.log('you clicked on option' + dismiss);
-                });
-
-            }
-        } else {
-            this.router.navigate(["/home/dashboard/edit-company-profile"]);
-        }
-    }
-
-    getOrgAdminsCount(userId: number) {
-        this.userService.getOrgAdminsCount(userId)
-            .subscribe(
-                data => {
-                    this.orgAdminCount = data;
-                },
-                error => {
-                    this.logger.errorPage(error);
-                },
-                () => this.logger.info("Finished getOrgAdminsCount()")
-            );
-
-    }
-
-    disableOrgAdmin() {
-        this.userService.disableOrgAdmin(this.loggedInUserId)
-            .subscribe(
-                data => {
-                    const response = data;
-                    if (response.statusCode == 1048) {
-                        $('a').removeClass('disabled');
-                        this.referenceService.isDisabling = false;
-                        $('#status').prop("checked", true);
-                        this.status = false;
-                        this.referenceService.userProviderMessage = this.properties.ACCOUNT_DEACTIVATE_SUCCESS;
-                        this.authenticationService.logout();
-                        this.router.navigate(["/login"]);
-                    }
-                },
-                error => {
-                    this.logger.errorPage(error);
-                    $('a').removeClass('disabled');
-                },
-                () => this.logger.info("Finished enableOrDisableOrgAdmin()")
-            );
-    }
-
-
-    //Forms section
-
-    initializeForm() {
-
-        this.userService.listForm(this.loggedInUserId).subscribe(result => {
-
-            console.log(result)
-            if (result.length > 0) {
-                this.form = result[0];
-                this.questions = result;
-                let index = 1;
-                this.questions = this.questions.map(q => {
-                    q.divId = 'question-' + index++;
-                    return q;
-                });
-                this.submitButtonText = "Update Questions";
-
-            } else {
-                this.questions = [];
-                this.submitButtonText = "Save Questions";
-            }
-
-            this.submitBUttonStateChange();
-        })
-        this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
-
-            this.dealtypes = dealTypes.data;
-
-        });
-    }
-
-    addQuestion() {
-        this.question = new DealQuestions();
-        var length;
-        if (this.questions != null && this.questions != undefined)
-            length = this.questions.length;
-        else
-            length = 0;
-        length = length + 1;
-        var id = 'question-' + length;
-        this.question.divId = id;
-        this.question.error = true;
-
-
-        this.questions.push(this.question);
-        this.submitBUttonStateChange();
-
-
-    }
-    remove(i, id) {
-        if (id)
-            console.log(id)
-        console.log(i)
-        var index = 1;
-
-        this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
-            .map(question => {
-                question.divId = 'question-' + index++;
-                return question;
-            });
-        console.log(this.questions);
-        this.submitBUttonStateChange();
-
-    }
-    showAlert(i, question) {
-        if (question.id) {
-            this.deleteQuestion(i, question);
-
-        } else {
-            this.remove(i, question.id);
-        }
-    }
-    deleteQuestion(i, question) {
-        try {
-            this.logger.info("Question in sweetAlert() " + question.id);
-            let self = this;
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to undo this action!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#54a7e9',
-                cancelButtonColor: '#999',
-                confirmButtonText: 'Yes, delete it!'
-
-            }).then(function (myData: any) {
-                console.log("deleteQuestion showAlert then()" + question);
-                self.userService.deleteQuestion(question).subscribe(result => {
-                    console.log(result)
-                    self.remove(i, question.id);
-                    self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-                }, error => console.log(error))
-            }, function (dismiss: any) {
-                console.log('you clicked on option');
-            });
-        } catch (error) {
-            console.log(error);
-        }
-
-    }
-    validateQuestion(question: DealQuestions) {
-        var errorClass = "form-group has-error has-feedback";
-        var successClass = "form-group has-success has-feedback";
-        if (question.question.length > 0) {
-            question.class = successClass;
-            question.error = false;
-        } else {
-            question.class = errorClass;
-            question.error = true;
-        }
-        this.submitBUttonStateChange();
-    }
-    validateDealForm(form: DealForms) {
-        if (form.name.length > 0) {
-            this.validateForm = true;
-        } else {
-            this.validateForm = false;
-        }
-        this.submitBUttonStateChange();
-    }
-    submitBUttonStateChange() {
-        let countForm = 0;
-        this.questions.forEach(question => {
-
-            if (question.error)
-                countForm++;
-        })
-        if (countForm > 0 || this.questions.length == 0)
-            this.formSubmiteState = false;
-        else
-            this.formSubmiteState = true;
-
-    }
-    saveForm() {
-        this.ngxloading = true;
-        let self = this;
-        let data = []
-        this.questions.forEach(question => {
-            const q = new DealQuestions();
-            console.log(self.authenticationService.getUserId())
-            q.question = question.question;
-            if (question.id) {
-                let obj = {
-                    id: question.id,
-                    question: question.question,
-                    updatedBy: self.authenticationService.getUserId()
-                }
-                data.push(obj);
-
-            } else {
-                let obj = {
-                    question: question.question,
-                    createdBy: self.authenticationService.getUserId()
-                }
-                data.push(obj);
-            }
-
-        })
-
-        this.userService.saveForm(this.authenticationService.getUserId(), data).subscribe(result => {
-
-            this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-            this.initializeForm();
-            // this.userService.listForm(this.loggedInUserId).subscribe(form => {
-            //     this.dealForms = form;
-            //     this.initializeForm();
-
-            //     this.ngxloading = false;
-            // })
-        }, (error: any) => {
-            console.log(error);
-            this.ngxloading = false;
-        }, () => { this.ngxloading = false; });
-
-    }
-
-    //Deal types
-    addDealtype() {
-        this.dealtype = new DealType();
-        var length;
-        if (this.dealtypes != null && this.dealtypes != undefined)
-            length = this.dealtypes.length;
-        else
-            length = 0;
-        length = length + 1;
-        var id = 'dealType-' + length;
-        this.dealtype.divId = id;
-        this.dealtype.error = true;
-
-
-        this.dealtypes.push(this.dealtype);
-        this.dealTypeButtonStateChange();
-    }
-
-    deleteDealType(i, dealType) {
-        this.ngxloading = true;
-        try {
-            this.logger.info("Deal Type in sweetAlert() " + dealType.id);
-            let self = this;
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to undo this action!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#54a7e9',
-                cancelButtonColor: '#999',
-                confirmButtonText: 'Yes, delete it!'
-
-            }).then(function (myData: any) {
-                console.log("dealType showAlert then()" + dealType);
-                self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
-                    if(result.statusCode==200){
-                        self.removeDealType(i, dealType.id);
-                        self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-                    }else if(result.statusCode==403){
-                        self.customResponseForm = new CustomResponse('ERROR', result.message, true);
-                    }else{
-                        self.customResponseForm = new CustomResponse('ERROR', self.properties.serverErrorMessage, true);
-                    }
-                    self.ngxloading = false;
-                    
-                }, (error) => {
-                    self.ngxloading = false;
-
-                }, () => {
-                    self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
-
-                        self.dealtypes = dealTypes.data;
-
-                    });
-                })
-            }, function (dismiss: any) {
-                console.log('you clicked on option');
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    removeDealType(i, id) {
-
-        if (id)
-            console.log(id)
-        console.log(i)
-        var index = 1;
-
-        this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
-            .map(dealtype => {
-                dealtype.divId = 'dealtype-' + index++;
-                return dealtype;
-            });
-        console.log(this.dealtypes);
-        this.dealTypeButtonStateChange();
-
-    }
-    validateDealType(dealType: DealType) {
-        var errorClass = "form-group has-error has-feedback";
-        var successClass = "form-group has-success has-feedback";
-        if (dealType.dealType.length > 0) {
-            dealType.class = successClass;
-            dealType.error = false;
-        } else {
-            dealType.class = errorClass;
-            dealType.error = true;
-        }
-        this.dealTypeButtonStateChange();
-    }
-
-    dealTypeButtonStateChange() {
-        let countForm = 0;
-        this.dealtypes.forEach(dealType => {
-
-            if (dealType.error)
-                countForm++;
-        })
-        if (countForm > 0 || this.dealtypes.length == 0)
-            this.dealSubmiteState = false;
-        else
-            this.dealSubmiteState = true;
-
-    }
-    saveDealTypes() {
-        if (this.dealtypes.length > 0) {
-            this.ngxloading = true;
-            let dtArr = []
-            this.dealtypes.forEach(dealtype => {
-                if (dealtype.id) {
-                    let obj = {
-                        "id": dealtype.id,
-                        "dealType": dealtype.dealType,
-                        "updatedBy": this.authenticationService.getUserId()
-                    }
-                    dtArr.push(obj);
-                } else {
-                    let obj = {
-                        "id": dealtype.id,
-                        "dealType": dealtype.dealType,
-                        "createdBy": this.authenticationService.getUserId()
-                    }
-                    dtArr.push(obj);
-                }
-            })
-            console.log(dtArr)
-
-            this.dealRegSevice.saveDealTypes(dtArr, this.authenticationService.getUserId()).subscribe(result => {
-                this.ngxloading = false;
-                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-
-            }, (error) => {
-                this.ngxloading = false;
-                this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
-
-            }, () => {
-                this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
-
-                    this.dealtypes = dealTypes.data;
-
-                });
-            })
-        }
-
-    }
-
-
-    checkIntegrations(): any {
-        this.dashBoardService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
-            if (response.statusCode == 8000) {
-                this.integrateRibbonText = "configured";
-                this.isMarketoProcess = response.data.isProcessing;
-            }
-            else {
-                this.integrateRibbonText = "configure";
-
-            }
-        }, error => {
-            this.integrateRibbonText = "configure";
-        })
-
-        this.hubSpotService.configHubSpot().subscribe(data => {
-            let response = data;
-            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                this.hubSpotRibbonText = "configured";
-            }
-            else {
-                this.hubSpotRibbonText = "configure";
-            }
-            if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-                this.hubSpotRedirectURL = response.data.redirectUrl;
-            }
-        }, (error: any) => {
-            this.hubSpotRibbonText = "configure";
-            this.logger.error(error, "Error in HubSpot checkIntegrations()");
-        }, () => this.logger.log("HubSpot Configuration Checking done"));
-
-        this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
-            let response = data;
-            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                this.sfRibbonText = "configured";
-            }
-            else {
-                this.sfRibbonText = "configure";
-            }
-            if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-                this.sfRedirectURL = response.data.redirectUrl;
-            }
-        }, error => {
-            this.sfRibbonText = "configure";
-            this.logger.error(error, "Error in checkIntegrations()");
-        }, () => this.logger.log("Integration Configuration Checking done"));
-    }
-
-    configmarketo() {
-        this.integrationTabIndex = 1;
-    }
-    closeMarketoForm(event: any) {
-        if (event === "0")
-            this.integrationTabIndex = 0;
-    }
-
-    activateTab(activeTabName: any) {
-        this.activeTabName = activeTabName;
-        if(this.activeTabName=="personalInfo"){
-            this.activeTabHeader = this.properties.personalInfo;
-        }else if(this.activeTabName=="password"){
-            this.activeTabHeader = this.properties.changePassword;
-        }else if(this.activeTabName=="settings"){
-            this.activeTabHeader = this.properties.viewType;
-        }else if(this.activeTabName=="playerSettings"){
-            this.activeTabHeader = this.properties.defaultPlayerSettings;
-        }else if(this.activeTabName=="dealTypes"){
-            this.activeTabHeader = this.properties.dealRegistration;
-        }else if(this.activeTabName=="integrations"){
-            this.activeTabHeader = this.properties.integrations;
-        }else if(this.activeTabName=="samlSettings"){
-            this.activeTabHeader = this.properties.samlSettings;
-        }else if (this.activeTabName == "gdpr") {
-            this.activeTabHeader = this.properties.gdprSettings;
-            this.getGdprSettings();
-        } else if (this.activeTabName == "categories") {
-            this.activeTabHeader = this.properties.folders;
-            this.categoryPagination = new Pagination();
-            this.listCategories(this.categoryPagination);
-        }else if(this.activeTabName=="dbButtonSettings"){
-            this.activeTabHeader = 'Dashboard Buttons';
-        }else if(this.activeTabName=="templates"){
-            this.activeTabHeader = 'Your Templates';
-        }else if(this.activeTabName=="leadPipelines"){
-            this.activeTabHeader = this.properties.leadPipelines;
-            this.pipelinePagination = new Pagination();
-            this.listAllPipelines(this.pipelinePagination);
-        }else if(this.activeTabName=="dealPipelines"){
-            this.activeTabHeader = this.properties.dealPipelines;
-            this.pipelinePagination = new Pagination();
-            this.listAllPipelines(this.pipelinePagination);
-        }else if(this.activeTabName=="tags"){
-            this.activeTabHeader = this.properties.tags;
-            this.tagsComponent.ngOnInit();
-       }
-
-        this.referenceService.goToTop();
-    }
-
-    ngOnDestroy() {
-        if (this.isPlayed === true) { this.videoJSplayer.dispose(); }
-        $('.profile-video').remove();
-        $('.h-video').remove();
-        this.referenceService.defaulgVideoMethodCalled = false;
-        this.dragulaService.destroy('pipelineStagesDragula');
-    }
-
-    configHubSpot() {
-        if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
-            window.location.href = this.hubSpotRedirectURL;
-        }
-    }
-
-    configSalesforce() {
-        if (this.sfRedirectURL !== undefined && this.sfRedirectURL !== '') {
-            window.location.href = this.sfRedirectURL;
-        }
-    }
-
-    /*********************GDPR Setting********************** */
-    setGdpr(event: any) {
-        this.gdprSetting.gdprStatus = event;
-        this.gdprSetting.unsubscribeStatus = event;
-        this.gdprSetting.formStatus = event;
-        this.gdprSetting.termsAndConditionStatus = event;
-        this.gdprSetting.deleteContactStatus = event;
-        this.gdprSetting.eventStatus = event;
-        if (!event) {
-            this.gdprSetting.allowMarketingEmails = event;
-        }
-    }
-
-    setAllGdprStatus() {
-        if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus
-            && !this.gdprSetting.deleteContactStatus && !this.gdprSetting.eventStatus) {
-            this.gdprSetting.gdprStatus = false;
-            this.gdprSetting.allowMarketingEmails = false;
-        } else {
-            this.gdprSetting.gdprStatus = true;
-        }
-    }
-
-
-
-    getGdprSettings() {
-        this.gdprSetting = new GdprSetting();
-        if (this.referenceService.companyId > 0) {
-            this.referenceService.startLoader(this.httpRequestLoader);
-            this.userService.getGdprSettingByCompanyId(this.referenceService.companyId)
-                .subscribe(
-                    response => {
-                        if (response.statusCode == 200) {
-                            this.gdprSetting = response.data;
-                            this.gdprSetting.isExists = true;
-                        } else {
-                            this.gdprSetting.isExists = false;
-                        }
-                        this.referenceService.stopLoader(this.httpRequestLoader);
-                    },
-                    (error: any) => {
-                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-                    },
-                    () => this.logger.info('Finished getGdprSettings()')
-                );
-        } else {
-            this.customResponse = new CustomResponse('ERROR', 'Unable to get GDPR Settings.', true);
-            this.referenceService.stopLoader(this.httpRequestLoader);
-        }
-
-    }
-
-    saveGdprSetting() {
-        this.referenceService.startLoader(this.httpRequestLoader);
-        this.gdprSetting.companyId = this.referenceService.companyId;
-        this.gdprSetting.createdUserId = this.loggedInUserId;
-        this.userService.saveGdprSetting(this.gdprSetting)
-            .subscribe(
-                data => {
-                    this.gdprSetting.isExists = true;
-                    this.customResponse = new CustomResponse('SUCCESS', 'Your settings have been saved.', true);
-                    this.referenceService.stopLoader(this.httpRequestLoader);
-                },
-                (error: any) => {
-                    let status = error.status;
-                    if (status == 409) {
-                        const body = error['_body'];
-                        const response = JSON.parse(body);
-                        this.customResponse = new CustomResponse('ERROR', response.message, true);
-                        this.referenceService.stopLoader(this.httpRequestLoader);
-                    } else {
-                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-                    }
-                },
-                () => this.logger.info('Finished saveGdprSetting()')
-            );
-        this.referenceService.goToTop();
-    }
-
-
-    updateGdprSetting() {
-        this.referenceService.startLoader(this.httpRequestLoader);
-        this.gdprSetting.updatedUserId = this.loggedInUserId;
-        this.userService.updateGdprSetting(this.gdprSetting)
-            .subscribe(
-                data => {
-                    this.gdprSetting.isExists = true;
-                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
-                    this.referenceService.stopLoader(this.httpRequestLoader);
-                },
-                (error: any) => {
-                    this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-                },
-                () => this.logger.info('Finished updateGdprSetting()')
-            );
-        this.referenceService.goToTop();
-
-
-    }
-    /***************Categories*************** */
-    listCategories(pagination: Pagination) {
-        this.category = new Category();
-        if (this.referenceService.companyId > 0) {
-            pagination.companyId = this.referenceService.companyId;
-            pagination.userId = this.loggedInUserId;
-            if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
-                pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-                pagination.vanityUrlFilter = true;
-            }
-            this.referenceService.startLoader(this.httpRequestLoader);
-            this.userService.getCategories(pagination)
-                .subscribe(
-                    response => {
-                        const data = response.data;
-                        pagination.totalRecords = data.totalRecords;
-                        pagination.previewAccess = data.previewAccess;
-                        this.categorySortOption.totalRecords = data.totalRecords;
-                        $.each(data.categories, function (_index: number, category: any) {
-                            category.displayTime = new Date(category.createdTimeInString);
-                        });
-                        pagination = this.pagerService.getPagedItems(pagination, data.categories);
-                        this.referenceService.stopLoader(this.httpRequestLoader);
-                    },
-                    (error: any) => {
-                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-                    },
-                    () => this.logger.info('Finished listCategories()')
-                );
-        } else {
-            this.customResponse = new CustomResponse('ERROR', 'Unable to get Categories.', true);
-            this.referenceService.stopLoader(this.httpRequestLoader);
-        }
-    }
-
-    /********************Pagaination&Search Code*****************/
-
-    /*************************Sort********************** */
-    sortBy(text: any) {
-        this.categorySortOption.formsSortOption = text;
-        this.getAllFilteredResults(this.categoryPagination);
-    }
-
-
-    /*************************Search********************** */
-    searchCategories() {
-        this.getAllFilteredResults(this.categoryPagination);
-    }
-
-    paginationDropdown(items: any) {
-        this.categorySortOption.itemsSize = items;
-        this.getAllFilteredResults(this.categoryPagination);
-    }
-
-    /************Page************** */
-    setPage(event: any) {
-        this.categoryResponse = new CustomResponse();
-        this.customResponse = new CustomResponse();
-        this.categoryPagination.pageIndex = event.page;
-        this.listCategories(this.categoryPagination);
-    }
-
-    getAllFilteredResults(pagination: Pagination) {
-        this.categoryResponse = new CustomResponse();
-        this.customResponse = new CustomResponse();
-        this.categoryPagination.pageIndex = 1;
-        this.categoryPagination.searchKey = this.categorySortOption.searchKey;
-        this.categoryPagination = this.utilService.sortOptionValues(this.categorySortOption.selectedCategoryDropDownOption, this.categoryPagination);
-        this.listCategories(this.categoryPagination);
-    }
-    eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
-    /********************Add*****************/
-
-    addCategory() {
-        this.isAddCategory = true;
-        this.category = new Category();
-        this.categoryModalTitle = 'Enter Folder Details';
-        this.categoyButtonSubmitText = "Save";
-        this.listExistingCategoryNames();
-    }
-    closeCategoryModal() {
-        $('#addCategoryModalPopup').modal('hide');
-        this.referenceService.stopLoader(this.addCategoryLoader);
-        this.category = new Category();
-        this.removeCategoryNameErrorClass();
-        this.categoryResponse = new CustomResponse();
-        this.isAddCategory = false;
-    }
-
-    validateCategoryNames(name: string) {
-        if ($.trim(name).length > 0) {
-            if (this.existingCategoryNames.indexOf($.trim(name).toLowerCase()) > -1 && $.trim(name).toLowerCase() != this.existingCategoryName) {
-                this.addCategoryNameErrorMessage(this.duplicateLabelMessage);
-            } else {
-                this.removeCategoryNameErrorClass();
-            }
-        } else {
-            this.addCategoryNameErrorMessage(this.requiredMessage);
-        }
-    }
-
-    addCategoryNameErrorMessage(errorMessage: string) {
-        this.category.isValid = false;
-        $('#categoryNameDiv').addClass(this.formErrorClass);
-        this.categoryNameErrorMessage = errorMessage;
-    }
-
-    removeCategoryNameErrorClass() {
-        $('#categoryNameDiv').removeClass(this.formErrorClass);
-        $('#categoryNameDiv').addClass(this.defaultFormClass);
-        this.category.isValid = true;
-        this.categoryResponse = new CustomResponse();
-        this.categoryNameErrorMessage = "";
-
-    }
-
-    sumbitOnEnter(event: any) {
-        if (event.keyCode == 13 && this.category.isValid) {
-            this.saveOrUpdateCategory();
-        }
-    }
-
-    listExistingCategoryNames() {
-        this.userService.listExistingCategoryNames(this.referenceService.companyId)
-            .subscribe(
-                data => {
-                     this.existingCategoryNames = data.data.map((a: { name: any; }) => a.name);
-                    if (this.isAddCategory) {
-                        $('#addCategoryModalPopup').modal('show');
-                        this.category.isValid = false;
-                    }else if(this.isDeleteCategory){
-                        this.exisitingCategories = data.data.filter((item: { id: number; }) => item.id!== this.category.id);;
-                        $('#deleteCategoryModalPopup').modal('show');
-                    }
-                },
-                error => {
-                    this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
-                },
-                () => {
-                    this.logger.info("Finished listExistingCategoryNames()");
-                }
-            );
-    }
-
-
-    saveOrUpdateCategory() {
-        this.referenceService.startLoader(this.addCategoryLoader);
-        this.category.createdUserId = this.loggedInUserId;
-        this.userService.saveOrUpdateCategory(this.category)
-            .subscribe(
-                (result: any) => {
-                    this.closeCategoryModal();
-                    if(result.access){
-                        this.referenceService.stopLoader(this.addCategoryLoader);
-                        this.categoryResponse = new CustomResponse('SUCCESS', result.message, true);
-                        this.categoryPagination = new Pagination();
-                        this.listCategories(this.categoryPagination);
-                    }else{
-                        this.authenticationService.forceToLogout();
-                    }
-                   
-                },
-                (error: string) => {
-                    this.referenceService.stopLoader(this.addCategoryLoader);
-                    let statusCode = JSON.parse(error['status']);
-                    if (statusCode == 409) {
-                        this.addCategoryNameErrorMessage(this.duplicateLabelMessage);
-                    } else {
-                        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
-                    }
-                });
-
-    }
-
-
-    getCategoryById(category:Category) {
-        if(!category.defaultCategory){
-            let id = category.id;
-            this.isAddCategory = false;
-            this.categoyButtonSubmitText = "Update";
-            $('#addCategoryModalPopup').modal('show');
-            this.referenceService.startLoader(this.addCategoryLoader);
-            this.categoryModalTitle = 'Edit Folder Details';
-            this.listExistingCategoryNames();
-            this.userService.getCategoryById(id)
-                .subscribe(
-                    (result: any) => {
-                        if (result.statusCode == 200) {
-                            this.category = result.data;
-                            this.existingCategoryName = $.trim(this.category.name.toLowerCase());
-                            this.category.isValid = true;
-                        } else {
-                            $('#addCategoryModalPopup').modal('hide');
-                            this.referenceService.showSweetAlertErrorMessage(result.message);
-                        }
-                        this.referenceService.stopLoader(this.addCategoryLoader);
-                    },
-                    (error: string) => {
-                        $('#addCategoryModalPopup').modal('hide');
-                        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
-                    });
-        }
-        
-    }
-
-
-    /***********Delete**************/
-    confirmDeleteCategory(category: Category) {
-        if (category.count > 0) {
-            this.isDeleteCategory = true;
-            this.category = category;
-            this.listExistingCategoryNames();
-        } else {
-            try {
-                let self = this;
-                swal({
-                    title: 'Are you sure?',
-                    text: "You won't be able to undo this action!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    swalConfirmButtonColor: '#54a7e9',
-                    swalCancelButtonColor: '#999',
-                    confirmButtonText: 'Yes, delete it!'
-
-                }).then(function () {
-                    self.deleteById(category);
-                }, function (dismiss: any) {
-                    console.log('you clicked on option' + dismiss);
-                });
-            } catch (error) {
-                this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
-                this.referenceService.showServerError(this.httpRequestLoader);
-            }
-        }
-
-    }
-
-    closeDeleteCategoryModal(){
-        $('#deleteCategoryModalPopup').modal('hide');
-        this.isDeleteCategory = false;
-        this.category = new Category();
-        this.selectedCategoryIdForTransferItems=0;
-    }
-    deleteCategoryWithoutTransferring(){
-        this.deleteById(this.category);
-    }
-
-    moveAndDeleteCategory(){
-        $('#deleteCategoryModalPopup').modal('hide');
-        this.category.isMoveAndDelete = true;
-        this.category.idToMoveItems = this.selectedCategoryIdForTransferItems;
-        this.deleteById(this.category);
-    }
-    deleteById(category: Category) {
-        this.categoryResponse = new CustomResponse();
-        this.referenceService.loading(this.httpRequestLoader, true);
-        this.referenceService.goToTop();
-        this.userService.deleteCategory(category)
-            .subscribe(
-                (response: any) => {
-                    this.closeDeleteCategoryModal();
-                    if(response.access){
-                        if (response.statusCode == 200) {
-                            let message = category.name + " Deleted Successfully";
-                            this.categoryResponse = new CustomResponse('SUCCESS', message, true);
-                            this.categoryPagination.pageIndex = 1;
-                            this.listCategories(this.categoryPagination);
-                        }
-                    }else{
-                        this.authenticationService.forceToLogout();
-                    }
-                   
-                },
-                (error: string) => {
-                    this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-                    this.categoryResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
-                }
-            );
-    }
-
-    previewItems(category:Category){
-        this.hasItems = false;
-        this.categoryPreviewItem = new CategoryPreviewItem();
-        this.isFolderPreview = true;
-        this.referenceService.startLoader(this.folderPreviewLoader);
-        this.userService.getItemsCount(category.id,this.loggedInUserId)
-        .subscribe(
-            (response: any) => {
-                this.categoryPreviewItem.items = response.data;
-                this.categoryPreviewItem.categoryId = category.id;
-                this.categoryPreviewItem.categoryName = category.name;
-                console.log(this.categoryPreviewItem);
-                this.referenceService.stopLoader(this.folderPreviewLoader);
-            },
-            (error: string) => {
-                this.referenceService.stopLoader(this.folderPreviewLoader);
-                this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
-            }
-        );
-    }
-
-    goToFolder(categoryId:number,item:any){
-        let count = item.moduleItemsCount;
-        let type = item.moduleName;
-        if(count>0 && item.previewAccess){
-            this.ngxloading = true;
-            if("Templates"==type){
-                this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
-            }else if("Forms"==type){
-                this.router.navigate(['/home/forms/manage/'+categoryId]);
-            }else if("Pages"==type){
-                this.router.navigate(['/home/pages/manage/'+categoryId]);
-            }else if("Campaigns"==type){
-                this.router.navigate(['/home/campaigns/manage/'+categoryId]);
-            }
-        }
-        
-    }
-
-/*************Default Display View */
-
-    getModulesDisplayDefaultView(){
-        this.modulesDisplayTypeError = false;
-        this.modulesDisplayViewcustomResponse = new CustomResponse();
-        this.userService.getModulesDisplayDefaultView(this.authenticationService.getUserId())
-            .subscribe(
-                data => {
-                    if(data.statusCode==200){
-                        this.modulesDisplayTypeString = data.data;
-                    }else{
-                        this.modulesDisplayTypeError = true;
-                        this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-                    }
-                },
-                error => {
-                    this.modulesDisplayTypeError = true;
-                    this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-                    },
-                () => { }
-            );
-    }
-
-    setDefaultView(){
-        this.ngxloading = true;
-        this.modulesDisplayViewcustomResponse = new CustomResponse();
-        this.updateDisplayViewError = false;
-        let selectedValue = $("input[name=moduleDisplayType]:checked").val();
-        this.userService.updateDefaultDisplayView(this.authenticationService.getUserId(),selectedValue)
-        .subscribe(
-            data => {
-                this.ngxloading = false;
-                if(data.statusCode==200){
-                    this.modulesDisplayViewcustomResponse = new CustomResponse('SUCCESS',data.message,true);
- 					localStorage.setItem('defaultDisplayType',selectedValue);
-                }else{
-                    this.updateDisplayViewError = true;
-                    this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-                }
-            },
-            error => {
-                this.updateDisplayViewError = true;
-                this.ngxloading = false;
-                this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-                },
-            () => { }
-        );
-    }
-
-    selectedLanguage(event:any){
-        //this.translateService.use(this.selectedLanguageCode);        
-    }
-
-    openBeeEditor(event:any){
-        this.xamplifyDefaultTemplate = event;
-        this.editXamplifyDefaultTemplate = true;
-    }
-
-    goBackToMyProfile(){
-        this.editXamplifyDefaultTemplate = false;
-        this.xamplifyDefaultTemplate = new VanityEmailTempalte();
-        this.referenceService.goToTop();
-    }
-
-    setSubjectLineTooltipText() {
-        this.subjectLineTooltipText = "Set your own subject line"
-    }
-    
-    salesforceSettings() {
-    	this.sfcfMasterCBClicked = false;
-    	this.customFieldsResponse.isVisible = false;
-        this.integrationTabIndex = 2;
-        this.ngxloading = true;
-        this.listSalesforceCustomFields();
-    }
-    
-    listSalesforceCustomFields() {
-    	let self = this;
-    	self.selectedCfIds = [];
-    	self.integrationService.listSalesforceCustomFields(this.loggedInUserId)
-        .subscribe(
-            data => {
-                this.ngxloading = false;
-                if(data.statusCode==200){
-                    this.sfCustomFieldsResponse = data.data;
-                    this.sfcfMasterCBClicked = false;
-                    $.each(this.sfCustomFieldsResponse, function (_index:number, customField) {
-                        if (customField.selected) {
-                        	self.selectedCfIds.push(customField.name);
-                        }
-                        
-                        if (customField.required) {
-                        	self.requiredCfIds.push(customField.name);
-                        	if (!customField.selected) {
-                        		self.selectedCfIds.push(customField.name);
-                      		}
-                        }
-                    });
-                    this.setSfCfPage(1);
-                }
-            },
-            error => {
-                this.ngxloading = false;
-                },
-            () => { }
-        );
-    }
-    
-    closeSfSettings() {
-    	 this.integrationTabIndex = 0;
-    }
-    
-    submitSfSettings() {
-    	this.ngxloading = true;
-    	let self = this;
-    	this.selectedCustomFieldIds = [];
-		$('[name="sfcf[]"]:checked').each(function() {
-				var id = $(this).val();
-				console.log(id);
-				self.selectedCustomFieldIds.push(id);
 		});
-		
-		 this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
-        .subscribe(
-            data => {
-                this.ngxloading = false;
-                if(data.statusCode==200){
-                    this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-                    this.listSalesforceCustomFields();
-                }
-            },
-            error => {
-                this.ngxloading = false;
-                },
-            () => { }
-        );
-    }
-    
-    setSfCfPage( page: number ) {
-    	this.paginatedSelectedIds = [];
-        try {
-            if ( page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages) ) {
-                return;
-            }
-             this.sfcfPager = this.socialPagerService.getPager( this.sfCustomFieldsResponse.length, page, this.pageSize );
-             this.sfcfPagedItems = this.sfCustomFieldsResponse.slice( this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1 );
-             var cfIds = this.sfcfPagedItems.map( function( a ) { return a.name; });
-                var items = $.grep( this.selectedCfIds, function( element ) {
-                    return $.inArray( element, cfIds ) !== -1;
-                });
-                if ( items.length == this.sfcfPager.pageSize  || items.length == this.sfCustomFieldsResponse.length || items.length == this.sfcfPagedItems.length ) {
-                    this.isHeaderCheckBoxChecked = true;
-                } else {
-                    this.isHeaderCheckBoxChecked = false;
-                }
+	}
 
-				if ( items ) {
-					for ( let i = 0; i < items.length; i++ ) {
-                    	this.paginatedSelectedIds.push( items[i] );
-                	}
-                }
-        } catch ( error ) {
-           // this.xtremandLogger.error( error, "setSfCfPage()." )
-        }
+	addQuestion() {
+		this.question = new DealQuestions();
+		var length;
+		if (this.questions != null && this.questions != undefined)
+			length = this.questions.length;
+		else
+			length = 0;
+		length = length + 1;
+		var id = 'question-' + length;
+		this.question.divId = id;
+		this.question.error = true;
 
-    }
-    
-    selectedPageNumber( event ) {
-        this.pageNumber.value = event;
-        if ( event === 0 ) { event = this.sfCustomFieldsResponse.length; }
-        this.pageSize = event;
-        this.setSfCfPage( 1 );
-    }
-    
-    /***********Re configure**************/
+
+		this.questions.push(this.question);
+		this.submitBUttonStateChange();
+
+
+	}
+	remove(i, id) {
+		if (id)
+			console.log(id)
+		console.log(i)
+		var index = 1;
+
+		this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
+			.map(question => {
+				question.divId = 'question-' + index++;
+				return question;
+			});
+		console.log(this.questions);
+		this.submitBUttonStateChange();
+
+	}
+	showAlert(i, question) {
+		if (question.id) {
+			this.deleteQuestion(i, question);
+
+		} else {
+			this.remove(i, question.id);
+		}
+	}
+	deleteQuestion(i, question) {
+		try {
+			this.logger.info("Question in sweetAlert() " + question.id);
+			let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to undo this action!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#54a7e9',
+				cancelButtonColor: '#999',
+				confirmButtonText: 'Yes, delete it!'
+
+			}).then(function(myData: any) {
+				console.log("deleteQuestion showAlert then()" + question);
+				self.userService.deleteQuestion(question).subscribe(result => {
+					console.log(result)
+					self.remove(i, question.id);
+					self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+				}, error => console.log(error))
+			}, function(dismiss: any) {
+				console.log('you clicked on option');
+			});
+		} catch (error) {
+			console.log(error);
+		}
+
+	}
+	validateQuestion(question: DealQuestions) {
+		var errorClass = "form-group has-error has-feedback";
+		var successClass = "form-group has-success has-feedback";
+		if (question.question.length > 0) {
+			question.class = successClass;
+			question.error = false;
+		} else {
+			question.class = errorClass;
+			question.error = true;
+		}
+		this.submitBUttonStateChange();
+	}
+	validateDealForm(form: DealForms) {
+		if (form.name.length > 0) {
+			this.validateForm = true;
+		} else {
+			this.validateForm = false;
+		}
+		this.submitBUttonStateChange();
+	}
+	submitBUttonStateChange() {
+		let countForm = 0;
+		this.questions.forEach(question => {
+
+			if (question.error)
+				countForm++;
+		})
+		if (countForm > 0 || this.questions.length == 0)
+			this.formSubmiteState = false;
+		else
+			this.formSubmiteState = true;
+
+	}
+	saveForm() {
+		this.ngxloading = true;
+		let self = this;
+		let data = []
+		this.questions.forEach(question => {
+			const q = new DealQuestions();
+			console.log(self.authenticationService.getUserId())
+			q.question = question.question;
+			if (question.id) {
+				let obj = {
+					id: question.id,
+					question: question.question,
+					updatedBy: self.authenticationService.getUserId()
+				}
+				data.push(obj);
+
+			} else {
+				let obj = {
+					question: question.question,
+					createdBy: self.authenticationService.getUserId()
+				}
+				data.push(obj);
+			}
+
+		})
+
+		this.userService.saveForm(this.authenticationService.getUserId(), data).subscribe(result => {
+
+			this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+			this.initializeForm();
+			// this.userService.listForm(this.loggedInUserId).subscribe(form => {
+			//     this.dealForms = form;
+			//     this.initializeForm();
+
+			//     this.ngxloading = false;
+			// })
+		}, (error: any) => {
+			console.log(error);
+			this.ngxloading = false;
+		}, () => { this.ngxloading = false; });
+
+	}
+
+	//Deal types
+	addDealtype() {
+		this.dealtype = new DealType();
+		var length;
+		if (this.dealtypes != null && this.dealtypes != undefined)
+			length = this.dealtypes.length;
+		else
+			length = 0;
+		length = length + 1;
+		var id = 'dealType-' + length;
+		this.dealtype.divId = id;
+		this.dealtype.error = true;
+
+
+		this.dealtypes.push(this.dealtype);
+		this.dealTypeButtonStateChange();
+	}
+
+	deleteDealType(i, dealType) {
+		this.ngxloading = true;
+		try {
+			this.logger.info("Deal Type in sweetAlert() " + dealType.id);
+			let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to undo this action!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#54a7e9',
+				cancelButtonColor: '#999',
+				confirmButtonText: 'Yes, delete it!'
+
+			}).then(function(myData: any) {
+				console.log("dealType showAlert then()" + dealType);
+				self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
+					if (result.statusCode == 200) {
+						self.removeDealType(i, dealType.id);
+						self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+					} else if (result.statusCode == 403) {
+						self.customResponseForm = new CustomResponse('ERROR', result.message, true);
+					} else {
+						self.customResponseForm = new CustomResponse('ERROR', self.properties.serverErrorMessage, true);
+					}
+					self.ngxloading = false;
+
+				}, (error) => {
+					self.ngxloading = false;
+
+				}, () => {
+					self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
+
+						self.dealtypes = dealTypes.data;
+
+					});
+				})
+			}, function(dismiss: any) {
+				console.log('you clicked on option');
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	}
+	removeDealType(i, id) {
+
+		if (id)
+			console.log(id)
+		console.log(i)
+		var index = 1;
+
+		this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
+			.map(dealtype => {
+				dealtype.divId = 'dealtype-' + index++;
+				return dealtype;
+			});
+		console.log(this.dealtypes);
+		this.dealTypeButtonStateChange();
+
+	}
+	validateDealType(dealType: DealType) {
+		var errorClass = "form-group has-error has-feedback";
+		var successClass = "form-group has-success has-feedback";
+		if (dealType.dealType.length > 0) {
+			dealType.class = successClass;
+			dealType.error = false;
+		} else {
+			dealType.class = errorClass;
+			dealType.error = true;
+		}
+		this.dealTypeButtonStateChange();
+	}
+
+	dealTypeButtonStateChange() {
+		let countForm = 0;
+		this.dealtypes.forEach(dealType => {
+
+			if (dealType.error)
+				countForm++;
+		})
+		if (countForm > 0 || this.dealtypes.length == 0)
+			this.dealSubmiteState = false;
+		else
+			this.dealSubmiteState = true;
+
+	}
+	saveDealTypes() {
+		if (this.dealtypes.length > 0) {
+			this.ngxloading = true;
+			let dtArr = []
+			this.dealtypes.forEach(dealtype => {
+				if (dealtype.id) {
+					let obj = {
+						"id": dealtype.id,
+						"dealType": dealtype.dealType,
+						"updatedBy": this.authenticationService.getUserId()
+					}
+					dtArr.push(obj);
+				} else {
+					let obj = {
+						"id": dealtype.id,
+						"dealType": dealtype.dealType,
+						"createdBy": this.authenticationService.getUserId()
+					}
+					dtArr.push(obj);
+				}
+			})
+			console.log(dtArr)
+
+			this.dealRegSevice.saveDealTypes(dtArr, this.authenticationService.getUserId()).subscribe(result => {
+				this.ngxloading = false;
+				this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+
+			}, (error) => {
+				this.ngxloading = false;
+				this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
+
+			}, () => {
+				this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+
+					this.dealtypes = dealTypes.data;
+
+				});
+			})
+		}
+
+	}
+
+
+	checkIntegrations(): any {
+		this.dashBoardService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
+			if (response.statusCode == 8000) {
+				this.integrateRibbonText = "configured";
+				this.isMarketoProcess = response.data.isProcessing;
+			}
+			else {
+				this.integrateRibbonText = "configure";
+
+			}
+		}, error => {
+			this.integrateRibbonText = "configure";
+		})
+
+		this.hubSpotService.configHubSpot().subscribe(data => {
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.hubSpotRibbonText = "configured";
+			}
+			else {
+				this.hubSpotRibbonText = "configure";
+			}
+			if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+				this.hubSpotRedirectURL = response.data.redirectUrl;
+			}
+		}, (error: any) => {
+			this.hubSpotRibbonText = "configure";
+			this.logger.error(error, "Error in HubSpot checkIntegrations()");
+		}, () => this.logger.log("HubSpot Configuration Checking done"));
+
+		this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.sfRibbonText = "configured";
+			}
+			else {
+				this.sfRibbonText = "configure";
+			}
+			if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+				this.sfRedirectURL = response.data.redirectUrl;
+			}
+		}, error => {
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkIntegrations()");
+		}, () => this.logger.log("Integration Configuration Checking done"));
+	}
+
+	configmarketo() {
+		this.integrationTabIndex = 1;
+	}
+	closeMarketoForm(event: any) {
+		if (event === "0")
+			this.integrationTabIndex = 0;
+	}
+
+	activateTab(activeTabName: any) {
+		this.activeTabName = activeTabName;
+		if (this.activeTabName == "personalInfo") {
+			this.activeTabHeader = this.properties.personalInfo;
+		} else if (this.activeTabName == "password") {
+			this.activeTabHeader = this.properties.changePassword;
+		} else if (this.activeTabName == "settings") {
+			this.activeTabHeader = this.properties.viewType;
+		} else if (this.activeTabName == "playerSettings") {
+			this.activeTabHeader = this.properties.defaultPlayerSettings;
+		} else if (this.activeTabName == "dealTypes") {
+			this.activeTabHeader = this.properties.dealRegistration;
+		} else if (this.activeTabName == "integrations") {
+			this.activeTabHeader = this.properties.integrations;
+		} else if (this.activeTabName == "samlSettings") {
+			this.activeTabHeader = this.properties.samlSettings;
+		} else if (this.activeTabName == "gdpr") {
+			this.activeTabHeader = this.properties.gdprSettings;
+			this.getGdprSettings();
+		} else if (this.activeTabName == "categories") {
+			this.activeTabHeader = this.properties.folders;
+			this.categoryPagination = new Pagination();
+			this.listCategories(this.categoryPagination);
+		} else if (this.activeTabName == "dbButtonSettings") {
+			this.activeTabHeader = 'Dashboard Buttons';
+		} else if (this.activeTabName == "templates") {
+			this.activeTabHeader = 'Your Templates';
+		} else if (this.activeTabName == "leadPipelines") {
+			this.activeTabHeader = this.properties.leadPipelines;
+			this.pipelinePagination = new Pagination();
+			this.listAllPipelines(this.pipelinePagination);
+		} else if (this.activeTabName == "dealPipelines") {
+			this.activeTabHeader = this.properties.dealPipelines;
+			this.pipelinePagination = new Pagination();
+			this.listAllPipelines(this.pipelinePagination);
+		}
+
+		this.referenceService.goToTop();
+	}
+
+	ngOnDestroy() {
+		if (this.isPlayed === true) { this.videoJSplayer.dispose(); }
+		$('.profile-video').remove();
+		$('.h-video').remove();
+		this.referenceService.defaulgVideoMethodCalled = false;
+		this.dragulaService.destroy('pipelineStagesDragula');
+	}
+
+configHubSpot() {
+		if (this.loggedInThroughVanityUrl) {
+			let providerName = 'hubspot';
+			let hubSpotCurrentUser = localStorage.getItem('currentUser');
+			let vanityUserId = JSON.parse(hubSpotCurrentUser)['userId'];
+			let redirectURL = window.btoa(this.hubSpotRedirectURL);
+			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
+			var x = screen.width / 2 - 700 / 2;
+			var y = screen.height / 2 - 450 / 2;
+			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+		}
+		else if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
+			window.location.href = this.hubSpotRedirectURL;
+		}
+	}
+
+configSalesforce() {
+		if (this.loggedInThroughVanityUrl) {
+			let providerName = 'salesforce';
+			let salesforceCurrentUser = localStorage.getItem('currentUser');
+			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
+			let redirectURL = window.btoa(this.sfRedirectURL);
+			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
+			var x = screen.width / 2 - 700 / 2;
+			var y = screen.height / 2 - 450 / 2;
+			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+		}
+		else if (this.sfRedirectURL !== undefined && this.sfRedirectURL !== '') {
+			window.location.href = this.sfRedirectURL;
+		}
+	}
+
+	/*********************GDPR Setting********************** */
+	setGdpr(event: any) {
+		this.gdprSetting.gdprStatus = event;
+		this.gdprSetting.unsubscribeStatus = event;
+		this.gdprSetting.formStatus = event;
+		this.gdprSetting.termsAndConditionStatus = event;
+		this.gdprSetting.deleteContactStatus = event;
+		this.gdprSetting.eventStatus = event;
+		if (!event) {
+			this.gdprSetting.allowMarketingEmails = event;
+		}
+	}
+
+	setAllGdprStatus() {
+		if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus
+			&& !this.gdprSetting.deleteContactStatus && !this.gdprSetting.eventStatus) {
+			this.gdprSetting.gdprStatus = false;
+			this.gdprSetting.allowMarketingEmails = false;
+		} else {
+			this.gdprSetting.gdprStatus = true;
+		}
+	}
+
+
+
+	getGdprSettings() {
+		this.gdprSetting = new GdprSetting();
+		if (this.referenceService.companyId > 0) {
+			this.referenceService.startLoader(this.httpRequestLoader);
+			this.userService.getGdprSettingByCompanyId(this.referenceService.companyId)
+				.subscribe(
+					response => {
+						if (response.statusCode == 200) {
+							this.gdprSetting = response.data;
+							this.gdprSetting.isExists = true;
+						} else {
+							this.gdprSetting.isExists = false;
+						}
+						this.referenceService.stopLoader(this.httpRequestLoader);
+					},
+					(error: any) => {
+						this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+					},
+					() => this.logger.info('Finished getGdprSettings()')
+				);
+		} else {
+			this.customResponse = new CustomResponse('ERROR', 'Unable to get GDPR Settings.', true);
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}
+
+	}
+
+	saveGdprSetting() {
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.gdprSetting.companyId = this.referenceService.companyId;
+		this.gdprSetting.createdUserId = this.loggedInUserId;
+		this.userService.saveGdprSetting(this.gdprSetting)
+			.subscribe(
+				data => {
+					this.gdprSetting.isExists = true;
+					this.gdprCustomResponse = new CustomResponse('SUCCESS', 'Your settings have been saved.', true);
+					this.referenceService.stopLoader(this.httpRequestLoader);
+				},
+				(error: any) => {
+					let status = error.status;
+					if (status == 409) {
+						const body = error['_body'];
+						const response = JSON.parse(body);
+						this.gdprCustomResponse = new CustomResponse('ERROR', response.message, true);
+						this.referenceService.stopLoader(this.httpRequestLoader);
+					} else {
+						this.gdprCustomResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+					}
+				},
+				() => this.logger.info('Finished saveGdprSetting()')
+			);
+		this.referenceService.goToTop();
+	}
+
+
+	updateGdprSetting() {
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.gdprSetting.updatedUserId = this.loggedInUserId;
+		this.userService.updateGdprSetting(this.gdprSetting)
+			.subscribe(
+				data => {
+					this.gdprSetting.isExists = true;
+					this.gdprCustomResponse = new CustomResponse('SUCCESS', data.message, true);
+					this.referenceService.stopLoader(this.httpRequestLoader);
+				},
+				(error: any) => {
+					this.gdprCustomResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+				},
+				() => this.logger.info('Finished updateGdprSetting()')
+			);
+		this.referenceService.goToTop();
+
+
+	}
+	/***************Categories*************** */
+	listCategories(pagination: Pagination) {
+		this.category = new Category();
+		if (this.referenceService.companyId > 0) {
+			pagination.companyId = this.referenceService.companyId;
+			pagination.userId = this.loggedInUserId;
+			if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+				pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+				pagination.vanityUrlFilter = true;
+			}
+			this.referenceService.startLoader(this.httpRequestLoader);
+			this.userService.getCategories(pagination)
+				.subscribe(
+					response => {
+						const data = response.data;
+						pagination.totalRecords = data.totalRecords;
+						pagination.previewAccess = data.previewAccess;
+						this.categorySortOption.totalRecords = data.totalRecords;
+						$.each(data.categories, function(_index: number, category: any) {
+							category.displayTime = new Date(category.createdTimeInString);
+						});
+						pagination = this.pagerService.getPagedItems(pagination, data.categories);
+						this.referenceService.stopLoader(this.httpRequestLoader);
+					},
+					(error: any) => {
+						this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+					},
+					() => this.logger.info('Finished listCategories()')
+				);
+		} else {
+			this.customResponse = new CustomResponse('ERROR', 'Unable to get Categories.', true);
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}
+	}
+
+	/********************Pagaination&Search Code*****************/
+
+	/*************************Sort********************** */
+	sortBy(text: any) {
+		this.categorySortOption.formsSortOption = text;
+		this.getAllFilteredResults(this.categoryPagination);
+	}
+
+
+	/*************************Search********************** */
+	searchCategories() {
+		this.getAllFilteredResults(this.categoryPagination);
+	}
+
+	paginationDropdown(items: any) {
+		this.categorySortOption.itemsSize = items;
+		this.getAllFilteredResults(this.categoryPagination);
+	}
+
+	/************Page************** */
+	setPage(event: any) {
+		this.categoryResponse = new CustomResponse();
+		this.customResponse = new CustomResponse();
+		this.categoryPagination.pageIndex = event.page;
+		this.listCategories(this.categoryPagination);
+	}
+
+	getAllFilteredResults(pagination: Pagination) {
+		this.categoryResponse = new CustomResponse();
+		this.customResponse = new CustomResponse();
+		this.categoryPagination.pageIndex = 1;
+		this.categoryPagination.searchKey = this.categorySortOption.searchKey;
+		this.categoryPagination = this.utilService.sortOptionValues(this.categorySortOption.selectedCategoryDropDownOption, this.categoryPagination);
+		this.listCategories(this.categoryPagination);
+	}
+	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
+	/********************Add*****************/
+
+	addCategory() {
+		this.isAddCategory = true;
+		this.category = new Category();
+		this.categoryModalTitle = 'Enter Folder Details';
+		this.categoyButtonSubmitText = "Save";
+		this.listExistingCategoryNames();
+	}
+	closeCategoryModal() {
+		$('#addCategoryModalPopup').modal('hide');
+		this.referenceService.stopLoader(this.addCategoryLoader);
+		this.category = new Category();
+		this.removeCategoryNameErrorClass();
+		this.categoryResponse = new CustomResponse();
+		this.isAddCategory = false;
+	}
+
+	validateCategoryNames(name: string) {
+		if ($.trim(name).length > 0) {
+			if (this.existingCategoryNames.indexOf($.trim(name).toLowerCase()) > -1 && $.trim(name).toLowerCase() != this.existingCategoryName) {
+				this.addCategoryNameErrorMessage(this.duplicateLabelMessage);
+			} else {
+				this.removeCategoryNameErrorClass();
+			}
+		} else {
+			this.addCategoryNameErrorMessage(this.requiredMessage);
+		}
+	}
+
+	addCategoryNameErrorMessage(errorMessage: string) {
+		this.category.isValid = false;
+		$('#categoryNameDiv').addClass(this.formErrorClass);
+		this.categoryNameErrorMessage = errorMessage;
+	}
+
+	removeCategoryNameErrorClass() {
+		$('#categoryNameDiv').removeClass(this.formErrorClass);
+		$('#categoryNameDiv').addClass(this.defaultFormClass);
+		this.category.isValid = true;
+		this.categoryResponse = new CustomResponse();
+		this.categoryNameErrorMessage = "";
+
+	}
+
+	sumbitOnEnter(event: any) {
+		if (event.keyCode == 13 && this.category.isValid) {
+			this.saveOrUpdateCategory();
+		}
+	}
+
+	listExistingCategoryNames() {
+		this.userService.listExistingCategoryNames(this.referenceService.companyId)
+			.subscribe(
+				data => {
+					this.existingCategoryNames = data.data.map((a: { name: any; }) => a.name);
+					if (this.isAddCategory) {
+						$('#addCategoryModalPopup').modal('show');
+						this.category.isValid = false;
+					} else if (this.isDeleteCategory) {
+						this.exisitingCategories = data.data.filter((item: { id: number; }) => item.id !== this.category.id);;
+						$('#deleteCategoryModalPopup').modal('show');
+					}
+				},
+				error => {
+					this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+				},
+				() => {
+					this.logger.info("Finished listExistingCategoryNames()");
+				}
+			);
+	}
+
+
+	saveOrUpdateCategory() {
+		this.referenceService.startLoader(this.addCategoryLoader);
+		this.category.createdUserId = this.loggedInUserId;
+		this.userService.saveOrUpdateCategory(this.category)
+			.subscribe(
+				(result: any) => {
+					this.closeCategoryModal();
+					if (result.access) {
+						this.referenceService.stopLoader(this.addCategoryLoader);
+						this.categoryResponse = new CustomResponse('SUCCESS', result.message, true);
+						this.categoryPagination = new Pagination();
+						this.listCategories(this.categoryPagination);
+					} else {
+						this.authenticationService.forceToLogout();
+					}
+
+				},
+				(error: string) => {
+					this.referenceService.stopLoader(this.addCategoryLoader);
+					let statusCode = JSON.parse(error['status']);
+					if (statusCode == 409) {
+						this.addCategoryNameErrorMessage(this.duplicateLabelMessage);
+					} else {
+						this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+					}
+				});
+
+	}
+
+
+	getCategoryById(category: Category) {
+		if (!category.defaultCategory) {
+			let id = category.id;
+			this.isAddCategory = false;
+			this.categoyButtonSubmitText = "Update";
+			$('#addCategoryModalPopup').modal('show');
+			this.referenceService.startLoader(this.addCategoryLoader);
+			this.categoryModalTitle = 'Edit Folder Details';
+			this.listExistingCategoryNames();
+			this.userService.getCategoryById(id)
+				.subscribe(
+					(result: any) => {
+						if (result.statusCode == 200) {
+							this.category = result.data;
+							this.existingCategoryName = $.trim(this.category.name.toLowerCase());
+							this.category.isValid = true;
+						} else {
+							$('#addCategoryModalPopup').modal('hide');
+							this.referenceService.showSweetAlertErrorMessage(result.message);
+						}
+						this.referenceService.stopLoader(this.addCategoryLoader);
+					},
+					(error: string) => {
+						$('#addCategoryModalPopup').modal('hide');
+						this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+					});
+		}
+
+	}
+
+
+	/***********Delete**************/
+	confirmDeleteCategory(category: Category) {
+		if (category.count > 0) {
+			this.isDeleteCategory = true;
+			this.category = category;
+			this.listExistingCategoryNames();
+		} else {
+			try {
+				let self = this;
+				swal({
+					title: 'Are you sure?',
+					text: "You won't be able to undo this action!",
+					type: 'warning',
+					showCancelButton: true,
+					swalConfirmButtonColor: '#54a7e9',
+					swalCancelButtonColor: '#999',
+					confirmButtonText: 'Yes, delete it!'
+
+				}).then(function() {
+					self.deleteById(category);
+				}, function(dismiss: any) {
+					console.log('you clicked on option' + dismiss);
+				});
+			} catch (error) {
+				this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+				this.referenceService.showServerError(this.httpRequestLoader);
+			}
+		}
+
+	}
+
+	closeDeleteCategoryModal() {
+		$('#deleteCategoryModalPopup').modal('hide');
+		this.isDeleteCategory = false;
+		this.category = new Category();
+		this.selectedCategoryIdForTransferItems = 0;
+	}
+	deleteCategoryWithoutTransferring() {
+		this.deleteById(this.category);
+	}
+
+	moveAndDeleteCategory() {
+		$('#deleteCategoryModalPopup').modal('hide');
+		this.category.isMoveAndDelete = true;
+		this.category.idToMoveItems = this.selectedCategoryIdForTransferItems;
+		this.deleteById(this.category);
+	}
+	deleteById(category: Category) {
+		this.categoryResponse = new CustomResponse();
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.referenceService.goToTop();
+		this.userService.deleteCategory(category)
+			.subscribe(
+				(response: any) => {
+					this.closeDeleteCategoryModal();
+					if (response.access) {
+						if (response.statusCode == 200) {
+							let message = category.name + " Deleted Successfully";
+							this.categoryResponse = new CustomResponse('SUCCESS', message, true);
+							this.categoryPagination.pageIndex = 1;
+							this.listCategories(this.categoryPagination);
+						}
+					} else {
+						this.authenticationService.forceToLogout();
+					}
+
+				},
+				(error: string) => {
+					this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+					this.categoryResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+				}
+			);
+	}
+
+	previewItems(category: Category) {
+		this.hasItems = false;
+		this.categoryPreviewItem = new CategoryPreviewItem();
+		this.isFolderPreview = true;
+		this.referenceService.startLoader(this.folderPreviewLoader);
+		this.userService.getItemsCount(category.id, this.loggedInUserId)
+			.subscribe(
+				(response: any) => {
+					this.categoryPreviewItem.items = response.data;
+					this.categoryPreviewItem.categoryId = category.id;
+					this.categoryPreviewItem.categoryName = category.name;
+					console.log(this.categoryPreviewItem);
+					this.referenceService.stopLoader(this.folderPreviewLoader);
+				},
+				(error: string) => {
+					this.referenceService.stopLoader(this.folderPreviewLoader);
+					this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+				}
+			);
+	}
+
+	goToFolder(categoryId: number, item: any) {
+		let count = item.moduleItemsCount;
+		let type = item.moduleName;
+		if (count > 0 && item.previewAccess) {
+			this.ngxloading = true;
+			if ("Templates" == type) {
+				this.router.navigate(['/home/emailtemplates/manage/' + categoryId]);
+			} else if ("Forms" == type) {
+				this.router.navigate(['/home/forms/manage/' + categoryId]);
+			} else if ("Pages" == type) {
+				this.router.navigate(['/home/pages/manage/' + categoryId]);
+			} else if ("Campaigns" == type) {
+				this.router.navigate(['/home/campaigns/manage/' + categoryId]);
+			}
+		}
+
+	}
+
+	/*************Default Display View */
+
+	getModulesDisplayDefaultView() {
+		this.modulesDisplayTypeError = false;
+		this.modulesDisplayViewcustomResponse = new CustomResponse();
+		this.userService.getModulesDisplayDefaultView(this.authenticationService.getUserId())
+			.subscribe(
+				data => {
+					if (data.statusCode == 200) {
+						this.modulesDisplayTypeString = data.data;
+					} else {
+						this.modulesDisplayTypeError = true;
+						this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+					}
+				},
+				error => {
+					this.modulesDisplayTypeError = true;
+					this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				},
+				() => { }
+			);
+	}
+
+	setDefaultView() {
+		this.ngxloading = true;
+		this.modulesDisplayViewcustomResponse = new CustomResponse();
+		this.updateDisplayViewError = false;
+		let selectedValue = $("input[name=moduleDisplayType]:checked").val();
+		this.userService.updateDefaultDisplayView(this.authenticationService.getUserId(), selectedValue)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						this.referenceService.showSweetAlertSuccessMessage(data.message);
+						localStorage.setItem('defaultDisplayType', selectedValue);
+					} else {
+						this.updateDisplayViewError = true;
+						this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+					}
+				},
+				error => {
+					this.updateDisplayViewError = true;
+					this.ngxloading = false;
+					this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+				},
+				() => { }
+			);
+	}
+
+	selectedLanguage(event: any) {
+		//this.translateService.use(this.selectedLanguageCode);        
+	}
+
+	openBeeEditor(event: any) {
+		this.xamplifyDefaultTemplate = event;
+		this.editXamplifyDefaultTemplate = true;
+	}
+
+	goBackToMyProfile() {
+		this.editXamplifyDefaultTemplate = false;
+		this.xamplifyDefaultTemplate = new VanityEmailTempalte();
+		this.referenceService.goToTop();
+	}
+
+	setSubjectLineTooltipText() {
+		this.subjectLineTooltipText = "Set your own subject line"
+	}
+
+	salesforceSettings() {
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationTabIndex = 2;
+		this.ngxloading = true;
+		this.listSalesforceCustomFields();
+	}
+
+	listSalesforceCustomFields() {
+		let self = this;
+		self.selectedCfIds = [];
+		self.integrationService.listSalesforceCustomFields(this.loggedInUserId)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						this.sfCustomFieldsResponse = data.data;
+						this.sfcfMasterCBClicked = false;
+						$.each(this.sfCustomFieldsResponse, function(_index: number, customField) {
+							if (customField.selected) {
+								self.selectedCfIds.push(customField.name);
+							}
+
+							if (customField.required) {
+								self.requiredCfIds.push(customField.name);
+								if (!customField.selected) {
+									self.selectedCfIds.push(customField.name);
+								}
+							}
+						});
+						this.setSfCfPage(1);
+					}
+				},
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
+	}
+
+	closeSfSettings() {
+		this.integrationTabIndex = 0;
+	}
+
+	submitSfSettings() {
+		this.ngxloading = true;
+		let self = this;
+		this.selectedCustomFieldIds = [];
+		$('[name="sfcf[]"]:checked').each(function() {
+			var id = $(this).val();
+			console.log(id);
+			self.selectedCustomFieldIds.push(id);
+		});
+
+		this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+						this.listSalesforceCustomFields();
+					}
+				},
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
+	}
+
+	setSfCfPage(page: number) {
+		this.paginatedSelectedIds = [];
+		try {
+			if (page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages)) {
+				return;
+			}
+			this.sfcfPager = this.socialPagerService.getPager(this.sfCustomFieldsResponse.length, page, this.pageSize);
+			this.sfcfPagedItems = this.sfCustomFieldsResponse.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
+			var cfIds = this.sfcfPagedItems.map(function(a) { return a.name; });
+			var items = $.grep(this.selectedCfIds, function(element) {
+				return $.inArray(element, cfIds) !== -1;
+			});
+			if (items.length == this.sfcfPager.pageSize || items.length == this.sfCustomFieldsResponse.length || items.length == this.sfcfPagedItems.length) {
+				this.isHeaderCheckBoxChecked = true;
+			} else {
+				this.isHeaderCheckBoxChecked = false;
+			}
+
+			if (items) {
+				for (let i = 0; i < items.length; i++) {
+					this.paginatedSelectedIds.push(items[i]);
+				}
+			}
+		} catch (error) {
+			// this.xtremandLogger.error( error, "setSfCfPage()." )
+		}
+
+	}
+
+	selectedPageNumber(event) {
+		this.pageNumber.value = event;
+		if (event === 0) { event = this.sfCustomFieldsResponse.length; }
+		this.pageSize = event;
+		this.setSfCfPage(1);
+	}
+
+	/***********Re configure**************/
 	reConfigSalesforce() {
 		try {
-			  const self = this;
-  swal( {
-      title: 'Salesforce Re-configuration?',
-      text: 'Are you sure? All data related to existing Salesforce account will be deleted by clicking Yes.',
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#54a7e9',
-      cancelButtonColor: '#999',
-      confirmButtonText: 'Yes'
+			const self = this;
+			swal({
+				title: 'Salesforce Re-configuration?',
+				text: 'Are you sure? All data related to existing Salesforce account will be deleted by clicking Yes.',
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#54a7e9',
+				cancelButtonColor: '#999',
+				confirmButtonText: 'Yes'
 
-  }).then( function() {
-      self.configSalesforce();
-  }, function( dismiss: any ) {
-      console.log( 'you clicked on option' + dismiss );
-  }); 
+			}).then(function() {
+				self.configSalesforce();
+			}, function(dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
 		} catch (error) {
 			this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
 			this.ngxloading = false;
 		}
 	}
-	
+
 	sfcfMasterCB() {
 		//let checked = e.target.checked;
 		this.sfcfMasterCBClicked = true;
 	}
-	
-	checkAll( ev: any ) {
-        if ( ev.target.checked ) {
-                console.log( "checked" );
-                $( '[name="sfcf[]"]' ).prop( 'checked', true );
-                let self = this;
-                $( '[name="sfcf[]"]:checked' ).each( function() {
-                    var id = $( this ).val();
-                    self.selectedCfIds.push( id );
-                    self.paginatedSelectedIds.push( id );
-                });
-                this.selectedCfIds = this.referenceService.removeDuplicates( this.selectedCfIds );
-                this.paginatedSelectedIds = this.referenceService.removeDuplicates( this.paginatedSelectedIds );
-                console.log( self.selectedCfIds );
-            } else {
-            	let self = this;
-                //$( '[name="sfcf[]"]' ).prop( 'checked', false );
-                
-                $( '[name="sfcf[]"]' ).each( function() {
-                    var id = $( this ).val();
-                    if(self.requiredCfIds.indexOf(id) == -1) {
-                    	 $( this ).prop( 'checked', false );
-                    	 self.paginatedSelectedIds.splice( $.inArray( id, self.paginatedSelectedIds ), 1 );
-                    } 
-                    
-                });
-                
-                if ( this.sfcfPager.maxResults == this.sfcfPager.totalItems ) {
-                    this.selectedCfIds = [];
-                    this.paginatedSelectedIds = [];
-                    //this.allselectedUsers.length = 0;
-                } else {
-                    //this.paginatedSelectedIds = [];
-                    let currentPageCfIds = this.sfcfPagedItems.map( function( a ) { return a.name; });
-                     this.paginatedSelectedIds = this.referenceService.removeDuplicates( this.paginatedSelectedIds );
-                    this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays( this.selectedCfIds, currentPageCfIds );
-                }
-            }
-            ev.stopPropagation();
-    }
-	
-	selectCf( cfName: string) {
-        let isChecked = $( '#' + cfName ).is( ':checked' );
-        console.log( this.selectedCfIds )
-        if ( isChecked ) {
-            if(this.selectedCfIds.indexOf(cfName) == -1) {
-                 this.selectedCfIds.push( cfName );   	
-             }
-             if(this.paginatedSelectedIds.indexOf(cfName) == -1) {
-                 this.paginatedSelectedIds.push( cfName );   	
-             }
-            
-            console.log( this.selectedCfIds );
-        } else {
-            this.selectedCfIds.splice( $.inArray( cfName, this.selectedCfIds ), 1 );
-            this.paginatedSelectedIds.splice( $.inArray( cfName, this.paginatedSelectedIds ), 1 );
 
-        }
-        if ( this.paginatedSelectedIds.length == this.sfcfPagedItems.length ) {
-            this.isHeaderCheckBoxChecked = true;
-        } else {
-            this.isHeaderCheckBoxChecked = false;
-        }
-        event.stopPropagation();
-    }
+	checkAll(ev: any) {
+		if (ev.target.checked) {
+			console.log("checked");
+			$('[name="sfcf[]"]').prop('checked', true);
+			let self = this;
+			$('[name="sfcf[]"]:checked').each(function() {
+				var id = $(this).val();
+				self.selectedCfIds.push(id);
+				self.paginatedSelectedIds.push(id);
+			});
+			this.selectedCfIds = this.referenceService.removeDuplicates(this.selectedCfIds);
+			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
+			console.log(self.selectedCfIds);
+		} else {
+			let self = this;
+			//$( '[name="sfcf[]"]' ).prop( 'checked', false );
 
-    addPipeline() {          
-        this.pipelineModalTitle = "Add a Pipeline"; 
-        $('#addPipelineModalPopup').modal('show');                
-    }
+			$('[name="sfcf[]"]').each(function() {
+				var id = $(this).val();
+				if (self.requiredCfIds.indexOf(id) == -1) {
+					$(this).prop('checked', false);
+					self.paginatedSelectedIds.splice($.inArray(id, self.paginatedSelectedIds), 1);
+				}
 
-    viewPipeline(pipelineToView: Pipeline) {   
-        let self = this;              
-        this.pipelineModalTitle = "View Pipeline";
-        $('#addPipelineModalPopup').modal('show');
-        this.referenceService.startLoader(this.addPipelineLoader);
-        this.pipelinePreview = true;
-        this.getPipeline(pipelineToView);
-    }
+			});
 
-    editPipeline(pipeline: Pipeline) { 
-        this.pipelineModalTitle = "Edit Pipeline";
-        $('#addPipelineModalPopup').modal('show');
-        this.referenceService.startLoader(this.addPipelineLoader);
-        this.getPipeline(pipeline);       
-    }
+			if (this.sfcfPager.maxResults == this.sfcfPager.totalItems) {
+				this.selectedCfIds = [];
+				this.paginatedSelectedIds = [];
+				//this.allselectedUsers.length = 0;
+			} else {
+				//this.paginatedSelectedIds = [];
+				let currentPageCfIds = this.sfcfPagedItems.map(function(a) { return a.name; });
+				this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
+				this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCfIds, currentPageCfIds);
+			}
+		}
+		ev.stopPropagation();
+	}
 
-    getPipeline(pipeline: Pipeline) {
-        let self = this;  
-        this.dashBoardService.getPipeline(pipeline.id, this.loggedInUserId)
-        .subscribe(
-            data => {
-                this.ngxloading = false;
-                if(data.statusCode==200){                   
-                    self.pipeline =  data.data; 
-                    let orderedStages = new Array<PipelineStage>();
-                    self.pipeline.stages.forEach(function (stage, index)  {
-                        if (stage.won === true) {
-                            stage.markAs = "won";
-                        } else if (stage.lost === true) {
-                            stage.markAs = "lost";
-                        } else {
-                            stage.markAs = "markAs"
-                        }                       
-                        orderedStages[stage.displayIndex - 1] = stage;
-                        if (stage.defaultStage === true) {
-                            self.defaultStageIndex = stage.displayIndex - 1;
-                        }
-                       });  
-                       self.pipeline.stages = orderedStages;
-                       self.pipeline.isValidStage =  true;
-                       self.pipeline.isValidName = true;
-                       self.pipeline.isValid = true;
-                } else { 
-                    this.closePipelineModal();
-                    this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
-                }
-                this.referenceService.stopLoader(this.addPipelineLoader);
-            },
-            error => {
-                this.ngxloading = false;
-                },
-            () => { }
-        );
-    }
+	selectCf(cfName: string) {
+		let isChecked = $('#' + cfName).is(':checked');
+		console.log(this.selectedCfIds)
+		if (isChecked) {
+			if (this.selectedCfIds.indexOf(cfName) == -1) {
+				this.selectedCfIds.push(cfName);
+			}
+			if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+				this.paginatedSelectedIds.push(cfName);
+			}
 
-    closePipelineModal() {
-        $('#addPipelineModalPopup').modal('hide');
-        this.referenceService.stopLoader(this.addPipelineLoader);
-        this.pipelineModalResponse = new CustomResponse();
-        this.pipeline = new Pipeline();
-        this.addDefaultPipelineStages();
-        this.removePipelineNameErrorClass();
-        this.removePipelineStageErrorClass();
-        this.defaultStageIndex = 0;
-        this.pipelineType = 'LEAD';
-        this.pipeline.isValid = false;
-        this.pipeline.isValidStage = false;
-        this.pipeline.isValidName = false;
-        this.pipelinePreview = false;
-    }
+			console.log(this.selectedCfIds);
+		} else {
+			this.selectedCfIds.splice($.inArray(cfName, this.selectedCfIds), 1);
+			this.paginatedSelectedIds.splice($.inArray(cfName, this.paginatedSelectedIds), 1);
 
-    validatePipelineName(name: string) {
-        if ($.trim(name).length > 0) {
-            this.removePipelineNameErrorClass(); 
-            this.pipeline.isValid = this.pipeline.isValidName && this.pipeline.isValidStage;                       
-        } else {
-            this.addPipelineNameErrorMessage(this.requiredMessage);
-        }
-    }
+		}
+		if (this.paginatedSelectedIds.length == this.sfcfPagedItems.length) {
+			this.isHeaderCheckBoxChecked = true;
+		} else {
+			this.isHeaderCheckBoxChecked = false;
+		}
+		event.stopPropagation();
+	}
 
-    validateStage(stageName: string){
-        if ($.trim(stageName).length > 0) {
-            this.removePipelineStageErrorClass();
-            this.pipeline.isValid = this.pipeline.isValidName && this.pipeline.isValidStage;            
-        } else {
-            let validStages = false;
-            this.pipeline.stages.forEach(function (stage, index) {
-                if (($.trim(stage.stageName).length > 0)) {
-                    validStages = true;
-                }
-            });
-            if (!validStages) {
-                this.addPipelineStageErrorMessage(this.requiredStageMessage);
-            }            
-        }
-    }
+	addPipeline() {
+		this.pipelineModalTitle = "Add a Pipeline";
+		$('#addPipelineModalPopup').modal('show');
+	}
 
-    addPipelineNameErrorMessage(errorMessage: string) {
-        this.pipeline.isValidName = false;
-        this.pipeline.isValid = false;
-        $('#pipelineNameDiv').addClass(this.formErrorClass);
-        this.pipelineNameErrorMessage = errorMessage;
-    }
+	viewPipeline(pipelineToView: Pipeline) {
+		let self = this;
+		this.pipelineModalTitle = "View Pipeline";
+		$('#addPipelineModalPopup').modal('show');
+		this.referenceService.startLoader(this.addPipelineLoader);
+		this.pipelinePreview = true;
+		this.getPipeline(pipelineToView);
+	}
 
-    addPipelineStageErrorMessage(errorMessage: string) {
-        this.pipeline.isValidStage = false;
-        this.pipeline.isValid = false;
-        $('#pipelineStageDiv').addClass(this.formErrorClass);
-        this.pipelineStageErrorMessage = errorMessage;
-    }
+	editPipeline(pipeline: Pipeline) {
+		this.pipelineModalTitle = "Edit Pipeline";
+		$('#addPipelineModalPopup').modal('show');
+		this.referenceService.startLoader(this.addPipelineLoader);
+		this.getPipeline(pipeline);
+	}
 
-    removePipelineNameErrorClass() {
-        $('#pipelineNameDiv').removeClass(this.formErrorClass);
-        $('#pipelineNameDiv').addClass(this.defaultFormClass);
-        this.pipeline.isValidName = true;
-        this.pipelineResponse = new CustomResponse();
-        this.pipelineNameErrorMessage = "";
-    }
+	getPipeline(pipeline: Pipeline) {
+		let self = this;
+		this.dashBoardService.getPipeline(pipeline.id, this.loggedInUserId)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						self.pipeline = data.data;
+						let orderedStages = new Array<PipelineStage>();
+						self.pipeline.stages.forEach(function(stage, index) {
+							if (stage.won === true) {
+								stage.markAs = "won";
+							} else if (stage.lost === true) {
+								stage.markAs = "lost";
+							} else {
+								stage.markAs = "markAs"
+							}
+							orderedStages[stage.displayIndex - 1] = stage;
+							if (stage.defaultStage === true) {
+								self.defaultStageIndex = stage.displayIndex - 1;
+							}
+						});
+						self.pipeline.stages = orderedStages;
+						self.pipeline.isValidStage = true;
+						self.pipeline.isValidName = true;
+						self.pipeline.isValid = true;
+					} else {
+						this.closePipelineModal();
+						this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
+					}
+					this.referenceService.stopLoader(this.addPipelineLoader);
+				},
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
+	}
 
-    removePipelineStageErrorClass() {
-        $('#pipelineStageDiv').removeClass(this.formErrorClass);
-        $('#pipelineStageDiv').addClass(this.defaultFormClass);
-        this.pipeline.isValidStage = true;        
-        this.pipelineResponse = new CustomResponse();
-        this.pipelineStageErrorMessage = "";
+	closePipelineModal() {
+		$('#addPipelineModalPopup').modal('hide');
+		this.referenceService.stopLoader(this.addPipelineLoader);
+		this.pipelineModalResponse = new CustomResponse();
+		this.pipeline = new Pipeline();
+		this.addDefaultPipelineStages();
+		this.removePipelineNameErrorClass();
+		this.removePipelineStageErrorClass();
+		this.defaultStageIndex = 0;
+		this.pipelineType = 'LEAD';
+		this.pipeline.isValid = false;
+		this.pipeline.isValidStage = false;
+		this.pipeline.isValidName = false;
+		this.pipelinePreview = false;
+	}
 
-    }
+	validatePipelineName(name: string) {
+		if ($.trim(name).length > 0) {
+			this.removePipelineNameErrorClass();
+			this.pipeline.isValid = this.pipeline.isValidName && this.pipeline.isValidStage;
+		} else {
+			this.addPipelineNameErrorMessage(this.requiredMessage);
+		}
+	}
 
-    pipelineSumbitOnEnter(event: any) {
-        if (event.keyCode == 13 && this.pipeline.isValid) {
-            this.saveOrUpdatePipeline();
-        }
-    }
+	validateStage(stageName: string) {
+		if ($.trim(stageName).length > 0) {
+			this.removePipelineStageErrorClass();
+			this.pipeline.isValid = this.pipeline.isValidName && this.pipeline.isValidStage;
+		} else {
+			let validStages = false;
+			this.pipeline.stages.forEach(function(stage, index) {
+				if (($.trim(stage.stageName).length > 0)) {
+					validStages = true;
+				}
+			});
+			if (!validStages) {
+				this.addPipelineStageErrorMessage(this.requiredStageMessage);
+			}
+		}
+	}
 
-    saveOrUpdatePipeline() {
-        //this.referenceService.startLoader(this.addPipelineLoader);  
-        let self = this;      
-        this.pipeline.userId = this.loggedInUserId;
-        if (this.activeTabName=="leadPipelines") {
-            this.pipeline.type = "LEAD";
-        } else if (this.activeTabName=="dealPipelines") {
-            this.pipeline.type = "DEAL";
-        }    
-        let removeIndices = new Array();    
-        this.pipeline.stages.forEach(function (stage, index)  {            
-            if (stage.stageName !== undefined && $.trim(stage.stageName).length > 0) {
-                if (stage.markAs === "won") {
-                    stage.won = true;
-                } else if (stage.markAs === "lost") {
-                    stage.lost = true;
-                } else {
-                    stage.won = false;
-                    stage.lost = false;
-                }
-                stage.defaultStage = false;
-            } else {
-                removeIndices.push(index);
-            }            
-           });
+	addPipelineNameErrorMessage(errorMessage: string) {
+		this.pipeline.isValidName = false;
+		this.pipeline.isValid = false;
+		$('#pipelineNameDiv').addClass(this.formErrorClass);
+		this.pipelineNameErrorMessage = errorMessage;
+	}
 
-           for (let i = removeIndices.length-1; i>=0; i--) {
-                self.pipeline.stages.splice(removeIndices[i], 1);
-           }
-        //    removeIndices.forEach(function(removeIndex, index) {
-        //     self.pipeline.stages.splice(removeIndex, 1);
-        //    });
-           this.pipeline.stages[this.defaultStageIndex].defaultStage = true;
-           console.log(this.pipeline);
-        
-        this.dashBoardService.saveOrUpdatePipeline(this.pipeline)
-        .subscribe(
-            data => {
-                this.ngxloading = false;
-                if(data.statusCode==200){                      
-                    this.closePipelineModal();
-                    this.pipelineResponse = new CustomResponse('SUCCESS', "Pipeline Submitted Successfully", true);
-                    this.listAllPipelines(this.pipelinePagination);              
-                } else if (data.statusCode==500) {
-                    this.pipelineModalResponse = new CustomResponse('ERROR', data.message, true);
-                }
-            },
-            error => {
-                this.ngxloading = false;
-                },
-            () => { }
-        );     
-    }
+	addPipelineStageErrorMessage(errorMessage: string) {
+		this.pipeline.isValidStage = false;
+		this.pipeline.isValid = false;
+		$('#pipelineStageDiv').addClass(this.formErrorClass);
+		this.pipelineStageErrorMessage = errorMessage;
+	}
 
-    addDefaultPipelineStages() {        
-        for(var i = 0; i < 4; i++){
-            this.addStage();
-         }        
-    }
+	removePipelineNameErrorClass() {
+		$('#pipelineNameDiv').removeClass(this.formErrorClass);
+		$('#pipelineNameDiv').addClass(this.defaultFormClass);
+		this.pipeline.isValidName = true;
+		this.pipelineResponse = new CustomResponse();
+		this.pipelineNameErrorMessage = "";
+	}
 
-    deleteStage(divIndex: number) {
-        this.pipeline.stages.splice(divIndex, 1);
-    }
+	removePipelineStageErrorClass() {
+		$('#pipelineStageDiv').removeClass(this.formErrorClass);
+		$('#pipelineStageDiv').addClass(this.defaultFormClass);
+		this.pipeline.isValidStage = true;
+		this.pipelineResponse = new CustomResponse();
+		this.pipelineStageErrorMessage = "";
 
-    addStage() {
-        let pipelineStage = new PipelineStage();
-        pipelineStage.markAs = "markAs";
-        pipelineStage.canDelete = true;
-        this.pipeline.stages.push(pipelineStage);
-    }
+	}
 
-    listAllPipelines(pagination: Pagination) {
-        let type:string;
-        if (this.activeTabName=="leadPipelines") {
-            type = "LEAD";
-        } else if (this.activeTabName=="dealPipelines") {
-            type = "DEAL";
-        }
-        pagination.userId = this.loggedInUserId;
-        pagination.pipelineType = type;
-        this.dashBoardService.listAllPipelines(pagination)
-        .subscribe(
-            response => {
-                this.ngxloading = false;
-               // this.pipelines = response.data; 
-                pagination.totalRecords = response.totalRecords;
-                this.pipelineSortOption.totalRecords = response.totalRecords;
-                pagination = this.pagerService.getPagedItems(pagination, response.data);
-            },
-            error => {
-                this.ngxloading = false;
-                },
-            () => { }
-        );    
-    }   
+	pipelineSumbitOnEnter(event: any) {
+		if (event.keyCode == 13 && this.pipeline.isValid) {
+			this.saveOrUpdatePipeline();
+		}
+	}
 
-    confirmDeletePipeline (pipeline: Pipeline) {
-        try {
-            let self = this;
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to undo this action!",
-                type: 'warning',
-                showCancelButton: true,
-                swalConfirmButtonColor: '#54a7e9',
-                swalCancelButtonColor: '#999',
-                confirmButtonText: 'Yes, delete it!'
+	saveOrUpdatePipeline() {
+		//this.referenceService.startLoader(this.addPipelineLoader);  
+		let self = this;
+		this.pipeline.userId = this.loggedInUserId;
+		if (this.activeTabName == "leadPipelines") {
+			this.pipeline.type = "LEAD";
+		} else if (this.activeTabName == "dealPipelines") {
+			this.pipeline.type = "DEAL";
+		}
+		let removeIndices = new Array();
+		this.pipeline.stages.forEach(function(stage, index) {
+			if (stage.stageName !== undefined && $.trim(stage.stageName).length > 0) {
+				if (stage.markAs === "won") {
+					stage.won = true;
+				} else if (stage.markAs === "lost") {
+					stage.lost = true;
+				} else {
+					stage.won = false;
+					stage.lost = false;
+				}
+				stage.defaultStage = false;
+			} else {
+				removeIndices.push(index);
+			}
+		});
 
-            }).then(function () {
-                self.deletePipeline(pipeline);
-            }, function (dismiss: any) {
-                console.log('you clicked on option' + dismiss);
-            });
-        } catch (error) {
-            this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
-            this.referenceService.showServerError(this.httpRequestLoader);
-        }
+		for (let i = removeIndices.length - 1; i >= 0; i--) {
+			self.pipeline.stages.splice(removeIndices[i], 1);
+		}
+		//    removeIndices.forEach(function(removeIndex, index) {
+		//     self.pipeline.stages.splice(removeIndex, 1);
+		//    });
+		this.pipeline.stages[this.defaultStageIndex].defaultStage = true;
+		console.log(this.pipeline);
 
-    }
+		this.dashBoardService.saveOrUpdatePipeline(this.pipeline)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						this.closePipelineModal();
+						this.pipelineResponse = new CustomResponse('SUCCESS', "Pipeline Submitted Successfully", true);
+						this.listAllPipelines(this.pipelinePagination);
+					} else if (data.statusCode == 500) {
+						this.pipelineModalResponse = new CustomResponse('ERROR', data.message, true);
+					}
+				},
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
+	}
 
-    deletePipeline (pipeline: Pipeline) {
-        pipeline.userId = this.loggedInUserId;
-        this.pipelineResponse = new CustomResponse();
-        this.referenceService.goToTop();
-        this.dashBoardService.deletePipeline(pipeline)
-            .subscribe(
-                (response: any) => {
-                    // this.closeDeleteCategoryModal();
-                    if (response.statusCode == 200) {
-                        let message = pipeline.name + " Deleted Successfully";
-                        this.pipelineResponse = new CustomResponse('SUCCESS', message, true);                        
-                        this.pipelinePagination.pageIndex = 1;
-                        this.listAllPipelines(this.pipelinePagination);
-                    } else if (response.statusCode == 400) {
-                        this.pipelineResponse = new CustomResponse('ERROR', response.message, true); 
-                    }
-                },
-                (error: string) => {
-                    this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-                    this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
-                }                
-            );
-    }
+	addDefaultPipelineStages() {
+		for (var i = 0; i < 4; i++) {
+			this.addStage();
+		}
+	}
 
-    syncPipeline(pipeline: Pipeline) {
-        let self = this; 
-        this.ngxloading = true; 
-        this.dashBoardService.syncPipeline(pipeline.id, this.loggedInUserId)
-        .subscribe(
-            data => {
-                this.ngxloading = false;
-                if(data.statusCode==200){                   
-                    let message = pipeline.name + " Synchronized Successfully";
-                    this.pipelineResponse = new CustomResponse('SUCCESS', message, true);                        
-                    this.pipelinePagination.pageIndex = 1;
-                    this.listAllPipelines(this.pipelinePagination);
-                } else { 
-                    this.closePipelineModal();
-                    this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
-                }
-            },
-            error => {
-                this.ngxloading = false;
-                this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-                this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
-                },
-            () => { }
-        );
-    }
+	deleteStage(divIndex: number) {
+		this.pipeline.stages.splice(divIndex, 1);
+	}
 
-    
-    /*************************Search********************** */
-    searchPipelines() {
-        this.getAllFilteredResultsPipeline(this.pipelinePagination);
-    }
+	addStage() {
+		let pipelineStage = new PipelineStage();
+		pipelineStage.markAs = "markAs";
+		pipelineStage.canDelete = true;
+		this.pipeline.stages.push(pipelineStage);
+	}
 
-    pipelinePaginationDropdown(items: any) {
-        this.pipelineSortOption.itemsSize = items;
-        this.getAllFilteredResults(this.pipelinePagination);
-    }
+	listAllPipelines(pagination: Pagination) {
+		let type: string;
+		if (this.activeTabName == "leadPipelines") {
+			type = "LEAD";
+		} else if (this.activeTabName == "dealPipelines") {
+			type = "DEAL";
+		}
+		pagination.userId = this.loggedInUserId;
+		pagination.pipelineType = type;
+		this.dashBoardService.listAllPipelines(pagination)
+			.subscribe(
+				response => {
+					this.ngxloading = false;
+					// this.pipelines = response.data; 
+					pagination.totalRecords = response.totalRecords;
+					this.pipelineSortOption.totalRecords = response.totalRecords;
+					pagination = this.pagerService.getPagedItems(pagination, response.data);
+				},
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
+	}
 
-    /************Page************** */
-    setPipelinePage(event: any) {
-        this.pipelineResponse = new CustomResponse();
-        this.customResponse = new CustomResponse();
-        this.pipelinePagination.pageIndex = event.page;
-        this.listAllPipelines(this.pipelinePagination);
-    }
+	confirmDeletePipeline(pipeline: Pipeline) {
+		try {
+			let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to undo this action!",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, delete it!'
 
-    getAllFilteredResultsPipeline(pagination: Pagination) {
-        this.pipelineResponse = new CustomResponse();
-        this.customResponse = new CustomResponse();
-        this.pipelinePagination.pageIndex = 1;
-        this.pipelinePagination.searchKey = this.pipelineSortOption.searchKey;
-        //this.pipelinePagination = this.utilService.sortOptionValues(this.pipelineSortOption.selectedCategoryDropDownOption, this.pipelinePagination);
-        this.listAllPipelines(this.pipelinePagination);
-    }
-    pipelineEventHandler(keyCode: any) { if (keyCode === 13) { this.searchPipelines(); } }
-    
+			}).then(function() {
+				self.deletePipeline(pipeline);
+			}, function(dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+		} catch (error) {
+			this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+			this.referenceService.showServerError(this.httpRequestLoader);
+		}
+
+	}
+
+	deletePipeline(pipeline: Pipeline) {
+		pipeline.userId = this.loggedInUserId;
+		this.pipelineResponse = new CustomResponse();
+		this.referenceService.goToTop();
+		this.dashBoardService.deletePipeline(pipeline)
+			.subscribe(
+				(response: any) => {
+					// this.closeDeleteCategoryModal();
+					if (response.statusCode == 200) {
+						let message = pipeline.name + " Deleted Successfully";
+						this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
+						this.pipelinePagination.pageIndex = 1;
+						this.listAllPipelines(this.pipelinePagination);
+					} else if (response.statusCode == 400) {
+						this.pipelineResponse = new CustomResponse('ERROR', response.message, true);
+					}
+				},
+				(error: string) => {
+					this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+					this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+				}
+			);
+	}
+
+	syncPipeline(pipeline: Pipeline) {
+		let self = this;
+		this.ngxloading = true;
+		this.dashBoardService.syncPipeline(pipeline.id, this.loggedInUserId)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						let message = pipeline.name + " Synchronized Successfully";
+						this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
+						this.pipelinePagination.pageIndex = 1;
+						this.listAllPipelines(this.pipelinePagination);
+					} else {
+						this.closePipelineModal();
+						this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
+					}
+				},
+				error => {
+					this.ngxloading = false;
+					this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+					this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+				},
+				() => { }
+			);
+	}
+
+
+	/*************************Search********************** */
+	searchPipelines() {
+		this.getAllFilteredResultsPipeline(this.pipelinePagination);
+	}
+
+	pipelinePaginationDropdown(items: any) {
+		this.pipelineSortOption.itemsSize = items;
+		this.getAllFilteredResults(this.pipelinePagination);
+	}
+
+	/************Page************** */
+	setPipelinePage(event: any) {
+		this.pipelineResponse = new CustomResponse();
+		this.customResponse = new CustomResponse();
+		this.pipelinePagination.pageIndex = event.page;
+		this.listAllPipelines(this.pipelinePagination);
+	}
+
+	getAllFilteredResultsPipeline(pagination: Pagination) {
+		this.pipelineResponse = new CustomResponse();
+		this.customResponse = new CustomResponse();
+		this.pipelinePagination.pageIndex = 1;
+		this.pipelinePagination.searchKey = this.pipelineSortOption.searchKey;
+		//this.pipelinePagination = this.utilService.sortOptionValues(this.pipelineSortOption.selectedCategoryDropDownOption, this.pipelinePagination);
+		this.listAllPipelines(this.pipelinePagination);
+	}
+	pipelineEventHandler(keyCode: any) { if (keyCode === 13) { this.searchPipelines(); } }
+
 }

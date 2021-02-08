@@ -219,6 +219,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  defaultLeadPipelineId = 0;
  defaultDealPipelineId = 0;
  salesforceIntegrated = false;
+ showConfigurePipelines = false;
 
  isValidPipeline = true;
 
@@ -266,7 +267,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         this.completeLoader = false;
     });
     const roles = this.authenticationService.getRoles();
-        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 ;
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 || roles.indexOf(this.roleName.prmRole)>-1 ;
         this.isOrgAdminOrOrgAdminTeamMember = (this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.reDistributeEvent;
         this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
   }
@@ -718,7 +719,7 @@ listCampaignPipelines() {
   loadContactLists(contactListsPagination: Pagination) {
     this.paginationType = 'contactlists';
     const roles = this.authenticationService.getRoles();
-    this.isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1;
+    this.isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 || roles.indexOf(this.roleName.prmRole)>-1;
     if(this.isEditCampaign){
        contactListsPagination.editCampaign = true;
        contactListsPagination.campaignId = this.eventCampaign.id;
@@ -799,7 +800,7 @@ listCampaignPipelines() {
   }
   clearSelectedContactList(){
       const roles = this.authenticationService.getRoles();
-      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 ;
+      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 || roles.indexOf(this.roleName.prmRole)>-1 ;
       if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
         this.parternUserListIds = [];
         this.userListIds = [];
@@ -2770,6 +2771,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                         let cfResponse = data;
                         if (cfResponse.statusCode === 200) {
                             this.salesforceIntegrated = true;
+                            this.showConfigurePipelines = false;
                         } else if (cfResponse.statusCode === 400) {
                             swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
                         }
@@ -2779,6 +2781,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
                     console.log("isPushToSalesforce ::::" + this.pushToCRM);
                 } else {
+                    this.showConfigurePipelines = true;
                     this.listCampaignPipelines();
                 }
             }, error => {

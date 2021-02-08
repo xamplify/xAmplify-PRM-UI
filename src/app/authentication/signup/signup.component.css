@@ -15,3 +15,11 @@
     font-size: 22px;
     cursor: pointer;
 }
+
+.agree-link{
+  color: white;
+  cursor: pointer;
+}
+.agree-link:hover{
+  color: #5b9bd1;
+}

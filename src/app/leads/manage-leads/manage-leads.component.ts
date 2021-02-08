@@ -17,6 +17,7 @@ import { Roles } from '../../core/models/roles';
 import { LeadsService } from '../services/leads.service';
 import { Lead } from '../models/lead';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -42,13 +43,25 @@ export class ManageLeadsComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadFormTitle = "Lead";
   actionType = "add";
-  leadId = 0;
-  showLeadForm = false;
-  showDealForm = false;
+  leadId = 0;  
   leadsResponse: CustomResponse = new CustomResponse();
   counts : any;
   countsLoader = false;
   syncSalesForce = false;
+  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+  listView = true;
+  campaignPagination: Pagination;
+  campaignSortOption: SortOption = new SortOption();
+  partnerPagination: Pagination;
+  partnerSortOption: SortOption = new SortOption();
+  selectedCampaignId = 0;
+  selectedCampaignName = "";
+  selectedPartnerCompanyId = 0;
+  selectedPartnerCompanyName = "";
+  showPartnerList = false;
+  showCampaignLeads = false;
+  showLeadForm = false;
+  showDealForm = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -57,26 +70,35 @@ export class ManageLeadsComponent implements OnInit {
     private dealRegistrationService: DealRegistrationService, private leadsService: LeadsService, 
     public integrationService: IntegrationService) {
 
-      this.loggedInUserId = this.authenticationService.getUserId();
+    this.loggedInUserId = this.authenticationService.getUserId();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    } else {
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
         const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
-        userService.getHomeRoles(url)
-            .subscribe(
-                response => {
-                    if (response.statusCode == 200) {
-                        this.authenticationService.loggedInUserRole = response.data.role;
-                        this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-                        this.authenticationService.superiorRole = response.data.superiorRole;
-                        if (this.authenticationService.loggedInUserRole == "Team Member") {
-                            dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
-                                this.superiorId = response;
-                                this.init();
-                            });
-                        } else {
-                            this.superiorId = this.authenticationService.getUserId();
-                            this.init();
-                        }
-                    }
-                })
+        // userService.getHomeRoles(url)
+        //     .subscribe(
+        //         response => {
+        //             if (response.statusCode == 200) {
+        //                 this.authenticationService.loggedInUserRole = response.data.role;
+        //                 this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+        //                 this.authenticationService.superiorRole = response.data.superiorRole;
+        //                 if (this.authenticationService.loggedInUserRole == "Team Member") {
+        //                     dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
+        //                         this.superiorId = response;
+        //                         this.init();
+        //                     });
+        //                 } else {
+        //                     this.superiorId = this.authenticationService.getUserId();
+        //                     this.init();
+        //                 }
+        //             }
+        //         })
+        this.init();
         
   }
 
@@ -84,47 +106,6 @@ export class ManageLeadsComponent implements OnInit {
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     
-  }
-
-  initVendorOrPartner() {
-    if (!this.isOnlyPartner) {
-      if (this.authenticationService.vanityURLEnabled) {
-        if (this.authenticationService.isPartnerTeamMember) {
-          this.showPartner();
-        } else {
-          this.isCompanyPartner = false;
-          this.showVendor();
-        }
-      } else {
-        this.showVendor();
-      }
-    } else {
-      this.showPartner();
-    }
-  }
-
-  getUserRoles(url: any) {
-    this.userService.getHomeRoles(url)
-      .subscribe(
-        response => {
-          if (response.statusCode == 200) {
-            this.authenticationService.loggedInUserRole = response.data.role;
-            this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-            this.authenticationService.superiorRole = response.data.superiorRole; 
-            if (this.authenticationService.loggedInUserRole == "Team Member") {
-              this.dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
-                this.superiorId = response; 
-                this.init();       
-              });
-            } else {
-              this.superiorId = this.authenticationService.getUserId();
-              this.init();
-            }           
-          }
-        },
-        () => {
-          
-        });
   }
 
   init() {
@@ -161,24 +142,39 @@ export class ManageLeadsComponent implements OnInit {
         }
       }
     }
-    this.referenceService.getCompanyIdByUserId(this.superiorId).subscribe(response => {
+    this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(response => {
       console.log(this.superiorId)
       this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
         this.enableLeads = data.enableLeads; 
         if (!this.isOnlyPartner) {
           if (this.authenticationService.vanityURLEnabled) {
-            if (this.authenticationService.isPartnerTeamMember) {
-              this.showPartner();
-            } else {
-              this.isCompanyPartner = false;
-              this.showVendor();
-            }
+            // if (this.authenticationService.isPartnerTeamMember) {
+            //   this.showPartner();
+            // } else {
+            //   this.isCompanyPartner = false;
+            //   this.showVendor();
+            // }
+            this.leadsService.getViewType(this.vanityLoginDto) .subscribe(
+              response => {
+                  if(response.statusCode==200){
+                    if (response.data === "PartnerView") {
+                      this.showPartner();
+                    } else if (response.data === "VendorView") {
+                      this.showVendor();
+                    } 
+                  }            
+              },
+              error => {
+                  this.httpRequestLoader.isServerError = true;
+                  },
+              () => { }
+            );
           } else {
             this.showVendor();
           }
         } else {
           this.showPartner();
-        }       
+        } 
       });
     });
     
@@ -190,26 +186,40 @@ export class ManageLeadsComponent implements OnInit {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
       this.checkSalesforceIntegration();
-      this.getVendorCounts();
+      //this.getVendorCounts();
       this.showLeads();
-      //this.switchVersions();
     } else {
       this.showPartner();
     }
   }
   showPartner() {
-    if (this.isCompanyPartner) {
-      this.isVendorVersion = false;
-      this.isPartnerVersion = true;
-      this.getPartnerCounts();
-      this.showLeads();
-      //this.switchVersions();
-    }
+    this.isVendorVersion = false;
+    this.isPartnerVersion = true;
+    //this.getPartnerCounts();
+    this.showLeads();
+  }
+
+  setViewType() {
+    this.leadsService.getViewType(this.vanityLoginDto) .subscribe(
+      response => {
+          if(response.statusCode==200){
+            if (response.data === "PartnerView") {
+              this.showPartner();
+            } else if (response.data === "VendorView") {
+              this.showVendor();
+            } 
+          }            
+      },
+      error => {
+          this.httpRequestLoader.isServerError = true;
+          },
+      () => { }
+  );
   }
 
   getVendorCounts() {
     this.countsLoader = true;
-    this.leadsService.getCounts(this.loggedInUserId)
+    this.leadsService.getCounts(this.vanityLoginDto)
     .subscribe(
         response => {
             if(response.statusCode==200){
@@ -226,7 +236,7 @@ export class ManageLeadsComponent implements OnInit {
 
   getPartnerCounts() {
     this.countsLoader = true;
-    this.leadsService.getCounts(this.loggedInUserId)
+    this.leadsService.getCounts(this.vanityLoginDto)
     .subscribe(
         response => {
             if(response.statusCode==200){
@@ -242,30 +252,48 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   showLeads() {
+    this.getCounts();
     this.selectedTabIndex = 1;
     this.leadsPagination = new Pagination;
+    this.campaignPagination = new Pagination;
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.leadsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
     this.listLeads(this.leadsPagination);
+    this.listCampaigns(this.campaignPagination);
   }
 
   showWonLeads() {
     this.selectedTabIndex = 2;
     this.leadsPagination = new Pagination;
     this.leadsPagination.filterKey = "won";
+    this.campaignPagination = new Pagination;
+    this.campaignPagination.filterKey = "won";
     this.listLeads(this.leadsPagination);
+    this.listCampaigns(this.campaignPagination);
   }
 
   showLostLeads() {
     this.selectedTabIndex = 3;
     this.leadsPagination = new Pagination;
     this.leadsPagination.filterKey = "lost";
+    this.campaignPagination = new Pagination;
+    this.campaignPagination.filterKey = "lost";
     this.listLeads(this.leadsPagination);
+    this.listCampaigns(this.campaignPagination);
   }
 
   showConvertedLeads() {
     this.selectedTabIndex = 4;
     this.leadsPagination = new Pagination;
     this.leadsPagination.filterKey = "converted";
+    this.campaignPagination = new Pagination;
+    this.campaignPagination.filterKey = "converted";
     this.listLeads(this.leadsPagination);
+    this.listCampaigns(this.campaignPagination);
   }
 
   listLeads(pagination: Pagination) {
@@ -275,6 +303,49 @@ export class ManageLeadsComponent implements OnInit {
     } else if (this.isPartnerVersion) {
       this.listLeadsForPartner(pagination);
     }
+  }
+
+  listCampaigns(pagination: Pagination) {
+    pagination.userId = this.loggedInUserId;
+    if (this.isVendorVersion) {
+      this.listCampaignsForVendor(pagination);
+    } else if (this.isPartnerVersion) {
+      this.listCampaignsForPartner(pagination);
+    }
+  }
+
+  listCampaignsForVendor(pagination: Pagination) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.listCampaignsForVendor(pagination)
+    .subscribe(
+        response => {            
+            this.referenceService.loading(this.httpRequestLoader, false);
+            pagination.totalRecords = response.data.totalRecords;
+            this.campaignSortOption.totalRecords = response.data.totalRecords;
+            pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
+        },
+        error => {
+            this.httpRequestLoader.isServerError = true;
+            },
+        () => { }
+    );
+  }
+
+  listCampaignsForPartner(pagination: Pagination) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.listCampaignsForPartner(pagination)
+    .subscribe(
+        response => {            
+            this.referenceService.loading(this.httpRequestLoader, false);
+            pagination.totalRecords = response.data.totalRecords;
+            this.campaignSortOption.totalRecords = response.data.totalRecords;
+            pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
+        },
+        error => {
+            this.httpRequestLoader.isServerError = true;
+            },
+        () => { }
+    );
   }
 
   listLeadsForVendor(pagination: Pagination) {
@@ -322,39 +393,67 @@ export class ManageLeadsComponent implements OnInit {
 
   /************Page************** */
   setLeadsPage(event: any) {
-   // this.pipelineResponse = new CustomResponse();
-   // this.customResponse = new CustomResponse();
     this.leadsPagination.pageIndex = event.page;
     this.listLeads(this.leadsPagination);
   }
 
   getAllFilteredResultsLeads(pagination: Pagination) {
-    //this.pipelineResponse = new CustomResponse();
-    //this.customResponse = new CustomResponse();
     this.leadsPagination.pageIndex = 1;
     this.leadsPagination.searchKey = this.leadsSortOption.searchKey;
     this.listLeads(this.leadsPagination);
+    this.campaignPagination.pageIndex = 1;
+    this.campaignPagination.searchKey = this.leadsSortOption.searchKey;
+    this.listCampaigns(this.campaignPagination);
+
   }
   leadEventHandler(keyCode: any) { if (keyCode === 13) { this.searchLeads(); } }
 
+  /************Page************** */
+  setCampaignsPage(event: any) {
+    // this.pipelineResponse = new CustomResponse();
+    // this.customResponse = new CustomResponse();
+     this.campaignPagination.pageIndex = event.page;
+     this.listCampaigns(this.campaignPagination);
+   }
+ 
+   getAllFilteredResultsCampaigns(pagination: Pagination) {
+     this.campaignPagination.pageIndex = 1;
+     this.campaignPagination.searchKey = this.campaignSortOption.searchKey;
+     this.listCampaigns(this.campaignPagination);
+   }
+  
   closeLeadModal() {  
     this.showLeadForm = false;
-    if (this.isVendorVersion) {
-      this.getVendorCounts();
-    } else if (this.isPartnerVersion) {
-      this.getPartnerCounts();
-    }
     this.showLeads();
   }
+
+  searchPartners() {
+    this.getAllFilteredResultsPartners(this.partnerPagination);
+  }
+
+  partnersPaginationDropdown(items: any) {
+    this.partnerSortOption.itemsSize = items;
+    this.getAllFilteredResultsPartners(this.partnerPagination);
+  }
+
+  /************Page************** */
+  setPartnersPage(event: any) {
+   
+    this.partnerPagination.pageIndex = event.page;
+    this.listPartnersForCampaign(this.partnerPagination);
+  }
+
+  getAllFilteredResultsPartners(pagination: Pagination) {
+   
+    this.partnerPagination.pageIndex = 1;
+    this.partnerPagination.searchKey = this.partnerSortOption.searchKey;
+    this.listPartnersForCampaign(this.partnerPagination);
+  }
+  searchPartnersKeyPress(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
 
   showSubmitLeadSuccess() {  
     this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
     this.showLeadForm = false;
-    if (this.isVendorVersion) {
-      this.getVendorCounts();
-    } else if (this.isPartnerVersion) {
-      this.getPartnerCounts();
-    }
     this.showLeads();
   }
 
@@ -373,7 +472,7 @@ export class ManageLeadsComponent implements OnInit {
   viewLead(lead: Lead) {        
     //this.leadFormTitle = "View Lead";
    // $('#leadFormModel').modal('show');    
-    this.showLeadForm = true;   
+    this.showLeadForm = true; 
     this.actionType = "view";
     this.leadId = lead.id;
     
@@ -382,7 +481,7 @@ export class ManageLeadsComponent implements OnInit {
   editLead(lead: Lead) {           
     //this.leadFormTitle = "Edit Lead";
     //$('#leadFormModel').modal('show'); 
-    this.showLeadForm = true;  
+    this.showLeadForm = true; 
     this.actionType = "edit";
     this.leadId = lead.id;
   }
@@ -418,7 +517,7 @@ export class ManageLeadsComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if(response.statusCode==200){
             this.leadsResponse = new CustomResponse('SUCCESS', "Lead Deleted Successfully", true);
-            this.getCounts();  
+            //this.getCounts();  
             this.showLeads();                         
         } else if (response.statusCode==500) {
             this.leadsResponse = new CustomResponse('ERROR', response.message, true);
@@ -492,7 +591,7 @@ export class ManageLeadsComponent implements OnInit {
          if(statusCode==200){
             this.referenceService.loading(this.httpRequestLoader, false);
             this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
-            this.getCounts();  
+            //this.getCounts();  
             this.showLeads();            
          }else{
             this.referenceService.loading(this.httpRequestLoader, false);
@@ -506,6 +605,88 @@ export class ManageLeadsComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
        }
      );
+}
+
+showPartners(campaign: any) {
+  if (campaign.id > 0) {
+    this.selectedCampaignId = campaign.id ;
+    this.selectedCampaignName = campaign.campaign;
+    if (campaign.channelCampaign) {
+      this.showPartnerList = true;
+      campaign.expand = !campaign.expand;
+      if (campaign.expand) {
+        this.partnerPagination = new Pagination;
+        this.partnerPagination.filterKey = this.campaignPagination.filterKey;
+        this.listPartnersForCampaign(this.partnerPagination);
+      }
+    } else {
+      this.showOwnCampaignLeads();
+    }            
+  }
+}
+
+listPartnersForCampaign (pagination: Pagination) {
+    pagination.userId = this.loggedInUserId;
+    pagination.campaignId = this.selectedCampaignId;
+    this.leadsService.listPartnersForCampaign(pagination)
+    .subscribe(
+        response => {            
+            this.referenceService.loading(this.httpRequestLoader, false);
+            pagination.totalRecords = response.data.totalRecords;
+            this.partnerSortOption.totalRecords = response.data.totalRecords;
+            pagination = this.pagerService.getPagedItems(pagination, response.data.partners);
+        },
+        error => {
+            this.httpRequestLoader.isServerError = true;
+            },
+        () => { }
+    );
+}
+
+showCampaignLeadsByPartner(partner: any) {
+  if (partner.companyId > 0  && this.selectedCampaignId) {
+    this.selectedPartnerCompanyId = partner.companyId ;
+    this.selectedPartnerCompanyName = partner.companyName;
+    this.showCampaignLeads = true;          
+  }
+}
+
+closeCampaignLeads() {
+  this.showCampaignLeads = false; 
+  this.selectedPartnerCompanyId = 0;
+  this.listLeads(this.leadsPagination);
+  this.listCampaigns(this.campaignPagination);
+}
+
+showOwnCampaignLeads() {
+  if (this.selectedCampaignId > 0) {
+    this.selectedPartnerCompanyId = 0 ;
+    this.selectedPartnerCompanyName = "";
+    this.showCampaignLeads = true;          
+  }
+}
+
+viewCampaignLeadForm(leadId: any) {   
+  this.showLeadForm = true;  
+  this.actionType = "view";
+  this.leadId = leadId;
+  
+}
+
+editCampaignLeadForm(leadId: any) {  
+  this.showLeadForm = true; 
+  this.actionType = "edit";
+  this.leadId = leadId;
+}
+
+refreshCounts() {
+  this.getCounts();
+}
+
+registerDealForm(leadId: any) {
+  this.showDealForm = true;
+  this.actionType = "add";
+  this.leadId = leadId;
 }
  
 }

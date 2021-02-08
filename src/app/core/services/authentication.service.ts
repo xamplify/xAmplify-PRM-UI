@@ -20,6 +20,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { Pagination } from '../../core/models/pagination';
 import { TranslateService } from '@ngx-translate/core';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -79,6 +80,7 @@ export class AuthenticationService {
   vendorRoleHash = "";
   partnerRoleHash = "";
   sessinExpriedMessage = "";
+  serviceStoppedMessage = "";
   private userLoggedIn = new Subject<boolean>();
   pagination: Pagination = new Pagination();
   userPreferredLanguage: string;
@@ -87,6 +89,11 @@ export class AuthenticationService {
   loginScreenDirection: string = 'Center';
   vendorTierTeamMember: boolean = false;
   contactsCount = false;
+  leftSideMenuLoader = false;
+  partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
+  partnershipEstablishedOnlyWithPrm = false;
+  folders = false;
+  reloadLoginPage = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -251,6 +258,7 @@ export class AuthenticationService {
         const isVendor = roleNames.indexOf(this.roleName.vendorRole) > -1;
         const isMarketingRole = roleNames.indexOf(this.roleName.marketingRole) > -1;
         const isVendorTierRole = roleNames.indexOf(this.roleName.vendorTierRole) > -1;
+		    const isPrmRole = roleNames.indexOf(this.roleName.prmRole) > -1;
         /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 &&
          (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
         if (roleNames.length === 1) {
@@ -264,8 +272,14 @@ export class AuthenticationService {
             return "Orgadmin";
           } else if (isVendor) {
             return "Vendor";
-          }else if(isMarketingRole){
+          }else if(isMarketingRole && !isPartner){
             return "Marketing";
+          }else if(isMarketingRole && isPartner){
+            return "Marketing & Partner";
+          }else if(isPrmRole && !isPartner){
+            return "Prm";
+          }else if(isPrmRole && isPartner){
+            return "Prm & Partner";
           }else if(isVendorTierRole){
             return "Vendor Tier";
           }  else if (this.isOnlyPartner()) {
@@ -325,7 +339,7 @@ export class AuthenticationService {
   isVendor() {
     try {
       const roleNames = this.getRoles();
-      if (roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && ( roleNames.indexOf(this.roleName.vendorRole) > -1) ||  roleNames.indexOf(this.roleName.vendorTierRole) > -1)) {
+      if (roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && ( roleNames.indexOf(this.roleName.vendorRole) > -1) ||  roleNames.indexOf(this.roleName.vendorTierRole) > -1 ||  roleNames.indexOf(this.roleName.prmRole) > -1)) {
         return true;
       } else {
         return false;
@@ -399,7 +413,7 @@ export class AuthenticationService {
   isVendorPartner() {
     try {
       const roleNames = this.getRoles();
-      if (roleNames && ((roleNames.indexOf(this.roleName.vendorRole) > -1  || roleNames.indexOf(this.roleName.vendorTierRole) > -1 || (roleNames.indexOf('ROLE_ALL') > -1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+      if (roleNames && ((roleNames.indexOf(this.roleName.vendorRole) > -1  || roleNames.indexOf(this.roleName.vendorTierRole) > -1 || roleNames.indexOf(this.roleName.prmRole) > -1 || (roleNames.indexOf('ROLE_ALL') > -1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
         return true;
       } else {
         return false;
@@ -474,25 +488,39 @@ export class AuthenticationService {
     module.isPartnershipEstablishedOnlyWithVendorTier = false;
     module.damAccessAsPartner = false;
     module.damAccess = false;
+    module.isMarketing = false;
+    module.isPrm = false;
+    module.isPrmTeamMember = false;
+    module.isPrmAndPartner = false;
+    module.isPrmAndPartnerTeamMember = false;
+    module.showCampaignsAnalyticsDivInDashboard = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
-	this.contactsCount = false;
-    try {
-      swal.close();
-    } catch (error) {
-      console.log(error);
-    }
+	  this.contactsCount = false;
+    this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
+    this.partnershipEstablishedOnlyWithPrm = false;
+    this.folders = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
+        this.closeSwal();
         window.location.href = "https://"+window.location.hostname+"/login";
       }else{
         if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
           window.location.href = 'https://www.xamplify.com/';
         } else {
-          this.router.navigate(['/'])
+          this.closeSwal();
+          this.router.navigate(['/']);
         }
       }
+    }
+  }
+
+  closeSwal(){
+    try {
+      swal.close();
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -549,7 +577,7 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser !== undefined && currentUser != null) {
       let roles = JSON.parse(currentUser)['roles'];
-      let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2 || role.roleId===18 || role.roleId===19);
+      let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2 || role.roleId===18 || role.roleId===19 || role.roleId==20);
       if (rolesExists.length > 0) {
         return true;
       }
@@ -560,6 +588,27 @@ export class AuthenticationService {
     this.sessinExpriedMessage = "Your role has been changed. Please login again.";
     this.logout();
   }
+
+  revokeAccessToken(){
+    let self = this;
+    this.showTokenExpiredSweetAlert();
+    setTimeout(function () {
+      self.logout();
+    }, 5000);
+  }
+
+  showTokenExpiredSweetAlert(){
+    swal(
+			{
+				title: 'Your token is expried.We are redirecting you to login page.',
+				text: "Please Wait...",
+				showConfirmButton: false,
+				imageUrl: "assets/images/loader.gif",
+				allowOutsideClick:false
+			}
+		);
+  }
+
 
   checkPartnerAccess(userId: number) {
     return this.http.get(this.REST_URL + "admin/hasPartnerAccess/" + userId + "?access_token=" + this.access_token, "")
@@ -591,7 +640,6 @@ export class AuthenticationService {
 
   extractData(res: Response) {
     let body = res.json();
-    console.log(body);
     return body || {};
   }
 
@@ -610,4 +658,37 @@ export class AuthenticationService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  getUrls() {
+    let vanityLoginDto = new VanityLoginDto();
+    if(this.companyProfileName !== undefined && this.companyProfileName !== ''){
+			vanityLoginDto.vendorCompanyProfileName = this.companyProfileName;
+			vanityLoginDto.vanityUrlFilter = true;
+     }
+     vanityLoginDto.userId = this.getUserId();
+    return this.http.post(this.REST_URL + "admin/getUrls?access_token=" + this.access_token,vanityLoginDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  authorizeUrl(url: string) {
+    let angularUrlInput = {};
+    let browserUrl = window.location.hostname;
+    //let browserUrl = "tga.xamplify.com";
+    if (!browserUrl.includes("release") && !browserUrl.includes("192.168")) {
+      let domainName = browserUrl.split('.');
+      if (domainName.length > 2) {
+        angularUrlInput['vendorCompanyProfileName'] = domainName[0];
+        angularUrlInput['vanityUrlFilter'] = true;
+      }
+    }
+    angularUrlInput['userId'] = this.getUserId();
+    angularUrlInput['url'] = url;
+    return this.http.post(this.REST_URL + "admin/authorizeUrl?access_token=" + this.access_token, angularUrlInput)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  
+  
 }

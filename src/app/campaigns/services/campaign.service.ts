@@ -11,6 +11,7 @@ import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var swal, $, Promise: any;
 @Injectable()
@@ -176,6 +177,13 @@ export class CampaignService {
         return this.http.get(this.URL + 'campaign/emaillog-count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+    
+    getCampaignHighLevelAnalytics(campaignId: number, userId:number){
+    	userId = this.authenticationService.checkLoggedInUserId(userId);
+    	 return this.http.get(this.URL + 'campaign/'+ campaignId+'/' + userId +'/highlevel-analytics/?access_token=' + this.authenticationService.access_token)
+         .map(this.extractData)
+         .catch(this.handleError);
     }
 
     getEmailSentCount(campaignId: number) {
@@ -495,6 +503,33 @@ export class CampaignService {
         pagination.campaignId = campaignId;
         let updatedUrl = this.URL +"campaign/"+url+"?access_token=" + this.authenticationService.access_token;
         return this.http.post(updatedUrl, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    checkCampaignIdAccess(campaignId:number) {
+        const url = this.URL + "campaign/checkCampaignIdAccess/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    parentAndRedistributedCampaignAccess(campaignId:number) {
+        const url = this.URL + "campaign/parentAndRedistributedCampaignAccess/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getCampaignTypes(){
+        let vanityLoginDto = new VanityLoginDto();
+        vanityLoginDto.userId = this.authenticationService.getUserId(); 
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+			vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+			vanityLoginDto.vanityUrlFilter = true;
+		 }
+        const url = this.URL + "campaign/getCampaignTypes?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url,vanityLoginDto)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -1016,7 +1051,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-getActiveAndTotalCampaignsCount(companyId:number,userId:number){
+   getActiveAndTotalCampaignsCount(companyId:number,userId:number){
         let url = this.URL + "campaign/getTotalAndActiveCampaigns/"+companyId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url, "")
             .map(this.extractData)
@@ -1028,7 +1063,7 @@ getActiveAndTotalCampaignsCount(companyId:number,userId:number){
         return this.http.get(this.URL + "/pipeline/campaign/" + userId + "/list?access_token=" + this.authenticationService.access_token)
             .map(this.extractData) .catch(this.handleError);
     }
-
+    
     listDownloadOrOpenedHistory(pagination:Pagination,viewType:string){
         let url = "";
         if(viewType=="tda"){
@@ -1047,6 +1082,17 @@ getActiveAndTotalCampaignsCount(companyId:number,userId:number){
         return this.http.get(this.URL + "/campaign/getPublicEventCampaignAlias/" + campaignId + "?access_token=" + this.authenticationService.access_token)
         .map(this.extractData) .catch(this.handleError);
     }
+
+    validateCampaignIdAndUserId(campaignId:number,userId:number){
+        return this.http.get(this.URL + "/campaign/validateCampaignIdAndUserId/" + campaignId + "/"+userId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData) .catch(this.handleError);
+    }
+
+    validatePartnerOrContactIdForCampaignAnalytics(partnerOrContactId:number,userType:string){
+        let userId = this.authenticationService.getUserId();
+        return this.http.get(this.URL + "/campaign/validatePartnerOrContactIdForCampaignAnalytics/" + partnerOrContactId + "/"+userId+"/"+userType+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData) .catch(this.handleError);
+    }
     
     private utilPostPaginationMethod(url:string,pagination:Pagination){
         return this.http.post(this.URL + url+"?access_token=" + this.authenticationService.access_token, pagination)
@@ -1063,6 +1109,6 @@ getActiveAndTotalCampaignsCount(companyId:number,userId:number){
     private handleError(error: any) {
         return Observable.throw(error);
     }
-
+    
 
 }
