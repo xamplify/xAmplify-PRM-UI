@@ -149,6 +149,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
     
+    emailActionDetails(campaignId: number, actionType: string, pagination: Pagination) {
+        return this.http.post(this.URL + 'campaign/'+ + campaignId +"/" +actionType + '/details?access_token=' + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     smsActionList(campaignId: number, actionType: string, pagination: Pagination) {
         return this.http.post(this.URL + 'campaign/list-smslogs-by-action/' + campaignId + '/' + actionType + '?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)

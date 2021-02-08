@@ -532,8 +532,8 @@
             </div>
           </div>
           <div class="col-xs-12 col-sm-6 p-5x emails-info"
-            [hidden]="mainLoader || hasClientError || !campaign.emailNotification">
-            <div class="p-5x"
+            [hidden]="mainLoader || hasClientError || !campaign.emailNotification">        
+            <div class="p-5x" *ngIf="campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'"
               [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
               <button class="portlet light color1-invert crcb" (click)="sentEmailModal()"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
@@ -547,6 +547,46 @@
                 </div>
               </button>
             </div>
+              <div class="p-5x"
+              [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}"  *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">
+              <button class="portlet light color1-invert crcb" (click)="emailActionDetails(campaign.campaignId, 'recipients')"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [disabled]="campaignReport.totalRecipients < 1 || !isPartnerEnabledAnalyticsAccess">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope"></i>
+                  <h1>
+                    <b>{{campaignReport.totalRecipients}}</b>
+                  </h1>
+                  <h5>Recipients</h5>
+                </div>
+              </button>
+            </div>
+               <div class="p-5x"  *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
+              [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
+              <button class="portlet light color1-invert crcb" (click)="sentEmailModal()"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope"></i>
+                  <h1>
+                    <b>{{campaignReport.emailSentCount}}</b>
+                  </h1>
+                  <h5>Total Emails Sent</h5>
+                </div>
+              </button>
+            </div>
+              <div class="p-5x" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
+              [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+              <button class="portlet light color1-invert crcb"  [ngClass]="{'forbidden' :!isDataShare ?true:null}" disabled>
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope-open"></i>
+                  <h1>
+                    <b>{{campaignReport.delivered}}</b>
+                  </h1>
+                  <h5>Deliverability</h5>
+                </div>
+              </button>
+            </div>
             <div class="p-5x" [hidden]="mainLoader || hasClientError"
               [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
@@ -555,9 +595,22 @@
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-open"></i>
                   <h1>
-                    <b>{{campaignReport.emailOpenCount}}  ({{campaignReport?.activeRecipientsPercentage}}%)</b>
+                    <b>{{campaignReport.activeRecipients}}</b>
                   </h1>
                   <h5>Active Recipients</h5>
+                </div>
+              </button>
+            </div>
+               <div class="p-5x" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
+              [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+              <button class="portlet light color1-invert crcb"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                 disabled>
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope-open"></i>
+                  <h1>
+                    <b>{{campaignReport.openRate}}</b>
+                  </h1>
+                  <h5>Open Rate</h5>
                 </div>
               </button>
             </div>
@@ -592,6 +645,19 @@
                 </button>
               </ng-container>
             </div>
+             <div class="p-5x" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
+              [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+              <button class="portlet light color1-invert crcb"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                 disabled>
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope-open"></i>
+                  <h1>
+                    <b>{{campaignReport.clickthroughRate}}</b>
+                  </h1>
+                  <h5>Clickthrough Rate</h5>
+                </div>
+              </button>
+            </div>
             <div class="p-5x" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'SOCIAL'"
               [ngClass]="{'hidden': campaignType !== 'SOCIAL', 'col-xs-4': campaignType === 'SOCIAL'}">
               <button class="portlet light color1-invert crcb" data-toggle="modal" data-target="#scrModal"
@@ -618,6 +684,45 @@
                     <b>{{campaignReport.usersWatchCount}}</b>
                   </h1>
                   <h5>Views</h5>
+                </div>
+              </button>
+            </div>
+              <div class="p-5x" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'" 
+              [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
+              <button class="portlet light color1-invert crcb" (click)="emailActionDetails(campaign.campaignId, 'hardbounce')"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.hardBounce < 1 || !isPartnerEnabledAnalyticsAccess">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope"></i>
+                  <h1>
+                    <b>{{campaignReport.hardBounce}}</b>
+                  </h1>
+                  <h5>Hard Bounce</h5>
+                </div>
+              </button>
+            </div>
+              <div class="p-5x" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
+              [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
+              <button class="portlet light color1-invert crcb" (click)="emailActionDetails(campaign.campaignId, 'softbounce')"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.softBounce < 1 || !isPartnerEnabledAnalyticsAccess">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope"></i>
+                  <h1>
+                    <b>{{campaignReport.softBounce}}</b>
+                  </h1>
+                  <h5>Soft Bounce</h5>
+                </div>
+              </button>
+            </div>
+              <div class="p-5x" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
+              [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
+              <button class="portlet light color1-invert crcb" (click)="emailActionDetails(campaign.campaignId, 'unsubscribe')"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.unsubscribed < 1 || !isPartnerEnabledAnalyticsAccess">
+                <div class="portlet-body text-center">
+                  <i class="fa fa-envelope"></i>
+                  <h1>
+                    <b>{{campaignReport.unsubscribed}}</b>
+                  </h1>
+                  <h5>Unsubscribe</h5>
                 </div>
               </button>
             </div>
@@ -2664,6 +2769,101 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Email contacts & hard bounce & soft bounce & unsubscribed List Modal -->
+<div class="modal right fade" id="emailActionDetailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="emailSentListModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
+    <div class="modal-content">
+      <div class="modal-header col-xs-12">
+        <div class="col-xs-12 col-sm-12 col-lg-12 p0">
+        <div class="col-xs-10 col-sm-10  col-lg-10 p0 visible-xs">
+         <h4 class="modal-title" id="emailSentListModalLabel"> Email contacts Details</h4>
+        </div>
+         <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
+          <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+        </div>
+        </div>
+      <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
+        <div class="col-xs-6 col-sm-6 col-lg-6 hidden-xs">          
+          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'recipients'">Total Recipients</h4>
+          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'hardbounce'">Hard-Bounce emails details</h4>
+          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'softbounce'"> Soft-Bounce emails details</h4>
+          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'unsubscribe'">Unsubscribed users details</h4>
+        </div>
+        <div class='col-xs-10 col-sm-5 col-lg-5'>
+          <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+            placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+          <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
+            <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+          </button>
+          <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
+              style="color:black !important"></i></button>
+        </div>
+        <div class="col-xs-2 col-sm-1 col-lg-1 p0">
+         <div class="btn-group" style="cursor:pointer; color: #7d8c98">
+          <span class="dropdown-toggle" data-toggle="dropdown"
+            style="box-shadow:none; position: absolute; display: inline-flex;">
+            <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
+              style="font-size:14px;"></i>
+          </span>
+          <ul class="dropdown-menu pull-right" style="margin-top:30px; right: -38px !important;">
+            <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
+          </ul>
+        </div>
+        </div>
+        </div>
+      </div>
+      <div class="modal-body">
+
+        <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+          <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
+          <h4 class="m5">Please wait while we process your request.</h4>
+        </div>
+        <div class="row" style="display: inline-block; padding-top:10px">
+          <div class="table-responsive">
+            <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+            <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
+              <div class="alert alert-info alert-dismissible" *ngIf="sentEmailOpenPagination.pagedItems?.length == 0">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                No results found.
+              </div>
+              <div class="table-responsive">
+              <table class="table tgrid" *ngIf="sentEmailOpenPagination.pagedItems?.length != 0">
+                <thead>
+                  <tr>
+                    <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
+                    <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
+                   <!--  <th style="font-size: 12px; font-weight: 500;">SENT TIME</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of sentEmailOpenPagination.pagedItems">
+                    <td>
+                      <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
+                    </td>
+                    <td>
+                      <h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
+                        <span *ngIf="campaign.campaignName?.length>30">...</span>
+                      </h6>
+                      <h4 *ngIf="item.campaignName==null">-</h4>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            </ng-container>
+            <div>
+              <app-pagination class="pg8" [pagination]="sentEmailOpenPagination"
+                *ngIf="sentEmailOpenPagination.pagedItems?.length > 0" [type]="'sentEmailData'"
+                (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
