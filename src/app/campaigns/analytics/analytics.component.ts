@@ -72,6 +72,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   campaignViewsPagination: Pagination = new Pagination();
   contactListInfoPagination: Pagination = new Pagination();
   emailActionListPagination: Pagination = new Pagination();
+  emailActionDetailsPagination: Pagination = new Pagination();
   usersWatchListPagination: Pagination = new Pagination();
   emailLogPagination: Pagination = new Pagination();
   campaignTotalViewsPagination: Pagination = new Pagination();
@@ -671,6 +672,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       } else if (event.type === 'contactListInfo') {
         this.contactListInfoPagination.pageIndex = event.page;
         this.getListOfContacts(this.contactListId);
+      } else if (event.type === 'emailActionDetails') {
+    	  this.emailActionDetailsPagination.pageIndex = event.page;
+    	   this.emailActionDetails(this.campaign.campaignId, this.actionType, this.emailActionDetailsPagination);
       } else {
         this.pagination.pageIndex = event.page;
         this.callPaginationValues(event.type);
@@ -710,7 +714,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       } else if (this.paginationType === 'rsvpDetailPagination') {
         this.rsvpDetailAnalyticsPagination = event;
         this.getRsvpDetails(this.rsvpResposeType);
-      } else {
+      } else if(this.paginationType === 'emailActionDetails'){
+    	  this.emailActionDetailsPagination = event;
+    	  this.emailActionDetails(this.campaign.campaignId, this.actionType, this.emailActionDetailsPagination);
+      }
+      
+      else {
         this.pagination = event;
         this.callPaginationValues(this.paginationType);
       }
@@ -757,35 +766,34 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           () => console.log('emailActionList() completed'))
     } catch (error) { this.xtremandLogger.error('Error in analytics page emails sent' + error); }
   }
-  emailActionDetails(campaignId: number, actionType: string) {
+  emailActionDetails(campaignId: number, actionType: string, emailActionDetailsPagination : Pagination) {
 	    try {
 	      this.loading = true;
 	      this.referenceService.loading(this.httpRequestLoader, true);
-	      this.paginationType = 'emailAction';
-	      this.downloadTypeName = 'emailAction';
+	      this.paginationType = 'emailActionDetails';
+	      this.downloadTypeName = 'emailActionDetails';
 	      this.actionType = actionType;
-	      this.sentEmailOpenPagination = new Pagination();
-	      this.campaignService.emailActionDetails(campaignId, actionType, this.sentEmailOpenPagination)
+	      this.campaignService.emailActionDetails(campaignId, actionType, this.emailActionDetailsPagination)
 	        .subscribe(data => {
 	         this.campaignViews  = data.data;
 	          this.campaignReport.emailActionType = actionType;
 	          $('#emailActionDetailsModal').modal();
               if (actionType ==='recipients'){
-                  this.sentEmailOpenPagination.totalRecords = parseInt(this.campaignReport.totalRecipients);
+                  this.emailActionDetailsPagination.totalRecords = parseInt(this.campaignReport.totalRecipients);
 	          }else if (actionType ==='hardbounce'){
-	        	  this.sentEmailOpenPagination.totalRecords = parseInt(this.campaignReport.hardBounce);
+	        	  this.emailActionDetailsPagination.totalRecords = parseInt(this.campaignReport.hardBounce);
 	          }else if (actionType ==='softbounce'){
-	        	  this.sentEmailOpenPagination.totalRecords = parseInt(this.campaignReport.softBounce);
+	        	  this.emailActionDetailsPagination.totalRecords = parseInt(this.campaignReport.softBounce);
 	          }else if (actionType ==='unsubscribe'){
-	        	  this.sentEmailOpenPagination.totalRecords = parseInt(this.campaignReport.unsubscribed);
+	        	  this.emailActionDetailsPagination.totalRecords = parseInt(this.campaignReport.unsubscribed);
 	          }
-	          this.sentEmailOpenPagination = this.pagerService.getPagedItems(this.sentEmailOpenPagination, this.campaignViews);
+	          this.emailActionDetailsPagination = this.pagerService.getPagedItems(this.emailActionDetailsPagination, this.campaignViews);
 	          this.loading = false;
 	          this.referenceService.loading(this.httpRequestLoader, false);
 	        },
 	          error => console.log(error),
 	          () => console.log('emailActionDetails() completed'))
-	    } catch (error) { this.xtremandLogger.error('Error in analytics page Total Recipients details' + error); }
+	    } catch (error) { this.xtremandLogger.error('Error in analytics page '+actionType +'details' + error); }
 	  }
 
   listautoResponseAnalyticsByCampaignAndUser(campaignId: number, userId: number) {
@@ -1690,12 +1698,15 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.donultModelpopupTitle = '';
       this.emailLogPagination = new Pagination();
       this.emailActionListPagination = new Pagination();
+      this.emailActionDetailsPagination = new Pagination();
       this.usersWatchListPagination = new Pagination();
       this.emailLogPagination.maxResults = 12;
       this.campaignViewsPagination.maxResults = 12;
       this.campaignViewsPagination.pageIndex = 1;
       this.emailActionListPagination.pageIndex = 1;
       this.emailActionListPagination.maxResults = 12;
+      this.emailActionDetailsPagination.pageIndex = 1;
+      this.emailActionDetailsPagination.maxResults = 12;
       this.contactListInfoPagination = new Pagination();
       this.contactListInfoPagination.pageIndex = 1;
       this.contactListInfoPagination.maxResults = 12;
@@ -2253,7 +2264,11 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
       this.rsvpDetailAnalyticsPagination.pageIndex = 1;
       this.getRsvpEmailNotOpenDetails();
-    }
+    }else if (this.paginationType == 'emailActionDetails') {
+        this.emailActionDetailsPagination.searchKey = this.searchKey;
+        this.emailActionDetailsPagination.pageIndex = 1;
+        this.emailActionDetails(this.campaignId, this.actionType, this.emailActionDetailsPagination);
+      }
 
   }
 
@@ -2276,6 +2291,7 @@ checkParentAndRedistributedCampaignAccess(){
       if(data.statusCode==200){
         this.downloadTypeName = this.paginationType = 'campaignViews';
         this.emailActionListPagination.pageIndex = 1;
+        this.emailActionDetailsPagination.pageIndex = 1;
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.getCampaignById(this.campaignId);
         //this.getCampaignHighLevelAnalytics(this.campaignId);

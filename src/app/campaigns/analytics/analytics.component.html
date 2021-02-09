@@ -2828,12 +2828,12 @@
           <div class="table-responsive">
             <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
             <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
-              <div class="alert alert-info alert-dismissible" *ngIf="sentEmailOpenPagination.pagedItems?.length == 0">
+              <div class="alert alert-info alert-dismissible" *ngIf="emailActionDetailsPagination.pagedItems?.length == 0">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 No results found.
               </div>
               <div class="table-responsive">
-              <table class="table tgrid" *ngIf="sentEmailOpenPagination.pagedItems?.length != 0">
+              <table class="table tgrid" *ngIf="emailActionDetailsPagination.pagedItems?.length != 0">
                 <thead>
                   <tr>
                     <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
@@ -2842,7 +2842,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of sentEmailOpenPagination.pagedItems">
+                  <tr *ngFor="let item of emailActionDetailsPagination.pagedItems">
                     <td>
                       <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
                     </td>
@@ -2858,8 +2858,8 @@
             </div>
             </ng-container>
             <div>
-              <app-pagination class="pg8" [pagination]="sentEmailOpenPagination"
-                *ngIf="sentEmailOpenPagination.pagedItems?.length > 0" [type]="'sentEmailData'"
+              <app-pagination class="pg8" [pagination]="emailActionDetailsPagination"
+                *ngIf="emailActionDetailsPagination.pagedItems?.length > 0" [type]="'emailActionDetails'"
                 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
             </div>
           </div>
