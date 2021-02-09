@@ -14,8 +14,8 @@
                <app-response-message [customResponse]="campaignErrorResponse" *ngIf="campaignErrorResponse.isVisible"></app-response-message>
             </div>
              <ng-container *ngIf="campaign && !deleteCampaignAlert">
-                <fieldset>
-                   <legend>Campaign details:</legend>
+                <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                   <legend class="scheduler-border">Campaign details:</legend>
                    <h6>
                       <span class="campaign-label ml10" *ngIf="previewCampaignType=='LANDINGPAGE'">PAGE campaign</span>
                       <span class="campaign-label ml10" *ngIf="previewCampaignType!='LANDINGPAGE'">{{previewCampaignType}} campaign</span>
@@ -69,8 +69,8 @@
                       </div>
                    </div>
                 </fieldset>
-                <fieldset *ngIf="previewCampaignType === 'SOCIAL'">
-                   <legend>Social Accounts</legend>
+                <fieldset class="scheduler-border" *ngIf="previewCampaignType === 'SOCIAL'">
+                   <legend class="scheduler-border">Social Accounts</legend>
                    <app-landing-page-loader *ngIf="socialAccountsLoader" [maxBoxLength]=2></app-landing-page-loader>
                    <ng-container *ngIf="!socialAccountsLoader">
                       <ng-container *ngIf="socialCampaign?.socialStatusList?.length==0">
@@ -85,8 +85,8 @@
                       </ng-container>
                    </ng-container>
                 </fieldset>
-                <fieldset [hidden]="previewCampaignType === 'SOCIAL'">
-                   <legend>Selected:</legend>
+                <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor" [hidden]="previewCampaignType === 'SOCIAL'">
+                   <legend class="scheduler-border">Selected:</legend>
                    <div class="col-xs-12 col-xs-12 row p0">
                       <div [hidden]="!campaign.campaignVideoFile" class="col-xs-6 p0">
                          <app-video-play *ngIf="campaign?.campaignVideoFile" [isPreview]="true" [videoFile]="campaign.campaignVideoFile" [videoWidth]="'280px'" [videoHeight]="'165px'"></app-video-play>
@@ -208,8 +208,8 @@
                       </ng-container>
                    </div>
                 </fieldset>
-                <fieldset>
-                   <legend>Selected {{contactType}}:</legend>
+                <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                   <legend class="scheduler-border">Selected {{contactType}}:</legend>
                    <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
                    <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
                    <div class="table-responsive">
@@ -273,8 +273,8 @@
                          <div [hidden]="!enableWorkFlow">
                             <div id="reply-onclick-div">
                                <!-- Content Should Come here ------------ -->
-                               <fieldset *ngIf="replies?.length>0">
-                                  <legend>{{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
+                               <fieldset class="scheduler-border" *ngIf="replies?.length>0">
+                                  <legend class="scheduler-border">{{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
                                   <div *ngFor="let reply of replies;let i=index" class="row">
                                      <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
                                         <div class="row">
@@ -386,8 +386,8 @@
                                   </div>
                                </fieldset>
                                <!-- ------------ADD ON CLICK------------------------ -->
-                               <fieldset *ngIf="urls?.length>0">
-                                  <legend> {{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
+                               <fieldset class="scheduler-border" *ngIf="urls?.length>0">
+                                  <legend class="scheduler-border"> {{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
                                   <div *ngFor="let url of urls;let i=index" class="row">
                                      <div class="portlet light dashboard-stat2" id="{{url.divId}}">
                                         <div class="row">
@@ -485,8 +485,8 @@
                       </div>
                    </div>
                 </div>
-                <fieldset>
-                   <legend>Analytics</legend>
+                <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                   <legend class="scheduler-border">Analytics</legend>
                    <div>
                       <div (click)="showAnalyticsModal('Total Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailSentCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
                       <h1>{{campaignReport.emailSentCount}}</h1>
