@@ -35,7 +35,7 @@ export class ManageLmsComponent implements OnInit {
   exportObject: any = {};
   categoryId: number = 0;
   isPartnerView: boolean = false;
-
+  ngxloading = false;
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public lmsService: LmsService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService) {

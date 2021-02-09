@@ -68,7 +68,7 @@ export class LmsService {
   }
 
   private extractData(res: Response) {
-    const body = res.json();
+    let body = res;
     return body || {};
   }
 
