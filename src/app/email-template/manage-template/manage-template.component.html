@@ -176,12 +176,12 @@
                                                     <i class="fa fa-inbox" aria-hidden="true"></i>
                                                 </a>
                                                 <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER'">
-                                                    <i class="fa fa-pencil-square-o"></i>
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
                                                 <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye"></i>
                                                 </a>
                                                 <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER' ">
-                                                    <i class="fa fa-trash-o"></i>
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                         </td>
