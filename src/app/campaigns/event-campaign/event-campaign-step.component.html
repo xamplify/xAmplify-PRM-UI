@@ -38,9 +38,11 @@ a.disabled {
             </div>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
+	<div class="page-bar">
+		<app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
+		</app-response-message>
+	</div>
 	<div class="page-bar" [hidden]="loader">
-	 <app-response-message class="pg8" [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
-            </app-response-message>
 	<div [hidden]="isEditPartnerTemplate">
 	<ngx-loading [show]="completeLoader"[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<div class="container"

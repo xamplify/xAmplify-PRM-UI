@@ -34,16 +34,18 @@
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="page-bar">
+            <app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
+            </app-response-message>
+        </div>
         <!-- End of Line 2 -->
         <div class="page-bar">
-            <app-response-message class="pg8" [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
-            </app-response-message>
             <div class="container" style="width: 100%;border-radius: 0;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);padding-bottom: 10px;">
                 <div style="display: flex;padding-top: 1em;">
                     <div id="step2" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block">
                             <span>
-                                <i class="fa fa-th-list"></i>
+                                <i class="fa fa-th-list" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs" translate>Campaign Details</h5>
                         </div>

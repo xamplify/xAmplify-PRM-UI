@@ -45,8 +45,8 @@
 
                 <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();">
                     <div class="col-xs-12 col-sm-6">
-                        <fieldset>
-                            <legend>Campaign details</legend>
+                        <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                            <legend class="scheduler-border">Campaign details</legend>
                             <form>
                                 <div class="form-group" [attr.class]="campaignNameDivClass">
                                     <label for="exampleInputEmail1">Campaign name (save as)</label>
@@ -188,13 +188,13 @@
                         </fieldset>
                     </div>
                     <div class="col-xs-12 col-sm-6">
-                        <fieldset *ngIf="campaignType=='VIDEO'">
+                        <fieldset class="scheduler-border" *ngIf="campaignType=='VIDEO'">
                             <legend>Selected video</legend>
                             <app-video-thumbnail [videoFile]="campaign.campaignVideoFile" (notifyParent)="previewVideo($event)"></app-video-thumbnail>
                         </fieldset>
                         <!-- ----------Email Template -->
-                        <fieldset *ngIf="campaignType!='LANDINGPAGE'">
-                            <legend>
+                        <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor" *ngIf="campaignType!='LANDINGPAGE'">
+                            <legend class="scheduler-border">
                                 Selected email template
                             </legend>
                             <div class="row m0"  style="cursor: pointer;">
@@ -223,7 +223,7 @@
                         </fieldset>
 
                         <!-- ----------Landing Page---------- -->
-                        <fieldset *ngIf="campaignType=='LANDINGPAGE'">
+                        <fieldset class="scheduler-border" *ngIf="campaignType=='LANDINGPAGE'">
                             <legend>Selected page</legend>
                             <div class="row m0" (click)="previewCampaignLandingPage(campaign)" style="cursor: pointer;">
                                 <div class="col-xs-3">
@@ -244,8 +244,8 @@
                         </fieldset>
 
                         <div class="table-responsive">
-                            <fieldset [style.border-color]="contactListBorderColor">
-                                <legend>Selected contact list</legend>
+                            <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                                <legend class="scheduler-border">Selected contact list</legend>
                                 <div class="row m0">
                                     <div class="col-xs-4 p0">
                                         <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}"></i>
@@ -378,7 +378,7 @@
                                             <strong>Please complete the * required fields</strong>
                                         </div>
                                         <!-- Content Should Come here ------------ -->
-                                        <fieldset *ngIf="replies?.length>0">
+                                        <fieldset class="scheduler-border" *ngIf="replies?.length>0">
                                             <legend style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
                                             <div *ngFor="let reply of replies;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
@@ -465,7 +465,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <ul class="content__list" *ngIf="reply.defaultTemplate">
-                                                                        <fieldset>
+                                                                        <fieldset class="scheduler-border">
                                                                             <li class="list__item" [class.list__item--selected]="reply.emailTemplate.id==reply.selectedEmailTemplateId" id="rcaretw">
                                                                                 <div class="flex-row">
                                                                                     <div class="item__select-box-wrapper">
@@ -514,7 +514,7 @@
                                             </div>
                                         </fieldset>
                                         <!-- ------------ADD ON CLICK------------------------ -->
-                                        <fieldset *ngIf="urls?.length>0">
+                                        <fieldset class="scheduler-border" *ngIf="urls?.length>0">
                                             <legend style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
                                             <div *ngFor="let url of urls;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{url.divId}}">
@@ -590,7 +590,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <ul class="content__list" *ngIf="url.defaultTemplate">
-                                                                        <fieldset>
+                                                                        <fieldset class="scheduler-border">
                                                                             <li class="list__item" [class.list__item--selected]="url.emailTemplate.id==url.selectedEmailTemplateId" id="rcaretw">
                                                                                 <div class="flex-row">
                                                                                     <div class="item__select-box-wrapper">
@@ -645,8 +645,8 @@
                         <!-- </fieldset> -->
                     </div>
                     <div class="col-xs-12" style="margin-top: 8px;">
-                        <fieldset>
-                            <legend>Launch Option</legend>
+                        <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                            <legend class="scheduler-border">Launch Option</legend>
                             <div>
                                 <div class="btn-group btn-group-justified">
                                     <ng-container *ngFor="let launchOption of campaignLaunchOptions">

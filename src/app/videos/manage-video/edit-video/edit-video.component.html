@@ -141,7 +141,7 @@
 				<form class="form-horizontal" [formGroup]="videoForm" novalidate>
 					<div class="form-actions">
 						<div class="row">
-							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
+							<div class="col-md-offset-6 col-md-5" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
 									<button type="button" class="btn green" [disabled]="!videoForm.valid || upperTextValid==false
 									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">{{saveButtonTitle | translate}}</button>
@@ -150,7 +150,7 @@
 							</div>
 						</div>
 						<!-- BEGIN SAMPLE FORM PORTLET-->
-						<div class="portlet box green " style="margin-top: 3px;" [class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
+						<div class="portlet box green " style="margin-top: 8px;" [class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
 							<div class="portlet-title" (click)="titleDivChange();" [ngClass]="{'activeDiv':!titleDiv , 'inactiveDiv' :titleDiv}">
 								<div class="col-xs-12 caption p01">
 									<!-- <i class="fa fa-info-circle"></i> -->
