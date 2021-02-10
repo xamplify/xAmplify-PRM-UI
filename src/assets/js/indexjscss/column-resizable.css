@@ -234,3 +234,7 @@ span.ui-column-resizer {
     height: 102px !important;
 }
 
+.zero-padding{
+	padding-right: 0px !important;
+}
+

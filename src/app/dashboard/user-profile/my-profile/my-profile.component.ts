@@ -1364,7 +1364,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	deleteDealType(i, dealType) {
-		this.ngxloading = true;
 		try {
 			this.logger.info("Deal Type in sweetAlert() " + dealType.id);
 			let self = this;
