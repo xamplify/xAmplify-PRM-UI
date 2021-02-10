@@ -81,6 +81,30 @@
             <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
             The event has been cancelled.
           </div>
+          
+                        <div class="pl10 pr10 col-xs-12"
+    [ngClass]="{'col-sm-3': campaignType === 'VIDEO', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-6': campaignType === 'SOCIAL'}"
+            *ngIf="campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE' || campaignType === 'VIDEO' || campaignType === 'SOCIAL' ">
+            <a class="dashboard-stat dashboard-stat-lighter yellow-gold forbidden" style="display: flex"              
+              [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
+              <div class="visual">
+                <i class="fa fa-envelope-open"></i>
+              </div>
+              <div class="camp-details">
+                <div class="camp-title" *ngIf="campaign.channelCampaign">{{campaignType}}  CAMPAIGN (PARTNER)</div>
+                <div class="camp-title" *ngIf="!campaign.channelCampaign">{{campaignType}}  CAMPAIGN</div>
+                <div class="camp-number">
+                  <b class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 17}}</b>
+                  <span *ngIf="campaign.campaignName?.length>17">...</span>
+                </div>
+                <div class="camp-desc">
+                  <span>{{campaign.launchTime | date: 'fullDate'}}</span>
+                </div>
+              </div>
+            </a>
+          </div>
+          
+          
           <div class="pl10 pr10 col-xs-12"
             [ngClass]="{'col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}"
             *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
@@ -93,8 +117,8 @@
                 <div class="camp-title ">Video Info</div>
                 <div class="camp-number">
                   <b class="m0"
-                    title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 25}}</b>
-                  <span *ngIf="campaign.campaignVideoFile.title?.length>25">...</span>
+                    title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 17}}</b>
+                  <span *ngIf="campaign.campaignVideoFile.title?.length>17">...</span>
                 </div>
                 <div class="camp-desc" *ngIf="isDataShare">
                   <span>Click for preview</span>
@@ -121,7 +145,7 @@
             </a>
           </div>
 
-          <div class="pl10 pr10 col-xs-12 col-sm-3" *ngIf="campaignType === 'EVENT'">
+          <div class="pl10 pr10 col-xs-12" *ngIf="campaignType === 'EVENT'" [ngClass]="{'col-sm-4': campaignType === 'EVENT'}">
             <a class="dashboard-stat dashboard-stat-lighter red-soft forbidden" style="display: flex;">
               <div class="visual">
                 <i class="fa fa-bullhorn"></i>
@@ -138,9 +162,9 @@
               </div>
             </a>
           </div>
-
+          
           <div class="pl10 pr10 col-xs-12"
-            [ngClass]="{'col-sm-3': campaignType === 'VIDEO' || campaignType === 'EVENT','col-sm-4': campaignType === 'REGULAR','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
+            [ngClass]="{'col-sm-3': campaignType === 'VIDEO' ,'col-sm-4': campaignType === 'REGULAR' || campaignType === 'EVENT','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
             *ngIf="(campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'EVENT') && campaign.selectedEmailTemplateId>0">
             <a class="dashboard-stat dashboard-stat-lighter blue-soft" style="display: flex"
               (click)="showEmailTemplatePreview(campaign.emailTemplate)"
@@ -151,8 +175,8 @@
               <div class="camp-details">
                 <div class="camp-title">Email Info</div>
                 <div class="camp-number">
-                  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 25}}</b>
-                  <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
+                  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 17}}</b>
+                  <span *ngIf="campaign.emailTemplate.name?.length>17">...</span>
                 </div>
                 <div class="camp-desc" *ngIf="isDataShare">
                   <span>Click for preview</span>
@@ -230,7 +254,7 @@
 
 
           <div class="pl10 pr10 col-xs-12"
-            [ngClass]="{'col-sm-3': campaignType === 'VIDEO' || campaignType === 'EVENT', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-6': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+            [ngClass]="{'col-sm-3': campaignType === 'VIDEO', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE' || campaignType === 'EVENT'), 'col-sm-6': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
             <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()"
               [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
               <div class="visual">
@@ -256,34 +280,6 @@
                 </div>
               </div>
             </a>
-          </div>
-
-          <div class="col-xs-12 p-5x" [hidden]="mainLoader || hasClientError"
-            *ngIf="campaign.emailNotification " style="margin-top: -7px;"
-            [ngClass]="{'col-sm-3': campaignType === 'VIDEO' || campaignType === 'EVENT', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-6': campaignType === 'SOCIAL'}"
-            >
-            <div class="p-5x">
-              <div class="portlet light p0">
-                <div class="portlet-body clearfix">
-                  <div class="col-xs-12">
-                    <span class="" style="cursor: default; color:#357ebd">
-                      <ng-container *ngIf="campaignType!='LANDINGPAGE'">
-                        {{campaignType}}
-                      </ng-container>
-                      <ng-container *ngIf="campaignType=='LANDINGPAGE'">
-                        PAGE
-                      </ng-container>
-                      CAMPAIGN {{isPartnerCampaign}}
-                    </span>
-                    <h4>{{campaign.campaignName}}</h4>
-                    <h5 class="text-info mb10" id="campaign-launch-time">
-                      <!-- {{campaign.launchTime | date: 'fullDate'}} -->
-                      <app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
-                    </h5>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
         </div>
