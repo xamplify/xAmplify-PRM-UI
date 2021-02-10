@@ -7,6 +7,7 @@ export const routes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "add", component: AddLmsComponent },
   { path: "edit", component: AddLmsComponent },
+  { path: "edit/:id", component: AddLmsComponent },
   { path: "manage", component: ManageLmsComponent },
   { path: "shared", component: ManageLmsComponent },
 ];

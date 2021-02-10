@@ -85,7 +85,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let learningTrack of pagination.pagedItems ;let i =index">
-                                        <td class="hidden-xs" style="width: 10%;">
+                                        <td class="hidden-xs text-cente" style="width: 10%;">
                                             <img class="img-class-list" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="Image Not Found">
                                         </td>
                                         <td>
@@ -106,12 +106,18 @@
                                         </td>
                                         <td id="actions-row">
                                             <div class="actions-block override-actions custom-width-icon">
-                                                <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(learningTrack.id)">
+                                                <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
-                                                <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                <a *ngIf="learningTrack.published" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
+                                                    <i class="fa fa-reply" aria-hidden="true"></i>
                                                 </a>
+                                                <a *ngIf="!learningTrack.published" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                                    <i class="fa fa-share" aria-hidden="true"></i>
+                                                </a>
+                                                <!-- <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                </a> -->
                                                 <a *ngIf="" data-toggle="tooltip" data-placement="top" title="Copy Link">
                                                     <i class="fa fa-clipboard" aria-hidden="true"></i>
                                                 </a>
@@ -175,12 +181,18 @@
                                 <span style="background-color: #5cb85c;" *ngIf="learningTrack.published" translate>Published</span>
                             </div>
                             <div class="bar">
-                                <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(learningTrack.id)">
+                                <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
-                                <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
-                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                <a *ngIf="learningTrack.published" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
+                                    <i class="fa fa-reply" aria-hidden="true"></i>
                                 </a>
+                                <a *ngIf="!learningTrack.published" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                    <i class="fa fa-share" aria-hidden="true"></i>
+                                </a>
+                                <!-- <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a> -->
                                 <a *ngIf="" data-toggle="tooltip" data-placement="top" title="Copy Link">
                                     <i class="fa fa-clipboard" aria-hidden="true"></i>
                                 </a>

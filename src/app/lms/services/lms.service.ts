@@ -15,18 +15,21 @@ import { HttpClient } from "@angular/common/http";
 export class LmsService {
 
   URL = this.authenticationService.REST_URL + "lms";
-  learningTrack:LearningTrack;
 
   constructor(private http: HttpClient,private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
-  saveOrUpdate(learningTrack: LearningTrack) {
+  saveOrUpdate(formData: FormData, learningTrack: LearningTrack) {
     let url = this.URL;
-    if(learningTrack.id > 0){
-      url = url + "/edit"
-    } else{
-      url = url + "/save"
+    if (learningTrack.id > 0) {
+      url = url + "/edit1"
+    } else {
+      url = url + "/save1"
     }
-    return this.http.post(url + "?access_token=" + this.authenticationService.access_token, learningTrack)
+    formData.append('learningTrack', new Blob([JSON.stringify(learningTrack)],
+      {
+        type: "application/json"
+      }));
+    return this.http.post(url + "?access_token=" + this.authenticationService.access_token, formData)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -63,6 +66,12 @@ export class LmsService {
 
   deleteById(learningTrack: LearningTrack) {
     return this.http.post(this.URL + "/delete?access_token=" + this.authenticationService.access_token, learningTrack)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  changePublish(id: number, isPublish: boolean) {
+    return this.http.get(this.URL + "/" + id + "/publish/" + isPublish + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }

@@ -201,22 +201,7 @@ export class ManageLmsComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchLearningTracks(); } }
 
   edit(id: number) {
-    this.referenceService.startLoader(this.httpRequestLoader);
-    this.lmsService.getById(id).subscribe(
-      (response: any) => {
-        if (response.statusCode == 200) {
-          this.lmsService.learningTrack = response.data;
-          this.router.navigate(["/home/lms/edit"]);
-        } else {
-          swal("Please Contact Admin!", response.message, "error");
-        }
-        this.referenceService.stopLoader(this.httpRequestLoader);
-      },
-      (error: string) => {
-        this.logger.errorPage(error);
-        this.referenceService.showServerError(this.httpRequestLoader);
-        this.referenceService.stopLoader(this.httpRequestLoader);
-      });
+    this.referenceService.goToRouter("/home/lms/edit/" + id);
   }
 
   confirmDelete(id: number) {
@@ -273,4 +258,48 @@ export class ManageLmsComponent implements OnInit {
     this.referenceService.showSweetAlertInfoMessage();
   }
 
+  confirmChangePublish(id: number, isPublish: boolean) {
+    let text = "";
+    if(isPublish){
+      text = "You want to publish.";
+    }else {
+      text = "You want to unpublish.";
+    }
+    try {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: text,
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes'
+
+      }).then(function () {
+        self.ChangePublish(id, isPublish);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    } catch (error) {
+      this.logger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
+      this.referenceService.showServerError(this.httpRequestLoader);
+    }
+  }
+
+  ChangePublish(learningTrackId: number, isPublish: boolean){
+    this.referenceService.startLoader(this.httpRequestLoader);
+    this.lmsService.changePublish(learningTrackId, isPublish).subscribe(
+      (respone:any) => {
+        if(respone.statusCode == 200){
+          this.listLearningTracks(this.pagination);
+        }
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      },
+      (error: string) => {
+        this.logger.errorPage(error);
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      })
+    }
 }
