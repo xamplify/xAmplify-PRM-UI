@@ -18,6 +18,7 @@ export class LearningTrack {
     categoryId:number;
     isValid:boolean = false;
     isSlugValid:boolean;
+    removeFeaturedImage:boolean = false;
 
     quiz:Form;
     contents:Array<any> = new Array<any>();

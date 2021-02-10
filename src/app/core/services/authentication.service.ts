@@ -94,6 +94,7 @@ export class AuthenticationService {
   partnershipEstablishedOnlyWithPrm = false;
   folders = false;
   reloadLoginPage = false;
+  lmsAccess = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -500,6 +501,7 @@ export class AuthenticationService {
     this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     this.partnershipEstablishedOnlyWithPrm = false;
     this.folders = false;
+    this.lmsAccess = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){

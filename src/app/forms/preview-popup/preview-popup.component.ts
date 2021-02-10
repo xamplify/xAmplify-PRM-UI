@@ -55,13 +55,7 @@ export class PreviewPopupComponent implements OnInit {
         if (this.authenticationService.isShowForms) {
             this.pagination.campaignType = 'EVENT';
         }
-        console.log(this.pagination.campaignType);
     }
-
-
-
-
-
 
     /************List Available Forms******************/
     showForms() {

@@ -1040,7 +1040,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               form.borderColor = event;
               this.isValidBorderColor = true;
           } else if (type === "pageBackgroundColor") {
-              this.pageBackgroundColor = event;
+              this.pageBgColor = event;
               form.pageBackgroundColor = event;
               this.pageBackgroundColor = event;
               this.isValidPageBackgroundColor = true;

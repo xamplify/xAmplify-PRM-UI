@@ -27,8 +27,9 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { ContactService } from '../../contacts/services/contact.service'
 import {  ImageCropperComponent } from 'ng2-img-cropper';
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
-declare var $, CKEDITOR: any;
+declare var $, swal, CKEDITOR: any;
 @Component({
   selector: 'app-add-lms',
   templateUrl: './add-lms.component.html',
@@ -66,6 +67,7 @@ export class AddLmsComponent implements OnInit {
   categoryNames: any;
   activeTabName: string = "";
   learningTrack: LearningTrack = new LearningTrack();
+  learningTrackId:number = 0;
   isAdd:boolean = true;
   lmsResponse: CustomResponse = new CustomResponse();
   slug = "";
@@ -89,13 +91,14 @@ export class AddLmsComponent implements OnInit {
   isSlugValid:boolean = false;
   isAssetValid:boolean = false;
   isGroupOrCompanyValid:boolean = false;
-  isDescriptionValid:boolean = true;
+  isDescriptionValid:boolean = false;
   titleErrorMessage:string;
   slugErrorMessage:string;
   assetErrorMessage:string;
   groupOrCompanyErrorMessage:string;
   descriptionErrorMessage:string;
   linkPrefix:string = "";
+  editRouterLink:string = "";
 
   @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
   fileObj: any;
@@ -110,7 +113,10 @@ export class AddLmsComponent implements OnInit {
   loadingcrop = false;
   featuredImagePath = "";
   existingSlug = "";
-  
+  openAddTagPopup: boolean = false;
+  pagination: Pagination = new Pagination();
+  @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public lmsService: LmsService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService, 
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -127,61 +133,37 @@ export class AddLmsComponent implements OnInit {
       dragulaService.dropModel.subscribe((value) => {
           this.onDropModel(value);
       });
-    if (this.lmsService.learningTrack == undefined) {
-      this.selectedPartnerCompanies.push(new LmsDto());
-      this.selectedAssets.push(new LmsDto());
-      this.selectedGroups.push(new LmsDto());
-      if (this.router.url.indexOf("/home/lms/edit") > -1) {
-        this.router.navigate(["/home/lms/manage"]);
-      }
-    }
-    if(this.lmsService.learningTrack !== undefined){
-      this.isAdd = false;
-      this.learningTrack = this.lmsService.learningTrack;
-      this.existingSlug = this.learningTrack.slug;
-      if(this.learningTrack.quiz !== undefined){
-        this.learningTrack.quizId = this.learningTrack.quiz.id;
-        this.selectedQuizName = this.learningTrack.quiz.name;
-      }
-      if(this.learningTrack.contents !== undefined && this.learningTrack.contents.length > 0){
-        this.selectedAssets = this.learningTrack.contents;
-      } else{
-        this.selectedAssets.push(new LmsDto());
-      }
-      if(this.learningTrack.companies !== undefined && this.learningTrack.companies.length > 0){
-        this.selectedPartnerCompanies = this.learningTrack.companies;
-      }else{
-        this.selectedPartnerCompanies.push(new LmsDto());
-      }
-      if(this.learningTrack.groups !== undefined && this.learningTrack.groups.length > 0){
-        this.selectedGroups = this.learningTrack.groups;
-      }else{
-        this.selectedGroups.push(new LmsDto());
-      }
-      if(this.learningTrack.tags !== undefined && this.learningTrack.tags.length > 0){
-        let tagIds:Array<number> = new Array<number>();
-        $.each(this.learningTrack.tags, function(index: number, tag: Tag){
-          tagIds.push(tag.id);
-        });
-        this.learningTrack.tagIds = tagIds;
-      }
-      if(this.learningTrack.category !== undefined){
-        this.learningTrack.categoryId = this.learningTrack.category.id;
-      }
-      this.SubmitButtonValue = "Update"
-      this.SubmitAndPublishButtonValue = "Update & Publish"
-      this.heading = "Edit Learning Track"
-      this.validateLearningTrack();
-    }
   }
 
   ngOnInit() {
     this.activeTabName = 'content';
+    if (this.router.url.indexOf('/edit') > -1) {
+      this.learningTrackId = parseInt(this.route.snapshot.params['id']);
+      if (this.learningTrackId > 0) {
+        this.isAdd = false;
+        this.editRouterLink = "/home/lms/edit/" + this.learningTrackId;
+        this.getById(this.learningTrackId);
+        this.SubmitButtonValue = "Update"
+        this.SubmitAndPublishButtonValue = "Update & Publish"
+        this.heading = "Edit Learning Track"
+      } else {
+        this.goToManageSectionWithError();
+      }
+    } else {
+      this.isAdd = true;
+      this.selectedPartnerCompanies.push(new LmsDto());
+      this.selectedAssets.push(new LmsDto());
+      this.selectedGroups.push(new LmsDto());
+    }
   }
 
   ngOnDestroy() {
     this.dragulaService.destroy('form-options');
-    this.lmsService.learningTrack = undefined;
+  }
+
+  goToManageSectionWithError() {
+    this.referenceService.showSweetAlertErrorMessage("Invalid Id");
+    this.referenceService.goToRouter("/home/lms");
   }
 
   private onDropModel(args) {
@@ -571,29 +553,40 @@ export class AddLmsComponent implements OnInit {
 
   addOrUpdateLearningTrack() {
     this.learningTrack.userId = this.loggedInUserId;
+    let formData: FormData = new FormData();
     this.validateLearningTrack();
-    console.log(this.learningTrack)
-    this.referenceService.startLoader(this.httpRequestLoader);
-    this.lmsService.saveOrUpdate(this.learningTrack).subscribe(
-      (data: any) => {
-        if (data.statusCode === 200) {
-          this.lmsResponse = new CustomResponse('SUCCESS', data.message, true);
-          this.referenceService.stopLoader(this.httpRequestLoader);
-          if(this.isAdd){
-            this.referenceService.isCreated = true;
-            this.referenceService.isUpdated = false;
-          }else{
-            this.referenceService.isUpdated = true;
-            this.referenceService.isCreated = false;
-          }
-          this.router.navigate(["/home/lms/manage"]);
-        }
-      },
-      (error: string) => {
-        this.referenceService.stopLoader(this.httpRequestLoader);
-        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+    if (this.learningTrack.isValid && this.isDescriptionValid) {
+      this.constructLearningTrack();
+      if (this.fileObj == null) {
+        formData.append("featuredImage", null);
+      } else {
+        formData.append("featuredImage", this.fileObj, this.fileObj['name']);
       }
-    )
+      this.referenceService.startLoader(this.httpRequestLoader);
+      this.lmsService.saveOrUpdate(formData, this.learningTrack).subscribe(
+        (data: any) => {
+          if (data.statusCode === 200) {
+            this.lmsResponse = new CustomResponse('SUCCESS', data.message, true);
+            this.referenceService.stopLoader(this.httpRequestLoader);
+            if (this.isAdd) {
+              this.referenceService.isCreated = true;
+              this.referenceService.isUpdated = false;
+            } else {
+              this.referenceService.isUpdated = true;
+              this.referenceService.isCreated = false;
+            }
+            this.router.navigate(["/home/lms/manage"]);
+          }
+        },
+        (error: string) => {
+          this.referenceService.stopLoader(this.httpRequestLoader);
+          this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+        }
+      )
+    } else {
+      this.lmsResponse =  new CustomResponse('ERROR', this.descriptionErrorMessage, true);
+      this.referenceService.goToTop();
+    }
   }
 
   validateLearningTrack(){
@@ -606,15 +599,11 @@ export class AddLmsComponent implements OnInit {
     this.validateGroupOrCompany();
     this.validateDescription();
     this.checkAllRequiredFields();
-    if(this.learningTrack.isValid){
-      this.constructLearningTrack();
-    }
   }
 
   checkAllRequiredFields(){
-    ///this.validateDescription();
     if(this.isTitleValid && this.isSlugValid && this.learningTrack.categoryId != undefined && this.learningTrack.categoryId > 0 
-      && this.isAssetValid && this.isGroupOrCompanyValid && this.isDescriptionValid){
+      && this.isAssetValid && this.isGroupOrCompanyValid){
       this.learningTrack.isValid = true;
     }
   }
@@ -670,7 +659,6 @@ export class AddLmsComponent implements OnInit {
     } else {
       this.removeErrorMessage("title");
     }
-    //this.checkAllRequiredFields();
   }
 
   validateAssets() {
@@ -679,7 +667,6 @@ export class AddLmsComponent implements OnInit {
     } else {
       this.removeErrorMessage("asset");
     }
-    //this.checkAllRequiredFields();
   }
 
   validateGroupOrCompany() {
@@ -688,7 +675,6 @@ export class AddLmsComponent implements OnInit {
     } else {
       this.removeErrorMessage("groupOrCompany");
     }
-    //this.checkAllRequiredFields();
   }
 
   validateSlug() {
@@ -699,7 +685,6 @@ export class AddLmsComponent implements OnInit {
     } else {
         this.removeErrorMessage("slug");
     }
-    //this.checkAllRequiredFields();
   }
 
   validateDescription(){
@@ -710,12 +695,12 @@ export class AddLmsComponent implements OnInit {
         description = CKEDITOR.instances[instanceName].getData();
       }
     }
-    if(description.length < 1 && this.learningTrack.description.length < 1){
+    // && this.learningTrack.description != undefined && this.learningTrack.description.length < 1
+    if(description.length < 1){
       this.addErrorMessage("description","description can not be empty");
     } else{
       this.removeErrorMessage("description")
     }
-    //this.checkAllRequiredFields();
   }
 
   addErrorMessage(type: string, message: string) {
@@ -731,13 +716,13 @@ export class AddLmsComponent implements OnInit {
       this.isAssetValid = false;
       this.learningTrack.isValid = false;
       this.assetErrorMessage = message;
-    } else if (type = "groupOrCompany") {
+    } else if (type == "groupOrCompany") {
       this.isGroupOrCompanyValid = false;
       this.learningTrack.isValid = false;
       this.groupOrCompanyErrorMessage = message;
-    } else if (type = "description") {
+    } else if (type == "description") {
       this.isDescriptionValid = false;
-      this.learningTrack.isValid = false;
+      //this.learningTrack.isValid = false;
       this.descriptionErrorMessage = message;
     }
   }
@@ -745,23 +730,18 @@ export class AddLmsComponent implements OnInit {
   removeErrorMessage(type: string) {
     if (type == "title") {
       this.isTitleValid = true;
-      //this.learningTrack.isValid = true;
       this.titleErrorMessage = ""
     } else if (type == "slug") {
       this.isSlugValid = true;
-      //this.learningTrack.isValid = true;
       this.slugErrorMessage = ""
     } else if (type == "asset") {
       this.isAssetValid = true;
-      //this.learningTrack.isValid = true;
       this.assetErrorMessage = ""
     } else if (type == "groupOrCompany") {
       this.isGroupOrCompanyValid = true;
-      //this.learningTrack.isValid = true;
       this.groupOrCompanyErrorMessage = ""
     } else if (type == "description") {
       this.isDescriptionValid = true;
-      //this.learningTrack.isValid = true;
       this.descriptionErrorMessage = ""
     }
     this.checkAllRequiredFields();
@@ -869,6 +849,15 @@ closeImageUploadModal() {
     $('#cropImage').modal('hide');
 }
 
+  clearImage() {
+    this.cropRounded = !this.cropRounded;
+    this.imageChangedEvent = null;
+    this.croppedImage = '';
+    this.fileObj = null;
+    this.learningTrack.removeFeaturedImage = true;
+    this.featuredImagePath = "";
+  }
+
 filenewChangeEvent(event) {
     const image: any = new Image();
     const file: File = event.target.files[0];
@@ -925,46 +914,76 @@ fileChangeEvent() {
     this.loadingcrop = true;
     this.fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
     this.fileObj = this.utilService.blobToFile(this.fileObj);
-    //this.uploadFile(this.fileObj)
-    this.featuredImagePath = null;
+    //this.featuredImagePath = null;
     this.loadingcrop = false;
+    this.learningTrack.removeFeaturedImage = true;
+    this.featuredImagePath = "";
     $('#cropImage').modal('hide');
 }
 
-uploadFile(file: File, type: string) {
-  // this.loading = true;
-  // this.referenceService.loading(this.httpRequestLoader, true);
-  // const formData: FormData = new FormData();
-  // formData.append('files', file, file.name);
-  // this.emailTemplateService.uploadFileFromForm(this.authenticationService.getUserId(), formData)
-  //     .subscribe(
-  //         (data: any) => {
-  //             if (data.statusCode === 1024 || data.statusCode === 1025) {
-  //                 if (type == 'backgroundImage') {
-  //                     this.backgroundImageChangedEvent = null;
-  //                     this.croppedBackgroundImage = null;
-  //                 } else if (type == 'companyLogo') {
-  //                     this.companyLogoChangedEvent = null;
-  //                     this.croppedCompanyLogoImage = null;
-  //                 }
-  //                 this.showSweetAlert(data.message);
-  //             } else if (data.access) {
-  //                 if (type == 'backgroundImage') {
-  //                     this.form.backgroundImage = data.filePath;
-  //                     this.formBackgroundImage = data.filePath;
-  //                 } else if (type == 'companyLogo') {
-  //                     this.form.companyLogo = data.filePath;
-  //                 }
-  //             } else {
-  //                 this.authenticationService.forceToLogout();
-  //             }
-  //             this.loading = false;
-  //             this.referenceService.loading(this.httpRequestLoader, false);
-  //         },
-  //         (error: string) => {
-  //             this.loading = false;
-  //             this.logger.errorPage(error);
-  //         });
-}
+  getById(id: number) {
+    this.ngxloading = true;
+    this.lmsService.getById(id).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let learningTrack:LearningTrack = response.data;
+          if (learningTrack != undefined) {
+            this.learningTrack = learningTrack;
+            this.featuredImagePath = this.learningTrack.featuredImage;
+            this.existingSlug = this.learningTrack.slug;
+            if (this.learningTrack.quiz !== undefined) {
+              this.learningTrack.quizId = this.learningTrack.quiz.id;
+              this.selectedQuizName = this.learningTrack.quiz.name;
+            }
+            if (this.learningTrack.contents !== undefined && this.learningTrack.contents.length > 0) {
+              this.selectedAssets = this.learningTrack.contents;
+            } else {
+              this.selectedAssets.push(new LmsDto());
+            }
+            if (this.learningTrack.companies !== undefined && this.learningTrack.companies.length > 0) {
+              this.selectedPartnerCompanies = this.learningTrack.companies;
+            } else {
+              this.selectedPartnerCompanies.push(new LmsDto());
+            }
+            if (this.learningTrack.groups !== undefined && this.learningTrack.groups.length > 0) {
+              this.selectedGroups = this.learningTrack.groups;
+            } else {
+              this.selectedGroups.push(new LmsDto());
+            }
+            if (this.learningTrack.tags !== undefined && this.learningTrack.tags.length > 0) {
+              let tagIds: Array<number> = new Array<number>();
+              $.each(this.learningTrack.tags, function (index: number, tag: Tag) {
+                tagIds.push(tag.id);
+              });
+              this.learningTrack.tagIds = tagIds;
+            }
+            if (this.learningTrack.category !== undefined) {
+              this.learningTrack.categoryId = this.learningTrack.category.id;
+            }
+            this.validateLearningTrack();
+            this.ngxloading = false;
+          } else {
+            this.goToManageSectionWithError();
+            this.ngxloading = false;
+          }
+        } else {
+          swal("Please Contact Admin!", response.message, "error");
+          this.ngxloading = false;
+        }
+      },
+      (error: string) => {
+        this.logger.errorPage(error);
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.ngxloading = false;
+      });
+  }
+
+  addTag(){
+    this.openAddTagPopup = true;
+  }
+
+  openCreateFolderPopup() {
+    this.addFolderModalPopupComponent.openPopup();
+  }
 
 }

@@ -136,7 +136,6 @@ setDashboardAsDefaultPage(event: any) {
 
 /*******************Top 4 Campaigns Releated Code************************** */
 getUserCampaignReport() {
-  if(this.authenticationService.module.showCampaignsAnalyticsDivInDashboard){
     this.referenceService.loading(this.topFourCampaignsLoader,true);
     this.referenceService.loading(this.emailStatisticsLoader,true);
     this.topFourLoading = true;  
@@ -161,9 +160,7 @@ getUserCampaignReport() {
                 this.setLaunchedCampaignsChild(this.userCampaignReport);
                 this.listCampaignInteractionsData(this.loggedInUserId, this.userCampaignReport.campaignReportOption);
             }
-        );
-  }  
-  
+        ); 
 }
 
 setLaunchedCampaignsChild(userCampaignReport: CampaignReport) {

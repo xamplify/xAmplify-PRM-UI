@@ -8,15 +8,17 @@
             <li>
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
-                <i *ngIf="isAdd" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="isAdd" [routerLink]="['/home/lms/add']">Add Learning Track</a>
-                <i *ngIf="!isAdd" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isAdd" [routerLink]="['/home/lms/edit']">Edit Learning Track</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="isAdd">Add Learning Track</a>
+                <a *ngIf="!isAdd">Edit Learning Track</a>
             </li>
         </ul>
     </div>
     <div class="page-bar">
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div style=" padding: 10px 6px;">
+            <app-response-message class="pg8" [customResponse]="lmsResponse" *ngIf="lmsResponse.isVisible">
+            </app-response-message>
             <div class="row">
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                     <div class="row">
@@ -148,6 +150,9 @@
                             <div class="caption caption-md ">
                                 <i class="icon-globe theme-font hide " aria-hidden="true "></i>
                                 <span class="caption-subject font-blue-madison bold uppercase ">Tags</span>
+                                <div class="inline" style="padding-left: 5px;">
+                                    <button type="button" class="btn btn-primary tag-add-btn" (click)="addTag()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div>
                             </div>
                         </div>
                         <div class="scroller ">
@@ -155,7 +160,7 @@
                                 <label class="form-check-label ">
                                     <input type="checkbox" class="form-check-input "
                                         (click)="updateSelectedTags(tag,$event) "
-                                        [checked]="learningTrack.tagIds.length > 0 && learningTrack.tagIds.includes(tag.id)">
+                                        [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.includes(tag.id)">
                                     {{tag.tagName}}
                                 </label>
                             </div>
@@ -169,6 +174,9 @@
                                 <i class="icon-globe theme-font hide " aria-hidden="true "></i>
                                 <span class="caption-subject font-blue-madison bold uppercase ">Category</span>
                                 <font class="required">*</font>
+                                <!-- <div class="inline" style="padding-left: 5px;">
+                                    <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div> -->
                             </div>
                         </div>
                         <select class="form-control " [(ngModel)]="learningTrack.categoryId " (change)="checkAllRequiredFields()">
@@ -179,31 +187,29 @@
                         </select>
                     </div>
                 </div>
-                <!-- <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
                     <div class="portlet light ">
                         <div class="portlet-title tabbable-line ">
                             <div class="caption caption-md ">
                                 <i class="icon-globe theme-font hide " aria-hidden="true "></i>
                                 <span class="caption-subject font-blue-madison bold uppercase ">Featured Image</span>
+                                <div class="inline" style="padding-left: 25px;">
+                                    <button type="button" class="btn btn-primary" (click)="clearImage()">Clear</button>
+                                </div>
                             </div>
                         </div>
                         <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="imageClick()">
-                            <div *ngIf="!croppedImage && !featuredImagePath" style="margin: 10px 0px 10px 0px;">
-                                <img *ngIf="!imageChangedEvent && !learningTrack.featuredImage" src="assets/images/background-form.png" class="profile-image img-grid" alt="">
+                            <div *ngIf="!croppedImage" style="margin: 10px 0px 10px 0px;">
+                                <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png" class="profile-image img-grid" alt="">
                             </div>
-                            <div *ngIf="featuredImagePath?.length>0; else showCroppedImage">
-                                <img class="img-grid" [src]="featuredImagePath" alt="">
-                            </div>
-                            <ng-template #showCroppedImage>
-                                <span *ngIf="croppedImage; else showImage">
+                            <div *ngIf="croppedImage; else showImage">
                                 <img class="img-grid" [src]="croppedImage" alt="">
-                            </span>
-                            </ng-template>
+                            </div>
                             <ng-template #showImage>
-                                <img class="img-grid" [src]="learningTrack.featuredImage" alt=""> </ng-template>
+                                <img class="img-grid" [src]="featuredImagePath" alt=""> </ng-template>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
                     <button class="btn btn-primary " type="submit " [disabled]="!learningTrack.isValid" (click)="addOrUpdateLearningTrack()">{{SubmitButtonValue}}</button>
                     <button class="btn btn-primary " type="submit " [disabled]="!learningTrack.isValid" *ngIf="!learningTrack.published" (click)="saveAndPublish()">{{SubmitAndPublishButtonValue}}</button>
@@ -676,4 +682,8 @@
             </svg>
         </div>
     </div>
+</div>
+
+<div *ngIf="openAddTagPopup">
+    <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="listTags($event)"></app-add-tags-util>
 </div>

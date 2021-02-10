@@ -449,3 +449,9 @@ label {
     opacity: 0.5;
     pointer-events: none;
 }
+
+.tag-add-btn {
+    height: 20px;
+    width: 20px;
+    padding: 1px 1px;
+}

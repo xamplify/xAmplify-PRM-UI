@@ -26,6 +26,10 @@
                 <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
             </div>
         </div>
+        <div class="folder-custom-response">
+            <app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
+            </app-response-message>
+        </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div [hidden]="isEditPartnerTemplate">
         <div class="portlet light shadow">
@@ -45,7 +49,7 @@
 
                 <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();">
                     <div class="col-xs-12 col-sm-6">
-                        <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                        <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Campaign details</legend>
                             <form>
                                 <div class="form-group" [attr.class]="campaignNameDivClass">
@@ -189,11 +193,11 @@
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <fieldset class="scheduler-border" *ngIf="campaignType=='VIDEO'">
-                            <legend>Selected video</legend>
+                            <legend class="scheduler-border">Selected video</legend>
                             <app-video-thumbnail [videoFile]="campaign.campaignVideoFile" (notifyParent)="previewVideo($event)"></app-video-thumbnail>
                         </fieldset>
                         <!-- ----------Email Template -->
-                        <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor" *ngIf="campaignType!='LANDINGPAGE'">
+                        <fieldset class="scheduler-border"  *ngIf="campaignType!='LANDINGPAGE'">
                             <legend class="scheduler-border">
                                 Selected email template
                             </legend>
@@ -379,7 +383,7 @@
                                         </div>
                                         <!-- Content Should Come here ------------ -->
                                         <fieldset class="scheduler-border" *ngIf="replies?.length>0">
-                                            <legend style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
+                                            <legend class="scheduler-border" style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
                                             <div *ngFor="let reply of replies;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
                                                     <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
@@ -515,7 +519,7 @@
                                         </fieldset>
                                         <!-- ------------ADD ON CLICK------------------------ -->
                                         <fieldset class="scheduler-border" *ngIf="urls?.length>0">
-                                            <legend style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
+                                            <legend class="scheduler-border" style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
                                             <div *ngFor="let url of urls;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{url.divId}}">
                                                     <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
@@ -645,7 +649,7 @@
                         <!-- </fieldset> -->
                     </div>
                     <div class="col-xs-12" style="margin-top: 8px;">
-                        <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                        <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Launch Option</legend>
                             <div>
                                 <div class="btn-group btn-group-justified">
