@@ -237,4 +237,8 @@ span.ui-column-resizer {
 .zero-padding{
 	padding-right: 0px !important;
 }
+.folder-custom-response{
+	overflow-x: auto;
+    margin-bottom: 5px;
+}
 
