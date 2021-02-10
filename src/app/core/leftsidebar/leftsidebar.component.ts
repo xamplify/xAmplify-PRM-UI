@@ -167,8 +167,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         this.formAccess = data.form;
                         this.authService.module.hasPartnerLandingPageAccess = data.partnerLandingPage;
 						let anyAdminRole =  roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ||roles.indexOf( this.roleName.vendorTierRole ) > -1  || roles.indexOf( this.roleName.marketingRole ) > -1;
-						                        /**********Form**************/
-                        if ((anyAdminRole || roles.indexOf( this.roleName.formRole ) > -1 )  && this.formAccess ) {
+						  /**********Form**************/
+                        if ((anyAdminRole || roles.indexOf( this.roleName.formRole ) > -1 || roles.indexOf(this.roleName.emailTemplateRole))   && this.formAccess ) {
                             this.authService.module.hasFormAccess = true;
                         }
                         /**********Landing Page**************/
