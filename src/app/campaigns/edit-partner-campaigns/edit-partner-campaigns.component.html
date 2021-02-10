@@ -26,6 +26,10 @@
                 <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
             </div>
         </div>
+        <div class="page-bar">
+            <app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
+            </app-response-message>
+        </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div [hidden]="isEditPartnerTemplate">
         <div class="portlet light shadow">
