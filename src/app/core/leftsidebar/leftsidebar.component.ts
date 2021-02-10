@@ -305,6 +305,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.partnershipEstablishedOnlyWithPrm = this.partnershipEstablishedOnlyWithPrm;
             this.authService.folders = data.folders;
             this.lmsAccess = data.lms;
+            this.authService.lmsAccess = data.lms;
             this.lmsAccessAsPartner = data.lmsAccessAsPartner;
         },
           error => {

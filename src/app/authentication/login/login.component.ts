@@ -205,6 +205,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authenticationService.isShowRedistribution = false;
     this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     this.authenticationService.partnershipEstablishedOnlyWithPrm = false;
+    this.authenticationService.lmsAccess = false;
   }
 
   ngOnInit() {
