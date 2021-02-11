@@ -303,4 +303,19 @@ export class TagsComponent implements OnInit {
         });
   }
 
+  showSuccessMessage(message:any){
+    if(message != undefined){
+      this.tagResponse = new CustomResponse('SUCCESS',message, true);
+    }else{
+      this.tagResponse = new CustomResponse();
+    }
+  }
+
+  resetTagValues(message: any){
+    this.openAddTagPopup = false;
+    this.isAddTag = false;
+    this.showSuccessMessage(message);
+    this.listTags(this.tagPagination);
+  }
+
 }

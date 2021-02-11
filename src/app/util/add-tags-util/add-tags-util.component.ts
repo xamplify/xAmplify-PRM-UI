@@ -73,6 +73,7 @@ export class AddTagsUtilComponent implements OnInit {
     this.isAddTag = false;
     this.tagNames = [];
     this.tag.isTagNameValid = false;
+    this.notifyParent.emit();
   }
 
   addTagErrorMessage(errorMessage: string) {
@@ -144,7 +145,7 @@ export class AddTagsUtilComponent implements OnInit {
           if (result.access) {
             this.referenceService.stopLoader(this.addTagLoader);
             this.tagResponse = new CustomResponse('SUCCESS', result.message, true);
-            this.notifyParent.emit(this.pagination);
+            this.notifyParent.emit(result.message);
           } else {
             this.authenticationService.forceToLogout();
           }

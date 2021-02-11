@@ -992,9 +992,10 @@ fileChangeEvent() {
     this.folderOrTagsCustomResponse = new CustomResponse('SUCCESS',message, true);
   }
 
-  resetTagValues(event:any){
+  resetTagValues(message:any){
     this.openAddTagPopup = false;
-    this.listTags(event);
+    this.showCategorySuccessMessage(message);
+    this.listTags(new Pagination());
   }
 
 
