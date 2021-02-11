@@ -40,7 +40,7 @@ export class IntegrationService {
                 .map(this.extractData)
                 .catch(this.handleError);
 				}else{
-					return this._http.get(this.authenticationService.REST_URL + type + "/" + this.authenticationService.getUserId() + "/oauth/callback?access_token=" + this.authenticationService.access_token + "&code=" + code)
+					return this._http.get(this.authenticationService.REST_URL + type + "/" + this.authenticationService.getUserId() + "/oauth/callback?code=" + code)
                 .map(this.extractData)
                 .catch(this.handleError);
 				}

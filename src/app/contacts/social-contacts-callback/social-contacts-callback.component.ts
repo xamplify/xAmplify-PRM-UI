@@ -14,37 +14,30 @@ import { IntegrationService } from 'app/core/services/integration.service';
 })
 
 export class SocialContactsCallbackComponent implements OnInit {
-   // public isPartner: boolean;
-    currentModule = '';
+    public isPartner: boolean;
     callbackName: string;
 
     constructor( private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger,private hubSpotService:HubSpotService ,private integrationService:IntegrationService) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
-            this.currentModule = 'contacts';
-        } else if( currentUrl.includes( 'home/assignleads' )){
-          this.currentModule = 'leads';
+            this.isPartner = false;
         } else {
-          this.currentModule = 'partners';
+            this.isPartner = true;
         }
+
         if ( currentUrl.includes( 'google-callback' ) ) {
             this.callbackName = 'google';
             this.contactService.socialCallbackName = "googleOauth";
-        }else if(currentUrl.includes( 'zoho-callback' )){
-            this.callbackName = 'zoho';
-            this.contactService.socialCallbackName = "zohoOauth";
         } else {
             this.contactService.socialCallbackName = "salesforceOauth";
             this.callbackName = 'salesforce';
         }
-        let isErrorUrl = (currentUrl.includes( 'error=access_denied' )  || currentUrl.includes( 'zoho-callback?error'));
-        if ( isErrorUrl && this.currentModule === 'contacts') {
+
+        if ( currentUrl.includes( 'error=access_denied' ) && this.isPartner == false ) {
             this.router.navigate( ['/home/contacts/add'] );
         }
-        else if (isErrorUrl && this.currentModule === 'partners') {
+        else if ( currentUrl.includes( 'error=access_denied' ) && this.isPartner == true ) {
             this.router.navigate( ['/home/partners'] );
-        } else if (isErrorUrl && this.currentModule === 'leads') {
-          this.router.navigate( ['/home/assignleads/add'] );
         }
     }
 
@@ -54,41 +47,20 @@ export class SocialContactsCallbackComponent implements OnInit {
                 .subscribe(
                 result => {
                     localStorage.removeItem( "userAlias" );
-                    localStorage.removeItem( "currentModule" );
+                    localStorage.removeItem( "isPartner" );
                     this.xtremandLogger.info( "result: " + result );
 
                     if ( this.callbackName == 'google' ) {
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if(vanityUrlFilter == 'true'){
-							var message = "isGoogleAuth";
-							this.postingMessageToParentWindow(message);
-						}else{
-							 this.contactService.socialProviderName = 'google';
-						}
+                        this.contactService.socialProviderName = 'google';
                     } else if ( this.callbackName == 'salesforce' ) {
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if(vanityUrlFilter == 'true'){
-							var message = "isSalesForceAuth";
-			                this.postingMessageToParentWindow(message);
-						}else{
-							this.contactService.socialProviderName = 'salesforce';
-						}
-                    }else if ( this.callbackName == 'zoho' ) {
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if(vanityUrlFilter == 'true'){
-							var message = "isZohoAuth";
-			             	this.postingMessageToParentWindow(message);
-						}else{
-							this.contactService.socialProviderName = 'zoho';
-						}
+                        this.contactService.socialProviderName = 'salesforce';                        
                     }
-                  if ( this.currentModule === 'contacts') {
-                      this.router.navigate( ['/home/contacts/add'] );
-                  } else if (this.currentModule === 'partners') {
-                      this.router.navigate( ['/home/partners'] );
-                  } else if (this.currentModule === 'leads') {
-                    this.router.navigate( ['/home/assignleads/add'] );
-                  }
+
+                    if ( this.isPartner == true ) {
+                        this.router.navigate( ['/home/partners'] );
+                    } else {
+                        this.router.navigate( ['/home/contacts/add'] );
+                    }
                 },
                 error => {
                     localStorage.removeItem( "userAlias" );
@@ -99,7 +71,6 @@ export class SocialContactsCallbackComponent implements OnInit {
             this.xtremandLogger.error( error, "SocialCallbackcomponent()", "socialCallback" );
         }
     }
-
     hubSpotCallback(code:string) {
         try {
             this.hubSpotService.hubSpotCallback(code)
@@ -108,7 +79,7 @@ export class SocialContactsCallbackComponent implements OnInit {
                         this.referenceService.integrationCallBackStatus = true;
                         this.xtremandLogger.info("Hubspot Callback :: " + result);
                         localStorage.removeItem("userAlias");
-                        localStorage.removeItem("currentModule");
+                        localStorage.removeItem("isPartner");
                         this.router.navigate(['/home/dashboard/myprofile'])
                     },
                     error => {
@@ -120,7 +91,7 @@ export class SocialContactsCallbackComponent implements OnInit {
             this.xtremandLogger.error(error, "SocialCallbackcomponent()", "hubSpotCallback()");
         }
     }
-
+    
     integrationCallback(code:string,type:string) {
         try {
             this.integrationService.handleCallbackByType(code,type)
@@ -129,26 +100,13 @@ export class SocialContactsCallbackComponent implements OnInit {
                         this.referenceService.integrationCallBackStatus = true;
                         this.xtremandLogger.info("Integration Callback :: " + result);
                         localStorage.removeItem("userAlias");
-                        localStorage.removeItem("currentModule");
-						this.router.navigate(['/home/dashboard/myprofile']);
-						
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if(type == 'hubspot' && vanityUrlFilter == 'true'){
-							var message = "isHubSpotAuth";
-			                this.postingMessageToParentWindow(message);
-						}
-						else if(type == 'isalesforce' && vanityUrlFilter == 'true'){
-							var message = "isSalesforceAuth";
-			                this.postingMessageToParentWindow(message);
-						}
-						
-                       
-                        // Commented below code by Swathi. Custom form creation should not be done here.
-                        /*if(type === "isalesforce"){
+                        localStorage.removeItem("isPartner");
+                        this.router.navigate(['/home/dashboard/myprofile']);
+                        if(type === "isalesforce"){
                             this.contactService.getSfFormFields().subscribe(result =>{
                                 console.log(result);
                             })
-                        }*/
+                        }
                     },
                     error => {
                         localStorage.removeItem("userAlias");
@@ -159,18 +117,9 @@ export class SocialContactsCallbackComponent implements OnInit {
         }
     }
 
-	postingMessageToParentWindow(message: string){
-			let trargetWindow = window.opener;
-            trargetWindow.postMessage(message,"*");
-            localStorage.removeItem('vanityUrlDomain');
-			localStorage.removeItem('vanityUrlFilter');
-			localStorage.removeItem('vanityUserId');
-            self.close();
-	}
-
     ngOnInit() {
         this.contactService.socialProviderName = '';
-        try {
+        try {           
         let queryParam: string = "";
         let code:string;
         this.route.queryParams.subscribe(
@@ -178,10 +127,10 @@ export class SocialContactsCallbackComponent implements OnInit {
                 code = param['code'];
                 let denied = param['denied'];
                 queryParam = "?code=" + code;
-            });
+            });            
             this.xtremandLogger.info("Router URL :: " + this.router.url);
             if (this.router.url.includes("hubspot-callback")) {
-             // this.hubSpotCallback(code);
+               // this.hubSpotCallback(code);
                this.integrationCallback(code,"hubspot");
             } else if(this.router.url.includes("isalesforce-callback")){
                 this.integrationCallback(code,"isalesforce");
