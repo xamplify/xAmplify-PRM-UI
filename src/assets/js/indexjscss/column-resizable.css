@@ -242,9 +242,4 @@ span.ui-column-resizer {
     margin-bottom: 5px;
 }
 
-.disabled{
-	opacity: 0.5;
-    pointer-events: none;
-    cursor: not-allowed;
-}
 
