@@ -43,6 +43,7 @@ export class AddLmsComponent implements OnInit {
   loading = false;
   formError = false;
   customResponse: CustomResponse = new CustomResponse();
+  folderOrTagsCustomResponse : CustomResponse = new CustomResponse();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   isPartnerView = false;
@@ -986,5 +987,15 @@ fileChangeEvent() {
     this.addFolderModalPopupComponent.openPopup();
     this.listCategories();
   }
+
+  showCategorySuccessMessage(message:any){
+    this.folderOrTagsCustomResponse = new CustomResponse('SUCCESS',message, true);
+  }
+
+  resetTagValues(event:any){
+    this.openAddTagPopup = false;
+    this.listTags(event);
+  }
+
 
 }
