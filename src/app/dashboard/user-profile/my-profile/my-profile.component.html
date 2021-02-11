@@ -129,7 +129,7 @@
                                 <a (click)="activateTab('templates');clearCustomResponse()" translate>
                                      Your Templates </a>
                             </li>
-                            <li *ngIf="authenticationService.lmsAccess" [ngClass]="{'active': activeTabName == 'templates'}">
+                            <li *ngIf="authenticationService.lmsAccess" [ngClass]="{'active': activeTabName == 'tags'}">
                                 <a (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>

@@ -21,9 +21,9 @@ export class LmsService {
   saveOrUpdate(formData: FormData, learningTrack: LearningTrack) {
     let url = this.URL;
     if (learningTrack.id > 0) {
-      url = url + "/edit1"
+      url = url + "/edit"
     } else {
-      url = url + "/save1"
+      url = url + "/save"
     }
     formData.append('learningTrack', new Blob([JSON.stringify(learningTrack)],
       {

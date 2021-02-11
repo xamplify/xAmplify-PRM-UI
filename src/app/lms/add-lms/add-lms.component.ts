@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { LmsService } from '../services/lms.service';
@@ -43,6 +43,7 @@ export class AddLmsComponent implements OnInit {
   loading = false;
   formError = false;
   customResponse: CustomResponse = new CustomResponse();
+  folderOrTagsCustomResponse : CustomResponse = new CustomResponse();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   isPartnerView = false;
@@ -984,6 +985,18 @@ fileChangeEvent() {
 
   openCreateFolderPopup() {
     this.addFolderModalPopupComponent.openPopup();
+    this.listCategories();
   }
+
+  showCategorySuccessMessage(message:any){
+    this.folderOrTagsCustomResponse = new CustomResponse('SUCCESS',message, true);
+  }
+
+  resetTagValues(message:any){
+    this.openAddTagPopup = false;
+    this.showCategorySuccessMessage(message);
+    this.listTags(new Pagination());
+  }
+
 
 }

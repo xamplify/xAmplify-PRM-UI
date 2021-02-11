@@ -87,7 +87,7 @@
 </div>
 
 <div *ngIf="openAddTagPopup">
-    <app-add-tags-util [pagination]="tagPagination" [isAddTag]="isAddTag" [selectedTag]="selectedTag" (notifyParent)="listTags($event)"></app-add-tags-util>
+    <app-add-tags-util [pagination]="tagPagination" [isAddTag]="isAddTag" [selectedTag]="selectedTag" (notifyParent)="resetTagValues($event)"></app-add-tags-util>
 </div>
 
 <!------------------------------Add/Edit Tag----------->

@@ -1581,7 +1581,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.dealPipelines;
 			this.pipelinePagination = new Pagination();
 			this.listAllPipelines(this.pipelinePagination);
-		}
+		} else if (this.activeTabName == "tags") {
+			this.activeTabHeader = this.properties.tags;
+		} 
 
 		this.referenceService.goToTop();
 	}
