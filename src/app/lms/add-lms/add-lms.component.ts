@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { LmsService } from '../services/lms.service';
@@ -984,6 +984,7 @@ fileChangeEvent() {
 
   openCreateFolderPopup() {
     this.addFolderModalPopupComponent.openPopup();
+    this.listCategories();
   }
 
 }
