@@ -557,7 +557,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 	            	this.campaignReport.activeRecipients = response.data.activeRecipients;
 	            	this.campaignReport.unsubscribed = response.data.unsubscribed;
 	            	this.campaignReport.pagesClicked = response.data.pagesClicked;
-	            	this.campaignReport.deliveredCount = response.data.deliveredCount;
+	            	this.campaignReport.deliveredCount = parseInt(response.data.deliveredCount);
 	            	
                     this.listCampaignViews(campaignId, this.campaignViewsPagination);
 	              /*this.campaignReport.emailOpenCount = data["email_opened_count"];
