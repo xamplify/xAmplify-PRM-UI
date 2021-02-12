@@ -54,7 +54,7 @@
                                     Forms</button></li>
                         </ul>
                     </div>
-                    <div class="row" style=" padding: 5px 10px 5px 15px;">
+                    <div *ngIf="isAdd || learningTrack.description != undefined" class="row" style=" padding: 5px 10px 5px 15px;">
                         <ckeditor [(ngModel)]="learningTrack.description" #myckeditor [config]="ckeConfig" debounce="500">
                         </ckeditor>
                     </div>
@@ -165,7 +165,7 @@
                                 <label class="form-check-label ">
                                     <input type="checkbox" class="form-check-input "
                                         (click)="updateSelectedTags(tag,$event) "
-                                        [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.includes(tag.id)">
+                                        [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tag.id)>-1">
                                     {{tag.tagName}}
                                 </label>
                             </div>
@@ -618,7 +618,7 @@
                     <app-list-loader *ngIf="assetLoader.isLoading"></app-list-loader>
                     <div class="row" *ngIf="!assetError">
                         <ul class="content__list" *ngFor="let file of assetPagination.pagedItems; let i =index;">
-                            <li class="list__item" [ngClass]="{'list__item--selected':selectedAssets[assetIndex].id == file.id}">
+                            <li class="list__item" [ngClass]="{'list__item--selected':selectedAssets[assetIndex] != undefined && selectedAssets[assetIndex].id == file.id}">
                                 <div class="flex-row pointer" (click)="setSelectedAsset(file); validateAssets()">
                                     <div class="item__select-box-wrapper">
                                         <span class="select-box-asset" (click)="setSelectedAsset(file); validateAssets()"> <label>
@@ -694,4 +694,4 @@
     <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)"></app-add-tags-util>
 </div>
 
-<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showCategorySuccessMessage($event)"></app-add-folder-modal-popup>
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="resetFolderValues($event)"></app-add-folder-modal-popup>

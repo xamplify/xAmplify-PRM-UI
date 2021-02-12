@@ -134,6 +134,7 @@ export class AddLmsComponent implements OnInit {
       dragulaService.dropModel.subscribe((value) => {
           this.onDropModel(value);
       });
+      this.ckeditor;
   }
 
   ngOnInit() {
@@ -156,6 +157,7 @@ export class AddLmsComponent implements OnInit {
       this.selectedAssets.push(new LmsDto());
       this.selectedGroups.push(new LmsDto());
     }
+    console.log(this.learningTrack.description);
   }
 
   ngOnDestroy() {
@@ -495,7 +497,8 @@ export class AddLmsComponent implements OnInit {
     if (event.target.checked) {
       this.learningTrack.tagIds.push(tag.id);
     } else {
-      this.learningTrack.tagIds.splice($.inArray(tag.id), 1);
+      let index =  this.learningTrack.tagIds.indexOf(tag.id);
+      this.learningTrack.tagIds.splice(index, 1);
     }
     console.log(this.learningTrack.tagIds)
   }
@@ -763,7 +766,9 @@ export class AddLmsComponent implements OnInit {
 
   updateSlug(type: string) {
     if(type == "title"){
-      this.learningTrack.slug = this.learningTrack.title.replace(/[^a-zA-Z0-9_-]/g, '_');
+      if(this.learningTrack.id == undefined || this.learningTrack.id < 1){
+        this.learningTrack.slug = this.learningTrack.title.replace(/[^a-zA-Z0-9_-]/g, '_');
+      }
     } else if(type == "slug"){
       this.learningTrack.slug = this.learningTrack.slug.replace(/[^a-zA-Z0-9_-]/g, '_');
     }
@@ -985,16 +990,20 @@ fileChangeEvent() {
 
   openCreateFolderPopup() {
     this.addFolderModalPopupComponent.openPopup();
-    this.listCategories();
   }
 
-  showCategorySuccessMessage(message:any){
+  showSuccessMessage(message:any){
     this.folderOrTagsCustomResponse = new CustomResponse('SUCCESS',message, true);
+  }
+
+  resetFolderValues(message:any){
+    this.showSuccessMessage(message);
+    this.listCategories();
   }
 
   resetTagValues(message:any){
     this.openAddTagPopup = false;
-    this.showCategorySuccessMessage(message);
+    this.showSuccessMessage(message);
     this.listTags(new Pagination());
   }
 
