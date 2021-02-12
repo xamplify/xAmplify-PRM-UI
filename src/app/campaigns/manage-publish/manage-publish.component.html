@@ -47,9 +47,9 @@
                   <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign" translate>Page</li>
                   <li class="filter" style="display: none;" translate>Own Template</li>
                 </ul>
-                
-                
-                
+
+
+
                 <div class="page-toolbar col-xs-12 col-sm-12 col-md-7" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                   <div class="row btn-group pull-right">
                     <div class="col-xs-2 col-sm-4 col-md-5 p0">
@@ -58,11 +58,11 @@
                           <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
                           <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
                           </span>
-                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" 
+                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
                           title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
                           <i class="fa fa-th-list p10" aria-hidden="true"></i>
                           </span>
-                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" 
+                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
                           title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
                           <i class="fa fa-th-large p10"  aria-hidden="true"></i>
                           </span>
@@ -73,7 +73,7 @@
                             <i class="fa fa-folder p10" aria-hidden="true"></i>
                             </span>
                             <span class="btn btn-xs hidden-xs l-g-view folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom"
-                            title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" 
+                            title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView"
                             (click)="setViewType('Folder-List')">
                             <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/>
                             </span>
@@ -92,7 +92,7 @@
                         </select>
                       </div>
                     </div>
-                   
+
                     <div class="col-xs-5 col-sm-4 col-md-4" style="padding-right: 0px;">
                       <div class="portlet-input input-inline input-small">
                         <div class="input-icon" style="position:relative;right: -11px;">
@@ -247,7 +247,7 @@
                       <td *ngIf="campaign?.emailNotification || campaign?.nurtrueCampaign">
                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                       <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                        <button class="btn btn-default btn-xs re-distributed-high-level">
+                        <button class="btn btn-default btn-xs re-distributed-high-level lt-blue-c">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
                               <strong class="custom-font-weight">{{campaign?.totalRecipients}}</strong>
@@ -256,29 +256,29 @@
                             <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Recipients</span>
                           </div>
                         </button>
-                        </div>                      
+                        </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                        <button class="btn btn-default btn-xs re-distributed-high-level">
+                        <button class="btn btn-default btn-xs re-distributed-high-level lt-green-c">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.totalEmailsSent}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.totalEmailsSent}}</strong>
                             </h6>
                             <span class="custom-font-weight">Total Emails Sent</span>
                           </div>
                         </button>
-                        </div>                        
+                        </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                         <button class="btn btn-default btn-xs re-distributed-high-level">
+                         <button class="btn btn-default btn-xs re-distributed-high-level tk-blue-c">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.delivered}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.delivered}}</strong>
                             </h6>
                             <span class="custom-font-weight">Deliverability</span>
                           </div>
                         </button>
-                        </div>                        
+                        </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                       <button class="btn btn-default btn-xs re-distributed-high-level">
+                       <button class="btn btn-default btn-xs re-distributed-high-level vlt-blue-c">
                             <div class="portlet-body text-center">
                               <h6 class="custom-font-size">
                                 <strong class="custom-font-weight">{{campaign?.activeRecipients}}</strong>
@@ -287,71 +287,71 @@
                             <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Active Recipients</span>
                             </div>
                           </button>
-                        </div>                        
+                        </div>
                       </div>
                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                       <button class="btn btn-default btn-xs re-distributed-high-level">
+                       <button class="btn btn-default btn-xs re-distributed-high-level pure-blue-c">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.openRate}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.openRate}}</strong>
                             </h6>
                             <span class="custom-font-weight">Open Rate</span>
                           </div>
                         </button>
-                        </div>                       
+                        </div>
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"  *ngIf="campaign.campaignType.indexOf('REGULAR')>-1 ||campaign.campaignType.indexOf('VIDEO')>-1 || campaign.campaignType.indexOf('LANDINGPAGE')>-1 ">
-                     <button class="btn btn-default btn-xs re-distributed-high-level">
+                     <button class="btn btn-default btn-xs re-distributed-high-level black-blue-c">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.emailClicked}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.emailClicked}}</strong>
                             </h6>
                             <span class="custom-font-weight">Clicked URL</span>
                           </div>
                         </button>
-                        </div>        
+                        </div>
                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"  *ngIf="campaign.campaignType.indexOf('EVENT') >-1">
-                            <button class="btn btn-default btn-xs re-distributed-high-level">
+                            <button class="btn btn-default btn-xs re-distributed-high-level pure-g-c">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.attendeesCount}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.attendeesCount}}</strong>
                             </h6>
                             <span class="custom-font-weight">Yes</span>
                           </div>
                         </button>
                         </div>
                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.campaignType.indexOf('SOCIAL') >-1 && !campaign.nurtureCampaign">
-                       <button class="btn btn-default btn-xs re-distributed-high-level">
+                       <button class="btn btn-default btn-xs re-distributed-high-level g-b-c">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.socialCampaignRedistributedCount}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.socialCampaignRedistributedCount}}</strong>
                             </h6>
                             <span class="custom-font-weight">Redistributed</span>
                           </div>
                         </button>
-                        </div> 
+                        </div>
                          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.campaignType.indexOf('EVENT') >-1">
-                         <button class="btn btn-default btn-xs re-distributed-high-level">
+                         <button class="btn btn-default btn-xs re-distributed-high-level g-y-c">
                           <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.totalAttendeesCount}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.totalAttendeesCount}}</strong>
                             </h6>
                             <span class="custom-font-weight">Total</span>
                           </div>
                         </button>
-                        </div>                        
+                        </div>
                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.campaignType.indexOf('EVENT') < 0 && campaign.campaignType.indexOf('SOCIAL') < 0">
-                       <button class="btn btn-default btn-xs re-distributed-high-level">
+                       <button class="btn btn-default btn-xs re-distributed-high-level y-b-c">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.clickthroughRate}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.clickthroughRate}}</strong>
                             </h6>
                             <span class="custom-font-weight">Clickthrough Rate</span>
                           </div>
                         </button>
-                        </div>                        
+                        </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0" *ngIf="campaign.campaignType.indexOf('VIDEO')>-1" >
-                            <button class="btn btn-default btn-xs re-distributed-high-level">
+                            <button class="btn btn-default btn-xs re-distributed-high-level b-b-c">
                             <div class="portlet-body text-center">
                               <h6 class="custom-font-size">
                                 <strong class="custom-font-weight">{{campaign?.views}}</strong>
@@ -359,32 +359,32 @@
                               <span class="custom-font-weight">Views</span>
                             </div>
                           </button>
-                        </div>                 
+                        </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                         <button class="btn btn-default btn-xs re-distributed-high-level">
+                         <button class="btn btn-default btn-xs re-distributed-high-level r-b-c">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.hardBounce}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.hardBounce}}</strong>
                             </h6>
                             <span class="custom-font-weight">Hard Bounce</span>
                           </div>
                         </button>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                      <button class="btn btn-default btn-xs re-distributed-high-level">
+                      <button class="btn btn-default btn-xs re-distributed-high-level h-r-c">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.softBounce}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.softBounce}}</strong>
                             </h6>
                             <span class="custom-font-weight">Soft Bounce</span>
                           </div>
                         </button>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                        <button class="btn btn-default btn-xs re-distributed-high-level">
+                        <button class="btn btn-default btn-xs re-distributed-high-level r-r-c">
                          <div class="portlet-body text-center">
                             <h6 class="custom-font-size">
-                             <strong class="custom-font-weight">{{campaign?.unsubscribed}}</strong> 
+                             <strong class="custom-font-weight">{{campaign?.unsubscribed}}</strong>
                             </h6>
                             <span class="custom-font-weight">Unsubscribe</span>
                           </div>
@@ -801,7 +801,7 @@
                               title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
                               <i class="fa fa-handshake-o" aria-hidden="true"></i>
                               </a>
-                              <ng-container *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) 
+                              <ng-container *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)
                               && campaign.channelCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && campaign.campaignType.indexOf('LANDINGPAGE') <0 ">
                                 <a  (click)="goToTemplateDownloadPartners(campaign)" data-toggle="tooltip" data-placement="top"
                                 title="Show Download History" data-rel="fancybox-button">
