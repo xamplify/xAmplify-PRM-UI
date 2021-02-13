@@ -96,5 +96,6 @@ export class CampaignReport {
     openRate: string;
     clickthroughRate: string;
     socialRedistributed: string;
+    deliveredCount : number=0;
 
 }

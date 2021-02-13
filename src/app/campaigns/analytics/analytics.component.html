@@ -517,7 +517,7 @@
             </div>
               <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
                 *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">
-              <button class="portlet light color1-invert crcb lt-blue-c" (click)="emailActionDetails(campaign.campaignId, 'recipients')"
+              <button class="portlet light color1-invert crcb lt-blue-c" (click)="emailActionDetails(campaign.campaignId, 'recipients', emailActionDetailsPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 [disabled]="campaignReport.totalRecipients < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
@@ -530,7 +530,7 @@
               </button>
             </div>
                <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"  *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">
-              <button class="portlet light color1-invert crcb lt-green-c" (click)="sentEmailModal()"
+              <button class="portlet light color1-invert crcb lt-green-c" (click)="emailActionDetails(campaign.campaignId, 'sent', emailActionDetailsPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
@@ -544,7 +544,9 @@
             </div>
               <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-              <button class="portlet light color1-invert crcb tk-blue-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}" disabled>
+              <button class="portlet light color1-invert crcb tk-blue-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}" 
+              (click)="emailActionDetails(campaign.campaignId, 'deliverability', emailActionDetailsPagination)"
+              [disabled]="campaignReport.deliveredCount < 1  || !isPartnerEnabledAnalyticsAccess" > 
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope"></i>
                   <h1>
@@ -571,7 +573,8 @@
                <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb pure-blue-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
-                 disabled>
+                 (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
+                 [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-open-o"></i>
                   <h1>
@@ -615,7 +618,8 @@
              <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb y-b-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
-                 disabled>
+                 (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
+                 [disabled]="campaignReport.emailClickedCount < 1" >
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-open"></i>
                   <h1>
@@ -655,7 +659,7 @@
             </div>
               <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
               >
-              <button class="portlet light color1-invert crcb r-b-c" (click)="emailActionDetails(campaign.campaignId, 'hardbounce')"
+              <button class="portlet light color1-invert crcb r-b-c" (click)="emailActionDetails(campaign.campaignId, 'hardbounce', emailActionDetailsPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.hardBounce < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-ban"></i>
@@ -668,7 +672,7 @@
             </div>
               <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
               >
-              <button class="portlet light color1-invert crcb h-r-c" (click)="emailActionDetails(campaign.campaignId, 'softbounce')"
+              <button class="portlet light color1-invert crcb h-r-c" (click)="emailActionDetails(campaign.campaignId, 'softbounce', emailActionDetailsPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.softBounce < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-trash-o"></i>
@@ -681,7 +685,7 @@
             </div>
               <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
               >
-              <button class="portlet light color1-invert crcb r-r-c" (click)="emailActionDetails(campaign.campaignId, 'unsubscribe')"
+              <button class="portlet light color1-invert crcb r-r-c" (click)="emailActionDetails(campaign.campaignId, 'unsubscribe', emailActionDetailsPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.unsubscribed < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-user-times"></i>
@@ -2791,6 +2795,7 @@
           <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'hardbounce'">Hard-Bounce emails details</h4>
           <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'softbounce'"> Soft-Bounce emails details</h4>
           <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'unsubscribe'">Unsubscribed users details</h4>
+          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'sent'">Sent Email Details</h4>
         </div>
         <div class='col-xs-10 col-sm-5 col-lg-5'>
           <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
@@ -2834,8 +2839,8 @@
                 <thead>
                   <tr>
                     <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
-                    <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
-                   <!--  <th style="font-size: 12px; font-weight: 500;">SENT TIME</th> -->
+                    <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>  
+                     <th style="font-size: 12px; font-weight: 500;" *ngIf="campaignReport.emailActionType === 'sent'">SENT TIME</th>                   
                   </tr>
                 </thead>
                 <tbody>
@@ -2848,6 +2853,11 @@
                         <span *ngIf="campaign.campaignName?.length>30">...</span>
                       </h6>
                       <h4 *ngIf="item.campaignName==null">-</h4>
+                    </td>
+                    <td *ngIf="campaignReport.emailActionType === 'sent'">
+                     <h6>
+                        <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                      </h6>                   
                     </td>
                   </tr>
                 </tbody>

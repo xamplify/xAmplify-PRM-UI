@@ -557,6 +557,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 	            	this.campaignReport.activeRecipients = response.data.activeRecipients;
 	            	this.campaignReport.unsubscribed = response.data.unsubscribed;
 	            	this.campaignReport.pagesClicked = response.data.pagesClicked;
+	            	this.campaignReport.deliveredCount = parseInt(response.data.deliveredCount);
 	            	
                     this.listCampaignViews(campaignId, this.campaignViewsPagination);
 	              /*this.campaignReport.emailOpenCount = data["email_opened_count"];
@@ -766,35 +767,30 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           () => console.log('emailActionList() completed'))
     } catch (error) { this.xtremandLogger.error('Error in analytics page emails sent' + error); }
   }
+  
   emailActionDetails(campaignId: number, actionType: string, emailActionDetailsPagination : Pagination) {
-	    try {
-	      this.loading = true;
-	      this.referenceService.loading(this.httpRequestLoader, true);
-	      this.paginationType = 'emailActionDetails';
-	      this.downloadTypeName = 'emailActionDetails';
-	      this.actionType = actionType;
-	      this.campaignService.emailActionDetails(campaignId, actionType, this.emailActionDetailsPagination)
-	        .subscribe(data => {
-	         this.campaignViews  = data.data;
-	          this.campaignReport.emailActionType = actionType;
-	          $('#emailActionDetailsModal').modal();
-              if (actionType ==='recipients'){
-                  this.emailActionDetailsPagination.totalRecords = parseInt(this.campaignReport.totalRecipients);
-	          }else if (actionType ==='hardbounce'){
-	        	  this.emailActionDetailsPagination.totalRecords = parseInt(this.campaignReport.hardBounce);
-	          }else if (actionType ==='softbounce'){
-	        	  this.emailActionDetailsPagination.totalRecords = parseInt(this.campaignReport.softBounce);
-	          }else if (actionType ==='unsubscribe'){
-	        	  this.emailActionDetailsPagination.totalRecords = parseInt(this.campaignReport.unsubscribed);
-	          }
-	          this.emailActionDetailsPagination = this.pagerService.getPagedItems(this.emailActionDetailsPagination, this.campaignViews);
-	          this.loading = false;
-	          this.referenceService.loading(this.httpRequestLoader, false);
-	        },
-	          error => console.log(error),
-	          () => console.log('emailActionDetails() completed'))
-	    } catch (error) { this.xtremandLogger.error('Error in analytics page '+actionType +'details' + error); }
-	  }
+      try {
+        this.loading = true;
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.paginationType = 'emailActionDetails';
+        this.downloadTypeName = 'emailActionDetails';
+        this.actionType = actionType;
+        this.campaignService.emailActionDetails(campaignId, actionType, this.emailActionDetailsPagination)
+          .subscribe(response => {
+           this.campaignViews  = response.data.data;
+           this.campaignViews.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
+           this.emailActionDetailsPagination.totalRecords = response.data.totalRecords;
+            this.campaignReport.emailActionType = actionType;
+            $('#emailActionDetailsModal').modal();
+            this.emailActionDetailsPagination = this.pagerService.getPagedItems(this.emailActionDetailsPagination, this.campaignViews);
+            this.loading = false;
+            this.referenceService.loading(this.httpRequestLoader, false);
+          },
+            error => console.log(error),
+            () => console.log('emailActionDetails() completed'))
+      } catch (error) { this.xtremandLogger.error('Error in analytics page '+actionType +'details' + error); }
+    }
+
 
   listautoResponseAnalyticsByCampaignAndUser(campaignId: number, userId: number) {
     try {
