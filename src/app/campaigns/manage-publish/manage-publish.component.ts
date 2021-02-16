@@ -767,17 +767,20 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     
     downloadCampaignHighLevelAnalytics() {
     	 let param = null;
+    	 let campaignType = this.pagination.campaignType;
          if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
              param = {
                  'userId': this.loggedInUserId,
                  'vendorCompanyProfileName': this.authenticationService.companyProfileName,
-                 'vanityUrlFilter': true
+                 'vanityUrlFilter': true,
+                 'campaignType' : campaignType
              };
          } else {
              param = {
                  'userId': this.loggedInUserId,
                  'vanityUrlFilter': false,
-                 'vendorCompanyProfileName':null
+                 'vendorCompanyProfileName':null,
+                 'campaignType' : campaignType
 
              };
          }
