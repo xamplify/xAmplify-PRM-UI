@@ -82,7 +82,7 @@ import { CampaignTemplateDownloadHistoryComponent } from 'app/campaigns/campaign
 import { ShareLeadsComponent } from './share-leads/share-leads.component';
 import { ImageLoaderComponent } from './image-loader/image-loader.component';
 import { AddTagsUtilComponent } from 'app/util/add-tags-util/add-tags-util.component';
-
+import { CampaignsLaunchedByPartnersComponent } from 'app/util/campaigns-launched-by-partners/campaigns-launched-by-partners.component';
 
 
 
@@ -100,7 +100,7 @@ import { AddTagsUtilComponent } from 'app/util/add-tags-util/add-tags-util.compo
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
 		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent,
-		ImageLoaderComponent],
+		ImageLoaderComponent,CampaignsLaunchedByPartnersComponent],
 
 
 
@@ -114,7 +114,7 @@ import { AddTagsUtilComponent } from 'app/util/add-tags-util/add-tags-util.compo
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
 		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent,ImageLoaderComponent]
+		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent]
 
 
 })

@@ -1861,6 +1861,49 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     }
   }
   
+  downloadCampaignDetailsByActionType(actionType: String) {
+      this.hasCampaignListViewOrAnalyticsOrDeleteAccess().subscribe(
+          data => {
+              if (data) {
+                  try {
+                      this.campaignService.downloadCampaignDetailsByActionType(this.campaignId, this.actionType)
+                          .subscribe(
+                          data => {
+                        	  let name = '';
+                        	  if(this.actionType === 'recipients'){
+                        		  name = 'Recipients_Details';
+                        	  }else if(this.actionType === 'sent'){
+                        		  name = 'Sent_Emails_Details';
+                        	  }else if(this.actionType === 'deliverability'){
+                        		  name = 'Delivered_Emails_Details';
+                        	  }else if(this.actionType === 'hardbounce'){
+                        		  name = 'HardBounce_Emails_Details';
+                        	  }else if(this.actionType === 'softbounce'){
+                        		  name = 'SoftBounce_Emails_Details';
+                        	  }else if(this.actionType === 'unsubscribe'){
+                        		  name = 'Unsubscribed_Users_Details';
+                        	  }
+                              this.downloadFile(data, name, this.campaignId);
+                              this.isLoadingDownloadList = false;
+                          },
+                          (error: any) => {
+                              this.xtremandLogger.error(error);
+                              this.xtremandLogger.errorPage(error);
+                              this.isLoadingDownloadList = false;
+                          },
+                          () => this.xtremandLogger.info("download completed")
+                          );
+                  } catch (error) {
+                      this.xtremandLogger.error(error, "AnalyticsComponent", "downloadCampaignDetailsByActionType()");
+                      this.isLoadingDownloadList = false;
+                  }
+              } else {
+                  this.authenticationService.forceToLogout();
+              }
+          }
+      );
+  }
+  
   checkDownLoadAccess(downloadTypeName: any) {
       this.hasCampaignListViewOrAnalyticsOrDeleteAccess().subscribe(
           data => {
@@ -1885,7 +1928,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         this.logListName = this.donultModelpopupTitle + '_Views_Logs.csv';
         this.downloadCsvList = this.totalListOfemailLog;
       } else if (this.downloadTypeName === 'emailAction') {
-        this.logListName = 'Email_Action_Logs.csv';
+        this.logListName = 'Email_Action_Logs_'+ this.campaignId +'.csv';
         this.downloadCsvList = this.campaignReport.totalEmailActionList;
       } else if (this.downloadTypeName === 'usersWatchedList') {
         this.logListName = 'Users_watched_Logs.csv';

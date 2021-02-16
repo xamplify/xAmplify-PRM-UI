@@ -402,6 +402,8 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+	
+
     listLeftSideNavBarItems(vanityUrlPostDto:any) {
         const url = this.moduleUrl+'showRssFeedOption?access_token=' + this.authenticationService.access_token;
             return this.http.post(url,vanityUrlPostDto)
@@ -416,9 +418,13 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+	getContactsStatistics() {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getContactsAnalyticsTreeMapData'+'/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token ;
+            return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
-
- 
 
     private extractData(res: Response) {
         let body = res.json();
