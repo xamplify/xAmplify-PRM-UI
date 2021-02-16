@@ -7,6 +7,8 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
+declare var swal: any;
+
 @Component({
   selector: 'app-vanity-social-contacts-callback',
   templateUrl: './vanity-social-contacts-callback.component.html',
@@ -21,14 +23,17 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 
 
 	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger, private hubSpotService: HubSpotService, private integrationService: IntegrationService) {
-		let currentUrl = this.router.url;
-		if (currentUrl.includes('home/contacts')) {
-			this.currentModule = 'contacts';
-		} else if (currentUrl.includes('home/assignleads')) {
+        let currentUrl = this.router.url;
+        if ( currentUrl.includes( 'home/contacts' ) ) {
+            this.currentModule = 'contacts';
+          }
+		else if(currentUrl.includes( 'home/assignleads' ))
+		{
 			this.currentModule = 'leads';
-		} else {
-			this.currentModule = 'partners';
-		}
+			}
+         else {
+          this.currentModule = 'partners';
+        }
 		if (currentUrl.includes('google-callback')) {
 			this.callbackName = 'google';
 			this.contactService.socialCallbackName = "googleOauth";
@@ -124,6 +129,12 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 
 	integrationCallback(code: string, type: string) {
 		try {
+			let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
+			if(vanityUrlFilter == undefined){
+							swal( {
+            text: 'Redirectng to Myprofile page...! Please Wait...It\'s processing',
+            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+        });}
 			this.integrationService.handleCallbackByType(code, type)
 				.subscribe(
 					result => {
@@ -131,8 +142,11 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 						this.xtremandLogger.info("Integration Callback :: " + result);
 						localStorage.removeItem("userAlias");
 						localStorage.removeItem("currentModule");
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 						if (vanityUrlFilter == 'true' ) {
+						swal( {
+					            text: 'Closing the window...! Please Wait...',
+					            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+					        });
 								var message = '';
 								if(type == 'hubspot'){
 									message = "isHubSpotAuth";
@@ -141,8 +155,11 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 									message = "isSalesForceAuth";
 								}
 								this.postingMessageToParentWindow(message);
-							}
-						this.router.navigate(['/home/dashboard/myprofile']);
+						}
+						else{
+								swal.close();
+								this.router.navigate(['/home/dashboard/myprofile']);
+						}
 						// Commented below code by Swathi. Custom form creation should not be done here.
                         /*if(type === "isalesforce"){
                             this.contactService.getSfFormFields().subscribe(result =>{
@@ -169,6 +186,7 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 		localStorage.removeItem('vanityUserAlias');
 		localStorage.removeItem("userAlias");
 		localStorage.removeItem("currentModule");
+		swal.close();
 		self.close();
 	}
 
