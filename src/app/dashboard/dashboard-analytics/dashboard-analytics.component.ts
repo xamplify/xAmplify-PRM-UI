@@ -190,14 +190,15 @@ this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnal
             this.xtremandLogger.log(data);
             this.referenceService.loading(this.topFourCampaignsLoader,false);
             const campaignIdArray = data.map(function (a) { return a[0]; });
-            //this.campaignIdArray = campaignIdArray;
             this.totalCampaignsCount = this.campaigns.length;
-            if (this.totalCampaignsCount >= 1) {
-                this.getCampaignsEamailBarChartReports(campaignIdArray);
-            }else{
-                this.referenceService.loading(this.emailStatisticsLoader,false);
-                this.topFourLoading = false;
-            }
+            this.referenceService.loading(this.emailStatisticsLoader,false);
+            //     this.topFourLoading = false;
+            // if (this.totalCampaignsCount >= 1) {
+            //     this.getCampaignsEamailBarChartReports(campaignIdArray);
+            // }else{
+            //     this.referenceService.loading(this.emailStatisticsLoader,false);
+            //     this.topFourLoading = false;
+            // }
         },
         error => { 
             this.topFourLoading = false;
@@ -389,6 +390,11 @@ showCampaignDetails(campaign:any){
     this.ngxLoading = true;
     this.referenceService.campaignType = campaign[7];
     this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
+  }
+
+  goToManagePartners(){
+    this.ngxLoading = true;
+    this.referenceService.goToRouter('/home/partners/manage');
   }
 
 

@@ -7,12 +7,13 @@
   <div class="page-bar">
     <ul class="page-breadcrumb">
       <li *ngIf="!authenticationService.isSuperAdmin()">
-        <i class="fa fa-home"></i>
+        <i class="fa fa-home" aria-hidden="true"></i>
         <a [routerLink]="referenseService.homeRouter">Home</a>
-        <i class="fa fa-angle-right"></i>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
-      <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin
-          Report</a><i class="fa fa-angle-right"></i></li>
+      <li *ngIf="authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin
+          Report</a><i class="fa fa-angle-right" aria-hidden="true"></i></li>
       <li>
         <a>Partner Analytics</a>
       </li>
@@ -27,9 +28,8 @@
             <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex" (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
-                  <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
                   <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1" 
-                   [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }">
+                   [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }" aria-hidden="true">
                  </i>
                 </div>
                 <div class="details">
@@ -44,7 +44,6 @@
             <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" >
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex" (click)="goToThroughPartnersDiv()">
                 <div class="visual">
-                  <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"  [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }"
                 *ngIf="selectedTabIndex == 3" ></i>
                 </div>
@@ -136,54 +135,8 @@
         </div>
         <!-- END PORTLET-->
       </div>
-      <div class="col-xs-12 col-sm-6 p5">
-        <div class="portlet light">
-          <div class="portlet-title">
-            <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase"> campaigns launched by partners</span>
-            </div>
-            <div class="inputs" align="right" style="float: right">
-              <div class="portlet-input input-inline input-medium">
-                <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
-                  <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="Search for a Partner" (keypress)="activePartnerSearch($event.keyCode)">
-                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="activePartnersSearchKey" (click)="activePartnersSearchKey=''"></button>
-                  <button type="submit" class="search-box-item-click" (click)="searchActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="portlet-body clearfix table-responsive" style="min-height: 410px;">
-            <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="listLoaderValue.ACTIVEPARTNERS"></app-list-loader>
-            <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading">
-              <thead>
-                <th>Partner</th>
-                <th>Campaigns</th>
-                <th> </th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of activePartnersPagination.pagedItems">
-                  <td>
-                    <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
-                  </td>
-                  <td class="text-center">{{item.count}}</td>
-                  <td>
-                    <app-pie-chart [customerId]="item.partnerId"></app-pie-chart>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
-              <strong>No campaigns found</strong>
-            </div>
-            <div style="position: absolute;bottom: 10px;" *ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
-
-              <app-pagination [pagination]="activePartnersPagination" [type]="'ActivePartnerPagination'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
-
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- -Campaigns Launched By Partners -->
+     <app-campaigns-launched-by-partners></app-campaigns-launched-by-partners>
     </div>
 
   </div><!-- End Of active-partners-div -->
