@@ -587,6 +587,12 @@ export class CampaignService {
             .map(( response: any ) => response );
     }
     
+    downloadCampaignDetailsByActionType( campaignId: number, actionType: string): Observable<Response> {
+        this.logger.info( campaignId );
+        return this.http.get( this.URL + "campaign/" + campaignId + "/" +actionType + "/download-details?access_token=" + this.authenticationService.access_token )
+            .map(( response: any ) => response );
+    }
+    
     
     downloadPartnerLeadList( campaignId: number, partnerId, leadType: any): Observable<Response> {
         this.logger.info( campaignId );
