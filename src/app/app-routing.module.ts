@@ -41,7 +41,6 @@ import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanit
 import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
 import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
 import { LogoutComponent } from 'app/authentication/logout/logout.component';
-import { VanityMyProfileComponent } from './vanity-my-profile/vanity-my-profile.component';
 
 
 export const routes: Routes = [
