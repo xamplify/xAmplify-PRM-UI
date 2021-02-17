@@ -41,6 +41,7 @@ import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanit
 import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
 import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
 import { LogoutComponent } from 'app/authentication/logout/logout.component';
+import { VanityMyProfileComponent } from './vanity-my-profile/vanity-my-profile.component';
 
 
 export const routes: Routes = [
@@ -48,8 +49,13 @@ export const routes: Routes = [
 	{ path: 'home/contacts/google-callback', component: VanitySocialContactsCallbackComponent },
     { path: 'home/contacts/zoho-callback', component: VanitySocialContactsCallbackComponent },
     { path: 'home/contacts/salesforce-callback', component: VanitySocialContactsCallbackComponent },
-   // { path: 'home/dashboard/hubspot-callback', component: VanitySocialContactsCallbackComponent },
-   // { path: 'home/dashboard/isalesforce-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'home/dashboard/hubspot-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'home/dashboard/isalesforce-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'leads-google-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'leads-zoho-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'leads-salesforce-callback', component: VanitySocialContactsCallbackComponent },
+
+
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'expired', component: LogoutComponent },
 	{ path: 'signup', component: SignupComponent },
