@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -15,6 +15,7 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 	providers: [Pagination, HttpRequestLoader,ListLoaderValue]
 })
 export class CampaignsLaunchedByPartnersComponent implements OnInit {
+	@Input() isFromPartnerAnalytics:boolean;
 	activePartnersSearchKey: string = "";
 	activePartnersPagination: Pagination = new Pagination();
 	activeParnterHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();

@@ -1,15 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
+import { Pagination } from 'app/core/models/pagination';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PagerService } from 'app/core/services/pager.service';
+import { ParterService } from 'app/partners/services/parter.service';
+import { ListLoaderValue } from 'app/common/models/list-loader-value';
 
 @Component({
   selector: 'app-partners-statistics',
   templateUrl: './partners-statistics.component.html',
-  styleUrls: ['./partners-statistics.component.css']
+  styleUrls: ['./partners-statistics.component.css'],
+  providers: [Pagination, HttpRequestLoader,ListLoaderValue]
 })
 export class PartnersStatisticsComponent implements OnInit {
-
-  constructor() { }
+  loggedInUserId: number = 0;
+  activePartnersSearchKey: string = "";
+	activePartnersPagination: Pagination = new Pagination();
+	activeParnterHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+	constructor(public listLoaderValue: ListLoaderValue,public authenticationService: AuthenticationService, public pagination: Pagination,
+		public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
+		public xtremandLogger: XtremandLogger) {
+		this.loggedInUserId = this.authenticationService.getUserId();
+	}
 
   ngOnInit() {
-  }
+		this.getActivePartnerReports();
+	}
+
+	activePartnerSearch(keyCode: any) { if (keyCode === 13) { this.searchActivePartnerAnalytics(); } }
+
+	searchActivePartnerAnalytics() {
+		this.activePartnersPagination.pageIndex = 1;
+		this.activePartnersPagination.searchKey = this.activePartnersSearchKey;
+		this.getActivePartnerReports();
+	}
+
+	getActivePartnerReports() {
+		this.referenseService.loading(this.activeParnterHttpRequestLoader, true);
+		this.activePartnersPagination.userId = this.loggedInUserId;
+		if (this.authenticationService.isSuperAdmin()) {
+			this.activePartnersPagination.userId = this.authenticationService.checkLoggedInUserId(this.activePartnersPagination.userId);
+		}
+		this.activePartnersPagination.maxResults = 3;
+		this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
+			(response: any) => {
+				for (var i in response.activePartnesList) {
+					response.activePartnesList[i].contactCompany = response.activePartnesList[i].partnerCompanyName;
+				}
+				this.activePartnersPagination.totalRecords = response.totalRecords;
+				this.activePartnersPagination = this.pagerService.getPagedItems(this.activePartnersPagination, response.activePartnesList);
+				this.referenseService.loading(this.activeParnterHttpRequestLoader, false);
+			},
+			(_error: any) => {
+				console.log("error");
+			}
+		);
+	}
+
+	setPage(event:any) {
+		this.activePartnersPagination.pageIndex = event.page;
+		this.getActivePartnerReports();
+	}
+
 
 }

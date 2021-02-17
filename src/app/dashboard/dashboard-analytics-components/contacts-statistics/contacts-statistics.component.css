@@ -1,15 +1,65 @@
-.total-partners-color {
-	color: #00a2e2;
+
+.dashboard-stat2 {
+	background: #fff;
+	padding: 15px 15px 1px 15px;
+	margin-bottom: 20px;
+	height: 60px;
 }
 
-.active-partners-color {
-	color: #00bb1d;
+.m0 {
+	margin: 0 !important;
 }
 
-.inactive-partners-color {
-	color: #f36360;
+.partners-count{
+	font-weight: 600;
+    font-size: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+	text-overflow: ellipsis;
+	margin-left: 10px;
 }
 
-.spx {
-	font-size: 50px;
+
+.partners-text{
+	font-weight: 600;
+    font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	color: #0000005c;
+	margin-left: -30px;
 }
+
+
+
+.icon1{
+	background: #aae2d0;
+	padding: 12px 12px;
+	border-radius: 3px;
+	color: #11b7b7;
+	height: 37px;
+	width: 37px;
+	margin-top: -7px;
+}
+
+.icon3 {
+	background: #eac2af;
+	padding: 12px 12px;
+	border-radius: 3px;
+	color: #d47735fc;
+	height: 37px;
+	width: 37px;
+	margin-top: -7px;
+}
+
+.icon2 {
+	background: #aadae2;
+	padding: 12px 12px;
+	border-radius: 3px;
+	color: #359696;
+	height: 37px;
+	width: 37px;
+	margin-top: -7px;
+}
+
+
