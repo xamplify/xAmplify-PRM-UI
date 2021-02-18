@@ -48,12 +48,11 @@ export const routes: Routes = [
 	{ path: 'home/contacts/google-callback', component: VanitySocialContactsCallbackComponent },
     { path: 'home/contacts/zoho-callback', component: VanitySocialContactsCallbackComponent },
     { path: 'home/contacts/salesforce-callback', component: VanitySocialContactsCallbackComponent },
-    { path: 'home/dashboard/hubspot-callback', component: VanitySocialContactsCallbackComponent },
-    { path: 'home/dashboard/isalesforce-callback', component: VanitySocialContactsCallbackComponent },
-    { path: 'leads-google-callback', component: VanitySocialContactsCallbackComponent },
-    { path: 'leads-zoho-callback', component: VanitySocialContactsCallbackComponent },
-    { path: 'leads-salesforce-callback', component: VanitySocialContactsCallbackComponent },
-
+    //{ path: 'home/dashboard/hubspot-callback', component: VanitySocialContactsCallbackComponent },
+    //{ path: 'home/dashboard/isalesforce-callback', component: VanitySocialContactsCallbackComponent },
+    //{ path: 'leads-google-callback', component: VanitySocialContactsCallbackComponent },
+    //{ path: 'leads-zoho-callback', component: VanitySocialContactsCallbackComponent },
+    //{ path: 'leads-salesforce-callback', component: VanitySocialContactsCallbackComponent },
 
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'expired', component: LogoutComponent },
