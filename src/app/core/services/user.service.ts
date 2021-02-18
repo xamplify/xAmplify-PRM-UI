@@ -22,6 +22,7 @@ export class UserService {
     URL = this.authenticationService.REST_URL;
     GDPR_SETTING_URL = this.authenticationService.REST_URL + "gdpr/setting/";
     CATEGORIES_URL = this.URL + 'category/';
+    MODULE_URL = this.URL+ 'module/';
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
     TAG_URL = this.URL + 'tag/';
@@ -330,13 +331,24 @@ export class UserService {
     }
 
     getItemsCount(categoryId:number,loggedInUserId:number){
-        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+       let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
        let input = {};
        input['loggedInUserId'] = loggedInUserId;
        input['categoryId'] = categoryId;
        input['vanityUrlFilter'] = vanityUrlFilter;
        input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
         return this.http.post(this.CATEGORIES_URL+"getItemsCountDetailsByCategoryId?access_token=" + this.authenticationService.access_token,input)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    isAdvancedDashboardAvailable(){
+       let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+       let input = {};
+       input['userId'] = this.authenticationService.getUserId();
+       input['vanityUrlFilter'] = vanityUrlFilter;
+       input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
+       return this.http.post(this.MODULE_URL+"isAdvancedDashboardAvailable?access_token=" + this.authenticationService.access_token,input)
         .map( this.extractData )
         .catch( this.handleError );
     }

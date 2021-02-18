@@ -62,8 +62,6 @@ export class DashboardAnalyticsComponent implements OnInit {
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-
-
    }
 
   ngOnInit() {

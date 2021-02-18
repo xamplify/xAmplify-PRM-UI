@@ -7,6 +7,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { UtilService } from 'app/core/services/util.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 declare var Highcharts: any;
 
@@ -29,7 +30,7 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
   heatMapTooltip = 'Current Year';
   heatMapLoader: HttpRequestLoader = new HttpRequestLoader();
   dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
-  constructor(public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService,public utilService:UtilService,private vanityUrlService: VanityURLService) {
+  constructor(public authenticationService:AuthenticationService,public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService,public utilService:UtilService,private vanityUrlService: VanityURLService) {
     this.sortDates = this.dashboardService.sortDates;
     this.sortHeatMapValues = this.sortDates.concat([{ 'name': 'Year', 'value': 'year' }]);
     this.heatMapSort = this.sortHeatMapValues[4];

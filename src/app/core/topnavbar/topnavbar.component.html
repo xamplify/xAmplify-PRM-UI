@@ -196,7 +196,7 @@
                             <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
                                 <li *ngIf="currentUrl.endsWith('welcome') && authenticationService.user.hasCompany">
                                     <a [routerLink]="['/home/dashboard']" translate>
-                                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
+                                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardText}}</a>
                                 </li>
                                 <li *ngIf="currentUrl.endsWith('dashboard') && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                                     <a [routerLink]="['/home/dashboard/welcome']" translate>

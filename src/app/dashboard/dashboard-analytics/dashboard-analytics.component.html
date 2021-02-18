@@ -123,7 +123,15 @@
    <!---Campaign Statistics And Email Statistics-->
    <div class="clearfix">
     <app-campaign-statistics-analytics></app-campaign-statistics-analytics>
+    <ng-container *ngIf="authenticationService?.advancedDashboard">
+        <div class="clearfix">
+            <app-partners-statistics></app-partners-statistics>
+            <app-partner-contacts-statistics></app-partner-contacts-statistics>
+            <app-mdf-statistics></app-mdf-statistics>
+        </div>
+    </ng-container>
     <!-- ---Email Statistics---------------->
+    <ng-container *ngIf="!authenticationService?.advancedDashboard">
       <div class="col-xs-12 col-sm-6">
                  <div class="col-xs-12 p0">
                      <div class="portlet light">
@@ -138,9 +146,9 @@
                              <div class="table-responsive" [hidden]="emailStatisticsLoader.isLoading">
                                  <table id="trellis" aria-describedby="desc">
                                      <tr>
-                                         <td class="first" scope="col"></td>
-                                         <td scope="col"></td>
-                                         <td scope="col"></td>
+                                         <td class="first"></td>
+                                         <td></td>
+                                         <td></td>
                                      </tr>
                                  </table>
                              </div>
@@ -153,7 +161,9 @@
                      </div>
                  </div>
              </div>
+            </ng-container>
      </div>
+     <ng-container *ngIf="!authenticationService?.advancedDashboard">
      <!------Regional Statistics, Video Statistics & Email Stats--------------->
      <div class="clearfix">
          <app-regional-statistics-analytics></app-regional-statistics-analytics>
@@ -163,6 +173,8 @@
              <app-email-stats-analytics></app-email-stats-analytics>
          </div>
      </div>
+    </ng-container>
+
     </div><!--End of page bar-->
  </div><!--End of row-->
 <app-social-accounts-analytics></app-social-accounts-analytics>
