@@ -3,7 +3,7 @@
     <div class="portlet light">
       <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
         <div class="caption">
-          <span class="caption-subject" translate>Contacts Statistics</span>
+          <span class="caption-subject" translate>Partner Contacts Statistics</span>
         </div>
       </div>
       <div class="portlet-body clearfix">
@@ -55,6 +55,15 @@
             </div>
           </div>
         </div>
+        <div class="col-xs-12 col-sm-12">
+          <div class="portlet-body">
+            <app-modal-popup-loader  [height]=220 [hidden]="!treeMapLoader.isLoading"></app-modal-popup-loader>
+                <div [hidden]="treeMapLoader.isLoading" id="minimized-contacts-treemap" style="max-width: 100%; min-height: 214px; cursor: pointer"></div>
+                <div [hidden]="treeMapLoader.isLoading" *ngIf="treeMapData?.length < 1" style="max-width: 100%;text-align: center;">
+                    <span style="position: absolute;top: 130px;left: 220px;">No data available</span>
+                </div>
+        </div>
+           </div>
       </div>
     </div>
   </div>
