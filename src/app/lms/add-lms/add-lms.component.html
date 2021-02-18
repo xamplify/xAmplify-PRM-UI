@@ -41,7 +41,8 @@
                         <font class="required">*</font>
                         <div class="input-group prefix">
                             <span class="input-group-addon" style="min-width: auto;">
-                                <a class="inline" href="{{linkPrefix + learningTrack.slug}}" target="_blank" [ngClass]="{'isDisabled' : isAdd}">{{linkPrefix}}</a>
+                                <a class="inline" href="{{linkPrefix + learningTrack.slug}}" target="_blank"
+                                    [ngClass]="{'isDisabled' : isAdd}">{{linkPrefix}}</a>
                             </span>
                             <input class="select-box inline form-control" [(ngModel)]="learningTrack.slug" maxlength="100" (input)="updateSlug('slug')">
                         </div>
@@ -66,82 +67,85 @@
                                     <span class="caption-subject font-blue-madison bold">Settings</span>
                                 </div>
                             </div>
-                            <div class=" row " style=" padding: 5px 10px 5px 15px;">
-                                <div style="border-bottom: 3px solid #eee;min-height: 30px;">
-                                    <ul class="tab-content-align" style="display: -webkit-inline-box;">
-                                        <li class="bold uppercase" style="padding: 10px 10px;" [ngClass]="{'active-tab': activeTabName == 'content'}"><a [ngClass]="{'active-tab-anchor-text': activeTabName == 'content'}" (click)="activateTab('content');clearCustomResponse()">content</a></li>
-                                        <li class="bold uppercase" style="padding: 10px 10px;" [ngClass]="{'active-tab': activeTabName == 'quizing'}"><a [ngClass]="{'active-tab-anchor-text': activeTabName == 'quizing'}" (click)="activateTab('quizing');clearCustomResponse()">quizing</a></li>
-                                        <li class="bold uppercase" style="padding: 10px 10px;" [ngClass]="{'active-tab': activeTabName == 'visibility'}"><a [ngClass]="{'active-tab-anchor-text': activeTabName == 'visibility'}" (click)="activateTab('visibility');clearCustomResponse()">visibility</a>
-                                        </li>
+                            <div class="panel with-nav-tabs panel-default">
+                                <div class="panel-heading">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#contentTab" data-toggle="tab">content</a></li>
+                                        <li><a href="#quizingTab" data-toggle="tab">quizing</a></li>
+                                        <li><a href="#visibilityTab" data-toggle="tab">visibility</a></li>
                                     </ul>
                                 </div>
-                            </div>
-                            <div class="tab-content" style="padding: 10px 10px;">
-                                <div class="tab-pane" [ngClass]="{'active': activeTabName == 'content'}">
-                                    <span *ngIf="!isAssetValid" class="required">{{assetErrorMessage}}</span>
-                                    <label class="label padding">Attach Asset</label>
-                                    <font class="required">*</font>
-                                    <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='selectedAssets'>
-                                        <ng-container *ngFor="let selectedAsset of selectedAssets;let i=index">
-                                            <div style="cursor: move;">
-                                                <a id="drag-div">
-                                                    <div class="padding">
-                                                        <input class="select-box inline" [value]="selectedAsset.assetName" disabled="disabled" (input)="validateAssets()">
-                                                        <button class="btn btn-primary" type="button" (click)="openAssetPopup(i)">Select
-                                                            Asset</button>
-                                                        <button class="btn btn-primary" type="button" (click)="clearAsset(i); validateAssets()">Clear</button>
-                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeAsset(i); validateAssets()">
-                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                        </button>
+                                <div class="panel-body">
+                                    <div class="tab-content" style="padding: 10px 10px;">
+                                        <div class="tab-pane fade in active" id="contentTab">
+                                            <span *ngIf="!isAssetValid" class="required">{{assetErrorMessage}}</span>
+                                            <label class="label padding">Attach Asset</label>
+                                            <font class="required">*</font>
+                                            <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='selectedAssets'>
+                                                <ng-container *ngFor="let selectedAsset of selectedAssets;let i=index">
+                                                    <div style="cursor: move;">
+                                                        <a id="drag-div">
+                                                            <div class="padding">
+                                                                <input class="select-box inline" [value]="selectedAsset.assetName" disabled="disabled" (input)="validateAssets()">
+                                                                <button class="btn btn-primary" type="button" (click)="openAssetPopup(i)">Select
+                                                                    Asset</button>
+                                                                <button class="btn btn-primary" type="button" (click)="clearAsset(i); validateAssets()">Clear</button>
+                                                                <button type="button" class="btn btn-danger btn-xs" (click)="removeAsset(i); validateAssets()">
+                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                </button>
+                                                            </div>
+                                                        </a>
                                                     </div>
-                                                </a>
+                                                </ng-container>
                                             </div>
-                                        </ng-container>
-                                    </div>
-                                    <div class="padding">
-                                        <button class="btn btn-primary" (click)="addAsset()">Add Asset</button>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" [ngClass]="{'active': activeTabName == 'quizing'}">
-                                    <label class="label padding ">Quiz</label>
-                                    <input class="select-box inline" [value]="selectedQuizName" disabled="disabled">
-                                    <button class="btn btn-primary" type="button" (click)="openQuizPopup()">Select Quiz</button>
-                                    <button class="btn btn-primary" type="button" (click)="clearQuiz()">Clear</button>
-                                </div>
-                                <div class=" tab-pane " [ngClass]="{ 'active': activeTabName=='visibility' } ">
-                                    <span *ngIf="!isGroupOrCompanyValid" class="required">{{groupOrCompanyErrorMessage}}</span>
-                                    <label class="label padding ">Group</label><br>
-                                    <ng-container *ngFor="let selectedGroup of selectedGroups;let i=index ">
-                                        <div class="padding ">
-                                            <select class="select-box" [(ngModel)]="selectedGroup.id" (change)="validateGroupOrCompany()">
-                                                <option *ngFor="let group of groupList " [ngValue]="group.id">
-                                                    {{group.name}}
-                                                </option>
-                                            </select>
-                                            <button type="button " class="btn btn-danger btn-xs " (click)="removeGroup(i); validateGroupOrCompany() ">
-                                                <span class="glyphicon glyphicon-trash "></span>
-                                            </button>
+                                            <div class="padding">
+                                                <button class="btn btn-primary" (click)="addAsset()">Add Asset</button>
+                                            </div>
                                         </div>
-                                    </ng-container>
-                                    <div class="padding ">
-                                        <button class="btn btn-primary " (click)="addGroup() ">Add Group</button><br>
-                                    </div>
-                                    <label class="label padding ">Company</label><br>
-                                    <ng-container *ngFor="let selectedPartnerCompany of selectedPartnerCompanies;let i=index ">
-                                        <div class="padding ">
-                                            <select class="select-box" [(ngModel)]="selectedPartnerCompany.id" (change)="validateGroupOrCompany()">
-                                                <option *ngFor="let partnerCompany of partnerCompanyList " [ngValue]="partnerCompany.id">
-                                                    {{partnerCompany.partnerCompanyName}}
-                                                </option>
-                                            </select>
-                                            <button type="button " class="btn btn-danger btn-xs " (click)="removePartnerCompany(i); validateGroupOrCompany() ">
-                                                <span class="glyphicon glyphicon-trash "></span>
-                                            </button>
+                                        <div class="tab-pane fade" id="quizingTab">
+                                            <label class="label padding ">Quiz</label>
+                                            <input class="select-box inline" [value]="selectedQuizName" disabled="disabled">
+                                            <button class="btn btn-primary" type="button" (click)="openQuizPopup()">Select Quiz</button>
+                                            <button class="btn btn-primary" type="button" (click)="clearQuiz()">Clear</button>
                                         </div>
-                                    </ng-container>
-                                    <div class="padding ">
-                                        <button class="btn btn-primary " (click)="addPartnerCompany() ">Add
-                                            Company</button><br>
+                                        <div class="tab-pane fade" id="visibilityTab">
+                                            <span *ngIf="!isGroupOrCompanyValid" class="required">{{groupOrCompanyErrorMessage}}</span>
+                                            <label class="label padding ">Group</label><br>
+                                            <ng-container *ngFor="let selectedGroup of selectedGroups;let i=index ">
+                                                <div class="padding ">
+                                                    <select class="select-box" [(ngModel)]="selectedGroup.id" (change)="validateGroupOrCompany()">
+                                                        <option *ngFor="let group of groupList " [ngValue]="group.id">
+                                                            {{group.name}}
+                                                        </option>
+                                                    </select>
+                                                    <button type="button " class="btn btn-danger btn-xs " (click)="removeGroup(i); validateGroupOrCompany() ">
+                                                        <span class="glyphicon glyphicon-trash "></span>
+                                                    </button>
+                                                </div>
+                                            </ng-container>
+                                            <div class="padding ">
+                                                <button class="btn btn-primary " (click)="addGroup() ">Add
+                                                    Group</button><br>
+                                            </div>
+                                            <label class="label padding ">Company</label><br>
+                                            <ng-container *ngFor="let selectedPartnerCompany of selectedPartnerCompanies;let i=index ">
+                                                <div class="padding ">
+                                                    <select class="select-box" [(ngModel)]="selectedPartnerCompany.id" (change)="validateGroupOrCompany()">
+                                                        <option *ngFor="let partnerCompany of partnerCompanyList "
+                                                            [ngValue]="partnerCompany.id">
+                                                            {{partnerCompany.partnerCompanyName}}
+                                                        </option>
+                                                    </select>
+                                                    <button type="button " class="btn btn-danger btn-xs " (click)="removePartnerCompany(i); validateGroupOrCompany() ">
+                                                        <span class="glyphicon glyphicon-trash "></span>
+                                                    </button>
+                                                </div>
+                                            </ng-container>
+                                            <div class="padding ">
+                                                <button class="btn btn-primary " (click)="addPartnerCompany() ">Add
+                                                    Company</button><br>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -186,8 +190,8 @@
                             </div>
                         </div>
                         <select class="form-control " [(ngModel)]="learningTrack.categoryId " (change)="checkAllRequiredFields()">
-                            <option *ngFor="let category of categoryNames " [ngValue]="category.id " data-toggle="tooltip "
-                                data-placement="top " title="{{category.name}} ">
+                            <option *ngFor="let category of categoryNames " [ngValue]="category.id "
+                                data-toggle="tooltip " data-placement="top " title="{{category.name}} ">
                                 {{category.name | slice: 0: 25}}
                             </option>
                         </select>
@@ -212,7 +216,8 @@
                                 <img class="img-grid" [src]="croppedImage" alt="">
                             </div>
                             <ng-template #showImage>
-                                <img class="img-grid" [src]="featuredImagePath" alt=""> </ng-template>
+                                <img class="img-grid" [src]="featuredImagePath" alt="">
+                            </ng-template>
                         </div>
                     </div>
                 </div>
@@ -643,8 +648,8 @@
                                                 </span>
                                             </div>
                                             <span class="item__name" data-toggle="tooltip" [title]="file.assetName">
-                                                <strong>{{file.assetName	| slice: 0: 8}}
-                                                 <span *ngIf="file.assetName?.length>8">...</span>
+                                                <strong>{{file.assetName | slice: 0: 8}}
+                                                    <span *ngIf="file.assetName?.length>8">...</span>
                                             </strong>
                                             </span>
                                             <div class="item__size">
@@ -654,10 +659,13 @@
                                                 <span>{{file.assetType}}</span>
                                             </div>
                                             <div class="item__actions">
-                                                <span> <a class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top" [title]="preview"
-                                                        (click)="$event.stopPropagation();" href="{{file.thumbnailPath}}" target="_blank">
-                                                        <i class="fa fa-external-link" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
-                                                    </a> 
+                                                <span> <a class="fm external-link" target="_BLANK" data-toggle="tooltip"
+                                                        data-placement="top" [title]="preview"
+                                                        (click)="$event.stopPropagation();"
+                                                        href="{{file.thumbnailPath}}" target="_blank">
+                                                        <i class="fa fa-external-link" aria-hidden="true"
+                                                            style="font-size: 20px; color: #5a5a5a"></i>
+                                                    </a>
                                                     <!-- <a class="fm delete" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.delete_item"
                                                         (click)="$event.stopPropagation();delete(file,file.id)">
                                                         <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
@@ -691,7 +699,90 @@
 </div>
 
 <div *ngIf="openAddTagPopup">
-    <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)"></app-add-tags-util>
+    <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
+    </app-add-tags-util>
 </div>
 
-<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="resetFolderValues($event)"></app-add-folder-modal-popup>
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="resetFolderValues($event)">
+</app-add-folder-modal-popup>
+
+
+<!-- <div class=" row " style=" padding: 5px 10px 5px 15px;">
+    <div style="border-bottom: 3px solid #eee;min-height: 30px;">
+        <ul class="tab-content-align" style="display: -webkit-inline-box;">
+            <li class="bold uppercase" style="padding: 10px 10px;" [ngClass]="{'active-tab': activeTabName == 'content'}"><a [ngClass]="{'active-tab-anchor-text': activeTabName == 'content'}" (click)="activateTab('content');clearCustomResponse()">content</a></li>
+            <li class="bold uppercase" style="padding: 10px 10px;" [ngClass]="{'active-tab': activeTabName == 'quizing'}"><a [ngClass]="{'active-tab-anchor-text': activeTabName == 'quizing'}" (click)="activateTab('quizing');clearCustomResponse()">quizing</a></li>
+            <li class="bold uppercase" style="padding: 10px 10px;" [ngClass]="{'active-tab': activeTabName == 'visibility'}"><a [ngClass]="{'active-tab-anchor-text': activeTabName == 'visibility'}" (click)="activateTab('visibility');clearCustomResponse()">visibility</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="tab-content" style="padding: 10px 10px;">
+    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'content'}">
+        <span *ngIf="!isAssetValid" class="required">{{assetErrorMessage}}</span>
+        <label class="label padding">Attach Asset</label>
+        <font class="required">*</font>
+        <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='selectedAssets'>
+            <ng-container *ngFor="let selectedAsset of selectedAssets;let i=index">
+                <div style="cursor: move;">
+                    <a id="drag-div">
+                        <div class="padding">
+                            <input class="select-box inline" [value]="selectedAsset.assetName" disabled="disabled" (input)="validateAssets()">
+                            <button class="btn btn-primary" type="button" (click)="openAssetPopup(i)">Select
+                                Asset</button>
+                            <button class="btn btn-primary" type="button" (click)="clearAsset(i); validateAssets()">Clear</button>
+                            <button type="button" class="btn btn-danger btn-xs" (click)="removeAsset(i); validateAssets()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </div>
+                    </a>
+                </div>
+            </ng-container>
+        </div>
+        <div class="padding">
+            <button class="btn btn-primary" (click)="addAsset()">Add Asset</button>
+        </div>
+    </div>
+    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'quizing'}">
+        <label class="label padding ">Quiz</label>
+        <input class="select-box inline" [value]="selectedQuizName" disabled="disabled">
+        <button class="btn btn-primary" type="button" (click)="openQuizPopup()">Select Quiz</button>
+        <button class="btn btn-primary" type="button" (click)="clearQuiz()">Clear</button>
+    </div>
+    <div class=" tab-pane " [ngClass]="{ 'active': activeTabName=='visibility' } ">
+        <span *ngIf="!isGroupOrCompanyValid" class="required">{{groupOrCompanyErrorMessage}}</span>
+        <label class="label padding ">Group</label><br>
+        <ng-container *ngFor="let selectedGroup of selectedGroups;let i=index ">
+            <div class="padding ">
+                <select class="select-box" [(ngModel)]="selectedGroup.id" (change)="validateGroupOrCompany()">
+                    <option *ngFor="let group of groupList " [ngValue]="group.id">
+                        {{group.name}}
+                    </option>
+                </select>
+                <button type="button " class="btn btn-danger btn-xs " (click)="removeGroup(i); validateGroupOrCompany() ">
+                    <span class="glyphicon glyphicon-trash "></span>
+                </button>
+            </div>
+        </ng-container>
+        <div class="padding ">
+            <button class="btn btn-primary " (click)="addGroup() ">Add Group</button><br>
+        </div>
+        <label class="label padding ">Company</label><br>
+        <ng-container *ngFor="let selectedPartnerCompany of selectedPartnerCompanies;let i=index ">
+            <div class="padding ">
+                <select class="select-box" [(ngModel)]="selectedPartnerCompany.id" (change)="validateGroupOrCompany()">
+                    <option *ngFor="let partnerCompany of partnerCompanyList " [ngValue]="partnerCompany.id">
+                        {{partnerCompany.partnerCompanyName}}
+                    </option>
+                </select>
+                <button type="button " class="btn btn-danger btn-xs " (click)="removePartnerCompany(i); validateGroupOrCompany() ">
+                    <span class="glyphicon glyphicon-trash "></span>
+                </button>
+            </div>
+        </ng-container>
+        <div class="padding ">
+            <button class="btn btn-primary " (click)="addPartnerCompany() ">Add
+                Company</button><br>
+        </div>
+    </div>
+</div> -->
