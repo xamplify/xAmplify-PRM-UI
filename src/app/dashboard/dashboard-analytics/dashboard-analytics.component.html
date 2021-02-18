@@ -120,14 +120,49 @@
     </div>
     
     <!---Campaign Statistics-->
-    <div class="clearfix">
-       <app-campaign-statistics-analytics></app-campaign-statistics-analytics>
-    </div>
-    <!---Partner Contacts Statistics-->
-    <div class="clearfix">
-        <app-partners-statistics></app-partners-statistics>
-        <app-partner-contacts-statistics></app-partner-contacts-statistics>
-    </div>
+   <!---Campaign Statistics And Email Statistics-->
+   <div class="clearfix">
+    <app-campaign-statistics-analytics></app-campaign-statistics-analytics>
+    <!-- ---Email Statistics---------------->
+      <div class="col-xs-12 col-sm-6">
+                 <div class="col-xs-12 p0">
+                     <div class="portlet light">
+                         <div class="portlet-title">
+                             <div class="caption">
+                                 <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                                 <span class="caption-subject" translate>Email Statistics</span>
+                             </div>
+                         </div>
+                         <div class="portlet-body" style="min-height: 230px;  max-height: 100%; max-width: auto;">
+                             <app-modal-popup-loader [height]=220 [hidden]="!emailStatisticsLoader.isLoading"></app-modal-popup-loader>
+                             <div class="table-responsive" [hidden]="emailStatisticsLoader.isLoading">
+                                 <table id="trellis" aria-describedby="desc">
+                                     <tr>
+                                         <td class="first" scope="col"></td>
+                                         <td scope="col"></td>
+                                         <td scope="col"></td>
+                                     </tr>
+                                 </table>
+                             </div>
+                             <ng-container *ngIf="!emailStatisticsLoader.isLoading">
+                                 <div *ngIf="categories?.length < 1" style="max-width: 100%;text-align: center;">
+                                     <span style="position: absolute;top: 130px;left: 220px;">No data available</span>
+                                 </div>
+                             </ng-container>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+     </div>
+     <!------Regional Statistics, Video Statistics & Email Stats--------------->
+     <div class="clearfix">
+         <app-regional-statistics-analytics></app-regional-statistics-analytics>
+         <!----Video Statistics--------->
+         <div>
+             <app-video-statistics-analytics></app-video-statistics-analytics>
+             <app-email-stats-analytics></app-email-stats-analytics>
+         </div>
+     </div>
     </div><!--End of page bar-->
  </div><!--End of row-->
 <app-social-accounts-analytics></app-social-accounts-analytics>
