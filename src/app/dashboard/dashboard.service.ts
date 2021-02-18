@@ -425,6 +425,20 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    getActiveInActiveTotalPartnerCounts(){
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getActiveInActiveTotalPartnerCounts'+'/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token ;
+            return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getPartnerContactsCount(){
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getPartnerContactsCount'+'/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token ;
+            return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     private extractData(res: Response) {
         let body = res.json();
