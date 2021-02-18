@@ -420,7 +420,7 @@ export class AddLmsComponent implements OnInit {
 				(result: any) => {
 					if (result !== "") {
             this.loggedInUserCompanyId = result;
-            this.linkPrefix = this.authenticationService.APP_URL + "lms/" + this.loggedInUserCompanyId + "/";
+            this.linkPrefix = this.authenticationService.APP_URL + "home/lms/lt/" + this.loggedInUserCompanyId + "/";
 					} else {
 						this.stopLoaders();
 						this.referenceService.showSweetAlertErrorMessage('Company Id Not Found.Please try aftersometime');
@@ -489,7 +489,7 @@ export class AddLmsComponent implements OnInit {
         this.learningTrack.description = CKEDITOR.instances[instanceName].getData();
       }
     }
-    this.learningTrack.description = this.learningTrack.description + "<b><a href = " + form.ailasUrl + "target='_blank'>" + form.name + "</a>";
+    this.learningTrack.description = this.learningTrack.description + "<b><a href = \"" + form.ailasUrl + "\" target=\"_blank\">" + form.name + "</a>";
     $('#formsList').modal('hide');
   }
 
@@ -566,6 +566,7 @@ export class AddLmsComponent implements OnInit {
       } else {
         formData.append("featuredImage", this.fileObj, this.fileObj['name']);
       }
+      console.log(this.learningTrack)
       this.referenceService.startLoader(this.httpRequestLoader);
       this.lmsService.saveOrUpdate(formData, this.learningTrack).subscribe(
         (data: any) => {

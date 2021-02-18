@@ -17,54 +17,64 @@
                           </div>
                     </div>
                     <div class="portlet-body clearfix">
-                        <div class="col-xs-12 col-sm-6 col-md-4 p10">
-                            <div class="dashboard-stat2 m0">
-                                <div>
-                                    <div class="col-xs-3 p0">
-                                        <i class="fa fa-handshake-o icon1" aria-hidden="true"></i>
+                        <ng-container>
+                            <app-dashboard-loader *ngIf="partnerAnalyticsCountLoader"></app-dashboard-loader>
+                        </ng-container>
+                        <ng-container *ngIf="!partnerAnalyticsCountLoader && partnerAnalyticsCountStatusCode!=200">
+                            <div class="alert alert-danger">
+                                <strong>{{properties?.serverErrorMessage}}</strong>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!partnerAnalyticsCountLoader && partnerAnalyticsCountStatusCode==200">
+                            <div class="col-xs-12 col-sm-6 col-md-4 p10">
+                                <div class="dashboard-stat2 m0">
+                                    <div>
+                                        <div class="col-xs-3 p0">
+                                            <i class="fa fa-handshake-o icon1" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-xs-9 p0">
+                                            <span class="partners-count">
+                                                {{partnerAnalyticsCount?.totalPartners}}
+                                            </span>
+                                            <br>
+                                            <span class="partners-text">Total Partners</span>
+                                        </div>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-9 p0">
-                                        <span class="partners-count">
-                                            545
-                                        </span>
-                                        <br>
-                                        <span class="partners-text">Total Partners</span>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 p10">
+                                <div class="dashboard-stat2 m0">
+                                    <div>
+                                        <div class="col-xs-3 p0">
+                                            <i class="fa fa-handshake-o icon2" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-xs-9 p0">
+                                            <span class="partners-count">
+                                                {{partnerAnalyticsCount?.activePartners}}
+                                            </span>
+                                            <br>
+                                            <span class="partners-text">Active Partners</span>
+                                        </div>
+                                        </div>
                                     </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 p10">
+                                <div class="dashboard-stat2 m0">
+                                    <div>
+                                        <div class="col-xs-3 p0">
+                                            <i class="fa fa-handshake-o icon3" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-xs-9 p0">
+                                            <span class="partners-count">
+                                                {{partnerAnalyticsCount?.inActivePartners}}
+                                            </span>
+                                            <br>
+                                            <span class="partners-text">InActive Partners</span>
+                                        </div>
+                                        </div>
                                     </div>
-                                </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 p10">
-                            <div class="dashboard-stat2 m0">
-                                <div>
-                                    <div class="col-xs-3 p0">
-                                        <i class="fa fa-handshake-o icon2" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="col-xs-9 p0">
-                                        <span class="partners-count">
-                                            500
-                                        </span>
-                                        <br>
-                                        <span class="partners-text">Active Partners</span>
-                                    </div>
-                                    </div>
-                                </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 p10">
-                            <div class="dashboard-stat2 m0">
-                                <div>
-                                    <div class="col-xs-3 p0">
-                                        <i class="fa fa-handshake-o icon3" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="col-xs-9 p0">
-                                        <span class="partners-count">
-                                            45
-                                        </span>
-                                        <br>
-                                        <span class="partners-text">InActive Partners</span>
-                                    </div>
-                                    </div>
-                                </div>
-                        </div>
+                            </div>
+                        </ng-container>
                         <div class="col-xs-12 col-sm-12">
                         <div class="table-responsive">
                             <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="listLoaderValue.ACTIVEPARTNERS"></app-list-loader>

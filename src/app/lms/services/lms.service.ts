@@ -76,6 +76,12 @@ export class LmsService {
       .catch(this.handleError);
   }
 
+  getBySlug(companyId: number,slug: string) {
+    return this.http.get(this.URL + "/" + companyId + "/" + slug + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     let body = res;
     return body || {};
