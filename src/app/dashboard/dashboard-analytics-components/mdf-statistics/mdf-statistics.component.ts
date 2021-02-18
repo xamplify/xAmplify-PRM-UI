@@ -9,7 +9,7 @@ import { Properties } from 'app/common/models/properties';
   selector: 'app-mdf-statistics',
   templateUrl: './mdf-statistics.component.html',
   styleUrls: ['./mdf-statistics.component.css'],
-  providers: [Properties]
+  providers: [Properties,MdfService]
 })
 export class MdfStatisticsComponent implements OnInit {
   loggedInUserCompanyId: number = 0;
