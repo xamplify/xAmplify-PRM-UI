@@ -62,8 +62,6 @@ export class DashboardAnalyticsComponent implements OnInit {
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-
-
    }
 
   ngOnInit() {
@@ -184,7 +182,6 @@ this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnal
     .subscribe(
         data => {
             this.topFourCampaignErrorResponse  = new CustomResponse();
-          //  this.campaignIdArray = [];
             this.xtremandLogger.info(data);
             this.campaigns = data;
             this.xtremandLogger.log(data);
@@ -192,13 +189,13 @@ this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnal
             const campaignIdArray = data.map(function (a) { return a[0]; });
             this.totalCampaignsCount = this.campaigns.length;
             this.referenceService.loading(this.emailStatisticsLoader,false);
-            //     this.topFourLoading = false;
-            // if (this.totalCampaignsCount >= 1) {
-            //     this.getCampaignsEamailBarChartReports(campaignIdArray);
-            // }else{
-            //     this.referenceService.loading(this.emailStatisticsLoader,false);
-            //     this.topFourLoading = false;
-            // }
+                this.topFourLoading = false;
+            if (this.totalCampaignsCount >= 1) {
+                this.getCampaignsEamailBarChartReports(campaignIdArray);
+            }else{
+                this.referenceService.loading(this.emailStatisticsLoader,false);
+                this.topFourLoading = false;
+            }
         },
         error => { 
             this.topFourLoading = false;
@@ -392,10 +389,7 @@ showCampaignDetails(campaign:any){
     this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
   }
 
-  goToManagePartners(){
-    this.ngxLoading = true;
-    this.referenceService.goToRouter('/home/partners/manage');
-  }
+
 
 
 }

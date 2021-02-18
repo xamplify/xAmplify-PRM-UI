@@ -52,6 +52,8 @@ import { ModuleAccessComponent } from './module-access/module-access.component';
 import { TagsComponent } from './tags/tags.component';
 import { PartnersStatisticsComponent } from './dashboard-analytics-components/partners-statistics/partners-statistics.component';
 import { PartnerContactsStatisticsComponent } from './dashboard-analytics-components/partner-contacts-statistics/partner-contacts-statistics.component';
+import { MdfStatisticsComponent } from './dashboard-analytics-components/mdf-statistics/mdf-statistics.component';
+import { AdvancedDashboardAnalyticsComponent } from './advanced-dashboard-analytics/advanced-dashboard-analytics.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -79,7 +81,9 @@ import { PartnerContactsStatisticsComponent } from './dashboard-analytics-compon
         ModuleAccessComponent,
         TagsComponent,
         PartnersStatisticsComponent,
-        PartnerContactsStatisticsComponent
+        PartnerContactsStatisticsComponent,
+        MdfStatisticsComponent,
+        AdvancedDashboardAnalyticsComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
