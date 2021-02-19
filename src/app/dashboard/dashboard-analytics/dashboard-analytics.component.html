@@ -124,11 +124,7 @@
    <div class="clearfix">
     <app-campaign-statistics-analytics></app-campaign-statistics-analytics>
     <ng-container *ngIf="authenticationService?.advancedDashboard">
-        <div class="clearfix">
-            <app-partners-statistics></app-partners-statistics>
-            <app-partner-contacts-statistics></app-partner-contacts-statistics>
-            <app-mdf-statistics></app-mdf-statistics>
-        </div>
+       <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
     </ng-container>
     <!-- ---Email Statistics---------------->
     <ng-container *ngIf="!authenticationService?.advancedDashboard">
