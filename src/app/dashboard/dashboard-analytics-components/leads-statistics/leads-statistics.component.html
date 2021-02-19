@@ -3,31 +3,31 @@
     <div class="portlet light">
       <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
         <div class="caption">
-          <span class="caption-subject" translate>Mdf Statistics</span>
+          <span class="caption-subject" translate>Leads Statistics</span>
         </div>
       </div>
       <div class="portlet-body clearfix">
-        <ng-container>
+        <!-- <ng-container>
           <app-dashboard-loader *ngIf="mdfStatsLoader"></app-dashboard-loader>
         </ng-container>
         <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode!=200">
           <div class="alert alert-danger">
             <strong>{{properties?.serverErrorMessage}}</strong>
           </div>
-        </ng-container>
-        <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode==200">
+        </ng-container> -->
+        <ng-container>
         <div class="col-xs-12 col-sm-6 col-md-4 p10">
           <div class="dashboard-stat2 m0">
             <div>
               <div class="col-xs-3 p0">
-                <i class="fa fa-dollar icon1" aria-hidden="true"></i>
+                <i class="fa fa-users icon1" aria-hidden="true"></i>
               </div>
               <div class="col-xs-9 p0">
                 <span class="partners-count">
-                  ${{mdfData?.totalBalance | number:'1.0':'en-US'}}
+                  17
                 </span>
                 <br>
-                <span class="partners-text">Total Balance</span>
+                <span class="partners-text">Total Leads</span>
               </div>
             </div>
           </div>
@@ -36,14 +36,14 @@
           <div class="dashboard-stat2 m0">
             <div>
               <div class="col-xs-3 p0">
-                <i class="fa fa-dollar icon2" aria-hidden="true"></i>
+                <i class="fa fa-users icon2" aria-hidden="true"></i>
               </div>
               <div class="col-xs-9 p0">
                 <span class="partners-count">
-                  ${{mdfData?.usedBalance | number:'1.0':'en-US'}}
+                  7
                 </span>
                 <br>
-                <span class="partners-text">Used Balance</span>
+                <span class="partners-text">Won Leads</span>
               </div>
             </div>
           </div>
@@ -52,14 +52,30 @@
           <div class="dashboard-stat2 m0">
             <div>
               <div class="col-xs-3 p0">
-                <i class="fa fa-dollar icon3" aria-hidden="true"></i>
+                <i class="fa fa-users icon3" aria-hidden="true"></i>
               </div>
               <div class="col-xs-9 p0">
                 <span class="partners-count">
-                  ${{mdfData?.availableBalance | number:'1.0':'en-US'}}
+                  0
                 </span>
                 <br>
-                <span class="partners-text">Available Balance</span>
+                <span class="partners-text">Lost Leads</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 p10">
+          <div class="dashboard-stat2 m0">
+            <div>
+              <div class="col-xs-3 p0">
+                <i class="fa fa-users icon3" aria-hidden="true"></i>
+              </div>
+              <div class="col-xs-9 p0">
+                <span class="partners-count">
+                  7
+                </span>
+                <br>
+                <span class="partners-text">Converted Leads</span>
               </div>
             </div>
           </div>

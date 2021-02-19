@@ -16,13 +16,43 @@ export class MdfStatisticsComponent implements OnInit {
   loggedInUserId:number = 0;
   mdfStatsLoader = false;
   mdfStatsStatusCode = 200;
+  mdfData:any;
   constructor(public properties:Properties,public mdfService:MdfService,public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
 
   ngOnInit() {
     this.mdfStatsLoader = true;
+    this.getCompanyId();
   }
+
+  getCompanyId() {
+    this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+      (result: any) => {
+        this.loggedInUserCompanyId = result;
+      }, (error: any) => {
+        this.xtremandLogger.log(error);
+        this.mdfStatsStatusCode = 0;
+        this.mdfStatsLoader = false;
+      },
+      () => {
+        this.getTilesInfo();
+      }
+    );
+
+  }
+  getTilesInfo() {
+    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId).subscribe((result: any) => {
+      this.mdfStatsLoader = false;
+      this.mdfData = result.data;
+    }, error => {
+      this.xtremandLogger.log(error);
+      this.mdfStatsStatusCode = 0;
+      this.mdfStatsLoader = false;
+
+    });
+  }
+
  
 
 }
