@@ -832,7 +832,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 				element.find('.fc-right-block')
 					.after($(`<div id = ${event.id} class="fc-left-block col-xs-1 p0"> ${str} </div>`));
-				$(element).popover({
+				/*$(element).popover({
 					container: 'body',
 					html: true,
 					placement: 'auto',
@@ -840,7 +840,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					content: function() {
 						return $('#fc-' + event.id).html();
 					}
-				});
+				});*/
 			},
 			eventClick: function(event) {
 				self.editSocialStatus(event.data.socialStatus);

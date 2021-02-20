@@ -439,6 +439,25 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    getLeadsCount() {
+        return this.http.get(this.authenticationService.REST_URL + `lead/getVendorLeadsCount/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+      }
+
+      getDealsCount(){
+        return this.http.get(this.authenticationService.REST_URL + `deal/getVendorDealsCount/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+      }
+
+      getWordCloudDataForRedistributedCampaigns(){
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getWordCloudDataForRedistributedCampaigns'+'/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token ;
+            return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+     }
+
 
     private extractData(res: Response) {
         let body = res.json();
