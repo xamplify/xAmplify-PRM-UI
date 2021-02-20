@@ -91,7 +91,17 @@
                                       <td>
                                         <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
                                       </td>
-                                      <td class="text-center">{{item.count}}</td>
+                                      <td class="text-center">
+                                      	<div>
+					                      <button class="btn btn-default btn-xs re-distributed-high-level">
+					                        <div class="portlet-body text-center">
+					                          <h4>
+					                            <b class="sky-blue">{{item.count}}</b>
+					                          </h4>
+					                        </div>
+					                      </button>
+					                    </div>
+                                      </td>
                                       <td>
                                         <app-pie-chart [customerId]="item.partnerId"></app-pie-chart>
                                       </td>
