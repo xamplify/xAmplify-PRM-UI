@@ -307,6 +307,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.lmsAccess = data.lms;
             this.authService.lmsAccess = data.lms;
             this.lmsAccessAsPartner = data.lmsAccessAsPartner;
+            this.authService.leadsAndDeals = data.enableLeads;
+            this.authService.mdf = data.mdf;
         },
           error => {
             this.loading = false;

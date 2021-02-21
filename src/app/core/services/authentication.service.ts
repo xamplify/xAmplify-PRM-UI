@@ -96,6 +96,8 @@ export class AuthenticationService {
   reloadLoginPage = false;
   lmsAccess = false;
   advancedDashboard = false;
+  mdf = false;
+  leadsAndDeals = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;

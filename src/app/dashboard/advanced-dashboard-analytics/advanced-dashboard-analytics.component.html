@@ -1,12 +1,13 @@
 <div class="clearfix">
   <app-partners-statistics></app-partners-statistics>
   <app-partner-contacts-statistics></app-partner-contacts-statistics>
-  <app-mdf-statistics></app-mdf-statistics>
+  <app-mdf-statistics *ngIf="authenticationService?.mdf"></app-mdf-statistics>
 </div>
 <div class="clearfix">
+ 
 <app-redistributed-campaigns-wordcloud-map></app-redistributed-campaigns-wordcloud-map>
 </div>
-<div class="clearfix">
+<div class="clearfix" *ngIf="authenticationService?.leadsAndDeals">
   <app-deals-statistics></app-deals-statistics>
   <app-leads-statistics></app-leads-statistics>
 </div>
