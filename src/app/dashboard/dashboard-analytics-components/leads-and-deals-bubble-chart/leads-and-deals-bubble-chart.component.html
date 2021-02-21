@@ -1,0 +1,22 @@
+<div class="col-xs-12">
+  <div class="text-center f-w-600"> Total {{moduleType}} By Top 10 Partners</div>
+  <app-modal-popup-loader [height]=220  [hidden]="!loading"></app-modal-popup-loader>
+  <div [hidden]="loading">
+  <div class="col-xs-6 m0 p0" id="{{moduleType}}" style="height: 250px;z-index: 555"></div>
+<div class="col-xs-6" style="padding: 9px 0px 0px 0px;margin: auto -15px;">
+<table style="border-collapse: collapse;" aria-describedby="deal-bubble-chart">
+<tr *ngFor="let name of names">
+  <th scope="col">
+      <div [style.background]="name.color" class="td-css"></div>
+  </th>
+  <td>
+      <h6 class="bold m0">{{name?.name | slice:0:16}}
+        <span *ngIf="name?.name?.length>16">..</span>
+      </h6>
+      
+  </td>
+</tr>
+</table>
+</div>
+</div>
+</div>

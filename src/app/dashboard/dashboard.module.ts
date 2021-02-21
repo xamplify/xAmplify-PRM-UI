@@ -57,6 +57,7 @@ import { AdvancedDashboardAnalyticsComponent } from './advanced-dashboard-analyt
 import { LeadsStatisticsComponent } from './dashboard-analytics-components/leads-statistics/leads-statistics.component';
 import { DealsStatisticsComponent } from './dashboard-analytics-components/deals-statistics/deals-statistics.component';
 import { RedistributedCampaignsWordcloudMapComponent } from './dashboard-analytics-components/redistributed-campaigns-wordcloud-map/redistributed-campaigns-wordcloud-map.component';
+import { LeadsAndDealsBubbleChartComponent } from './dashboard-analytics-components/leads-and-deals-bubble-chart/leads-and-deals-bubble-chart.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -89,7 +90,8 @@ import { RedistributedCampaignsWordcloudMapComponent } from './dashboard-analyti
         AdvancedDashboardAnalyticsComponent,
         LeadsStatisticsComponent,
         DealsStatisticsComponent,
-        RedistributedCampaignsWordcloudMapComponent
+        RedistributedCampaignsWordcloudMapComponent,
+        LeadsAndDealsBubbleChartComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
