@@ -14,7 +14,12 @@
                       <strong>{{properties?.serverErrorMessage}}</strong>
                     </div>
                   </ng-container>
-                    <div [hidden]="loader" id="partner-redistributed-wordcolud-map"></div>
+                  <div [hidden]="loader" *ngIf="wordCloudData?.length < 1" style="max-width: 100%;text-align: center;">
+                    <div class="alert alert-info">
+                         <strong>No Data Found</strong>
+                     </div>
+                </div>
+                <div [hidden]="loader" id="partner-redistributed-wordcolud-map"></div>
             </div>
         </div>
     </div>

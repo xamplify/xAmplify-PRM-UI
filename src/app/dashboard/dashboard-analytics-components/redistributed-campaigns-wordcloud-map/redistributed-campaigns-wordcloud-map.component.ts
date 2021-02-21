@@ -21,6 +21,7 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
         this.dashboardService.getWordCloudDataForRedistributedCampaigns().subscribe(
             data=>{
                 this.loader = false;
+                this.wordCloudData = data;
                 this.statusCode = 200;
                 this.loadChart(data);
             },error=>{

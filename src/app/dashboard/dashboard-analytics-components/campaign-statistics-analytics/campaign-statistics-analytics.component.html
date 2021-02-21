@@ -40,10 +40,12 @@
             </div>
             <div class="portlet-body">
                 <app-modal-popup-loader  [height]=220 [hidden]="!heatMapLoader.isLoading"></app-modal-popup-loader>
-                    <div [hidden]="heatMapLoader.isLoading" id="dashboard-heat-map" style="max-width: 100%; min-height: 214px; cursor: pointer"></div>
-                    <div [hidden]="heatMapLoader.isLoading" *ngIf="heatMapData?.length < 1" style="max-width: 100%;text-align: center;">
-                        <span style="position: absolute;top: 130px;left: 220px;">No data available</span>
-                    </div>
+                <div [hidden]="heatMapLoader.isLoading" *ngIf="heatMapData?.length < 1" style="max-width: 100%;text-align: center;">
+                      <div class="alert alert-info">
+          				<strong>No Data Found</strong>
+         			</div>
+                  </div>
+                 <div [hidden]="heatMapLoader.isLoading" id="dashboard-heat-map" style="max-width: 100%; min-height: 214px; cursor: pointer"></div>
             </div>
         </div>
     </div>
@@ -88,9 +90,11 @@
     </div>
     <div class="portlet-body">
         <app-modal-popup-loader [hidden]="!heatMapLoader.isLoading"></app-modal-popup-loader>
-        <div [hidden]="heatMapLoader.isLoading" id="heat-map-data" style="max-width: 100%; min-height: auto; cursor: pointer"></div>
         <div [hidden]="heatMapLoader.isLoading" *ngIf="heatMapData?.length < 1" style="max-width: 100%;text-align: center;">
-            <span style="position: absolute;top: 130px;left: 220px;">No data available</span>
-        </div>
+                      <div class="alert alert-info">
+          				<strong>No Data Found</strong>
+         			</div>
+                  </div>
+        <div [hidden]="heatMapLoader.isLoading" id="heat-map-data" style="max-width: 100%; min-height: auto; cursor: pointer"></div>
     </div>
 </div>
