@@ -49,7 +49,7 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
             series: [{
                 type: 'wordcloud',
                 data: data,
-                name: 'Occurrences'
+                name: 'Redistributed Campaigns'
             }],
             title: {
                 text: ''

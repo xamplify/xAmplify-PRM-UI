@@ -1,11 +1,13 @@
 <div class="clearfix">
-  <app-partners-statistics></app-partners-statistics>
-  <app-partner-contacts-statistics></app-partner-contacts-statistics>
+  <ng-container
+    *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember">
+    <app-partners-statistics></app-partners-statistics>
+    <app-partner-contacts-statistics></app-partner-contacts-statistics>
+  </ng-container>
   <app-mdf-statistics *ngIf="authenticationService?.mdf"></app-mdf-statistics>
 </div>
-<div class="clearfix">
- 
-<app-redistributed-campaigns-wordcloud-map></app-redistributed-campaigns-wordcloud-map>
+<div class="clearfix" *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember">
+  <app-redistributed-campaigns-wordcloud-map></app-redistributed-campaigns-wordcloud-map>
 </div>
 <div class="clearfix" *ngIf="authenticationService?.leadsAndDeals">
   <app-deals-statistics></app-deals-statistics>
