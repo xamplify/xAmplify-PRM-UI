@@ -770,12 +770,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         let campaignType = this.pagination.campaignType;
         let teamMemberId : number = 0;
         let teamMemberAnalytics = null;
+        let categoryId : number = 0;
+        let categoryType = '';
     	
     	if(this.teamMemberId!=undefined){
     		teamMemberId = this.teamMemberId;
     		teamMemberAnalytics = true;
         }else{
         	teamMemberAnalytics = false;
+        }
+    	
+    	if(this.categoryId!=undefined){
+            categoryId = this.categoryId;
+            categoryType = 'c';
         }
     	 
          if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -785,7 +792,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'vanityUrlFilter': true,
                  'campaignType' : campaignType,
                  'teamMemberId' : teamMemberId,
-                 'teamMemberAnalytics' : teamMemberAnalytics
+                 'teamMemberAnalytics' : teamMemberAnalytics,
+                 'categoryId' :categoryId,
+                 'categoryType' : categoryType
              };
          } else {
              param = {
@@ -794,7 +803,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'vendorCompanyProfileName':null,
                  'campaignType' : campaignType,
                  'teamMemberId' :  teamMemberId,
-                 'teamMemberAnalytics' : teamMemberAnalytics
+                 'teamMemberAnalytics' : teamMemberAnalytics,
+                 'categoryId' :categoryId,
+                 'categoryType' : categoryType
 
              };
          }
