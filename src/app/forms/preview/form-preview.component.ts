@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -52,6 +52,9 @@ export class FormPreviewComponent implements OnInit {
   pageBackgroundColor = "";
   enableButton = false;
   siteKey = "";
+  @Input() learningTrackId:number;
+  @Output() notifyParent: EventEmitter<any>;
+
   resolved(captchaResponse: string) {
     if(captchaResponse){
       this.formService.validateCaptcha(captchaResponse).subscribe(
@@ -72,6 +75,7 @@ export class FormPreviewComponent implements OnInit {
     private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router, private socialService: SocialService,
     private landingPageService: LandingPageService, public deviceService: Ng2DeviceService, public utilService: UtilService, public sanitizer: DomSanitizer, private vanityURLService: VanityURLService) {
       this.siteKey = this.envService.captchaSiteKey;
+      this.notifyParent = new EventEmitter<any>();
 
   }
 
@@ -280,8 +284,13 @@ export class FormPreviewComponent implements OnInit {
         }
         formSubmit.fields.push(formField);
       });
-
-      this.formService.submitForm(formSubmit)
+      let formType:string = null
+      if(this.learningTrackId != undefined && this.learningTrackId > 0){
+        formType = "lms-form"
+        formSubmit.userId = this.authenticationService.getUserId();
+        formSubmit.learningTrackId = this.learningTrackId;
+      }
+      this.formService.submitForm(formSubmit, formType)
         .subscribe(
           (response: any) => {
             if (response.statusCode == 200) {
@@ -311,10 +320,13 @@ export class FormPreviewComponent implements OnInit {
                 swal.close();
                 }, 3000);
               }
-              
+              this.notifyParent.emit(new CustomResponse('SUCCESS', response.message, true));
 
             } else if (response.statusCode == 404) {
               this.addHeaderMessage(response.message, this.errorAlertClass);
+              this.notifyParent.emit(new CustomResponse('ERROR', response.message, true));
+            } else if (response.statusCode == 400) {
+              this.notifyParent.emit(new CustomResponse('ERROR', response.message, true));
             }
           },
           (error: string) => {

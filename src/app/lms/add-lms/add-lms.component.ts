@@ -994,7 +994,9 @@ fileChangeEvent() {
   }
 
   showSuccessMessage(message:any){
-    this.folderOrTagsCustomResponse = new CustomResponse('SUCCESS',message, true);
+    if(message != undefined){
+      this.folderOrTagsCustomResponse = new CustomResponse('SUCCESS',message, true);
+    }
   }
 
   resetFolderValues(message:any){

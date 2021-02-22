@@ -25,11 +25,14 @@ export class PreviewLmsComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   learningTrack:LearningTrack = new LearningTrack();
   customResponse: CustomResponse = new CustomResponse();
+  showContentPreview:boolean = false;
+  isFormPreview:boolean = false;
+  loggedInUserId:number = 0;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, 
     public authenticationService: AuthenticationService, public lmsService: LmsService, 
     private router: Router, public sanitizer: DomSanitizer) {
-
+      this.loggedInUserId = this.authenticationService.getUserId();
    }
 
   ngOnInit() {
@@ -60,4 +63,31 @@ export class PreviewLmsComponent implements OnInit {
       });
     }
 
+    previewContent(){
+      this.showContentPreview = true;
+      this.isFormPreview = false;
+      this.customResponse = new CustomResponse();
+    }
+
+    previewQuiz(){
+      this.showContentPreview = true;
+      this.isFormPreview = true;
+      this.authenticationService.formAlias = this.learningTrack.quiz.alias;
+      this.customResponse = new CustomResponse();
+    }
+
+    closePreview(customResponse:CustomResponse){
+      this.showContentPreview = false;
+      this.isFormPreview = false;
+      this.getBySlug();
+      this.addMessage(customResponse);
+    }
+
+    addMessage(customResponse:CustomResponse){
+      if(customResponse != undefined){
+        this.customResponse = customResponse;
+      } else{
+        this.customResponse = new CustomResponse();
+      }
+    }
 }
