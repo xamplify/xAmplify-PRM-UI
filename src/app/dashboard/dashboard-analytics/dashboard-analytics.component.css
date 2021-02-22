@@ -582,3 +582,8 @@
       font-weight: 500;
       cursor: default;
   }
+
+  .mmtp{
+    margin: 14px;
+    margin-top: 1px;
+  }

@@ -51,7 +51,6 @@
 <div class="page-bar page-bar-shadow" style="padding: 1em 1em 0 1em;">
   <app-module-analytics></app-module-analytics>
 </div>
-
 <!------------Dashbaord Button Carusel---------------------->
 <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
 <!------------Vendor Activity---------------------->
@@ -173,11 +172,33 @@
     </ng-container>
     </div><!--End of page bar-->
  </div><!--End of row-->
+ <!----Show Anlaytics For PRM-->
+ <div *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) && authenticationService?.dashboardType=='Advanced Dashboard'&&(authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
+    <div class="row">
+        <div class="page-bar portlet light border-radius-0 shadow mmtp">
+            <app-mdf-statistics *ngIf="authenticationService?.mdf"></app-mdf-statistics>
+            <div class="clearfix" *ngIf="authenticationService?.leadsAndDeals">
+                <app-deals-statistics></app-deals-statistics>
+                <app-leads-statistics></app-leads-statistics>
+            </div>
+        </div>
+    </div>
+    
+ </div>
 <app-social-accounts-analytics></app-social-accounts-analytics>
 </ng-container>
 <ng-container *ngIf="authenticationService?.dashboardType=='Detailed Dashboard'">
-    <div class="clearfix">
-        <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
+    <div class="row">
+        <div class="page-bar portlet light border-radius-0 shadow mmtp">
+            <ng-container *ngIf="authenticationService?.mdf || authenticationService?.leadsAndDeals">
+                <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
+            </ng-container>
+            <ng-container *ngIf="!authenticationService?.mdf && !authenticationService?.leadsAndDeals">
+                <div class="alert alert-info center-align">
+                    <strong>No Analytics Found</strong>
+                </div>
+            </ng-container>
+        </div>
     </div>
 </ng-container>
 </div>

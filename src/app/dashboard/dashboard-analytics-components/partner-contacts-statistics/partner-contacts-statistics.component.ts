@@ -74,7 +74,7 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 				exporting: { enabled: false },
 				tooltip: {
 					formatter: function() {
-						return 'Partner Company Name: <b>' + this.point.name + '</b><br>Contacts<b>' + this.point.value + '</b>';
+						return 'Partner Company Name: <b>' + this.point.name + '</b><br>Contacts: <b>' + this.point.value + '</b>';
 					}
 				},
 				plotOptions: {
