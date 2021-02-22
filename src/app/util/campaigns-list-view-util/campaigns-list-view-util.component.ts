@@ -643,6 +643,55 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
           this.modulesDisplayType.isFolderListView = false;
       }
   }
+  
+  downloadCampaignHighLevelAnalytics() {
+      let param = null;
+      let campaignType = this.pagination.campaignType;
+      let teamMemberId : number = 0;
+      let teamMemberAnalytics = null;
+      let categoryId : number = 0;
+      let categoryType = '';
+      
+      if(this.teamMemberId!=undefined){
+          teamMemberId = this.teamMemberId;
+          teamMemberAnalytics = true;
+      }else{
+          teamMemberAnalytics = false;
+      }
+      
+      if(this.categoryId!=undefined){
+          categoryId = this.categoryId;
+          categoryType = 'c';
+      }
+       
+       if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+           param = {
+               'userId': this.loggedInUserId,
+               'vendorCompanyProfileName': this.authenticationService.companyProfileName,
+               'vanityUrlFilter': true,
+               'campaignType' : campaignType,
+               'teamMemberId' : teamMemberId,
+               'teamMemberAnalytics' : teamMemberAnalytics,
+               'categoryId' :categoryId,
+               'categoryType' : categoryType
+               
+           };
+       } else {
+           param = {
+               'userId': this.loggedInUserId,
+               'vanityUrlFilter': false,
+               'vendorCompanyProfileName':null,
+               'campaignType' : campaignType,
+               'teamMemberId' :  teamMemberId,
+               'teamMemberAnalytics' : teamMemberAnalytics,
+               'categoryId' :categoryId,
+               'categoryType' : categoryType
+
+           };
+       }
+       let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
+       this.refService.post(param, completeUrl);
+  }
 
 
 }

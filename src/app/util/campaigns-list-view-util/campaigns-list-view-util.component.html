@@ -61,6 +61,10 @@
                                             <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search"></i></button>
                                         </div>
                                     </div>
+                                    
+                                    <a style = "margin-top:5px;position:relative;right: -4px;"  *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
+									<i class="fa fa-download margin" aria-hidden="true"></i>
+								</a>
 
                                 </div>
                             </div>
