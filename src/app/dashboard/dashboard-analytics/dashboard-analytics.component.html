@@ -46,6 +46,7 @@
     </div>
 </div>
 </ng-container>
+<ng-container *ngIf="authenticationService?.dashboardType=='Dashboard' || authenticationService?.dashboardType=='Advanced Dashboard'">
 <!------------Modules Count Anlatyics Boxes---------------------->
 <div class="page-bar page-bar-shadow" style="padding: 1em 1em 0 1em;">
   <app-module-analytics></app-module-analytics>
@@ -123,11 +124,11 @@
    <!---Campaign Statistics And Email Statistics-->
    <div class="clearfix">
     <app-campaign-statistics-analytics></app-campaign-statistics-analytics>
-    <ng-container *ngIf="authenticationService?.dashboardType!='DASHBOARD'">
+    <ng-container *ngIf="authenticationService?.dashboardType=='Advanced Dashboard'">
        <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
     </ng-container>
     <!-- ---Email Statistics---------------->
-    <ng-container *ngIf="authenticationService?.dashboardType=='DASHBOARD'">
+    <ng-container *ngIf="authenticationService?.dashboardType=='Dashboard'">
       <div class="col-xs-12 col-sm-6">
                  <div class="col-xs-12 p0">
                      <div class="portlet light">
@@ -159,7 +160,7 @@
              </div>
             </ng-container>
      </div>
-     <ng-container *ngIf="authenticationService?.dashboardType=='DASHBOARD'">
+     <ng-container *ngIf="authenticationService?.dashboardType=='Dashboard'">
      <!------Regional Statistics, Video Statistics & Email Stats--------------->
      <div class="clearfix">
          <app-regional-statistics-analytics></app-regional-statistics-analytics>
@@ -170,10 +171,15 @@
          </div>
      </div>
     </ng-container>
-
     </div><!--End of page bar-->
  </div><!--End of row-->
 <app-social-accounts-analytics></app-social-accounts-analytics>
+</ng-container>
+<ng-container *ngIf="authenticationService?.dashboardType=='Detailed Dashboard'">
+    <div class="clearfix">
+        <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
+    </div>
+</ng-container>
 </div>
 
 <!-- Customize Campaign Modal -->

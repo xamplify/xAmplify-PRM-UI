@@ -54,7 +54,7 @@ export class DashboardAnalyticsComponent implements OnInit {
    isMaxBarChartNumber = true;
    emailStatisticsLoader:HttpRequestLoader = new HttpRequestLoader();
    dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
-    hasCampaignRole: boolean;
+   hasCampaignRole: boolean;
 
   constructor(public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
