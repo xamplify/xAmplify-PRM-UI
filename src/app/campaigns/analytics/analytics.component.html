@@ -2821,13 +2821,13 @@
         </div>
         </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body clearfix">
 
         <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
           <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
           <h4 class="m5">Please wait while we process your request.</h4>
         </div>
-        <div class="row" style="display: inline-block; padding-top:10px">
+        <div class="row col-xs-12 col-md-12 col-lg-12 col-sm-12" style="display: inline-block;">
           <div class="table-responsive">
             <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
             <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
@@ -2865,12 +2865,12 @@
               </table>
             </div>
             </ng-container>
+            </div>
             <div>
               <app-pagination class="pg8" [pagination]="emailActionDetailsPagination"
                 *ngIf="emailActionDetailsPagination.pagedItems?.length > 0" [type]="'emailActionDetails'"
                 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
             </div>
-          </div>
         </div>
       </div>
     </div>
