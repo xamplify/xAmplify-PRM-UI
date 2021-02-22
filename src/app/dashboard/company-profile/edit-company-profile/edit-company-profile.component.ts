@@ -31,6 +31,7 @@ import { CampaignAccess } from '../../../campaigns/models/campaign-access';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { MdfService } from 'app/mdf/services/mdf.service';
+import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 
 
 declare var $,swal: any;
@@ -1612,5 +1613,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.landingPage = false;
             this.campaignAccess.landingPageCampaign = false;
           }
+      }
+
+      selectDashboardType(){
+        let selectedDashboard = $('#dashboardTypeC option:selected').val();
+        if(selectedDashboard==DashboardType[DashboardType.DASHBOARD]){
+          this.campaignAccess.dashboardType = DashboardType.DASHBOARD;
+        }else if(selectedDashboard==DashboardType[DashboardType.ADVANCED_DASHBOARD]){
+          this.campaignAccess.dashboardType = DashboardType.ADVANCED_DASHBOARD;
+        }else if(selectedDashboard==DashboardType[DashboardType.DETAILED_DASHBOARD]){
+          this.campaignAccess.dashboardType = DashboardType.DETAILED_DASHBOARD;
+        }
       }
 }

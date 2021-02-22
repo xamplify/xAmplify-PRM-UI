@@ -351,16 +351,19 @@
 											</tr>
 
 											<tr>
-												<th scope="col">Advanced Dashboard</th>
-												<td><input type="checkbox"
-													[(ngModel)]="campaignAccess.advancedDashboard"
-													[ngModelOptions]="{standalone: true}"></td>
+												<th scope="row">Dashboard Type</th>
+												<td>
+													<select  class="form-control" id="dashboardTypeC" (change)="selectDashboardType()">
+														<option value="DASHBOARD">Dashboard</option>
+														<option value="ADVANCED_DASHBOARD">Advanced Dashboard</option>
+														<option value="DETAILED_DASHBOARD">Detailed Dashboard</option>
+													</select>
+												</td>
 											</tr>
 											
 										</table>
 									</div>
 									<div class="modal-footer">
-										<!-- *ngIf="this.userEmailIdErrorMessage.length==0 && customResponse.responseType!='ERROR'" -->
 										<button type="button" id="module-access-button"
 											(click)="updateAccess()" disabled="disabled"
 											class="btn green-haze" translate>Save</button>
