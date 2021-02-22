@@ -190,9 +190,14 @@
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<tr>
-								<th scope="row">Advanced Dashboard</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.advancedDashboard"
-										[ngModelOptions]="{standalone: true}"></td>
+								<th scope="row">Dashboard Type</th>
+								<td>
+									<select  class="form-control" id="dashboardType" (change)="selectDashboardType()">
+										<option value="DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DASHBOARD'">Dashboard</option>
+										<option value="ADVANCED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='ADVANCED_DASHBOARD'">Advanced Dashboard</option>
+										<option value="DETAILED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DETAILED_DASHBOARD'">Detailed Dashboard</option>
+									</select>
+								</td>
 							</tr>
 						</tbody>
 					</table>
