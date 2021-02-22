@@ -342,13 +342,13 @@ export class UserService {
         .catch( this.handleError );
     }
 
-    isAdvancedDashboardAvailable(){
+    getDashboardType(){
        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
        let input = {};
        input['userId'] = this.authenticationService.getUserId();
        input['vanityUrlFilter'] = vanityUrlFilter;
        input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
-       return this.http.post(this.MODULE_URL+"isAdvancedDashboardAvailable?access_token=" + this.authenticationService.access_token,input)
+       return this.http.post(this.MODULE_URL+"getDashboardType?access_token=" + this.authenticationService.access_token,input)
         .map( this.extractData )
         .catch( this.handleError );
     }

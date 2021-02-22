@@ -81,6 +81,9 @@
                                             <span *ngIf="!isAssetValid" class="required">{{assetErrorMessage}}</span>
                                             <label class="label padding">Attach Asset</label>
                                             <font class="required">*</font>
+                                            <label class="form-check-label label" style="float: right;"> <input type="checkbox" class="form-check-input"
+                                                    [(ngModel)]="learningTrack.followAssetSequence">Follow Sequence
+                                            </label>
                                             <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='selectedAssets'>
                                                 <ng-container *ngFor="let selectedAsset of selectedAssets;let i=index">
                                                     <div style="cursor: move;">

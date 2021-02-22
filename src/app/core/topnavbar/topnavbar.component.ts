@@ -52,8 +52,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   sourceType = "";
   isLoggedInFromAdminSection = false;
-  advancedDashboard = false;
-  dashboardText = "Dashboard";
+  dashboardType = "";
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,private vanityServiceURL:VanityURLService) {
@@ -228,19 +227,18 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
   ngOnInit() {
     try{
-     this.isAdvancedDashboardAvailable();
+     this.getDashboardType();
      this.getUnreadNotificationsCount();
      this.getRoles();
      this.isAddedByVendor();
     }catch(error) {this.logger.error('error'+error); }
   }
-  isAdvancedDashboardAvailable(){
-    this.userService.isAdvancedDashboardAvailable().
+  getDashboardType(){
+    this.userService.getDashboardType().
     subscribe(
       data=>{
-        this.advancedDashboard = data;
-        this.authenticationService.advancedDashboard = data;
-        this.dashboardText = this.advancedDashboard ? 'Advanced Dashboard':'Dashboard';
+        this.dashboardType = data;
+        this.authenticationService.dashboardType = data;
       },error=>{
         this.logger.error(error);
       }

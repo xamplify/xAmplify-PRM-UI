@@ -1,4 +1,4 @@
-<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+<div *ngIf="!showContentPreview" class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
     <div class="my-container">
         <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
@@ -29,6 +29,7 @@
                                 <ng-container *ngIf="content?.assetName">
                                     <strong> {{content.assetName}}</strong>
                                 </ng-container>
+                                <button class="btn btn-primary" (click)="previewContent()">View</button>
                             </p>
                             <p>
                                 <span translate>
@@ -46,6 +47,7 @@
                                 <ng-container *ngIf="learningTrack.quiz?.name">
                                     <strong> {{learningTrack.quiz.name}}</strong>
                                 </ng-container>
+                                <button class="btn btn-primary" (click)="previewQuiz()">View</button>
                             </p>
                         </div>
                     </article>
@@ -55,53 +57,9 @@
     </ng-container>
 </div>
 
-
-<!-- <div class="row">
-    <ul class="content__list" *ngFor="let file of learningTrack.contents; let i =index;">
-        <li class="list__item">
-            <div class="flex-row pointer">
-                <div class="item__select-box-wrapper">
-                    <span class="ng-scope"> <a style="cursor: default;"
-                            class="item__preview item__preview--image img-container custom" target="_BLANK">
-                            <img ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
-                                id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)"
-                                class="thumb ng-scope" src="{{file.thumbnailPath}}" alt="">
-                        </a> <a href="javascript:;"> </a>
-                    </span>
-                </div>
-                <div class="item__content">
-                <div class="flex-row">
-                    <div class="item__last-modified">
-                                    <span>
-                                        <app-timestamp [isOnlyDate]="true"
-                                            [dateAndTime]="file.createdDateInUTCString"> </app-timestamp>
-                                    </span>
-                                </div>
-                    <span class="item__name" data-toggle="tooltip" [title]="file.assetName">
-                        <strong>{{file.assetName | slice: 0: 8}}
-                            <span *ngIf="file.assetName?.length>8">...</span>
-                    </strong>
-                    </span>
-                    <div class="item__size">
-                                    <span *ngIf="file.published">Published</span>
-                                </div>
-                                <div class="item__type">
-                                    <span>{{file.assetType}}</span>
-                                </div> 
-                    <div class="item__actions">
-                                    <span> <a class="fm external-link" target="_BLANK" data-toggle="tooltip"
-                                            data-placement="top" [title]="preview"
-                                            (click)="$event.stopPropagation();"
-                                            href="{{file.thumbnailPath}}" target="_blank">
-                                            <i class="fa fa-external-link" aria-hidden="true"
-                                                style="font-size: 20px; color: #5a5a5a"></i>
-                                        </a>
-                                    </span>
-                                </div> 
-                </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </li>
-    </ul>
-</div> -->
+<section *ngIf="showContentPreview">
+    <a (click)="closePreview()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+        <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+    <app-form-preview *ngIf="isFormPreview" [learningTrackId]="learningTrack.id" (notifyParent)="closePreview($event)">
+    </app-form-preview>
+</section>

@@ -78,8 +78,14 @@ export class FormService {
     }
 
 
-    submitForm( formSubmit: FormSubmit ) {
-        return this.http.post( this.URL + "submit/save", formSubmit )
+    submitForm( formSubmit: FormSubmit, type:string) {
+        let url = this.URL + "submit/";
+        if(type != undefined && type != null && type == "lms-form"){
+            url = url + "save-lms-form";
+        } else {
+            url = url + "save";
+        }
+        return this.http.post(url , formSubmit )
             .map( this.extractData )
             .catch( this.handleError );
     }

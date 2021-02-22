@@ -189,7 +189,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     module.isCompanyPartner = false;
     module.hasSocialStatusRole = false;
     module.isVendor = false;
-	module.isVendorTier = false;
+  	module.isVendorTier = false;
     module.isMarketing = false;
     module.isPrm = false;
     module.isPrmTeamMember = false;
@@ -208,6 +208,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authenticationService.lmsAccess = false;
     this.authenticationService.mdf = false;
     this.authenticationService.leadsAndDeals = false;
+    this.authenticationService.dashboardType = "";
   }
 
   ngOnInit() {
