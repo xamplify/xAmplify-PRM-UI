@@ -26,7 +26,6 @@ export class Module {
     isVendor:boolean = false;
     isOrgAdmin:boolean = false;
     isPartner:boolean = false;
-    isVendorTier = false;
     isMarketing = false;
 
     isPartnershipEstablishedOnlyWithVendorTier = false;
@@ -38,6 +37,11 @@ export class Module {
 	isPrmTeamMember = false;
 	isPrmAndPartner = false;
     isPrmAndPartnerTeamMember = false;
+
+    isVendorTier = false;
+    isVendorTierTeamMember = false;
+    isVendorTierAndPartner = false;
+    isVendorTierAndPartnerTeamMember = false;
     
     showCampaignsAnalyticsDivInDashboard = false;
 

@@ -299,6 +299,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.module.isPrmTeamMember = roleDisplayDto.prmTeamMember;
             this.authService.module.isPrmAndPartner = roleDisplayDto.prmAndPartner;
             this.authService.module.isPrmAndPartnerTeamMember = roleDisplayDto.prmAndPartnerTeamMember;
+            this.authService.module.isVendorTier = roleDisplayDto.vendorTier;
+            this.authService.module.isVendorTierTeamMember = roleDisplayDto.vendorTierTeamMember;
+            this.authService.module.isVendorTierAndPartner = roleDisplayDto.vendorTierAndPartner;
+            this.authService.module.isVendorTierAndPartnerTeamMember = roleDisplayDto.vendorTierAndPartnerTeamMember;
             this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = data.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
             this.authService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner =this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
             this.partnershipEstablishedOnlyWithPrm = data.partnershipEstablishedOnlyWithPrm;

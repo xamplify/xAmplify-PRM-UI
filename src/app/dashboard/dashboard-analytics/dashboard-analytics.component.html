@@ -192,7 +192,9 @@
 <ng-container *ngIf="authenticationService?.dashboardType=='Detailed Dashboard'">
     <div class="row">
         <div class="page-bar portlet light border-radius-0 shadow mmtp">
-            <ng-container *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember)">
+            <ng-container *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner
+             || authenticationService?.module?.isPrmAndPartnerTeamMember ||authenticationService?.module?.isVendorTier || authenticationService?.module?.isVendorTierTeamMember
+             || authenticationService?.module?.isVendorTierAndPartner ||  authenticationService?.module?.isVendorTierAndPartnerTeamMember )">
                 <ng-container *ngIf="authenticationService?.mdf || authenticationService?.leadsAndDeals">
                     <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
                 </ng-container>
@@ -202,7 +204,9 @@
                     </div>
                 </ng-container>
             </ng-container>
-            <ng-container *ngIf="(!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember)">
+            <ng-container *ngIf="(!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && !authenticationService?.module?.isPrmAndPartner
+             && !authenticationService?.module?.isPrmAndPartnerTeamMember && !authenticationService?.module?.isVendorTier && !authenticationService?.module?.isVendorTierTeamMember
+             && !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember)">
                 <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
             </ng-container>
         </div>
