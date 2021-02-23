@@ -229,7 +229,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       this.pagination = new Pagination();
       $('#through-partner-div').hide();
       $('#inactive-partners-div').hide();
-      // this.listRedistributedThroughPartnerCampaigns(this.pagination);
       $('#active-partner-div').show();
       $("#redistribute-partners-div").hide();
       $('#approve-partners-div').hide();
@@ -708,14 +707,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
   ngOnInit() {
       if(this.loggedInUserId>0){
         this.partnerReportData();
-        this.paginationType = 'userInteraction';
-        this.homeComponent.getVideoDefaultSettings();
-        this.campaignInteractionPagination.maxResults = 10;
-        //this.partnerUserInteractionReports();
-       /* this.getActivePartnerReports();*/
-        this.goToReDistributedPartnersDiv()
-        this.pagination.maxResults = 12;
-        this.listRedistributedThroughPartnerCampaigns(this.pagination);
+        this.goToActivePartnersDiv();
     }else{
         this.router.navigate(['home/dashboard']);
     }

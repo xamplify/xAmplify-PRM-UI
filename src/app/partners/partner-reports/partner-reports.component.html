@@ -25,6 +25,22 @@
       <div>
         <div>
           <div class="row">
+            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToActivePartnersDiv()" >
+              <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
+                <div class="visual">
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"  [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }"
+                *ngIf="selectedTabIndex == 0" aria-hidden="true"></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{activePartnersCount}}</div>
+                  <div class="desc">Active Partners</div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a class="more" (click)="goToActivePartnersDiv()"> Detailed view 
+                    <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                </span>
+              </a>
+            </div>
             <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex" (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
@@ -56,22 +72,7 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToActivePartnersDiv()" >
-              <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
-                <div class="visual">
-                  <!-- <i class="fa fa-handshake-o"></i> -->
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"  [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }"
-                *ngIf="selectedTabIndex == 0" ></i>
-                </div>
-                <div class="details">
-                  <div class="number">{{activePartnersCount}}</div>
-                  <div class="desc">Active Partners</div>
-                </div>
-                <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToActivePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
-                </span>
-              </a>
-            </div>
+            
             <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToInActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
@@ -113,12 +114,13 @@
   </div>
   <div id="active-partner-div">
     <div class="row">
+      <div class="page-bar portlet light border-radius-0 shadow mmtp">
       <div class="col-xs-12 col-sm-6 p5">
         <!-- BEGIN PORTLET-->
         <div class="portlet light">
           <div class="portlet-title">
             <div class="caption">
-              <i class="icon-bar-chart font-green-sharp hide"></i>
+              <i class="icon-bar-chart font-green-sharp hide" aria-hidden="true"></i>
               <span class="caption-subject font-green-sharp uppercase">Partners by Country</span>
             </div>
             <div class="panel-title pull-right">
@@ -128,7 +130,7 @@
             <app-worldmap *ngIf="worldMapdataReport" [worldMapData]='worldMapdataReport' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
           </div>
         </div>
-        <div class="portlet light">
+        <div class="portlet light" style="margin-top: 37px;">
           <div class="portlet-body" style="padding-top: 0;">
             <div id="campaign-type-chart" class="campaign-type"></div>
           </div>
@@ -137,11 +139,12 @@
       </div>
       <!-- -Campaigns Launched By Partners -->
      <app-campaigns-launched-by-partners [isFromPartnerAnalytics]='true'></app-campaigns-launched-by-partners>
+     <app-redistributed-campaigns-and-leads-bar-chart></app-redistributed-campaigns-and-leads-bar-chart>
+     <app-redistributed-campaigns-and-leads-quarterly-bar-chart></app-redistributed-campaigns-and-leads-quarterly-bar-chart>
     </div>
-
+    
+  </div>
   </div><!-- End Of active-partners-div -->
-
-
   <!-- --------------------Inactive Partners Count-------- -->
   <div id="inactive-partners-div" style="display: none;">
     <div class="row">

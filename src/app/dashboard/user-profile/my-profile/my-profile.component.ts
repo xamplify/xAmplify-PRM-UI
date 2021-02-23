@@ -1599,14 +1599,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 configHubSpot() {
 		if (this.loggedInThroughVanityUrl) {
-			let providerName = 'hubspot';
+		/*	let providerName = 'hubspot';
 			let hubSpotCurrentUser = localStorage.getItem('currentUser');
 			let vanityUserId = JSON.parse(hubSpotCurrentUser)['userId'];
 			let redirectURL = window.btoa(this.hubSpotRedirectURL);
 			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
 			var x = screen.width / 2 - 700 / 2;
 			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
+			this.referenceService.showSweetAlertInfoMessage();
 		}
 		else if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
 			window.location.href = this.hubSpotRedirectURL;
@@ -1615,14 +1616,15 @@ configHubSpot() {
 
 configSalesforce() {
 		if (this.loggedInThroughVanityUrl) {
-			let providerName = 'salesforce';
+		/*	let providerName = 'salesforce';
 			let salesforceCurrentUser = localStorage.getItem('currentUser');
 			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
 			let redirectURL = window.btoa(this.sfRedirectURL);
 			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
 			var x = screen.width / 2 - 700 / 2;
 			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
+			this.referenceService.showSweetAlertInfoMessage();
 		}
 		else if (this.sfRedirectURL !== undefined && this.sfRedirectURL !== '') {
 			window.location.href = this.sfRedirectURL;
