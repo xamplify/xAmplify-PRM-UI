@@ -173,7 +173,9 @@
     </div><!--End of page bar-->
  </div><!--End of row-->
  <!----Show Anlaytics For PRM-->
- <div *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) && authenticationService?.dashboardType=='Advanced Dashboard'&&(authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
+ <div *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
+ && authenticationService?.dashboardType=='Advanced Dashboard' && 
+ (authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
     <div class="row">
         <div class="page-bar portlet light border-radius-0 shadow mmtp">
             <app-mdf-statistics *ngIf="authenticationService?.mdf"></app-mdf-statistics>
@@ -190,13 +192,18 @@
 <ng-container *ngIf="authenticationService?.dashboardType=='Detailed Dashboard'">
     <div class="row">
         <div class="page-bar portlet light border-radius-0 shadow mmtp">
-            <ng-container *ngIf="authenticationService?.mdf || authenticationService?.leadsAndDeals">
-                <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
+            <ng-container *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember)">
+                <ng-container *ngIf="authenticationService?.mdf || authenticationService?.leadsAndDeals">
+                    <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
+                </ng-container>
+                <ng-container *ngIf="!authenticationService?.mdf && !authenticationService?.leadsAndDeals">
+                    <div class="alert alert-info center-align">
+                        <strong>No Analytics Found</strong>
+                    </div>
+                </ng-container>
             </ng-container>
-            <ng-container *ngIf="!authenticationService?.mdf && !authenticationService?.leadsAndDeals">
-                <div class="alert alert-info center-align">
-                    <strong>No Analytics Found</strong>
-                </div>
+            <ng-container *ngIf="(!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember)">
+                <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
             </ng-container>
         </div>
     </div>

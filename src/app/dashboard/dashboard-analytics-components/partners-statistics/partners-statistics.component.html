@@ -75,6 +75,7 @@
                                     </div>
                             </div>
                         </ng-container>
+                        <br>
                         <div class="col-xs-12 col-sm-12">
                         <div class="table-responsive">
                             <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="listLoaderValue.ACTIVEPARTNERS"></app-list-loader>
@@ -96,7 +97,7 @@
 					                      <button class="btn btn-default btn-xs re-distributed-high-level">
 					                        <div class="portlet-body text-center">
 					                          <h4>
-					                            <b class="sky-blue">{{item.count}}</b>
+					                            <strong class="sky-blue">{{item.count}}</strong>
 					                          </h4>
 					                        </div>
 					                      </button>
