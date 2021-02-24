@@ -247,7 +247,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
         this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
           .subscribe(data => {
-            this.listCampaignViewsDataInsert(data);
+            this.listCampaignViewsDataInsert(data, data.totalRecords);
           },
             error => console.log(error),
             () => console.log('listCampaignInteractiveViews(): called'))
@@ -255,7 +255,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign, this.isSmsServiceAnalytics)
           .subscribe(data => {
             console.log(data);
-            this.listCampaignViewsDataInsert(data.campaignviews);
+            this.listCampaignViewsDataInsert(data.data, data.totalRecords);
           },
             error => console.log(error),
             () => console.log('listCampaignViews(); called'))
@@ -263,7 +263,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
-  listCampaignViewsDataInsert(campaignviews: any) {
+  listCampaignViewsDataInsert(campaignviews: any, totalRecords:number) {
     this.campaignViews = campaignviews;
     this.campaignViews.forEach((element, index) => {
       if (element.latestView) { element.latestView = new Date(element.latestView); }
@@ -274,7 +274,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     }
     this.maxViewsValue = Math.max.apply(null, views);
     if (this.paginationType === 'campaignViews') {
-      this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
+      this.campaignViewsPagination.totalRecords = totalRecords;
       this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
     } else if (this.paginationType === 'sentEmailData') {
       this.sentEmailOpenPagination.totalRecords = this.campaignReport.emailSentCount;
