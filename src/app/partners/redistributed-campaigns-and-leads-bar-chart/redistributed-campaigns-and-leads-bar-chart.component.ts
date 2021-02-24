@@ -1,20 +1,45 @@
 import { Component, OnInit } from '@angular/core';
+import {ParterService} from 'app/partners/services/parter.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { Properties } from 'app/common/models/properties';
+
 declare var Highcharts: any;
 
 @Component({
   selector: 'app-redistributed-campaigns-and-leads-bar-chart',
   templateUrl: './redistributed-campaigns-and-leads-bar-chart.component.html',
-  styleUrls: ['./redistributed-campaigns-and-leads-bar-chart.component.css']
+  styleUrls: ['./redistributed-campaigns-and-leads-bar-chart.component.css'],
+  providers: [Properties]
 })
 export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
-
-  constructor() { }
+chartLoader = false;
+statusCode=200;
+constructor(public partnerService:ParterService,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
-    this.renderChart();
+      this.chartLoader = true;
+      this.partnerService.getRedistributedCampaignsAndLeadsCount().subscribe(
+        response=>{
+            let data = response.data;
+            this.statusCode =  response.statusCode;
+            if(this.statusCode==200){
+                let xAxis = data.xaxis;
+                let yAxis1 = data.yaxis1;
+                let yAxis2 = data.yaxis2;
+                this.renderChart(xAxis,yAxis1,yAxis2);
+            }else{
+                this.chartLoader = false;
+            }
+        },error=>{
+            this.chartLoader = false;
+            this.statusCode = 500;
+            this.xtremandLogger.error(error);
+        }
+      );
+    
   }
 
-  renderChart(){
+  renderChart(xAxis:any,yAxis1:any,yAxis2:any){
     Highcharts.chart('bar-chart-container', {
       credits:{
         enabled:false
@@ -22,39 +47,35 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
       chart: {
           zoomType: 'xy'
       },
-      title: {
-          text: 'Average Monthly Temperature and Rainfall in Tokyo'
-      },
-      subtitle: {
-          text: 'Source: WorldClimate.com'
+      title:{
+          text:''
       },
       xAxis: [{
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          categories: xAxis,
           crosshair: true
       }],
       yAxis: [{ // Primary yAxis
           labels: {
-              format: '{value}°C',
+              format: '{value}',
               style: {
                   color: Highcharts.getOptions().colors[1]
               }
           },
           title: {
-              text: 'Temperature',
+              text: '',
               style: {
                   color: Highcharts.getOptions().colors[1]
               }
           }
       }, { // Secondary yAxis
           title: {
-              text: 'Rainfall',
+              text: '',
               style: {
                   color: Highcharts.getOptions().colors[0]
               }
           },
           labels: {
-              format: '{value} mm',
+              format: '{value}',
               style: {
                   color: Highcharts.getOptions().colors[0]
               }
@@ -76,23 +97,17 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
               'rgba(255,255,255,0.25)'
       },
       series: [{
-          name: 'Rainfall',
+          name: 'Redistributed Campaigns',
           type: 'column',
-          yAxis: 1,
-          data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-          tooltip: {
-              valueSuffix: ' mm'
-          }
-  
+          yAxis: 0,
+          data: yAxis1
       }, {
-          name: 'Temperature',
+          name: 'Leads',
           type: 'spline',
-          data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-          tooltip: {
-              valueSuffix: '°C'
-          }
+          data: yAxis2
       }]
   });
+  this.chartLoader = false;
   }
 
 }

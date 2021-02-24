@@ -85,6 +85,15 @@ export class ParterService {
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
+
+    getRedistributedCampaignsAndLeadsCount() {
+        const url = this.URL + 'partner/getRedistributedCampaignsAndLeadsCountForBarChartDualAxes/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
+
+
+    
     
     handleError( error: any ) {
         const errMsg = ( error.message ) ? error.message :
