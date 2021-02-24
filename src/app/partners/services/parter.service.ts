@@ -86,8 +86,9 @@ export class ParterService {
             .catch( this.handleError );
     }
 
-    getRedistributedCampaignsAndLeadsCount() {
-        const url = this.URL + 'partner/getRedistributedCampaignsAndLeadsCountForBarChartDualAxes/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token
+    getRedistributedCampaignsAndLeadsCount(chartId:string) {
+        let urlSuffix = chartId=="redistributeCampaignsAndLeadsCountBarChart" ? 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes':'getRedistributedCampaignsAndLeadsCountPreviousQuarterForBarChartDualAxes';
+        const url = this.URL + 'partner/'+urlSuffix+'/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
