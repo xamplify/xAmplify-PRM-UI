@@ -3,12 +3,20 @@
       <div class="portlet light">
         <div class="portlet-title" style="min-height: 0px;">
           <div class="caption">
-              <span class="caption-subject" translate>Bar Chart</span>
-          </div>
+              <span class="caption-subject" translate *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">Top 10 Redistributed Campaigns & Leads</span>
+              <span class="caption-subject" translate *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'">Top 10 Redistributed Campaigns & Leads Previous Quarter</span>
+            </div>
       </div>
       <div class="portlet-body">
-        <figure class="highcharts-figure">
-        <div id="bar-chart-container">
+        <app-modal-popup-loader  [hidden]="!chartLoader"></app-modal-popup-loader>
+        <figure [hidden]="chartLoader" class="highcharts-figure">
+        <div id="{{chartId}}">
+          <div class="alert alert-info center-align " *ngIf="statusCode==404">
+            <strong>No Data Found</strong>
+        </div>
+        <div class="alert alert-danger center-align" *ngIf="statusCode==500">
+          <strong>{{properties?.serverErrorMessage}}</strong>
+        </div>
         </div>
         </figure>
       </div>

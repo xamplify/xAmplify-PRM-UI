@@ -139,8 +139,10 @@
       </div>
       <!-- -Campaigns Launched By Partners -->
      <app-campaigns-launched-by-partners [isFromPartnerAnalytics]='true'></app-campaigns-launched-by-partners>
-     <app-redistributed-campaigns-and-leads-bar-chart></app-redistributed-campaigns-and-leads-bar-chart>
-     <app-redistributed-campaigns-and-leads-quarterly-bar-chart></app-redistributed-campaigns-and-leads-quarterly-bar-chart>
+     <app-redistributed-campaigns-and-leads-bar-chart [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+     <app-redistributed-campaigns-and-leads-bar-chart [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart>
+   	 <app-kpi></app-kpi>
+   	 <app-partner-leads-bar-chart></app-partner-leads-bar-chart>
     </div>
     
   </div>

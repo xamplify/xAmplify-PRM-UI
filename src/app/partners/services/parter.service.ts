@@ -85,6 +85,16 @@ export class ParterService {
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
+
+    getRedistributedCampaignsAndLeadsCount(chartId:string) {
+        let urlSuffix = chartId=="redistributeCampaignsAndLeadsCountBarChart" ? 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes':'getRedistributedCampaignsAndLeadsCountPreviousQuarterForBarChartDualAxes';
+        const url = this.URL + 'partner/'+urlSuffix+'/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
+
+
+    
     
     handleError( error: any ) {
         const errMsg = ( error.message ) ? error.message :
