@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import {ParterService} from 'app/partners/services/parter.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
@@ -14,11 +14,11 @@ declare var Highcharts: any;
 export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
 chartLoader = false;
 statusCode=200;
-constructor(public partnerService:ParterService,public xtremandLogger:XtremandLogger) { }
-
+@Input() chartId:any;
+constructor(public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {
       this.chartLoader = true;
-      this.partnerService.getRedistributedCampaignsAndLeadsCount().subscribe(
+      this.partnerService.getRedistributedCampaignsAndLeadsCount(this.chartId).subscribe(
         response=>{
             let data = response.data;
             this.statusCode =  response.statusCode;
@@ -40,7 +40,17 @@ constructor(public partnerService:ParterService,public xtremandLogger:XtremandLo
   }
 
   renderChart(xAxis:any,yAxis1:any,yAxis2:any){
-    Highcharts.chart('bar-chart-container', {
+    let chartId = this.chartId;
+    let primayAxisColor = "";
+    let secondaryAxisColor = "";
+    if(chartId=="redistributeCampaignsAndLeadsCountBarChart"){
+        primayAxisColor = Highcharts.getOptions().colors[0];
+        secondaryAxisColor = Highcharts.getOptions().colors[1];
+    }else{
+        primayAxisColor = Highcharts.getOptions().colors[7];
+        secondaryAxisColor = Highcharts.getOptions().colors[9];
+    }
+    Highcharts.chart(chartId, {
       credits:{
         enabled:false
       },
@@ -64,20 +74,20 @@ constructor(public partnerService:ParterService,public xtremandLogger:XtremandLo
           title: {
               text: '',
               style: {
-                  color: Highcharts.getOptions().colors[1]
+                  color: secondaryAxisColor
               }
           }
       }, { // Secondary yAxis
           title: {
               text: '',
               style: {
-                  color: Highcharts.getOptions().colors[0]
+                  color: primayAxisColor
               }
           },
           labels: {
               format: '{value}',
               style: {
-                  color: Highcharts.getOptions().colors[0]
+                  color: primayAxisColor
               }
           },
           opposite: true
@@ -100,11 +110,13 @@ constructor(public partnerService:ParterService,public xtremandLogger:XtremandLo
           name: 'Redistributed Campaigns',
           type: 'column',
           yAxis: 0,
-          data: yAxis1
+          data: yAxis1,
+          color: primayAxisColor
       }, {
           name: 'Leads',
           type: 'spline',
-          data: yAxis2
+          data: yAxis2,
+          color: secondaryAxisColor
       }]
   });
   this.chartLoader = false;
