@@ -99,12 +99,24 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    findLeadsToDealsConversionPercentage(companyId:number) {
+        return this.kpiApi(companyId,'findLeadsToDealsConversionPercentage');
+    }
+
+    findLeadsOpportunityAmount(companyId:number) {
+        return this.kpiApi(companyId,'findLeadsOpportunityAmount');
+    }
+
+    kpiApi(companyId:number,url:string){
+        const apiUrl = this.URL + 'partner/'+url+'/'+companyId+'?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get( apiUrl )
+            .catch( this.handleError );
+    }
+
 
     
     
     handleError( error: any ) {
-        const errMsg = ( error.message ) ? error.message :
-            error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw( error );
     }
 }
