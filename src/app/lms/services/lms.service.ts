@@ -82,6 +82,12 @@ export class LmsService {
       .catch(this.handleError);
   }
 
+  updatePartnerProgress(progress: LearningTrack) {
+    return this.http.post(this.URL + "/p/progress?access_token=" + this.authenticationService.access_token, progress)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     let body = res;
     return body || {};

@@ -1,5 +1,6 @@
 import { Form } from '../../forms/models/form';
 import { Tag } from '../../dashboard/models/tag';
+import { ActivityType } from '../models/activity-type';
 
 export class LearningTrack {
     id:number;
@@ -20,6 +21,9 @@ export class LearningTrack {
     isSlugValid:boolean;
     removeFeaturedImage:boolean = false;
     followAssetSequence:boolean = false;
+    contentId:number;
+    status:ActivityType;
+    createdByCompanyId:number;
 
     quiz:Form;
     contents:Array<any> = new Array<any>();

@@ -302,4 +302,14 @@ export class ManageLmsComponent implements OnInit {
         this.referenceService.stopLoader(this.httpRequestLoader);
       })
     }
+
+    view(learningTrack:LearningTrack){
+      let route = "/home/lms/lt/"  +  learningTrack.createdByCompanyId + "/" + learningTrack.slug;
+      this.referenceService.goToRouter(route);
+    }
+
+    viewAnalytics(learningTrack:LearningTrack){
+      // let route = "/home/lms/analytics/"  +  learningTrack.id;
+      // this.referenceService.goToRouter(route);
+    }
 }

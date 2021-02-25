@@ -134,7 +134,6 @@ export class AddLmsComponent implements OnInit {
       dragulaService.dropModel.subscribe((value) => {
           this.onDropModel(value);
       });
-      this.ckeditor;
   }
 
   ngOnInit() {
