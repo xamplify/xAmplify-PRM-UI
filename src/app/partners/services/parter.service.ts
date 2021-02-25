@@ -93,6 +93,12 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    getLeadsAndDealsCount() {
+        const url = this.URL + 'partner/getLeadsAndDealsCount/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
+
 
     
     
