@@ -31,9 +31,7 @@ export class MdfStatisticsComponent implements OnInit {
       (result: any) => {
         this.loggedInUserCompanyId = result;
       }, (error: any) => {
-        this.xtremandLogger.log(error);
-        this.mdfStatsStatusCode = 0;
-        this.mdfStatsLoader = false;
+        this.setErrorCode(error);
       },
       () => {
         this.getTilesInfo();
@@ -46,11 +44,14 @@ export class MdfStatisticsComponent implements OnInit {
       this.mdfStatsLoader = false;
       this.mdfData = result.data;
     }, error => {
-      this.xtremandLogger.log(error);
-      this.mdfStatsStatusCode = 0;
-      this.mdfStatsLoader = false;
-
+      this.setErrorCode(error);
     });
+  }
+
+  setErrorCode(error:any){
+    this.xtremandLogger.log(error);
+    this.mdfStatsStatusCode = 0;
+    this.mdfStatsLoader = false;
   }
 
  

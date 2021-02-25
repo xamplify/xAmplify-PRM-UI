@@ -7,16 +7,19 @@
             </div>
       </div>
       <div class="portlet-body">
-         <!-- <app-box-loader [countLoader]=1></app-box-loader> -->
-        <div class="row">
-          <div class="col-sm-6">
+        <div class="row" *ngIf="!companyIdError">
+         <app-box-loader [countLoader]=1 *ngIf="opportunityAmountDto?.loader"></app-box-loader>
+         <ng-container *ngIf="!opportunityAmountDto?.loader">
+          <div class="col-sm-6" title="{{leadsToDealsConversionInPercentage}}">
             <div>
               <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h">
                  <div class="visual">
                     <i aria-hidden="true" class=""></i>
                  </div>
                  <div class="details">
-                    <div class="number">61%</div>
+                    <div class="number">{{leadsToDealsConversionInPercentage | slice:0:10}}
+                     <span *ngIf="leadsToDealsConversionInPercentage?.length>10">...</span>
+                    </div>
                     <div class="desc">Leads To Deals Conversion</div>
                  </div>
                  <span class="morePadding">
@@ -26,23 +29,31 @@
               </a>
            </div>
             </div>
-            <div class="col-sm-6">
+         </ng-container>
+            <app-box-loader [countLoader]=1 *ngIf="opportunityAmountDto?.loader"></app-box-loader>
+            <ng-container *ngIf="!opportunityAmountDto?.loader">
+            <div class="col-sm-6" title="{{opportunityAmount}}">
               <div>
                 <a class="dashboard-stat dashboard-stat-lighter green-soft min-h">
                    <div class="visual">
                       <i aria-hidden="true" class=""></i>
                    </div>
                    <div class="details">
-                      <div class="number">$ 10000</div>
+                      <div class="number">{{opportunityAmount | slice:0:10}}
+                        <span *ngIf="opportunityAmount?.length>10">...</span>
+                      </div>
                       <div class="desc">Opportunity Amount</div>
                    </div>
                    <span class="morePadding">
-                <a  translate="" ng-reflect-translate="" class="more hidden"> Detailed view 
-                <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                </span>
+                   <a  translate="" ng-reflect-translate="" class="more hidden"> Detailed view 
+                   <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                  </span>
                 </a>
              </div>
               </div>
+            </ng-container>
+               <app-box-loader [countLoader]=1 *ngIf="mdfDto?.loader"></app-box-loader>
+               <ng-container *ngIf="!mdfDto?.loader">
               <div class="col-sm-6 custom-padding">
                 <div>
                   <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h">
@@ -50,7 +61,7 @@
                         <i aria-hidden="true" class=""></i>
                      </div>
                      <div class="details">
-                        <div class="number">$7000</div>
+                        <div class="number"> ${{mdfTotalBalance | number:'1.0':'en-US'}}</div>
                         <div class="desc">MDF Total Balance</div>
                      </div>
                      <span class="morePadding">
@@ -60,6 +71,10 @@
                   </a>
                </div>
                 </div>
+               </ng-container>
+               <br>
+               <app-box-loader [countLoader]=1 *ngIf="mdfDto?.loader"></app-box-loader>
+               <ng-container *ngIf="!mdfDto?.loader">
                 <div class="col-sm-6 custom-padding">
                   <div>
                     <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h">
@@ -67,7 +82,7 @@
                           <i aria-hidden="true" class=""></i>
                        </div>
                        <div class="details">
-                          <div class="number">$400</div>
+                          <div class="number">${{mdfUsedBalance | number:'1.0':'en-US'}}</div>
                           <div class="desc">MDF Used Balance</div>
                        </div>
                        <span class="morePadding">
@@ -77,18 +92,8 @@
                     </a>
                  </div>
                   </div>
+               </ng-container>
           </div>
-        <!-- <app-modal-popup-loader  [hidden]="!chartLoader"></app-modal-popup-loader>
-        <figure [hidden]="chartLoader" class="highcharts-figure">
-        <div id="{{chartId}}">
-          <div class="alert alert-info center-align " *ngIf="statusCode==404">
-            <strong>No Data Found</strong>
-        </div>
-        <div class="alert alert-danger center-align" *ngIf="statusCode==500">
-          <strong>{{properties?.serverErrorMessage}}</strong>
-        </div>
-        </div>
-        </figure> -->
       </div>
       </div>
   </div>
