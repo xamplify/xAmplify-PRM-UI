@@ -542,7 +542,15 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   getCampaignHighLevelAnalytics(campaignId: number){
 	    try {
 	        this.loading = true;
-	        this.campaignService.getCampaignHighLevelAnalytics(campaignId, this.loggedInUserId)
+	        
+	        let userId = null;
+	        if(this.isNavigatedThroughAnalytics){
+	        	userId = this.campaign.userId;
+	        }else{
+	        	userId = this.loggedInUserId ;
+	        }
+	        
+	        this.campaignService.getCampaignHighLevelAnalytics(campaignId, userId)
 	          .subscribe(
 	            response => {
 	            	this.campaignReport.emailSentCount = response.data.totalEmailsSent;
@@ -2925,31 +2933,48 @@ checkParentAndRedistributedCampaignAccess(){
     let headers = [];
 
     if(this.campaignType=="REGULAR"){
-      headers = ['Campaign Name', 'Campaign Type', 'Launched On', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients',"URL's Clicked"];
+      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
+                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','HardBounce', 'SoftBounce','Unsubscribe'];
     }else{
-      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients',"URL's Clicked",'Views'];
+      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
+                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','Views','HardBounce', 'SoftBounce','Unsubscribe'];
     }
 
     var data = [
       {
         campaignName:  this.campaign.campaignName,
         campaignType: this.campaignType +" CAMPAIGN",
-        campaignLaunchTime: $.trim($('#campaign-launch-time').text()),
+       // campaignLaunchTime: $.trim($('#campaign-launch-time').text()),
         contactListLength: this.campaign.userListIds.length,
-        recipientsCount: this.campaignReport.emailSentCount,
-        activeRecipientsCount: this.campaignReport.emailOpenCount,
-        clickedUrlsCount:this.campaignReport.dataShareClickedUrlsCountForVendor
+        recipientsCount: this.campaignReport.totalRecipients,
+        sentCount : this.campaignReport.emailSentCount,
+        delivered : this.campaignReport.delivered,
+        activeRecipients : this.campaignReport.activeRecipients, 
+        openRate: this.campaignReport.openRate,
+        clickedUrlsCount:this.campaignReport.emailClickedCount,
+        clickthroughRate :this.campaignReport.clickthroughRate,
+        hardBounce : this.campaignReport.hardBounce,
+        softBounce : this.campaignReport.softBounce,
+        unsubscribed : this.campaignReport.unsubscribed
       }
     ];
 
     var videoCampaignData = [{
-      campaignName:  this.campaign.campaignName,
-      campaignType: this.campaignType +" CAMPAIGN",
-      contactListLength: this.campaign.userListIds.length,
-      recipientsCount: this.campaignReport.emailSentCount,
-      activeRecipientsCount: this.campaignReport.emailOpenCount,
-      clickedUrlsCount:this.campaignReport.dataShareClickedUrlsCountForVendor,
-      viewsCount:this.campaignReport.usersWatchCount
+        campaignName:  this.campaign.campaignName,
+        campaignType: this.campaignType +" CAMPAIGN",
+       // campaignLaunchTime: $.trim($('#campaign-launch-time').text()),
+        contactListLength: this.campaign.userListIds.length,
+        recipientsCount: this.campaignReport.totalRecipients,
+        sentCount : this.campaignReport.emailSentCount,
+        delivered : this.campaignReport.delivered,
+        activeRecipients : this.campaignReport.activeRecipients, 
+        openRate: this.campaignReport.openRate,
+        clickedUrlsCount:this.campaignReport.emailClickedCount,
+        clickthroughRate :this.campaignReport.clickthroughRate,
+        viewsCount:this.campaignReport.usersWatchCount,
+        hardBounce : this.campaignReport.hardBounce,
+        softBounce : this.campaignReport.softBounce,
+        unsubscribed : this.campaignReport.unsubscribed
     }
       
 

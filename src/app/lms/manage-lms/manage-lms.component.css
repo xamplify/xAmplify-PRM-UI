@@ -126,3 +126,16 @@
 .custom-width-icon {
     min-width: 130px;
 }
+
+.progress {
+    height: 6px!important;
+    background-color: #d0cfcf;
+    background-image: none;
+    box-shadow: none;
+    border-radius: 6px!important;
+    margin-bottom: 0px;
+}
+
+.progress-bar {
+    background-color: #29d836!important;
+}
