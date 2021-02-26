@@ -11,7 +11,7 @@
            </div>
       </div>
       <div class="portlet-body">
-        <app-modal-popup-loader  [hidden]="!chartLoader"></app-modal-popup-loader>
+        <app-modal-popup-loader [height]="460"  [hidden]="!chartLoader"></app-modal-popup-loader>
         <figure [hidden]="chartLoader" class="highcharts-figure">
         <div id="{{chartId}}">
           <div class="alert alert-info center-align " *ngIf="statusCode==404">

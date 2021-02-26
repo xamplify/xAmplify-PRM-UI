@@ -16,8 +16,8 @@
           </div>
         </div>
       </div>
-      <div class="portlet-body clearfix table-responsive" style="min-height: 375px;">
-        <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="listLoaderValue.ACTIVEPARTNERS"></app-list-loader>
+      <div class="portlet-body clearfix table-responsive" style="min-height: 435px;">
+        <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="4"></app-list-loader>
         <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading" aria-describedby="redistributedCampaignsAndPartners">
           <thead>
             <th scope="col">Partner</th>

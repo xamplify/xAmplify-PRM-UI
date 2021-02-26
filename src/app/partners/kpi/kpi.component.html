@@ -21,8 +21,8 @@
                     <i aria-hidden="true" class=""></i>
                  </div>
                  <div class="details">
-                    <div class="number">{{leadsToDealsConversionInPercentage | slice:0:10}}
-                     <span *ngIf="leadsToDealsConversionInPercentage?.length>10">...</span>
+                    <div class="number">{{leadsToDealsConversionInPercentage | slice:0:8}}
+                     <span *ngIf="leadsToDealsConversionInPercentage?.length>8">...</span>
                     </div>
                     <div class="desc">Leads To Deals Conversion</div>
                  </div>
@@ -43,8 +43,8 @@
                       <i aria-hidden="true" class=""></i>
                    </div>
                    <div class="details">
-                      <div class="number">{{opportunityAmount | slice:0:10}}
-                        <span *ngIf="opportunityAmount?.length>10">...</span>
+                      <div class="number">{{opportunityAmount | slice:0:8}}
+                        <span *ngIf="opportunityAmount?.length>8">...</span>
                       </div>
                       <div class="desc">Opportunity Amount</div>
                    </div>
