@@ -3,7 +3,7 @@ import {ParterService} from 'app/partners/services/parter.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
 import {AuthenticationService} from 'app/core/services/authentication.service';
-declare var Highcharts: any;
+declare var Highcharts,$: any;
 
 @Component({
   selector: 'app-redistributed-campaigns-and-leads-bar-chart',
@@ -43,7 +43,13 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
   }
 
   getDataForBarChart(){
-    this.partnerService.getRedistributedCampaignsAndLeadsCount(this.chartId).subscribe(
+    let filterValue;
+    if(this.hasLeadsAndDealsAccess){
+        filterValue = $('#hasLeadsAndDealsAccess option:selected').val();
+    }else{
+        filterValue = 'r';
+    }
+    this.partnerService.getRedistributedCampaignsAndLeadsCount(this.chartId,filterValue).subscribe(
         response=>{
             let data = response.data;
             this.statusCode =  response.statusCode;

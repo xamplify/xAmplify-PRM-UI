@@ -86,7 +86,7 @@ export class ParterService {
             .catch( this.handleError );
     }
 
-    getRedistributedCampaignsAndLeadsCount(chartId:string) {
+    getRedistributedCampaignsAndLeadsCount(chartId:string,filterType:string) {
         let urlSuffix = chartId=="redistributeCampaignsAndLeadsCountBarChart" ? 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes':'getRedistributedCampaignsAndLeadsCountPreviousQuarterForBarChartDualAxes';
         const url = this.URL + 'partner/'+urlSuffix+'/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( url )

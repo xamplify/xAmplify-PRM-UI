@@ -9,6 +9,12 @@
               <a class="close-circle ref-mar" (click)="refreshChart()" title="Refresh">
                  <i class="fa fa-refresh" aria-hidden="true"></i></a>
            </div>
+            <div *ngIf="hasLeadsAndDealsAccess">
+                <select class="form-control">
+                  <option value="r">Top 10 Redistributed Campaigns</option>
+                  <option value="l">Top 10 Leads</option>
+                </select>
+            </div>
       </div>
       <div class="portlet-body">
         <app-modal-popup-loader [height]="460"  [hidden]="!chartLoader"></app-modal-popup-loader>
