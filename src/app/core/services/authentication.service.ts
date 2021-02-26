@@ -698,6 +698,12 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
+  getModuleAccessByLoggedInUserId(){
+    return this.http.get(this.REST_URL + "module/getModuleDetails/"+this.getUserId()+"?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   
   
 }

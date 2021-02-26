@@ -2,7 +2,7 @@ import { Component, OnInit,Input } from '@angular/core';
 import {ParterService} from 'app/partners/services/parter.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
-
+import {AuthenticationService} from 'app/core/services/authentication.service';
 declare var Highcharts: any;
 
 @Component({
@@ -15,10 +15,34 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
 chartLoader = false;
 statusCode=200;
 @Input() chartId:any;
-constructor(public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
+hasLeadsAndDealsAccess = false;
+headerText = "";
+constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {
       this.chartLoader = true;
-      this.partnerService.getRedistributedCampaignsAndLeadsCount(this.chartId).subscribe(
+      this.getModuleDetails();
+  }
+
+  getModuleDetails(){
+      this.authenticationService.getModuleAccessByLoggedInUserId().subscribe(
+        response=>{
+            this.hasLeadsAndDealsAccess = response.enableLeads;
+            if(this.chartId=='redistributeCampaignsAndLeadsCountBarChart'){
+                this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
+            }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
+                this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads For Previous Quarter':'Redistributed Campaigns For Previous Quarter';
+
+            }
+        },error=>{
+            this.setErrorResponse(error);
+        },()=>{
+            this.getDataForBarChart();
+        }
+      );
+  }
+
+  getDataForBarChart(){
+    this.partnerService.getRedistributedCampaignsAndLeadsCount(this.chartId).subscribe(
         response=>{
             let data = response.data;
             this.statusCode =  response.statusCode;
@@ -31,14 +55,16 @@ constructor(public partnerService:ParterService,public xtremandLogger:XtremandLo
                 this.chartLoader = false;
             }
         },error=>{
-            this.chartLoader = false;
-            this.statusCode = 500;
-            this.xtremandLogger.error(error);
+            this.setErrorResponse(error);
         }
       );
-    
   }
 
+  setErrorResponse(error){
+    this.chartLoader = false;
+    this.statusCode = 500;
+    this.xtremandLogger.error(error);
+  }
   renderChart(xAxis:any,yAxis1:any,yAxis2:any){
     let chartId = this.chartId;
     let primayAxisColor = "";
@@ -49,6 +75,13 @@ constructor(public partnerService:ParterService,public xtremandLogger:XtremandLo
     }else{
         primayAxisColor = Highcharts.getOptions().colors[7];
         secondaryAxisColor = Highcharts.getOptions().colors[9];
+    }
+    let series = [];
+    if(this.hasLeadsAndDealsAccess){
+        series.push(this.setRedistributedCampaignsSeries(yAxis1,primayAxisColor));
+        series.push(this.setLeadsSeries(yAxis2,secondaryAxisColor));
+    }else{
+        series.push(this.setRedistributedCampaignsSeries(yAxis1,primayAxisColor));
     }
     Highcharts.chart(chartId, {
       credits:{
@@ -77,7 +110,8 @@ constructor(public partnerService:ParterService,public xtremandLogger:XtremandLo
                   color: secondaryAxisColor
               }
           }
-      }, { // Secondary yAxis
+      }, 
+      { // Secondary yAxis
           title: {
               text: '',
               style: {
@@ -103,23 +137,35 @@ constructor(public partnerService:ParterService,public xtremandLogger:XtremandLo
           y: 100,
           floating: true,
           backgroundColor:
-              Highcharts.defaultOptions.legend.backgroundColor || // theme
+              Highcharts.defaultOptions.legend.backgroundColor || 
               'rgba(255,255,255,0.25)'
       },
-      series: [{
-          name: 'Redistributed Campaigns',
-          type: 'column',
-          yAxis: 0,
-          data: yAxis1,
-          color: primayAxisColor
-      }, {
-          name: 'Leads',
-          type: 'spline',
-          data: yAxis2,
-          color: secondaryAxisColor
-      }]
+      series: series
   });
-  this.chartLoader = false;
+    this.chartLoader = false;
+  }
+
+  setRedistributedCampaignsSeries(yAxis1:any,primaryAxisColor:any){
+      let data:any;
+       data = {
+        name: 'Redistributed Campaigns',
+        type: 'column',
+        yAxis: 0,
+        data: yAxis1,
+        color: primaryAxisColor
+      }
+      return data;
+  }
+
+  setLeadsSeries(yAxis2:any,secondaryAxisColor:any){
+    let data:any;
+    data = {
+        name: 'Leads',
+        type: 'spline',
+        data: yAxis2,
+        color: secondaryAxisColor
+      }
+      return data;
   }
 
 }
