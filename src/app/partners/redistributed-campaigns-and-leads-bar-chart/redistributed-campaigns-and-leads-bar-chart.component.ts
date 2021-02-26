@@ -19,10 +19,12 @@ hasLeadsAndDealsAccess = false;
 headerText = "";
 constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {
-      this.chartLoader = true;
-      this.getModuleDetails();
+      this.refreshChart();
   }
-
+  refreshChart(){
+    this.chartLoader = true;
+    this.getModuleDetails();
+  }
   getModuleDetails(){
       this.authenticationService.getModuleAccessByLoggedInUserId().subscribe(
         response=>{
@@ -31,7 +33,6 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
             }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads For Previous Quarter':'Redistributed Campaigns For Previous Quarter';
-
             }
         },error=>{
             this.setErrorResponse(error);

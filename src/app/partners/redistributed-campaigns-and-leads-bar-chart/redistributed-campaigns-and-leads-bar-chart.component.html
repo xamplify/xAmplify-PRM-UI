@@ -5,6 +5,10 @@
           <div class="caption">
               <span class="caption-subject" translate>{{headerText}}</span>
             </div>
+            <div>
+              <a class="close-circle ref-mar" (click)="refreshChart()" title="Refresh">
+                 <i class="fa fa-refresh" aria-hidden="true"></i></a>
+           </div>
       </div>
       <div class="portlet-body">
         <app-modal-popup-loader  [hidden]="!chartLoader"></app-modal-popup-loader>

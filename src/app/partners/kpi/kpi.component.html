@@ -1,15 +1,19 @@
-<div class="col-xs-12 col-sm-6"  style="padding: 0">
+<div class="col-xs-12 col-sm-6"  style="padding: 0" *ngIf="hasLeadsAndDealsAccess || mdfAccess">
   <div class="col-xs-12">
       <div class="portlet light">
         <div class="portlet-title" style="min-height: 0px;">
-          <div class="caption">
-              <span class="caption-subject" translate>Deals | Opportunities| MDF</span>
+          <div class="caption" *ngIf="!loader">
+              <span class="caption-subject" translate>{{headerText}}</span>
+            </div>
+            <div>
+               <a class="close-circle ref-mar" (click)="refreshKpis()" title="Refresh">
+                  <i class="fa fa-refresh" aria-hidden="true"></i></a>
             </div>
       </div>
       <div class="portlet-body">
         <div class="row" *ngIf="!companyIdError">
          <app-box-loader [countLoader]=1 *ngIf="opportunityAmountDto?.loader"></app-box-loader>
-         <ng-container *ngIf="!opportunityAmountDto?.loader">
+         <ng-container *ngIf="!opportunityAmountDto?.loader && hasLeadsAndDealsAccess">
           <div class="col-sm-6" title="{{leadsToDealsConversionInPercentage}}">
             <div>
               <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h">
@@ -31,7 +35,7 @@
             </div>
          </ng-container>
             <app-box-loader [countLoader]=1 *ngIf="opportunityAmountDto?.loader"></app-box-loader>
-            <ng-container *ngIf="!opportunityAmountDto?.loader">
+            <ng-container *ngIf="!opportunityAmountDto?.loader && hasLeadsAndDealsAccess">
             <div class="col-sm-6" title="{{opportunityAmount}}">
               <div>
                 <a class="dashboard-stat dashboard-stat-lighter green-soft min-h">
@@ -53,7 +57,7 @@
               </div>
             </ng-container>
                <app-box-loader [countLoader]=1 *ngIf="mdfDto?.loader"></app-box-loader>
-               <ng-container *ngIf="!mdfDto?.loader">
+               <ng-container *ngIf="!mdfDto?.loader && mdfAccess">
               <div class="col-sm-6 custom-padding">
                 <div>
                   <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h">
@@ -72,9 +76,8 @@
                </div>
                 </div>
                </ng-container>
-               <br>
                <app-box-loader [countLoader]=1 *ngIf="mdfDto?.loader"></app-box-loader>
-               <ng-container *ngIf="!mdfDto?.loader">
+               <ng-container *ngIf="!mdfDto?.loader && mdfAccess">
                 <div class="col-sm-6 custom-padding">
                   <div>
                     <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h">
