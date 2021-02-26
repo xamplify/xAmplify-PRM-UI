@@ -462,7 +462,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           .subscribe(
             data => {
               console.log(data);
-              this.campaignBarViews = data.campaignviews;
+              this.campaignBarViews = data.data;
               this.campaignBarViewsDataInsert();
             },
             error => console.log(error),
