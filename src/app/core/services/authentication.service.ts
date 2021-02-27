@@ -12,7 +12,6 @@ import { Roles } from '../models/roles';
 import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
-import { environment } from '../../../environments/environment';
 declare var swal, require: any;
 var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
@@ -97,7 +96,7 @@ export class AuthenticationService {
   lmsAccess = false;
   mdf = false;
   leadsAndDeals = false;
-  dashboardType = "Dashboard";
+  dashboardTypes = [];
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;

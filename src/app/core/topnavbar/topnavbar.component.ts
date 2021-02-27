@@ -52,7 +52,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   sourceType = "";
   isLoggedInFromAdminSection = false;
-  dashboardType = "";
+  dashboardTypes = [];
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,private vanityServiceURL:VanityURLService) {
@@ -237,8 +237,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.userService.getDashboardType().
     subscribe(
       data=>{
-        this.dashboardType = data;
-        this.authenticationService.dashboardType = data;
+        this.dashboardTypes = data;
+        this.authenticationService.dashboardTypes = data;
       },error=>{
         this.logger.error(error);
       }
@@ -388,5 +388,14 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   selectedLanguage(langCode:any){
     this.authenticationService.userPreferredLanguage= langCode;
     this.translateService.use(langCode);
+  }
+
+  navigateToDashboard(dashboardType:string){
+    if(dashboardType=="Detailed Dashboard"){
+      this.refService.goToRouter('/home/dashboard/detailed');
+    }else{
+      this.refService.goToRouter('/home/dashboard');
+    }
+    
   }
 }
