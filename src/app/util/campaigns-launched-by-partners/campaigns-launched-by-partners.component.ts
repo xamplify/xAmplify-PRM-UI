@@ -43,7 +43,7 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 		if (this.authenticationService.isSuperAdmin()) {
 			this.activePartnersPagination.userId = this.authenticationService.checkLoggedInUserId(this.activePartnersPagination.userId);
 		}
-		this.activePartnersPagination.maxResults = 4;
+		this.activePartnersPagination.maxResults = 3;
 		this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
 			(response: any) => {
 				for (var i in response.activePartnesList) {

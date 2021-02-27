@@ -61,8 +61,8 @@ export class ParterService {
             .catch( this.handleError );
     }
     
-    launchedCampaignsCountGroupByCampaignType( partnerId: number, customerId:number ) {
-        const url = this.URL + 'partner/campaigns-count-by-campaigntype/'+customerId+'/'+partnerId+'?access_token=' + this.authenticationService.access_token
+    launchedCampaignsCountGroupByCampaignType( partnerCompanyId: number, customerId:number ) {
+        const url = this.URL + 'partner/campaigns-count-by-campaigntype/'+customerId+'/'+partnerCompanyId+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
