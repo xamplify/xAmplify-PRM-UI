@@ -17,12 +17,14 @@ statusCode=200;
 @Input() chartId:any;
 hasLeadsAndDealsAccess = false;
 headerText = "";
+filterValue = 'r';
 constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {
       this.refreshChart();
   }
   refreshChart(){
     this.chartLoader = true;
+    this.filterValue = 'r';
     this.getModuleDetails();
   }
   getModuleDetails(){
@@ -43,13 +45,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
   }
 
   getDataForBarChart(){
-    let filterValue;
-    if(this.hasLeadsAndDealsAccess){
-        filterValue = $('#hasLeadsAndDealsAccess option:selected').val();
-    }else{
-        filterValue = 'r';
-    }
-    this.partnerService.getRedistributedCampaignsAndLeadsCount(this.chartId,filterValue).subscribe(
+    this.partnerService.getRedistributedCampaignsAndLeadsCount(this.chartId,this.filterValue).subscribe(
         response=>{
             let data = response.data;
             this.statusCode =  response.statusCode;
@@ -173,6 +169,12 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
         color: secondaryAxisColor
       }
       return data;
+  }
+
+  filterChartByType(){
+    this.chartLoader = true;
+    this.filterValue = $('#chartFilter option:selected').val();
+    this.getDataForBarChart();
   }
 
 }

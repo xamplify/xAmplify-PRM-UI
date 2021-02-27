@@ -1,7 +1,7 @@
-<div class="col-xs-12 col-sm-6" *ngIf="hasLeadsAndDealsAccess"  style="padding: 0">
+<div class="col-xs-12 col-sm-6" [hidden]="!hasLeadsAndDealsAccess"  style="padding: 0">
   <div class="col-xs-12">
       <div class="portlet light">
-        <div class="portlet-title" style="min-height: 0px;">
+        <div class="portlet-title" style="min-height: 0px;" [hidden]="chartLoader">
           <div class="caption">
               <span class="caption-subject" translate>Leads & Deals</span>
             </div>
@@ -9,6 +9,12 @@
               <a class="close-circle ref-mar" (click)="refreshChart()" title="Refresh">
                  <i class="fa fa-refresh" aria-hidden="true"></i></a>
            </div>
+           <div [hidden]="!hasLeadsAndDealsAccess">
+            <select class="form-control" id="leadsAndDealsFilterOption" (change)="filterChartByType()">
+              <option value="l">Top 10 Leads</option>
+              <option value="d">Top 10 Deals</option>
+            </select>
+        </div>
       </div>
       <div class="portlet-body">
         <app-modal-popup-loader [height]="408"  [hidden]="!chartLoader"></app-modal-popup-loader>

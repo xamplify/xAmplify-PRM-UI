@@ -88,13 +88,13 @@ export class ParterService {
 
     getRedistributedCampaignsAndLeadsCount(chartId:string,filterType:string) {
         let urlSuffix = chartId=="redistributeCampaignsAndLeadsCountBarChart" ? 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes':'getRedistributedCampaignsAndLeadsCountPreviousQuarterForBarChartDualAxes';
-        const url = this.URL + 'partner/'+urlSuffix+'/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token
+        const url = this.URL + 'partner/'+urlSuffix+'/'+this.authenticationService.getUserId()+'/'+filterType+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
 
-    getLeadsAndDealsCount() {
-        const url = this.URL + 'partner/getLeadsAndDealsCount/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token
+    getLeadsAndDealsCount(filterType:string) {
+        const url = this.URL + 'partner/getLeadsAndDealsCount/'+this.authenticationService.getUserId()+'/'+filterType+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
