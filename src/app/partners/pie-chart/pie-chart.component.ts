@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ParterService } from '../services/parter.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
 declare var Highcharts: any;
 @Component({
@@ -10,11 +11,11 @@ declare var Highcharts: any;
 })
 
 export class PieChartComponent implements OnInit {
-  @Input() customerId: number;
-  constructor(public parterService: ParterService, public authenticationService:AuthenticationService) { }
+  @Input() partnerCompanyId: number;
+  constructor(public parterService: ParterService, public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger) { }
 
   constructPieChart(pieChartData: any){
-   Highcharts.chart('pie'+this.customerId, {
+   Highcharts.chart('pie'+this.partnerCompanyId, {
        chart: {
            plotBackgroundColor: null,
            plotBorderWidth: null,
@@ -50,11 +51,14 @@ export class PieChartComponent implements OnInit {
   
   launchedCampaignsCountGroupByCampaignType() {
       var pieChartData;
-      this.parterService.launchedCampaignsCountGroupByCampaignType(this.customerId, this.authenticationService.user.id).subscribe(
+      this.parterService.launchedCampaignsCountGroupByCampaignType(this.partnerCompanyId, this.authenticationService.user.id).subscribe(
         (data: any) => {
           pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL},{name: 'EVENT', y: data.EVENT}];
         },
-        (error: any) => { console.log('error got here') },
+        (error: any) => { 
+		this.xtremandLogger.error(error);
+		
+	},
         () => this.constructPieChart(pieChartData)
       );
     }

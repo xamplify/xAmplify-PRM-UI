@@ -195,12 +195,24 @@
 
                             <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
                                 <li *ngIf="currentUrl.endsWith('welcome') && authenticationService.user.hasCompany">
-                                    <a [routerLink]="['/home/dashboard']" translate>
-                                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}</a>
+                                    <a *ngFor="let dashboardType of dashboardTypes" (click)="navigateToDashboard(dashboardType)">
+                                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}
+                                    </a>
                                 </li>
-                                <li *ngIf="currentUrl.endsWith('dashboard') && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
+                                <li *ngIf="(currentUrl.endsWith('dashboard') ||currentUrl.endsWith('dashboard/detailed'))  && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                                     <a [routerLink]="['/home/dashboard/welcome']" translate>
                                         <i class="fa fa-paper-plane-o" aria-hidden="true" ></i> Welcome</a>
+                                        <ng-container *ngFor="let dashboardType of dashboardTypes">
+                                            <ng-container *ngIf="dashboardType=='Dashboard' &&  !currentUrl.endsWith('dashboard')">
+                                            </ng-container>
+                                            <ng-container *ngIf="dashboardType=='Detailed Dashboard' &&  !currentUrl.endsWith('dashboard/detailed')">
+                                                <a  (click)="navigateToDashboard(dashboardType)">
+                                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}
+                                                </a>
+                                            </ng-container>
+                                            
+                                        </ng-container>
+                                        
                                 </li>
     
                                 <li *ngIf="(!currentUrl.endsWith('dashboard')) && (!currentUrl.endsWith('welcome')) && authenticationService.user.hasCompany">

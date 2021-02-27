@@ -23,6 +23,7 @@ import { DashboardAnalyticsComponent } from './dashboard-analytics/dashboard-ana
 import { DashboardButtonsComponent } from "./dashboard-buttons/dashboard-buttons.component";
 import { VanityEmailTemplatesComponent } from "app/email-template/vanity-email-templates/vanity-email-templates.component";
 import { ModuleAccessComponent } from "./module-access/module-access.component";
+import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashboard.component';
 
 const routes: Routes = [
  { path: "", component: DashboardAnalyticsComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: "views_report", component: ViewsReportComponent },
   { path: "extrafaq", component: ExtraFaqComponent },
   { path: "welcome", component: WelcomeComponent },
+  { path: "detailed", component: DetailedDashboardComponent },
   { path: "default", component: DefaultPageComponent },
   { path: "profilehelp", component: ProfileHelpComponent },
   { path: "followers", component: FollowersComponent },

@@ -23,14 +23,37 @@ export class KpiComponent implements OnInit {
   opportunityAmount: any;
   mdfTotalBalance: any;
   mdfUsedBalance: any;
+  hasLeadsAndDealsAccess = false;
+  mdfAccess = false;
+  headerText = "";
+  loader = false;
   constructor(public mdfService:MdfService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public partnerService:ParterService
     ) { 
       this.loggedInUserId = this.authenticationService.getUserId();
     }
 
   ngOnInit() {
-    this.getCompanyId();
+    this.refreshKpis();
   }
+
+  refreshKpis(){
+    this.loader = true;
+    this.getModuleDetails();
+  }
+
+  getModuleDetails(){
+    this.authenticationService.getModuleAccessByLoggedInUserId().subscribe(
+      response=>{
+          this.hasLeadsAndDealsAccess = response.enableLeads;
+          this.mdfAccess = response.mdf;
+      },error=>{
+        this.setErrorResponse(error);
+      },()=>{
+          this.getCompanyId();
+      }
+    );
+}
+
   getCompanyId() {
     this.startAllLoaders();
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
@@ -38,17 +61,46 @@ export class KpiComponent implements OnInit {
         this.loggedInUserCompanyId = result;
         this.companyIdError = false;
       }, (error: any) => {
-        this.xtremandLogger.log(error);
-        this.stopAllLoaders();
-        this.companyIdError = true;
+        this.setErrorResponse(error);
       },
       () => {
-        this.findLeadsToDealsConversionPercentage();
-        this.findLeadsOpportunityAmount();
-        this.getMdfKpis();
+       this.setHeaderText();
+        if(this.hasLeadsAndDealsAccess){
+          this.findLeadsToDealsConversionPercentage();
+          this.findLeadsOpportunityAmount();
+        }
+        if(this.mdfAccess){
+          this.getMdfKpis();
+        }
+        if(!this.hasLeadsAndDealsAccess){
+          this.leadsToDealsConversionDto.loader = false;
+          this.opportunityAmountDto.loader = false;
+        } 
+        if(!this.mdfAccess){
+          this.mdfDto.loader = false;
+        }
       }
     );
   }
+
+  setHeaderText(){
+    if(this.hasLeadsAndDealsAccess && this.mdfAccess){
+      this.headerText = "Deals | Opportunities | MDF";
+    }else if(this.hasLeadsAndDealsAccess && !this.mdfAccess){
+      this.headerText = "Deals | Opportunities";
+    }else if(!this.hasLeadsAndDealsAccess && this.mdfAccess){
+      this.headerText = "MDF";
+    }
+    this.loader = false;
+  }
+
+  setErrorResponse(error){
+    this.xtremandLogger.log(error);
+    this.stopAllLoaders();
+    this.companyIdError = true;
+    this.loader = false;
+  }
+
 
   findLeadsToDealsConversionPercentage(){
     this.partnerService.findLeadsToDealsConversionPercentage(this.loggedInUserCompanyId).subscribe(

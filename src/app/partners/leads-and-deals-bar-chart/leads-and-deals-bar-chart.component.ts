@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ParterService} from 'app/partners/services/parter.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
-declare var Highcharts: any;
+import {AuthenticationService} from 'app/core/services/authentication.service';
+declare var Highcharts,$: any;
 
 @Component({
   selector: 'app-leads-and-deals-bar-chart',
@@ -13,10 +14,33 @@ declare var Highcharts: any;
 export class LeadsAndDealsBarChartComponent implements OnInit {
   chartLoader = false;
   statusCode=200;
-  constructor(public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
+  hasLeadsAndDealsAccess = false;
+  filterValue = "";
+  constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {
-      this.chartLoader = true;
-      this.partnerService.getLeadsAndDealsCount().subscribe(
+      this.refreshChart();
+  }
+  refreshChart(){
+    this.chartLoader = true;
+    this.filterValue = 'l';
+    this.getModuleDetails();
+  }
+  getModuleDetails(){
+    this.authenticationService.getModuleAccessByLoggedInUserId().subscribe(
+      response=>{
+          this.hasLeadsAndDealsAccess = response.enableLeads;
+      },error=>{
+          this.setErrorResponse(error);
+      },()=>{
+          if(this.hasLeadsAndDealsAccess){
+            this.getDataForChart();
+          }
+      }
+    );
+}
+
+  getDataForChart(){
+    this.partnerService.getLeadsAndDealsCount(this.filterValue).subscribe(
         response=>{
             let data = response.data;
             this.statusCode =  response.statusCode;
@@ -29,12 +53,15 @@ export class LeadsAndDealsBarChartComponent implements OnInit {
                 this.chartLoader = false;
             }
         },error=>{
-            this.chartLoader = false;
-            this.statusCode = 500;
-            this.xtremandLogger.error(error);
+            this.setErrorResponse(error);
         }
       );
-    
+  }
+
+  setErrorResponse(error){
+    this.chartLoader = false;
+    this.statusCode = 500;
+    this.xtremandLogger.error(error);
   }
 
   renderChart(xAxis:any,yAxis1:any,yAxis2:any){
@@ -89,6 +116,12 @@ export class LeadsAndDealsBarChartComponent implements OnInit {
         }]
     });
   this.chartLoader = false;
+  }
+
+  filterChartByType(){
+    this.filterValue = $('#leadsAndDealsFilterOption option:selected').val();
+    this.chartLoader = true;
+    this.getDataForChart();
   }
 
 }
