@@ -61,6 +61,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
   isError = false;
   customResponse: CustomResponse = new CustomResponse();
   vendoorInvitation: VendorInvitation = new VendorInvitation();
+  worldMapLoader = false;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption,
@@ -103,8 +104,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       credits: { enabled: false },
       series: [{  showInLegend: false, data:data }]
     });
+    this.worldMapLoader = false;
   }
   partnerReportData() {
+    this.worldMapLoader = true;
     this.parterService.partnerReports(this.loggedInUserId).subscribe(
       (data: any) => {
         this.worldMapdataReport = data.countrywisePartnersCount.countrywisepartners;
@@ -120,7 +123,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
         this.campaignTypeChart(campaignData);
       },
-      (error: any) => { console.log('error got here') });
+      (error: any) => {
+          this.xtremandLogger.error(error);
+          this.worldMapLoader = false;
+         });
   }
   /*********Active Partner  Analytics***********/
   getActivePartnerReports(){

@@ -6,7 +6,7 @@
           <span class="caption-subject" translate>Deals Statistics</span>
         </div>
       </div>
-      <div class="portlet-body clearfix">
+      <div class="portlet-body clearfix" style="min-height: 450px;">
         <ng-container>
           <app-dashboard-loader *ngIf="dealsLoader"></app-dashboard-loader>
         </ng-container>
@@ -27,7 +27,7 @@
                   {{dealsData?.totalDeals}}
                 </span>
                 <br>
-                <span class="partners-text">Total Deals</span>
+                <span class="partners-text">Total</span>
               </div>
             </div>
           </div>
@@ -43,7 +43,7 @@
                   {{dealsData?.wonDeals}}
                 </span>
                 <br>
-                <span class="partners-text">Won Deals</span>
+                <span class="partners-text">Won</span>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@
                   {{dealsData?.lostDeals}}
                 </span>
                 <br>
-                <span class="partners-text">Lost Deals</span>
+                <span class="partners-text">Lost</span>
               </div>
             </div>
           </div>

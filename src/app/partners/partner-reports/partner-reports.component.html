@@ -127,7 +127,8 @@
             </div>
           </div>
           <div class="portlet-body text-center">
-            <app-worldmap *ngIf="worldMapdataReport" [worldMapData]='worldMapdataReport' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
+            <app-modal-popup-loader *ngIf="worldMapLoader"></app-modal-popup-loader>
+            <app-worldmap *ngIf="worldMapdataReport && !worldMapLoader" [worldMapData]='worldMapdataReport' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
           </div>
         </div>
         <div class="portlet light" style="margin-top: 37px;">
