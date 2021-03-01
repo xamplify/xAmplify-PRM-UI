@@ -7,18 +7,40 @@
 </div>
   <app-modal-popup-loader [height]=220  [hidden]="!loading"></app-modal-popup-loader>
   <div [hidden]="loading">
-  <div class="col-xs-6 m0 p0" id="{{moduleType}}" style="height: 250px;z-index: 555"></div>
-<div class="col-xs-6" style="padding: 9px 0px 0px 0px;margin: auto -15px;">
-<table style="border-collapse: collapse;" aria-describedby="deal-bubble-chart">
-<tr *ngFor="let name of names">
-  <th scope="col">
+  <div class="col-xs-12 m0 p0" id="{{moduleType}}" style="height: 250px;z-index: 555"></div>
+</div>
+<div *ngIf="names?.length > 0" class="col-xs-12" style="padding: 9px 0px 0px 0px;margin: auto -15px;">
+<div class="table-responsive" style="overflow-x:auto;">
+<table class="table table-striped" aria-describedby="deal-bubble-chart">
+<!-- -Top 1 to 5 -->
+<tr>
+<ng-container *ngFor="let name of names;let i=index;">
+<ng-container *ngIf="i<=4">
+<th scope="col">
       <div [style.background]="name.color" class="td-css"></div>
   </th>
   <td>
-      <h6 class="bold m0" title="{{name?.name}}">{{name?.name | slice:0:16}}
-        <span *ngIf="name?.name?.length>16">..</span>
+      <h6 class="bold m0" title="{{name?.name}}">{{name?.name | slice:0:10}}
+        <span *ngIf="name?.name?.length>10">..</span>
       </h6>
   </td>
+</ng-container>
+  </ng-container>
+</tr>
+<!-- -Top 5 to 10 -->
+<tr>
+<ng-container *ngFor="let name of names;let i=index;">
+<ng-container *ngIf="i>4">
+<th scope="col">
+      <div [style.background]="name.color" class="td-css"></div>
+  </th>
+  <td>
+      <h6 class="bold m0" title="{{name?.name}}">{{name?.name | slice:0:10}}
+        <span *ngIf="name?.name?.length>10">..</span>
+      </h6>
+  </td>
+</ng-container>
+  </ng-container>
 </tr>
 </table>
 </div>

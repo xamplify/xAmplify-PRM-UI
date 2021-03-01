@@ -10,10 +10,24 @@
                  <i class="fa fa-refresh" aria-hidden="true"></i></a>
            </div>
             <div [hidden]="!hasLeadsAndDealsAccess">
-                <select class="form-control" id="chartFilter" (change)="filterChartByType()">
-                  <option value="r">Top 10 Redistributed Campaigns</option>
-                  <option value="l">Top 10 Leads</option>
-                </select>
+                <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">
+                  <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartDropDown" (change)="filterRedistributeCampaignsAndLeadsCountBarChart()">
+                    <option  value="r">Top 10 Redistributed Campaigns</option>
+                    <option value="l">Top 10 Leads</option>
+                  </select>
+                </div>
+                <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'">
+                  <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartQuarterlyDropDown" (change)="filterRedistributeCampaignsAndLeadsCountBarChartQuarterly()">
+                    <option  value="r">Top 10 Redistributed Campaigns</option>
+                    <option value="l">Top 10 Leads</option>
+                  </select>
+                </div>
+                <div *ngIf="chartId=='top10LeadsAndDealsBarChart'">
+                  <select class="form-control" id="top10LeadsAndDealsBarChartDropDown" (change)="filterTop10LeadsAndDealsBarChartDropDown()">
+                    <option value="l">Top 10 Leads</option>
+                    <option  value="d">Top 10 Deals</option>
+                  </select>
+                </div>
             </div>
       </div>
       <div class="portlet-body">

@@ -4,7 +4,8 @@
         <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
     </div>
 </div>
-<div class="row">
+<app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
+<div class="row" *ngIf="!loading && hasAccess">
         <div class="page-bar portlet light border-radius-0 shadow mmtp">
             <ng-container *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner
              || authenticationService?.module?.isPrmAndPartnerTeamMember ||authenticationService?.module?.isVendorTier || authenticationService?.module?.isVendorTierTeamMember
