@@ -66,7 +66,7 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 			Highcharts.chart(treeMapId, {
 				colorAxis: {
 					minColor: '#FFFFFF',
-					maxColor: Highcharts.getOptions().colors[1]
+					maxColor: Highcharts.getOptions().colors[0]
 				},
 				credits: {
 					enabled: false
