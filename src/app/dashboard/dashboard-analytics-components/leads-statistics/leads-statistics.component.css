@@ -16,7 +16,7 @@
     overflow: hidden;
     white-space: nowrap;
 	text-overflow: ellipsis;
-	margin-left: 23px;
+	/* margin-left: 23px; */
 }
 
 
@@ -27,7 +27,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 	color: #0000005c;
-	margin-left: -18px;
+	/* margin-left: -18px; */
 }
 
 
@@ -62,4 +62,16 @@
 	margin-top: -7px;
 }
 
+  .number {
+      margin: 0px;
+      text-align: left;
+      font-weight: 800;
+  }
+  
+  .text {
+      font-size: 11px;
+      padding: 7px 0px;
+      font-weight: 700;
+  }
+  
 
