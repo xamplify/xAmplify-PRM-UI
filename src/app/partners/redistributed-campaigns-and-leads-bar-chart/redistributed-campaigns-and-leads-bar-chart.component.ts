@@ -18,13 +18,25 @@ statusCode=200;
 hasLeadsAndDealsAccess = false;
 headerText = "";
 filterValue = 'r';
+dropDownValues:Array<any> = new Array<any>();
 constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {
       this.refreshChart();
   }
   refreshChart(){
     this.chartLoader = true;
-    this.filterValue = 'r';
+    let top10LeadsOption = {'value':'l','text':'Top 10 Leads'};
+    if(this.chartId!='top10LeadsAndDealsBarChart'){
+        this.filterValue = 'r';
+        let top10RedistributedCampaignsOption = {'value':'r','text':'Top 10 Redistributed Campaigns'};
+        this.dropDownValues.push(top10RedistributedCampaignsOption);
+        this.dropDownValues.push(top10LeadsOption);
+    }else if(this.chartId=='top10LeadsAndDealsBarChart'){
+        this.filterValue = 'l';
+        let top10RedistributedCampaignsOption = {'value':'d','text':'Top 10 Deals'};
+        this.dropDownValues.push(top10RedistributedCampaignsOption);
+    }
+    
     this.getModuleDetails();
   }
   getModuleDetails(){
@@ -35,6 +47,8 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
             }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads For Previous Quarter':'Redistributed Campaigns For Previous Quarter';
+            }else if(this.chartId=='top10LeadsAndDealsBarChart'){
+                this.headerText = "Leads & Deals"
             }
         },error=>{
             this.setErrorResponse(error);
@@ -45,7 +59,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
   }
 
   getDataForBarChart(){
-    this.partnerService.getRedistributedCampaignsAndLeadsCount(this.chartId,this.filterValue).subscribe(
+    this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId,this.filterValue).subscribe(
         response=>{
             let data = response.data;
             this.statusCode =  response.statusCode;
@@ -72,19 +86,30 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
     let chartId = this.chartId;
     let primayAxisColor = "";
     let secondaryAxisColor = "";
+    let primaryYAxisText = "";
+    let secondaryYAxisText = "";
     if(chartId=="redistributeCampaignsAndLeadsCountBarChart"){
         primayAxisColor = Highcharts.getOptions().colors[0];
         secondaryAxisColor = Highcharts.getOptions().colors[1];
-    }else{
+        primaryYAxisText = "Leads";
+        secondaryYAxisText = "Redistributed Campaigns";
+    }else if(chartId=="redistributeCampaignsAndLeadsCountBarChartQuarterly"){
         primayAxisColor = Highcharts.getOptions().colors[7];
         secondaryAxisColor = Highcharts.getOptions().colors[9];
+        primaryYAxisText = "Leads";
+        secondaryYAxisText = "Redistributed Campaigns";
+    }else if(chartId="top10LeadsAndDealsBarChart"){
+        primayAxisColor = Highcharts.getOptions().colors[0];
+        secondaryAxisColor = Highcharts.getOptions().colors[2];
+        primaryYAxisText = "Leads";
+        secondaryYAxisText = "Deals";
     }
     let series = [];
     if(this.hasLeadsAndDealsAccess){
-        series.push(this.setRedistributedCampaignsSeries(yAxis1,primayAxisColor));
-        series.push(this.setLeadsSeries(yAxis2,secondaryAxisColor));
+        series.push(this.setRedistributedCampaignsSeries(yAxis1,primayAxisColor,secondaryYAxisText));
+        series.push(this.setLeadsSeries(yAxis2,secondaryAxisColor,primaryYAxisText));
     }else{
-        series.push(this.setRedistributedCampaignsSeries(yAxis1,primayAxisColor));
+        series.push(this.setRedistributedCampaignsSeries(yAxis1,primayAxisColor,secondaryYAxisText));
     }
     Highcharts.chart(chartId, {
       credits:{
@@ -107,8 +132,10 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
                   color: Highcharts.getOptions().colors[1]
               }
           },
+          allowDecimals: false, 
+          minrange:1,
           title: {
-              text: '',
+              text: primaryYAxisText,
               style: {
                   color: secondaryAxisColor
               }
@@ -116,7 +143,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
       }, 
       { // Secondary yAxis
           title: {
-              text: '',
+              text: secondaryYAxisText,
               style: {
                   color: primayAxisColor
               }
@@ -127,6 +154,8 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
                   color: primayAxisColor
               }
           },
+          allowDecimals: false, 
+          minrange:1,
           opposite: true
       }],
       tooltip: {
@@ -148,32 +177,44 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
     this.chartLoader = false;
   }
 
-  setRedistributedCampaignsSeries(yAxis1:any,primaryAxisColor:any){
+  setRedistributedCampaignsSeries(yAxis1:any,primaryAxisColor:any,name:string){
       let data:any;
        data = {
-        name: 'Redistributed Campaigns',
+        name: name,
         type: 'column',
-        yAxis: 0,
+        yAxis: 1,
         data: yAxis1,
         color: primaryAxisColor
       }
       return data;
   }
 
-  setLeadsSeries(yAxis2:any,secondaryAxisColor:any){
+  setLeadsSeries(yAxis2:any,secondaryAxisColor:any,name:string){
     let data:any;
     data = {
-        name: 'Leads',
-        type: 'spline',
+        name: name,
         data: yAxis2,
         color: secondaryAxisColor
       }
       return data;
   }
 
-  filterChartByType(){
+  filterRedistributeCampaignsAndLeadsCountBarChart(){
+      this.filterChart('redistributeCampaignsAndLeadsCountBarChartDropDown');
+  }
+
+  filterRedistributeCampaignsAndLeadsCountBarChartQuarterly(){
+    this.filterChart('redistributeCampaignsAndLeadsCountBarChartQuarterlyDropDown');
+   
+  }
+
+  filterTop10LeadsAndDealsBarChartDropDown(){
+    this.filterChart('top10LeadsAndDealsBarChartDropDown');
+  }
+
+  filterChart(dropDownId:string){
     this.chartLoader = true;
-    this.filterValue = $('#chartFilter option:selected').val();
+    this.filterValue = $('#'+dropDownId+' option:selected').val();
     this.getDataForBarChart();
   }
 

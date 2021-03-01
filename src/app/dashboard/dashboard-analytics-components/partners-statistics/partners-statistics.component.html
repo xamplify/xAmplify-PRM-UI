@@ -16,7 +16,7 @@
                             </div>
                           </div>
                     </div>
-                    <div class="portlet-body clearfix">
+                    <div class="portlet-body clearfix" style="height: 495px;">
                         <ng-container>
                             <app-dashboard-loader *ngIf="partnerAnalyticsCountLoader"></app-dashboard-loader>
                         </ng-container>
@@ -78,7 +78,7 @@
                         <br>
                         <div class="col-xs-12 col-sm-12">
                         <div class="table-responsive">
-                            <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="3"></app-list-loader>
+                            <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="4"></app-list-loader>
                             <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading" aria-describedby="redistributedCampaignsAndPartners">
                                 <thead>
                                     <tr>

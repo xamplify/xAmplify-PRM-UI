@@ -210,16 +210,22 @@
                                                     <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}
                                                 </a>
                                             </ng-container>
-                                            
                                         </ng-container>
-                                        
                                 </li>
-    
                                 <li *ngIf="(!currentUrl.endsWith('dashboard')) && (!currentUrl.endsWith('welcome')) && authenticationService.user.hasCompany">
                                     <a *ngIf="refService.userDefaultPage==='WELCOME'" [routerLink]="['/home/dashboard/'+refService.userDefaultPage.toLowerCase()]" translate>
                                         <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Welcome</a>
                                     <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]" translate>
                                         <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
+                                        <ng-container *ngFor="let dashboardType of dashboardTypes">
+                                            <ng-container *ngIf="dashboardType=='Dashboard' &&  !currentUrl.endsWith('dashboard')">
+                                            </ng-container>
+                                            <ng-container *ngIf="dashboardType=='Detailed Dashboard' &&  !currentUrl.endsWith('dashboard/detailed')">
+                                                <a  (click)="navigateToDashboard(dashboardType)">
+                                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}
+                                                </a>
+                                            </ng-container>
+                                        </ng-container>
                                 </li>
                             </ng-container>
                             <li class="divider"></li>
