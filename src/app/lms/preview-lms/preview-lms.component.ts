@@ -32,17 +32,17 @@ export class PreviewLmsComponent implements OnInit {
   loggedInUserId: number = 0;
   assetDetails: any;
   assetViewLoader: boolean = false;
-  takeQuiz: boolean = true;
+  //takeQuiz: boolean = true;
   loggedInUserCompanyId: number = 0;
   isCreatedUser: boolean = false;
+  showFile:boolean = false;
+  filePath:string = "";
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public lmsService: LmsService,
     private router: Router, public sanitizer: DomSanitizer, public logger: XtremandLogger) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.getCompanyId();
-    console.log(this.loggedInUserCompanyId)
-    console.log(this.createdUserCompanyId)
   }
 
   ngOnInit() {
@@ -82,7 +82,7 @@ export class PreviewLmsComponent implements OnInit {
 
   getBySlug() {
     this.referenceService.startLoader(this.httpRequestLoader);
-    this.takeQuiz = true;
+    //this.takeQuiz = true;
     let self = this;
     this.lmsService.getBySlug(this.createdUserCompanyId, this.slug).subscribe(
       (result: any) => {
@@ -90,11 +90,11 @@ export class PreviewLmsComponent implements OnInit {
           let learningTrack: LearningTrack = result.data;
           if (learningTrack != undefined) {
             this.learningTrack = learningTrack;
-            $.each(this.learningTrack.contents, function (index: number, content: any) {
-              if (!content.finished) {
-                self.takeQuiz = false;
-              }
-            });
+            // $.each(this.learningTrack.contents, function (index: number, content: any) {
+            //   if (!content.finished) {
+            //     self.takeQuiz = false;
+            //   }
+            // });
           }
           this.referenceService.stopLoader(this.httpRequestLoader);
         } else {
@@ -162,4 +162,15 @@ export class PreviewLmsComponent implements OnInit {
       this.customResponse = new CustomResponse();
     }
   }
+
+  openFile(assetDetails:any){
+    this.showFile = true;
+    this.filePath = assetDetails.thumbnailPath;
+  }
+
+  closeFile(){
+    this.showFile = false;
+    this.filePath = "";
+  }
+
 }

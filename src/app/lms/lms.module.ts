@@ -9,13 +9,15 @@ import { AddLmsComponent } from './add-lms/add-lms.component';
 import { ManageLmsComponent } from './manage-lms/manage-lms.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { PreviewLmsComponent } from './preview-lms/preview-lms.component';
+import { LmsAnalyticsComponent } from './lms-analytics/lms-analytics.component';
+import { LmsPartnerAnalyticsComponent } from './lms-partner-analytics/lms-partner-analytics.component';
 
 
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, LmsRoutingModule, CKEditorModule
   ],
-  declarations: [AddLmsComponent, ManageLmsComponent, PreviewLmsComponent],
+  declarations: [AddLmsComponent, ManageLmsComponent, PreviewLmsComponent, LmsAnalyticsComponent, LmsPartnerAnalyticsComponent],
   providers: [LmsService]
 })
 export class LmsModule { }
