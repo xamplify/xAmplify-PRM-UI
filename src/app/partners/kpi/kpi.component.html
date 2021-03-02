@@ -17,8 +17,8 @@
           <div class="col-sm-6" title="{{leadsToDealsConversionInPercentage}}">
             <div>
               <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h">
-                 <div class="visual">
-                    <i aria-hidden="true" class=""></i>
+                 <div class="visual custp">
+                    <i aria-hidden="true" class="fa fa-tags"></i>
                  </div>
                  <div class="details">
                     <div class="number">{{leadsToDealsConversionInPercentage | slice:0:8}}
@@ -39,11 +39,11 @@
             <div class="col-sm-6" title="{{opportunityAmount}}">
               <div>
                 <a class="dashboard-stat dashboard-stat-lighter green-soft min-h">
-                   <div class="visual">
-                      <i aria-hidden="true" class=""></i>
+                   <div class="visual custp">
+                      <i aria-hidden="true" class="fa fa-money"></i>
                    </div>
                    <div class="details">
-                      <div class="number">{{opportunityAmount | slice:0:8}}
+                      <div class="number">{{opportunityAmount}}
                         <span *ngIf="opportunityAmount?.length>8">...</span>
                       </div>
                       <div class="desc">Opportunity Amount</div>
@@ -61,11 +61,11 @@
               <div class="col-sm-6 custom-padding">
                 <div>
                   <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h">
-                     <div class="visual">
-                        <i aria-hidden="true" class=""></i>
+                     <div class="visual custp">
+                        <i aria-hidden="true" class="fa fa-dollar"></i>
                      </div>
                      <div class="details">
-                        <div class="number"> ${{mdfTotalBalance | number:'1.0':'en-US'}}</div>
+                        <div class="number"> ${{mdfTotalBalance}}</div>
                         <div class="desc">MDF Total Balance</div>
                      </div>
                      <span class="morePadding">
@@ -80,12 +80,12 @@
                <ng-container *ngIf="!mdfDto?.loader && mdfAccess">
                 <div class="col-sm-6 custom-padding">
                   <div>
-                    <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h">
-                       <div class="visual">
-                          <i aria-hidden="true" class=""></i>
+                    <a class="dashboard-stat dashboard-stat-lighter red-soft min-h">
+                       <div class="visual custp">
+                          <i aria-hidden="true" class="fa fa-dollar"></i>
                        </div>
                        <div class="details">
-                          <div class="number">${{mdfUsedBalance | number:'1.0':'en-US'}}</div>
+                          <div class="number">${{mdfUsedBalance}}</div>
                           <div class="desc">MDF Used Balance</div>
                        </div>
                        <span class="morePadding">
