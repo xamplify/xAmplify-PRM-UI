@@ -309,7 +309,7 @@ export class ManageLmsComponent implements OnInit {
     }
 
     viewAnalytics(learningTrack:LearningTrack){
-      // let route = "/home/lms/analytics/"  +  learningTrack.id;
-      // this.referenceService.goToRouter(route);
+      let route = "/home/lms/analytics/"  +  learningTrack.id;
+      this.referenceService.goToRouter(route);
     }
 }

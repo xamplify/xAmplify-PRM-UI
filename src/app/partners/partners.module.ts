@@ -10,7 +10,6 @@ import { PartnerReportsComponent } from './partner-reports/partner-reports.compo
 import { SharedLibraryModule } from '../shared/shared-library.module';
 import { CKEditorModule } from "ng2-ckeditor";
 import { RedistributedCampaignsAndLeadsBarChartComponent } from './redistributed-campaigns-and-leads-bar-chart/redistributed-campaigns-and-leads-bar-chart.component';
-import { LeadsAndDealsBarChartComponent } from './leads-and-deals-bar-chart/leads-and-deals-bar-chart.component';
 import { KpiComponent } from './kpi/kpi.component';
 
 @NgModule({
@@ -18,6 +17,6 @@ import { KpiComponent } from './kpi/kpi.component';
     CKEditorModule, CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule, SharedLibraryModule
   ],
   providers: [],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, LeadsAndDealsBarChartComponent, KpiComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent]
 })
 export class PartnersModule { }

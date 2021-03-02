@@ -11,7 +11,6 @@
 }
 
 .partners-count{
-	font-weight: 600;
     font-size: 20px;
     overflow: hidden;
     white-space: nowrap;
@@ -20,15 +19,12 @@
 
 
 .partners-text{
-	font-weight: 600;
     font-size: 14px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 	color: #0000005c;
 }
-
-
 
 .icon1{
 	background: #aae2d0;
@@ -112,7 +108,7 @@
     }
     .card-align {
         text-align: right;
-        padding-right: -0px;
+        padding-right: 8px;
     }
 }
 

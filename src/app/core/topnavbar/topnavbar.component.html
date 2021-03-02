@@ -200,10 +200,13 @@
                                     </a>
                                 </li>
                                 <li *ngIf="(currentUrl.endsWith('dashboard') ||currentUrl.endsWith('dashboard/detailed'))  && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
-                                    <a [routerLink]="['/home/dashboard/welcome']" translate>
+                                    <a [routerLink]="['/home/dashboard/welcome']" *ngIf="currentUrl.endsWith('dashboard')" translate>
                                         <i class="fa fa-paper-plane-o" aria-hidden="true" ></i> Welcome</a>
                                         <ng-container *ngFor="let dashboardType of dashboardTypes">
-                                            <ng-container *ngIf="dashboardType=='Dashboard' &&  !currentUrl.endsWith('dashboard')">
+                                            <ng-container *ngIf="dashboardType=='Dashboard' &&  currentUrl.endsWith('dashboard/detailed')">
+                                                <a  (click)="navigateToDashboard(dashboardType)">
+                                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}
+                                                </a>
                                             </ng-container>
                                             <ng-container *ngIf="dashboardType=='Detailed Dashboard' &&  !currentUrl.endsWith('dashboard/detailed')">
                                                 <a  (click)="navigateToDashboard(dashboardType)">
