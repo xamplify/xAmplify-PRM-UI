@@ -18,25 +18,18 @@ statusCode=200;
 hasLeadsAndDealsAccess = false;
 headerText = "";
 filterValue = 'r';
-dropDownValues:Array<any> = new Array<any>();
+hideLeadsAndDealsChart = false;
 constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {
       this.refreshChart();
   }
   refreshChart(){
     this.chartLoader = true;
-    let top10LeadsOption = {'value':'l','text':'Top 10 Leads'};
     if(this.chartId!='top10LeadsAndDealsBarChart'){
         this.filterValue = 'r';
-        let top10RedistributedCampaignsOption = {'value':'r','text':'Top 10 Redistributed Campaigns'};
-        this.dropDownValues.push(top10RedistributedCampaignsOption);
-        this.dropDownValues.push(top10LeadsOption);
     }else if(this.chartId=='top10LeadsAndDealsBarChart'){
         this.filterValue = 'l';
-        let top10RedistributedCampaignsOption = {'value':'d','text':'Top 10 Deals'};
-        this.dropDownValues.push(top10RedistributedCampaignsOption);
     }
-    
     this.getModuleDetails();
   }
   getModuleDetails(){
@@ -48,12 +41,24 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
             }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads For Previous Quarter':'Redistributed Campaigns For Previous Quarter';
             }else if(this.chartId=='top10LeadsAndDealsBarChart'){
-                this.headerText = "Leads & Deals"
+                if(this.hasLeadsAndDealsAccess){
+                    this.hideLeadsAndDealsChart = false;
+                }else{
+                    this.hideLeadsAndDealsChart = true;
+                }
+                this.headerText = "Leads & Deals";
             }
         },error=>{
             this.setErrorResponse(error);
         },()=>{
-            this.getDataForBarChart();
+            if(this.chartId=='top10LeadsAndDealsBarChart'){
+                if(this.hasLeadsAndDealsAccess){
+                    this.getDataForBarChart();
+                }
+            }else{
+                this.getDataForBarChart();
+            }
+            
         }
       );
   }
