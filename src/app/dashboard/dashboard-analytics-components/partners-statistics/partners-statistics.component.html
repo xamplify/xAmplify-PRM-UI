@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-7" style="padding: 0">
+<div class="col-xs-12 col-sm-6" style="padding: 0">
             <div class="col-sm-12">
                 <div class="portlet light" style="min-height: 510px;">
                     <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
@@ -16,7 +16,7 @@
                             </div>
                           </div>
                     </div>
-                    <div class="portlet-body clearfix" style="height: 495px;">
+                    <div class="portlet-body clearfix" style="height: 485px;">
                         <ng-container>
                             <app-dashboard-loader *ngIf="partnerAnalyticsCountLoader"></app-dashboard-loader>
                         </ng-container>
@@ -26,53 +26,57 @@
                             </div>
                         </ng-container>
                         <ng-container *ngIf="!partnerAnalyticsCountLoader && partnerAnalyticsCountStatusCode==200">
-                            <div class="col-xs-12 col-sm-6 col-md-4 p10">
-                                <div class="dashboard-stat2 m0">
-                                    <div>
-                                        <div class="col-xs-3 p0">
-                                            <i class="fa fa-handshake-o icon1" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="col-xs-9 p0">
-                                            <span class="partners-count">
-                                                {{partnerAnalyticsCount?.totalPartners}}
-                                            </span>
-                                            <br>
-                                            <span class="partners-text">Total</span>
-                                        </div>
-                                        </div>
-                                    </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-4 p10">
-                                <div class="dashboard-stat2 m0">
-                                    <div>
-                                        <div class="col-xs-3 p0">
-                                            <i class="fa fa-handshake-o icon2" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="col-xs-9 p0">
-                                            <span class="partners-count">
-                                                {{partnerAnalyticsCount?.activePartners}}
-                                            </span>
-                                            <br>
-                                            <span class="partners-text">Active</span>
-                                        </div>
+                            <div class="col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-4 pl0">
+                                        <div class="portlet light card-height">
+                                            <div>
+                                                <div class="col-xs-3 p0">
+                                                    <i class="fa fa-handshake-o icon1" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="col-xs-9 card-align">
+                                                    <h3 class="number">
+                                                        {{partnerAnalyticsCount?.totalPartners}}
+                                                    </h3>
+        
+                                                    <p class="partners-text">Total</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-4 p10">
-                                <div class="dashboard-stat2 m0">
-                                    <div>
-                                        <div class="col-xs-3 p0">
-                                            <i class="fa fa-handshake-o icon3" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="col-xs-9 p0">
-                                            <span class="partners-count">
-                                                {{partnerAnalyticsCount?.inActivePartners}}
-                                            </span>
-                                            <br>
-                                            <span class="partners-text">InActive</span>
-                                        </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4 pl0">
+                                        <div class="portlet light card-height">
+                                            <div>
+                                                <div class="col-xs-3 p0">
+                                                    <i class="fa fa-handshake-o icon2" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="col-xs-9 card-align">
+                                                    <h3 class="number">
+                                                        {{partnerAnalyticsCount?.activePartners}}
+                                                    </h3>
+        
+                                                    <p class="partners-text">Active</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-4 pl0">
+                                        <div class="portlet light card-height">
+                                            <div>
+                                                <div class="col-xs-3 p0">
+                                                    <i class="fa fa-handshake-o icon3" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="col-xs-9 card-align">
+                                                    <h3 class="number">
+                                                        {{partnerAnalyticsCount?.inActivePartners}}
+                                                    </h3>
+        
+                                                    <p class="partners-text">InActive</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </ng-container>
                         <br>
