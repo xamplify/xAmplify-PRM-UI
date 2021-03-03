@@ -1,0 +1,110 @@
+<ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+    <ng-container>
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <a [routerLink]="referenceService.homeRouter">Home</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <a [routerLink]="['/home/lms/manage']">Manage Learning Track</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <a>Analytics</a>
+                </li>
+            </ul>
+            <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+            <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+            </a>
+        </div>
+    </ng-container>
+    <div style="position: relative; top: -10px">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    </div>
+    <div class="page-bar">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet light clearfix" style="min-height: 644px;">
+                    <div class="portlet-title" style="border-bottom: none">
+                        <div class="row">
+                            <div class="page-toolbar col-xs-12">
+                                <div class="btn-group pull-right">
+                                    <div class="inputs" style="float: right">
+                                        <!-- <div style="float: left;">
+                        <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                        <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
+                            {{option.name}}</option>
+                        </select>
+                    </div> -->
+                                        <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
+                                            <div class="input-icon right" style="position: relative;right: -11px;">
+                                                <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search();"></button>
+                                                <button type="submit" class="search-box-item-click" (click)="search()">
+                                                    <i class="fa fa-search" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-list-loader *ngIf=" httpRequestLoader.isLoading ">
+                    </app-list-loader>
+                    <ng-container *ngIf="!httpRequestLoader.isLoading">
+                        <div class="table-responsive">
+                            <table class='table tgrid table-hover table-sm' id="lms-analytics-list-table" *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
+                                <thead>
+                                    <tr>
+                                        <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
+                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'lms-analytics-list-table',2)">
+                                            </span>
+                                            <span class="gridHeader" translate>Company</span>
+                                        </th>
+                                        <th class="visible-xs" colspan="1" style="width: 45%" id="border-bottom">
+                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-lms-list-table',1)">
+                                            </span>
+                                            <span class="gridHeader" translate>Company</span>
+                                        </th>
+                                        <th class="text-center" translate>Count</th>
+                                        <th class="text-center" id="min-width" translate>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let company of pagination.pagedItems ;let i =index">
+                                        <td class="hidden-xs text-cente" style="width: 10%;">
+                                            <img class="img-class" [src]="company.companyLogo" onerror="this.src='assets/images/company-profile-logo.png';" alt="{{company.companyLogo}}">
+                                        </td>
+                                        <td>
+                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{company.companyName}}" translate>
+                                                <span><strong>{{company.companyName}}</strong></span>
+                                            </h4>
+                                        </td>
+                                        <td class="text-center">{{company.count}}
+                                        </td>
+                                        <td id="actions-row">
+                                            <div class="actions-block override-actions custom-width-icon">
+                                                <a *ngIf="company.count > 0" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(company)">
+                                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </ng-container>
+                    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="getAnalytics($event)" [hidden]="httpRequestLoader.isLoading">
+                        </app-pagination>
+                    </div>
+                    <!-- End of 24 -->
+                    <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                        <strong translate>No Data Found.</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

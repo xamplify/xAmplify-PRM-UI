@@ -11,32 +11,35 @@
 }
 
 .partners-count{
-	font-weight: 600;
     font-size: 20px;
     overflow: hidden;
     white-space: nowrap;
 	text-overflow: ellipsis;
-	/* margin-left: 15px; */
 }
 
 
 .partners-text{
-	font-weight: 600;
     font-size: 14px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 	color: #0000005c;
-	/* margin-left: -30px; */
 }
-
-
 
 .icon1{
 	background: #aae2d0;
-	padding: 12px 12px;
+	padding: 12px 10px;
 	border-radius: 3px;
-	color: #11b7b7;
+	color: #fff;
+	height: 37px;
+	width: 37px;
+	margin-top: -7px;
+}
+.icon2 {
+	background: #aadae2;
+	padding: 12px 10px;
+	border-radius: 3px;
+	color: #fff;
 	height: 37px;
 	width: 37px;
 	margin-top: -7px;
@@ -44,19 +47,9 @@
 
 .icon3 {
 	background: #eac2af;
-	padding: 12px 12px;
+	padding: 12px 10px;
 	border-radius: 3px;
-	color: #d47735fc;
-	height: 37px;
-	width: 37px;
-	margin-top: -7px;
-}
-
-.icon2 {
-	background: #aadae2;
-	padding: 12px 12px;
-	border-radius: 3px;
-	color: #359696;
+	color: #fff;
 	height: 37px;
 	width: 37px;
 	margin-top: -7px;
@@ -70,5 +63,52 @@
 }
 .sky-blue{
 	color:#00a6e8
+}
+
+.number {
+    margin: 0px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 14px!important;
+}
+
+.text {
+    font-size: 11px;
+    padding: 0px 0px;
+    font-weight: 500;
+    text-align: right;
+}
+
+.card-align {
+    text-align: right;
+}
+
+.card-height {
+    height: 45px;
+    padding-left: 5px!important;
+}
+
+@media screen and (max-width: 1366px) and (min-width: 1024px) {
+    .number {
+        margin: 0px;
+        text-align: right;
+        font-weight: 700;
+        font-size: 14px!important;
+    }
+    .text {
+        font-size: 10px;
+        padding: 0px 0px;
+        font-weight: 500;
+        text-align: right;
+    }
+    .card-height {
+        height: 45px;
+        padding-left: 5px!important;
+        padding-right: 3px!important;
+    }
+    .card-align {
+        text-align: right;
+        padding-right: 8px;
+    }
 }
 

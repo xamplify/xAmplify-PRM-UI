@@ -88,6 +88,24 @@ export class LmsService {
       .catch(this.handleError);
   }
 
+  getAnalytics(pagination:Pagination){
+    return this.http.post(this.URL + "/analytics?access_token=" + this.authenticationService.access_token, pagination)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getPartnerAnalytics(pagination:Pagination){
+    return this.http.post(this.URL + "/partner/analytics?access_token=" + this.authenticationService.access_token, pagination)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getPartnerDetailedAnalytics(pagination:Pagination){
+    return this.http.post(this.URL + "/partner/analytics/activities?access_token=" + this.authenticationService.access_token, pagination)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     let body = res;
     return body || {};

@@ -192,41 +192,15 @@
 										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
                                 <a [routerLink]="['/home/social/manage/all']" translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                             </li>
-
-                            <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
-                                <li *ngIf="currentUrl.endsWith('welcome') && authenticationService.user.hasCompany">
-                                    <a *ngFor="let dashboardType of dashboardTypes" (click)="navigateToDashboard(dashboardType)">
-                                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}
-                                    </a>
-                                </li>
-                                <li *ngIf="(currentUrl.endsWith('dashboard') ||currentUrl.endsWith('dashboard/detailed'))  && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
-                                    <a [routerLink]="['/home/dashboard/welcome']" translate>
-                                        <i class="fa fa-paper-plane-o" aria-hidden="true" ></i> Welcome</a>
-                                        <ng-container *ngFor="let dashboardType of dashboardTypes">
-                                            <ng-container *ngIf="dashboardType=='Dashboard' &&  !currentUrl.endsWith('dashboard')">
-                                            </ng-container>
-                                            <ng-container *ngIf="dashboardType=='Detailed Dashboard' &&  !currentUrl.endsWith('dashboard/detailed')">
-                                                <a  (click)="navigateToDashboard(dashboardType)">
-                                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}
-                                                </a>
-                                            </ng-container>
-                                        </ng-container>
-                                </li>
-                                <li *ngIf="(!currentUrl.endsWith('dashboard')) && (!currentUrl.endsWith('welcome')) && authenticationService.user.hasCompany">
-                                    <a *ngIf="refService.userDefaultPage==='WELCOME'" [routerLink]="['/home/dashboard/'+refService.userDefaultPage.toLowerCase()]" translate>
-                                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Welcome</a>
-                                    <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]" translate>
-                                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
-                                        <ng-container *ngFor="let dashboardType of dashboardTypes">
-                                            <ng-container *ngIf="dashboardType=='Dashboard' &&  !currentUrl.endsWith('dashboard')">
-                                            </ng-container>
-                                            <ng-container *ngIf="dashboardType=='Detailed Dashboard' &&  !currentUrl.endsWith('dashboard/detailed')">
-                                                <a  (click)="navigateToDashboard(dashboardType)">
-                                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}
-                                                </a>
-                                            </ng-container>
-                                        </ng-container>
-                                </li>
+                            <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany">
+                                <ng-container *ngFor="let dashboardType of dashboardTypes">
+                                    <li (click)="navigateToDashboardType(dashboardType)">
+                                        <a>
+                                            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                                            {{dashboardType}}
+                                        </a>
+                                    </li>
+                                </ng-container>
                             </ng-container>
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">

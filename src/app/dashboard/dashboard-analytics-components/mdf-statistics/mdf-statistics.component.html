@@ -1,71 +1,75 @@
-<div class="col-xs-12 col-sm-12" style="padding: 0">
-  <div class="col-sm-12">
-    <div class="portlet light">
-      <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
-        <div class="caption">
-          <span class="caption-subject" translate>Mdf Statistics</span>
-        </div>
+<div [ngClass]="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember ? 'col-xs-12 col-sm-12':'col-xs-12 col-sm-6'" style="padding: 0">
+    <div class="col-sm-12">
+      <div class="portlet light">
+          <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
+              <div class="caption">
+                  <span class="caption-subject" translate>MDF Balance Statistics</span>
+              </div>
+          </div>
+          <div class="portlet-body clearfix">
+              <ng-container>
+                  <app-dashboard-loader *ngIf="mdfStatsLoader"></app-dashboard-loader>
+              </ng-container>
+              <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode!=200">
+                  <div class="alert alert-danger">
+                      <strong>{{properties?.serverErrorMessage}}</strong>
+                  </div>
+              </ng-container>
+              <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode==200">
+                  <div class="col-md-12 col-lg-12">
+                      <div class="row">
+                          <div class="col-xs-12 col-sm-6 col-md-4 pl0">
+                              <div class="portlet light card-height">
+                                  <div>
+                                      <div class="col-xs-3 p0">
+                                          <i class="fa fa-dollar icon1" aria-hidden="true"></i>
+                                      </div>
+                                      <div class="col-xs-9 card-align">
+                                          <h3 class="number">
+                                              {{mdfData?.totalBalance | number:'1.0':'en-US'}}
+                                          </h3>
+
+                                          <p class="partners-text">Total</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-6 col-md-4 pl0">
+                              <div class="portlet light card-height">
+                                  <div>
+                                      <div class="col-xs-3 p0">
+                                          <i class="fa fa-dollar icon2" aria-hidden="true"></i>
+                                      </div>
+                                      <div class="col-xs-9 card-align">
+                                          <h3 class="number">
+                                              {{mdfData?.usedBalance | number:'1.0':'en-US'}}
+                                          </h3>
+
+                                          <p class="partners-text">Used</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-6 col-md-4 pl0">
+                              <div class="portlet light card-height">
+                                  <div>
+                                      <div class="col-xs-3 p0">
+                                          <i class="fa fa-dollar icon3" aria-hidden="true"></i>
+                                      </div>
+                                      <div class="col-xs-9 card-align">
+                                          <h3 class="number">
+                                              {{mdfData?.availableBalance | number:'1.0':'en-US'}}
+                                          </h3>
+
+                                          <p class="partners-text">Available</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </ng-container>
+          </div>
       </div>
-      <div class="portlet-body clearfix">
-        <ng-container>
-          <app-dashboard-loader *ngIf="mdfStatsLoader"></app-dashboard-loader>
-        </ng-container>
-        <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode!=200">
-          <div class="alert alert-danger">
-            <strong>{{properties?.serverErrorMessage}}</strong>
-          </div>
-        </ng-container>
-        <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode==200">
-        <div class="col-xs-12 col-sm-6 col-md-4 p10">
-          <div class="dashboard-stat2 m0">
-            <div>
-              <div class="col-xs-2 p0">
-                <i class="fa fa-dollar icon1" aria-hidden="true"></i>
-              </div>
-              <div class="col-xs-10 p0">
-                <span class="partners-count">
-                  ${{mdfData?.totalBalance | number:'1.0':'en-US'}}
-                </span>
-                <br>
-                <span class="partners-text">Total Balance</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 p10">
-          <div class="dashboard-stat2 m0">
-            <div>
-              <div class="col-xs-2 p0">
-                <i class="fa fa-dollar icon2" aria-hidden="true"></i>
-              </div>
-              <div class="col-xs-10 p0">
-                <span class="partners-count">
-                  ${{mdfData?.usedBalance | number:'1.0':'en-US'}}
-                </span>
-                <br>
-                <span class="partners-text">Used Balance</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 p10">
-          <div class="dashboard-stat2 m0">
-            <div>
-              <div class="col-xs-2 p0">
-                <i class="fa fa-dollar icon3" aria-hidden="true"></i>
-              </div>
-              <div class="col-xs-10 p0">
-                <span class="partners-count">
-                  ${{mdfData?.availableBalance | number:'1.0':'en-US'}}
-                </span>
-                <br>
-                <span class="partners-text">Available Balance</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>
-      </div>
-    </div>
   </div>
 </div>
