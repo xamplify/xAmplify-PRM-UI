@@ -16,7 +16,7 @@ import { FormGroup, FormBuilder, Validators, FormControl , NgModel} from '@angul
 declare var $, CKEDITOR, ckInstance:any;
 import { TagInputComponent as SourceTagInput } from 'ngx-chips';
 import "rxjs/add/observable/of";
-import { tap } from 'rxjs/operators';
+import { tap, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
@@ -242,18 +242,14 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           if(this.currentUrl.endsWith('welcome') || this.currentUrl.endsWith('welcome/')){
             filteredDashboardTypes = this.refService.filterArrayList(data,'Welcome');
           }else if(this.currentUrl.endsWith('dashboard') || this.currentUrl.endsWith('dashboard/')){
-            if(data.indexOf('Dashboard')>-1){
-              filteredDashboardTypes = this.refService.filterArrayList(data,'Dashboard');
-            }else if(data.indexOf('Advanced Dashboard')>-1){
-              filteredDashboardTypes = this.refService.filterArrayList(data,'Advanced Dashboard');
-            }
+            filteredDashboardTypes = this.excludeDashboardAndAdvancedDashboard(data,filteredDashboardTypes);
           }else if(this.currentUrl.endsWith('detailed') || this.currentUrl.endsWith('detailed/')){
             filteredDashboardTypes = this.refService.filterArrayList(data,'Detailed Dashboard');
           }else{
             if(this.refService.userDefaultPage=="WELCOME"){
               filteredDashboardTypes = this.refService.filterArrayList(data,'Welcome');
             }else if(this.refService.userDefaultPage=="DASHBOARD"){
-              filteredDashboardTypes = this.refService.filterArrayList(data,'Dashboard');
+              filteredDashboardTypes = this.excludeDashboardAndAdvancedDashboard(data,filteredDashboardTypes);
             }else{
               filteredDashboardTypes = data;
             }
@@ -265,6 +261,15 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
         this.logger.error(error);
       }
     );
+  }
+
+  excludeDashboardAndAdvancedDashboard(data:any,filteredDashboardTypes:any){
+    if(data.indexOf('Dashboard')>-1){
+      filteredDashboardTypes = this.refService.filterArrayList(data,'Dashboard');
+    }else if(data.indexOf('Advanced Dashboard')>-1){
+      filteredDashboardTypes = this.refService.filterArrayList(data,'Advanced Dashboard');
+    }
+    return filteredDashboardTypes;
   }
 
   lockScreen(){
