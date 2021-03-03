@@ -23,4 +23,5 @@ export class SocialConnection {
     facebookFriendsCount: any = '_';
 
     weeklyPostsCount: number;
+	page: boolean;
 }

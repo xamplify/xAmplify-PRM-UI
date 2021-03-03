@@ -52,6 +52,10 @@
 						<span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
 						<span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
 					</span>
+					<span *ngIf="socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+						<span *ngIf="!socialStatusProvider.socialConnection.page">Profile</span>
+						<span *ngIf="socialStatusProvider.socialConnection.page">Page</span>
+					</span>
 				</h6>
 		</div>
 		<div class="clearfix"></div>
