@@ -237,7 +237,29 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.userService.getDashboardType().
     subscribe(
       data=>{
-        this.dashboardTypes = data;
+        let filteredDashboardTypes:Array<any>;
+        if(data!=undefined && data.length>0){
+          if(this.currentUrl.endsWith('welcome') || this.currentUrl.endsWith('welcome/')){
+            filteredDashboardTypes = this.refService.filterArrayList(data,'Welcome');
+          }else if(this.currentUrl.endsWith('dashboard') || this.currentUrl.endsWith('dashboard/')){
+            if(data.indexOf('Dashboard')>-1){
+              filteredDashboardTypes = this.refService.filterArrayList(data,'Dashboard');
+            }else if(data.indexOf('Advanced Dashboard')>-1){
+              filteredDashboardTypes = this.refService.filterArrayList(data,'Advanced Dashboard');
+            }
+          }else if(this.currentUrl.endsWith('detailed') || this.currentUrl.endsWith('detailed/')){
+            filteredDashboardTypes = this.refService.filterArrayList(data,'Detailed Dashboard');
+          }else{
+            if(this.refService.userDefaultPage=="WELCOME"){
+              filteredDashboardTypes = this.refService.filterArrayList(data,'Welcome');
+            }else if(this.refService.userDefaultPage=="DASHBOARD"){
+              filteredDashboardTypes = this.refService.filterArrayList(data,'Dashboard');
+            }else{
+              filteredDashboardTypes = data;
+            }
+          }
+        }
+        this.dashboardTypes = filteredDashboardTypes;
         this.authenticationService.dashboardTypes = data;
       },error=>{
         this.logger.error(error);
@@ -390,10 +412,12 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.translateService.use(langCode);
   }
 
-  navigateToDashboard(dashboardType:string){
+  navigateToDashboardType(dashboardType:string){
     if(dashboardType=="Detailed Dashboard"){
       this.refService.goToRouter('/home/dashboard/detailed');
-    }else{
+    }else if(dashboardType=="Welcome"){
+      this.refService.goToRouter('/home/dashboard/welcome');
+    }else if(dashboardType=="Advanced Dashboard" || dashboardType=="Dashboard"){
       this.refService.goToRouter('/home/dashboard');
     }
     
