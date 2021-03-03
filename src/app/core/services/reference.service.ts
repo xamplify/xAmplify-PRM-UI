@@ -2152,5 +2152,9 @@ export class ReferenceService {
 		$('.modal .modal-body').css('max-height', $(window).height() * 0.75);
 	}
 
+	filterArrayList(array:Array<any>,itemToRemove:any){
+		return array.filter(item => item !== itemToRemove);
+	}
+
 
 }

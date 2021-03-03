@@ -192,8 +192,15 @@
 										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
                                 <a [routerLink]="['/home/social/manage/all']" translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                             </li>
-
-                            <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
+                            <ng-container *ngFor="let dashboardType of dashboardTypes">
+                                <li (click)="navigateToDashboardType(dashboardType)">
+                                    <a>
+                                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                                        {{dashboardType}}
+                                    </a>
+                                </li>
+                            </ng-container>
+                            <!-- <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
                                 <li *ngIf="currentUrl.endsWith('welcome') && authenticationService.user.hasCompany">
                                     <a *ngFor="let dashboardType of dashboardTypes" (click)="navigateToDashboard(dashboardType)">
                                         <i class="fa fa-paper-plane-o" aria-hidden="true"></i> {{dashboardType}}
@@ -235,7 +242,9 @@
                                             </ng-container>
                                         </ng-container>
                                 </li>
-                            </ng-container>
+                            </ng-container> -->
+
+
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
                                 <a translate> <i class="icon-key" aria-hidden="true"></i> Log Out
