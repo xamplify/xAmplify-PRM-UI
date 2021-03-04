@@ -249,8 +249,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
             if(campaignAccessDto!=undefined){
                 hasLandingPageAccess = campaignAccessDto.landingPage;
-                partnerLandingPageAccess = campaignAccessDto.partnerLandingPage;
-                
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
                             || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1;  
