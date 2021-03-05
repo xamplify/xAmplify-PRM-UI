@@ -94,7 +94,7 @@
                               <!----Delete-->
                               <a *ngIf="viewType=='plc'" (click)="confirmDeletePartnerById(partner,i)"
                                  title="{{actionsDescription.campaign_delete_partner}}"> <i
-                                 class="fa fa-trash" aria-hidden="true"></i>
+                                 class="fa fa-trash-o" aria-hidden="true"></i>
                               </a>
                            </div>
                         </td>
@@ -154,6 +154,7 @@
                   </select>
                </div>
             </div>
+            <br><br><br>
             <div
                *ngIf="sortOption.totalRecords == 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
                class="alert alert-info">
