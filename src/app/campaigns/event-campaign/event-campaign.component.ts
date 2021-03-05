@@ -2767,15 +2767,17 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
                 let response = data;
                 if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                    this.salesforceIntegrated = true;
+                    this.listCampaignPipelines();
                     this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
                         let cfResponse = data;
                         if (cfResponse.statusCode === 200) {
-                            this.salesforceIntegrated = true;
                             this.showConfigurePipelines = false;
                         } else if (cfResponse.statusCode === 400) {
                             swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
-                        }
-                        this.listCampaignPipelines();
+                        } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
+                            swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
+                        }                         
                     }, error => {
                         this.logger.error(error, "Error in salesforce checkIntegrations()");
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));

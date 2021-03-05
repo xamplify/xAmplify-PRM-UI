@@ -315,6 +315,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         this.enableLeads = data.enableLeads;
                         this.salesEnablement = data.salesEnablement;
                         this.isSalesforceIntegrated();
+                        //this.listCampaignPipelines();
                     });
                 })
                
@@ -3373,16 +3374,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loading = true;
             this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
                 let response = data;
-                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {          
+                    this.salesforceIntegrated = true;  
+                    this.listCampaignPipelines();        
                     this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
                         let cfResponse = data;
+                        //this.listCampaignPipelines();
                         if (cfResponse.statusCode === 200) {
-                            this.salesforceIntegrated = true;
+                            //this.salesforceIntegrated = true;
 							this.showConfigurePipelines = false;
-                        } else if (cfResponse.statusCode === 400) {
+                        } else if (cfResponse.statusCode === 400) {                            
                             swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
-                        }
-                        this.listCampaignPipelines();
+                        } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
+                            swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
+                        }                        
                     }, error => {
                         this.logger.error(error, "Error in salesforce checkIntegrations()");
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
