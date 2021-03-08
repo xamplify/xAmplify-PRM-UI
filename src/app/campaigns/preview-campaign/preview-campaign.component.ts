@@ -733,12 +733,16 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           pagination.campaignId = campaignId;
           pagination.campaignType = "VIDEO";
           this.campaignService.listCampaignInteractiveViews(pagination,false)
-           .subscribe(data => {  this.listCampaignViewsDataInsert(data, campaignId); },
+           .subscribe(data => {
+               this.listCampaignViewsDataInsert(data.data, campaignId);
+               },
            error => console.log(error),
            () => console.log('listCampaignInteractiveViews(): called') )
       } else{
          this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign,false)
-           .subscribe(data => { this.listCampaignViewsDataInsert(data.campaignviews, campaignId); },
+           .subscribe(data => { 
+             this.listCampaignViewsDataInsert(data.data, campaignId);
+             },
             error => console.log(error),
             () => console.log('listCampaignViews(); called') )
          }
