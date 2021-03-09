@@ -489,7 +489,7 @@
                    <legend class="scheduler-border">Analytics</legend>
                    <div>
                       <div (click)="showAnalyticsModal('Total Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailSentCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
-                      <h1>{{campaignReport.emailSentCount}}</h1>
+                      <h1>{{campaignReport.totalRecipients}}</h1>
                       <h5>Total Recipients</h5>
                    </div>
                    <div (click)="showAnalyticsModal('Active Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailOpenCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
@@ -724,8 +724,7 @@
                             <tr>
                                <th class="th-size" style="text-align: left;width:25%">NAME</th>
                                <ng-container *ngIf="paginationType==='Total Recipients'">
-                                  <th class="th-size" style="text-align:center">CAMPAIGN NAME</th>
-                                  <th class="th-size">SENT TIME</th>
+                                  <th class="th-size" style="text-align:center">CAMPAIGN NAME</th>                                  
                                </ng-container>
                                <ng-container *ngIf="paginationType==='Active Recipients' || paginationType==='Clicked URL' ">
                                   <th style="width:33%" *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
@@ -749,11 +748,6 @@
                                   <td class="text-center">
                                      <h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
                                         <span *ngIf="campaign.campaignName?.length>30">...</span><span *ngIf="item.campaignName==null">-</span>
-                                     </h6>
-                                  </td>
-                                  <td>
-                                     <h6>
-                                        <app-timestamp *ngIf="campaign.launchTime" [dateAndTime]="campaign.launchTime"> </app-timestamp><span *ngIf="!campaign.launchTime">-</span>
                                      </h6>
                                   </td>
                                </tr>

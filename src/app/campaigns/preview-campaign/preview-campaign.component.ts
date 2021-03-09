@@ -205,7 +205,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.campaignType = 'REGULAR';
             } 
             this.getEmailSentCount(this.previewCampaignId);
-            this.getEmailLogCountByCampaign(this.previewCampaignId);
+            //this.getEmailLogCountByCampaign(this.previewCampaignId);
             this.getCampaignWatchedUsersCount(this.previewCampaignId);
             this.referenceService.loadingPreview = false;
             $('#myModal').modal('show');
@@ -476,15 +476,27 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
  }
     getEmailSentCount(campaignId: number) {
       try {
-        this.campaignService.getEmailSentCount(campaignId)
+          this.campaignService.getCampaignHighLevelAnalytics(campaignId, this.loggedInUserId)
           .subscribe(
-          data => {
-            this.campaignReport.emailSentCount = data.emails_sent_count;
-          },
-          error => console.log(error),
-          () => {
-            // this.listCampaignViews(campaignId, this.campaignViewsPagination);
-          }
+            response => {
+                this.campaignReport.emailSentCount = response.data.totalEmailsSent;
+                this.campaignReport.totalRecipients = response.data.totalRecipients;
+                this.campaignReport.delivered = response.data.delivered;
+                this.campaignReport.unsubscribed = response.data.unsubscribed;
+                this.campaignReport.softBounce = response.data.softBounce;
+                this.campaignReport.hardBounce = response.data.hardBounce;
+                this.campaignReport.clickthroughRate = response.data.clickthroughRate;
+                this.campaignReport.emailClickedCount = response.data.emailClicked;
+                this.campaignReport.openRate = response.data.openRate;
+                this.campaignReport.activeRecipients = response.data.activeRecipients;
+                this.campaignReport.unsubscribed = response.data.unsubscribed;
+                this.campaignReport.pagesClicked = response.data.pagesClicked;
+                this.campaignReport.deliveredCount = parseInt(response.data.deliveredCount);
+                this.campaignReport.emailOpenCount = parseInt(response.data.opened);
+              this.loading = false;
+            },
+            error => console.log(error),
+            () => console.log()
           )
       } catch (error) { console.error('error' + error); }
     }
@@ -551,7 +563,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
        this.paginationType = paginationType;
        this.pagination = new Pagination();
        if(paginationType === 'Total Recipients' && this.campaignReport.emailSentCount>0){
-          this.modalTitle = 'Sent Email Details';
+          this.modalTitle = 'Total Recipients';
           this.listCampaignViews(this.previewCampaignId, this.pagination);
           this.openCalendarModal();
        } else if(paginationType === 'Active Recipients' && this.campaignReport.emailOpenCount>0){
