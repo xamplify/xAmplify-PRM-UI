@@ -23,7 +23,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-	color: #0000005c;
+    /* color: #0000005c; */
+    font-weight: bold;
 }
 
 
@@ -66,6 +67,7 @@
     text-align: right;
     font-weight: 700;
     font-size: 14px!important;
+     color:#00000085;
 }
 
 .text {

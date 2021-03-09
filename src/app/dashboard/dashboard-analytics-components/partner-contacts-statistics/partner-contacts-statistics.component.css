@@ -16,12 +16,14 @@
     text-overflow: ellipsis;
 }
 
+
 .partners-text {
     font-size: 14px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #0000005c;
+    /* color: #0000005c; */
+    font-weight: bold;
 }
 
 .icon1 {
@@ -64,6 +66,7 @@
     margin: 0px;
     text-align: right;
     font-size: 14px!important;
+     color:#00000085;
 }
 
 .text {
