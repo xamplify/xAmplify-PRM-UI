@@ -488,7 +488,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       views.push(this.campaignBarViews[i].viewsCount)
     }
     this.maxViewsValue = Math.max.apply(null, views);
-    this.pagination.totalRecords = this.campaignReport.emailSentCount;
+    this.pagination.totalRecords = parseInt(this.campaignReport.totalRecipients);
     this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignBarViews);
     console.log(this.pagination);
     if (isShowBarChart) {
