@@ -90,5 +90,6 @@ export class Campaign {
     dealPipelineId: number;
     viewInBrowserTag = true;
     unsubscribeLink = true;
+    toPartner : boolean;
 
 }
