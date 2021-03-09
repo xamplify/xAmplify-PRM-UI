@@ -50,6 +50,7 @@ declare var $,swal:any;
   providers:[CallActionSwitch,Properties, CountryNames,LandingPageService]
 })
 export class PreviewCampaignComponent implements OnInit,OnDestroy {
+	isCampaignLaunched : boolean;
     ngxloading:boolean;
     campaignType = "";
     selectedEmailTemplateId: number = 0;
@@ -224,6 +225,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
         this.selectedUserlistIds = this.campaign.userListIds;
         this.isChannelCampaign = this.campaign.channelCampaign;
+        this.isCampaignLaunched = this.campaign.launched;
         if(this.campaign.scheduleTime!=null && this.campaign.scheduleTime!="null" && this.campaign.campaignScheduleType!="NOW"){
             this.campaign.scheduleCampaign  = this.campaignLaunchOptions[1];
         }else{
@@ -251,6 +253,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
     setEventCampaignData(result:EventCampaign){
       this.campaign = result;
+      this.isCampaignLaunched = this.campaign.launched;
       console.log(this.campaign);
       this.campaign.emailTemplate = result.emailTemplateDTO;
       this.campaign.launchTimeInString = new Date(result.launchTimeInString);
