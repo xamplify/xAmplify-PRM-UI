@@ -485,7 +485,7 @@
                       </div>
                    </div>
                 </div>
-                <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor" *ngIf="!isCampaignLaunched" >
+                <fieldset *ngIf="campaign?.launched" class="scheduler-border" [style.border-color]="contactListBorderColor" >
                    <legend class="scheduler-border">Analytics </legend>
                    <div>
                       <div (click)="showAnalyticsModal('Total Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailSentCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
