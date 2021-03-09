@@ -4,8 +4,9 @@ import { Form } from 'app/forms/models/form';
 import { ColumnInfo } from 'app/forms/models/column-info';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { FormOption } from 'app/forms/models/form-option';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 
-declare var $: any;
+declare var $: any, swal;
 
 @Component({
   selector: 'app-sf-deal',
@@ -26,10 +27,15 @@ export class SfDealComponent implements OnInit {
   dropdownSettings = {};
   multiSelectvalueArray=[];
   optionObj: any;
+  showSFFormError: boolean = false;
+  sfFormError: string = "";
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  isLoading = false;
   constructor(private contactService: ContactService, private referenceService: ReferenceService) {
   }
 
   ngOnInit() {
+    this.showSFFormError = false;
     this.dropdownSettings = {
       singleSelection: false,
       text: "Please select",
@@ -43,22 +49,32 @@ export class SfDealComponent implements OnInit {
       if (this.dealId == undefined || this.dealId <= 0) {
         this.dealId = 0;
       }
+      
+      this.isLoading = true;
       this.contactService.getSfForm(this.createdForCompanyId, this.dealId).subscribe(result => {
-        this.form = result.data;
-        let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
-        for (let multiSelectObj of allMultiSelects) {
-          let selectedOptions = multiSelectObj.value.split(';');        
-          for(let option of selectedOptions){
-            this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
-            this.multiSelectvalueArray.push(this.optionObj);
+        this.showSFFormError = false; 
+        this.isLoading = false;
+        if (result.statusCode == 200) {
+          this.form = result.data;
+          let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
+          for (let multiSelectObj of allMultiSelects) {
+            let selectedOptions = multiSelectObj.value.split(';');        
+            for(let option of selectedOptions){
+              this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+              this.multiSelectvalueArray.push(this.optionObj);
+            }
+            multiSelectObj.value = this.multiSelectvalueArray; 
+          }      
+    
+          let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
+          if (reqFieldsCheck.length === 0) {
+            this.isDealRegistrationFormValid = false;
           }
-          multiSelectObj.value = this.multiSelectvalueArray; 
-        }      
-  
-        let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
-        if (reqFieldsCheck.length === 0) {
-          this.isDealRegistrationFormValid = false;
+        } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
+          this.showSFFormError = true;    
+          this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
         }
+        
       }, error => {
         console.log(error);
       });
