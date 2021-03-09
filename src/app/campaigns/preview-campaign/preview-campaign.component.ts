@@ -755,7 +755,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignViews);
       this.loading = false;
       this.referenceService.loading(this.httpRequestLoader, false);
-     // this.totalListOfCampaignViews(campaignId, this.pagination.totalRecords);
   }
     
   totalListOfCampaignViews(campaignId: number, totalRecords: number) {
@@ -772,7 +771,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     } else{
        this.campaignService.listCampaignViews(campaignId, this.totalViewsPatination, this.isChannelCampaign,false)
          .subscribe(data => {
-             this.totalCampaignViews = data.campaignviews;
+             this.totalCampaignViews = data.data;
              this.downloadEmailLogs();
              },
           error => console.log(error),
