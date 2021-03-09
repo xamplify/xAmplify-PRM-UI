@@ -112,6 +112,7 @@ export class PublicEventEmailPopupComponent implements OnInit {
         eventCampaign.id = this.selectedCampaign.campaignId;
         eventCampaign.channelCampaign = this.selectedCampaign.channelCampaign;
         eventCampaign.nurtureCampaign = this.selectedCampaign.nurtureCampaign;
+        eventCampaign.toPartner = this.selectedCampaign.toPartner;
         this.campaignService.sendPublicEventEmail( eventCampaign ).subscribe(
             ( response: any ) => {
                 if (response.access) {
