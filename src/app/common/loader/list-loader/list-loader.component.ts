@@ -18,7 +18,10 @@ export class ListLoaderComponent implements OnInit {
         this.rowsCount = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.page = "Admin";
         this.icons = [];
-    }
+    }else if(this.rowsCount === 4){
+		this.rowsCount = [0, 1, 2,3];
+      	this.icons = [0];
+	}
     else {
       this.rowsCount = [0, 1, 2, 3, 4, 5];
       this.icons = [0, 1, 2];

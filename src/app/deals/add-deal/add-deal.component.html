@@ -85,7 +85,7 @@
             </fieldset>            
           </div>
         </div>
-        <div *ngIf= "showSfForm">
+        <div *ngIf= "showSfForm && deal.createdForCompanyId">
           <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [dealId]="deal.id" [isPreview]="preview"></app-sf-deal>
         </div>
         <div *ngIf= "!showSfForm && showDefaultForm">

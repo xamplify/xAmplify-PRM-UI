@@ -55,13 +55,7 @@ export class PreviewPopupComponent implements OnInit {
         if (this.authenticationService.isShowForms) {
             this.pagination.campaignType = 'EVENT';
         }
-        console.log(this.pagination.campaignType);
     }
-
-
-
-
-
 
     /************List Available Forms******************/
     showForms() {
@@ -159,6 +153,18 @@ export class PreviewPopupComponent implements OnInit {
                             this.pageBackgroundColor = this.form.pageBackgroundColor;
                             this.formBackgroundImage = "";
                         }
+                        $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
+                            if (value.labelType == 'quiz_radio') {
+                                //value.labelType = 'quiz'
+                                value.choices = value.radioButtonChoices;
+                                //value.choiceType = "radio";
+
+                            } else if (value.labelType == 'quiz_checkbox') {
+                                //value.labelType = 'quiz'
+                                value.choices = value.checkBoxChoices;
+                                //value.choiceType = "checkbox";
+                            }
+                        });
                         console.log(data.data);
                         this.formError = false;
                     } else {

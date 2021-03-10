@@ -78,8 +78,14 @@ export class FormService {
     }
 
 
-    submitForm( formSubmit: FormSubmit ) {
-        return this.http.post( this.URL + "submit/save", formSubmit )
+    submitForm( formSubmit: FormSubmit, type:string) {
+        let url = this.URL + "submit/";
+        if(type != undefined && type != null && type == "lms-form"){
+            url = url + "save-lms-form";
+        } else {
+            url = url + "save";
+        }
+        return this.http.post(url , formSubmit )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -128,6 +134,12 @@ export class FormService {
 
     }
     
+    quizList( pagination: Pagination ): Observable<any> {
+        return this.http.post( this.URL + "quiz-list?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     private extractData( res: Response ) {
         const body = res.json();
         return body || {};

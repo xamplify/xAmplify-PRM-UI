@@ -14,7 +14,8 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
-                <a>Create Form</a>
+                <a *ngIf="isAdd">Create Form</a>
+                 <a *ngIf="!isAdd">Edit Form</a>
             </li>
         </ul>
     </div>

@@ -337,12 +337,13 @@ export class AddDealComponent implements OnInit {
   }
 
   isSalesForceEnabled() {
+    this.showSfForm = false;
     this.dealsService.isSalesForceEnabled(this.deal.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
           if (response.statusCode == 200) {
             this.showSfForm = response.data;
-          }
+          } 
         },
         error => {
           console.log(error);

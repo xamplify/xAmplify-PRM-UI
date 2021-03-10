@@ -1002,15 +1002,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   ngOnInit() {
     try{
-      QuickSidebar.init();
       this.getDefaultPlayerSettings();
-      console.log(this.referenceService.videoTitles);
       this.removeVideoTitlesWhiteSpaces();
       this.loadRangeDisable = true;
       $('#overlay-modal').hide();
       console.log('EditVideoComponent ngOnit: ');
       this.categories = this.referenceService.refcategories;
-      console.log(this.saveVideoFile);
       this.saveVideoFile.categories = this.categories;
       this.settingImageGifPaths();
       this.buildForm();

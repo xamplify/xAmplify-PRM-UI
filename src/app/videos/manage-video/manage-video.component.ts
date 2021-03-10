@@ -118,7 +118,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     ngOnInit() {
       try {
         this.pagination.maxResults = 12;
-        QuickSidebar.init();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);

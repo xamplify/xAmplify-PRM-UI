@@ -16,7 +16,7 @@ import { FormGroup, FormBuilder, Validators, FormControl , NgModel} from '@angul
 declare var $, CKEDITOR, ckInstance:any;
 import { TagInputComponent as SourceTagInput } from 'ngx-chips';
 import "rxjs/add/observable/of";
-import { tap } from 'rxjs/operators';
+import { tap, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
@@ -52,6 +52,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   sourceType = "";
   isLoggedInFromAdminSection = false;
+  dashboardTypes = [];
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,private vanityServiceURL:VanityURLService) {
@@ -226,11 +227,51 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
   ngOnInit() {
     try{
+     this.getDashboardType();
      this.getUnreadNotificationsCount();
      this.getRoles();
      this.isAddedByVendor();
     }catch(error) {this.logger.error('error'+error); }
   }
+  getDashboardType(){
+    this.userService.getDashboardType().
+    subscribe(
+      data=>{
+        let filteredDashboardTypes:Array<any>;
+        if(data!=undefined && data.length>0){
+          if(this.currentUrl.endsWith('welcome') || this.currentUrl.endsWith('welcome/')){
+            filteredDashboardTypes = this.refService.filterArrayList(data,'Welcome');
+          }else if(this.currentUrl.endsWith('dashboard') || this.currentUrl.endsWith('dashboard/')){
+            filteredDashboardTypes = this.excludeDashboardAndAdvancedDashboard(data,filteredDashboardTypes);
+          }else if(this.currentUrl.endsWith('detailed') || this.currentUrl.endsWith('detailed/')){
+            filteredDashboardTypes = this.refService.filterArrayList(data,'Detailed Dashboard');
+          }else{
+            if(this.refService.userDefaultPage=="WELCOME"){
+              filteredDashboardTypes = this.refService.filterArrayList(data,'Welcome');
+            }else if(this.refService.userDefaultPage=="DASHBOARD"){
+              filteredDashboardTypes = this.excludeDashboardAndAdvancedDashboard(data,filteredDashboardTypes);
+            }else{
+              filteredDashboardTypes = data;
+            }
+          }
+        }
+        this.dashboardTypes = filteredDashboardTypes;
+        this.authenticationService.dashboardTypes = data;
+      },error=>{
+        this.logger.error(error);
+      }
+    );
+  }
+
+  excludeDashboardAndAdvancedDashboard(data:any,filteredDashboardTypes:any){
+    if(data.indexOf('Dashboard')>-1){
+      filteredDashboardTypes = this.refService.filterArrayList(data,'Dashboard');
+    }else if(data.indexOf('Advanced Dashboard')>-1){
+      filteredDashboardTypes = this.refService.filterArrayList(data,'Advanced Dashboard');
+    }
+    return filteredDashboardTypes;
+  }
+
   lockScreen(){
     this.router.navigate(['/userlock']);
   }
@@ -374,5 +415,16 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   selectedLanguage(langCode:any){
     this.authenticationService.userPreferredLanguage= langCode;
     this.translateService.use(langCode);
+  }
+
+  navigateToDashboardType(dashboardType:string){
+    if(dashboardType=="Detailed Dashboard"){
+      this.refService.goToRouter('/home/dashboard/detailed');
+    }else if(dashboardType=="Welcome"){
+      this.refService.goToRouter('/home/dashboard/welcome');
+    }else if(dashboardType=="Advanced Dashboard" || dashboardType=="Dashboard"){
+      this.refService.goToRouter('/home/dashboard');
+    }
+    
   }
 }

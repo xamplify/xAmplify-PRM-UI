@@ -861,7 +861,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
         this.selectedCampaignWatchedUsers(this.videoUtilService.sortMonthDates[3].value);
         this.selectedSortByValue(this.minutesSort.value);
-        QuickSidebar.init();
         this.getVideoPlayedSkippedInfo();
         this.videoUtilService.selectedVideoId = this.selectedVideo.id;
         this.nonApplicableUsersMinutesWatched();

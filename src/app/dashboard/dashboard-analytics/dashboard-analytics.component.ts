@@ -54,7 +54,7 @@ export class DashboardAnalyticsComponent implements OnInit {
    isMaxBarChartNumber = true;
    emailStatisticsLoader:HttpRequestLoader = new HttpRequestLoader();
    dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
-    hasCampaignRole: boolean;
+   hasCampaignRole: boolean;
 
   constructor(public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
@@ -62,8 +62,6 @@ export class DashboardAnalyticsComponent implements OnInit {
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-
-
    }
 
   ngOnInit() {
@@ -80,22 +78,12 @@ export class DashboardAnalyticsComponent implements OnInit {
         this.getDefaultPage(this.loggedInUserId);
         this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.getUserCampaignReport();
-        
-        Metronic.init();
-        Layout.init();
-        Demo.init();
-        QuickSidebar.init();
-        Index.init();
-        Index.initDashboardDaterange();
-        Index.initCharts();
-        Index.initChat();
-        Tasks.initDashboardWidget();
         this.xtremandLogger.log(this.authenticationService.getRoles());
     }
   }
 
   getDefaultPage(userId: number) {
-    //this.ngxLoading = true;
+    this.ngxLoading = true;
     this.userService.getUserDefaultPage(userId)
         .subscribe(
             data => {
@@ -105,13 +93,16 @@ export class DashboardAnalyticsComponent implements OnInit {
                 }
                 this.ngxLoading = false;
             },
-            error => this.xtremandLogger.log(error),
+            error =>{
+                this.xtremandLogger.log(error);
+                this.ngxLoading = false;
+            }, 
             () => { }
         );
 }
 
     listVendorsByLoggedInUserId(userId: number) {
-    //this.ngxLoading = true;
+    this.ngxLoading = true;
     this.dashBoardService.listVendorsByLoggedInUserId(userId)
         .subscribe(
             response => {
@@ -119,13 +110,16 @@ export class DashboardAnalyticsComponent implements OnInit {
                this.vendorCompanies = data;
                this.ngxLoading = false;
             },
-            error => this.xtremandLogger.log(error),
+            error => {
+                this.xtremandLogger.log(error);
+                this.ngxLoading = false;
+            },
             () => { }
         );
 }
 
 setDashboardAsDefaultPage(event: any) {
-  //this.ngxLoading = true;
+  this.ngxLoading = true;
   this.referenceService.userDefaultPage = event ? 'DASHBOARD' : 'WELCOME';
   this.userService.setUserDefaultPage(this.authenticationService.getUserId(), this.referenceService.userDefaultPage)
       .subscribe(
@@ -146,7 +140,6 @@ setDashboardAsDefaultPage(event: any) {
 
 /*******************Top 4 Campaigns Releated Code************************** */
 getUserCampaignReport() {
-  if(this.authenticationService.module.showCampaignsAnalyticsDivInDashboard){
     this.referenceService.loading(this.topFourCampaignsLoader,true);
     this.referenceService.loading(this.emailStatisticsLoader,true);
     this.topFourLoading = true;  
@@ -171,9 +164,7 @@ getUserCampaignReport() {
                 this.setLaunchedCampaignsChild(this.userCampaignReport);
                 this.listCampaignInteractionsData(this.loggedInUserId, this.userCampaignReport.campaignReportOption);
             }
-        );
-  }  
-  
+        ); 
 }
 
 setLaunchedCampaignsChild(userCampaignReport: CampaignReport) {
@@ -197,14 +188,14 @@ this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnal
     .subscribe(
         data => {
             this.topFourCampaignErrorResponse  = new CustomResponse();
-          //  this.campaignIdArray = [];
             this.xtremandLogger.info(data);
             this.campaigns = data;
             this.xtremandLogger.log(data);
             this.referenceService.loading(this.topFourCampaignsLoader,false);
             const campaignIdArray = data.map(function (a) { return a[0]; });
-            //this.campaignIdArray = campaignIdArray;
             this.totalCampaignsCount = this.campaigns.length;
+            this.referenceService.loading(this.emailStatisticsLoader,false);
+                this.topFourLoading = false;
             if (this.totalCampaignsCount >= 1) {
                 this.getCampaignsEamailBarChartReports(campaignIdArray);
             }else{
@@ -403,6 +394,8 @@ showCampaignDetails(campaign:any){
     this.referenceService.campaignType = campaign[7];
     this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
   }
+
+
 
 
 }

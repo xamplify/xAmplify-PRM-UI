@@ -259,6 +259,15 @@ export class SortOption {
     { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
 ];
 
+  tagSortDropDownOptions = [
+    { 'name': 'Name(A-Z)', 'value': 'tagName-ASC' },
+    { 'name': 'Name(Z-A)', 'value': 'tagName-DESC' },
+    { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+    { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+    { 'name': 'Updated On(ASC)', 'value': 'updatedTime-ASC' },
+    { 'name': 'Updated On(DESC)', 'value': 'updatedTime-DESC' }
+  ];
+
 
 
     numberOfItemsPerPage = [
@@ -291,5 +300,7 @@ export class SortOption {
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;
+    public selectedTagDropDownOption:any = this.tagSortDropDownOptions[3];
+
 
 }

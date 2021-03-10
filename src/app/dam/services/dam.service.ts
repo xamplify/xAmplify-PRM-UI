@@ -105,9 +105,6 @@ export class DamService {
       .catch(this.handleError);
   }
 
-
- 
-
   saveDamAnalytics(damAnalyticsPostDto: DamAnalyticsPostDto) {
     return this.http.post(this.URL + "saveDamAnalytics?access_token=" + this.authenticationService.access_token, damAnalyticsPostDto)
       .map(this.extractData)

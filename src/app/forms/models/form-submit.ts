@@ -3,5 +3,6 @@ export class FormSubmit {
     id:number;
     alias:string="";
     fields:Array<FormSubmitField> = new Array<FormSubmitField>();
-
+    userId:number;
+    learningTrackId:number;
 }

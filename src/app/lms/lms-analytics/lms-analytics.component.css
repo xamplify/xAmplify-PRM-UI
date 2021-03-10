@@ -1,0 +1,11 @@
+#actions-row {
+    width: 30%
+}
+
+#min-width {
+    min-width: 145px;
+}
+
+.custom-width-icon {
+    min-width: 130px;
+}

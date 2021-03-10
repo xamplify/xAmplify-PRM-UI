@@ -173,7 +173,7 @@ tr:hover {
 }
 
 .custom-anchor {
-	
+
 }
 
 .fa-line-chart {
@@ -333,6 +333,7 @@ tr>td>h6 {
 /* Campaign Report Count Block*/
 .crcb {
 	width: 100%;
+  margin-bottom: 5px;
 }
 
 .bg-color {
@@ -811,3 +812,81 @@ fieldset {
 	margin-left: 12px;
 	font-size: 20px !important;
 }
+
+.lt-blue-c:hover{
+  background-color: #008fd5 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.lt-green-c:hover{
+  background-color: #58cc00 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.tk-blue-c:hover{
+  background-color: #3564b9 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.vlt-blue-c:hover{
+  background-color: #2bc2b5 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.pure-blue-c:hover{
+  background-color: #2f2470 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.black-blue-c:hover{
+  background-color: #7f2ca3 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.pure-g-c:hover{
+  background-color: #08f145 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.g-b-c:hover{
+  background-color: #009970 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.g-y-c:hover{
+  background-color: #3a5e00 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.y-b-c:hover{
+  background-color: #827500 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+.y-b-c:hover{
+  background-color: #827500 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.b-b-c:hover{
+  background-color: #2b005c !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.r-b-c:hover{
+  background-color: #c72828 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+.h-r-c:hover{
+  background-color: #660000 !important;
+  color :#fff !important;
+  border-color: #fff !important;
+}
+.r-r-c:hover{
+  background-color: red !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+

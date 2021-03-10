@@ -149,6 +149,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
     
+    emailActionDetails(campaignId: number, actionType: string, pagination: Pagination) {
+        return this.http.post(this.URL + 'campaign/'+ + campaignId +"/" +actionType + '/details?access_token=' + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     smsActionList(campaignId: number, actionType: string, pagination: Pagination) {
         return this.http.post(this.URL + 'campaign/list-smslogs-by-action/' + campaignId + '/' + actionType + '?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
@@ -177,6 +183,13 @@ export class CampaignService {
         return this.http.get(this.URL + 'campaign/emaillog-count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+    
+    getCampaignHighLevelAnalytics(campaignId: number, userId:number){
+    	userId = this.authenticationService.checkLoggedInUserId(userId);
+    	 return this.http.get(this.URL + 'campaign/'+ campaignId+'/' + userId +'/highlevel-analytics/?access_token=' + this.authenticationService.access_token)
+         .map(this.extractData)
+         .catch(this.handleError);
     }
 
     getEmailSentCount(campaignId: number) {
@@ -571,6 +584,12 @@ export class CampaignService {
     downRegularVideoCampaignViews( campaignId: number, campaignType: string, publicEventCampaign:boolean): Observable<Response> {
         this.logger.info( campaignId );
         return this.http.get( this.URL + "campaign/" + campaignId + "/" +campaignType + "/"+ publicEventCampaign +"/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
+            .map(( response: any ) => response );
+    }
+    
+    downloadCampaignDetailsByActionType( campaignId: number, actionType: string): Observable<Response> {
+        this.logger.info( campaignId );
+        return this.http.get( this.URL + "campaign/" + campaignId + "/" +actionType + "/download-details?access_token=" + this.authenticationService.access_token )
             .map(( response: any ) => response );
     }
     

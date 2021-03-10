@@ -12,7 +12,6 @@ import { Roles } from '../models/roles';
 import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
-import { environment } from '../../../environments/environment';
 declare var swal, require: any;
 var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
@@ -20,6 +19,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { Pagination } from '../../core/models/pagination';
 import { TranslateService } from '@ngx-translate/core';
+import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -93,6 +93,10 @@ export class AuthenticationService {
   partnershipEstablishedOnlyWithPrm = false;
   folders = false;
   reloadLoginPage = false;
+  lmsAccess = false;
+  mdf = false;
+  leadsAndDeals = false;
+  dashboardTypes = [];
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -492,6 +496,10 @@ export class AuthenticationService {
     module.isPrmTeamMember = false;
     module.isPrmAndPartner = false;
     module.isPrmAndPartnerTeamMember = false;
+    module.isVendorTier = false;
+    module.isVendorTierTeamMember = false;
+    module.isVendorTierAndPartner = false;
+    module.isVendorTierAndPartnerTeamMember = false;
     module.showCampaignsAnalyticsDivInDashboard = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
@@ -499,6 +507,7 @@ export class AuthenticationService {
     this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     this.partnershipEstablishedOnlyWithPrm = false;
     this.folders = false;
+    this.lmsAccess = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
@@ -639,7 +648,6 @@ export class AuthenticationService {
 
   extractData(res: Response) {
     let body = res.json();
-    console.log(body);
     return body || {};
   }
 
@@ -658,4 +666,43 @@ export class AuthenticationService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  getUrls() {
+    let vanityLoginDto = new VanityLoginDto();
+    if(this.companyProfileName !== undefined && this.companyProfileName !== ''){
+			vanityLoginDto.vendorCompanyProfileName = this.companyProfileName;
+			vanityLoginDto.vanityUrlFilter = true;
+     }
+     vanityLoginDto.userId = this.getUserId();
+    return this.http.post(this.REST_URL + "admin/getUrls?access_token=" + this.access_token,vanityLoginDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  authorizeUrl(url: string) {
+    let angularUrlInput = {};
+    let browserUrl = window.location.hostname;
+    //let browserUrl = "tga.xamplify.com";
+    if (!browserUrl.includes("release") && !browserUrl.includes("192.168")) {
+      let domainName = browserUrl.split('.');
+      if (domainName.length > 2) {
+        angularUrlInput['vendorCompanyProfileName'] = domainName[0];
+        angularUrlInput['vanityUrlFilter'] = true;
+      }
+    }
+    angularUrlInput['userId'] = this.getUserId();
+    angularUrlInput['url'] = url;
+    return this.http.post(this.REST_URL + "admin/authorizeUrl?access_token=" + this.access_token, angularUrlInput)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getModuleAccessByLoggedInUserId(){
+    return this.http.get(this.REST_URL + "module/getModuleDetails/"+this.getUserId()+"?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  
+  
 }

@@ -9,12 +9,14 @@ import { AddPartnersComponent } from './add-partners/add-partners.component';
 import { PartnerReportsComponent } from './partner-reports/partner-reports.component';
 import { SharedLibraryModule } from '../shared/shared-library.module';
 import { CKEditorModule } from "ng2-ckeditor";
+import { RedistributedCampaignsAndLeadsBarChartComponent } from './redistributed-campaigns-and-leads-bar-chart/redistributed-campaigns-and-leads-bar-chart.component';
+import { KpiComponent } from './kpi/kpi.component';
 
 @NgModule({
   imports: [
     CKEditorModule, CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule, SharedLibraryModule
   ],
   providers: [],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent]
 })
 export class PartnersModule { }

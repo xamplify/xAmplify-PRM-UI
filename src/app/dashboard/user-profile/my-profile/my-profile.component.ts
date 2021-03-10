@@ -345,20 +345,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 			this.getUserByUserName(this.currentUser.userName);
 			this.cropperSettings();
-			this.roleNames = this.authenticationService.loggedInUserRole;
-			if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member") {
-				if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0) {
-					this.roleNames = "Vendor";
-				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0) {
-					this.roleNames = "OrgAdmin";
-				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0) {
-					this.roleNames = "Marketing";
-				}else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 20).length !== 0) {
-					this.roleNames = "PRM";
-				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
-					this.roleNames = "Partner";
-				}
-			}
+			
 			// this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
 			this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
@@ -391,6 +378,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		
 		try {
 			if (this.referenceService.integrationCallBackStatus) {
 				this.activeTabName = 'integrations';
@@ -400,7 +388,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.activeTabHeader = this.properties.personalInfo;
 			}
 			this.customConstructorCall();
-			console.log(this.authenticationService.user);
 			this.geoLocation();
 			this.videoUtilService.normalVideoJsFiles();
 			// const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -434,8 +421,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (this.authenticationService.vanityURLEnabled) {
 				this.setSubjectLineTooltipText();
 			}
+			this.getRoles();
 			this.addDefaultPipelineStages();
-
 			window.addEventListener('message', function(e) {
 				if (e.data == 'isHubSpotAuth') {
 					localStorage.setItem('isHubSpotAuth', 'yes');
@@ -450,6 +437,38 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
+	}
+
+	getRoles(){
+		this.ngxloading = true;
+		this.userService.getRoles(this.authenticationService.getUserId())
+      .subscribe(
+      response => {
+           if(response.statusCode==200){
+              this.authenticationService.loggedInUserRole = response.data.role;
+              this.roleNames = this.authenticationService.loggedInUserRole;
+			if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member") {
+				if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0) {
+					this.roleNames = "Vendor";
+				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0) {
+					this.roleNames = "OrgAdmin";
+				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0) {
+					this.roleNames = "Marketing";
+				}else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 20).length !== 0) {
+					this.roleNames = "PRM";
+				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
+					this.roleNames = "Partner";
+				}
+			}
+           }else{
+               this.authenticationService.loggedInUserRole = 'User';
+		   }
+		   this.ngxloading = false;
+      },
+      error => {this.logger.errorPage(error)},
+      () => this.logger.log('Finished')
+      );
+		
 	}
 
 	ngAfterViewInit() {
@@ -1346,7 +1365,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	deleteDealType(i, dealType) {
-		this.ngxloading = true;
 		try {
 			this.logger.info("Deal Type in sweetAlert() " + dealType.id);
 			let self = this;
@@ -1564,7 +1582,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.dealPipelines;
 			this.pipelinePagination = new Pagination();
 			this.listAllPipelines(this.pipelinePagination);
-		}
+		} else if (this.activeTabName == "tags") {
+			this.activeTabHeader = this.properties.tags;
+		} 
 
 		this.referenceService.goToTop();
 	}
@@ -1577,33 +1597,34 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.dragulaService.destroy('pipelineStagesDragula');
 	}
 
-	configHubSpot() {
-	  	if (this.loggedInThroughVanityUrl) {
-			let providerName = 'hubspot';
+configHubSpot() {
+		if (this.loggedInThroughVanityUrl) {
+		/*	let providerName = 'hubspot';
 			let hubSpotCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(hubSpotCurrentUser);
-			const redirectURL = window.btoa(this.hubSpotRedirectURL);
-			let url = this.authenticationService.APP_URL + "e/" + providerName + "/" + redirectURL + "/" + encodedData;
+			let vanityUserId = JSON.parse(hubSpotCurrentUser)['userId'];
+			let redirectURL = window.btoa(this.hubSpotRedirectURL);
+			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
 			var x = screen.width / 2 - 700 / 2;
 			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
+			this.referenceService.showSweetAlertInfoMessage();
 		}
 		else if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
 			window.location.href = this.hubSpotRedirectURL;
 		}
 	}
 
-	configSalesforce() {
+configSalesforce() {
 		if (this.loggedInThroughVanityUrl) {
-			let providerName = 'salesforce';
+		/*	let providerName = 'salesforce';
 			let salesforceCurrentUser = localStorage.getItem('currentUser');
-			const encodedData = window.btoa(salesforceCurrentUser);
-			const redirectURL = window.btoa(this.sfRedirectURL);
-
-			let url = this.authenticationService.APP_URL + "e/" + providerName + "/" + redirectURL + "/" + encodedData;
+			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
+			let redirectURL = window.btoa(this.sfRedirectURL);
+			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
 			var x = screen.width / 2 - 700 / 2;
 			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
+			this.referenceService.showSweetAlertInfoMessage();
 		}
 		else if (this.sfRedirectURL !== undefined && this.sfRedirectURL !== '') {
 			window.location.href = this.sfRedirectURL;

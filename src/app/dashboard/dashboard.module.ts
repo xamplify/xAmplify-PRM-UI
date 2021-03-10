@@ -49,6 +49,16 @@ import { DashboardButtonsComponent } from './dashboard-buttons/dashboard-buttons
 import { DashboardButtonsCarouselComponent } from './dashboard-buttons-carousel/dashboard-buttons-carousel.component';
 import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-templates/vanity-email-templates.component';
 import { ModuleAccessComponent } from './module-access/module-access.component';
+import { TagsComponent } from './tags/tags.component';
+import { PartnersStatisticsComponent } from './dashboard-analytics-components/partners-statistics/partners-statistics.component';
+import { PartnerContactsStatisticsComponent } from './dashboard-analytics-components/partner-contacts-statistics/partner-contacts-statistics.component';
+import { MdfStatisticsComponent } from './dashboard-analytics-components/mdf-statistics/mdf-statistics.component';
+import { AdvancedDashboardAnalyticsComponent } from './advanced-dashboard-analytics/advanced-dashboard-analytics.component';
+import { LeadsStatisticsComponent } from './dashboard-analytics-components/leads-statistics/leads-statistics.component';
+import { DealsStatisticsComponent } from './dashboard-analytics-components/deals-statistics/deals-statistics.component';
+import { RedistributedCampaignsWordcloudMapComponent } from './dashboard-analytics-components/redistributed-campaigns-wordcloud-map/redistributed-campaigns-wordcloud-map.component';
+import { LeadsAndDealsBubbleChartComponent } from './dashboard-analytics-components/leads-and-deals-bubble-chart/leads-and-deals-bubble-chart.component';
+import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashboard.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -73,7 +83,17 @@ import { ModuleAccessComponent } from './module-access/module-access.component';
         DashboardButtonsComponent,        
         DashboardButtonsCarouselComponent, 
         VanityEmailTemplatesComponent,
-        ModuleAccessComponent       
+        ModuleAccessComponent,
+        TagsComponent,
+        PartnersStatisticsComponent,
+        PartnerContactsStatisticsComponent,
+        MdfStatisticsComponent,
+        AdvancedDashboardAnalyticsComponent,
+        LeadsStatisticsComponent,
+        DealsStatisticsComponent,
+        RedistributedCampaignsWordcloudMapComponent,
+        LeadsAndDealsBubbleChartComponent,
+        DetailedDashboardComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

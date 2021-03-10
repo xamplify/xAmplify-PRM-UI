@@ -52,6 +52,10 @@
 						<span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
 						<span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
 					</span>
+					<span *ngIf="socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+						<span *ngIf="!socialStatusProvider.socialConnection.page">Profile</span>
+						<span *ngIf="socialStatusProvider.socialConnection.page">Page</span>
+					</span>
 				</h6>
 		</div>
 		<div class="clearfix"></div>
@@ -190,6 +194,10 @@
 										<span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
 										<span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
 									</span>
+									<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+										<span *ngIf="!socialStatus.socialStatusProvider.socialConnection.page">Profile</span>
+										<span *ngIf="socialStatus.socialStatusProvider.socialConnection.page">Page</span>
+									</span>
 								</h6>
 							<div class="error-block mt10" *ngIf="socialStatus.publishStatus === 'FAILURE'">
 								<h5>{{socialStatus.publishMessage}}</h5>
@@ -241,7 +249,7 @@
 					</div>
 					<div class="update-status-content col-xs-10 col-sm-11">
 						<textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
-						 [(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
+						 [(ngModel)]="socialStatus.statusMessage" (input)="getOgTagsData(socialStatus.statusMessage)" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
 						<h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
 
 						<section class="" [hidden]="isSocialCampaign && alias">
@@ -319,6 +327,10 @@
 													<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
 														<span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
 														<span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
+													</span> 
+													<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+														<span *ngIf="!socialStatus.socialStatusProvider.socialConnection.page">Profile</span>
+														<span *ngIf="socialStatus.socialStatusProvider.socialConnection.page">Page</span>
 													</span>
 												</h6>
 											</div>
@@ -503,7 +515,7 @@
 			</div>
 			<div [hidden]="isSocialCampaign">
 				<div class="col-sm-12 dashboard-stat2">
-					<ngx-loading [show]="loadingCalendar"></ngx-loading>
+					<!-- <ngx-loading [show]="loadingCalendar"></ngx-loading> -->
 					<div id='calendar' class="p10"></div>
 				</div>
 			</div>
@@ -563,6 +575,10 @@
 									<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
 										<span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
 										<span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
+									</span>
+									<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+										<span *ngIf="!socialStatus.socialStatusProvider.socialConnection.page">Profile</span>
+										<span *ngIf="socialStatus.socialStatusProvider.socialConnection.page">Page</span>
 									</span>
 								</h6>
 							<div class="error-block mt10" *ngIf="socialStatus.publishStatus === 'FAILURE'">

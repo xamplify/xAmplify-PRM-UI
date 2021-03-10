@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { AuthGuard } from './auth.guard';
-
+import { AuthGuardService } from './auth-guard.service';
 import { AppCustomPreloader } from './app-routing-loader';
-
 import { HomeComponent } from './core/home/home.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
@@ -39,15 +37,23 @@ import { PublicPageResponseComponent } from 'app/common/public-page-response/pub
 import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
 import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
-import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-token-login/expired-access-token-login.component';
 import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanity-add-contacts.component';
-import { HubmarketoVanityAddContactsComponent } from './contacts/hubmarketo-vanity-add-contacts/hubmarketo-vanity-add-contacts.component';
 import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
+import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
 import { LogoutComponent } from 'app/authentication/logout/logout.component';
 
 
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
+	{ path: 'home/contacts/google-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'home/contacts/zoho-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'home/contacts/salesforce-callback', component: VanitySocialContactsCallbackComponent },
+    //{ path: 'home/dashboard/hubspot-callback', component: VanitySocialContactsCallbackComponent },
+    //{ path: 'home/dashboard/isalesforce-callback', component: VanitySocialContactsCallbackComponent },
+    //{ path: 'leads-google-callback', component: VanitySocialContactsCallbackComponent },
+    //{ path: 'leads-zoho-callback', component: VanitySocialContactsCallbackComponent },
+    //{ path: 'leads-salesforce-callback', component: VanitySocialContactsCallbackComponent },
+
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'expired', component: LogoutComponent },
 	{ path: 'signup', component: SignupComponent },
@@ -81,6 +87,7 @@ export const routes: Routes = [
 			{ path: 'dam', loadChildren: 'app/dam/dam.module#DamModule', data: { preload: false } },
 			{ path: 'leads', loadChildren: 'app/leads/leads.module#LeadsModule',  data: { preload: false } },
 			{ path: 'deal', loadChildren: 'app/deals/deals.module#DealsModule', data: { preload: false } },
+			{ path: 'lms', loadChildren: 'app/lms/lms.module#LmsModule',  data: { preload: false } },
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent }
 		]
 	},
@@ -91,10 +98,8 @@ export const routes: Routes = [
 	{ path: ':social/login', component: SocialLoginComponent },
 	{ path: ':social/callback', component: SocialCallbackComponent },
 	{ path: 'v/:socialProvider/:userId/:vud', component: VanitySocialLoginComponent },
-	{ path: 'syn/:socialProvider/:currentModule/:currentUser', component: VanitySynchronizeContactsComponent },
-	{ path: 'v/:socialProvider/:currentUser', component: VanityAddContactsComponent },
-	{ path: 'e/:socialProvider/:hubSpotRedirectURL/:currentUser', component: HubmarketoVanityAddContactsComponent },
-	{ path: 'e/:socialProvider/:userId/:vud/:accessToken/:zohoCurrentUser/:module', component: ExpiredAccessTokenLoginComponent },
+	{ path: 'v/:socialProvider/:vanityUserId/:vanityUserAlias/:currentModule/:redirectURL', component: VanityAddContactsComponent },
+	{ path: 'syn/:socialProvider/:vanityUserId/:vanityUserAlias/:currentModule', component: VanitySynchronizeContactsComponent },
 	{ path: 'share/:alias', component: ShareVideoComponent },
 	{ path: 'embed/:alias', component: ShareVideoComponent },
 	{ path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },

@@ -61,8 +61,8 @@ export class ParterService {
             .catch( this.handleError );
     }
     
-    launchedCampaignsCountGroupByCampaignType( partnerId: number, customerId:number ) {
-        const url = this.URL + 'partner/campaigns-count-by-campaigntype/'+customerId+'/'+partnerId+'?access_token=' + this.authenticationService.access_token
+    launchedCampaignsCountGroupByCampaignType( partnerCompanyId: number, customerId:number ) {
+        const url = this.URL + 'partner/campaigns-count-by-campaigntype/'+customerId+'/'+partnerCompanyId+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
@@ -85,10 +85,45 @@ export class ParterService {
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
+
+    getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(chartId:string,filterType:string) {
+        let urlSuffix = "";
+        if(chartId=="redistributeCampaignsAndLeadsCountBarChart"){
+            urlSuffix = 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes';
+        }else if(chartId=="redistributeCampaignsAndLeadsCountBarChartQuarterly"){
+            urlSuffix = 'getRedistributedCampaignsAndLeadsCountPreviousQuarterForBarChartDualAxes';
+        }else if(chartId=="top10LeadsAndDealsBarChart"){
+            urlSuffix = 'getLeadsAndDealsCount';
+        }
+        const url = this.URL + 'partner/'+urlSuffix+'/'+this.authenticationService.getUserId()+'/'+filterType+'?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
+
+    getLeadsAndDealsCount(filterType:string) {
+        const url = this.URL + 'partner/getLeadsAndDealsCount/'+this.authenticationService.getUserId()+'/'+filterType+'?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
+
+    findLeadsToDealsConversionPercentage(companyId:number) {
+        return this.kpiApi(companyId,'findLeadsToDealsConversionPercentage');
+    }
+
+    findLeadsOpportunityAmount(companyId:number) {
+        return this.kpiApi(companyId,'findLeadsOpportunityAmount');
+    }
+
+    kpiApi(companyId:number,url:string){
+        const apiUrl = this.URL + 'partner/'+url+'/'+companyId+'?access_token=' + this.authenticationService.access_token
+        return this.httpClient.get( apiUrl )
+            .catch( this.handleError );
+    }
+
+
+    
     
     handleError( error: any ) {
-        const errMsg = ( error.message ) ? error.message :
-            error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw( error );
     }
 }

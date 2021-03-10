@@ -592,8 +592,8 @@
             <i class="fa fa-times"></i>
           </a>
           <h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo" style="font-weight: 600;color: #635e5e !important;">
-            <span *ngIf="previewContactList.name?.length<20">{{previewContactList.name}}</span>
-            <span *ngIf="previewContactList.name?.length>20">{{previewContactList.name | slice:0:20}}</span>
+            <span>{{previewContactList.name | slice:0:20}}</span>
+            <span *ngIf="previewContactList?.name.length>20">..</span>
           </h4>
         </div>
         <div class="modal-body">

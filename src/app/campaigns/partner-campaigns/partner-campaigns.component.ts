@@ -440,16 +440,19 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                     this.router.navigate(['/home/campaigns/social', data.socialStatusList[0].alias]);
                 }else{
                     this.customResponse = new CustomResponse("ERROR","This campaign cannot be redistributed.Please contact admin",true);
+                    this.ngxloading = false;
                 }
             },
             error => {
                 this.customResponse = new CustomResponse("ERROR","This campaign cannot be redistributed.Please contact admin",true);
+                this.ngxloading = false;
                     
                 },
             () => console.log()
             );
     }
     reDistributeCampaign(campaign:any){
+        this.ngxloading = true;
         this.authenticationService.sessinExpriedMessage = "";
         this.customResponse = new CustomResponse();
         this.referenceService.goToTop();
@@ -469,6 +472,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                         this.campaignService.isExistingRedistributedCampaignName = false;
                         this.router.navigate(['/home/campaigns/re-distribute-campaign']);
                     }else{
+                        this.ngxloading = false;
                         this.authenticationService.forceToLogout();
                     }
                     

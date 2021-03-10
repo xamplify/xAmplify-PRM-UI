@@ -1318,7 +1318,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
           }
 
     ngOnInit() {
-        QuickSidebar.init();
         try {
             if (this.refService.homeMethodsCalled === false) {
                 this.homeComponent.getVideoTitles();

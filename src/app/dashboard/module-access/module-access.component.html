@@ -55,9 +55,10 @@
 				  </tbody>
 				</table>
 			  </div>
-			  
-			  <app-response-message [customResponse]="customResponse"
-			  *ngIf="customResponse.isVisible"></app-response-message>
+			  <div class="table-responsive">
+				<app-response-message [customResponse]="customResponse"
+				*ngIf="customResponse.isVisible"></app-response-message>
+			  </div>
 			<fieldset style="margin: 20px 2px;">
 				<legend>Module Access</legend>
 				<app-modal-popup-loader *ngIf="moduleLoader"></app-modal-popup-loader>
@@ -183,7 +184,21 @@
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.dam"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
-							
+							<tr>
+								<th scope="row">LMS</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.lms"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th scope="row">Dashboard Type</th>
+								<td>
+									<select  class="form-control" id="dashboardType" (change)="selectDashboardType()">
+										<option value="DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DASHBOARD'">Dashboard</option>
+										<option value="ADVANCED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='ADVANCED_DASHBOARD'">Advanced Dashboard</option>
+										<option value="DETAILED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DETAILED_DASHBOARD'">Detailed Dashboard ( Dashboard + Detailed Dashboard)</option>
+									</select>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>

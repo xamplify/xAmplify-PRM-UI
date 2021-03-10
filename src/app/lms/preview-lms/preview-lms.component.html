@@ -1,0 +1,172 @@
+<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+    <div class="my-container">
+        <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    </div>
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a>View Learning Track</a>
+            </li>
+        </ul>
+    </div>
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+    </app-response-message>
+    <div class="page-bar padding">
+        <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <ng-container *ngIf="learningTrack != undefined">
+            <section *ngIf="showLearningTrack">
+                <div class="title padding_bottom">{{learningTrack.title}}</div>
+                <div class="padding_bottom">
+                    <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(learningTrack.description)"></div>
+                </div>
+            </section>
+            <section *ngIf="!showLearningTrack">
+                <a (click)="closeView()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+                    <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+                <app-form-preview *ngIf="!showAsset" [learningTrackId]="learningTrack.id" (notifyParent)="closeView($event)">
+                </app-form-preview>
+                <div *ngIf="showAsset" style="background: #fff;">
+                    <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
+                    <div [hidden]="assetViewLoader">
+                        <div class="page-bar">
+                            <div class="row">
+                                <div class="col-md-8 col-lg-8 cpdam">
+                                    <div class="portlet light cphdam">
+                                        <div class="portlet-title port-heading">
+                                            <div class="caption" style="color:#000!important;">
+                                                <h2>
+                                                    <strong>{{assetDetails?.assetName | slice:0:50}}</strong>
+                                                    <span *ngIf="assetDetails?.assetName?.length>50">..</span>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <div style="margin-left: 10px;">
+                                            {{assetDetails?.description}}
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4" style="padding: 6px 40px 0px 17px;">
+                                    <div>
+                                        <div class="grid-box" style="min-height: 200px;">
+                                            <img class="img-class" src="{{assetDetails?.thumbnailPath}}" alt="No Image Found"><br>
+                                            <a class="btn btn-info">Download</a>
+                                            <!-- <a class="btn btn-info" (click)="openFile(assetDetails)">View</a> -->
+                                            <h4>Published On :
+                                                <app-timestamp [showInLine]="'true'" [dateAndTime]="assetDetails?.displayTime">
+                                                </app-timestamp>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="portlet light ">
+                <div class="portlet-title tabbable-line ">
+                    <div class="caption caption-md ">
+                        <i class="icon-globe theme-font hide " aria-hidden="true "></i>
+                        <span class="caption-subject font-blue-madison bold uppercase ">Content</span>
+                    </div>
+                </div>
+                <app-grid-loader *ngIf="httpRequestLoader.isLoading">
+                </app-grid-loader>
+                <div class="row padding_bottom" *ngIf="!httpRequestLoader.isLoading">
+                    <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let content of learningTrack.contents ;let i =index" id="ContentListDiv_{{content.id}}">
+                        <div class="grid-box">
+                            <img class="img-class" [src]="content.thumbnailPath" onerror="this.src='learningTrack.featuredImage';" alt="{{content.title}}">
+                            <h4 class="ellipsis mt5 mb5 f-w-600" title="{{content.assetName}}">
+                                {{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span><br><br>
+                            </h4>
+                            <div>
+                                <h6 title="{{content.assetType}}" translate>
+                                    Type: <strong>{{content.assetType}}</strong>
+                                </h6>
+                            </div>
+                            <div class="bar">
+                                <a [ngClass]="{'isDisabled' : i != 0 && learningTrack.followAssetSequence && !learningTrack.contents[i-1].finished && !isCreatedUser}" data-toggle="tooltip" data-placement="top" title="View" (click)="viewContent(content)">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-xs-12">
+                        <div class="grid-box" *ngIf="learningTrack.quiz">
+                            <img class="img-class" style="width: 100px;" [src]="learningTrack.featuredImage" alt="{{learningTrack.quiz.name}}">
+                            <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack.quiz.name}}">
+                                {{learningTrack.quiz.name | slice:0:25}} <span *ngIf="learningTrack.quiz.name?.length>25">...</span><br><br>
+                            </h4>
+                            <div>
+                                <h6 title="Form" translate>
+                                    Type: <strong>Form</strong>
+                                </h6>
+                            </div>
+                            <div class="bar">
+                                <a [ngClass]="{'isDisabled' : !enableQuiz}" data-toggle="tooltip" data-placement="top" title="View" (click)="viewQuiz()">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div *ngIf="showFile">
+    <a (click)="closeFile()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+        <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+    <iframe [src]="filePath" width="800px" height="2100px"></iframe>
+</div>
+
+
+<!-- <section *ngIf="!showLearningTrack">
+    <a (click)="closeView()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+        <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+    <app-form-preview *ngIf="!showAsset" [learningTrackId]="learningTrack.id" (notifyParent)="closeView($event)">
+    </app-form-preview>
+    <div *ngIf="showAsset" class="page-content" style="background: #fff;">
+        <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
+        <div [hidden]="assetViewLoader">
+            <div class="page-bar">
+                <div class="row">
+                    <div class="col-md-8 col-lg-8 cpdam">
+                        <div class="portlet light cphdam">
+                            <div class="portlet-title port-heading">
+                                <div class="caption" style="color:#000!important;">
+                                    <h2>
+                                        <strong>{{assetDetails?.assetName | slice:0:50}}</strong>
+                                        <span *ngIf="assetDetails?.assetName?.length>50">..</span>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div style="margin-left: 10px;">
+                                {{assetDetails?.description}}
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4" style="padding: 6px 40px 0px 17px;">
+                        <div>
+                            <div class="grid-box" style="min-height: 200px;">
+                                <img class="img-class" src="{{assetDetails?.thumbnailPath}}" alt="No Image Found"><br>
+                                <a class="btn btn-info">Download</a>
+                                <a class="btn btn-info">View</a>
+                                <h4>Published On :
+                                    <app-timestamp [showInLine]="'true'" [dateAndTime]="assetDetails?.displayTime">
+                                    </app-timestamp>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->

@@ -7,6 +7,7 @@ import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { MdfService } from 'app/mdf/services/mdf.service';
+import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 
 
 declare var $;
@@ -28,11 +29,10 @@ export class ModuleAccessComponent implements OnInit {
   companyLoader = true;
   moduleLoader = true;
   ngxLoading = false;
-  constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
-
   roleId:number = 0;
- 
+  dashboardTypeInString = "";
 
+  constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
   ngOnInit() {
     this.companyId = this.route.snapshot.params['alias'];
     this.userAlias = this.route.snapshot.params['userAlias'];
@@ -122,6 +122,19 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.allBoundSource = false;
       this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
       this.campaignAccess.salesEnablement = false;
+    }else{
+     this.getModuleAccessByCompanyId();
+    }
+  }
+
+  selectDashboardType(){
+    let selectedDashboard = $('#dashboardType option:selected').val();
+    if(selectedDashboard==DashboardType[DashboardType.DASHBOARD]){
+      this.campaignAccess.dashboardType = DashboardType.DASHBOARD;
+    }else if(selectedDashboard==DashboardType[DashboardType.ADVANCED_DASHBOARD]){
+      this.campaignAccess.dashboardType = DashboardType.ADVANCED_DASHBOARD;
+    }else if(selectedDashboard==DashboardType[DashboardType.DETAILED_DASHBOARD]){
+      this.campaignAccess.dashboardType = DashboardType.DETAILED_DASHBOARD;
     }
   }
   

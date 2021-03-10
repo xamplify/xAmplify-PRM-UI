@@ -5,9 +5,9 @@
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()"><i
-				class="fa fa-home"></i> <a
+				class="fa fa-home" aria-hidden="true"></i> <a
 				[routerLink]="referenceService.homeRouter">Home</a> <i
-				class="fa fa-angle-right"></i></li>
+				class="fa fa-angle-right" aria-hidden="true"></i></li>
 			<li>
 				<a routerLink = "/home/campaigns/{{campaignId}}/details">Campaign Analytics</a> <i class="fa fa-angle-right"></i></li>
 

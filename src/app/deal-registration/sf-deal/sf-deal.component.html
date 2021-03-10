@@ -1,6 +1,11 @@
 <div class="row portlet light" style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
-  <h4 class="caption" class="portlet-title">Deal Details</h4>
-  <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
+  <h4 class="caption" class="portlet-title">Deal Details</h4>  
+  <div class="alert alert-danger" id="company-profile-error-div" *ngIf= "showSFFormError">
+    <a class="close" aria-label="close">x</a>
+    <strong>{{sfFormError}}</strong>
+  </div>  
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">    
     <div class="form-group">
       <label class="control-label">{{columnInfo.labelName}}
         <span class="required" *ngIf="columnInfo.required">*</span>

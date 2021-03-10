@@ -1,0 +1,60 @@
+<div class="col-xs-12 col-sm-7">
+    <div class="portlet light" style="min-height: 494px">
+      <div class="portlet-title" style="min-height: 50px;">
+        <div class="caption">
+          <span class="caption-subject font-red-sunglo uppercase" translate>Campaigns
+          Launched By Active Partners</span>
+        </div>
+        <div class="inputs" id="right">
+          <div class="portlet-input input-inline input-medium">
+            <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
+              <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
+              placeholder="Search for a Partner" (keypress)="activePartnerSearch($event.keyCode)">
+              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="activePartnersSearchKey" (click)="activePartnersSearchKey='';searchActivePartnerAnalytics();"></button>
+              <button type="submit" class="search-box-item-click" (click)="searchActivePartnerAnalytics()"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="portlet-body clearfix table-responsive">
+        <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="3"></app-list-loader>
+        <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading" aria-describedby="redistributedCampaignsAndPartners">
+          <thead>
+            <tr>
+            <th scope="col">Partner Company Name</th>
+            <th scope="col" class="text-center">Campaigns</th>
+            <th scope="col" class="text-center">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of activePartnersPagination.pagedItems">
+              <td title="{{item?.partnerCompanyName}}">
+                <strong>{{item?.partnerCompanyName | slice:0:20}}</strong>
+                <span *ngIf="item?.partnerCompanyName.length>20">...</span>
+              </td>
+              <td class="text-center">
+              <div>
+                <button class="btn btn-default btn-xs re-distributed-high-level">
+                  <div class="portlet-body text-center">
+                    <h4>
+                      <strong class="sky-blue">{{item?.count}}</strong>
+                    </h4>
+                  </div>
+                </button>
+              </div>
+              </td>
+              <td class="text-center">
+                <app-pie-chart [partnerCompanyId]="item.companyId"></app-pie-chart>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
+          <strong>No campaigns found</strong>
+        </div>
+      </div>
+      <div *ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
+          <app-pagination [pagination]="activePartnersPagination" [type]="'ActivePartnerPagination'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
+        </div>
+    </div>
+</div>

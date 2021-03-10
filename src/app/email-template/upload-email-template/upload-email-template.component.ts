@@ -283,10 +283,6 @@ export class UploadEmailTemplateComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         try {
-            Metronic.init();
-            Layout.init();
-            Demo.init();
-            TableManaged.init();
             this.ckeConfig = {
                 allowedContent: true,
             };

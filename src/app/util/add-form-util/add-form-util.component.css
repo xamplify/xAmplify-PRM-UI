@@ -30,7 +30,7 @@
 }
 
 #portlet-height {
-    height: 785px;
+    overflow-x: hidden;
 }
 
 #portlet-form-height {
@@ -1429,8 +1429,6 @@ div.switch5>input.switch:focus~label:before {
     padding: 0px 15px 10px 15px;
 }
 
-
-
 .custom-size-form-brush {
     font-size: 14px;
 }
@@ -1514,4 +1512,13 @@ div.switch5>input.switch:focus~label:before {
     .modal-lg {
         width: 850px!important;
     }
+}
+
+.check-icon {
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.drop-down-custom {
+    height: 30px;
 }

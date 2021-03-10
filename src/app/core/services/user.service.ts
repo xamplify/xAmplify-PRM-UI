@@ -22,8 +22,10 @@ export class UserService {
     URL = this.authenticationService.REST_URL;
     GDPR_SETTING_URL = this.authenticationService.REST_URL + "gdpr/setting/";
     CATEGORIES_URL = this.URL + 'category/';
+    MODULE_URL = this.URL+ 'module/';
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
+    TAG_URL = this.URL + 'tag/';
     
     constructor(
         private http: Http,
@@ -329,13 +331,24 @@ export class UserService {
     }
 
     getItemsCount(categoryId:number,loggedInUserId:number){
-        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+       let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
        let input = {};
        input['loggedInUserId'] = loggedInUserId;
        input['categoryId'] = categoryId;
        input['vanityUrlFilter'] = vanityUrlFilter;
        input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
         return this.http.post(this.CATEGORIES_URL+"getItemsCountDetailsByCategoryId?access_token=" + this.authenticationService.access_token,input)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    getDashboardType(){
+       let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+       let input = {};
+       input['userId'] = this.authenticationService.getUserId();
+       input['vanityUrlFilter'] = vanityUrlFilter;
+       input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
+       return this.http.post(this.MODULE_URL+"getDashboardType?access_token=" + this.authenticationService.access_token,input)
         .map( this.extractData )
         .catch( this.handleError );
     }
@@ -362,8 +375,27 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    
+    getTags(pagination: Pagination) {
+        return this.http.post(this.authenticationService.REST_URL + "tag/getTagsByCompanyId?access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
+    saveOrUpdateTag(tag: any) {
+        let url = this.TAG_URL + "save";
+        if (tag.id > 0) {
+            url = this.TAG_URL + "update";
+        }
+        return this.http.post(url + "?access_token=" + this.authenticationService.access_token, tag)
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    deleteTag(tag: any){
+        return this.http.post(this.TAG_URL+"delete?access_token=" + this.authenticationService.access_token, tag)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private handleServerError(error: any) {
         return Observable.throw(error);

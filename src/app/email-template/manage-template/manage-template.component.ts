@@ -239,7 +239,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     getOrgCampaignTypes(){
       this.refService.getOrgCampaignTypes( this.refService.companyId).subscribe(
       data=>{
-        console.log(data);
         this.campaignAccess.videoCampaign = data.video;
         this.campaignAccess.emailCampaign = data.regular;
         this.campaignAccess.socialCampaign = data.social;
@@ -251,7 +250,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
           (result: any) => {
             if (result !== "") {
-              console.log(result);
               this.refService.companyId = result;
               this.getOrgCampaignTypes();
             }
@@ -262,10 +260,14 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     ngOnInit() {
       this.selectedSortedOption =  this.sortByDropDown[0];
         try {
+            if(!this.refService.companyId){
+                this.getCompanyIdByUserId()
+           } else {
+               this.getOrgCampaignTypes();
+           }
             if(this.router.url.endsWith('manage/')){
                 this.setViewType('Folder-Grid');
             }else{
-                if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
                 this.pagination.maxResults = 12;
                 this.categoryId = this.route.snapshot.params['categoryId'];
                 if(this.categoryId!=undefined){
@@ -274,8 +276,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 }
                 let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
                 if(showList){
-                    this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
-                    this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
                     if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
                         this.modulesDisplayType.isListView = true;
                         this.modulesDisplayType.isGridView = false;
@@ -413,18 +413,16 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     }
     
     getTemplateById(emailTemplate:EmailTemplate){
+        this.ngxloading = true;
     	this.emailTemplateService.getById( emailTemplate.id )
         .subscribe(
         ( data: any ) => {
-            console.log( data );
             emailTemplate.body = data.body;
             this.showPreview(emailTemplate);
         },
-        error => console.error( error ),
-        () => {
-            console.log( 'loadContacts() finished' );
-        }
-        );
+        error => {
+           this.logger.errorPage(error);
+        });
     }
     
     showPreview(emailTemplate:EmailTemplate){

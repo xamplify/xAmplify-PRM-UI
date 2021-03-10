@@ -1,14 +1,14 @@
 thead tr th {
 	position: relative;
 }
+
 #autoresponse-tr {
 	background-color: #d3d3d317
 }
+
 #autoresponse-analytics {
 	background-color: #f1f1f15e;
 }
-
-
 
 span.ui-column-resizer {
 	display: block;
@@ -29,8 +29,8 @@ span.ui-column-resizer {
 }
 
 .moreipsis {
-  position: relative;
-  line-height: 16px;
+	position: relative;
+	line-height: 16px;
 }
 
 .moreipsis:before {
@@ -45,6 +45,7 @@ span.ui-column-resizer {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	min-height: 30px;
 }
 
 #border-bottom-padding {
@@ -174,14 +175,16 @@ span.ui-column-resizer {
 	padding: 10px;
 	margin: 0px;
 }
+
 #form-company-logo {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: 45px;
-    width: 115px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height: 45px;
+	width: 115px;
 }
-.margin-top-form-body{
+
+.margin-top-form-body {
 	margin-top: 10px;
 }
 
@@ -189,48 +192,66 @@ span.ui-column-resizer {
 	cursor: pointer;
 	color: #54a7e9;
 }
+
 .img-circle {
-    height: 40px;
-    width: 40px;
-    border: 1px solid #ccc;
+	height: 40px;
+	width: 40px;
+	border: 1px solid #ccc;
 }
-.center-align{
+
+.center-align {
 	text-align: center;
 }
 
 .xamp-margin-left-icon {
-    margin: 5px 5px 5px 5px;
+	margin: 5px 5px 5px 5px;
 }
 
-.fa-margin{
+.fa-margin {
 	margin-left: 5px;
 }
-.header-fw{
+
+.header-fw {
 	font-weight: 600;
 }
-.edit-mdf-form-margin{
-    margin-top: 5px;
-    margin-right: 5px
-}
-.action-btn-dam {
-    border: 1px solid #4c98dd;
-    padding: 7px;
-    border-radius: 50%;
+
+.edit-mdf-form-margin {
+	margin-top: 5px;
+	margin-right: 5px
 }
 
-.bold-asset{
+.action-btn-dam {
+	border: 1px solid #4c98dd;
+	padding: 7px;
+	border-radius: 50%;
+}
+
+.bold-asset {
 	font-weight: bold !important;
 }
 
-.auto-height{
-  height: auto !important;
+.auto-height {
+	height: auto !important;
 }
 
-.hidden{
-    display: none !important;
+.hidden {
+	display: none !important;
 }
 
-.min-h{
-    height: 102px !important;
+.min-h {
+	height: 102px !important;
 }
 
+.zero-padding {
+	padding-right: 0px !important;
+}
+
+.folder-custom-response {
+	overflow-x: auto;
+	margin-bottom: 5px;
+}
+
+.mmtp {
+	margin: 14px;
+	margin-top: 1px;
+}

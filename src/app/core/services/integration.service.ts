@@ -5,9 +5,12 @@ import { ActivatedRoute } from "@angular/router";
 import { ReferenceService } from "./reference.service";
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs/Observable";
+import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 
 @Injectable()
 export class IntegrationService {
+	
+
 
     constructor(private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
         console.log(logger);
@@ -30,9 +33,18 @@ export class IntegrationService {
     handleCallbackByType(code: string, type: string): Observable<String> {
         this.logger.info(this.authenticationService.REST_URL + type + "/" + this.authenticationService.getUserId() + "/oauth/callback?access_token=" + this.authenticationService.access_token + "&code=" + code);
         if (code !== undefined) {
-            return this._http.get(this.authenticationService.REST_URL + type + "/" + this.authenticationService.getUserId() + "/oauth/callback?access_token=" + this.authenticationService.access_token + "&code=" + code)
+				let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
+				let vanityUserId = localStorage.getItem('vanityUserId');
+				if(vanityUrlFilter){
+					return this._http.get(this.authenticationService.REST_URL + type + "/" + vanityUserId + "/oauth/callback?code=" + code)
                 .map(this.extractData)
                 .catch(this.handleError);
+				}else{
+					return this._http.get(this.authenticationService.REST_URL + type + "/" + this.authenticationService.getUserId() + "/oauth/callback?code=" + code)
+                .map(this.extractData)
+                .catch(this.handleError);
+				}
+            
         }
     }
 

@@ -1,3 +1,4 @@
+import {DashboardType} from '../models/dashboard-type.enum';
 export class CampaignAccess {
   videoCampaign = false;
   emailCampaign = false
@@ -21,4 +22,7 @@ export class CampaignAccess {
   shareLeads = false;
   campaignPartnerTemplateOpenedAnalytics = false;
   salesEnablement = false;
+  lms = false;
+  dashboardType:DashboardType;
+  dashboardTypeInString = "";
 }

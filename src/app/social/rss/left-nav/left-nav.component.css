@@ -64,3 +64,10 @@ img {
     float: right;
     margin-top: -5px;
 }
+.add-content-i{
+    padding: 5px;font-size:14px;color: #fff;
+}
+
+.add-content-text{
+    font-family: Open Sans, sans-serif;
+}

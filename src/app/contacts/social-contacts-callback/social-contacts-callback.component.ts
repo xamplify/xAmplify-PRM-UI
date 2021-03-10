@@ -22,9 +22,12 @@ export class SocialContactsCallbackComponent implements OnInit {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.currentModule = 'contacts';
-        } else if( currentUrl.includes( 'home/assignleads' )){
-          this.currentModule = 'leads';
-        } else {
+          }
+		else if(currentUrl.includes( 'home/assignleads' ))
+		{
+			this.currentModule = 'leads';
+			}
+         else {
           this.currentModule = 'partners';
         }
         if ( currentUrl.includes( 'google-callback' ) ) {
@@ -56,31 +59,13 @@ export class SocialContactsCallbackComponent implements OnInit {
                     localStorage.removeItem( "userAlias" );
                     localStorage.removeItem( "currentModule" );
                     this.xtremandLogger.info( "result: " + result );
-					/* if blocks are edited by ajay to differentiate vanity and send a message to parent window */
+
                     if ( this.callbackName == 'google' ) {
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if(vanityUrlFilter == 'true'){
-							var message = "isGoogleAuth";
-							this.postingMessageToParentWindow(message);
-						}else{
-							 this.contactService.socialProviderName = 'google';
-						}
+                        this.contactService.socialProviderName = 'google';
                     } else if ( this.callbackName == 'salesforce' ) {
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if(vanityUrlFilter == 'true'){
-							var message = "isSalesForceAuth";
-			                this.postingMessageToParentWindow(message);
-						}else{
-							this.contactService.socialProviderName = 'salesforce';
-						}
+                        this.contactService.socialProviderName = 'salesforce';
                     }else if ( this.callbackName == 'zoho' ) {
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if(vanityUrlFilter == 'true'){
-							var message = "isZohoAuth";
-			             	this.postingMessageToParentWindow(message);
-						}else{
-							this.contactService.socialProviderName = 'zoho';
-						}
+                        this.contactService.socialProviderName = 'zoho';
                     }
                   if ( this.currentModule === 'contacts') {
                       this.router.navigate( ['/home/contacts/add'] );
@@ -99,7 +84,6 @@ export class SocialContactsCallbackComponent implements OnInit {
             this.xtremandLogger.error( error, "SocialCallbackcomponent()", "socialCallback" );
         }
     }
-
     hubSpotCallback(code:string) {
         try {
             this.hubSpotService.hubSpotCallback(code)
@@ -130,20 +114,7 @@ export class SocialContactsCallbackComponent implements OnInit {
                         this.xtremandLogger.info("Integration Callback :: " + result);
                         localStorage.removeItem("userAlias");
                         localStorage.removeItem("currentModule");
-						this.router.navigate(['/home/dashboard/myprofile']);
-						
-						/* added if blocks for sending a message to parent window */
-						let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-						if(type == 'hubspot' && vanityUrlFilter == 'true'){
-							var message = "isHubSpotAuth";
-			                this.postingMessageToParentWindow(message);
-						}
-						else if(type == 'isalesforce' && vanityUrlFilter == 'true'){
-							var message = "isSalesforceAuth";
-			                this.postingMessageToParentWindow(message);
-						}
-						
-                       
+                        this.router.navigate(['/home/dashboard/myprofile']);
                         // Commented below code by Swathi. Custom form creation should not be done here.
                         /*if(type === "isalesforce"){
                             this.contactService.getSfFormFields().subscribe(result =>{
@@ -160,15 +131,6 @@ export class SocialContactsCallbackComponent implements OnInit {
         }
     }
 
-	/* added postingMessageToParentWindow method by ajay */
-	postingMessageToParentWindow(message: string){
-			let trargetWindow = window.opener;
-            trargetWindow.postMessage(message,"*");
-            localStorage.removeItem('vanityUrlDomain');
-			localStorage.removeItem('vanityUrlFilter');
-            self.close();
-	}
-
     ngOnInit() {
         this.contactService.socialProviderName = '';
         try {
@@ -182,7 +144,7 @@ export class SocialContactsCallbackComponent implements OnInit {
             });
             this.xtremandLogger.info("Router URL :: " + this.router.url);
             if (this.router.url.includes("hubspot-callback")) {
-             // this.hubSpotCallback(code);
+               // this.hubSpotCallback(code);
                this.integrationCallback(code,"hubspot");
             } else if(this.router.url.includes("isalesforce-callback")){
                 this.integrationCallback(code,"isalesforce");

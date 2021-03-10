@@ -9,24 +9,25 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 })
 export class VanityAddContactsComponent implements OnInit {
 
-	constructor(private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService) { }
+	constructor(private router: Router, private route: ActivatedRoute) { }
 
 	ngOnInit() {
 		let providerName = this.route.snapshot.params['socialProvider'];
-		let currentUser = this.route.snapshot.params['currentUser'];
-		let currentUser1 = this.route.snapshot.params['url'];
-		const decodedData = window.atob(currentUser);
-		localStorage.setItem('currentUser', decodedData);
+		let urlFromParentWindow = this.route.snapshot.params['redirectURL'];
+		let redirectURL = window.atob(urlFromParentWindow);
+		let vanityUserId = this.route.snapshot.params['vanityUserId'];
+		localStorage.setItem('vanityUserId', vanityUserId);
+		let vanityUserAlias = this.route.snapshot.params['vanityUserAlias'];
+		localStorage.setItem('vanityUserAlias', vanityUserAlias);
+		let vanityCurrentModule = this.route.snapshot.params['currentModule'];
+		localStorage.setItem('vanityCurrentModule', vanityCurrentModule);
 		localStorage.setItem('vanityUrlFilter', 'true');
-		this.authenticationService.access_token = JSON.parse(decodedData)['accessToken'];
-		if (currentUser1 != null) {
-			window.location.href = "" + currentUser1;
+		if (redirectURL.search('https') != -1) {
+			window.location.href = "" + redirectURL;
 		} else {
 			let url = providerName + "/login";
 			this.router.navigate([url]);
 		}
-
-
 	}
 
 }

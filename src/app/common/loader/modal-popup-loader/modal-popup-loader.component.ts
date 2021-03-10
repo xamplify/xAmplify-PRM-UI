@@ -7,13 +7,19 @@ import { Component, OnInit,Input } from '@angular/core';
 })
 export class ModalPopupLoaderComponent implements OnInit {
 
-@Input() height;
+@Input() height:any;
 updatedHeight:string=""
   constructor() { }
 
   ngOnInit() {
 	if(this.height!=undefined){
-		this.updatedHeight = "220px";
+		if(this.height=="460"){
+			this.updatedHeight = "460px";
+		}else if(this.height=="408"){
+			this.updatedHeight = "408px";
+		}else{
+			this.updatedHeight = "220px";
+		}
 	}else{
 		this.updatedHeight = "370px";
 	}

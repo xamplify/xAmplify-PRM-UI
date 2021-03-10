@@ -128,8 +128,8 @@
 			</li>
 				
 			<li
-				*ngIf="!partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && authService.module.hasPartnerLandingPageAccess && (authService.module.isCompanyPartner || authService.isPartnerTeamMember)"
-				[ngClass]="{'active': location.path().includes('landing-pages')}">
+				*ngIf="!partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && authService.module.hasPartnerLandingPageAccess"
+				[ngClass]="{'active': location.path().includes('pages/partner') ||location.path().includes('forms/partner') }">
 				<a [routerLink]="['./pages/partner']"> <i class="fa fa-wpforms"
 					aria-hidden="true"></i> <span class="title" translate>Pages</span>
 					<span class="arrow "></span> <span class="selected"></span>
@@ -137,7 +137,7 @@
 			</li>
 
 			<li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier
-	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') ||location.path().includes('forms') || location.path().includes('pages')  }">
+	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') || (location.path().includes('forms') && !location.path().includes('forms/partner')) || (location.path().includes('pages') && !location.path().includes('pages/partner') )  }">
                 <a [routerLink]="['./design/add']">
                     <i class="fa fa-paint-brush" aria-hidden="true"></i>
                     <span class="title" translate>Design</span>
@@ -147,7 +147,7 @@
             </li>
 
 
-            <li *ngIf="authService.user.hasCompany && authService.module.isCampaign && !partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && !partnershipEstablishedOnlyWithPrm" [ngClass]="{'active': location.path().includes('campaigns')}">
+            <li *ngIf="authService.user.hasCompany && authService.module.isCampaign && !partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && !partnershipEstablishedOnlyWithPrm" [ngClass]="{'active':(location.path().includes('campaigns') || location.path().includes('campaign'))}">
                 <a href="javascript:;" (click)="openOrCloseTabs('campaigns')">
                     <i class="fa fa-bullhorn" aria-hidden="true"></i>
                     <span class="title" translate>Campaign </span>
@@ -325,7 +325,7 @@
                 </ul>
             </li>
          </ng-container>
-         <!--Only Dam Acess As Vendor-->
+         <!--Only Dam Access As Vendor-->
          <ng-container *ngIf="damAccess && !damAccessAsPartner">
             <li [ngClass]="{'active': location.path().includes('dam')}">
                 <a [routerLink]="['/home/dam/manage']">
@@ -342,6 +342,74 @@
                 <a [routerLink]="['/home/dam/shared']">
                 <i class="fa fa-th-large" aria-hidden="true"></i>
                 <span class="title">DAM</span>
+                <span class="arrow"></span>
+                <span class="selected"></span>
+                </a>
+             </li> 
+         </ng-container>
+        <!------LMS----------->
+         <!---Vendor And Partner-->
+         <ng-container *ngIf="lmsAccess && lmsAccessAsPartner">
+            <li  [ngClass]="{'active': location.path().includes('lms')}">
+                <a href="javascript:;" (click)="openOrCloseTabs('lms')">
+                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                    <span class="title" translate>LMS</span>
+                    <span class="arrow"></span>
+                    <span class="selected"></span>
+                </a>
+                <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': lms? 'block': 'none' }" >
+                    <li>
+                        <a [routerLink]="['/home/lms/add']">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <span class="title" translate>Add Learning Tracks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/home/lms/manage']">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span class="title" translate>Manage Learning Tracks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/home/lms/shared']">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span class="title" translate>Manage Shared Learning Tracks</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+         </ng-container>
+         <!--Only LMS Access As Vendor-->
+         <ng-container *ngIf="lmsAccess && !lmsAccessAsPartner">
+            <li  [ngClass]="{'active': location.path().includes('lms')}">
+                <a href="javascript:;" (click)="openOrCloseTabs('lms')">
+                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                    <span class="title" translate>LMS</span>
+                    <span class="arrow"></span>
+                    <span class="selected"></span>
+                </a>
+                <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': lms? 'block': 'none' }" >
+                    <li>
+                        <a [routerLink]="['/home/lms/add']">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <span class="title" translate>Add Learning Tracks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/home/lms/manage']">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span class="title" translate>Manage Learning Tracks</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+         </ng-container>
+        <!--Only LMS Acess As Partner-->
+        <ng-container *ngIf="!lmsAccess && lmsAccessAsPartner">
+            <li [ngClass]="{'active': location.path().includes('lms')}">
+                <a [routerLink]="['/home/lms/shared']">
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                <span class="title">LMS</span>
                 <span class="arrow"></span>
                 <span class="selected"></span>
                 </a>

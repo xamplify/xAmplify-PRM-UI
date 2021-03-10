@@ -1,0 +1,25 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from "@angular/router";
+import { AddLmsComponent } from './add-lms/add-lms.component';
+import { ManageLmsComponent } from './manage-lms/manage-lms.component';
+import { PreviewLmsComponent } from './preview-lms/preview-lms.component';
+import { LmsAnalyticsComponent } from './lms-analytics/lms-analytics.component';
+import { LmsPartnerAnalyticsComponent } from './lms-partner-analytics/lms-partner-analytics.component'
+
+export const routes: Routes = [
+  { path: "", redirectTo: "manage", pathMatch: "full" },
+  { path: "add", component: AddLmsComponent },
+  { path: "edit", component: AddLmsComponent },
+  { path: "edit/:id", component: AddLmsComponent },
+  { path: "manage", component: ManageLmsComponent },
+  { path: "shared", component: ManageLmsComponent },
+  { path: 'lt/:companyId/:slug', component: PreviewLmsComponent },
+  { path: 'analytics/:id', component: LmsAnalyticsComponent },
+  { path: 'partnerAnalytics/:ltId/:id', component: LmsPartnerAnalyticsComponent },
+
+];
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class LmsRoutingModule { }

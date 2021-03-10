@@ -94,7 +94,7 @@
               </div>
             </div>
           </div>
-          <ng-container *ngIf="this.modulesDisplayType.isFolderGridView || this.modulesDisplayType.isFolderListView">
+          <ng-container *ngIf="(this.modulesDisplayType.isFolderGridView || this.modulesDisplayType.isFolderListView) && !ngxloading">
             <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
           </ng-container>
           <app-grid-loader *ngIf="httpRequestLoader.isLoading && this.modulesDisplayType.isGridView"></app-grid-loader>
