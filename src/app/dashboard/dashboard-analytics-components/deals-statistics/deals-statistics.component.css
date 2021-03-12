@@ -30,7 +30,7 @@
 
 
 .icon1{
-	background: #aae2d0;
+	background: #5C9BD1;
 	padding: 12px 12px;
 	border-radius: 3px;
 	color: #fff;
@@ -39,18 +39,20 @@
 	margin-top: -7px;
 }
 
-.icon3 {
-	background: #eac2af;
-	padding: 12px 12px;
-	border-radius: 3px;
-	color: #fff;
-	height: 37px;
-	width: 37px;
-	margin-top: -7px;
-}
 
 .icon2 {
-	background: #aadae2;
+	background: #3faba4;
+	padding: 12px 12px;
+	border-radius: 3px;
+	color: #fff;
+	height: 37px;
+	width: 37px;
+	margin-top: -7px;
+}
+
+
+.icon3 {
+	background: #FF0000;
 	padding: 12px 12px;
 	border-radius: 3px;
 	color: #fff;
