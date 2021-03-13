@@ -510,7 +510,8 @@
 </div>
 <!---Publish Pop Up-->
 <ng-container *ngIf="showPublishPopup">
-   <app-publish-to-partners [companyId]="loggedInUserCompanyId" [assetId]="selectedAssetId" (notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-publish-to-partners>
+   <!-- <app-publish-to-partners [companyId]="loggedInUserCompanyId" [assetId]="selectedAssetId" (notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-publish-to-partners> -->
+   <app-publish-to-partners-popup [companyId]="loggedInUserCompanyId" [assetId]="selectedAssetId" (notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-publish-to-partners-popup>
 </ng-container>
 <!---Preview Pop Up-->
 <div class="modal fade right" id="asset-preview-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
