@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DamService } from '../services/dam.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -11,25 +11,29 @@ import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
-import {ParterService} from "app/partners/services/parter.service";
-declare var $,swal: any;
+import { ParterService } from "app/partners/services/parter.service";
+import {UserService} from "app/core/services/user.service";
+declare var $:any, swal: any;
 
 @Component({
-  selector: 'app-publish-to-partners-popup',
-  templateUrl: './publish-to-partners-popup.component.html',
-  styleUrls: ['./publish-to-partners-popup.component.css'],
-  providers: [HttpRequestLoader, SortOption, Properties]
+	selector: 'app-publish-to-partners-popup',
+	templateUrl: './publish-to-partners-popup.component.html',
+	styleUrls: ['./publish-to-partners-popup.component.css'],
+	providers: [HttpRequestLoader, SortOption, Properties]
 
 })
 export class PublishToPartnersPopupComponent implements OnInit {
 
-  ngxLoading = false;
+	ngxLoading = false;
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
+	adminsAndTeamMembersPagination: Pagination = new Pagination();
 	customResponse: CustomResponse = new CustomResponse();
+	adminsAndTeamMembersErrorMessage: CustomResponse = new CustomResponse();
 	@Input() companyId: any;
 	@Input() assetId: any;
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+	teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
 	sortOption: SortOption = new SortOption();
 	isHeaderCheckBoxChecked = false;
 	selectedPartnerShipIds: any[] = [];
@@ -39,20 +43,20 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	responseImage = "";
 	responseClass = "event-success";
 	@Output() notifyOtherComponent = new EventEmitter();
-	damPublishPostDto:DamPublishPostDto = new DamPublishPostDto();
-	statusCode: number=0;
-	publishedPartnershipIds:any[] = [];
+	damPublishPostDto: DamPublishPostDto = new DamPublishPostDto();
+	statusCode: number = 0;
+	publishedPartnershipIds: any[] = [];
 	showPublishedPartnersList = false;
-	constructor(public partnerService:ParterService,public xtremandLogger:XtremandLogger,private damService: DamService,private pagerService: PagerService, public authenticationService: AuthenticationService,
-		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService) {
+	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
+		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService,public userService:UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 	ngOnInit() {
-		if (this.companyId != undefined && this.companyId > 0 && this.assetId!=undefined && this.assetId>0) {
+		if (this.companyId != undefined && this.companyId > 0 && this.assetId != undefined && this.assetId > 0) {
 			this.pagination.vendorCompanyId = this.companyId;
 			this.openPopup();
-		}else{
+		} else {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 			this.closePopup();
 		}
@@ -68,16 +72,16 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;
-      this.sortOption.totalRecords = data.totalRecords;
-      $.each(data.list, function (_index: number, list: any) {
-        list.displayTime = new Date(list.createdTimeInString);
-      });
+			this.sortOption.totalRecords = data.totalRecords;
+			$.each(data.list, function (_index: number, list: any) {
+				list.displayTime = new Date(list.createdTimeInString);
+			});
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
 			this.referenceService.stopLoader(this.httpRequestLoader);
 		}, _error => {
 			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-		},()=>{
-			
+		}, () => {
+
 		});
 	}
 
@@ -98,14 +102,14 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		this.sortOption = new SortOption();
 		this.isHeaderCheckBoxChecked = false;
 		this.selectedPartnerShipIds = [];
-    this.publishedPartnershipIds = [];
-    this.ngxLoading = false;
+		this.publishedPartnershipIds = [];
+		this.ngxLoading = false;
 	}
 
 	/********************Pagaination&Search Code*****************/
-	listItems(pagination:any){
+	listItems(pagination: any) {
 		this.pagination = pagination;
-		this.listPublishedOrUnPublishedPartners();	
+		this.listPublishedOrUnPublishedPartners();
 	}
 	/*************************Sort********************** */
 	sortBy(text: any) {
@@ -125,7 +129,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	setPage(event: any) {
 		this.customResponse = new CustomResponse();
 		this.pagination.pageIndex = event.page;
-		this.listPublishedOrUnPublishedPartners();	
+		this.listPublishedOrUnPublishedPartners();
 	}
 
 
@@ -134,14 +138,14 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		this.pagination.pageIndex = 1;
 		this.pagination.searchKey = this.sortOption.searchKey;
 		this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedDamPartnerDropDownOption, this.pagination);
-		this.listPublishedOrUnPublishedPartners();	
+		this.listPublishedOrUnPublishedPartners();
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
 
-	listPublishedOrUnPublishedPartners(){
-		if(this.showPublishedPartnersList){
+	listPublishedOrUnPublishedPartners() {
+		if (this.showPublishedPartnersList) {
 			this.listPublishedPartners(this.pagination);
-		}else{
+		} else {
 			this.findPartnerCompanies(this.pagination);
 		}
 	}
@@ -152,7 +156,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 			$('[name="damPartnershipCheckBoxName[]"]').prop('checked', true);
 			this.isRowSelected = true;
 			let self = this;
-			$('[name="damPartnershipCheckBoxName[]"]:checked').each(function(_index: number) {
+			$('[name="damPartnershipCheckBoxName[]"]:checked').each(function (_index: number) {
 				var id = $(this).val();
 				self.selectedPartnerShipIds.push(parseInt(id));
 				$('#damPartnershipTr_' + id).addClass('row-selected');
@@ -167,7 +171,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 				this.selectedPartnerShipIds = [];
 			} else {
 				this.selectedPartnerShipIds = this.referenceService.removeDuplicates(this.selectedPartnerShipIds);
-				let currentPageSelectedIds = this.pagination.pagedItems.map(function(a) { return a.partnershipId; });
+				let currentPageSelectedIds = this.pagination.pagedItems.map(function (a) { return a.partnershipId; });
 				this.selectedPartnerShipIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedPartnerShipIds, currentPageSelectedIds);
 				if (this.selectedPartnerShipIds.length == 0) {
 					this.isRowSelected = false;
@@ -208,7 +212,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	}
 
 	highlightSelectedCampaignRow(partnership: any, event: any) {
-		if(!this.showPublishedPartnersList){
+		if (!this.showPublishedPartnersList) {
 			let partnershipId = partnership.partnershipId;
 			let isChecked = $('#' + partnershipId).is(':checked');
 			if (isChecked) {
@@ -229,7 +233,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 
 	/****Publish To Partners */
 	publishAsset() {
-		if(this.selectedPartnerShipIds.length>0){
+		if (this.selectedPartnerShipIds.length > 0) {
 			this.startLoaders();
 			this.damPublishPostDto.damId = this.assetId;
 			this.damPublishPostDto.partnershipIds = this.selectedPartnerShipIds;
@@ -240,38 +244,38 @@ export class PublishToPartnersPopupComponent implements OnInit {
 					this.sendSuccess = true;
 					this.statusCode = data.statusCode;
 					if (data.statusCode == 200) {
-					  this.responseMessage = "Published Successfully";
+						this.responseMessage = "Published Successfully";
 					} else {
 						this.responseMessage = data.message;
 					}
 					this.resetFields();
 				} else {
-          this.ngxLoading = false;
+					this.ngxLoading = false;
 					this.authenticationService.forceToLogout();
 				}
 			}, _error => {
-			  this.ngxLoading = false;
-			  this.sendSuccess = false;
-			  this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+				this.ngxLoading = false;
+				this.sendSuccess = false;
+				this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
 			});
-		}else{
+		} else {
 			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR','Please select atleast one partner',true);
+			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one partner', true);
 		}
-		
+
 	}
 
-	startLoaders(){
+	startLoaders() {
 		this.ngxLoading = true;
 		this.referenceService.startLoader(this.httpRequestLoader);
 	}
 
-	stopLoaders(){
+	stopLoaders() {
 		this.ngxLoading = false;
 		this.referenceService.stopLoader(this.httpRequestLoader);
 	}
 
-	viewPublishedPartners(){
+	viewPublishedPartners() {
 		this.showPublishedPartnersList = true;
 		this.pagination = new Pagination();
 		this.pagination.vendorCompanyId = this.companyId;
@@ -289,12 +293,12 @@ export class PublishToPartnersPopupComponent implements OnInit {
 			this.referenceService.stopLoader(this.httpRequestLoader);
 		}, _error => {
 			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-		},()=>{
-			
+		}, () => {
+
 		});
 	}
 
-	viewUnPublishedPartners(){
+	viewUnPublishedPartners() {
 		this.showPublishedPartnersList = false;
 		this.pagination = new Pagination();
 		this.pagination.vendorCompanyId = this.companyId;
@@ -303,7 +307,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		this.findPartnerCompanies(this.pagination);
 	}
 
-	openDeletePopup(partner:any){
+	openDeletePopup(partner: any) {
 		try {
 			let self = this;
 			swal({
@@ -340,16 +344,36 @@ export class PublishToPartnersPopupComponent implements OnInit {
 					this.customResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
 				}
 			);
-  }
-  
-  viewTeamMembers(item:any){
-    this.pagination.pagedItems.forEach((element) => {
-        let partnerCompanyId = element.partnerCompanyId;
-        let clickedCompanyId = item.partnerCompanyId;
-        if(clickedCompanyId!=partnerCompanyId){
-            element.expand =false;
-        }
-      });
-    item.expand = !item.expand;
-}
+	}
+
+	viewTeamMembers(item: any) {
+		this.pagination.pagedItems.forEach((element) => {
+			let partnerCompanyId = element.partnerCompanyId;
+			let clickedCompanyId = item.partnerCompanyId;
+			if (clickedCompanyId != partnerCompanyId) {
+				element.expand = false;
+			}
+		});
+		item.expand = !item.expand;
+		if(item.expand){
+			this.getTeamMembersAndAdmins(item.partnerCompanyId);
+		}
+	}
+
+	getTeamMembersAndAdmins(companyId:number){
+		this.referenceService.loading(this.teamMembersLoader, true);
+		this.adminsAndTeamMembersPagination.companyId = companyId;
+		this.userService.findAdminsAndTeamMembers(this.adminsAndTeamMembersPagination).subscribe(
+			response=>{
+				let data = response.data;
+				this.adminsAndTeamMembersPagination.totalRecords = data.totalRecords;
+				this.adminsAndTeamMembersPagination = this.pagerService.getPagedItems(this.adminsAndTeamMembersPagination, data.list);
+				this.referenceService.loading(this.teamMembersLoader, false);
+			},error=>{
+				this.xtremandLogger.error(error);
+				this.referenceService.loading(this.teamMembersLoader, false);
+				this.adminsAndTeamMembersErrorMessage = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+			}
+		);
+	}
 }

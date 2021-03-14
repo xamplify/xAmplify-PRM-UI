@@ -257,7 +257,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		});
 		asset.expand = !asset.expand;
 		if (asset.expand) {
-			//this.historyPagination.campaignId = asset.parentId;
 			this.historyPagination.campaignId = asset.id;
 			this.listAssetsHistory(this.historyPagination);
 		} else {

@@ -1,5 +1,5 @@
 <div class="modal fade right" id="partnerCompaniesPopup" tabindex="-1" role="dialog" aria-labelledby="partnerCompaniesPopup" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog full-width" role="document">
      <div class="modal-content">
         <div class="modal-header">
            <button type="button" class="close-circle" (click)="closePopup()">
@@ -65,17 +65,15 @@
                     <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="dam-partnership-list-table" aria-describedby="damPartnersTableDescription">
                        <thead>
                           <tr>
-                            <th></th>
-                             <!-- <th *ngIf="!showPublishedPartnersList" class="text-center" scope="col">
-                                <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="selectAllPartners">
-                             </th> -->
+                            <th scope="col"></th>
                              <th scope="col" class="text-center">Partner Company Name</th>
                              <th scope="col" class="text-center">Created Time</th>
                              <th *ngIf="showPublishedPartnersList" scope="col">Actions</th>
                           </tr>
                        </thead>
                        <tbody>
-                          <tr *ngFor="let partner of pagination.pagedItems ;let i =index" id="damPartnershipTr_{{partner.partnershipId}}" [class.row-selected]="selectedPartnerShipIds.indexOf(partner.partnershipId)>-1" (click)="highlightSelectedCampaignRow(partner,$event)">
+                          <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
+                          <tr>
                             <td>
                               <div class="actions-block">
                                 <a  (click)="viewTeamMembers(partner)" title="View/Hide Team Members">
@@ -91,14 +89,43 @@
                             <app-timestamp  [dateAndTime]="partner?.displayTime">
                             </app-timestamp>
                          </td>
-                          <td id="actions-row" *ngIf="showPublishedPartnersList">
-                             <div class="actions-block override-actions custom-width-icon float-none">
-                                <a  title="Delete" (click)="openDeletePopup(partner)">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                </a>
-                             </div>
-                          </td>
                           </tr>
+                          <tr  [ngClass]="{'hidden': !partner?.expand}">
+                           <td colspan="3">
+                              <div class="table-responsive">
+                              <table class="table tgrid table-condensed child-table-xamp" aria-describedby="team-members-info">
+                                 <thead>
+                                    <tr>
+                                      <th scope="row" style="width:10%;">
+                                       <input type="checkbox">
+                                     </th>
+                                      <th scope="row">Entity Info</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
+                                    <ng-container *ngIf="!teamMembersLoader.isLoading && adminsAndTeamMembersErrorMessage.isVisible">
+                                       <div class="custom-response-padding">
+                                          <app-response-message [customResponse]="adminsAndTeamMembersErrorMessage"></app-response-message>
+                                      </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!teamMembersLoader.isLoading && !adminsAndTeamMembersErrorMessage.isVisible">
+                                    <tr *ngFor="let adminAndTeamMember of adminsAndTeamMembersPagination.pagedItems;let i = index">
+                                        <td>
+                                           <input type="checkbox">
+                                        </td>
+                                        <td>
+                                          <app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
+                                          </app-user-info>
+                                        </td>
+                                     </tr>
+                                     </ng-container>
+                                  </tbody>
+                              </table>
+                           </div>
+                           </td>
+                          </tr>
+                        </ng-container>
                        </tbody>
                     </table>
                  </div>
