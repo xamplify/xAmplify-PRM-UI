@@ -14,7 +14,7 @@ export class SocialConnection {
     emailId: string;
     active: boolean;
     existingUser: boolean;
-
+	canSaveSocialConnections: boolean;
     twitterTotalTweetsCount: any = '-';
     twitterTotalFollowersCount: any = '-';
     twitterTotalFriendsCount: any = '-';
