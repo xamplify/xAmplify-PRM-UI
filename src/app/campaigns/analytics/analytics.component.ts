@@ -750,10 +750,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.paginationType = 'emailAction';
       this.downloadTypeName = 'emailAction';
       this.actionType = actionType;
-      this.campaignService.emailActionList(campaignId, actionType, pagination)
-        .subscribe(data => {
-          data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
-          this.campaignReport.emailLogs = data;
+      this.campaignService.emailActionDetails(campaignId, actionType, pagination)
+        .subscribe(response => {
+          this.campaignReport.emailLogs = response.data.data;
+          this.campaignReport.emailLogs.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
           this.campaignReport.emailActionType = actionType;
           $('#emailActionListModal').modal();
           if (actionType === 'open') {
