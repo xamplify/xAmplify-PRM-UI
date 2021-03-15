@@ -13,6 +13,7 @@ import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ParterService } from "app/partners/services/parter.service";
 import {UserService} from "app/core/services/user.service";
+import {AdminAndTeamMemberDto} from "../models/admin-and-team-member-dto"
 declare var $:any, swal: any;
 
 @Component({
@@ -27,8 +28,8 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	ngxLoading = false;
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
-	adminsAndTeamMembersPagination: Pagination = new Pagination();
 	customResponse: CustomResponse = new CustomResponse();
+	adminAndTeamMemberDto : AdminAndTeamMemberDto = new AdminAndTeamMemberDto();
 	adminsAndTeamMembersErrorMessage: CustomResponse = new CustomResponse();
 	@Input() companyId: any;
 	@Input() assetId: any;
@@ -347,6 +348,8 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	}
 
 	viewTeamMembers(item: any) {
+		this.adminAndTeamMemberDto = new AdminAndTeamMemberDto();
+		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
 		this.pagination.pagedItems.forEach((element) => {
 			let partnerCompanyId = element.partnerCompanyId;
 			let clickedCompanyId = item.partnerCompanyId;
@@ -356,24 +359,43 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		});
 		item.expand = !item.expand;
 		if(item.expand){
-			this.getTeamMembersAndAdmins(item.partnerCompanyId);
+			this.adminAndTeamMemberDto.pagination.companyId = item.partnerCompanyId;
+			this.getTeamMembersAndAdmins(this.adminAndTeamMemberDto.pagination);
 		}
 	}
 
-	getTeamMembersAndAdmins(companyId:number){
+	getTeamMembersAndAdmins(adminsAndTeamMembersPagination:Pagination){
+		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
 		this.referenceService.loading(this.teamMembersLoader, true);
-		this.adminsAndTeamMembersPagination.companyId = companyId;
-		this.userService.findAdminsAndTeamMembers(this.adminsAndTeamMembersPagination).subscribe(
+		adminsAndTeamMembersPagination.maxResults = 3;
+		this.userService.findAdminsAndTeamMembers(adminsAndTeamMembersPagination).subscribe(
 			response=>{
 				let data = response.data;
-				this.adminsAndTeamMembersPagination.totalRecords = data.totalRecords;
-				this.adminsAndTeamMembersPagination = this.pagerService.getPagedItems(this.adminsAndTeamMembersPagination, data.list);
+				adminsAndTeamMembersPagination.totalRecords = data.totalRecords;
+				adminsAndTeamMembersPagination = this.pagerService.getPagedItems(adminsAndTeamMembersPagination, data.list);
 				this.referenceService.loading(this.teamMembersLoader, false);
 			},error=>{
 				this.xtremandLogger.error(error);
 				this.referenceService.loading(this.teamMembersLoader, false);
-				this.adminsAndTeamMembersErrorMessage = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+				this.adminsAndTeamMembersErrorMessage = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 			}
 		);
 	}
+	/************Page************** */
+	naviagtePages(event: any) {
+		this.adminAndTeamMemberDto.pagination.pageIndex = event.page;
+		this.getTeamMembersAndAdmins(this.adminAndTeamMemberDto.pagination);
+	}
+
+	adminAndTeamMembersKeySearch(keyCode: any) { if (keyCode === 13) { this.searchAdminsAndTeamMembers(); } }
+
+	searchAdminsAndTeamMembers(){
+		this.adminAndTeamMemberDto.pagination.pageIndex = 1;
+		this.getTeamMembersAndAdmins(this.adminAndTeamMemberDto.pagination);
+	}
+
+	highlightAdminOrTeamMemberRow(adminAndTeamMemberDto:AdminAndTeamMemberDto){
+		console.log(adminAndTeamMemberDto);
+	}
+	
 }

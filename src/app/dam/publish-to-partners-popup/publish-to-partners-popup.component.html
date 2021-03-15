@@ -93,7 +93,22 @@
                           <tr  [ngClass]="{'hidden': !partner?.expand}">
                            <td colspan="3">
                               <div class="table-responsive">
-                              <table class="table tgrid table-condensed child-table-xamp" aria-describedby="team-members-info">
+                                 <div class="portlet-input input-inline float-right mb10p" id="search-div">
+                                    <div class="input-icon right" id="icon">
+                                       <input type="text" id="sort-text" class="form-control" [(ngModel)]="adminAndTeamMemberDto.pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)">
+                                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="adminAndTeamMemberDto.pagination.searchKey" (click)="adminAndTeamMemberDto.pagination.searchKey='';searchAdminsAndTeamMembers();"></button>
+                                       <button type="submit" class="search-box-item-click" (click)="searchAdminsAndTeamMembers()">
+                                       <i class="fa fa-search" aria-hidden="true"></i>
+                                       </button>
+                                    </div>
+                                 </div>
+                                 <ng-container *ngIf="!teamMembersLoader.isLoading && adminsAndTeamMembersErrorMessage.isVisible">
+                                    <div class="custom-response-padding">
+                                       <app-response-message [customResponse]="adminsAndTeamMembersErrorMessage"></app-response-message>
+                                   </div>
+                                 </ng-container>
+                              <ng-container *ngIf="!adminsAndTeamMembersErrorMessage.isVisible">
+                              <table  class="table tgrid table-condensed child-table-xamp" aria-describedby="team-members-info">
                                  <thead>
                                     <tr>
                                       <th scope="row" style="width:10%;">
@@ -104,16 +119,11 @@
                                   </thead>
                                   <tbody>
                                     <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
-                                    <ng-container *ngIf="!teamMembersLoader.isLoading && adminsAndTeamMembersErrorMessage.isVisible">
-                                       <div class="custom-response-padding">
-                                          <app-response-message [customResponse]="adminsAndTeamMembersErrorMessage"></app-response-message>
-                                      </div>
-                                    </ng-container>
-                                    <ng-container *ngIf="!teamMembersLoader.isLoading && !adminsAndTeamMembersErrorMessage.isVisible">
-                                    <tr *ngFor="let adminAndTeamMember of adminsAndTeamMembersPagination.pagedItems;let i = index">
+                                    <ng-container *ngIf="!teamMembersLoader.isLoading">
+                                    <tr *ngFor="let adminAndTeamMember of adminAndTeamMemberDto.pagination.pagedItems;let i = index">
                                         <td>
-                                           <input type="checkbox">
-                                        </td>
+                                          <input type="checkbox" class="chk"  id="{{adminAndTeamMember.userId}}"  name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRow(adminAndTeamMemberDto,$event)">
+                                       </td>
                                         <td>
                                           <app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
                                           </app-user-info>
@@ -122,6 +132,15 @@
                                      </ng-container>
                                   </tbody>
                               </table>
+                               <!---Pagination-->
+                               <div *ngIf="adminAndTeamMemberDto.pagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info">
+                                 <strong>No Data Found.</strong>
+                              </div>
+                              <div *ngIf="adminAndTeamMemberDto.pagination.pagedItems.length !== 0" [hidden]="teamMembersLoader.isLoading">
+                                 <app-pagination [pagination]="adminAndTeamMemberDto.pagination" (notifyParent)="naviagtePages($event)" (notifyParentDropDown)="getTeamMembersAndAdmins($event)">
+                                 </app-pagination>
+                              </div>
+                           </ng-container>
                            </div>
                            </td>
                           </tr>
