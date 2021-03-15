@@ -71,7 +71,8 @@ export class SocialManageComponent implements OnInit, OnDestroy {
 
     }
     confirmRemoveAccount(socialConnection: SocialConnection){
-        const self = this;
+	if(socialConnection.canSaveSocialConnections){
+		 const self = this;
         swal( {
             title: 'Are you sure?',
             text: 'Do you really want to remove this account?',
@@ -86,12 +87,14 @@ export class SocialManageComponent implements OnInit, OnDestroy {
         }, function( dismiss: any ) {
             console.log( 'you clicked on option' + dismiss );
         });
+		}
+       
     }
 
     confirmDialog(socialConnection: SocialConnection) {
-        if (! socialConnection.active) {
+        if (socialConnection.canSaveSocialConnections && !socialConnection.active ) {
             socialConnection.active = !socialConnection.active;
-        } else {
+        } else if(socialConnection.canSaveSocialConnections  && socialConnection.active) {
             const self = this;
             swal( {
                 title: 'Are you sure?',
