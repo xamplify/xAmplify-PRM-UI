@@ -645,7 +645,7 @@
             <div [hidden]="mainLoader || hasClientError" class="col-xs-6 col-sm-2 col-md-2 col-lg-2 p-5x" *ngIf="campaignType === 'VIDEO'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb b-b-c"
-                (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
+              (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 [disabled]="campaignReport.usersWatchCount < 1 || !isDataShare">
                 <div class="portlet-body text-center">
