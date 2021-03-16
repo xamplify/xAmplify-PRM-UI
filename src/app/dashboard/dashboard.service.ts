@@ -530,4 +530,11 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    updateSpfConfiguration(companyId:number){
+        return this.http.get(this.url + `updateSpfConfiguration/${companyId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
 }

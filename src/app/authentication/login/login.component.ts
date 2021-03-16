@@ -145,15 +145,34 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   redirectTo(user: User) {
-    this.loading = false;
     const roles = user.roles;
     if (this.authenticationService.isSuperAdmin()) {
       this.router.navigate(['/home/dashboard/admin-report']);
     } else if (user.hasCompany || roles.length === 1) {
-      this.router.navigate([this.referenceService.homeRouter]);
+      if(user.campaignAccessDto!=undefined){
+        let companyId = user.campaignAccessDto.companyId;
+        this.isSpfConfigured(companyId);
+      }else{
+        this.router.navigate([this.referenceService.homeRouter]);
+      }
     } else {
       this.router.navigate(['/home/dashboard/add-company-profile']);
     }
+  }
+
+  isSpfConfigured(companyId:number){
+    this.authenticationService.isSpfConfigured(companyId).subscribe(
+      response=>{
+        if(response.data){
+          this.router.navigate([this.referenceService.homeRouter]);
+        }else{
+          this.router.navigate(['/home/dashboard/spf']);
+        }
+      },_error=>{
+        this.loading = false;
+        this.router.navigate([this.referenceService.homeRouter]);
+      }
+    );
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.login(); } }
   setCustomeResponse(responseType: string, responseMessage: string) {

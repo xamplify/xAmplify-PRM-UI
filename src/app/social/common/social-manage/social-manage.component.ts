@@ -87,14 +87,17 @@ export class SocialManageComponent implements OnInit, OnDestroy {
         }, function( dismiss: any ) {
             console.log( 'you clicked on option' + dismiss );
         });
+		} else {
+			swal("Sorry! you are not authorized to delete this account.", "", "error")
 		}
        
     }
 
     confirmDialog(socialConnection: SocialConnection) {
-        if (socialConnection.canSaveSocialConnections && !socialConnection.active ) {
+		if (socialConnection.canSaveSocialConnections) {
+			if (!socialConnection.active ) {
             socialConnection.active = !socialConnection.active;
-        } else if(socialConnection.canSaveSocialConnections  && socialConnection.active) {
+        } else if( socialConnection.active) {
             const self = this;
             swal( {
                 title: 'Are you sure?',
@@ -111,6 +114,10 @@ export class SocialManageComponent implements OnInit, OnDestroy {
                 console.log( 'you clicked on option' + dismiss );
             });
         }
+
+		} else {
+			swal("Sorry! you are not authorized to update this account.", "", "info")
+		}
     }
     errorHandler(event){event.target.src= 'assets/images/social/avatar.png';}
     ngOnInit() {

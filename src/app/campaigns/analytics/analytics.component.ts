@@ -620,6 +620,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.campaignService.emailActionDetails(campaignId, 'views', pagination)
         .subscribe(
         		response => {
+        	this.actionType = 'views';
+        	this.campaignReport.emailActionType =  'views';
             this.usersWatchListPagination.totalRecords = response.data.totalRecords;;
             this.campaignReport.usersWatchList = response.data.data;
             response.data.data.forEach((element, index) => {
@@ -1891,6 +1893,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
                         		  name = 'SoftBounce_Emails_Details';
                         	  }else if(this.actionType === 'unsubscribe'){
                         		  name = 'Unsubscribed_Users_Details';
+                        	  }else if(this.actionType === 'views'){
+                        		  name = 'Campaign_Video_Views_Details';
+                        	  }else if(this.actionType === 'open'){
+                        		  name = 'Email_Opened_Details';
+                        	  }else if(this.actionType === 'click'){
+                        		  name = 'Email_Clicked_Details';
                         	  }
                               this.downloadFile(data, name, this.campaignId);
                               this.isLoadingDownloadList = false;
