@@ -1266,7 +1266,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		let req = { "userId": this.userId, "q": url };
 		this.socialService.getOgMetaTags(req).subscribe(data => {
 			let response = data.data;
-			if (response !== undefined && response !== '') {
+			if (response !== undefined && response !== '' && response.description != null && response.imageUrl != null && response.link != null && response.title != null) {
 				this.socialStatus.statusMessage = response.link;
 				this.socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
 				this.socialStatus.ogTitle = response.title;
@@ -1275,6 +1275,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				this.socialStatus.ogt = true;
 				this.socialStatusList[0] = this.socialStatus;
 				this.savedURL = url;
+			}
+			else{
+				this.clearRssOgTagsFeed();
 			}
 		}, error => {
 			this.clearRssOgTagsFeed();
@@ -1304,4 +1307,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			error => { this.logger.error("error in getCategoryNamesByUserId(" + this.userId + ")", error); },
 			() => this.logger.info("Finished listCategories()"));
 	}
+	
+	toggleEnable(socialConnection : SocialConnection) {
+		if (socialConnection.canSaveSocialConnections) {
+			socialConnection.active = !socialConnection.active;
+		} else {
+			swal("Sorry! you are not authorized to update this account.", "", "info");
+		}
+	}
+	
+	
 }

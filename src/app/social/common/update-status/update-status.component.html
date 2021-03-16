@@ -262,7 +262,7 @@
 							</div>
 						</section>
 
-						<section *ngIf="socialStatus.validLink" class="row">
+						<section *ngIf="socialStatus.validLink" class="update-status-content col-xs-10 col-sm-11" style="float:left;">
 							<div class="col-sm-2"><img src="{{socialStatus.ogImage}}" width="100%"></div>
 							<div class="col-sm-10"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
 									<span *ngIf="socialStatus.statusMessage?.length>160">..</span>
@@ -667,7 +667,7 @@
 				<div *ngIf="socialConnections?.length > 0">
                   <div class="col-sm-6 col-xs-12 box" *ngFor="let socialConnection of socialConnections;let i = index">
                     <div class="portlet light block" [ngClass]="{'checked': socialConnection.active, 'unchecked': !socialConnection.active}"
-                      (click)="socialConnection.active = !socialConnection.active">
+                       (click)= "toggleEnable(socialConnection)" >
                       <div class="portlet-body">
                         <div class="pt10">
                           <div style="display: block; height: 20px;">
