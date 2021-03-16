@@ -25,7 +25,9 @@ export class EmailLog {
     longitude: string;
     subject: string;
     emailActionCount: number;
+    utcTimeString : string;
 
     emailLogHistory: Array<EmailLog>;
     isExpand: boolean = false;
+    
 }
