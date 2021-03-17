@@ -44,21 +44,28 @@ export class SpfComponent implements OnInit {
   }
 
   saveSpf(){
-    this.referenceService.goToTop();
-    this.customResponse = new CustomResponse();
-    this.loading = true;
-    try{
-      this.updateSpfConfiguration(this.companyId);
-    }catch(error){
-      this.loading = false;
-      this.customResponse = new CustomResponse('ERROR', 'Client Error', true);
-    }
+	this.customResponse = new CustomResponse();
+	this.referenceService.goToTop();
+	if(this.isChecked){
+    	this.customResponse = new CustomResponse();
+    	this.loading = true;
+	    try{
+	      this.updateSpfConfiguration(this.companyId);
+	    }catch(error){
+	      this.loading = false;
+	      this.customResponse = new CustomResponse('ERROR', 'Client Error', true);
+	    }
+	}else{
+		this.customResponse = new CustomResponse('ERROR', 'You must agree', true);
+	}
+    
   }
   updateSpfConfiguration(companyId:number){
     this.dashboardService.updateSpfConfiguration(companyId).subscribe(
       response=>{
         this.loading = false;
         this.customResponse = new CustomResponse('SUCCESS', 'SPF Configuration Updated Successfully', true);
+        this.isSpfConfigured();
       },error=>{
         this.loading = false;
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);

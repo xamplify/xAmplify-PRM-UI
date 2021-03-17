@@ -1,54 +1,36 @@
-<div class="page-content">
-    <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
-        <div class="col-xs-12 col-sm-6 p0">
-            <h4 class="text-primary f-w-600 m10">Publish SPF record with your DNS registrer</h4>
-        </div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+ <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+<div class="portlet-border">
+  <div class="portlet box">
+    <div class="tenpixelspaddig mttp">
+      <label class="bold-font">This will be represented by a TXT entry in the domain that is being configured in xAmplify. By default, xAmplify is expecting the entry to have this value:</label>
     </div>
-    <div class="row">
-        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-            <div class="page-bar portlet light border-radius-0 shadow mmtp">
-                <div class="btp">
-                    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-                    <br>
-                </div>
-                <div class="portlet-border">
-                    <div class="portlet box">
-                        <div class="tenpixelspaddig">
-                            <label class="bold-font">This will be represented by a TXT entry in the domain that is being configured in xAmplify. By default, xAmplify is expecting the entry to have this value:</label>
-                        </div>
-                        <div class="tenpixelspaddig">
-                            <div class="alert alert-spf">
-                                <strong>v=spf1 include:<a  href="https://u10208008.wl009.sendgrid.net/" target="_blank" rel="noopener noreferrer">u10208008.wl009.sendgrid.net</a> ~all</strong>
-                            </div>
-                        </div>
-                        <div class="tenpixelspaddig">
-                            <label class="bold-font">***If you already have an SPF statement for another service, you'll want to add the xAmplify information to it, keeping everything in one statement. It could look something like this:</label>
-                        </div>
-                        <div class="tenpixelspaddig">
-                            <div class="alert alert-spf">
-                                <strong>v=spf1 include:yourcompany.com include:<a href="https://u10208008.wl009.sendgrid.net/" target="_blank" rel="noopener noreferrer">u10208008.wl009.sendgrid.net</a> ~all</strong>
-                                </div>
-                        </div>
-                        <div class="tenpixelspaddig">
-                            <label class="bold-font"> For any queries, please reach out to support team, admin@xamplify.com +1 408.250.9503</label>
-                        </div>
-                    </div>
-                </div>
-                <ng-container *ngIf="!spfConfigured">
-                     <div class="form-group" style="margin-top: 15px;">
-                    <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
-                       You confirm that SPF configuration is done.
-                    <br>
-                    </div>
-                    <div *ngIf="!isChecked" style="color:red" translate>You must agree</div><br> 
-                    <div class="modal-footer">
-                        <button type="button" [disabled]="!isChecked" class="btn btn-primary" (click)="saveSpf()" translate>Submit</button>
-                    </div>
-            </ng-container>
-            </div>
-            
-        </div>
+    <div class="tenpixelspaddig">
+      <div class="alert alert-spf">
+        <strong>v=spf1 include:<a  href="https://u10208008.wl009.sendgrid.net/" target="_blank" rel="noopener noreferrer">u10208008.wl009.sendgrid.net</a> ~all</strong>
+      </div>
     </div>
-
-
-
+    <div class="tenpixelspaddig">
+      <label class="bold-font">***If you already have an SPF statement for another service, you'll want to add the xAmplify information to it, keeping everything in one statement. It could look something like this:</label>
+    </div>
+    <div class="tenpixelspaddig">
+      <div class="alert alert-spf">
+        <strong>v=spf1 include:yourcompany.com include:<a href="https://u10208008.wl009.sendgrid.net/" target="_blank" rel="noopener noreferrer">u10208008.wl009.sendgrid.net</a> ~all</strong>
+      </div>
+    </div>
+    <div class="tenpixelspaddig">
+      <label class="bold-font"> For any queries, please reach out to support team, admin@xamplify.com +1 408.250.9503</label>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="!spfConfigured">
+  <div class="form-group" style="margin-top: 15px;">
+    <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
+    You confirm that SPF configuration is done.
+    <br>
+  </div>
+  <br> 
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="saveSpf()" translate>Submit</button>
+  </div>
+</ng-container>

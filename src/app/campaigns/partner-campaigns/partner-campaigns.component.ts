@@ -39,6 +39,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignSuccessMessage = "";
     superiorId = 0;
     loggedInUserId = 0;
+    companyId = 0;
+    showSpf = false;
     campaignName:string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
@@ -214,12 +216,13 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.campaignAccess.socialCampaign = campaignAccess.social;
                 this.campaignAccess.eventCampaign = campaignAccess.event;
                 this.campaignAccess.landingPageCampaign = campaignAccess.page;
+                this.companyId = this.referenceService.companyId;
+                this.isSpfConfigured();
             },_error=>{
                 this.referenceService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 this.ngxloading = false;
                 this.referenceService.loading(this.httpRequestLoader, false);
             },()=>{
-                this.ngxloading = false;
                 this.referenceService.loading(this.httpRequestLoader, false);
                 if(this.router.url.endsWith('/')){
                     this.setViewType('Folder-Grid');
@@ -249,6 +252,19 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             }
         );
     }
+
+    isSpfConfigured(){
+        this.ngxloading  = true;
+        this.authenticationService.isSpfConfigured(this.companyId).subscribe(
+          response=>{
+            this.ngxloading = false;
+            this.showSpf = !response.data;
+          },_error=>{
+            this.ngxloading = false;
+          }
+        );
+      }
+
    
     filterCampaigns(type: string) {
         if ( this.role == "Vendor" ) {
