@@ -363,16 +363,16 @@
       </div>
     </div>
   </div>
-  <div class="modal right fade" id="email_template_preivew" data-backdrop="static">
-    <div class="modal-dialog modal-lg modal-template" style="right:0">
+  <div class="modal fade right" id="email_template_preivew" tabindex="-1" role="dialog" aria-labelledby="redistibuteCampaignPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-template" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
           <i class="fa fa-times" aria-hidden="true"></i>
           </button>
           <h4 class="modal-title" title="{{campaignName}}">
-            {{campaignName | slice:0:25}}
-            <span *ngIf="campaignName?.length>25">...</span>
+            {{campaignName | slice:0:50}}
+            <span *ngIf="campaignName?.length>50">...</span>
           </h4>
         </div>
         <div class="modal-body">
@@ -386,7 +386,7 @@
       </div>
     </div>
   </div>
-  <div class="modal right fade" id="social-campaign-preview" data-backdrop="static">
+  <div class="modal fade right" id="social-campaign-preview" data-backdrop="static">
     <div class="modal-dialog modal-lg modal-template" style="right:0">
       <div class="modal-content">
         <div class="modal-header">
@@ -394,8 +394,8 @@
           <i class="fa fa-times" aria-hidden="true"></i>
           </button>
           <h4 class="modal-title" title="{{campaignName}}">
-            {{campaignName | slice:0:25}}
-            <span *ngIf="campaignName?.length>25">...</span>
+            {{campaignName | slice:0:50}}
+            <span *ngIf="campaignName?.length>50">...</span>
           </h4>
         </div>
         <div class="modal-body">

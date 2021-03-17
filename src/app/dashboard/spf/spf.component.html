@@ -17,16 +17,17 @@
                             <label class="bold-font">This will be represented by a TXT entry in the domain that is being configured in xAmplify. By default, xAmplify is expecting the entry to have this value:</label>
                         </div>
                         <div class="tenpixelspaddig">
-                            <label class="bold-font">v=spf1 include:<a  href="https://u10208008.wl009.sendgrid.net/" target="_blank" rel="noopener noreferrer">u10208008.wl009.sendgrid.net</a> ~all</label>
+                            <div class="alert alert-spf">
+                                <strong>v=spf1 include:<a  href="https://u10208008.wl009.sendgrid.net/" target="_blank" rel="noopener noreferrer">u10208008.wl009.sendgrid.net</a> ~all</strong>
+                            </div>
                         </div>
                         <div class="tenpixelspaddig">
                             <label class="bold-font">***If you already have an SPF statement for another service, you'll want to add the xAmplify information to it, keeping everything in one statement. It could look something like this:</label>
                         </div>
                         <div class="tenpixelspaddig">
-                            <label class="bold-font"> v=spf1 include:yourcompany.com include:<a href="https://u10208008.wl009.sendgrid.net/" target="_blank" rel="noopener noreferrer">u10208008.wl009.sendgrid.net</a> ~all</label>
-                        </div>
-                        <div class="tenpixelspaddig">
-                            <img src="assets/images/spf.jpg" alt="" height="200px;">
+                            <div class="alert alert-spf">
+                                <strong>v=spf1 include:yourcompany.com include:<a href="https://u10208008.wl009.sendgrid.net/" target="_blank" rel="noopener noreferrer">u10208008.wl009.sendgrid.net</a> ~all</strong>
+                                </div>
                         </div>
                         <div class="tenpixelspaddig">
                             <label class="bold-font"> For any queries, please reach out to support team, admin@xamplify.com +1 408.250.9503</label>
@@ -34,12 +35,12 @@
                     </div>
                 </div>
                 <ng-container *ngIf="!spfConfigured">
-                    <div class="form-group" style="margin-top: 15px;">
+                     <div class="form-group" style="margin-top: 15px;">
                     <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
-                        Text here
+                       You confirm that SPF configuration is done.
                     <br>
                     </div>
-                    <div *ngIf="!isChecked" style="color:red" translate>You must agree</div><br>
+                    <div *ngIf="!isChecked" style="color:red" translate>You must agree</div><br> 
                     <div class="modal-footer">
                         <button type="button" [disabled]="!isChecked" class="btn btn-primary" (click)="saveSpf()" translate>Submit</button>
                     </div>
