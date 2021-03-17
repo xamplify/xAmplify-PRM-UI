@@ -34,6 +34,7 @@ export class SelectCampaignTypeComponent implements OnInit{
     loading = true;
     companyIdError = false;
     loggedInUserCompanyId: number = 0;
+    showSpf = false;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     constructor(private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService,
       public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess){
@@ -81,6 +82,7 @@ export class SelectCampaignTypeComponent implements OnInit{
             this.companyIdError = false;
             this.refService.companyId = this.loggedInUserCompanyId;
             this.getOrgCampaignTypes();
+            this.isSpfConfigured();
           }else{
             this.companyIdError = true;
             this.loading = false;
@@ -89,6 +91,19 @@ export class SelectCampaignTypeComponent implements OnInit{
         }
       );
      }
+
+     isSpfConfigured(){
+      this.loading  = true;
+      this.authenticationService.isSpfConfigured(this.loggedInUserCompanyId).subscribe(
+        response=>{
+          this.loading = false;
+          this.showSpf = !response.data;
+        },error=>{
+          this.loading = false;
+        }
+      );
+    }
+
     ngOnInit() {
         try{
  		      this.getCompanyIdByUserId(); 

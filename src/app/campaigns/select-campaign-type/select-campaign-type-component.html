@@ -240,3 +240,4 @@
 </div>
 
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
+<app-spf-modal-popup *ngIf="showSpf" [companyId]="loggedInUserCompanyId"></app-spf-modal-popup>
