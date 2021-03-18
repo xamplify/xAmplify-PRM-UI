@@ -5,7 +5,9 @@
 .tenpixelspaddig{
     padding:10px
 }
-
+.bold-font-weight{
+    font-weight: bold;
+}
 .btp{
     padding-bottom: 30px !important;
 }
