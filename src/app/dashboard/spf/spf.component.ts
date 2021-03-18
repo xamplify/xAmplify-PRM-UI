@@ -35,7 +35,7 @@ export class SpfComponent implements OnInit {
         this.loading = false;
         if(response.data){
           this.spfConfigured = true;
-          this.customResponse = new CustomResponse('INFO', 'SPF Configuration Done', true);
+          this.customResponse = new CustomResponse('SUCCESS', 'SPF Configuration Done', true);
         }
       },error=>{
         this.loading = false;
