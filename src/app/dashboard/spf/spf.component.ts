@@ -16,6 +16,9 @@ export class SpfComponent implements OnInit {
  customResponse: CustomResponse = new CustomResponse();
  companyId:number = 0;
  spfConfigured = false;
+ bootstrapAlertClass = "";
+ successOrErrorMessage = "";
+ spfErrorOrSuccessClass = "";
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService) { }
 
   ngOnInit() {
@@ -35,7 +38,8 @@ export class SpfComponent implements OnInit {
         this.loading = false;
         if(response.data){
           this.spfConfigured = true;
-          this.customResponse = new CustomResponse('SUCCESS', 'SPF Configuration Done', true);
+          this.bootstrapAlertClass = "alert alert-success";
+          this.successOrErrorMessage = "SPF Configuration Done"; 
         }
       },error=>{
         this.loading = false;
@@ -44,7 +48,9 @@ export class SpfComponent implements OnInit {
   }
 
   saveSpf(){
-	this.customResponse = new CustomResponse();
+  this.spfErrorOrSuccessClass = "";
+  this.bootstrapAlertClass = "";
+  this.successOrErrorMessage = ""; 
 	this.referenceService.goToTop();
 	if(this.isChecked){
     	this.customResponse = new CustomResponse();
@@ -52,11 +58,14 @@ export class SpfComponent implements OnInit {
 	    try{
 	      this.updateSpfConfiguration(this.companyId);
 	    }catch(error){
-	      this.loading = false;
-	      this.customResponse = new CustomResponse('ERROR', 'Client Error', true);
+        this.loading = false;
+        this.bootstrapAlertClass = "alert alert-danger";
+        this.successOrErrorMessage = "Client Error"; 
 	    }
 	}else{
-		this.customResponse = new CustomResponse('ERROR', 'You must agree', true);
+		this.bootstrapAlertClass = "alert alert-danger";
+    this.successOrErrorMessage = "You must confirm";
+    this.spfErrorOrSuccessClass = "required";
 	}
     
   }
@@ -64,11 +73,13 @@ export class SpfComponent implements OnInit {
     this.dashboardService.updateSpfConfiguration(companyId).subscribe(
       response=>{
         this.loading = false;
-        this.customResponse = new CustomResponse('SUCCESS', 'SPF Configuration Updated Successfully', true);
+        this.bootstrapAlertClass = "alert alert-success";
+        this.successOrErrorMessage = "SPF Configuration Updated Successfully";
         this.isSpfConfigured();
       },error=>{
         this.loading = false;
-        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.bootstrapAlertClass = "alert alert-success";
+        this.successOrErrorMessage = this.properties.serverErrorMessage;
       }
     );
   }

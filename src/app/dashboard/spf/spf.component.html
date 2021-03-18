@@ -1,5 +1,7 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
- <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+<div class="{{bootstrapAlertClass}}">
+  <strong>{{successOrErrorMessage}}</strong>
+</div>
 <div class="portlet-border">
   <div class="portlet box">
     <div class="tenpixelspaddig mttp">
@@ -24,13 +26,12 @@
   </div>
 </div>
 <ng-container *ngIf="!spfConfigured">
-  <div class="form-group" style="margin-top: 15px;">
-    <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
-    You confirm that SPF configuration is done.
-    <br>
-  </div>
-  <br> 
   <div class="modal-footer">
+    <div class="form-group left">
+      <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
+      <span class="{{spfErrorOrSuccessClass}}">You confirm that SPF configuration is done.</span>
+      <br>
+    </div>
     <button type="button" class="btn btn-primary" (click)="saveSpf()" translate>Submit</button>
   </div>
 </ng-container>
