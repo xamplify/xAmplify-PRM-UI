@@ -23,3 +23,8 @@
 .float-right{
 	float: right;
 }
+
+.table tr.row-selected td {
+    background-color: #00a6e847 !important;
+    color: white;
+}

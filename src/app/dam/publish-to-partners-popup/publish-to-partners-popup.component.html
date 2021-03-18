@@ -107,12 +107,12 @@
                                        <app-response-message [customResponse]="adminsAndTeamMembersErrorMessage"></app-response-message>
                                    </div>
                                  </ng-container>
-                              <ng-container *ngIf="!adminsAndTeamMembersErrorMessage.isVisible">
-                              <table  class="table tgrid table-condensed child-table-xamp" aria-describedby="team-members-info">
+                              <div *ngIf="!adminsAndTeamMembersErrorMessage.isVisible">
+                              <table  class="table tgrid table-condensed child-table-xamp" aria-describedby="team-members-info" id="admin-and-team-members-{{partner?.partnershipId}}">
                                  <thead>
                                     <tr>
                                       <th scope="row" style="width:10%;">
-                                       <input type="checkbox">
+                                       <input type="checkbox" id="partnership-{{partner?.partnershipId}}">
                                      </th>
                                       <th scope="row">Entity Info</th>
                                     </tr>
@@ -120,9 +120,9 @@
                                   <tbody>
                                     <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
                                     <ng-container *ngIf="!teamMembersLoader.isLoading">
-                                    <tr *ngFor="let adminAndTeamMember of adminAndTeamMemberDto.pagination.pagedItems;let i = index">
+                                    <tr *ngFor="let adminAndTeamMember of adminAndTeamMemberDto.pagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}" [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" >
                                         <td>
-                                          <input type="checkbox" class="chk"  id="{{adminAndTeamMember.userId}}"  name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRow(adminAndTeamMemberDto,$event)">
+                                          <input type="checkbox" id="ptm-{{adminAndTeamMember.userId}}"  [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRow(adminAndTeamMemberDto,adminAndTeamMember.userId,$event)">
                                        </td>
                                         <td>
                                           <app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
@@ -140,7 +140,7 @@
                                  <app-pagination [pagination]="adminAndTeamMemberDto.pagination" (notifyParent)="naviagtePages($event)" (notifyParentDropDown)="getTeamMembersAndAdmins($event)">
                                  </app-pagination>
                               </div>
-                           </ng-container>
+                           </div>
                            </div>
                            </td>
                           </tr>
@@ -160,7 +160,7 @@
         </div>
      </div>
      <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading && !showPublishedPartnersList">
-        <button type="submit" class="btn green-haze" [disabled]="selectedPartnerShipIds?.length==0" *ngIf="!sendSuccess" (click)="publishAsset()">Publish</button>
+        <button type="submit" class="btn green-haze" [disabled]="selectedTeamMemberIds?.length==0" *ngIf="!sendSuccess" (click)="publish()">Publish</button>
         <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
      </div>
   </div>

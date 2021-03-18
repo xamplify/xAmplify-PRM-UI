@@ -13,7 +13,8 @@ import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ParterService } from "app/partners/services/parter.service";
 import {UserService} from "app/core/services/user.service";
-import {AdminAndTeamMemberDto} from "../models/admin-and-team-member-dto"
+import {AdminAndTeamMemberDto} from "../models/admin-and-team-member-dto";
+import {PublishToPartnerCompanyDto} from "../models/publish-to-partner-company-dto";
 declare var $:any, swal: any;
 
 @Component({
@@ -48,6 +49,8 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	statusCode: number = 0;
 	publishedPartnershipIds: any[] = [];
 	showPublishedPartnersList = false;
+	publishToPartnerCompanyDtos:Array<PublishToPartnerCompanyDto> =  new Array<PublishToPartnerCompanyDto>();
+	selectedTeamMemberIds:any[] = [];
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService,public userService:UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -360,6 +363,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		item.expand = !item.expand;
 		if(item.expand){
 			this.adminAndTeamMemberDto.pagination.companyId = item.partnerCompanyId;
+			this.adminAndTeamMemberDto.partnershipId = item.partnershipId;
 			this.getTeamMembersAndAdmins(this.adminAndTeamMemberDto.pagination);
 		}
 	}
@@ -373,6 +377,14 @@ export class PublishToPartnersPopupComponent implements OnInit {
 				let data = response.data;
 				adminsAndTeamMembersPagination.totalRecords = data.totalRecords;
 				adminsAndTeamMembersPagination = this.pagerService.getPagedItems(adminsAndTeamMembersPagination, data.list);
+				// let self = this;
+				// if(this.selectedTeamMemberIds.length>0){
+				// 	$.each(data.list,function(_index,value){
+				// 		let userId = value.userId;
+				// 		$('#ptm-'+userId).attr("checked",self.selectedTeamMemberIds.indexOf(userId)>-1);
+				// 	});
+				// }
+				$('#ptm-18156').attr("checked",true);
 				this.referenceService.loading(this.teamMembersLoader, false);
 			},error=>{
 				this.xtremandLogger.error(error);
@@ -394,8 +406,49 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		this.getTeamMembersAndAdmins(this.adminAndTeamMemberDto.pagination);
 	}
 
-	highlightAdminOrTeamMemberRow(adminAndTeamMemberDto:AdminAndTeamMemberDto){
-		console.log(adminAndTeamMemberDto);
+	highlightAdminOrTeamMemberRow(adminAndTeamMemberDto:AdminAndTeamMemberDto,teamMemberId:number,event:any){
+		let publishToPartnerCompanyDto =  adminAndTeamMemberDto.publishToPartnerCompanyDto;
+		let isChecked = $("#ptm-"+teamMemberId+":checked").length==1;
+		if (isChecked) {
+			$('#publishToPartners-' + teamMemberId).addClass('row-selected');
+			publishToPartnerCompanyDto.partnershipId = adminAndTeamMemberDto.partnershipId;
+			publishToPartnerCompanyDto.teamMemberIds.push(teamMemberId);
+			this.selectedTeamMemberIds.push(teamMemberId);
+			this.publishToPartnerCompanyDtos.push(publishToPartnerCompanyDto);
+		} else {
+			$('#publishToPartners-' + teamMemberId).removeClass('row-selected');
+			publishToPartnerCompanyDto.teamMemberIds.splice($.inArray(teamMemberId, publishToPartnerCompanyDto.teamMemberIds), 1);
+			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
+			this.publishToPartnerCompanyDtos.splice($.inArray(publishToPartnerCompanyDto, this.publishToPartnerCompanyDtos), 1);
+			if(publishToPartnerCompanyDto.teamMemberIds.length==0){
+				publishToPartnerCompanyDto.partnershipId = 0;
+			}
+		}
+		let trLength = $('#admin-and-team-members-'+adminAndTeamMemberDto.partnershipId+' tbody tr').length;
+		let selectedRowsLength = $('[name="adminOrTeamMemberCheckBox[]"]:checked').length;
+		console.log(selectedRowsLength);
+		if (trLength != selectedRowsLength) {
+			$('#partnership-'+adminAndTeamMemberDto.partnershipId).prop("checked", false)
+		} else if (trLength == selectedRowsLength) {
+			$('#partnership-'+adminAndTeamMemberDto.partnershipId).prop("checked", true);
+		}
+		this.publishToPartnerCompanyDtos = this.removeDumplicateObjects(this.publishToPartnerCompanyDtos);
+		event.stopPropagation();
 	}
-	
+
+	removeDumplicateObjects(myArray){ 
+		var newArray = [];
+		$.each(myArray, function(key, value) {
+		  var exists = false;
+		  $.each(newArray, function(k, val2) {
+			if(value.partnershipId == val2.partnershipId){ exists = true } 
+		  });
+		  if(!exists && value.partnershipId != "") { newArray.push(value); }
+		});
+		return newArray;
+	  }
+	  
+	  publish(){
+		  console.log(this.publishToPartnerCompanyDtos);
+	  }
 }
