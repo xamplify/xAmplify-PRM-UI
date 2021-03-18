@@ -1,0 +1,1091 @@
+<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+  <div class="my-container">
+    <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
+  <!-- --------------Heading -->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="referenceService.homeRouter">Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <a *ngIf="isAdd">Add Track Builder</a>
+        <a *ngIf="!isAdd">Edit Track Builder</a>
+      </li>
+    </ul>
+    <div id="folder-margin-xamp">
+      <button class="add-button-xamplify" style="margin-left: 5px;float: right;" (click)="openCreateFolderPopup()"
+        translate>Create a Folder</button>
+    </div>
+    <div id="folder-margin-xamp">
+      <button class="add-button-xamplify" style="margin-left: 5px;float: right;" (click)="addTag()" translate>Create a
+        Tag</button>
+    </div>
+  </div>
+  <div class="folder-custom-response">
+    <app-response-message [customResponse]="folderOrTagsCustomResponse" *ngIf="folderOrTagsCustomResponse.isVisible">
+    </app-response-message>
+    <app-response-message class="pg8" [customResponse]="lmsResponse" *ngIf="lmsResponse.isVisible">
+    </app-response-message>
+  </div>
+  <div class="page-bar">
+    <div class="container"
+      style="width: 100%;border-radius: 0;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);padding-bottom: 10px;">
+      <div style="display: flex;padding-top: 1em;">
+        <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
+          <div class="cenetered-block">
+            <span>
+              <i class="fa fa-th-list" aria-hidden="true"></i>
+            </span>
+            <h5 class="hidden-xs" translate>Track Details</h5>
+          </div>
+        </div>
+        <div id="step-2" [attr.class]="stepTwoTabClass" (click)="changeActiveTab('step-2')">
+          <div class="cenetered-block">
+            <span>
+              <i class="fa fa-th-large" aria-hidden="true"></i>
+            </span>
+            <h5 class="hidden-xs" translate>Description</h5>
+          </div>
+        </div>
+        <div id="step-3" [attr.class]="stepThreeTabClass" (click)="changeActiveTab('step-3')">
+          <div class="cenetered-block">
+            <span>
+              <i class="fa fa-th-large" aria-hidden="true"></i>
+            </span>
+            <h5 class="hidden-xs" translate>Assets</h5>
+          </div>
+        </div>
+        <div id="step-4" [attr.class]="stepFourTabClass" (click)="changeActiveTab('step-4')">
+          <div class="cenetered-block">
+            <span>
+              <i class="fa fa-users" aria-hidden="true"></i>
+            </span>
+            <h5 class="hidden-xs" translate>Share</h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- step 1 -->
+      <div *ngIf="activeTabName == 'step-1'" class="setup-content step activeStepInfo">
+        <div style="margin-top: 10px;">
+          <div class="portlet box">
+            <div class="portlet-body">
+              <div class="row">
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                  <div class="row form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <label class="control-label col-sm-4" style="text-align: right;" translate>Title
+                        <font style="color: red">*</font>
+                      </label>
+                      <div class="inline col-sm-8">
+                        <input class="form-control" placeholder="Add title" [(ngModel)]="learningTrack.title"
+                          maxlength="100" (keypress)="omitSpecialCharacters($event)"
+                          (input)="updateSlug('title'); validateTitle(); validateStepOne()">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin-top: 5px;">
+                      <span *ngIf="!isTitleValid" class="required">{{titleErrorMessage}}</span>
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <label class="control-label col-sm-4" style="text-align: right;" translate>Link
+                        <font style="color: red">*</font>
+                      </label>
+                      <div class="prefix inline col-sm-8">
+                        <span class="input-group-addon" style="min-width: auto;">
+                          <a class="inline" href="{{linkPrefix + learningTrack.slug}}" target="_blank"
+                            [ngClass]="{'isDisabled' : isAdd}">{{linkPrefix}}</a>
+                        </span>
+                        <input class="select-box inline form-control" [(ngModel)]="learningTrack.slug" maxlength="100"
+                          (input)="updateSlug('slug'); validateStepOne()">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin-top: 5px;">
+                      <span *ngIf="!isSlugValid" class="required">{{slugErrorMessage}}</span>
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <label class="control-label col-sm-4" style="text-align: right;" translate>Folder
+                      <font style="color: red">*</font>
+                    </label>
+                    <div class="inline col-sm-8">
+                      <!-- <tag-input [(ngModel)]="selectedFolder" name="folder" theme='bootstrap'
+                                  [ngModelOptions]="{standalone: true}" [placeholder]="'Folder'"
+                                  [secondaryPlaceholder]="'Select folder'" [separatorKeyCodes]="[32,188,186,13,9]"
+                                  [clearOnBlur]="true" [addOnPaste]="true" (kewDown)="press($event)" [addOnBlur]="true"
+                                  (onAdd)="addFolder($event);validateStepOne()" (onRemove)="removeFolder($event);validateStepOne()">
+                                  <tag-input-dropdown [keepOpen]="false" [identifyBy]="'id'" [displayBy]="'name'"
+                                    [autocompleteItems]="categoryNames" [showDropdownIfEmpty]="true">
+                                  </tag-input-dropdown>
+                                </tag-input> -->
+                      <select class="form-control" [(ngModel)]="learningTrack.categoryId " (change)="validateStepOne()">
+                        <option *ngFor="let category of categoryNames " [ngValue]="category.id " data-toggle="tooltip "
+                          data-placement="top " title="{{category.name}} ">
+                          {{category.name | slice: 0: 25}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <label class="control-label col-sm-4" style="text-align: right;" translate>Tags
+                    </label>
+                    <div class="inline col-sm-8">
+                      <tag-input [(ngModel)]="selectedTags" name="tags" theme='bootstrap'
+                        [ngModelOptions]="{standalone: true}" [placeholder]="'+Tag'"
+                        [secondaryPlaceholder]="'Select tag'" [separatorKeyCodes]="[32,188,186,13,9]"
+                        [clearOnBlur]="true" [addOnPaste]="true" (kewDown)="press($event)" [addOnBlur]="true"
+                        (onAdd)="addTags($event)" (onRemove)="removeTags($event)">
+                        <tag-input-dropdown [keepOpen]="false" [identifyBy]="'id'" [displayBy]="'tagName'"
+                          [autocompleteItems]="tags" [showDropdownIfEmpty]="true">
+                        </tag-input-dropdown>
+                      </tag-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                  <div class="portlet light">
+                    <div class="portlet-title tabbable-line ">
+                      <div class="caption caption-md ">
+                        <i class="icon-globe theme-font hide " aria-hidden="true "></i>
+                        <span class="caption-subject font-blue-madison bold uppercase ">Featured Image</span>
+                      </div>
+                      <div class="inline" style="float: right; padding-bottom: 5px;">
+                        <button type="button" class="btn btn-primary" (click)="clearImage()">Clear</button>
+                      </div>
+                    </div>
+                    <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
+                      (click)="imageClick()">
+                      <div *ngIf="!croppedImage" style="margin: 10px 0px 10px 0px;">
+                        <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png"
+                          class="profile-image img-grid" alt="">
+                      </div>
+                      <div *ngIf="croppedImage; else showImage">
+                        <img class="img-grid" [src]="croppedImage" alt="">
+                      </div>
+                      <ng-template #showImage>
+                        <img class="img-grid" [src]="featuredImagePath" alt="">
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-2');"
+                  [disabled]="!isStepOneValid" translate>Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- step 2 -->
+      <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo" style="margin-top: 10px;">
+        <div class="portlet light">
+          <div class="input-icon right pull-right cebp">
+            <ul class="button-align inline">
+              <li style="margin-right: 5px;"><button class="btn btn-primary">Add Media</button></li>
+              <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getFormsList()">Add
+                  Forms</button></li>
+            </ul>
+          </div>
+          <div *ngIf="!isDescriptionValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center"
+            style="margin-bottom: 5px;">
+            <span class="required">{{descriptionErrorMessage}}</span>
+          </div>
+          <div class="portlet-body">
+            <div *ngIf="isAdd || learningTrack.description != undefined">
+              <ckeditor [(ngModel)]="learningTrack.description" #myckeditor [config]="ckeConfig" debounce="500"
+                maxlength="5000" (change)="validateDescription();validateStepTwo()">
+              </ckeditor>
+            </div>
+            <div class="row" style="margin: 10px 0px;">
+              <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-1')"
+                translate>Previous</button>
+              <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-3');"
+                [disabled]="!isStepTwoValid" translate>Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- step 3 -->
+      <div [ngClass]="{'blur-content' : showFilePreview}">
+        <div *ngIf="activeTabName == 'step-3'" class="setup-content step activeStepInfo" style="margin-top: 10px;">
+          <div class="portlet light">
+            <div class="col-lg-12">
+              <div class="page-toolbar">
+                <div class="inline">
+                  <button class="btn btn-primary" (click)="openOrderAssetsPopup()">Order Assets</button>
+                  <button class="btn btn-primary" (click)="openQuizPopup()">Select Quiz</button>
+                </div>
+                <div class="btn-group pull-right">
+                  <div class="inputs float-right" style="display: inline-flex;">
+                    <div id="left" style="padding-left: 5px;">
+                      <select class="form-control" [(ngModel)]="assetSortOption.damSortOption"
+                        (ngModelChange)="assetSortBy($event)">
+                        <option *ngFor="let option of assetSortOption.damSortDropDownOptions" [ngValue]="option">
+                          {{option.name}}</option>
+                      </select>
+                    </div>
+                    <div class="portlet-input input-inline" id="search-div">
+                      <div class="input-icon right" id="icon" style="padding-left: 5px;">
+                        <input type="text" [(ngModel)]="assetSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                          class="form-control" placeholder="Search..." (keypress)="assetEventHandler($event.keyCode)">
+                        <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;"
+                          *ngIf="assetSortOption.searchKey"
+                          (click)="assetSortOption.searchKey='';searchAssets()"></button>
+                        <button type="submit" class="search-box-item-click email-search" (click)="searchAssets()">
+                          <i class="fa fa-search cesf-xamp"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="portlet-body">
+              <app-grid-loader *ngIf="assetLoader.isLoading"></app-grid-loader>
+              <div class="row" *ngIf="!assetError">
+                <ul class="content__list" *ngFor="let file of assetPagination.pagedItems; let i =index;">
+                  <li class="list__item" [ngClass]="{'list__item--selected': isAssetSelected(file)}">
+                    <div class="flex-row pointer">
+                      <div class="item__select-box-wrapper"
+                        (click)="setSelectedAsset(file); validateAssets(); validateStepThree()">
+                        <span class="select-box-asset"> <label>
+                            <input type="checkbox"
+                              (click)="setSelectedAsset(file); validateAssets(); validateStepThree()">
+                          </label>
+                        </span> <span class="ng-scope"> <a style="cursor: default;"
+                            class="item__preview item__preview--image img-container custom" target="_BLANK">
+                            <img
+                              ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
+                              id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)"
+                              class="thumb ng-scope" src="{{file.thumbnailPath}}" alt="">
+                          </a> <a href="javascript:;"> </a>
+                        </span>
+                      </div>
+                      <div class="item__content">
+                        <div class="flex-row">
+                          <div class="item__last-modified">
+                            <span>
+                              <app-timestamp [isOnlyDate]="true" [dateAndTime]="file.createdDateInUTCString">
+                              </app-timestamp>
+                            </span>
+                          </div>
+                          <span class="item__name" data-toggle="tooltip" [title]="file.assetName">
+                            <strong>{{file.assetName | slice: 0: 8}}
+                              <span *ngIf="file.assetName?.length>8">...</span>
+                            </strong>
+                          </span>
+                          <div class="item__size">
+                            <span *ngIf="file.published">Published</span>
+                          </div>
+                          <div class="item__type">
+                            <span>{{file.assetType}}</span>
+                          </div>
+                          <div class="item__actions">
+                            <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top"
+                                title="preview" (click)="assetPreview(file)" style="left: 10px;">
+                                <i class="fa fa-external-link" aria-hidden="true"
+                                  style="font-size: 20px; color: #5a5a5a"></i>
+                              </a>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8">
+                <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
+                  (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
+                </app-pagination>
+              </div>
+              <!-- End of 24 -->
+              <div *ngIf="assetPagination.totalRecords==0 && !assetLoader.isLoading" class="alert alert-info">
+                <strong>No Assets Found.</strong>
+              </div>
+              <div style="padding: 0px 0px 35px 0px;">
+                <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-2')"
+                  translate>Previous</button>
+                <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-4');"
+                  [disabled]="!isStepThreeValid" translate>Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- step 4 -->
+      <div *ngIf="activeTabName == 'step-4'" class="setup-content step hiddenStepInfo" style="margin-top: 10px;">
+        <div class="panel with-nav-tabs panel-default">
+          <div class="panel-heading">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#groupsTab" data-toggle="tab">Groups</a></li>
+              <li><a href="#companiesTab" data-toggle="tab">Companies</a></li>
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              <div class="tab-pane fade in active row" id="groupsTab">
+                <div class="col-lg-12">
+                  <div class="page-toolbar">
+                    <div class="btn-group pull-right">
+                      <div class="inputs float-right" style="display: inline-flex;">
+                        <div id="left">
+                          <select class="form-control" [(ngModel)]="groupsSortOption.selectedGroupsDropDownOption"
+                            (ngModelChange)="groupsSortBy($event)">
+                            <option *ngFor="let option of groupsSortOption.groupsSortDropDownOptions"
+                              [ngValue]="option">
+                              {{option.name}}</option>
+                          </select>
+                        </div>
+                        <div class="portlet-input input-inline" id="search-div">
+                          <div class="input-icon right" id="icon" style="padding-left: 5px;">
+                            <input type="text" id="sort-text" class="form-control"
+                              [(ngModel)]="groupsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                              placeholder="search..." (keypress)="groupsEventHandler($event.keyCode)">
+                            <button class="glyphicon glyphicon-remove search-box-item-clear"
+                              *ngIf="groupsSortOption.searchKey"
+                              (click)="groupsSortOption.searchKey='';searchGroups();"></button>
+                            <button type="submit" class="search-box-item-click" (click)="searchGroups()">
+                              <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <app-list-loader *ngIf="groupsLoader.isLoading"></app-list-loader>
+                  <div class="table-responsive">
+                    <table class="table table-bordered no-more-tables dataTable no-footer"
+                      *ngIf="groupsPagination.totalRecords > 0">
+                      <thead>
+                        <tr>
+                          <td align="center">
+                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+                              (change)="checkAll($event);validateGroupOrCompany();validateStepFour();checkAllRequiredFields()"
+                              id="checkAllExistingContacts" />
+                          </td>
+                          <th style="text-align: center;">
+                            <span class="ui-column-resizer"
+                              (mousedown)="refService.onMouseDown($event,'user_list_tb',1)">
+                            </span>
+                            <span class="gridHeader" translate>List Name</span>
+                          </th>
+                          <th style="text-align: center;" translate>Uploaded Date</th>
+                          <th style="text-align: center;" translate>Preview </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr role="row" *ngFor="let group of groupsPagination.pagedItems;let i = index"
+                          style="vertical-align: middle;padding: 0px;">
+                          <td class="text-center">
+                            <input type="checkbox" [checked]="isGroupSelected(group)"
+                              (change)="changeSelectedGroups(group,$event);validateGroupOrCompany();validateStepFour();checkAllRequiredFields()">
+                          </td>
+                          <td class="text-center moreipsis" title="{{group.name}}">
+                            <span>{{group.name}}</span>
+                          </td>
+                          <td class="text-center">
+                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="group.createdDate">
+                            </app-timestamp>
+                          </td>
+                          <td class="text-center">
+                            <a (click)="getGroupList(group)">
+                              <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title=""
+                                data-original-title="Preview"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div *ngIf="groupsPagination.pagedItems.length !== 0" class="pg8">
+                    <app-pagination [pagination]="groupsPagination" (notifyParent)="setGroupsPage($event)"
+                      (notifyParentDropDown)="listGroups($event)" [hidden]="groupsLoader.isLoading">
+                    </app-pagination>
+                  </div>
+                  <!-- End of 24 -->
+                  <div *ngIf="groupsPagination.totalRecords==0 && !groupsLoader.isLoading" class="alert alert-info">
+                    <strong>No Groups Found.</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade row" id="companiesTab">
+                <div class="col-lg-12">
+                  <div class="page-toolbar">
+                    <div class="btn-group pull-right">
+                      <div class="inputs float-right" style="display: inline-flex;">
+                        <div id="left">
+                          <select class="form-control"
+                            [(ngModel)]="PartnerCompaniesSortOption.selectedPartnerCompanyDropDownOption"
+                            (ngModelChange)="partnerCompaniesSortBy($event)">
+                            <option *ngFor="let option of PartnerCompaniesSortOption.partnerCompanySortDropDownOptions"
+                              [ngValue]="option">
+                              {{option.name}}</option>
+                          </select>
+                        </div>
+                        <div class="portlet-input input-inline" id="search-div">
+                          <div class="input-icon right" id="icon" style="padding-left: 5px;">
+                            <input type="text" id="sort-text" class="form-control"
+                              [(ngModel)]="PartnerCompaniesSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                              placeholder="search..." (keypress)="partnerCompaniesEventHandler($event.keyCode)">
+                            <button class="glyphicon glyphicon-remove search-box-item-clear"
+                              *ngIf="PartnerCompaniesSortOption.searchKey"
+                              (click)="PartnerCompaniesSortOption.searchKey='';searchPartnerCompaniess();"></button>
+                            <button type="submit" class="search-box-item-click" (click)="searchPartnerCompaniess()">
+                              <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <app-list-loader *ngIf="PartnerCompaniesLoader.isLoading"></app-list-loader>
+                  <div class="table-responsive" *ngIf="!PartnerCompaniesLoader.isLoading">
+                    <table class="table table-bordered no-more-tables dataTable no-footer"
+                      *ngIf="PartnerCompaniesPagination.totalRecords > 0">
+                      <thead>
+                        <tr>
+                          <td align="center">
+                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+                              (change)="checkAllPartnerCompanies($event);validateGroupOrCompany();validateStepFour();checkAllRequiredFields()"
+                              id="checkAllExistingContacts" />
+                          </td>
+                          <th style="text-align: center;">
+                            <span class="ui-column-resizer"
+                              (mousedown)="refService.onMouseDown($event,'company_list_tb',1)">
+                            </span>
+                            <span class="gridHeader" translate>Company Name</span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr role="row" *ngFor="let company of PartnerCompaniesPagination.pagedItems;let i = index"
+                          style="vertical-align: middle;padding: 0px;">
+                          <td class="text-center">
+                            <input type="checkbox" [checked]="isPartnerCompanySelected(company)"
+                              (change)="changeSelectedpartnerCompanies(company,$event);validateGroupOrCompany();validateStepFour();checkAllRequiredFields()">
+                          </td>
+                          <td class="text-center moreipsis" title="{{company.partnerCompanyName}}">
+                            <span>{{company.partnerCompanyName}}</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div *ngIf="PartnerCompaniesPagination.pagedItems.length !== 0" class="pg8">
+                    <app-pagination [pagination]="PartnerCompaniesPagination"
+                      (notifyParent)="setPartnerCompaniesPage($event)"
+                      (notifyParentDropDown)="listPartnerCompanies($event)" [hidden]="PartnerCompaniesLoader.isLoading">
+                    </app-pagination>
+                  </div>
+                  <div *ngIf="PartnerCompaniesPagination.totalRecords==0 && !PartnerCompaniesLoader.isLoading"
+                    class="alert alert-info">
+                    <strong>No Companies Found.</strong>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-3')"
+                translate>Previous</button>
+              <div class="pull-right">
+                <button class="btn btn-primary green" type="submit" [disabled]="!learningTrack.isValid"
+                  (click)="addOrUpdateLearningTrack()">{{SubmitButtonValue}}</button>
+                <button class="btn btn-primary green" type="submit" [disabled]="!learningTrack.isValid"
+                  *ngIf="!learningTrack.published" (click)="saveAndPublish()">{{SubmitAndPublishButtonValue}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- --------------Popup to add image --------------- -->
+<div class="modal right fade" id="cropImage" tabindex="-1" role="dialog" aria-labelledby="cropLogoImage"
+  data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog imgCrop-modal" role="document">
+    <div class="modal-content rounded-0">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px'}"></ngx-loading>
+      <div class="modal-header">
+        <a class="close-circle" data-dismiss="modal" (click)="closeImageUploadModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+        <h4 class="modal-title" id="cropLogoImage">Choose the featured image
+        </h4>
+      </div>
+      <div class="modal-body" style="overflow-y: unset !important;">
+        <div style="position: relative; top: -5px; width: 118px;" class="btn green fileinput-button-css"
+          *ngIf="!imageChangedEvent">
+          <span>Select image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
+            (change)="filenewChangeEvent($event)">
+        </div>
+        <!-- <button style="position: relative; top: -5px; width: 118px;" class="btn green" (click)="chooseFileFromList()">Your images</button> -->
+        <div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only
+          images
+        </div>
+        <div style="position: relative; top: -5px;" *ngIf="fileSizeError" style="color:red">*File size should be less
+          than 12MB</div>
+        <div>
+          <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }">
+          </ngx-loading>
+          <div [hidden]="!imageChangedEvent">
+            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [onlyScaleDown]="true"
+              [roundCropper]="false" format="jpg" outputType="base64" (imageCropped)="imageCroppedMethod($event)"
+              (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" [resizeToWidth]="1000" (preserveSize)="true"
+              (imageQuality)=0 (loadImageFailed)="loadImageFailed()" [style.display]="showCropper ? null : 'none'">
+            </image-cropper>
+          </div>
+          <div *ngIf="!imageChangedEvent">
+            <fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+            </fieldset>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadImage()">Save
+            Changes</button>
+        </div>
+        <div>
+          <ul style="padding: 0 15px;">
+            <li>For optimal results, your logo should fit within the white rectangle.</li>
+            <li>If you would like to use a different logo in an email template, you can change it during the template
+              design process.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <svg id="svg-filter">
+    <filter id="svg-blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+    </filter>
+  </svg>
+</div>
+
+<!-- --------------List Of Forms Popup--------------- -->
+<div class="modal right" id="formsList" data-backdrop="static">
+  <div class="modal-dialog modal-lg " style="width: 75%;right:0">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true "></i>
+        </button>
+        <h4 class="modal-title text-center">Forms</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" *ngIf="!formsError">
+          <div class="col-xs-12 p5">
+            <div class="portlet light">
+              <div class="portlet-title ">
+                <div class="inputs" id="right">
+                  <div id="left">
+                    <select class="form-control" [(ngModel)]="formSortOption.formsSortOption"
+                      (ngModelChange)="formsSortBy($event)" style="position: relative;right: -3px;">
+                      <option *ngFor="let option of formSortOption.manageFormsSortOptions" [ngValue]="option">
+                        {{option.name}}</option>
+                    </select>
+                  </div>
+                  <div class="portlet-input input-inline input-small" id="search">
+                    <div class="input-icon right" id="search-icon">
+                      <input type="text" id="search-text" class="form-control" [(ngModel)]="formSortOption.searchKey"
+                        [ngModelOptions]="{standalone: true}" placeholder="search..."
+                        (keypress)="formsEventHandler($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="formSortOption.searchKey"
+                        (click)="formSortOption.searchKey='' ;searchForms();"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchForms()"><i
+                          class="fa fa-search"></i> </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <app-list-loader *ngIf="formsLoader.isLoading"></app-list-loader>
+              <div class="table-responsive" *ngIf="!formsLoader.isLoading">
+                <table class='table tgrid table-hover table-sm' *ngIf="formPagination.pagedItems?.length>0"
+                  aria-describedby="describe">
+                  <thead>
+                    <tr>
+                      <th>Select</th>
+                      <th>Form Details</th>
+                      <th class="text-center">Preview</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let form of formPagination.pagedItems ;let i =index">
+                      <td>
+                        <input type="radio" (click)="updateDescription(form, $event)">
+                      </td>
+                      <td>
+                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
+                          {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
+                        </h4>
+                        <h6>
+                          Created By <strong>{{form.createdName}}</strong>
+                        </h6>
+                        <h6>
+                          From <strong>{{form.companyName}}</strong>
+                        </h6>
+                      </td>
+                      <td id="actions-row" style="text-align: center;  vertical-align: middle;">
+                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="formPagination.pagedItems.length !== 0" class="pg8">
+                <app-pagination [pagination]="formPagination" (notifyParent)="setFormsPage($event)"
+                  (notifyParentDropDown)="listForms($event)" [hidden]="formsLoader.isLoading">
+                </app-pagination>
+              </div>
+              <!-- End of 24 -->
+              <div *ngIf="formPagination.totalRecords==0 && !formsLoader.isLoading" class="alert alert-info">
+                <strong>No Forms Found.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="formsError">
+          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+          </app-response-message>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span
+            *ngIf="!authenticationService.isShowForms">Close</span><span
+            *ngIf="authenticationService.isShowForms">Submit</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- -----------Form Preview Popup------------ -->
+<div class="modal right " id="form-preview-modal" data-backdrop="static">
+  <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Form Preview</h4>
+      </div>
+      <div
+        [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}"
+        [style.backgroundColor]="pageBackgroundColor">
+        <div class="modal-body">
+          <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <div *ngIf="form.showCompanyLogo">
+            <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')===0;"
+              [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" />
+            <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo"
+              alt="" />
+          </div>
+          <div class="vertical-center">
+            <div class="panel panel-info " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor"
+              [style.borderColor]="form.borderColor">
+              <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor"
+                [style.borderColor]="form.borderColor">
+                <div class="panel-title">{{form.name}}</div>
+              </div>
+              <div class="panel-body" *ngIf="!formError">
+                <h5>{{form.description}}</h5>
+                <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
+                  <div class="form-group">
+                    <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
+                      <span class="required" *ngIf="columnInfo.required">*</span>
+                    </label>
+                    <ng-container
+                      *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
+                      <input type="{{columnInfo.labelType}}" class="form-control"
+                        placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000"
+                        disabled="disabled">
+                    </ng-container>
+
+                    <ng-container *ngIf="columnInfo.labelType=='textarea'">
+                      <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}"
+                        maxlength="1000" disabled="disabled"></textarea>
+                    </ng-container>
+                    <!-- ---------------------------Date----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='date'">
+                      <app-date-picker [class.disabled]='true' [isFromForm]='true'>
+                      </app-date-picker>
+                    </ng-container>
+                    <!-- ---------------------------Price----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='price'">
+                      <div class="input-group prefix">
+                        <span class="input-group-addon" style="pointer-events: none;">
+                          {{columnInfo.priceSymbol}}
+                        </span>
+                        <input type="number" min="0" class="form-control" disabled="disabled"
+                          placeholder="{{columnInfo.placeHolder}}">
+                      </div>
+                    </ng-container>
+                    <!-- ---------------------------Upload----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='upload'">
+                      <input type="file" class="form-control" disabled="disabled">
+                    </ng-container>
+                    <!-- ---------------------------Radio Button----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='radio'">
+                      <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                        <div class="form-check">
+                          <label class="form-check-label" [style.color]="form.labelColor">
+                            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
+                              class="form-check-input" disabled="disabled">
+                            {{radioButton.name}}
+                          </label>
+                        </div>
+                        <br>
+                      </ng-container>
+                    </ng-container>
+                    <!-- ---------------------------Check Box----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='checkbox'">
+                      <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+                        <div class="form-check">
+                          <label class="form-check-label" [style.color]="form.labelColor">
+                            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
+                              class="form-check-input" disabled="disabled">
+                            {{checkBox.name}}
+                          </label>
+                        </div>
+                        <br>
+                      </ng-container>
+                    </ng-container>
+                    <!-- ---------------------------DropDown Menu----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='select'">
+                      <select class="form-control">
+                        <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
+                          {{dropDownValue.name}}</option>
+                      </select>
+                    </ng-container>
+                    <!-- ---------------------------Quiz Choices----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
+                      <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
+                        <div class="form-check">
+                          <label class="form-check-label" [style.color]="form.labelColor">
+                            <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}"
+                              class="form-check-input" disabled="disabled">
+                            {{choice.name}}
+                          </label>
+                        </div>
+                        <br>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </ng-container>
+                <div *ngIf="form.showCaptcha">
+                  <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                </div>
+                <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
+                <ng-template #show>
+                  <button type="submit" disabled="disabled" class="button-padding" id="bottom-right"
+                    [style.backgroundColor]="form.buttonColor"
+                    [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                </ng-template>
+                <ng-template #dontShow>
+                  <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right"
+                    [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                </ng-template>
+              </div>
+            </div>
+            <!------Show Footer-------->
+            <footer>
+              <div style="text-align: center;" *ngIf="form.showFooter && form.footer"
+                [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
+            </footer>
+          </div>
+          <div *ngIf="formError">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal" class="btn btn-default" id="bottom-right">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- --------------Order assets Popup--------------- -->
+<div class="modal right" id="order-assets" data-backdrop="static">
+  <div class="modal-dialog modal-lg " style="width: 75%;right:0">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true "></i>
+        </button>
+        <h4 class="modal-title text-center">Selected Assets</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="pg8 inline" style="float: right;">
+              <label style="margin-right: 10px; margin-top: 4px;">Follow Sequence </label>
+              <div class="switch">
+                <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round-flat"
+                  [(ngModel)]="learningTrack.followAssetSequence" type="checkbox">
+                <label for="cmn-toggle-1"></label>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="pg8" style="padding: 5px 0px 25px 0px;">
+                      <label class="form-check-label" style="float: right;"> <input type="checkbox" class="form-check-input"
+                          [(ngModel)]="learningTrack.followAssetSequence">Follow Sequence
+                      </label>
+                    </div> -->
+          <div class="col-xs-12 p5">
+            <ul id="sortable" [dragula]='"assetsDragula"' [dragulaModel]='selectedAssets'
+              style="padding-inline-start: 0px;">
+              <ng-container *ngFor="let asset of selectedAssets; let i = index">
+                <li class="list-group-item row" id="asset{{i}}"
+                  style="margin-right: 0px;margin-left: 0px;cursor: move;">
+                  <div class="col-sm-3 col-lg-3">
+                    <span class="fa fa-ellipsis-v"></span>
+                  </div>
+                  <div class="col-sm-3 col-lg-3">
+                    <img class="img-circle" alt="Image not found" [src]="asset.thumbnailPath">
+                  </div>
+                  <div class="col-sm-3 col-lg-3">
+                    {{asset.assetName}}
+                  </div>
+                  <div class="col-sm-3 col-lg-3">
+                    <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset)">
+                      <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal" class="btn btn-default" id="bottom-right">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- --------------List Of Partners In Group Popup--------------- -->
+<div class="modal right" id="group-info-list" data-backdrop="static">
+  <div class="modal-dialog modal-lg " style="width: 75%;right:0">
+    <div class="modal-content">
+      <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true "></i>
+        </button>
+        <h4 class="modal-title" id="user-list-name" align="center" title="{{groupName}}">
+          <b>{{groupName|slice:0:20}}<span *ngIf="groupName?.length>20">..</span></b>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12 p5">
+            <div class="table-responsive">
+              <table style="margin-bottom: 10px;" class="table table-striped table-hover table-bordered">
+                <thead>
+                  <tr>
+                    <th>EMAIL ID</th>
+                    <th>FIRST NAME</th>
+                    <th>LAST NAME</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let info of groupInfoPagination.pagedItems ;let i =index">
+                    <td><span *ngIf="info.emailId">{{info.emailId}}</span></td>
+                    <td><span *ngIf="info.emailId">{{info.firstName}}</span></td>
+                    <td><span *ngIf="info.emailId">{{info.lastName}}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="groupInfoPagination.pagedItems.length !== 0" class="pg8">
+              <app-pagination [pagination]="groupInfoPagination" (notifyParent)="setGroupInfoPage($event)"
+                (notifyParentDropDown)="listGroupInfo($event)" [hidden]="isLoading">
+              </app-pagination>
+            </div>
+            <!-- End of 24 -->
+            <div *ngIf="groupInfoPagination.totalRecords==0 && !isLoading" class="alert alert-info">
+              <strong>No Data Found.</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- --------------List Of Quiz Forms Popup--------------- -->
+<div class="modal right" id="quiz-list" data-backdrop="static">
+  <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Forms</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" *ngIf="!quizFormsError">
+          <div class="col-xs-12 p5">
+            <div class="portlet light">
+              <div class="portlet-title">
+                <div class="inputs" id="right">
+                  <div id="left">
+                    <select class="form-control" [(ngModel)]="quizFormSortOption.formsSortOption"
+                      (ngModelChange)="quizSortBy($event)" style="position: relative;right: -3px;">
+                      <option *ngFor="let option of quizFormSortOption.manageFormsSortOptions" [ngValue]="option">
+                        {{option.name}}</option>
+                    </select>
+                  </div>
+                  <div class="portlet-input input-inline input-small" id="search">
+                    <div class="input-icon right" id="search-icon">
+                      <input type="text" id="search-text" class="form-control"
+                        [(ngModel)]="quizFormSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                        placeholder="search..." (keypress)="quizEventHandler($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear"
+                        *ngIf="quizFormSortOption.searchKey"
+                        (click)="quizFormSortOption.searchKey='';searchQuizForms();"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchQuizForms()"><i
+                          class="fa fa-search"></i> </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <app-list-loader *ngIf="quizFormsLoader.isLoading"></app-list-loader>
+              <div class="table-responsive" *ngIf="!quizFormsLoader.isLoading">
+                <table class='table tgrid table-hover table-sm' *ngIf="quizFormPagination.pagedItems?.length>0"
+                  aria-describedby="describe">
+                  <thead>
+                    <tr>
+                      <th>Select</th>
+                      <th>Form Details</th>
+                      <th class="text-center">Preview</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let form of quizFormPagination.pagedItems ;let i =index">
+                      <td>
+                        <input type="radio" [checked]="this.learningTrack.quizId === form.id"
+                          (click)="selectedQuiz(form)">
+                      </td>
+                      <td>
+                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
+                          {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
+                        </h4>
+                        <h6>
+                          Created By <strong>{{form.createdName}}</strong>
+                        </h6>
+                        <h6>
+                          From <strong>{{form.companyName}}</strong>
+                        </h6>
+                      </td>
+                      <td id="actions-row" style="text-align: center;  vertical-align: middle;">
+                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="quizFormPagination.pagedItems.length !== 0" class="pg8">
+                <app-pagination [pagination]="quizFormPagination" (notifyParent)="setQuizPage($event)"
+                  (notifyParentDropDown)="listQuizForms($event)" [hidden]="quizFormsLoader.isLoading">
+                </app-pagination>
+              </div>
+              <!-- End of 24 -->
+              <div *ngIf="quizFormPagination.totalRecords==0 && !quizFormsLoader.isLoading" class="alert alert-info">
+                <strong>No Forms Found.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="quizFormsLoader">
+          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+          </app-response-message>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span
+            *ngIf="!authenticationService.isShowForms">Close</span><span
+            *ngIf="authenticationService.isShowForms">Submit</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Preview Assets -->
+<ng-container *ngIf="showFilePreview">
+  <div class="overlay page-content">
+    <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
+    <div class="overlay-content">
+      <img *ngIf="isImage" [src]="filePath" alt="No Image Found"><br>
+      <video *ngIf="isVideo" width="320" height="240" controls>
+        <source [src]="filePath" [type]="fileType">
+        Your browser does not support the video tag.
+      </video>
+      <audio *ngIf="isAudio" controls>
+        <source [src]="filePath" [type]="fileType">
+        Your browser does not support the audio tag.
+      </audio>
+      <!-- <div *ngIf="isFile && filePath && viewer">
+        <ngx-doc-viewer [url]="filePath" [viewer]="viewer" disableContent="popout" style="width:100%;height:75vh;">
+        </ngx-doc-viewer>
+      </div> -->
+    </div>
+  </div>
+</ng-container>
+
+
+<!-- Preview Bee Template Modal Popup-->
+<div class="modal fade right" id="asset-preview-modal" tabindex="-1" role="dialog" data-backdrop="static"
+  data-keyboard="false">
+  <div class="modal-dialog modal-lg modal-template fullwidth" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title" id="assetTitle"></h4>
+      </div>
+      <div class="modal-body">
+        <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+        <div id="asset-preview-content">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="openAddTagPopup">
+  <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
+  </app-add-tags-util>
+</div>
+
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="resetFolderValues($event)">
+</app-add-folder-modal-popup>

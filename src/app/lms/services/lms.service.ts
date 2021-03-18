@@ -40,6 +40,12 @@ export class LmsService {
       .catch(this.handleError);
   }
 
+  getPartnerCompanies(pagination: Pagination) {
+    return this.http.post(this.URL + "/partner/companies?access_token=" + this.authenticationService.access_token, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   validateSlug(learningTrack: LearningTrack) {
     return this.http.post(this.URL + "/slug/validate?access_token=" + this.authenticationService.access_token, learningTrack)
       .map(this.extractData)
@@ -102,6 +108,12 @@ export class LmsService {
 
   getPartnerDetailedAnalytics(pagination:Pagination){
     return this.http.post(this.URL + "/partner/analytics/activities?access_token=" + this.authenticationService.access_token, pagination)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  downloadBeeTemplate(obj:LearningTrack){
+    return this.http.post(this.URL + "/download/pdf?access_token=" + this.authenticationService.access_token, obj)
     .map(this.extractData)
     .catch(this.handleError);
   }
