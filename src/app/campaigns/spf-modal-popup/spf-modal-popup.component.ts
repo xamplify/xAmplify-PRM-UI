@@ -18,6 +18,7 @@ export class SpfModalPopupComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   loading = false;
   checkBoxError = false;
+  spfErrorOrSuccessClass = "";
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService) { }
 
   ngOnInit() {
@@ -25,6 +26,7 @@ export class SpfModalPopupComponent implements OnInit {
   }
 
   saveSpf(){
+    this.spfErrorOrSuccessClass = "";
     this.referenceService.scrollToModalBodyTopByClass();
     if(this.isChecked){
       this.checkBoxError = false;
@@ -33,6 +35,7 @@ export class SpfModalPopupComponent implements OnInit {
       this.updateSpfConfiguration(this.companyId);
     }else{
       this.checkBoxError = true;
+      this.spfErrorOrSuccessClass = "required";
     }
     
   }

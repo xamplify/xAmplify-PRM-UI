@@ -84,20 +84,17 @@
                                             <label class="form-check-label label" style="float: right;"> <input type="checkbox" class="form-check-input"
                                                     [(ngModel)]="learningTrack.followAssetSequence">Follow Sequence
                                             </label>
-                                            <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='selectedAssets'>
+                                            <div id="sortable" class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='selectedAssets'>
                                                 <ng-container *ngFor="let selectedAsset of selectedAssets;let i=index">
-                                                    <div style="cursor: move;">
-                                                        <a id="drag-div">
-                                                            <div class="padding">
-                                                                <input class="select-box inline" [value]="selectedAsset.assetName" disabled="disabled" (input)="validateAssets()">
-                                                                <button class="btn btn-primary" type="button" (click)="openAssetPopup(i)">Select
-                                                                    Asset</button>
-                                                                <button class="btn btn-primary" type="button" (click)="clearAsset(i); validateAssets()">Clear</button>
-                                                                <button type="button" class="btn btn-danger btn-xs" (click)="removeAsset(i); validateAssets()">
-                                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                                </button>
-                                                            </div>
-                                                        </a>
+                                                    <div class="padding" id="asset{{x}}">
+                                                        <span class="fa fa-ellipsis-v"></span>
+                                                        <input class="select-box inline" [value]="selectedAsset.assetName" disabled="disabled" (input)="validateAssets()">
+                                                        <button class="btn btn-primary" type="button" (click)="openAssetPopup(i)">Select
+                                                            Asset</button>
+                                                        <button class="btn btn-primary" type="button" (click)="clearAsset(i); validateAssets()">Clear</button>
+                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeAsset(i); validateAssets()">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
                                                     </div>
                                                 </ng-container>
                                             </div>

@@ -10,6 +10,8 @@ import { LearningTrack } from '../models/learningTrack'
 import { DomSanitizer } from "@angular/platform-browser";
 import { CustomResponse } from '../../common/models/custom-response';
 import { ActivityType } from '../models/activity-type';
+import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.component'
+import { DamService } from '../../dam/services/dam.service';
 
 
 declare var $, swal: any;
@@ -18,7 +20,7 @@ declare var $, swal: any;
   selector: 'app-preview-lms',
   templateUrl: './preview-lms.component.html',
   styleUrls: ['./preview-lms.component.css'],
-  providers: [HttpRequestLoader, LmsService]
+  providers: [HttpRequestLoader, LmsService, DamService]
 })
 export class PreviewLmsComponent implements OnInit {
 
@@ -35,12 +37,23 @@ export class PreviewLmsComponent implements OnInit {
   //takeQuiz: boolean = true;
   loggedInUserCompanyId: number = 0;
   isCreatedUser: boolean = false;
-  showFile:boolean = false;
-  filePath:string = "";
+  @ViewChild('previewPopupComponent') previewPopupComponent: PreviewPopupComponent;
+  showFilePreview: boolean = false;
+  isImage: boolean = false;
+  isAudio: boolean = false;
+  isVideo: boolean = false;
+  isFile: boolean = false;
+  filePath: string = "";
+  viewer: string = "google";
+  fileType: string = "";
+  modalPopupLoader = false;
+  imageTypes: Array<string> = ['jpg', 'jpeg', 'png'];
+  fileTypes: Array<string> = ['txt', 'pdf', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx']
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public lmsService: LmsService,
-    private router: Router, public sanitizer: DomSanitizer, public logger: XtremandLogger) {
+    private router: Router, public sanitizer: DomSanitizer, public logger: XtremandLogger,
+    private damService: DamService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.getCompanyId();
   }
@@ -69,7 +82,7 @@ export class PreviewLmsComponent implements OnInit {
           }
           this.referenceService.stopLoader(this.httpRequestLoader);
         }, (error: any) => {
-          this.referenceService.startLoader(this.httpRequestLoader);
+          this.referenceService.stopLoader(this.httpRequestLoader);
         },
       );
     } else {
@@ -109,6 +122,8 @@ export class PreviewLmsComponent implements OnInit {
   }
 
   updatePartnerProgress(progress: LearningTrack) {
+    progress.userId = this.loggedInUserId;
+    progress.id = this.learningTrack.id;
     if (!this.isCreatedUser) {
       this.assetViewLoader = true;
       this.lmsService.updatePartnerProgress(progress).subscribe(
@@ -125,26 +140,44 @@ export class PreviewLmsComponent implements OnInit {
     }
   }
 
+  downloadBeeTemplate(assetDetails: any) {
+    this.referenceService.startLoader(this.httpRequestLoader);
+    let object: LearningTrack = new LearningTrack();
+    object.userId = this.loggedInUserId;
+    object.contentId = assetDetails.id;
+    object.id = this.learningTrack.id;
+    this.lmsService.downloadBeeTemplate(object).subscribe(
+      (result: any) => {
+        if (result.statusCode == 200) {
+          this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED);
+          this.logger.info('Finished downloadBeeTemplate()');
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+      },
+      (error: string) => {
+        this.logger.error(this.referenceService.errorPrepender + " downloadBeeTemplate():" + error);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      });
+  }
+
+
   viewContent(asset: any) {
     this.showLearningTrack = false;
     this.assetDetails = asset;
     this.showAsset = true;
     this.referenceService.goToTop();
-    let progress: LearningTrack = new LearningTrack();
-    progress.contentId = asset.id;
-    progress.userId = this.loggedInUserId;
-    progress.id = this.learningTrack.id;
-    progress.status = ActivityType.OPENED;
-    this.updatePartnerProgress(progress);
-    this.customResponse = new CustomResponse();
   }
 
   viewQuiz() {
-    this.showLearningTrack = false;
-    this.showAsset = false;
-    this.authenticationService.formAlias = this.learningTrack.quiz.alias;
-    this.referenceService.goToTop();
-    this.customResponse = new CustomResponse();
+    if (!this.isCreatedUser) {
+      this.showLearningTrack = false;
+      this.showAsset = false;
+      this.authenticationService.formAlias = this.learningTrack.quiz.alias;
+      this.referenceService.goToTop();
+      this.customResponse = new CustomResponse();
+    } else {
+      this.previewPopupComponent.previewForm(this.learningTrack.quiz.id)
+    }
   }
 
   closeView(customResponse: CustomResponse) {
@@ -163,14 +196,86 @@ export class PreviewLmsComponent implements OnInit {
     }
   }
 
-  openFile(assetDetails:any){
-    this.showFile = true;
-    this.filePath = assetDetails.thumbnailPath;
+  assetPreview(assetDetails: any) {
+    if (assetDetails.beeTemplate) {
+      this.previewBeeTemplate(assetDetails);
+    } else {
+      let assetType = assetDetails.assetType;
+      this.filePath = assetDetails.assetPath;
+      if (assetType == 'mp3') {
+        this.showFilePreview = true;
+        this.fileType = "audio/mpeg";
+        this.isAudio = true;
+      } else if (assetType == 'mp4') {
+        this.showFilePreview = true;
+        this.fileType = "video/mp4";
+        this.isVideo = true;
+      } else if (this.imageTypes.includes(assetType)) {
+        this.showFilePreview = true;
+        this.isImage = true;
+      } else if (this.fileTypes.includes(assetType)) {
+        // this.showFilePreview = true;
+        // this.isFile = true;
+        // if (assetType == 'xlsx' || assetType == 'xls') {
+        //   this.viewer = "office";
+        // }
+        this.referenceService.showSweetAlertInfoMessage();
+      } else {
+        this.referenceService.showSweetAlertErrorMessage('Unsupported file type, Please download the file to view.');
+      }
+    }
+    if (this.showFilePreview || assetDetails.beeTemplate) {
+      this.setProgressAndUpdate(assetDetails.id, ActivityType.OPENED);
+      this.getBySlug();
+    }
   }
 
-  closeFile(){
-    this.showFile = false;
+  closeAssetPreview() {
+    this.showFilePreview = false;
+    this.isImage = false;
+    this.isAudio = false;
+    this.isVideo = false;
+    this.isFile = false;
     this.filePath = "";
+    this.viewer = "google";
+  }
+
+  downloadAsset(assetDetails: any) {
+    if (!assetDetails.beeTemplate) {
+      window.open(assetDetails.assetPath, '_blank');
+      this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED)
+    } else {
+      this.downloadBeeTemplate(assetDetails);
+    }
+  }
+
+  setProgressAndUpdate(id: number, status: ActivityType) {
+    let progress: LearningTrack = new LearningTrack();
+    progress.contentId = id;
+    progress.status = status;
+    this.updatePartnerProgress(progress);
+    this.customResponse = new CustomResponse();
+  }
+
+  previewBeeTemplate(asset: any) {
+    let htmlContent = "#asset-preview-content";
+    $(htmlContent).empty();
+    $('#assetTitle').val('');
+    this.referenceService.setModalPopupProperties();
+    $("#asset-preview-modal").modal('show');
+    this.modalPopupLoader = true;
+    this.damService.previewAssetById(asset.id).subscribe(
+      (response: any) => {
+        let assetDetails = response.data;
+        $(htmlContent).append(assetDetails.htmlBody);
+        $('#assetTitle').text(assetDetails.name);
+        this.modalPopupLoader = false;
+      }, (error: any) => {
+        swal("Please Contact Admin!", "Unable to show  preview", "error");
+        this.modalPopupLoader = false;
+        $("#asset-preview-modal").modal('hide');
+      }
+    );
   }
 
 }

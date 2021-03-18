@@ -197,7 +197,13 @@
                                     <li (click)="navigateToDashboardType(dashboardType)">
                                         <a>
                                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-                                            {{dashboardType}}
+                                            <ng-container *ngIf="dashboardType=='Welcome'">
+                                                Help (Welcome)
+                                            </ng-container>
+                                            <ng-container *ngIf="dashboardType!='Welcome'">
+                                                {{dashboardType}}
+                                            </ng-container>
+                                           
                                         </a>
                                     </li>
                                 </ng-container>

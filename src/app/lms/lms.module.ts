@@ -11,13 +11,14 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { PreviewLmsComponent } from './preview-lms/preview-lms.component';
 import { LmsAnalyticsComponent } from './lms-analytics/lms-analytics.component';
 import { LmsPartnerAnalyticsComponent } from './lms-partner-analytics/lms-partner-analytics.component';
-
+import { AddLmsNewComponent } from './add-lms-new/add-lms-new.component';
+//import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, LmsRoutingModule, CKEditorModule
   ],
-  declarations: [AddLmsComponent, ManageLmsComponent, PreviewLmsComponent, LmsAnalyticsComponent, LmsPartnerAnalyticsComponent],
+  declarations: [AddLmsComponent, ManageLmsComponent, PreviewLmsComponent, LmsAnalyticsComponent, LmsPartnerAnalyticsComponent, AddLmsNewComponent],
   providers: [LmsService]
 })
 export class LmsModule { }

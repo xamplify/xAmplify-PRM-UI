@@ -6,9 +6,9 @@
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
                 <i *ngIf="!isPartnerView" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isPartnerView" [routerLink]="['/home/lms/manage']">Manage Learning Track</a>
+                <a *ngIf="!isPartnerView" [routerLink]="['/home/lms/manage']">Manage Track Builder</a>
                 <i *ngIf="isPartnerView" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="isPartnerView" [routerLink]="['/home/lms/shared']">Shared Learning Track</a>
+                <a *ngIf="isPartnerView" [routerLink]="['/home/lms/shared']">Shared Track Builder</a>
             </li>
         </ul>
     </div>

@@ -141,7 +141,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
             pagination.showDraftContent=true;
             this.videoFileService.loadVideoFiles(pagination)
                 .subscribe((result: any) => {
-                  result.listOfMobinars.forEach((element, index) => { element.uploadedDate = new Date(element.uploadedDate);});
+                  result.list.forEach((element, index) => { element.uploadedDate = new Date(element.uploadedDate);});
                   pagination.totalRecords = result.totalRecords;
                     if (this.checkTotalRecords) {
                         this.allRecords = result.totalRecords;
@@ -151,7 +151,7 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                     console.log(this.categories);
                     this.categories.sort(function (a: any, b: any) { return (a.id) - (b.id); });
                     this.referenceService.loading(this.httpRequestLoader, false);
-                    pagination = this.pagerService.getPagedItems(pagination, result.listOfMobinars);
+                    pagination = this.pagerService.getPagedItems(pagination, result.list);
                 },
                 (error: any) => {
                     this.xtremandLogger.error('Manage-videos component:  Loading Videos():' + error);

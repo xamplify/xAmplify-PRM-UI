@@ -268,6 +268,17 @@ export class SortOption {
     { 'name': 'Updated On(DESC)', 'value': 'updatedTime-DESC' }
   ];
 
+  groupsSortDropDownOptions = [
+		{ 'name': 'List name (A-Z)', 'value': 'name-ASC' },
+		{ 'name': 'List name (Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Creation date (ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Creation date (DESC)', 'value': 'createdTime-DESC' },
+  ];
+
+  partnerCompanySortDropDownOptions = [
+		{ 'name': 'Company name (A-Z)', 'value': 'companyName-ASC' },
+		{ 'name': 'Company name (Z-A)', 'value': 'companyName-DESC' },
+  ];
 
 
     numberOfItemsPerPage = [
@@ -301,6 +312,7 @@ export class SortOption {
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;
     public selectedTagDropDownOption:any = this.tagSortDropDownOptions[3];
-
+    public selectedGroupsDropDownOption:any = this.groupsSortDropDownOptions[3];
+    public selectedPartnerCompanyDropDownOption = this.partnerCompanySortDropDownOptions[0];
 
 }

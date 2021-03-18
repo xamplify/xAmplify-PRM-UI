@@ -50,10 +50,10 @@ export class ManageLmsComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
     if (this.referenceService.isCreated) {
-      this.message = "Learning track created successfully";
+      this.message = "Track Builder created successfully";
       this.showMessageOnTop(this.message);
     } else if (this.referenceService.isUpdated) {
-      this.message = "Learning track updated successfully";
+      this.message = "Track Builder updated successfully";
       this.showMessageOnTop(this.message);
     }
     this.listLearningTracks(this.pagination);
@@ -237,9 +237,9 @@ export class ManageLmsComponent implements OnInit {
     this.lmsService.deleteById(learningTrack).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
-          this.referenceService.showInfo("Learning track Deleted Successfully", "");
+          this.referenceService.showInfo("Track Builder Deleted Successfully", "");
           const message = response.message;
-          this.customResponse = new CustomResponse('SUCCESS', "Learning track Deleted Successfully", true);
+          this.customResponse = new CustomResponse('SUCCESS', "Track Builder Deleted Successfully", true);
           this.pagination.pageIndex = 1;
           this.listLearningTracks(this.pagination);
         } else {
