@@ -91,7 +91,7 @@ export class VideoFileService {
             url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
         } else {
             if (this.videoType === 'myVideos') {
-                url = this.URL + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
+                url = this.URL + 'loadVideos/'+this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
             } else if (this.videoType === 'partnerVideos') {
                 url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
             }
