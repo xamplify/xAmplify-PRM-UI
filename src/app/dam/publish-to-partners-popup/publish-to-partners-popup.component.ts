@@ -377,14 +377,6 @@ export class PublishToPartnersPopupComponent implements OnInit {
 				let data = response.data;
 				adminsAndTeamMembersPagination.totalRecords = data.totalRecords;
 				adminsAndTeamMembersPagination = this.pagerService.getPagedItems(adminsAndTeamMembersPagination, data.list);
-				// let self = this;
-				// if(this.selectedTeamMemberIds.length>0){
-				// 	$.each(data.list,function(_index,value){
-				// 		let userId = value.userId;
-				// 		$('#ptm-'+userId).attr("checked",self.selectedTeamMemberIds.indexOf(userId)>-1);
-				// 	});
-				// }
-				$('#ptm-18156').attr("checked",true);
 				this.referenceService.loading(this.teamMembersLoader, false);
 			},error=>{
 				this.xtremandLogger.error(error);
@@ -424,30 +416,87 @@ export class PublishToPartnersPopupComponent implements OnInit {
 				publishToPartnerCompanyDto.partnershipId = 0;
 			}
 		}
+		this.checkHeaderCheckBox(adminAndTeamMemberDto);
+		this.publishToPartnerCompanyDtos = this.removeDumplicateObjects(this.publishToPartnerCompanyDtos);
+		event.stopPropagation();
+	}
+
+	highlightSelectedAdminOrTeamMemberRow(adminAndTeamMemberDto:AdminAndTeamMemberDto,teamMemberId:number,event:any){
+		let publishToPartnerCompanyDto =  adminAndTeamMemberDto.publishToPartnerCompanyDto;
+		let isChecked = $("#ptm-"+teamMemberId+":checked").length==1;
+		if (isChecked) {
+			$('#ptm-' + teamMemberId).prop("checked", false);
+			$('#publishToPartners-' + teamMemberId).removeClass('row-selected');
+			publishToPartnerCompanyDto.teamMemberIds.splice($.inArray(teamMemberId, publishToPartnerCompanyDto.teamMemberIds), 1);
+			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
+			this.publishToPartnerCompanyDtos.splice($.inArray(publishToPartnerCompanyDto, this.publishToPartnerCompanyDtos), 1);
+			if(publishToPartnerCompanyDto.teamMemberIds.length==0){
+				publishToPartnerCompanyDto.partnershipId = 0;
+			}
+		} else {
+			$('#ptm-' + teamMemberId).prop("checked", true);
+			$('#publishToPartners-' + teamMemberId).addClass('row-selected');
+			publishToPartnerCompanyDto.partnershipId = adminAndTeamMemberDto.partnershipId;
+			publishToPartnerCompanyDto.teamMemberIds.push(teamMemberId);
+			this.selectedTeamMemberIds.push(teamMemberId);
+			this.publishToPartnerCompanyDtos.push(publishToPartnerCompanyDto);
+		}
+		this.checkHeaderCheckBox(adminAndTeamMemberDto);
+		event.stopPropagation();
+	}
+
+	checkHeaderCheckBox(adminAndTeamMemberDto:any) {
 		let trLength = $('#admin-and-team-members-'+adminAndTeamMemberDto.partnershipId+' tbody tr').length;
 		let selectedRowsLength = $('[name="adminOrTeamMemberCheckBox[]"]:checked').length;
-		console.log(selectedRowsLength);
 		if (trLength != selectedRowsLength) {
 			$('#partnership-'+adminAndTeamMemberDto.partnershipId).prop("checked", false)
 		} else if (trLength == selectedRowsLength) {
 			$('#partnership-'+adminAndTeamMemberDto.partnershipId).prop("checked", true);
 		}
-		this.publishToPartnerCompanyDtos = this.removeDumplicateObjects(this.publishToPartnerCompanyDtos);
-		event.stopPropagation();
 	}
 
-	removeDumplicateObjects(myArray){ 
+	removeDumplicateObjects(myArray:any){ 
 		var newArray = [];
-		$.each(myArray, function(key, value) {
+		$.each(myArray, function(_key:any, value:any) {
 		  var exists = false;
-		  $.each(newArray, function(k, val2) {
+		  $.each(newArray, function(_k:any, val2:any) {
 			if(value.partnershipId == val2.partnershipId){ exists = true } 
 		  });
 		  if(!exists && value.partnershipId != "") { newArray.push(value); }
 		});
 		return newArray;
 	  }
-	  
+
+	selectAllTeamMembers(event:any,partnershipId:number){
+		let publishToPartnerCompanyDto =  this.adminAndTeamMemberDto.publishToPartnerCompanyDto;
+		if (event.target.checked) {
+			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', true);
+			let self = this;
+			$('[name="adminOrTeamMemberCheckBox[]"]:checked').each(function(_index: number) {
+				var id = $(this).val();
+				$('#publishToPartners-' + id).addClass('row-selected');
+			publishToPartnerCompanyDto.partnershipId = self.adminAndTeamMemberDto.partnershipId;
+			publishToPartnerCompanyDto.teamMemberIds.push(parseInt(id));
+			self.selectedTeamMemberIds.push(parseInt(id));
+			self.publishToPartnerCompanyDtos.push(publishToPartnerCompanyDto);
+			});
+			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
+			this.publishToPartnerCompanyDtos = this.removeDumplicateObjects(this.publishToPartnerCompanyDtos);
+		} else {
+			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
+			$('#admin-and-team-members-'+partnershipId+' tr').removeClass("row-selected");
+			if (this.pagination.maxResults > 30 || (this.pagination.maxResults == this.pagination.totalRecords)) {
+				this.selectedTeamMemberIds = [];
+				this.publishToPartnerCompanyDtos = new Array<PublishToPartnerCompanyDto>();
+			} else {
+				this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
+				let currentPageSelectedIds = this.adminAndTeamMemberDto.pagination.pagedItems.map(function(a) { return a.userId; });
+				this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
+			}
+		}
+		event.stopPropagation();
+	}	
+
 	  publish(){
 		  console.log(this.publishToPartnerCompanyDtos);
 	  }

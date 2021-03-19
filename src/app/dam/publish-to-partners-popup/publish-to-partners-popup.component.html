@@ -90,7 +90,7 @@
                             </app-timestamp>
                          </td>
                           </tr>
-                          <tr  [ngClass]="{'hidden': !partner?.expand}">
+                          <tr *ngIf="partner?.expand">
                            <td colspan="3">
                               <div class="table-responsive">
                                  <div class="portlet-input input-inline float-right mb10p" id="search-div">
@@ -112,7 +112,7 @@
                                  <thead>
                                     <tr>
                                       <th scope="row" style="width:10%;">
-                                       <input type="checkbox" id="partnership-{{partner?.partnershipId}}">
+                                       <input type="checkbox" id="partnership-{{partner?.partnershipId}}"   (change)="selectAllTeamMembers($event,partner.partnershipId)">
                                      </th>
                                       <th scope="row">Entity Info</th>
                                     </tr>
@@ -120,7 +120,7 @@
                                   <tbody>
                                     <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
                                     <ng-container *ngIf="!teamMembersLoader.isLoading">
-                                    <tr *ngFor="let adminAndTeamMember of adminAndTeamMemberDto.pagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}" [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" >
+                                    <tr *ngFor="let adminAndTeamMember of adminAndTeamMemberDto.pagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}" [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" (click)="highlightSelectedAdminOrTeamMemberRow(adminAndTeamMemberDto,adminAndTeamMember.userId,$event)" >
                                         <td>
                                           <input type="checkbox" id="ptm-{{adminAndTeamMember.userId}}"  [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRow(adminAndTeamMemberDto,adminAndTeamMember.userId,$event)">
                                        </td>
