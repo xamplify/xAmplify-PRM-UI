@@ -7,7 +7,6 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { LearningTrack } from '../models/learningTrack'
-import { DomSanitizer } from "@angular/platform-browser";
 import { CustomResponse } from '../../common/models/custom-response';
 import { ActivityType } from '../models/activity-type';
 import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.component'
@@ -52,7 +51,7 @@ export class PreviewLmsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public lmsService: LmsService,
-    private router: Router, public sanitizer: DomSanitizer, public logger: XtremandLogger,
+    private router: Router, public logger: XtremandLogger,
     private damService: DamService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.getCompanyId();

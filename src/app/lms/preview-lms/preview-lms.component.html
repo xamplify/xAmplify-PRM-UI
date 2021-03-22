@@ -18,7 +18,7 @@
                 <div class="page-bar padding">
                     <div class="title padding_bottom">{{learningTrack.title}}</div>
                     <div class="padding_bottom text-wrap">
-                        <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(learningTrack.description)"></div>
+                        <div [innerHTML]="learningTrack.description"></div>
                     </div>
                 </div>
             </section>
@@ -89,6 +89,10 @@
                                         <h6 title="{{content.assetType}}" translate>
                                             Type: <strong>{{content.assetType}}</strong>
                                         </h6>
+                                    </div>
+                                    <div class="ribbon">
+                                        <span style="background-color: #5cb85c;" *ngIf="content.finished && !isCreatedUser" translate>Finished</span>
+                                        <span style="background-color: #819081;" *ngIf="!content.finished && !isCreatedUser && learningTrack.contents[i-1].finished" translate>In Progress</span>
                                     </div>
                                     <div class="bar">
                                         <a [ngClass]="{'isDisabled' : i != 0 && learningTrack.followAssetSequence && !learningTrack.contents[i-1].finished && !isCreatedUser}" data-toggle="tooltip" data-placement="top" title="View" (click)="viewContent(content)">

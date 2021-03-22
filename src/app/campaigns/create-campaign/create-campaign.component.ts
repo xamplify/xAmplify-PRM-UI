@@ -1196,7 +1196,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.videoFileService.loadCampaignVideos(pagination,pagination.videoCategoryId)
             .subscribe(
             (result:any) => {
-                this.campaignVideos = result.listOfMobinars;
+                this.campaignVideos = result.list;
                 this.categories = result.categories;
                 pagination.totalRecords = result.totalRecords;
                 this.videosPagination = this.pagerService.getPagedItems(pagination, this.campaignVideos);
