@@ -138,6 +138,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 								this.pagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
 								this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 							}
+							this.pagination.userId = this.loggedInUserId;
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.listAssets(this.pagination);

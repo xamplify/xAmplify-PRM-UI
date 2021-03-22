@@ -77,7 +77,7 @@
                             </td>
                             <td  title="{{partner?.companyName}}">
                               <div>
-                                 <img class="img-c-h" alt="No Image Found" src="{{partner?.companyLogo}}">
+                                 <img class="img-c-h" alt="No Image Found" [src]="authenticationService.MEDIA_URL+partner.companyLogo">
                               </div>
                            </td>
                           <td class="text-center" title="{{partner?.companyName}}">
@@ -90,7 +90,7 @@
                          </td>
                           </tr>
                           <tr *ngIf="partner?.expand">
-                           <td colspan="3">
+                           <td colspan="4">
                               <div class="table-responsive">
                                  <div class="portlet-input input-inline float-right mb10p" id="search-div">
                                     <div class="input-icon right" id="icon">
