@@ -86,6 +86,29 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		});
 	}
 
+	navigateToNextPage(event:any){
+		this.pagination.pageIndex = event.page;
+		this.findPartnerCompanies(this.pagination);
+	}
+
+	partnersSearchOnKeyEvent(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+
+	/*************************Sort********************** */
+	sortBy(text: any) {
+		this.sortOption.selectedDamPartnerDropDownOption = text;
+		this.getAllFilteredResults();
+	}
+	/*************************Search********************** */
+	searchPartners() {
+		this.getAllFilteredResults();
+	}
+	getAllFilteredResults() {
+		this.customResponse = new CustomResponse();
+		this.pagination.pageIndex = 1;
+		this.pagination.searchKey = this.sortOption.searchKey;
+		this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedDamPartnerDropDownOption, this.pagination);
+		this.findPartnerCompanies(this.pagination);	
+	}
 
 	closePopup() {
 		this.notifyOtherComponent.emit();
@@ -225,4 +248,46 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		}
 		ev.stopPropagation();
 	}
+
+	publish(){
+		if(this.selectedTeamMemberIds.length>0){
+			this.startLoaders();
+			this.damPublishPostDto.damId = this.assetId;
+			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
+			this.damPublishPostDto.publishedBy = this.loggedInUserId;
+			this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
+				this.stopLoaders();
+				if (data.access) {
+					this.sendSuccess = true;
+					this.statusCode = data.statusCode;
+					if (data.statusCode == 200) {
+					  this.responseMessage = "Published Successfully";
+					} else {
+						this.responseMessage = data.message;
+					}
+					this.resetFields();
+				} else {
+					this.authenticationService.forceToLogout();
+				}
+			}, _error => {
+			  this.ngxLoading = false;
+			  this.sendSuccess = false;
+			  this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+			});
+		}else{
+			this.referenceService.goToTop();
+			this.customResponse = new CustomResponse('ERROR','Please select atleast one partner',true);
+		}
+	}
+
+	startLoaders(){
+		this.ngxLoading = true;
+		this.referenceService.startLoader(this.httpRequestLoader);
+	}
+
+	stopLoaders(){
+		this.ngxLoading = false;
+		this.referenceService.stopLoader(this.httpRequestLoader);
+	}
+
 }

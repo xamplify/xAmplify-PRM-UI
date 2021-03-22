@@ -38,7 +38,7 @@
                                    </div>
                                    <div class="portlet-input input-inline" id="search-div">
                                       <div class="input-icon right" id="icon">
-                                         <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                         <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
                                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
                                          <button type="submit" class="search-box-item-click" (click)="searchPartners()">
                                          <i class="fa fa-search" aria-hidden="true"></i>
@@ -59,7 +59,8 @@
                     <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="dam-partnership-list-table" aria-describedby="damPartnersTableDescription">
                        <thead>
                           <tr>
-                            <th scope="col"></th>
+                             <th scope="col"></th>
+                             <th scope="col">Company Logo</th>
                              <th scope="col" class="text-center">Partner Company Name</th>
                              <th scope="col" class="text-center">Created Time</th>
                           </tr>
@@ -74,6 +75,11 @@
                                 </a>
                               </div>
                             </td>
+                            <td  title="{{partner?.companyName}}">
+                              <div>
+                                 <img class="img-c-h" alt="No Image Found" src="{{partner?.companyLogo}}">
+                              </div>
+                           </td>
                           <td class="text-center" title="{{partner?.companyName}}">
                              <span>{{partner?.companyName | slice:0:20}}</span>
                              <span *ngIf="partner?.companyName.length>20">...</span>
@@ -148,7 +154,7 @@
               </ng-container>
            </ng-container>
            <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-           <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listItems($event)">
+           <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">
            </app-pagination>
         </div>
      </div>
