@@ -27,12 +27,6 @@
                        <div class="col-xs-12">
                           <div class="page-toolbar">
                              <div class="btn-group pull-right">
-                                <ng-container class='m10'>
-                                   <span *ngIf="!showPublishedPartnersList" class="btn btn-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Edit Selected Partners" (click)="viewPublishedPartners()">
-                                   <i class="fa fa-edit p10" aria-hidden="true"></i></span> &nbsp;
-                                   <span *ngIf="showPublishedPartnersList" class="btn btn-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Go To Partners" (click)="viewUnPublishedPartners()">
-                                   <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span> &nbsp;
-                                </ng-container>
                                 <div class="inputs float-right" style="display: inline-flex;">
                                    <div>
                                       <select class="form-control" [(ngModel)]="sortOption.selectedDamPartnerDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
@@ -68,7 +62,6 @@
                             <th scope="col"></th>
                              <th scope="col" class="text-center">Partner Company Name</th>
                              <th scope="col" class="text-center">Created Time</th>
-                             <th *ngIf="showPublishedPartnersList" scope="col">Actions</th>
                           </tr>
                        </thead>
                        <tbody>
@@ -95,8 +88,8 @@
                               <div class="table-responsive">
                                  <div class="portlet-input input-inline float-right mb10p" id="search-div">
                                     <div class="input-icon right" id="icon">
-                                       <input type="text" id="sort-text" class="form-control" [(ngModel)]="adminAndTeamMemberDto.pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)">
-                                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="adminAndTeamMemberDto.pagination.searchKey" (click)="adminAndTeamMemberDto.pagination.searchKey='';searchAdminsAndTeamMembers();"></button>
+                                       <input type="text" id="sort-text" class="form-control" [(ngModel)]="teamMembersPagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)">
+                                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="teamMembersPagination?.searchKey" (click)="teamMembersPagination.searchKey='';searchAdminsAndTeamMembers();"></button>
                                        <button type="submit" class="search-box-item-click" (click)="searchAdminsAndTeamMembers()">
                                        <i class="fa fa-search" aria-hidden="true"></i>
                                        </button>
@@ -112,7 +105,7 @@
                                  <thead>
                                     <tr>
                                       <th scope="row" style="width:10%;">
-                                       <input type="checkbox" id="partnership-{{partner?.partnershipId}}"   (change)="selectAllTeamMembers($event,partner.partnershipId)">
+                                       <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
                                      </th>
                                       <th scope="row">Entity Info</th>
                                     </tr>
@@ -120,9 +113,9 @@
                                   <tbody>
                                     <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
                                     <ng-container *ngIf="!teamMembersLoader.isLoading">
-                                    <tr *ngFor="let adminAndTeamMember of adminAndTeamMemberDto.pagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}" [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" (click)="highlightSelectedAdminOrTeamMemberRow(adminAndTeamMemberDto,adminAndTeamMember.userId,$event)" >
+                                    <tr *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}" [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)" >
                                         <td>
-                                          <input type="checkbox" id="ptm-{{adminAndTeamMember.userId}}"  [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRow(adminAndTeamMemberDto,adminAndTeamMember.userId,$event)">
+                                          <input type="checkbox" id="{{adminAndTeamMember.userId}}"  [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
                                        </td>
                                         <td>
                                           <app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
@@ -133,11 +126,11 @@
                                   </tbody>
                               </table>
                                <!---Pagination-->
-                               <div *ngIf="adminAndTeamMemberDto.pagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info">
+                               <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info">
                                  <strong>No Data Found.</strong>
                               </div>
-                              <div *ngIf="adminAndTeamMemberDto.pagination.pagedItems.length !== 0" [hidden]="teamMembersLoader.isLoading">
-                                 <app-pagination [pagination]="adminAndTeamMemberDto.pagination" (notifyParent)="naviagtePages($event)" (notifyParentDropDown)="getTeamMembersAndAdmins($event)">
+                              <div *ngIf="teamMembersPagination.pagedItems.length !== 0" [hidden]="teamMembersLoader.isLoading">
+                                 <app-pagination [pagination]="teamMembersPagination" (notifyParent)="naviagtePages($event)" (notifyParentDropDown)="getTeamMembersAndAdmins($event)">
                                  </app-pagination>
                               </div>
                            </div>
@@ -159,7 +152,7 @@
            </app-pagination>
         </div>
      </div>
-     <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading && !showPublishedPartnersList">
+     <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
         <button type="submit" class="btn green-haze" [disabled]="selectedTeamMemberIds?.length==0" *ngIf="!sendSuccess" (click)="publish()">Publish</button>
         <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
      </div>

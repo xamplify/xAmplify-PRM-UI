@@ -30,16 +30,11 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
 	customResponse: CustomResponse = new CustomResponse();
-	adminAndTeamMemberDto : AdminAndTeamMemberDto = new AdminAndTeamMemberDto();
-	adminsAndTeamMembersErrorMessage: CustomResponse = new CustomResponse();
 	@Input() companyId: any;
 	@Input() assetId: any;
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
 	sortOption: SortOption = new SortOption();
-	isHeaderCheckBoxChecked = false;
-	selectedPartnerShipIds: any[] = [];
-	isRowSelected: boolean;
 	sendSuccess = false;
 	responseMessage = "";
 	responseImage = "";
@@ -47,10 +42,12 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	@Output() notifyOtherComponent = new EventEmitter();
 	damPublishPostDto: DamPublishPostDto = new DamPublishPostDto();
 	statusCode: number = 0;
-	publishedPartnershipIds: any[] = [];
-	showPublishedPartnersList = false;
-	publishToPartnerCompanyDtos:Array<PublishToPartnerCompanyDto> =  new Array<PublishToPartnerCompanyDto>();
+	/*********Expanded List******* */
+	isHeaderCheckBoxChecked = false;
 	selectedTeamMemberIds:any[] = [];
+	teamMembersPagination:Pagination = new Pagination();
+	adminsAndTeamMembersErrorMessage: CustomResponse = new CustomResponse();
+
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService,public userService:UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -105,253 +102,12 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		this.pagination = new Pagination();
 		this.sortOption = new SortOption();
 		this.isHeaderCheckBoxChecked = false;
-		this.selectedPartnerShipIds = [];
-		this.publishedPartnershipIds = [];
+		this.selectedTeamMemberIds = [];
 		this.ngxLoading = false;
-	}
-
-	/********************Pagaination&Search Code*****************/
-	listItems(pagination: any) {
-		this.pagination = pagination;
-		this.listPublishedOrUnPublishedPartners();
-	}
-	/*************************Sort********************** */
-	sortBy(text: any) {
-		this.sortOption.selectedDamPartnerDropDownOption = text;
-		this.getAllFilteredResults();
-	}
-	/*************************Search********************** */
-	searchPartners() {
-		this.getAllFilteredResults();
-	}
-
-	paginationDropdown() {
-		this.getAllFilteredResults();
-	}
-
-	/************Page************** */
-	setPage(event: any) {
-		this.customResponse = new CustomResponse();
-		this.pagination.pageIndex = event.page;
-		this.listPublishedOrUnPublishedPartners();
-	}
-
-
-	getAllFilteredResults() {
-		this.customResponse = new CustomResponse();
-		this.pagination.pageIndex = 1;
-		this.pagination.searchKey = this.sortOption.searchKey;
-		this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedDamPartnerDropDownOption, this.pagination);
-		this.listPublishedOrUnPublishedPartners();
-	}
-	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
-
-	listPublishedOrUnPublishedPartners() {
-		if (this.showPublishedPartnersList) {
-			this.listPublishedPartners(this.pagination);
-		} else {
-			this.findPartnerCompanies(this.pagination);
-		}
-	}
-
-	/***********CheckBox Selection************ */
-	checkAll(ev: any) {
-		if (ev.target.checked) {
-			$('[name="damPartnershipCheckBoxName[]"]').prop('checked', true);
-			this.isRowSelected = true;
-			let self = this;
-			$('[name="damPartnershipCheckBoxName[]"]:checked').each(function (_index: number) {
-				var id = $(this).val();
-				self.selectedPartnerShipIds.push(parseInt(id));
-				$('#damPartnershipTr_' + id).addClass('row-selected');
-			});
-			this.selectedPartnerShipIds = this.referenceService.removeDuplicates(this.selectedPartnerShipIds);
-			if (this.selectedPartnerShipIds.length == 0) { this.isRowSelected = false; }
-		} else {
-			$('[name="damPartnershipCheckBoxName[]"]').prop('checked', false);
-			$('#dam-partnership-list-table tr').removeClass("row-selected");
-			if (this.pagination.maxResults > 30 || (this.pagination.maxResults == this.pagination.totalRecords)) {
-				this.isRowSelected = false;
-				this.selectedPartnerShipIds = [];
-			} else {
-				this.selectedPartnerShipIds = this.referenceService.removeDuplicates(this.selectedPartnerShipIds);
-				let currentPageSelectedIds = this.pagination.pagedItems.map(function (a) { return a.partnershipId; });
-				this.selectedPartnerShipIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedPartnerShipIds, currentPageSelectedIds);
-				if (this.selectedPartnerShipIds.length == 0) {
-					this.isRowSelected = false;
-				}
-			}
-
-		}
-		ev.stopPropagation();
-	}
-
-	highlightRowByCheckBox(partnership: any, event: any) {
-		let partnershipId = partnership.partnershipId;
-		let isChecked = $('#' + partnershipId).is(':checked');
-		if (isChecked) {
-			$('#damPartnershipTr_' + partnershipId).addClass('row-selected');
-			this.selectedPartnerShipIds.push(partnershipId);
-		} else {
-			$('#damPartnershipTr_' + partnershipId).removeClass('row-selected');
-			this.selectedPartnerShipIds.splice($.inArray(partnershipId, this.selectedPartnerShipIds), 1);
-		}
-		this.utility();
-		event.stopPropagation();
-	}
-
-	utility() {
-		var trLength = $('#dam-partnership-list-table tbody tr').length;
-		var selectedRowsLength = $('[name="damPartnershipCheckBoxName[]"]:checked').length;
-		if (selectedRowsLength > 0) {
-			this.isRowSelected = true;
-		} else {
-			this.isRowSelected = false;
-		}
-		if (trLength != selectedRowsLength) {
-			$('#selectAllPartners').prop("checked", false)
-		} else if (trLength == selectedRowsLength) {
-			$('#selectAllPartners').prop("checked", true);
-		}
-	}
-
-	highlightSelectedCampaignRow(partnership: any, event: any) {
-		if (!this.showPublishedPartnersList) {
-			let partnershipId = partnership.partnershipId;
-			let isChecked = $('#' + partnershipId).is(':checked');
-			if (isChecked) {
-				//Removing Highlighted Row
-				$('#' + partnershipId).prop("checked", false);
-				$('#damPartnershipTr_' + partnershipId).removeClass('row-selected');
-				this.selectedPartnerShipIds.splice($.inArray(partnershipId, this.selectedPartnerShipIds), 1);
-			} else {
-				//Highlighting Row
-				$('#' + partnershipId).prop("checked", true);
-				$('#damPartnershipTr_' + partnershipId).addClass('row-selected');
-				this.selectedPartnerShipIds.push(partnershipId);
-			}
-			this.utility();
-		}
-		event.stopPropagation();
-	}
-
-	/****Publish To Partners */
-	publishAsset() {
-		if (this.selectedPartnerShipIds.length > 0) {
-			this.startLoaders();
-			this.damPublishPostDto.damId = this.assetId;
-			this.damPublishPostDto.partnershipIds = this.selectedPartnerShipIds;
-			this.damPublishPostDto.publishedBy = this.loggedInUserId;
-			this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
-				this.stopLoaders();
-				if (data.access) {
-					this.sendSuccess = true;
-					this.statusCode = data.statusCode;
-					if (data.statusCode == 200) {
-						this.responseMessage = "Published Successfully";
-					} else {
-						this.responseMessage = data.message;
-					}
-					this.resetFields();
-				} else {
-					this.ngxLoading = false;
-					this.authenticationService.forceToLogout();
-				}
-			}, _error => {
-				this.ngxLoading = false;
-				this.sendSuccess = false;
-				this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-			});
-		} else {
-			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one partner', true);
-		}
-
-	}
-
-	startLoaders() {
-		this.ngxLoading = true;
-		this.referenceService.startLoader(this.httpRequestLoader);
-	}
-
-	stopLoaders() {
-		this.ngxLoading = false;
-		this.referenceService.stopLoader(this.httpRequestLoader);
-	}
-
-	viewPublishedPartners() {
-		this.showPublishedPartnersList = true;
-		this.pagination = new Pagination();
-		this.pagination.vendorCompanyId = this.companyId;
-		this.pagination.formId = this.assetId;
-		this.sortOption = new SortOption();
-		this.listPublishedPartners(this.pagination);
-	}
-	listPublishedPartners(pagination: Pagination) {
-		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.listPublishedPartners(pagination).subscribe((result: any) => {
-			let data = result.data;
-			pagination.totalRecords = data.totalRecords;
-			this.sortOption.totalRecords = data.totalRecords;
-			pagination = this.pagerService.getPagedItems(pagination, data.list);
-			this.referenceService.stopLoader(this.httpRequestLoader);
-		}, _error => {
-			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-		}, () => {
-
-		});
-	}
-
-	viewUnPublishedPartners() {
-		this.showPublishedPartnersList = false;
-		this.pagination = new Pagination();
-		this.pagination.vendorCompanyId = this.companyId;
-		this.pagination.formId = this.assetId;
-		this.sortOption = new SortOption();
-		this.findPartnerCompanies(this.pagination);
-	}
-
-	openDeletePopup(partner: any) {
-		try {
-			let self = this;
-			swal({
-				title: 'Are you sure?',
-				text: "You won't be able to undo this action!",
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				confirmButtonText: 'Yes, delete it!'
-			}).then(function () {
-				self.deleteById(partner);
-			}, function (dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
-		} catch (error) {
-			this.xtremandLogger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
-		}
-	}
-
-	deleteById(partner: any) {
-		this.customResponse = new CustomResponse();
-		this.referenceService.startLoader(this.httpRequestLoader);
-		this.referenceService.goToTop();
-		this.damService.deletePartner(partner.id)
-			.subscribe(
-				(response: any) => {
-					this.customResponse = new CustomResponse('SUCCESS', "Partner Deleted Successfully", true);
-					this.pagination.pageIndex = 1;
-					this.listPublishedPartners(this.pagination);
-				},
-				(_error: string) => {
-					this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-					this.customResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
-				}
-			);
 	}
 
 	viewTeamMembers(item: any) {
-		this.adminAndTeamMemberDto = new AdminAndTeamMemberDto();
+		this.teamMembersPagination = new Pagination();
 		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
 		this.pagination.pagedItems.forEach((element) => {
 			let partnerCompanyId = element.partnerCompanyId;
@@ -362,21 +118,31 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		});
 		item.expand = !item.expand;
 		if(item.expand){
-			this.adminAndTeamMemberDto.pagination.companyId = item.partnerCompanyId;
-			this.adminAndTeamMemberDto.partnershipId = item.partnershipId;
-			this.getTeamMembersAndAdmins(this.adminAndTeamMemberDto.pagination);
+			this.teamMembersPagination.companyId = item.partnerCompanyId;
+			this.teamMembersPagination.partnershipId = item.partnershipId;
+			this.getTeamMembersAndAdmins(this.teamMembersPagination);
 		}
 	}
 
-	getTeamMembersAndAdmins(adminsAndTeamMembersPagination:Pagination){
+	getTeamMembersAndAdmins(teamMembersPagination:Pagination){
 		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
 		this.referenceService.loading(this.teamMembersLoader, true);
-		adminsAndTeamMembersPagination.maxResults = 3;
-		this.userService.findAdminsAndTeamMembers(adminsAndTeamMembersPagination).subscribe(
+		teamMembersPagination.maxResults = 3;
+		this.userService.findAdminsAndTeamMembers(teamMembersPagination).subscribe(
 			response=>{
 				let data = response.data;
-				adminsAndTeamMembersPagination.totalRecords = data.totalRecords;
-				adminsAndTeamMembersPagination = this.pagerService.getPagedItems(adminsAndTeamMembersPagination, data.list);
+				teamMembersPagination.totalRecords = data.totalRecords;
+				teamMembersPagination = this.pagerService.getPagedItems(teamMembersPagination, data.list);
+				/*******Header checkbox will be chcked when navigating through page numbers*****/
+				let teamMemberIds = teamMembersPagination.pagedItems.map(function(a) { return a.userId; });
+				let items = $.grep(this.selectedTeamMemberIds, function(element: any) {
+					return $.inArray(element, teamMemberIds) !== -1;
+				});
+				if (items.length == teamMemberIds.length) {
+					this.isHeaderCheckBoxChecked = true;
+				} else {
+					this.isHeaderCheckBoxChecked = false;
+				}
 				this.referenceService.loading(this.teamMembersLoader, false);
 			},error=>{
 				this.xtremandLogger.error(error);
@@ -385,119 +151,78 @@ export class PublishToPartnersPopupComponent implements OnInit {
 			}
 		);
 	}
+
 	/************Page************** */
 	naviagtePages(event: any) {
-		this.adminAndTeamMemberDto.pagination.pageIndex = event.page;
-		this.getTeamMembersAndAdmins(this.adminAndTeamMemberDto.pagination);
+		this.teamMembersPagination.pageIndex = event.page;
+		this.getTeamMembersAndAdmins(this.teamMembersPagination);
 	}
 
 	adminAndTeamMembersKeySearch(keyCode: any) { if (keyCode === 13) { this.searchAdminsAndTeamMembers(); } }
 
 	searchAdminsAndTeamMembers(){
-		this.adminAndTeamMemberDto.pagination.pageIndex = 1;
-		this.getTeamMembersAndAdmins(this.adminAndTeamMemberDto.pagination);
+		this.teamMembersPagination.pageIndex = 1;
+		this.getTeamMembersAndAdmins(this.teamMembersPagination);
 	}
 
-	highlightAdminOrTeamMemberRow(adminAndTeamMemberDto:AdminAndTeamMemberDto,teamMemberId:number,event:any){
-		let publishToPartnerCompanyDto =  adminAndTeamMemberDto.publishToPartnerCompanyDto;
-		let isChecked = $("#ptm-"+teamMemberId+":checked").length==1;
+	highlightAdminOrTeamMemberRowOnCheckBoxClick(teamMemberId:number,partnershipId:number, event:any){
+		let isChecked = $('#' + teamMemberId).is(':checked');
 		if (isChecked) {
-			$('#publishToPartners-' + teamMemberId).addClass('row-selected');
-			publishToPartnerCompanyDto.partnershipId = adminAndTeamMemberDto.partnershipId;
-			publishToPartnerCompanyDto.teamMemberIds.push(teamMemberId);
+			$('#publishToPartners' + teamMemberId).addClass('row-selected');
 			this.selectedTeamMemberIds.push(teamMemberId);
-			this.publishToPartnerCompanyDtos.push(publishToPartnerCompanyDto);
 		} else {
-			$('#publishToPartners-' + teamMemberId).removeClass('row-selected');
-			publishToPartnerCompanyDto.teamMemberIds.splice($.inArray(teamMemberId, publishToPartnerCompanyDto.teamMemberIds), 1);
+			$('#publishToPartners' + teamMemberId).removeClass('row-selected');
 			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
-			this.publishToPartnerCompanyDtos.splice($.inArray(publishToPartnerCompanyDto, this.publishToPartnerCompanyDtos), 1);
-			if(publishToPartnerCompanyDto.teamMemberIds.length==0){
-				publishToPartnerCompanyDto.partnershipId = 0;
-			}
 		}
-		this.checkHeaderCheckBox(adminAndTeamMemberDto);
-		this.publishToPartnerCompanyDtos = this.removeDumplicateObjects(this.publishToPartnerCompanyDtos);
+		this.checkHeaderCheckBox(partnershipId);
 		event.stopPropagation();
 	}
 
-	highlightSelectedAdminOrTeamMemberRow(adminAndTeamMemberDto:AdminAndTeamMemberDto,teamMemberId:number,event:any){
-		let publishToPartnerCompanyDto =  adminAndTeamMemberDto.publishToPartnerCompanyDto;
-		let isChecked = $("#ptm-"+teamMemberId+":checked").length==1;
-		if (isChecked) {
-			$('#ptm-' + teamMemberId).prop("checked", false);
-			$('#publishToPartners-' + teamMemberId).removeClass('row-selected');
-			publishToPartnerCompanyDto.teamMemberIds.splice($.inArray(teamMemberId, publishToPartnerCompanyDto.teamMemberIds), 1);
-			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
-			this.publishToPartnerCompanyDtos.splice($.inArray(publishToPartnerCompanyDto, this.publishToPartnerCompanyDtos), 1);
-			if(publishToPartnerCompanyDto.teamMemberIds.length==0){
-				publishToPartnerCompanyDto.partnershipId = 0;
-			}
-		} else {
-			$('#ptm-' + teamMemberId).prop("checked", true);
-			$('#publishToPartners-' + teamMemberId).addClass('row-selected');
-			publishToPartnerCompanyDto.partnershipId = adminAndTeamMemberDto.partnershipId;
-			publishToPartnerCompanyDto.teamMemberIds.push(teamMemberId);
-			this.selectedTeamMemberIds.push(teamMemberId);
-			this.publishToPartnerCompanyDtos.push(publishToPartnerCompanyDto);
-		}
-		this.checkHeaderCheckBox(adminAndTeamMemberDto);
-		event.stopPropagation();
-	}
-
-	checkHeaderCheckBox(adminAndTeamMemberDto:any) {
-		let trLength = $('#admin-and-team-members-'+adminAndTeamMemberDto.partnershipId+' tbody tr').length;
+	checkHeaderCheckBox(partnershipId:number) {
+		let trLength = $('#admin-and-team-members-'+partnershipId+' tbody tr').length;
 		let selectedRowsLength = $('[name="adminOrTeamMemberCheckBox[]"]:checked').length;
-		if (trLength != selectedRowsLength) {
-			$('#partnership-'+adminAndTeamMemberDto.partnershipId).prop("checked", false)
-		} else if (trLength == selectedRowsLength) {
-			$('#partnership-'+adminAndTeamMemberDto.partnershipId).prop("checked", true);
-		}
+		this.isHeaderCheckBoxChecked = (trLength == selectedRowsLength);
 	}
 
-	removeDumplicateObjects(myArray:any){ 
-		var newArray = [];
-		$.each(myArray, function(_key:any, value:any) {
-		  var exists = false;
-		  $.each(newArray, function(_k:any, val2:any) {
-			if(value.partnershipId == val2.partnershipId){ exists = true } 
-		  });
-		  if(!exists && value.partnershipId != "") { newArray.push(value); }
-		});
-		return newArray;
-	  }
+	highlightSelectedAdminOrTeamMemberRowOnRowClick(teamMemberId:number,partnershipId:number, event:any) {
+		let isChecked = $('#' + teamMemberId).is(':checked');
+		if (isChecked) {
+			//Removing Highlighted Row
+			$('#' + teamMemberId).prop("checked", false);
+			$('#publishToPartners' + teamMemberId).removeClass('row-selected');
+			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
+		} else {
+			//Highlighting Row
+			$('#' + teamMemberId).prop("checked", true);
+			$('#publishToPartners' + teamMemberId).addClass('row-selected');
+			this.selectedTeamMemberIds.push(teamMemberId);
+		}
+		this.checkHeaderCheckBox(partnershipId);
+		event.stopPropagation();
+	}
 
-	selectAllTeamMembers(event:any,partnershipId:number){
-		let publishToPartnerCompanyDto =  this.adminAndTeamMemberDto.publishToPartnerCompanyDto;
-		if (event.target.checked) {
+	selectAllTeamMembersOfTheCurrentPage(ev: any,partnershipId:number) {
+		if (ev.target.checked) {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', true);
 			let self = this;
-			$('[name="adminOrTeamMemberCheckBox[]"]:checked').each(function(_index: number) {
+			$('[name="adminOrTeamMemberCheckBox[]"]:checked').each(function (_index: number) {
 				var id = $(this).val();
-				$('#publishToPartners-' + id).addClass('row-selected');
-			publishToPartnerCompanyDto.partnershipId = self.adminAndTeamMemberDto.partnershipId;
-			publishToPartnerCompanyDto.teamMemberIds.push(parseInt(id));
-			self.selectedTeamMemberIds.push(parseInt(id));
-			self.publishToPartnerCompanyDtos.push(publishToPartnerCompanyDto);
+				self.selectedTeamMemberIds.push(parseInt(id));
+				$('#publishToPartners' + id).addClass('row-selected');
 			});
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
-			this.publishToPartnerCompanyDtos = this.removeDumplicateObjects(this.publishToPartnerCompanyDtos);
 		} else {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
-			$('#admin-and-team-members-'+partnershipId+' tr').removeClass("row-selected");
+			$('#dam-partnership-list-table tr').removeClass("row-selected");
 			if (this.pagination.maxResults > 30 || (this.pagination.maxResults == this.pagination.totalRecords)) {
 				this.selectedTeamMemberIds = [];
-				this.publishToPartnerCompanyDtos = new Array<PublishToPartnerCompanyDto>();
 			} else {
 				this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
-				let currentPageSelectedIds = this.adminAndTeamMemberDto.pagination.pagedItems.map(function(a) { return a.userId; });
+				let currentPageSelectedIds = this.pagination.pagedItems.map(function (a) { return a.partnershipId; });
 				this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
 			}
-		}
-		event.stopPropagation();
-	}	
 
-	  publish(){
-		  console.log(this.publishToPartnerCompanyDtos);
-	  }
+		}
+		ev.stopPropagation();
+	}
 }
