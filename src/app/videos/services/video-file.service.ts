@@ -249,7 +249,7 @@ export class VideoFileService {
     }
     loadCampaignVideos(pagination: Pagination, categoryId: number) {
         console.log(pagination);
-        const url = this.URL + categoryId +
+        const url = this.URL + 'loadVideos/'+ categoryId +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         console.log(url);
         return this.http.post(url, pagination)
