@@ -43,7 +43,7 @@
 }
 
 .scroller {
-    height: 200px;
+    height: 125px;
     padding: 10px;
     overflow: auto;
 }
@@ -257,9 +257,7 @@
 }
 
 .add-btn {
-    height: 20px;
-    width: 20px;
-    padding: 1px 1px;
+    padding: 6px 10px;
 }
 
 .inline {
@@ -268,8 +266,9 @@
 
 .select-box {
     width: 60%;
-    height: 35px;
+    height: 36px;
     padding: 6px 12px;
+    border-radius: 0px !important;
 }
 
 .button-align {
@@ -838,4 +837,77 @@ input.cmn-toggle-round-flat:checked+label {
 input.cmn-toggle-round-flat:checked+label:after {
     margin-left: 33px;
     background-color: #27A1CA;
+}
+
+.form-group label {
+    font-weight: 500 !important;
+    color: #999 !important;
+}
+
+.has-success .form-control {
+    border-color: #0ad40e;
+}
+
+.has-error .form-control {
+    border-color: #a94442;
+}
+
+.form-group label {
+    font-weight: 700
+}
+
+.form-group label {
+    font-weight: 700;
+    color: rgb(111, 111, 111);
+    /* float: left; */
+    margin-bottom: 0.4em;
+}
+
+.form-horizontal .form-group {
+    margin-right: 0.5em;
+}
+
+.form-body label {
+    color: #000 !important
+}
+
+
+/* Style the search field */
+
+.link input[type=text] {
+    /* padding: 10px; */
+    /* font-size: 17px; */
+    /* border: 1px solid grey; */
+    float: left;
+    /* width: 80%; */
+    /* background: #f1f1f1; */
+}
+
+
+/* Style the submit button */
+
+.link button {
+    float: left;
+    width: 10%;
+    /* padding: 10px; */
+    background: #2196F3;
+    color: white;
+    /* font-size: 17px; */
+    /* border: 1px solid grey; */
+    border-left: none;
+    /* Prevent double borders */
+    cursor: pointer;
+}
+
+.link button:hover {
+    background: #0b7dda;
+}
+
+
+/* Clear floats */
+
+.link::after {
+    content: "";
+    clear: both;
+    display: table;
 }

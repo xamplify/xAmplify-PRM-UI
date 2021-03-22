@@ -156,7 +156,15 @@ export class AddLmsNewComponent implements OnInit {
   fileType: string = "";
   modalPopupLoader = false;
   imageTypes: Array<string> = ['jpg', 'jpeg', 'png'];
-  fileTypes: Array<string> = ['txt', 'pdf', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx']
+  fileTypes: Array<string> = ['txt', 'pdf', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx'];
+  isEditSlug: boolean = false;
+  completeLink: string = "";
+  private dom: Document;
+
+  tagFirstColumnEndIndex:number = 0;
+  tagsListFirstColumn:Array<Tag> = new Array<Tag>();
+  tagsListSecondColumn:Array<Tag> = new Array<Tag>();
+  tagSearchKey:string = "";
 
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public lmsService: LmsService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
@@ -214,24 +222,21 @@ export class AddLmsNewComponent implements OnInit {
   changeActiveTab(activeTab: string) {
     this.activeTabName = activeTab;
     if (activeTab == "step-1") {
-      this.validateStepOne();
       this.stepOneTabClass = this.activeTabClass;
     } else if (activeTab == "step-2") {
-      this.validateStepTwo();
       this.stepTwoTabClass = this.activeTabClass;
-      this.stepOneTabClass = this.completedTabClass;
+      //this.stepOneTabClass = this.completedTabClass;
     } else if (activeTab == "step-3") {
-      this.validateStepThree();
       this.stepThreeTabClass = this.activeTabClass;
-      this.stepTwoTabClass = this.completedTabClass;
+      //this.stepTwoTabClass = this.completedTabClass;
       this.listAssets(this.assetPagination);
     } else if (activeTab == "step-4") {
-      this.validateStepFour();
       this.stepFourTabClass = this.activeTabClass;
-      this.stepThreeTabClass = this.completedTabClass;
+      //this.stepThreeTabClass = this.completedTabClass;
       this.listGroups(this.groupsPagination);
       this.listPartnerCompanies(this.PartnerCompaniesPagination);
     }
+    this.validateAllSteps();
   }
 
   getById(id: number) {
@@ -298,6 +303,9 @@ export class AddLmsNewComponent implements OnInit {
         const data = response.data;
         pagination.totalRecords = data.totalRecords;
         this.formSortOption.totalRecords = data.totalRecords;
+        $.each(data.forms, function (index, form) {
+          form.createdDateString = new Date(form.createdDateString);
+        });
         pagination = this.pagerService.getPagedItems(pagination, data.forms);
         this.referenceService.loading(this.formsLoader, false);
       },
@@ -573,6 +581,16 @@ export class AddLmsNewComponent implements OnInit {
         response => {
           const data = response.data;
           this.tags = data.tags;
+          let length = this.tags.length ;
+          if((length % 2) == 0){
+            this.tagFirstColumnEndIndex = length / 2;
+            this.tagsListFirstColumn = this.tags.slice(0,this.tagFirstColumnEndIndex);
+            this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex);
+          } else {
+            this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
+            this.tagsListFirstColumn = this.tags.slice(0,this.tagFirstColumnEndIndex + 1);
+            this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex + 1);
+          }
           this.referenceService.stopLoader(this.httpRequestLoader);
         },
         (error: any) => {
@@ -582,6 +600,14 @@ export class AddLmsNewComponent implements OnInit {
         () => this.logger.info('Finished listTags()')
       );
   }
+
+  searchTags(){
+    let pagination :Pagination = new Pagination();
+    pagination.searchKey = this.tagSearchKey;
+    this.listTags(pagination);
+  }
+
+  tagEventHandler(keyCode: any) { if (keyCode === 13) { this.searchTags(); } }
 
   /*****************List Categories*******************/
   listCategories() {
@@ -649,6 +675,7 @@ export class AddLmsNewComponent implements OnInit {
           if (result !== "") {
             this.loggedInUserCompanyId = result;
             this.linkPrefix = this.authenticationService.APP_URL + "home/lms/lt/" + this.loggedInUserCompanyId + "/";
+            this.completeLink = this.linkPrefix;
           } else {
             this.stopLoaders();
             this.referenceService.showSweetAlertErrorMessage('Company Id Not Found.Please try aftersometime');
@@ -897,6 +924,26 @@ export class AddLmsNewComponent implements OnInit {
     if ((this.isAdd || (!this.isAdd && this.existingSlug !== this.learningTrack.slug)) && this.isSlugValid) {
       this.validateSlugForCompany();
     }
+    this.completeLink = this.linkPrefix + this.learningTrack.slug;
+  }
+
+  editSlug() {
+    this.isEditSlug = true;
+  }
+
+  editedSlug() {
+    this.isEditSlug = false;
+  }
+
+  copyInputMessage(inputElement: any) {
+    this.referenceService.goToTop();
+    this.lmsResponse = new CustomResponse();
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    let message = 'Link copied to clipboard successfully.';
+    $("#copy-link").select();
+    this.lmsResponse = new CustomResponse('SUCCESS', message, true);
   }
 
   addTag() {
@@ -930,6 +977,15 @@ export class AddLmsNewComponent implements OnInit {
 
   removeTags(type) {
     console.log(this.selectedTags);
+  }
+
+  updateSelectedTags(tag: Tag, event: any) {
+    if (event.target.checked) {
+      this.learningTrack.tagIds.push(tag.id);
+    } else {
+      let index = this.learningTrack.tagIds.indexOf(tag.id);
+      this.learningTrack.tagIds.splice(index, 1);
+    }
   }
 
   addFolder(type) {
@@ -1060,12 +1116,19 @@ export class AddLmsNewComponent implements OnInit {
   validateStepOne() {
     if (this.isTitleValid && this.isSlugValid && this.learningTrack.categoryId != undefined && this.learningTrack.categoryId > 0) {
       this.isStepOneValid = true;
-      if (this.isStepTwoValid) {
-        this.stepTwoTabClass = this.completedTabClass;
-      } else if (this.activeTabName != "step-2") {
+      // if (this.isStepTwoValid) {
+      //   this.stepTwoTabClass = this.completedTabClass;
+      // } else if (this.activeTabName != "step-2") {
+      //   this.stepTwoTabClass = this.defaultTabClass;
+      // }
+      this.stepOneTabClass = this.completedTabClass;
+      if (this.activeTabName != "step-2") {
         this.stepTwoTabClass = this.defaultTabClass;
       }
-    } else if (this.isStepOneValid) {
+      if (this.activeTabName == "step-1") {
+        this.stepOneTabClass = this.activeTabClass;
+      }
+    } else {
       this.isStepOneValid = false;
       this.stepTwoTabClass = this.disableTabClass;
       this.stepThreeTabClass = this.disableTabClass;
@@ -1075,14 +1138,21 @@ export class AddLmsNewComponent implements OnInit {
   }
 
   validateStepTwo() {
-    if (this.isDescriptionValid) {
+    if (this.isDescriptionValid && this.isStepOneValid) {
       this.isStepTwoValid = true;
-      if (this.isStepThreeValid) {
-        this.stepThreeTabClass = this.completedTabClass;
-      } else if (this.activeTabName != "step-3") {
+      // if (this.isStepThreeValid) {
+      //   this.stepThreeTabClass = this.completedTabClass;
+      // } else if (this.activeTabName != "step-3") {
+      //   this.stepThreeTabClass = this.defaultTabClass;
+      // }
+      this.stepTwoTabClass = this.completedTabClass;
+      if (this.activeTabName != "step-3") {
         this.stepThreeTabClass = this.defaultTabClass;
       }
-    } else if (this.isStepTwoValid) {
+      if (this.activeTabName == "step-2") {
+        this.stepTwoTabClass = this.activeTabClass;
+      }
+    } else {
       this.isStepTwoValid = false;
       this.stepThreeTabClass = this.disableTabClass;
       this.stepFourTabClass = this.disableTabClass;
@@ -1091,33 +1161,48 @@ export class AddLmsNewComponent implements OnInit {
   }
 
   validateStepThree() {
-    if (this.isAssetValid) {
+    if (this.isAssetValid && this.isStepTwoValid) {
       this.isStepThreeValid = true;
-      if (this.isStepFourValid) {
-        this.stepFourTabClass = this.completedTabClass;
-      } else if (this.activeTabName != "step-4") {
+      // if (this.isStepFourValid) {
+      //   this.stepFourTabClass = this.completedTabClass;
+      // } else if (this.activeTabName != "step-4") {
+      //   this.stepFourTabClass = this.defaultTabClass;
+      // }
+      this.stepThreeTabClass = this.completedTabClass;
+      if (this.activeTabName != "step-4") {
         this.stepFourTabClass = this.defaultTabClass;
       }
-    } else if (this.isStepThreeValid) {
+      if (this.activeTabName == "step-3") {
+        this.stepThreeTabClass = this.activeTabClass;
+      }
+    } else {
       this.isStepThreeValid = false;
       this.stepFourTabClass = this.disableTabClass;
-    }
+    } 
     this.checkAllRequiredFields();
   }
 
   validateStepFour() {
-    if (this.isGroupOrCompanyValid) {
+    if (this.isGroupOrCompanyValid && this.isStepThreeValid) {
       this.isStepFourValid = true;
-      if (this.activeTabName != "step-4") {
-        this.stepFourTabClass = this.completedTabClass;
+      // if (this.activeTabName != "step-4") {
+      //   this.stepFourTabClass = this.completedTabClass;
+      // }
+      this.stepFourTabClass = this.completedTabClass;
+      if (this.activeTabName == "step-4") {
+        this.stepFourTabClass = this.activeTabClass;
       }
-    } else if (this.isStepFourValid) {
+    } else {
       this.isStepFourValid = false;
-      if (this.activeTabName != "step-4") {
-        this.stepFourTabClass = this.defaultTabClass;
-      }
     }
     this.checkAllRequiredFields();
+  }
+
+  validateAllSteps(){
+    this.validateStepOne();
+    this.validateStepTwo();
+    this.validateStepThree();
+    this.validateStepFour();
   }
 
   constructLearningTrack() {

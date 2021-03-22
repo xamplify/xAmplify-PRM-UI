@@ -1,6 +1,7 @@
 .title {
     font-size: 25px;
-    text-align: center;
+    text-align: left;
+    border-bottom: 2px solid #cac8c8;
 }
 
 .isDisabled {
@@ -20,6 +21,7 @@
 
 .text-wrap {
     overflow-wrap: break-word;
+    padding-top: 10px;
 }
 
 .cpdam {
