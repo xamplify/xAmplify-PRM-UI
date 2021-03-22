@@ -298,7 +298,7 @@ export class AddCustomFeedsComponent implements OnInit {
         if (result.totalRecords > 0) {
           $('#preview-section').show();
           videosPagination.totalRecords = result.totalRecords;
-          videosPagination = this.pagerService.getPagedItems(videosPagination, result.listOfMobinars);
+          videosPagination = this.pagerService.getPagedItems(videosPagination, result.list);
           // this.previewVideo(videosPagination.pagedItems[0]);
         }
       });
