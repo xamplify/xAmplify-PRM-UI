@@ -24,10 +24,7 @@
 	float: right;
 }
 
-.table tr.row-selected td {
-    background-color: #00a6e847 !important;
-    color: white;
-}
+
 
 #right-margin {
     margin-right: 90px;
@@ -55,7 +52,7 @@
     right: -3px;
 }
 
-.table tr.row-selected td {
+.table tr.row-selected td,.partner-company-selected {
     background-color: #00a6e847 !important;
     color: white;
 }
@@ -159,5 +156,7 @@
 }
 
 .img-c-h{
-	height: 55px;
+    height: 55px;
+    border: 1px solid #03A9F4;
 }
+

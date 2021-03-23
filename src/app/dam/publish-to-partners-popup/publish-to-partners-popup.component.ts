@@ -69,6 +69,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	}
 
 	findPartnerCompanies(pagination: Pagination) {
+		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
 			let data = result.data;
@@ -150,7 +151,6 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	getTeamMembersAndAdmins(teamMembersPagination:Pagination){
 		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
 		this.referenceService.loading(this.teamMembersLoader, true);
-		teamMembersPagination.maxResults = 3;
 		this.userService.findAdminsAndTeamMembers(teamMembersPagination).subscribe(
 			response=>{
 				let data = response.data;
@@ -161,7 +161,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 				let items = $.grep(this.selectedTeamMemberIds, function(element: any) {
 					return $.inArray(element, teamMemberIds) !== -1;
 				});
-				if (items.length == teamMemberIds.length) {
+				if (items.length == teamMemberIds.length && teamMemberIds.length>0) {
 					this.isHeaderCheckBoxChecked = true;
 				} else {
 					this.isHeaderCheckBoxChecked = false;
@@ -237,14 +237,10 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		} else {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
 			$('#dam-partnership-list-table tr').removeClass("row-selected");
-			if (this.pagination.maxResults > 30 || (this.pagination.maxResults == this.pagination.totalRecords)) {
-				this.selectedTeamMemberIds = [];
-			} else {
-				this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
-				let currentPageSelectedIds = this.pagination.pagedItems.map(function (a) { return a.partnershipId; });
-				this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
-			}
-
+			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
+			let currentPageSelectedIds = this.teamMembersPagination.pagedItems.map(function (a) { return a.userId; });
+			this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
+			
 		}
 		ev.stopPropagation();
 	}
@@ -267,6 +263,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 					}
 					this.resetFields();
 				} else {
+					this.ngxLoading = false;
 					this.authenticationService.forceToLogout();
 				}
 			}, _error => {

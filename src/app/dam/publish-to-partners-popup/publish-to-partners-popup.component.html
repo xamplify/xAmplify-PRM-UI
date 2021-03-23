@@ -67,7 +67,7 @@
                        </thead>
                        <tbody>
                           <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
-                          <tr>
+                          <tr id="partnership-tr-{{partner.partnershipId}}">
                             <td>
                               <div class="actions-block">
                                 <a  (click)="viewTeamMembers(partner)" title="View/Hide Team Members">
