@@ -541,6 +541,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.socialStatusList = [];
 		this.isAllSelected = false;
 		this.selectedAccounts = 0;
+		//added by Ajay
+		this.socialStatus = new SocialStatus();
+
 		let socialStatus = new SocialStatus();
 		socialStatus.userId = this.userId;
 		this.socialCampaign.userListIds = [];
@@ -1237,20 +1240,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.socialStatusList[0] = this.socialStatus;
 	}
 
-	onKeyPress(enteredURL: string) {
+	onKeyPress(socialStatus: any) {
+		let enteredURL = socialStatus.statusMessage;
 		if (enteredURL.length === 0) {
 			this.socialStatus.statusMessage = ""
-			this.clearRssOgTagsFeed();
+			this.clearRssOgTagsFeed(socialStatus);
 		} else {
-			this.getOgTagsData(enteredURL);
-			/*if (!this.isUrlValid(enteredURL)) {
-			this.socialStatus.statusMessage = enteredURL;
-			this.clearRssOgTagsFeed();
-			} else {
-			if (this.isUrlValid(enteredURL) && enteredURL !== this.savedURL) {
-			this.getOgTagsData(enteredURL);
-			}
-			}*/
+			this.getOgTagsData(socialStatus);
 		}
 	}
 
@@ -1261,42 +1257,38 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		return pattern.test(url);
 	}
 
-	getOgTagsData(url: string) {
+	getOgTagsData(socialStatus: any) {
+		let url = socialStatus.statusMessage;
 		let req = { "userId": this.userId, "q": url };
 		this.socialService.getOgMetaTags(req).subscribe(data => {
 			if (data.statusCode === 8105) {
 				let response = data.data;
 				if (response !== undefined && response !== '') {
-					this.socialStatus.statusMessage = response.link;
-					this.socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
-					this.socialStatus.ogTitle = response.title;
-					this.socialStatus.ogDescription = response.description;
-					this.socialStatus.validLink = true;
-					this.socialStatus.ogt = true;
-					this.socialStatusList[0] = this.socialStatus;
+					socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
+					socialStatus.ogTitle = response.title;
+					socialStatus.ogDescription = response.description;
+					socialStatus.validLink = true;
+					socialStatus.ogt = true;
 					this.savedURL = url;
 				}
 			} else {
-				this.socialStatus.statusMessage = url;
-				this.clearRssOgTagsFeed();
-				
-			}
+				this.clearRssOgTagsFeed(socialStatus);
 
+			}
 		}, error => {
-			this.clearRssOgTagsFeed();
+			this.clearRssOgTagsFeed(socialStatus);
 			console.log(error);
 		}, () => console.log("Campaign Names Loaded"));
 	}
 
 
 
-	clearRssOgTagsFeed() {
-		this.socialStatus.ogImage = ""
-		this.socialStatus.ogTitle = "";
-		this.socialStatus.ogDescription = "";
-		this.socialStatus.validLink = false;
-		this.socialStatus.ogt = false;
-		this.socialStatusList[0] = this.socialStatus;
+	clearRssOgTagsFeed(socialStatus: any) {
+		socialStatus.ogImage = ""
+		socialStatus.ogTitle = "";
+		socialStatus.ogDescription = "";
+		socialStatus.validLink = false;
+		socialStatus.ogt = false;
 		this.savedURL = '';
 	}
 
