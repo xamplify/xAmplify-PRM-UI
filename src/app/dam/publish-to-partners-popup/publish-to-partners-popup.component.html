@@ -135,10 +135,6 @@
                                <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info">
                                  <strong>No Data Found.</strong>
                               </div>
-                              <div *ngIf="teamMembersPagination.pagedItems.length !== 0" [hidden]="teamMembersLoader.isLoading">
-                                 <app-pagination [pagination]="teamMembersPagination" (notifyParent)="naviagtePages($event)" (notifyParentDropDown)="getTeamMembersAndAdmins($event)">
-                                 </app-pagination>
-                              </div>
                            </div>
                            </div>
                            </td>
