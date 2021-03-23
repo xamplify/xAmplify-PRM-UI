@@ -47,7 +47,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	selectedTeamMemberIds:any[] = [];
 	teamMembersPagination:Pagination = new Pagination();
 	adminsAndTeamMembersErrorMessage: CustomResponse = new CustomResponse();
-
+	selectedPartnershipIds:any[] = [];
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService,public userService:UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -124,9 +124,11 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	resetFields() {
 		this.damPublishPostDto = new DamPublishPostDto();
 		this.pagination = new Pagination();
+		this.teamMembersPagination = new Pagination();
 		this.sortOption = new SortOption();
 		this.isHeaderCheckBoxChecked = false;
 		this.selectedTeamMemberIds = [];
+		this.selectedPartnershipIds =[];
 		this.ngxLoading = false;
 	}
 
@@ -204,6 +206,12 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	checkHeaderCheckBox(partnershipId:number) {
 		let trLength = $('#admin-and-team-members-'+partnershipId+' tbody tr').length;
 		let selectedRowsLength = $('[name="adminOrTeamMemberCheckBox[]"]:checked').length;
+		if(selectedRowsLength==0){
+			this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
+		}else{
+			this.selectedPartnershipIds.push(partnershipId);
+		}
+		this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
 		this.isHeaderCheckBoxChecked = (trLength == selectedRowsLength);
 	}
 
@@ -234,13 +242,15 @@ export class PublishToPartnersPopupComponent implements OnInit {
 				$('#publishToPartners' + id).addClass('row-selected');
 			});
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
+			this.selectedPartnershipIds.push(partnershipId);
 		} else {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
 			$('#dam-partnership-list-table tr').removeClass("row-selected");
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
 			let currentPageSelectedIds = this.teamMembersPagination.pagedItems.map(function (a) { return a.userId; });
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
-			
+			this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
+			this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
 		}
 		ev.stopPropagation();
 	}
