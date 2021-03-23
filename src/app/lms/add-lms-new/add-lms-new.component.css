@@ -911,3 +911,27 @@ input.cmn-toggle-round-flat:checked+label:after {
     clear: both;
     display: table;
 }
+
+.tags-table tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.profile-pic {
+    margin-top: -87px;
+    position: absolute;
+    right: 0px;
+    top: 89px;
+    border: none;
+}
+
+.message-content {
+    border: dotted 3px lightgray;
+    min-height: 77px;
+    padding: 4px 0px;
+}
+
+.blur-modal {
+    pointer-events: none;
+    z-index: 100;
+    opacity: .5;
+}

@@ -50,7 +50,7 @@ export class LmsPartnerAnalyticsComponent implements OnInit {
     this.initLoader = true;
     this.learningTrackId = parseInt(this.route.snapshot.params['ltId']);
     this.partnerCompanyId = parseInt(this.route.snapshot.params['id']);
-    this.analyticsRouter = "/home/lms/analytics/" + this.learningTrackId;
+    this.analyticsRouter = "/home/tracks/analytics/" + this.learningTrackId;
     if(this.learningTrackId < 1 || this.partnerCompanyId < 1){
       this.goBack();
     }
@@ -177,9 +177,9 @@ export class LmsPartnerAnalyticsComponent implements OnInit {
   goBack(){
     let route = "";
     if(this.learningTrackId != undefined && this.learningTrackId > 0){
-      route = "home/lms/analytics/" + this.learningTrackId;
+      route = "home/tracks/analytics/" + this.learningTrackId;
     } else if(this.learningTrackId == undefined || this.learningTrackId < 1){
-      route = "home/lms/manage";
+      route = "home/tracks/manage";
     }
     this.router.navigate([route]);
   }

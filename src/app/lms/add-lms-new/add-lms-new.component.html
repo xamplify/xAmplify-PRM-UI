@@ -9,8 +9,8 @@
         <i class="fa fa-home" aria-hidden="true"></i>
         <a [routerLink]="referenceService.homeRouter">Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
-        <a *ngIf="isAdd">Add Track Builder</a>
-        <a *ngIf="!isAdd">Edit Track Builder</a>
+        <a *ngIf="isAdd">Add Tracks</a>
+        <a *ngIf="!isAdd">Edit Tracks</a>
       </li>
     </ul>
     <div id="folder-margin-xamp">
@@ -77,137 +77,186 @@
                     <label class="control-label col-sm-4" style="text-align: right;" translate>Title
                       <font style="color: red">*</font><br>
                     </label>
-                    <div class="col-sm-8">
-                      <input class="form-control" placeholder="Add title" [(ngModel)]="learningTrack.title"
-                        maxlength="100" (keypress)="omitSpecialCharacters($event)"
+                    <div class="col-sm-8" style="padding-bottom: 10px;">
+                      <input class="form-control" placeholder="Add title" [(ngModel)]="learningTrack.title" maxlength="100"
+                        (keypress)="omitSpecialCharacters($event)"
                         (input)="updateSlug('title'); validateTitle(); validateAllSteps()">
-                      <span *ngIf="!isTitleValid" class="required pull-left">{{titleErrorMessage}}</span>
+                      <span *ngIf="!isTitleValid" class="required pull-left"
+                        style="position: absolute;">{{titleErrorMessage}}</span>
                     </div>
                     <!-- <div class="text-center" style="margin-top: 5px;">
-                            <span *ngIf="!isTitleValid" class="required">{{titleErrorMessage}}</span>
-                          </div> -->
+                                        <span *ngIf="!isTitleValid" class="required">{{titleErrorMessage}}</span>
+                                      </div> -->
                   </div>
                   <div class="row form-group">
                     <label class="control-label col-sm-4" style="text-align: right;" translate>Link
                       <font style="color: red">*</font>
                     </label>
-                    <div *ngIf="isEditSlug">
-                      <div class="prefix inline col-sm-8">
-                        <span class="input-group-addon" style="min-width: auto;">
-                          {{linkPrefix}}
-                        </span>
-                        <div class="inline link" action="action_page.php">
-                          <input class="select-box inline form-control" [(ngModel)]="learningTrack.slug" maxlength="100"
-                            (input)="updateSlug('slug'); validateAllSteps()">
-                          <button type="button" (click)="editedSlug()" style="width: auto;border-radius: 2px;"><i
-                              class="fa fa-angle-right" style="font-size: 19px;"></i></button>
+                    <div class="col-sm-8" style="padding-bottom: 10px;">
+                      <div *ngIf="isEditSlug">
+                        <div class="prefix inline">
+                          <span class="input-group-addon" style="min-width: auto;">
+                            {{linkPrefix}}
+                          </span>
+                          <div class="inline link" action="action_page.php">
+                            <input class="select-box inline form-control" [(ngModel)]="learningTrack.slug" maxlength="100"
+                              (input)="updateSlug('slug'); validateAllSteps()">
+                            <button type="button" (click)="editedSlug()" style="width: auto;border-radius: 2px;"><i
+                                class="fa fa-angle-right" style="font-size: 19px;"></i></button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div *ngIf="!isEditSlug">
-                      <div class="inline link col-sm-8" action="action_page.php">
-                        <input class="form-control" id="copy-link" type="text" readonly="readonly"
-                          [ngModel]="completeLink" #link>
-                        <button type="button" (click)="editSlug()"><i class="fa fa-edit"></i></button>
-                        <button type="button" (click)="copyInputMessage(link)"><i class="fa fa-copy"></i></button>
+                      <div *ngIf="!isEditSlug">
+                        <div class="inline link" action="action_page.php" style="width: 100%;">
+                          <input class="form-control" id="copy-link" type="text" readonly="readonly" [ngModel]="completeLink"
+                            #link>
+                          <button type="button" (click)="editSlug()"><i class="fa fa-edit"></i></button>
+                          <button type="button" (click)="copyInputMessage(link)"><i class="fa fa-copy"></i></button>
+                        </div>
                       </div>
+                      <span *ngIf="!isSlugValid" class="required pull-left"
+                        style="position: absolute;">{{slugErrorMessage}}</span>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin-top: 5px;">
-                      <span *ngIf="!isSlugValid" class="required">{{slugErrorMessage}}</span>
-                    </div>
+                    <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 5px;position: absolute;">
+                                  <span *ngIf="!isSlugValid" class="required">{{slugErrorMessage}}</span>
+                                </div> -->
                   </div>
-                  <div class="row form-group">
+                  <div class="row form-group" style="padding-bottom: 10px;">
                     <label class="control-label col-sm-4" style="text-align: right;" translate>Folder
                       <font style="color: red">*</font>
                     </label>
                     <div class="inline col-sm-8">
                       <!-- <tag-input [(ngModel)]="selectedFolder" name="folder" theme='bootstrap'
-                                        [ngModelOptions]="{standalone: true}" [placeholder]="'Folder'"
-                                        [secondaryPlaceholder]="'Select folder'" [separatorKeyCodes]="[32,188,186,13,9]"
-                                        [clearOnBlur]="true" [addOnPaste]="true" (kewDown)="press($event)" [addOnBlur]="true"
-                                        (onAdd)="addFolder($event);validateStepOne()" (onRemove)="removeFolder($event);validateStepOne()">
-                                        <tag-input-dropdown [keepOpen]="false" [identifyBy]="'id'" [displayBy]="'name'"
-                                          [autocompleteItems]="categoryNames" [showDropdownIfEmpty]="true">
-                                        </tag-input-dropdown>
-                                      </tag-input> -->
+                                                    [ngModelOptions]="{standalone: true}" [placeholder]="'Folder'"
+                                                    [secondaryPlaceholder]="'Select folder'" [separatorKeyCodes]="[32,188,186,13,9]"
+                                                    [clearOnBlur]="true" [addOnPaste]="true" (kewDown)="press($event)" [addOnBlur]="true"
+                                                    (onAdd)="addFolder($event);validateStepOne()" (onRemove)="removeFolder($event);validateStepOne()">
+                                                    <tag-input-dropdown [keepOpen]="false" [identifyBy]="'id'" [displayBy]="'name'"
+                                                      [autocompleteItems]="categoryNames" [showDropdownIfEmpty]="true">
+                                                    </tag-input-dropdown>
+                                                  </tag-input> -->
                       <select class="form-control" [(ngModel)]="learningTrack.categoryId " (change)="validateAllSteps()">
                         <option *ngFor="let category of categoryNames " [ngValue]="category.id " data-toggle="tooltip "
                           data-placement="top " title="{{category.name}} ">
-                          {{category.name | slice: 0: 25}}
+                          <div>
+                            {{category.name | slice: 0: 25}}
+                          </div>
                         </option>
                       </select>
                     </div>
                   </div>
                   <!-- <div class="row form-group">
+                                <label class="control-label col-sm-4" style="text-align: right;" translate>Tags
+                                </label>
+                                <div class="inline col-sm-8">
+                                  <tag-input [(ngModel)]="selectedTags" name="tags" theme='bootstrap'
+                                    [ngModelOptions]="{standalone: true}" [placeholder]="'+Tag'"
+                                    [secondaryPlaceholder]="'Select tag'" [separatorKeyCodes]="[32,188,186,13,9]"
+                                    [clearOnBlur]="true" [addOnPaste]="true" (kewDown)="press($event)" [addOnBlur]="true"
+                                    (onAdd)="addTags($event)" (onRemove)="removeTags($event)">
+                                    <tag-input-dropdown [keepOpen]="false" [identifyBy]="'id'" [displayBy]="'tagName'"
+                                      [autocompleteItems]="tags" [showDropdownIfEmpty]="true">
+                                    </tag-input-dropdown>
+                                  </tag-input>
+                                </div> 
+                              </div> -->
+                  <div class="row form-group" style="padding-bottom: 10px;">
                     <label class="control-label col-sm-4" style="text-align: right;" translate>Tags
                     </label>
                     <div class="inline col-sm-8">
-                      <tag-input [(ngModel)]="selectedTags" name="tags" theme='bootstrap'
-                        [ngModelOptions]="{standalone: true}" [placeholder]="'+Tag'"
-                        [secondaryPlaceholder]="'Select tag'" [separatorKeyCodes]="[32,188,186,13,9]"
-                        [clearOnBlur]="true" [addOnPaste]="true" (kewDown)="press($event)" [addOnBlur]="true"
-                        (onAdd)="addTags($event)" (onRemove)="removeTags($event)">
-                        <tag-input-dropdown [keepOpen]="false" [identifyBy]="'id'" [displayBy]="'tagName'"
-                          [autocompleteItems]="tags" [showDropdownIfEmpty]="true">
-                        </tag-input-dropdown>
-                      </tag-input>
-                    </div> 
-                  </div> -->
-                  <div class="col-sm-offset-3">
-                    <div class="portlet light ">
-                      <div class="portlet-title tabbable-line ">
-                        <div class="caption caption-md ">
-                          <i class="icon-globe theme-font hide " aria-hidden="true "></i>
-                          <span class="caption-subject font-blue-madison bold uppercase ">Tags</span>
-                        </div>
-                        <div class="inline" style="float: right;">
-                          <div class="input-icon left" style="padding-bottom: 5px;">
-                            <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..."
-                              class="form-control" (keypress)="tagEventHandler($event.keyCode)" style="padding: 6px 12px;">
-                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
-                              (click)="tagSearchKey='';searchTags()"></button>
-                            <button type="submit" class="search-box-item-click email-search" (click)="searchTags()">
-                              <i class="fa fa-search cesf-xamp"></i></button>
-                          </div>
-                          <div style="padding-left: 10px;">
-                            <button type="button" class="btn btn-primary add-btn" (click)="addTag()">
-                              <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i></button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="scroller">
-                        <div class="row">
-                          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <div *ngFor="let tag of tagsListFirstColumn; let i=index;">
-                              <label class="form-check-label ">
-                                <input type="checkbox" class="form-check-input " (click)="updateSelectedTags(tag,$event) "
-                                  [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tag.id)>-1">
-                                <div class="btn btn-primary" style="padding: 4px 10px;">{{tag.tagName}}</div>
-                              </label>
+                      <div class="portlet light" style="width: 100%;">
+                        <div class="portlet-title tabbable-line ">
+                          <!-- <div class="caption caption-md ">
+                                                        <i class="icon-globe theme-font hide " aria-hidden="true "></i>
+                                                        <span class="caption-subject font-blue-madison bold uppercase ">Tags</span>
+                                                      </div> -->
+                          <div class="inline" style="float: right;">
+                            <div class="input-icon left" style="padding-bottom: 5px;">
+                              <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
+                                placeholder="Search..." class="form-control" (keypress)="tagEventHandler($event.keyCode)"
+                                style="padding: 6px 12px;">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
+                                (click)="tagSearchKey='';searchTags()"></button>
+                              <button type="submit" class="search-box-item-click email-search" (click)="searchTags()">
+                                <i class="fa fa-search cesf-xamp"></i></button>
                             </div>
-                          </div>
-                          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <div *ngFor="let tag of tagsListSecondColumn; let i=index;">
-                                <label class="form-check-label ">
-                                  <input type="checkbox" class="form-check-input " (click)="updateSelectedTags(tag,$event) "
-                                    [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tag.id)>-1">
-                                  <div class="btn btn-primary" style="padding: 4px 10px;">{{tag.tagName}}</div>
-                                </label>
+                            <div style="padding-left: 10px;">
+                              <button type="button" class="btn btn-primary add-btn" (click)="addTag()">
+                                <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i></button>
                             </div>
                           </div>
                         </div>
-                        <!-- <div *ngFor="let tag of tags">
-                          <label class="form-check-label ">
-                            <input type="checkbox" class="form-check-input " (click)="updateSelectedTags(tag,$event) "
-                              [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tag.id)>-1">
-                            <div class="btn btn-primary" style="padding: 4px 10px;">{{tag.tagName}}</div>
-                          </label>
-                        </div> -->
+                        <div class="scroller">
+                          <!-- <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                          <div *ngFor="let tag of tagsListFirstColumn; let i=index;">
+                                            <label class="form-check-label ">
+                                              <input type="checkbox" class="form-check-input "
+                                                (click)="updateSelectedTags(tag,$event) "
+                                                [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tag.id)>-1">
+                                              <div class="btn btn-primary" style="padding: 4px 10px;">{{tag.tagName}}</div>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                          <div *ngFor="let tag of tagsListSecondColumn; let i=index;">
+                                            <label class="form-check-label ">
+                                              <input type="checkbox" class="form-check-input "
+                                                (click)="updateSelectedTags(tag,$event) "
+                                                [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tag.id)>-1">
+                                              <div class="btn btn-primary" style="padding: 4px 10px;">{{tag.tagName}}</div>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div> -->
+      
+                          <table class="table table-bordered no-footer tags-table" id="tags_list">
+                            <tbody>
+                              <tr role="row" *ngFor="let tag of tagsListFirstColumn;let i = index"
+                                style="vertical-align: middle;padding: 0px;">
+                                <td style="padding: 5px;vertical-align: middle;">
+                                  <div class="col-sm-2 col-sm-offset-2">
+                                    <label class="form-check-label inline">
+                                      <input type="checkbox" class="form-check-input "
+                                        (click)="updateSelectedTags(tag,$event.target.checked)"
+                                        [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tag.id)>-1">
+                                    </label>
+                                  </div>
+                                  <div class="col-sm-5">
+                                    <div class="btn btn-primary" (click)="updateSelectedTags(tag,undefined)"
+                                      style="padding: 4px 10px;">
+                                      {{tag.tagName}}</div>
+                                  </div>
+                                </td>
+                                <td style="padding: 5px;vertical-align: middle;">
+                                  <div class="col-sm-2 col-sm-offset-2">
+                                    <label class="form-check-label inline">
+                                      <input *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
+                                        type="checkbox" class="form-check-input "
+                                        (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)"
+                                        [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
+                                    </label>
+                                  </div>
+                                  <div class="col-sm-5">
+                                    <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
+                                      class="btn btn-primary" (click)="updateSelectedTags(tagsListSecondColumn[i],undefined)"
+                                      style="padding: 4px 10px;">
+                                      {{tagsListSecondColumn[i].tagName}}</div>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+      
+      
+      
+      
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-body">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row" style="padding-top: 10px;">
                   <div class="portlet light">
                     <div class="portlet-title tabbable-line ">
                       <div class="caption caption-md ">
@@ -230,13 +279,24 @@
                       <ng-template #showImage>
                         <img class="img-grid" [src]="featuredImagePath" alt="">
                       </ng-template>
+                      <a class="btn btn-primary1 profile-pic" title="upload 2:1 ratio logo">
+                        &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+                          style="font-size:25px;padding-top:10px"></i></a>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-body">
-                <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-2');"
-                  [disabled]="!isStepOneValid" translate>Next</button>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row">
+                  <div class="message-content">
+                    <ul>
+                      <li translate>Maximum file size is 10 MB.</li>
+                      <li translate>Please Upload <strong>.jpg, .jpeg, .png </strong>files only.</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-sm-12 row" style="padding-right: 20px; padding-bottom: 10px;">
+                  <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-2');"
+                    [disabled]="!isStepOneValid" translate>Next</button>
+                </div>
               </div>
             </div>
           </div>
@@ -245,10 +305,11 @@
 
       <!-- step 2 -->
       <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo" style="margin-top: 10px;">
+        <ngx-loading [show]="!isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="portlet light">
           <div class="input-icon right pull-right cebp">
             <ul class="button-align inline">
-              <li style="margin-right: 5px;"><button class="btn btn-primary">Add Media</button></li>
+              <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add Media</button></li>
               <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getFormsList()">Add
                   Forms</button></li>
             </ul>
@@ -259,8 +320,9 @@
           </div>
           <div class="portlet-body">
             <div *ngIf="isAdd || learningTrack.description != undefined">
-              <ckeditor [(ngModel)]="learningTrack.description" #myckeditor [config]="ckeConfig" debounce="500"
-                maxlength="5000" (change)="validateDescription();validateAllSteps()">
+              <ckeditor [(ngModel)]="learningTrack.description" #myckeditor [config]="ckeConfig"
+                (ready)="onReady($event)" debounce="500" maxlength="5000"
+                (change)="validateDescription();validateAllSteps()">
               </ckeditor>
             </div>
             <div class="row" style="margin: 10px 0px;">
@@ -401,15 +463,16 @@
                         <div id="left">
                           <select class="form-control" [(ngModel)]="groupsSortOption.selectedGroupsDropDownOption"
                             (ngModelChange)="groupsSortBy($event)">
-                            <option *ngFor="let option of groupsSortOption.groupsSortDropDownOptions" [ngValue]="option">
+                            <option *ngFor="let option of groupsSortOption.groupsSortDropDownOptions"
+                              [ngValue]="option">
                               {{option.name}}</option>
                           </select>
                         </div>
                         <div class="portlet-input input-inline" id="search-div">
                           <div class="input-icon right" id="icon" style="padding-left: 5px;">
-                            <input type="text" id="sort-text-group" class="form-control" [(ngModel)]="groupsSortOption.searchKey"
-                              [ngModelOptions]="{standalone: true}" placeholder="search..."
-                              (keypress)="groupsEventHandler($event.keyCode)">
+                            <input type="text" id="sort-text-group" class="form-control"
+                              [(ngModel)]="groupsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                              placeholder="search..." (keypress)="groupsEventHandler($event.keyCode)">
                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                               *ngIf="groupsSortOption.searchKey"
                               (click)="groupsSortOption.searchKey='';searchGroups();"></button>
@@ -470,7 +533,8 @@
                               </span>
                             </h5>
                             <h5 class="mb0 ellipsis" title="{{group.companyName}}">
-                              <b>{{group.companyName | slice:0:50}}</b> <span *ngIf="group.companyName?.length>50">...</span>
+                              <b>{{group.companyName | slice:0:50}}</b> <span
+                                *ngIf="group.companyName?.length>50">...</span>
                             </h5>
                           </td>
                           <td class="text-center">
@@ -507,7 +571,8 @@
                     <div class="btn-group pull-right">
                       <div class="inputs float-right" style="display: inline-flex;">
                         <div id="left">
-                          <select class="form-control" [(ngModel)]="PartnerCompaniesSortOption.selectedPartnerCompanyDropDownOption"
+                          <select class="form-control"
+                            [(ngModel)]="PartnerCompaniesSortOption.selectedPartnerCompanyDropDownOption"
                             (ngModelChange)="partnerCompaniesSortBy($event)">
                             <option *ngFor="let option of PartnerCompaniesSortOption.partnerCompanySortDropDownOptions"
                               [ngValue]="option">
@@ -537,7 +602,7 @@
                     <table class='table tgrid table-hover table-sm' *ngIf="PartnerCompaniesPagination.totalRecords > 0">
                       <thead>
                         <tr>
-                          <td align="center" style="width: 10%" >
+                          <td align="center" style="width: 10%">
                             <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
                               (change)="checkAllPartnerCompanies($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()"
                               id="checkAllExistingContacts" />
@@ -568,7 +633,8 @@
                     </table>
                   </div>
                   <div *ngIf="PartnerCompaniesPagination.pagedItems.length !== 0" class="pg8">
-                    <app-pagination [pagination]="PartnerCompaniesPagination" (notifyParent)="setPartnerCompaniesPage($event)"
+                    <app-pagination [pagination]="PartnerCompaniesPagination"
+                      (notifyParent)="setPartnerCompaniesPage($event)"
                       (notifyParentDropDown)="listPartnerCompanies($event)" [hidden]="PartnerCompaniesLoader.isLoading">
                     </app-pagination>
                   </div>
@@ -1056,7 +1122,7 @@
         <button type="button" class="close-circle" data-dismiss="modal">
           <i class="fa fa-times" aria-hidden="true "></i>
         </button>
-        <h4 class="modal-title" id="user-list-name" align="center" title="{{groupName}}">
+        <h4 class="modal-title pull-left" id="user-list-name" title="{{groupName}}">
           <b>{{groupName|slice:0:20}}<span *ngIf="groupName?.length>20">..</span></b>
         </h4>
       </div>
@@ -1251,6 +1317,145 @@
       </div>
       <div class="modal-footer">
         <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- --------------List Of Assets Popup--------------- -->
+<div class="modal right" id="media-asset-list" data-backdrop="static">
+  <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Assets</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12 p5">
+            <div class="portlet light">
+              <div class="portlet-title">
+                <div class="inputs" id="right">
+                  <div id="left">
+                    <select class="form-control" [(ngModel)]="assetSortOption.damSortOption"
+                      (ngModelChange)="assetSortBy($event)" style="position: relative;right: -3px;">
+                      <option *ngFor="let option of assetSortOption.damSortDropDownOptions" [ngValue]="option">
+                        {{option.name}}</option>
+                    </select>
+                  </div>
+                  <div class="portlet-input input-inline input-small" id="search">
+                    <div class="input-icon right" id="search-icon">
+                      <input type="text" id="search-text" class="form-control" [(ngModel)]="assetSortOption.searchKey"
+                        [ngModelOptions]="{standalone: true}" placeholder="search..."
+                        (keypress)="assetEventHandler($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="assetSortOption.searchKey"
+                        (click)="assetSortOption.searchKey='';searchAssets();"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchAssets()"><i
+                          class="fa fa-search"></i> </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <app-list-loader *ngIf="assetLoader.isLoading"></app-list-loader>
+              <div class="table-responsive" *ngIf="!assetLoader.isLoading">
+                <table class='table tgrid table-hover table-sm' *ngIf="assetPagination.pagedItems?.length>0"
+                  aria-describedby="describe">
+                  <thead>
+                    <tr>
+                      <th class="hidden-xs" colspan="3" style="width: 35%" id="border-bottom">
+                        <span class="gridHeader" translate>Asset Details</span>
+                      </th>
+                      <th class="hidden-xs text-center" translate scope="col">Type</th>
+                      <th class="hidden-xs text-center" translate scope="col">Created On</th>
+                      <th class="text-center">Preview</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let asset of assetPagination.pagedItems ;let i =index">
+                      <td>
+                        <input type="radio" (click)="addMediaToDescription(asset)" [checked]="selectedAssetForMedia != undefined && selectedAssetForMedia != null">
+                      </td>
+                      <td class="hidden-xs text-cente" style="width: 10%;">
+                        <img class="img-class-list" alt="Image not found" [src]="asset.thumbnailPath">
+                      </td>
+                      <td>
+                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset.assetName}}" translate>
+                          <span><strong>{{asset.assetName}}</strong></span>
+                        </h4>
+                        <h6 class="moreipsis" title="{{asset.displayName}}">
+                          <span translate> Created By
+                            <strong>{{asset.displayName}}</strong></span>
+                          </h6>
+                      </td>
+                      <td class="hidden-xs text-center">
+                        {{asset.assetType}}
+                      </td>
+                      <td class="hidden-xs text-center">
+                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.displayTime">
+                        </app-timestamp>
+                      </td>
+                      <td id="actions-row" style="text-align: center;  vertical-align: middle;">
+                        <a data-toggle="tooltip" data-placement="top" title="Preview">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8">
+                <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
+                  (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
+                </app-pagination>
+              </div>
+              <!-- End of 24 -->
+              <div *ngIf="assetPagination.totalRecords==0 && !assetLoader.isLoading" class="alert alert-info">
+                <strong>No Assets Found.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="assetLoader">
+          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+          </app-response-message>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span>Close</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- --------------Media link title popup--------------- -->
+<div class="modal" id="media-link-title" data-backdrop="static" style="top: 25%;">
+  <div class="modal-dialog modal-lg" style="width: 40% !important;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" (click)="closeLinkTitlePopup()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12 p5">
+            <label class="control-label col-sm-4" style="text-align: right;" translate>Display Text
+            </label>
+            <div class="col-sm-8">
+              <input class="form-control" [(ngModel)]="mediaLinkDisplayText" (keypress)="mediaDisplayTextEventHandler($event.keyCode)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <a class="btn btn-default" (click)="updateDescriptionWithAssetUrl()"><span>Confirm</span></a>
+          <a class="btn btn-default" style="padding-left: 5px;" (click)="closeLinkTitlePopup()"><span>Close</span></a>
+      </div>
       </div>
     </div>
   </div>

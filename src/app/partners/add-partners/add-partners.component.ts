@@ -807,12 +807,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					} else {
 						this.editContactComponent.isHeaderCheckBoxChecked = false;
 					}
-					if (!this.searchKey) {
+					/*if (!this.searchKey) {
 						this.loadAllPartnerInList(pagination.totalRecords);
 					} else {
 						this.pageLoader = false;
 
-					}
+					}*/
+					this.pageLoader = false;
 
 				},
 				error => this.xtremandLogger.error(error),

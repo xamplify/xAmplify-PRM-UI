@@ -161,10 +161,14 @@ export class AddLmsNewComponent implements OnInit {
   completeLink: string = "";
   private dom: Document;
 
-  tagFirstColumnEndIndex:number = 0;
-  tagsListFirstColumn:Array<Tag> = new Array<Tag>();
-  tagsListSecondColumn:Array<Tag> = new Array<Tag>();
-  tagSearchKey:string = "";
+  tagFirstColumnEndIndex: number = 0;
+  tagsListFirstColumn: Array<Tag> = new Array<Tag>();
+  tagsListSecondColumn: Array<Tag> = new Array<Tag>();
+  tagSearchKey: string = "";
+
+  isCkeditorLoaded: boolean = false;
+  mediaLinkDisplayText: string = "";
+  selectedAssetForMedia: any;
 
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public lmsService: LmsService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
@@ -190,7 +194,7 @@ export class AddLmsNewComponent implements OnInit {
         this.stepTwoTabClass = this.completedTabClass;
         this.stepThreeTabClass = this.completedTabClass;
         this.stepFourTabClass = this.completedTabClass;
-        this.editRouterLink = "/home/lms/edit/" + this.learningTrackId;
+        this.editRouterLink = "/home/tracks/edit/" + this.learningTrackId;
         this.getById(this.learningTrackId);
         this.SubmitButtonValue = "Update"
         this.SubmitAndPublishButtonValue = "Update & Publish"
@@ -207,13 +211,17 @@ export class AddLmsNewComponent implements OnInit {
     }
   }
 
+  onReady(event: any) {
+    this.isCkeditorLoaded = true;
+  }
+
   ngOnDestroy() {
     this.dragulaService.destroy('assetsDragula');
   }
 
   goToManageSectionWithError() {
     this.referenceService.showSweetAlertErrorMessage("Invalid Id");
-    this.referenceService.goToRouter("/home/lms");
+    this.referenceService.goToRouter("/home/tracks");
   }
 
   private onDropModel(args) {
@@ -399,6 +407,7 @@ export class AddLmsNewComponent implements OnInit {
   /*************************List Assets********************** */
   listAssets(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
+    pagination.companyId = this.loggedInUserCompanyId;
     this.referenceService.goToTop();
     this.startLoaders();
     this.damService.list(pagination).subscribe((result: any) => {
@@ -581,14 +590,14 @@ export class AddLmsNewComponent implements OnInit {
         response => {
           const data = response.data;
           this.tags = data.tags;
-          let length = this.tags.length ;
-          if((length % 2) == 0){
+          let length = this.tags.length;
+          if ((length % 2) == 0) {
             this.tagFirstColumnEndIndex = length / 2;
-            this.tagsListFirstColumn = this.tags.slice(0,this.tagFirstColumnEndIndex);
+            this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex);
             this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex);
           } else {
             this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
-            this.tagsListFirstColumn = this.tags.slice(0,this.tagFirstColumnEndIndex + 1);
+            this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex + 1);
             this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex + 1);
           }
           this.referenceService.stopLoader(this.httpRequestLoader);
@@ -601,8 +610,8 @@ export class AddLmsNewComponent implements OnInit {
       );
   }
 
-  searchTags(){
-    let pagination :Pagination = new Pagination();
+  searchTags() {
+    let pagination: Pagination = new Pagination();
     pagination.searchKey = this.tagSearchKey;
     this.listTags(pagination);
   }
@@ -674,7 +683,7 @@ export class AddLmsNewComponent implements OnInit {
         (result: any) => {
           if (result !== "") {
             this.loggedInUserCompanyId = result;
-            this.linkPrefix = this.authenticationService.APP_URL + "home/lms/lt/" + this.loggedInUserCompanyId + "/";
+            this.linkPrefix = this.authenticationService.APP_URL + "home/tracks/tb/" + this.loggedInUserCompanyId + "/";
             this.completeLink = this.linkPrefix;
           } else {
             this.stopLoaders();
@@ -979,13 +988,20 @@ export class AddLmsNewComponent implements OnInit {
     console.log(this.selectedTags);
   }
 
-  updateSelectedTags(tag: Tag, event: any) {
-    if (event.target.checked) {
+  updateSelectedTags(tag: Tag, checked: boolean) {
+    let index = this.learningTrack.tagIds.indexOf(tag.id);
+    if (checked == undefined) {
+      if (index > -1) {
+        this.learningTrack.tagIds.splice(index, 1);
+      } else {
+        this.learningTrack.tagIds.push(tag.id);
+      }
+    } else if (checked) {
       this.learningTrack.tagIds.push(tag.id);
     } else {
-      let index = this.learningTrack.tagIds.indexOf(tag.id);
       this.learningTrack.tagIds.splice(index, 1);
     }
+    console.log(this.learningTrack.tagIds)
   }
 
   addFolder(type) {
@@ -1178,7 +1194,7 @@ export class AddLmsNewComponent implements OnInit {
     } else {
       this.isStepThreeValid = false;
       this.stepFourTabClass = this.disableTabClass;
-    } 
+    }
     this.checkAllRequiredFields();
   }
 
@@ -1198,7 +1214,7 @@ export class AddLmsNewComponent implements OnInit {
     this.checkAllRequiredFields();
   }
 
-  validateAllSteps(){
+  validateAllSteps() {
     this.validateStepOne();
     this.validateStepTwo();
     this.validateStepThree();
@@ -1252,7 +1268,7 @@ export class AddLmsNewComponent implements OnInit {
               this.referenceService.isUpdated = true;
               this.referenceService.isCreated = false;
             }
-            this.router.navigate(["/home/lms/manage"]);
+            this.router.navigate(["/home/tracks/manage"]);
           }
         },
         (error: string) => {
@@ -1351,5 +1367,44 @@ export class AddLmsNewComponent implements OnInit {
       }
     );
   }
+
+  getAssetsList() {
+    this.assetError = false;
+    this.customResponse = new CustomResponse();
+    this.assetPagination = new Pagination();
+    this.listAssets(this.assetPagination);
+    $('#media-asset-list').modal('show');
+  }
+
+  addMediaToDescription(asset: any) {
+    this.selectedAssetForMedia = asset;
+    $('#media-asset-list').addClass('blur-modal');
+    $('#media-link-title').modal('show');
+  }
+
+  updateDescriptionWithAssetUrl() {
+    if (this.selectedAssetForMedia != undefined && this.selectedAssetForMedia != null) {
+      let assetPath = this.selectedAssetForMedia.assetPath;
+      if (assetPath != undefined) {
+        if (this.mediaLinkDisplayText.length > 0) {
+          this.learningTrack.description = this.learningTrack.description + "<b><a href = \"" + assetPath + "\" target=\"_blank\">" + this.mediaLinkDisplayText + "</a>";
+        } else {
+          this.learningTrack.description = this.learningTrack.description + "<b><a href = \"" + assetPath + "\" target=\"_blank\">" + assetPath + "</a>";
+        }
+      }
+    }
+    this.closeLinkTitlePopup();
+    $('#media-asset-list').modal('hide');
+  }
+
+  closeLinkTitlePopup() {
+    this.selectedAssetForMedia = null;
+    this.mediaLinkDisplayText = "";
+    $('#media-link-title').modal('hide');
+    $('#media-asset-list').removeClass('blur-modal');
+
+  }
+
+  mediaDisplayTextEventHandler(keyCode: any) { if (keyCode === 13) { this.updateDescriptionWithAssetUrl(); } }
 
 }

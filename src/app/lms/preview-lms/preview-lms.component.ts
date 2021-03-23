@@ -165,6 +165,7 @@ export class PreviewLmsComponent implements OnInit {
     this.assetDetails = asset;
     this.showAsset = true;
     this.referenceService.goToTop();
+    this.setProgressAndUpdate(asset.id, ActivityType.OPENED);
   }
 
   viewQuiz() {

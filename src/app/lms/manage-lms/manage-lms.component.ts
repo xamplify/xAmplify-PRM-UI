@@ -100,7 +100,7 @@ export class ManageLmsComponent implements OnInit {
       this.exportObject['type'] = 2;
       this.exportObject['folderType'] = viewType;
       if (this.categoryId > 0) {
-        this.router.navigateByUrl('/home/lms/manage/');
+        this.router.navigateByUrl('/home/tracks/manage/');
       }
     } else if ("Folder-List" == viewType) {
       this.modulesDisplayType.isListView = false;
@@ -139,7 +139,7 @@ export class ManageLmsComponent implements OnInit {
       this.listLearningTracks(this.pagination);
     }
     else if (this.router.url.endsWith('manage/')) {
-      this.router.navigateByUrl('/home/lms/manage');
+      this.router.navigateByUrl('/home/tracks/manage');
     }
   }
 
@@ -201,7 +201,7 @@ export class ManageLmsComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchLearningTracks(); } }
 
   edit(id: number) {
-    this.referenceService.goToRouter("/home/lms/edit/" + id);
+    this.referenceService.goToRouter("/home/tracks/edit/" + id);
   }
 
   confirmDelete(id: number) {
@@ -304,12 +304,12 @@ export class ManageLmsComponent implements OnInit {
     }
 
     view(learningTrack:LearningTrack){
-      let route = "/home/lms/lt/"  +  learningTrack.createdByCompanyId + "/" + learningTrack.slug;
+      let route = "/home/tracks/tb/"  +  learningTrack.createdByCompanyId + "/" + learningTrack.slug;
       this.referenceService.goToRouter(route);
     }
 
     viewAnalytics(learningTrack:LearningTrack){
-      let route = "/home/lms/analytics/"  +  learningTrack.id;
+      let route = "/home/tracks/analytics/"  +  learningTrack.id;
       this.referenceService.goToRouter(route);
     }
 }

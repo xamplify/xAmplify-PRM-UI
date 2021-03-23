@@ -7,7 +7,7 @@
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <a [routerLink]="referenceService.homeRouter">Home</a>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    <a [routerLink]="['/home/lms/manage']">Manage Learning Track</a>
+                    <a [routerLink]="['/home/tracks/manage']">Manage Tracks</a>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                     <a [routerLink]="analyticsRouter">Analytics</a>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -85,7 +85,8 @@
                                             <td>
                                                 <div *ngIf="partner.hasLearningTrackQuiz && partner.learningTrackProgress == 100">
                                                     <h6 class="view-banner" style="background-color: #5cb85c;" translate>
-                                                        {{partner.learningTrackScore}} out of {{partner.learningTrackMaxScore}}</h6>
+                                                        {{partner.learningTrackScore}} out of {{partner.learningTrackMaxScore}}
+                                                    </h6>
                                                 </div>
                                                 <div *ngIf="partner.hasLearningTrackQuiz && partner.learningTrackProgress != 100">
                                                     <h6 class="view-banner" style="background-color: #cad2ca;" translate>Not Yet Finished

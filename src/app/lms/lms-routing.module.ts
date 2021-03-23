@@ -14,7 +14,7 @@ export const routes: Routes = [
   { path: "edit/:id", component: AddLmsNewComponent },
   { path: "manage", component: ManageLmsComponent },
   { path: "shared", component: ManageLmsComponent },
-  { path: 'lt/:companyId/:slug', component: PreviewLmsComponent },
+  { path: 'tb/:companyId/:slug', component: PreviewLmsComponent },
   { path: 'analytics/:id', component: LmsAnalyticsComponent },
   { path: 'partnerAnalytics/:ltId/:id', component: LmsPartnerAnalyticsComponent },
   { path: "add-new", component: AddLmsNewComponent },
