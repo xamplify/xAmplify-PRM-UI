@@ -87,7 +87,7 @@ export const routes: Routes = [
 			{ path: 'dam', loadChildren: 'app/dam/dam.module#DamModule', data: { preload: false } },
 			{ path: 'leads', loadChildren: 'app/leads/leads.module#LeadsModule',  data: { preload: false } },
 			{ path: 'deal', loadChildren: 'app/deals/deals.module#DealsModule', data: { preload: false } },
-			{ path: 'lms', loadChildren: 'app/lms/lms.module#LmsModule',  data: { preload: false } },
+			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule',  data: { preload: false } },
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent }
 		]
 	},

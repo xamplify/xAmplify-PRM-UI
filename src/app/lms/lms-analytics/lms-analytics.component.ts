@@ -109,7 +109,7 @@ export class LmsAnalyticsComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 
   goBack(){
-    this.router.navigate(['home/lms/manage']);
+    this.router.navigate(['home/tracks/manage']);
   }
 
   refreshPage(){
@@ -117,7 +117,7 @@ export class LmsAnalyticsComponent implements OnInit {
   }
 
   viewAnalytics(company:any){
-    let route = "home/lms/partnerAnalytics/" + this.learningTrackId + "/" + company.id;
+    let route = "home/tracks/partnerAnalytics/" + this.learningTrackId + "/" + company.id;
     this.router.navigate([route]);
   }
 }

@@ -348,7 +348,7 @@
         <!------LMS----------->
          <!---Vendor And Partner-->
          <ng-container *ngIf="lmsAccess && lmsAccessAsPartner">
-            <li  [ngClass]="{'active': location.path().includes('lms')}">
+            <li  [ngClass]="{'active': location.path().includes('tracks')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('lms')">
                     <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                     <span class="title" translate>Track Builder</span>
@@ -357,21 +357,21 @@
                 </a>
                 <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': lms? 'block': 'none' }" >
                     <li>
-                        <a [routerLink]="['/home/lms/add']">
+                        <a [routerLink]="['/home/tracks/add']">
                             <i class="fa fa-plus" aria-hidden="true"></i>
-                            <span class="title" translate>Add Track Builders</span>
+                            <span class="title" translate>Add Tracks</span>
                         </a>
                     </li>
                     <li>
-                        <a [routerLink]="['/home/lms/manage']">
+                        <a [routerLink]="['/home/tracks/manage']">
                             <i class="fa fa-list" aria-hidden="true"></i>
-                            <span class="title" translate>Manage Track Builders</span>
+                            <span class="title" translate>Manage Tracks</span>
                         </a>
                     </li>
                     <li>
-                        <a [routerLink]="['/home/lms/shared']">
+                        <a [routerLink]="['/home/tracks/shared']">
                             <i class="fa fa-list" aria-hidden="true"></i>
-                            <span class="title" translate>Manage Shared Track Builders</span>
+                            <span class="title" translate>Manage Shared Tracks</span>
                         </a>
                     </li>
                 </ul>
@@ -379,7 +379,7 @@
          </ng-container>
          <!--Only LMS Access As Vendor-->
          <ng-container *ngIf="lmsAccess && !lmsAccessAsPartner">
-            <li  [ngClass]="{'active': location.path().includes('lms')}">
+            <li  [ngClass]="{'active': location.path().includes('tracks')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('lms')">
                     <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                     <span class="title" translate>Track Builder</span>
@@ -388,15 +388,15 @@
                 </a>
                 <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': lms? 'block': 'none' }" >
                     <li>
-                        <a [routerLink]="['/home/lms/add']">
+                        <a [routerLink]="['/home/tracks/add']">
                             <i class="fa fa-plus" aria-hidden="true"></i>
-                            <span class="title" translate>Add Track Builders</span>
+                            <span class="title" translate>Add Tracks</span>
                         </a>
                     </li>
                     <li>
-                        <a [routerLink]="['/home/lms/manage']">
+                        <a [routerLink]="['/home/tracks/manage']">
                             <i class="fa fa-list" aria-hidden="true"></i>
-                            <span class="title" translate>Manage Track Builders</span>
+                            <span class="title" translate>Manage Tracks</span>
                         </a>
                     </li>
                 </ul>
@@ -404,8 +404,8 @@
          </ng-container>
         <!--Only LMS Acess As Partner-->
         <ng-container *ngIf="!lmsAccess && lmsAccessAsPartner">
-            <li [ngClass]="{'active': location.path().includes('lms')}">
-                <a [routerLink]="['/home/lms/shared']">
+            <li [ngClass]="{'active': location.path().includes('tracks')}">
+                <a [routerLink]="['/home/tracks/shared']">
                 <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                 <span class="title">Track Builder</span>
                 <span class="arrow"></span>
