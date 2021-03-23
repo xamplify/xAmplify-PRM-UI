@@ -262,6 +262,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
 			this.damPublishPostDto.publishedBy = this.loggedInUserId;
 			this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
+				this.referenceService.scrollToModalBodyTopByClass();
 				this.stopLoaders();
 				if (data.access) {
 					this.sendSuccess = true;
