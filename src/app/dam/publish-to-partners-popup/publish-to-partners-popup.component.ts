@@ -65,12 +65,27 @@ export class PublishToPartnersPopupComponent implements OnInit {
 
 	openPopup() {
 		$('#partnerCompaniesPopup').modal('show');
-		this.findPartnerCompanies(this.pagination);
+		this.findPublishedPartnershipIdsByDamId();
+	}
+
+	findPublishedPartnershipIdsByDamId(){
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.damService.findPublishedPartnershipIdsByDamId(this.assetId).subscribe(
+			response=>{
+				this.selectedPartnershipIds = response.data;
+			},error=>{
+				this.xtremandLogger.error(error);
+				this.findPartnerCompanies(this.pagination);
+			},()=>{
+				this.findPartnerCompanies(this.pagination);
+			}
+		);
 	}
 
 	findPartnerCompanies(pagination: Pagination) {
 		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.httpRequestLoader);
+		pagination.campaignId = this.assetId;
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;
