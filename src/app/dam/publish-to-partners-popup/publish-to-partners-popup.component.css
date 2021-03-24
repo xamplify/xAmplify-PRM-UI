@@ -61,6 +61,10 @@
     color: white;
 }
 
+.x-hidden{
+    overflow-x: hidden !important;
+}
+
 
 
 /*--thank you pop starts here--*/

@@ -66,6 +66,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	openPopup() {
 		$('#partnerCompaniesPopup').modal('show');
 		this.findPublishedPartnershipIdsByDamId();
+		this.findPublishedPartnerIds();
 	}
 
 	findPublishedPartnershipIdsByDamId(){
@@ -164,21 +165,18 @@ export class PublishToPartnersPopupComponent implements OnInit {
 			this.teamMembersPagination.companyId = item.partnerCompanyId;
 			this.teamMembersPagination.partnershipId = item.partnershipId;
 			this.teamMembersPagination.campaignId = this.assetId;
-			this.findPublishedPartnerIds(item);
+			this.getTeamMembersAndAdmins(this.teamMembersPagination);
 			
 		}
 	}
 
-	findPublishedPartnerIds(item:any){
-		this.damService.findPublishedPartnerIds(this.assetId,item.partnershipId).subscribe(
+	findPublishedPartnerIds(){
+		this.damService.findPublishedPartnerIds(this.assetId).subscribe(
 			response=>{
 				this.selectedTeamMemberIds = response.data;
-				alert(this.selectedTeamMemberIds);
-				this.getTeamMembersAndAdmins(this.teamMembersPagination);
 			},error=>{
 				this.xtremandLogger.error(error);
-				this.getTeamMembersAndAdmins(this.teamMembersPagination);
-			});
+		});
 	}
 
 	getTeamMembersAndAdmins(teamMembersPagination:Pagination){
