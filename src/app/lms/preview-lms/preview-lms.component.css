@@ -105,3 +105,11 @@
         right: 35px;
     }
 }
+
+.img-asset-class {
+    height: 90px;
+    width: 100px;
+    background: #f2f4f9;
+    border: solid 1px #008fd5;
+    border-radius: 1px;
+}

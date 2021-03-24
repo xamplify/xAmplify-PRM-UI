@@ -935,3 +935,73 @@ input.cmn-toggle-round-flat:checked+label:after {
     z-index: 100;
     opacity: .5;
 }
+
+#myInput {
+    box-sizing: border-box;
+    border: none;
+    border: 1px solid #ddd;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 5px;
+}
+
+#myInput:focus {
+    outline: 3px solid #ddd;
+    width: 100%;
+    padding: 10px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdown-content {
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    z-index: 1;
+    width: 100%;
+}
+
+.dropdown-option {
+    color: black;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    border-radius: 3px;
+}
+
+.dropdown-option:hover {
+    background-color: #8ec3ef;
+}
+
+.dropdown-scroller {
+    height: 200px;
+    padding: 5px;
+    overflow: auto;
+}
+
+.dropdown-content-odd {
+    background-color: #ddd;
+}
+
+.img-asset-list {
+    height: 100px;
+    width: 95px;
+    margin: 0;
+    background: #f2f4f9;
+    border: solid 1px #008fd5;
+    border-radius: 1px;
+    padding: 10px;
+}
+
+.img-company-list {
+    height: 100px;
+    width: 95px;
+    margin: 0;
+    border: solid 1px #008fd5;
+    border-radius: 1px;
+    padding: 10px;
+}

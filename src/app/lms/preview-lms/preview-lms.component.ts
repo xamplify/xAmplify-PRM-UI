@@ -128,6 +128,7 @@ export class PreviewLmsComponent implements OnInit {
       this.lmsService.updatePartnerProgress(progress).subscribe(
         (result: any) => {
           if (result.statusCode == 200) {
+            this.getBySlug();
             this.logger.info('Finished updatePartnerProgress()');
             this.assetViewLoader = false;
           }
@@ -165,7 +166,6 @@ export class PreviewLmsComponent implements OnInit {
     this.assetDetails = asset;
     this.showAsset = true;
     this.referenceService.goToTop();
-    this.setProgressAndUpdate(asset.id, ActivityType.OPENED);
   }
 
   viewQuiz() {
@@ -226,7 +226,6 @@ export class PreviewLmsComponent implements OnInit {
     }
     if (this.showFilePreview || assetDetails.beeTemplate) {
       this.setProgressAndUpdate(assetDetails.id, ActivityType.OPENED);
-      this.getBySlug();
     }
   }
 

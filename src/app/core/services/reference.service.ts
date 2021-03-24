@@ -270,18 +270,15 @@ export class ReferenceService {
 		}
 	}
 	validateEmailId(emailId: string) {
-		var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
-		return regex.test(emailId);
+		return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
 	}
 
 	validateWebsiteURL(url: string) {
-		var regex = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
-		return regex.test(url);
+		return this.regularExpressions.URL_PATTERN.test(url);
 	}
 
 	validatePhoneNumber(phoneNumber: string) {
-		var regex = /^[0-9-+]+$/;
-		return regex.test(phoneNumber);
+		return this.regularExpressions.PHONE_NUMBER_PATTERN.test(phoneNumber);
 	}
 
 	hideDiv(divId: string) {

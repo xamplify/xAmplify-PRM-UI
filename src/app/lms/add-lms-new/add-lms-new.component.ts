@@ -169,6 +169,9 @@ export class AddLmsNewComponent implements OnInit {
   isCkeditorLoaded: boolean = false;
   mediaLinkDisplayText: string = "";
   selectedAssetForMedia: any;
+  folderName:string = "";
+  showFolderDropDown:boolean = false;
+  filteredCategoryNames: any;
 
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public lmsService: LmsService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
@@ -237,6 +240,7 @@ export class AddLmsNewComponent implements OnInit {
     } else if (activeTab == "step-3") {
       this.stepThreeTabClass = this.activeTabClass;
       //this.stepTwoTabClass = this.completedTabClass;
+      this.assetPagination = new Pagination();
       this.listAssets(this.assetPagination);
     } else if (activeTab == "step-4") {
       this.stepFourTabClass = this.activeTabClass;
@@ -249,6 +253,7 @@ export class AddLmsNewComponent implements OnInit {
 
   getById(id: number) {
     this.ngxloading = true;
+    let self = this;
     this.lmsService.getById(id).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
@@ -257,6 +262,7 @@ export class AddLmsNewComponent implements OnInit {
             this.learningTrack = learningTrack;
             this.featuredImagePath = this.learningTrack.featuredImage;
             this.existingSlug = this.learningTrack.slug;
+            this.completeLink = this.linkPrefix + this.learningTrack.slug;
             if (this.learningTrack.quiz !== undefined) {
               this.learningTrack.quizId = this.learningTrack.quiz.id;
             }
@@ -271,9 +277,15 @@ export class AddLmsNewComponent implements OnInit {
             }
             if (this.learningTrack.tags !== undefined && this.learningTrack.tags.length > 0) {
               this.selectedTags = this.learningTrack.tags;
+              let tagIds: Array<number> = new Array<number>();
+              $.each(this.selectedTags, function (index, tag) {
+                tagIds.push(tag.id);
+              });
+              this.learningTrack.tagIds = tagIds;
             }
             if (this.learningTrack.category !== undefined) {
               this.learningTrack.categoryId = this.learningTrack.category.id;
+              this.folderName = this.learningTrack.category.name;
             }
             this.validateLearningTrack();
             this.ngxloading = false;
@@ -624,6 +636,7 @@ export class AddLmsNewComponent implements OnInit {
     this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
       (data: any) => {
         this.categoryNames = data.data;
+        this.filteredCategoryNames = this.categoryNames;
         this.referenceService.stopLoader(this.httpRequestLoader);
       },
       error => {
@@ -802,7 +815,9 @@ export class AddLmsNewComponent implements OnInit {
     this.imageChangedEvent = null;
     this.croppedImage = '';
     this.fileObj = null;
-    this.learningTrack.removeFeaturedImage = true;
+    if(!this.isAdd){
+      this.learningTrack.removeFeaturedImage = true;
+    }
     this.featuredImagePath = "";
   }
 
@@ -863,7 +878,9 @@ export class AddLmsNewComponent implements OnInit {
     this.fileObj = this.utilService.blobToFile(this.fileObj);
     //this.featuredImagePath = null;
     this.loadingcrop = false;
-    this.learningTrack.removeFeaturedImage = true;
+    if(!this.isAdd){
+      this.learningTrack.removeFeaturedImage = true;
+    }
     this.featuredImagePath = "";
     $('#cropImage').modal('hide');
   }
@@ -1292,10 +1309,7 @@ export class AddLmsNewComponent implements OnInit {
     this.validateDescription();
     this.validateAssets();
     this.validateGroupOrCompany();
-    this.validateStepFour();
-    this.validateStepThree();
-    this.validateStepTwo();
-    this.validateStepOne();
+    this.validateAllSteps();
   }
 
   checkAllRequiredFields() {
@@ -1407,4 +1421,24 @@ export class AddLmsNewComponent implements OnInit {
 
   mediaDisplayTextEventHandler(keyCode: any) { if (keyCode === 13) { this.updateDescriptionWithAssetUrl(); } }
 
+  showDropDown() {
+    this.showFolderDropDown = !this.showFolderDropDown;
+  }
+
+  updateFolderValue(folder:any){
+    this.folderName = folder.name;
+    this.learningTrack.categoryId = folder.id
+    this.filteredCategoryNames = this.categoryNames;
+    this.showFolderDropDown = false;
+  }
+
+  filterFolders(inputElement:any){
+    let value = inputElement.value;
+    if(value != undefined && value != null && value != ""){
+      this.filteredCategoryNames = this.categoryNames.filter(
+        item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
+    } else {
+      this.filteredCategoryNames = this.categoryNames;
+    }
+  }
 }

@@ -81,7 +81,7 @@
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let content of learningTrack.contents ;let i =index" id="ContentListDiv_{{content.id}}">
                             <div [ngClass]="{'disable' : i != 0 && learningTrack.followAssetSequence && !learningTrack.contents[i-1].finished && !isCreatedUser}">
                                 <div class="grid-box" (click)="viewContent(content)">
-                                    <img class="img-class" [src]="content.thumbnailPath" onerror="this.src='learningTrack.featuredImage';" alt="{{content.title}}">
+                                    <img class="img-asset-class" [src]="content.thumbnailPath" onerror="this.src='learningTrack.featuredImage';" alt="{{content.title}}">
                                     <h4 class="ellipsis mt5 mb5 f-w-600" title="{{content.assetName}}">
                                         {{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span><br><br>
                                     </h4>
@@ -92,7 +92,7 @@
                                     </div>
                                     <div class="ribbon">
                                         <span style="background-color: #5cb85c;" *ngIf="content.finished && !isCreatedUser" translate>Finished</span>
-                                        <span style="background-color: #819081;" *ngIf="!content.finished && !isCreatedUser && learningTrack.contents[i-1].finished" translate>In Progress</span>
+                                        <span style="background-color: #819081;" *ngIf="i != 0  && !content.finished && !isCreatedUser && learningTrack.contents[i-1].finished" translate>In Progress</span>
                                     </div>
                                     <div class="bar">
                                         <a [ngClass]="{'isDisabled' : i != 0 && learningTrack.followAssetSequence && !learningTrack.contents[i-1].finished && !isCreatedUser}" data-toggle="tooltip" data-placement="top" title="View" (click)="viewContent(content)">
@@ -105,7 +105,7 @@
                         <div class="col-md-3 col-sm-4 col-xs-12">
                             <div [ngClass]="{'disable' : !isCreatedUser && !learningTrack.enableQuiz}">
                                 <div class="grid-box" *ngIf="learningTrack.quiz">
-                                    <img class="img-class" style="width: 100px;" [src]="learningTrack.featuredImage" alt="{{learningTrack.quiz.name}}">
+                                    <img class="img-asset-class" style="width: 100px;" [src]="learningTrack.featuredImage" alt="{{learningTrack.quiz.name}}">
                                     <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack.quiz.name}}">
                                         {{learningTrack.quiz.name | slice:0:25}} <span *ngIf="learningTrack.quiz.name?.length>25">...</span><br><br>
                                     </h4>
