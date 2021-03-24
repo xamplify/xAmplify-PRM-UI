@@ -61,15 +61,15 @@
                           <tr>
                              <th scope="col"></th>
                              <th scope="col">Company Logo</th>
-                             <th scope="col" class="text-center">Partner Company Name</th>
-                             <th scope="col" class="text-center">Created Time</th>
+                             <th scope="col">Partner Company Name</th>
+                             <th scope="col">Created Time</th>
                           </tr>
                        </thead>
                        <tbody>
                           <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
                           <tr [class.partner-company-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1">
                             <td>
-                              <div class="actions-block">
+                              <div class="actions-block left-float">
                                 <a  (click)="viewTeamMembers(partner)" title="View/Hide Team Members">
                                   <i class="fa" [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}" aria-hidden="true"></i>
                                 </a>
@@ -80,11 +80,11 @@
                                  <img class="img-c-h" alt="No Image Found" [src]="authenticationService.MEDIA_URL+partner.companyLogo">
                               </div>
                            </td>
-                          <td class="text-center" title="{{partner?.companyName}}">
+                          <td title="{{partner?.companyName}}">
                              <span>{{partner?.companyName | slice:0:20}}</span>
                              <span *ngIf="partner?.companyName.length>20">...</span>
                           </td>
-                          <td class="text-center">
+                          <td>
                             <app-timestamp  [dateAndTime]="partner?.displayTime">
                             </app-timestamp>
                          </td>
@@ -110,7 +110,7 @@
                               <table  class="table tgrid table-condensed child-table-xamp" aria-describedby="team-members-info" id="admin-and-team-members-{{partner?.partnershipId}}">
                                  <thead>
                                     <tr>
-                                      <th scope="row" style="width:10%;">
+                                      <th scope="row">
                                        <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
                                      </th>
                                       <th scope="row">Entity Info</th>

@@ -52,10 +52,15 @@
     right: -3px;
 }
 
-.table tr.row-selected td,.partner-company-selected {
+.table tr.row-selected td {
     background-color: #00a6e847 !important;
     color: white;
 }
+.partner-company-selected{
+    background-color: #00a6e824 !important;
+    color: white;
+}
+
 
 
 /*--thank you pop starts here--*/

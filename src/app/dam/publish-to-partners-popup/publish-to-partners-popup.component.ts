@@ -149,6 +149,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 
 	viewTeamMembers(item: any) {
 		this.teamMembersPagination = new Pagination();
+		this.isHeaderCheckBoxChecked = false;
 		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
 		this.pagination.pagedItems.forEach((element) => {
 			let partnerCompanyId = element.partnerCompanyId;
@@ -159,10 +160,25 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		});
 		item.expand = !item.expand;
 		if(item.expand){
+			this.referenceService.loading(this.teamMembersLoader, true);
 			this.teamMembersPagination.companyId = item.partnerCompanyId;
 			this.teamMembersPagination.partnershipId = item.partnershipId;
-			this.getTeamMembersAndAdmins(this.teamMembersPagination);
+			this.teamMembersPagination.campaignId = this.assetId;
+			this.findPublishedPartnerIds(item);
+			
 		}
+	}
+
+	findPublishedPartnerIds(item:any){
+		this.damService.findPublishedPartnerIds(this.assetId,item.partnershipId).subscribe(
+			response=>{
+				this.selectedTeamMemberIds = response.data;
+				alert(this.selectedTeamMemberIds);
+				this.getTeamMembersAndAdmins(this.teamMembersPagination);
+			},error=>{
+				this.xtremandLogger.error(error);
+				this.getTeamMembersAndAdmins(this.teamMembersPagination);
+			});
 	}
 
 	getTeamMembersAndAdmins(teamMembersPagination:Pagination){
@@ -172,6 +188,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 			response=>{
 				let data = response.data;
 				teamMembersPagination.totalRecords = data.totalRecords;
+				teamMembersPagination.maxResults = teamMembersPagination.totalRecords;
 				teamMembersPagination = this.pagerService.getPagedItems(teamMembersPagination, data.list);
 				/*******Header checkbox will be chcked when navigating through page numbers*****/
 				let teamMemberIds = teamMembersPagination.pagedItems.map(function(a) { return a.userId; });

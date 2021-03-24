@@ -270,8 +270,7 @@ export class ReferenceService {
 		}
 	}
 	validateEmailId(emailId: string) {
-		var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
-		return regex.test(emailId);
+		return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
 	}
 
 	validateWebsiteURL(url: string) {
