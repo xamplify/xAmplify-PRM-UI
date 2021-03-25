@@ -120,7 +120,7 @@
                     title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 17}}</b>
                   <span *ngIf="campaign.campaignVideoFile.title?.length>17">...</span>
                 </div>
-                <div class="camp-desc" *ngIf="isDataShare">
+                <div class="camp-desc" >
                   <span>Click for preview</span>
                 </div>
               </div>
@@ -178,7 +178,7 @@
                   <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 17}}</b>
                   <span *ngIf="campaign.emailTemplate.name?.length>17">...</span>
                 </div>
-                <div class="camp-desc" *ngIf="isDataShare">
+                <div class="camp-desc" >
                   <span>Click for preview</span>
                 </div>
               </div>
@@ -275,7 +275,7 @@
                     <ng-template #partnerlist><span>Partner Lists</span></ng-template>
                   </b>
                 </div>
-                <div class="camp-desc" *ngIf="isDataShare">
+                <div class="camp-desc" >
                   <span>Click for details</span>
                 </div>
               </div>
