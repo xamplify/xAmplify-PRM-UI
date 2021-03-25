@@ -91,10 +91,11 @@
                 <i class="fa fa-envelope-open"></i>
               </div>
               <div class="camp-details">
-                <div class="camp-title" *ngIf="campaign.channelCampaign">{{campaignType}}  CAMPAIGN (PARTNER)</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType != 'VIDEO'">{{campaignType}} CAMPAIGN (PARTNER)</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType === 'VIDEO'">{{campaignType}} (PARTNER)</div>
                 <div class="camp-title" *ngIf="!campaign.channelCampaign">{{campaignType}}  CAMPAIGN</div>
                 <div class="camp-number">
-                  <b class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 17}}</b>
+                  <b class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 12}}</b>
                   <span *ngIf="campaign.campaignName?.length>17">...</span>
                 </div>
                 <div class="camp-desc">
@@ -117,7 +118,7 @@
                 <div class="camp-title ">Video Info</div>
                 <div class="camp-number">
                   <b class="m0"
-                    title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 17}}</b>
+                    title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 12}}</b>
                   <span *ngIf="campaign.campaignVideoFile.title?.length>17">...</span>
                 </div>
                 <div class="camp-desc" >
@@ -175,7 +176,7 @@
               <div class="camp-details">
                 <div class="camp-title">Email Info</div>
                 <div class="camp-number">
-                  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 17}}</b>
+                  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 12}}</b>
                   <span *ngIf="campaign.emailTemplate.name?.length>17">...</span>
                 </div>
                 <div class="camp-desc" >
