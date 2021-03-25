@@ -791,6 +791,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.contactService.loadUsersOfContactList(this.partnerListId, pagination).subscribe(
 				(data: any) => {
 					this.partners = data.listOfUsers;
+					this.contactService.allPartners = data.listOfUsers;
 					this.totalRecords = data.totalRecords;
 					this.setLegalBasisOptionString(this.partners);
 					this.isLoadingList = false;
