@@ -310,6 +310,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 			}, _error => {
 			  this.ngxLoading = false;
 			  this.sendSuccess = false;
+			  this.referenceService.goToTop();
 			  this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
 			});
 		}else{
