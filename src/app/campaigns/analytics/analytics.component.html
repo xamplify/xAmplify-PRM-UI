@@ -619,7 +619,7 @@
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb y-b-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                  (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
-                 [disabled]="campaignReport.emailClickedCount < 1" >
+                 [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess" > 
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-open"></i>
                   <h1>
