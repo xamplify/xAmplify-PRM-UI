@@ -142,6 +142,10 @@
     color: red;
 }
 
+.event-info{
+    color: #03A9F4;
+}
+
 .valid-email {
     color: #51ab35;
 }
@@ -153,6 +157,11 @@
 #font-size-success {
     font-size: 30px;
     color: green;
+}
+
+#font-size-info {
+    font-size: 30px;
+    color: #03A9F4;
 }
 
 #font-size-error {

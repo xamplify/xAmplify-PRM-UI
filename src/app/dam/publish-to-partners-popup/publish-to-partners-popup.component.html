@@ -14,8 +14,8 @@
                  <h4 class="event-success">{{responseMessage}}</h4>
               </ng-container>
               <ng-container *ngIf="statusCode!=200">
-                 <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
-                 <h4 class="event-error">{{responseMessage}}</h4>
+                 <i class="fa fa-info-circle" id="font-size-info" aria-hidden="true"></i>
+                 <h4 class="event-info">{{responseMessage}}</h4>
               </ng-container>
            </div>
            <ng-container *ngIf="!sendSuccess">
