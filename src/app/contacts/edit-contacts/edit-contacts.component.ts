@@ -1827,7 +1827,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.xtremandLogger.log(this.allUsers);
 
 
-					//this.loadAllContactListUsers(this.selectedContactListId, this.totalRecords, pagination.searchKey);
+					this.loadAllContactListUsers(this.selectedContactListId, this.totalRecords, pagination.searchKey);
 
 
 					var contactIds = this.pagination.pagedItems.map(function(a) { return a.id; });
