@@ -703,6 +703,12 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
+  isSpfConfigured(companyId:number){
+    return this.http.get(this.REST_URL + `admin/isSpfConfigured/${companyId}?access_token=${this.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+
   
   
 }

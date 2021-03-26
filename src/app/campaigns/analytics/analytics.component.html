@@ -91,10 +91,11 @@
                 <i class="fa fa-envelope-open"></i>
               </div>
               <div class="camp-details">
-                <div class="camp-title" *ngIf="campaign.channelCampaign">{{campaignType}}  CAMPAIGN (PARTNER)</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType != 'VIDEO'">{{campaignType}} CAMPAIGN (PARTNER)</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType === 'VIDEO'">{{campaignType}} (PARTNER)</div>
                 <div class="camp-title" *ngIf="!campaign.channelCampaign">{{campaignType}}  CAMPAIGN</div>
                 <div class="camp-number">
-                  <b class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 17}}</b>
+                  <b class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 12}}</b>
                   <span *ngIf="campaign.campaignName?.length>17">...</span>
                 </div>
                 <div class="camp-desc">
@@ -117,10 +118,10 @@
                 <div class="camp-title ">Video Info</div>
                 <div class="camp-number">
                   <b class="m0"
-                    title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 17}}</b>
+                    title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 12}}</b>
                   <span *ngIf="campaign.campaignVideoFile.title?.length>17">...</span>
                 </div>
-                <div class="camp-desc" *ngIf="isDataShare">
+                <div class="camp-desc" >
                   <span>Click for preview</span>
                 </div>
               </div>
@@ -175,10 +176,10 @@
               <div class="camp-details">
                 <div class="camp-title">Email Info</div>
                 <div class="camp-number">
-                  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 17}}</b>
+                  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 12}}</b>
                   <span *ngIf="campaign.emailTemplate.name?.length>17">...</span>
                 </div>
-                <div class="camp-desc" *ngIf="isDataShare">
+                <div class="camp-desc" >
                   <span>Click for preview</span>
                 </div>
               </div>
@@ -275,7 +276,7 @@
                     <ng-template #partnerlist><span>Partner Lists</span></ng-template>
                   </b>
                 </div>
-                <div class="camp-desc" *ngIf="isDataShare">
+                <div class="camp-desc" >
                   <span>Click for details</span>
                 </div>
               </div>
@@ -590,7 +591,7 @@
               <!----This is For Vendor/Partner------->
               <ng-container *ngIf="!isNavigatedThroughAnalytics">
                 <button class="portlet light color1-invert crcb black-blue-c"
-                  (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
+                (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
                   [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.emailClickedCount < 1">
                   <div class="portlet-body text-center">
                     <i class="fa fa-globe"></i>
@@ -619,7 +620,7 @@
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb y-b-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                  (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
-                 [disabled]="campaignReport.emailClickedCount < 1" >
+                 [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess" > 
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-open"></i>
                   <h1>
@@ -645,7 +646,7 @@
             <div [hidden]="mainLoader || hasClientError" class="col-xs-6 col-sm-2 col-md-2 col-lg-2 p-5x" *ngIf="campaignType === 'VIDEO'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb b-b-c"
-                (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
+              (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 [disabled]="campaignReport.usersWatchCount < 1 || !isDataShare">
                 <div class="portlet-body text-center">
@@ -1954,7 +1955,7 @@
               style="font-size:14px; float:right"></i>
           </span>
           <ul class="dropdown-menu pull-right" style="right: 15px!important;">
-            <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
+            <li><a id="delete_button" (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType )"> Export To Excel </a></li>
           </ul>
         </div>
         </div>
@@ -2088,7 +2089,7 @@
               style="font-size:14px; float:right"></i>
           </span>
           <ul class="dropdown-menu pull-right">
-            <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
+            <li><a id="delete_button" (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType )"> Export To Excel </a></li>
           </ul>
         </div>
         </div>

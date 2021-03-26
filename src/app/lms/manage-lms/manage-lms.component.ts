@@ -50,10 +50,10 @@ export class ManageLmsComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
     if (this.referenceService.isCreated) {
-      this.message = "Learning track created successfully";
+      this.message = "Track Builder created successfully";
       this.showMessageOnTop(this.message);
     } else if (this.referenceService.isUpdated) {
-      this.message = "Learning track updated successfully";
+      this.message = "Track Builder updated successfully";
       this.showMessageOnTop(this.message);
     }
     this.listLearningTracks(this.pagination);
@@ -100,7 +100,7 @@ export class ManageLmsComponent implements OnInit {
       this.exportObject['type'] = 2;
       this.exportObject['folderType'] = viewType;
       if (this.categoryId > 0) {
-        this.router.navigateByUrl('/home/lms/manage/');
+        this.router.navigateByUrl('/home/tracks/manage/');
       }
     } else if ("Folder-List" == viewType) {
       this.modulesDisplayType.isListView = false;
@@ -139,7 +139,7 @@ export class ManageLmsComponent implements OnInit {
       this.listLearningTracks(this.pagination);
     }
     else if (this.router.url.endsWith('manage/')) {
-      this.router.navigateByUrl('/home/lms/manage');
+      this.router.navigateByUrl('/home/tracks/manage');
     }
   }
 
@@ -201,7 +201,7 @@ export class ManageLmsComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchLearningTracks(); } }
 
   edit(id: number) {
-    this.referenceService.goToRouter("/home/lms/edit/" + id);
+    this.referenceService.goToRouter("/home/tracks/edit/" + id);
   }
 
   confirmDelete(id: number) {
@@ -237,9 +237,9 @@ export class ManageLmsComponent implements OnInit {
     this.lmsService.deleteById(learningTrack).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
-          this.referenceService.showInfo("Learning track Deleted Successfully", "");
+          this.referenceService.showInfo("Track Builder Deleted Successfully", "");
           const message = response.message;
-          this.customResponse = new CustomResponse('SUCCESS', "Learning track Deleted Successfully", true);
+          this.customResponse = new CustomResponse('SUCCESS', "Track Builder Deleted Successfully", true);
           this.pagination.pageIndex = 1;
           this.listLearningTracks(this.pagination);
         } else {
@@ -304,12 +304,12 @@ export class ManageLmsComponent implements OnInit {
     }
 
     view(learningTrack:LearningTrack){
-      let route = "/home/lms/lt/"  +  learningTrack.createdByCompanyId + "/" + learningTrack.slug;
+      let route = "/home/tracks/tb/"  +  learningTrack.createdByCompanyId + "/" + learningTrack.slug;
       this.referenceService.goToRouter(route);
     }
 
     viewAnalytics(learningTrack:LearningTrack){
-      let route = "/home/lms/analytics/"  +  learningTrack.id;
+      let route = "/home/tracks/analytics/"  +  learningTrack.id;
       this.referenceService.goToRouter(route);
     }
 }

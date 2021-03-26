@@ -566,6 +566,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 	            	this.campaignReport.unsubscribed = response.data.unsubscribed;
 	            	this.campaignReport.pagesClicked = response.data.pagesClicked;
 	            	this.campaignReport.deliveredCount = parseInt(response.data.deliveredCount);
+	            	this.campaignReport.usersWatchCount = parseInt(response.data.views);
 	            	
                     this.listCampaignViews(campaignId, this.campaignViewsPagination);
 	              /*this.campaignReport.emailOpenCount = data["email_opened_count"];
@@ -616,12 +617,14 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.referenceService.loading(this.httpRequestLoader, true);
       this.paginationType = 'usersWatch';
       this.downloadTypeName = 'usersWatchedList';
-      this.campaignService.usersWatchList(campaignId, pagination)
+      this.campaignService.emailActionDetails(campaignId, 'views', pagination)
         .subscribe(
-          data => {
-            this.usersWatchListPagination.totalRecords = this.campaignReport.usersWatchCount;
-            this.campaignReport.usersWatchList = data.data;
-            data.data.forEach((element, index) => {
+        		response => {
+        	this.actionType = 'views';
+        	this.campaignReport.emailActionType =  'views';
+            this.usersWatchListPagination.totalRecords = response.data.totalRecords;;
+            this.campaignReport.usersWatchList = response.data.data;
+            response.data.data.forEach((element, index) => {
               element.startTime = new Date(element.startTimeUtcString);
               element.endTime = new Date(element.endTimeUtcString);
             });
@@ -750,10 +753,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.paginationType = 'emailAction';
       this.downloadTypeName = 'emailAction';
       this.actionType = actionType;
-      this.campaignService.emailActionList(campaignId, actionType, pagination)
-        .subscribe(data => {
-          data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
-          this.campaignReport.emailLogs = data;
+      this.campaignService.emailActionDetails(campaignId, actionType, pagination)
+        .subscribe(response => {
+          this.campaignReport.emailLogs = response.data.data;
+          this.campaignReport.emailLogs.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
           this.campaignReport.emailActionType = actionType;
           $('#emailActionListModal').modal();
           if (actionType === 'open') {
@@ -765,7 +768,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           } else if (actionType === 'click') {
             this.sortByDropDown = this.sortByDropDown.filter(function (el) { return el.name != "Subject(ASC)"; });
             this.sortByDropDown = this.sortByDropDown.filter(function (el) { return el.name != "Subject(DESC)"; });
-            this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
+            this.emailActionListPagination.totalRecords = response.data.totalRecords;;
           }
           this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
           this.loading = false;
@@ -1159,8 +1162,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
                 this.campaignType = 'VIDEO';
                 this.getCountryWiseCampaignViews(campaignId);
                 this.getCampaignViewsReportDurationWise(campaignId);
-                this.getCampaignWatchedUsersCount(campaignId);
-                this.campaignWatchedUsersListCount(campaignId);
+                //this.getCampaignWatchedUsersCount(campaignId);
+               // this.campaignWatchedUsersListCount(campaignId);
               } else if (campaignType.includes('SOCIAL')) {
                 this.campaignType = 'SOCIAL';
                 this.getSocialCampaignByCampaignId(campaignId);
@@ -1890,6 +1893,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
                         		  name = 'SoftBounce_Emails_Details';
                         	  }else if(this.actionType === 'unsubscribe'){
                         		  name = 'Unsubscribed_Users_Details';
+                        	  }else if(this.actionType === 'views'){
+                        		  name = 'Campaign_Video_Views_Details';
+                        	  }else if(this.actionType === 'open'){
+                        		  name = 'Email_Opened_Details';
+                        	  }else if(this.actionType === 'click'){
+                        		  name = 'Email_Clicked_Details';
                         	  }
                               this.downloadFile(data, name, this.campaignId);
                               this.isLoadingDownloadList = false;
@@ -2339,6 +2348,7 @@ checkParentAndRedistributedCampaignAccess(){
         this.downloadTypeName = this.paginationType = 'campaignViews';
         this.emailActionListPagination.pageIndex = 1;
         this.emailActionDetailsPagination.pageIndex = 1;
+        this.usersWatchListPagination.pageIndex = 1;
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.getCampaignById(this.campaignId);
         //this.getCampaignHighLevelAnalytics(this.campaignId);

@@ -1047,6 +1047,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               this.isValidPageBackgroundColor = true;
           }
       } catch (error) { console.log(error); }
+      this.checkValideColorCodes();
   }
 
   characterSize() {
@@ -1547,6 +1548,10 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
         this.pageBackgroundColor = colorCode;
         this.isValidPageBackgroundColor = true;
     }
+    this.checkValideColorCodes();
+}
+
+checkValideColorCodes(){
     if (this.isValidBackgroundColor && this.isValidLabelColor && this.isValidButtonBackgroundColor && this.isValidButtonValueColor && this.isValidTitleColor && this.isValidBorderColor && this.isValidPageBackgroundColor) {
         this.form.isValidColorCode = true;
     }

@@ -247,7 +247,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
             this.referenceService.loading(this.httpRequestLoader, true);
             this.videoFileService.loadVideoFiles(pagination)
                 .subscribe((result: any) => {
-                    this.allVideos = result.listOfMobinars;
+                    this.allVideos = result.list;
                     this.totalRecords = result.totalRecords;
                     pagination.totalRecords = this.totalRecords;
                     for (let i = 0; i < this.allVideos.length; i++) {

@@ -6,9 +6,9 @@
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
                 <i *ngIf="!isPartnerView" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isPartnerView" [routerLink]="['/home/lms/manage']">Manage Learning Track</a>
+                <a *ngIf="!isPartnerView" [routerLink]="['/home/tracks/manage']">Manage Tracks</a>
                 <i *ngIf="isPartnerView" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="isPartnerView" [routerLink]="['/home/lms/shared']">Shared Learning Track</a>
+                <a *ngIf="isPartnerView" [routerLink]="['/home/tracks/shared']">Shared Tracks</a>
             </li>
         </ul>
     </div>
@@ -25,15 +25,22 @@
                 </ng-container>
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
-                        <div class="page-toolbar col-xs-12" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                        <div class="page-toolbar col-xs-12"
+                            *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="btn-group pull-right">
                                 <ng-container class='m10'>
-                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
+                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                                        data-placement="bottom" title="List View"
+                                        [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
                                         <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
-                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
+                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
+                                        data-placement="bottom" title="Grid View"
+                                        [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
                                         <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                     </span>
-                                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
+                                    <span *ngIf="pagination.categoryId>0"
+                                        class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
+                                        data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                 </ng-container>
                                 <div class="inputs" style="float: right">
@@ -45,9 +52,14 @@
                                     </div> -->
                                     <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
                                         <div class="input-icon right" style="position: relative;right: -11px;">
-                                            <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-                                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchLearningTracks();"></button>
-                                            <button type="submit" class="search-box-item-click" (click)="searchLearningTracks()">
+                                            <input type="text" style="height:34px;" class="form-control"
+                                                [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                                placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                            <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                                *ngIf="sortOption.searchKey"
+                                                (click)="sortOption.searchKey='';searchLearningTracks();"></button>
+                                            <button type="submit" class="search-box-item-click"
+                                                (click)="searchLearningTracks()">
                                                 <i class="fa fa-search" aria-hidden="true"></i></button>
                                         </div>
                                     </div>
@@ -56,7 +68,8 @@
                         </div>
                     </div>
                 </div>
-                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView"></app-landing-page-loader>
+                <app-landing-page-loader [maxBoxLength]=4
+                    *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView"></app-landing-page-loader>
                 <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView ">
                 </app-list-loader>
                 <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView">
@@ -64,16 +77,19 @@
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive">
-                            <table class='table tgrid table-hover table-sm' id="manage-lms-list-table" *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
+                            <table class='table tgrid table-hover table-sm' id="manage-lms-list-table"
+                                *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
                                 <thead>
                                     <tr>
                                         <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
-                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-lms-list-table',2)">
+                                            <span class="ui-column-resizer gray"
+                                                (mousedown)="referenceService.onMouseDown($event,'manage-lms-list-table',2)">
                                             </span>
                                             <span class="gridHeader" translate>Learning Track</span>
                                         </th>
                                         <th class="visible-xs" colspan="1" style="width: 45%" id="border-bottom">
-                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-lms-list-table',1)">
+                                            <span class="ui-column-resizer gray"
+                                                (mousedown)="referenceService.onMouseDown($event,'manage-lms-list-table',1)">
                                             </span>
                                             <span class="gridHeader" translate>Learning Track</span>
                                         </th>
@@ -88,10 +104,12 @@
                                 <tbody>
                                     <tr *ngFor="let learningTrack of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs text-cente" style="width: 10%;">
-                                            <img class="img-class-list" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="Image Not Found">
+                                            <img class="img-track-list" [src]="learningTrack.featuredImage"
+                                                onerror="this.src='assets/images/lms.jpg';" alt="Image Not Found">
                                         </td>
                                         <td>
-                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}" translate>
+                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}"
+                                                translate>
                                                 <span><strong>{{learningTrack.title}}</strong></span>
                                             </h4>
                                             <h6 class="moreipsis" title="{{learningTrack.category.name}}">
@@ -102,40 +120,54 @@
                                                 <span translate> Created By
                                                     <strong>{{learningTrack.createdByName}}</strong></span>
                                             </h6>
-                                            <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner" style="background-color: #5cb85c;" translate>Published</h6>
+                                            <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner"
+                                                style="background-color: #5cb85c;" translate>Published</h6>
                                         </td>
                                         <td class="hidden-xs text-center">
-                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
+                                            <app-timestamp [isOnlyDate]="true"
+                                                [dateAndTime]="learningTrack.createdDateString">
                                             </app-timestamp>
                                         </td>
                                         <td>
                                             <div *ngIf="isPartnerView" class="row">
                                                 <div class="progress">
-                                                    <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar">
+                                                    <div class="progress-bar" data-toggle="tooltip" data-placement="top"
+                                                        title="{{learningTrack.progress}}%"
+                                                        [ngStyle]="{'width': learningTrack.progress + '%'}"
+                                                        style="border-radius:1px;" role="progressbar">
                                                     </div>
                                                 </div>
-                                                <span *ngIf="learningTrack.progress != undefined">{{learningTrack.progress}}%</span>
+                                                <span
+                                                    *ngIf="learningTrack.progress != undefined">{{learningTrack.progress}}%</span>
                                                 <span *ngIf="learningTrack.progress == undefined">0%</span>
                                             </div>
                                         </td>
                                         <td id="actions-row">
                                             <div class="actions-block override-actions custom-width-icon">
-                                                <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
+                                                <a *ngIf="learningTrack.canUpdate && !isPartnerView"
+                                                    data-toggle="tooltip" data-placement="top" title="Preview & Edit"
+                                                    (click)="edit(learningTrack.id)">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
-                                                <a *ngIf="learningTrack.published && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
+                                                <a *ngIf="learningTrack.published && !isPartnerView"
+                                                    data-toggle="tooltip" data-placement="top" title="Unpublish"
+                                                    (click)="confirmChangePublish(learningTrack.id, false)">
                                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                                 </a>
-                                                <a *ngIf="!learningTrack.published && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                                <a *ngIf="!learningTrack.published && !isPartnerView"
+                                                    data-toggle="tooltip" data-placement="top" title="Publish"
+                                                    (click)="confirmChangePublish(learningTrack.id, true)">
                                                     <i class="fa fa-share" aria-hidden="true"></i>
                                                 </a>
                                                 <!-- <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
                                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a> -->
-                                                <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
+                                                <a data-toggle="tooltip" data-placement="top" title="View"
+                                                    (click)="view(learningTrack)">
                                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a>
-                                                <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
+                                                <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
+                                                    title="View Analytics" (click)="viewAnalytics(learningTrack)">
                                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                 </a>
                                                 <!-- <ng-container *ngIf="">
@@ -159,7 +191,9 @@
                                                         </a>
                                                     </ng-container>
                                                 </ng-container> -->
-                                                <a *ngIf="learningTrack.canDelete && !isPartnerView" id="template-delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(learningTrack.id)">
+                                                <a *ngIf="learningTrack.canDelete && !isPartnerView"
+                                                    id="template-delete" data-toggle="tooltip" data-placement="top"
+                                                    title="Delete" (click)="confirmDelete(learningTrack.id)">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -171,17 +205,26 @@
                     </ng-container>
                 </section>
 
-                <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                    <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
+                <div class="row"
+                    *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                    <div class="col-md-3 col-sm-4 col-xs-12"
+                        *ngFor="let learningTrack of pagination.pagedItems ;let i =index"
+                        id="LearningTrackListDiv_{{learningTrack.id}}">
                         <div class="grid-box">
-                            <img class="img-class" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="{{learningTrack.title}}">
-                            <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}" style="float: none !important;" translate>
-                                {{learningTrack.title | slice:0:25}} <span *ngIf="learningTrack.title?.length>25">...</span><br><br>
+                            <img class="img-grid-track " [src]="learningTrack.featuredImage"
+                                onerror="this.src='assets/images/lms.jpg';" alt="{{learningTrack.title}}">
+                            <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}"
+                                style="float: none !important;" translate>
+                                {{learningTrack.title | slice:0:25}} <span
+                                    *ngIf="learningTrack.title?.length>25">...</span><br><br>
                             </h4>
                             <div>
                                 <div *ngIf="isPartnerView" style="margin: 0px 15px 0px 15px;">
                                     <div class="progress">
-                                        <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar">
+                                        <div class="progress-bar" data-toggle="tooltip" data-placement="top"
+                                            title="{{learningTrack.progress}}%"
+                                            [ngStyle]="{'width': learningTrack.progress + '%'}"
+                                            style="border-radius:1px;" role="progressbar">
                                         </div>
                                     </div>
                                     <span *ngIf="learningTrack.progress != undefined">{{learningTrack.progress}}%</span>
@@ -204,25 +247,33 @@
                                 </h6>
                             </div>
                             <div class="ribbon">
-                                <span style="background-color: #5cb85c;" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
+                                <span style="background-color: #5cb85c;"
+                                    *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
                             </div>
                             <div class="bar">
-                                <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
+                                <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip"
+                                    data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
-                                <a *ngIf="learningTrack.published && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
+                                <a *ngIf="learningTrack.published && !isPartnerView" data-toggle="tooltip"
+                                    data-placement="top" title="Unpublish"
+                                    (click)="confirmChangePublish(learningTrack.id, false)">
                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                 </a>
-                                <a *ngIf="!learningTrack.published && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                <a *ngIf="!learningTrack.published && !isPartnerView" data-toggle="tooltip"
+                                    data-placement="top" title="Publish"
+                                    (click)="confirmChangePublish(learningTrack.id, true)">
                                     <i class="fa fa-share" aria-hidden="true"></i>
                                 </a>
                                 <!-- <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a> -->
-                                <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
+                                <a data-toggle="tooltip" data-placement="top" title="View"
+                                    (click)="view(learningTrack)">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
+                                <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
+                                    title="View Analytics" (click)="viewAnalytics(learningTrack)">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 </a>
                                 <!-- <ng-container *ngIf="">
@@ -248,7 +299,9 @@
                                         <span class="badge" id="notification-list">{{learningTrack.count}}</span>
                                     </ng-container>
                                 </ng-container> -->
-                                <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
+                                <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
+                                    data-placement="top" title="Delete" class="delete"
+                                    (click)="confirmDelete(learningTrack.id)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -257,7 +310,8 @@
                 </div>
                 <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                     <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listLearningTracks($event)" [hidden]="httpRequestLoader.isLoading">
+                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                            (notifyParentDropDown)="listLearningTracks($event)" [hidden]="httpRequestLoader.isLoading">
                         </app-pagination>
                     </div>
                     <!-- End of 24 -->

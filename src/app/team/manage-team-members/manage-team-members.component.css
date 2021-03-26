@@ -219,12 +219,7 @@ hr {
     opacity: 0.7;
 }
 
-img:hover {
-    -webkit-filter: grayscale(0%);
-    background-color: #4dff4d;
-    filter: grayscale(0%);
-    opacity: 2;
-}
+
 
 .fa fa-cog:hover {
     color: blue;

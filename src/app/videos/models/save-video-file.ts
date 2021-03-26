@@ -5,6 +5,7 @@ export class SaveVideoFile {
     title: string;
     categoryId: number;
     category: Category;
+    categoryName : string;
     categories: Category[];
     viewBy: string;
     tags: string[];

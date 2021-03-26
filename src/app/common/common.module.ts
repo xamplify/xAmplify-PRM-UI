@@ -83,7 +83,7 @@ import { ShareLeadsComponent } from './share-leads/share-leads.component';
 import { ImageLoaderComponent } from './image-loader/image-loader.component';
 import { AddTagsUtilComponent } from 'app/util/add-tags-util/add-tags-util.component';
 import { CampaignsLaunchedByPartnersComponent } from 'app/util/campaigns-launched-by-partners/campaigns-launched-by-partners.component';
-
+import { SpfDescriptionComponent } from 'app/util/spf-description/spf-description.component';
 
 
 
@@ -100,7 +100,7 @@ import { CampaignsLaunchedByPartnersComponent } from 'app/util/campaigns-launche
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
 		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent,
-		ImageLoaderComponent,CampaignsLaunchedByPartnersComponent],
+		ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent],
 
 
 
@@ -114,7 +114,7 @@ import { CampaignsLaunchedByPartnersComponent } from 'app/util/campaigns-launche
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
 		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent]
+		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent]
 
 
 })

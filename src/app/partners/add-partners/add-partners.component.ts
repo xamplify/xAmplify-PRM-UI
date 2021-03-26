@@ -813,6 +813,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						this.pageLoader = false;
 
 					}
+					this.pageLoader = false;
 
 				},
 				error => this.xtremandLogger.error(error),
