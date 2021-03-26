@@ -791,7 +791,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.contactService.loadUsersOfContactList(this.partnerListId, pagination).subscribe(
 				(data: any) => {
 					this.partners = data.listOfUsers;
-					this.contactService.allPartners = data.listOfUsers;
 					this.totalRecords = data.totalRecords;
 					this.setLegalBasisOptionString(this.partners);
 					this.isLoadingList = false;
@@ -808,12 +807,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					} else {
 						this.editContactComponent.isHeaderCheckBoxChecked = false;
 					}
-					/*if (!this.searchKey) {
+					if (!this.searchKey) {
 						this.loadAllPartnerInList(pagination.totalRecords);
 					} else {
 						this.pageLoader = false;
 
-					}*/
+					}
 					this.pageLoader = false;
 
 				},
