@@ -48,6 +48,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	teamMembersPagination:Pagination = new Pagination();
 	adminsAndTeamMembersErrorMessage: CustomResponse = new CustomResponse();
 	selectedPartnershipIds:any[] = [];
+	isEdit = false;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService,public userService:UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -174,6 +175,9 @@ export class PublishToPartnersPopupComponent implements OnInit {
 		this.damService.findPublishedPartnerIds(this.assetId).subscribe(
 			response=>{
 				this.selectedTeamMemberIds = response.data;
+				if(response.data!=undefined && response.data.length>0){
+					this.isEdit = true;
+				}
 			},error=>{
 				this.xtremandLogger.error(error);
 		});
@@ -286,7 +290,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 	}
 
 	publish(){
-		if(this.selectedTeamMemberIds.length>0){
+		if(this.selectedTeamMemberIds.length>0 || this.isEdit){
 			this.startLoaders();
 			this.damPublishPostDto.damId = this.assetId;
 			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
