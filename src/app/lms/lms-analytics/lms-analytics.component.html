@@ -7,17 +7,11 @@
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <a [routerLink]="referenceService.homeRouter">Home</a>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    <a [routerLink]="['/home/lms/manage']">Manage Learning Track</a>
+                    <a [routerLink]="['/home/tracks/manage']">Manage Tracks</a>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                     <a>Analytics</a>
                 </li>
             </ul>
-            <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </a>
-            <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
-                <i class="fa fa-refresh" aria-hidden="true"></i>
-            </a>
         </div>
     </ng-container>
     <div style="position: relative; top: -10px">
@@ -38,7 +32,7 @@
                             {{option.name}}</option>
                         </select>
                     </div> -->
-                                        <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
+                                        <div class="portlet-input input-inline" style="margin-right: 15px;width: 180px;">
                                             <div class="input-icon right" style="position: relative;right: -11px;">
                                                 <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
                                                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search();"></button>
@@ -46,6 +40,12 @@
                                                     <i class="fa fa-search" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
+                                        <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </a>
+                                        <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
+                                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
                                 <tbody>
                                     <tr *ngFor="let company of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs text-cente" style="width: 10%;">
-                                            <img class="img-class" [src]="company.companyLogo" onerror="this.src='assets/images/company-profile-logo.png';" alt="{{company.companyLogo}}">
+                                            <img class="img-class" [src]="authenticationService.MEDIA_URL + company.companyLogo" onerror="this.src='assets/images/company-profile-logo.png';" alt="{{company.companyLogo}}">
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{company.companyName}}" translate>

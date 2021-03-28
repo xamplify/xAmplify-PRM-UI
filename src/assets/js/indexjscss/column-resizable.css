@@ -67,6 +67,9 @@ span.ui-column-resizer {
 .left-float{
 	float:left !important;
 }
+.left{
+	float: left !important;
+}
 
 .margin-space {
 	margin-left: 3px !important;

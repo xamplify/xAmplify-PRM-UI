@@ -1884,7 +1884,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.setPage(1);
 		this.searchKey = null;
 		this.pagination.searchKey = this.searchKey;
-		this.pagination.maxResults = 10;
+		this.pagination.maxResults = 12;
 		this.invalidDeleteSuccessMessage = false;
 		this.editListContacts = true;
 		this.showAllContactData = false;
@@ -1894,7 +1894,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.uploadCsvUsingFile = false;
 		this.showSelectedCategoryUsers = true;
 		this.checkingLoadContactsCount = true;
-		this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+		//this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
 		this.contactsByType.selectedCategory = null;

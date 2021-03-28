@@ -274,13 +274,11 @@ export class ReferenceService {
 	}
 
 	validateWebsiteURL(url: string) {
-		var regex = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
-		return regex.test(url);
+		return this.regularExpressions.URL_PATTERN.test(url);
 	}
 
 	validatePhoneNumber(phoneNumber: string) {
-		var regex = /^[0-9-+]+$/;
-		return regex.test(phoneNumber);
+		return this.regularExpressions.PHONE_NUMBER_PATTERN.test(phoneNumber);
 	}
 
 	hideDiv(divId: string) {

@@ -1584,7 +1584,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.listAllPipelines(this.pipelinePagination);
 		} else if (this.activeTabName == "tags") {
 			this.activeTabHeader = this.properties.tags;
-		} 
+		} else if(this.activeTabName =="spf"){
+			this.activeTabHeader = this.properties.spfHeaderText;
+		}
 
 		this.referenceService.goToTop();
 	}

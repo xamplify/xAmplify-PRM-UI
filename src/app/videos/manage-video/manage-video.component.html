@@ -90,7 +90,7 @@
                         </td>
                          <td class="text-center hidden-xs">
                            <!-- <span class='view-by-banner'>{{videoFile.viewBy}}</span> -->
-                           <span *ngIf="videoFile.viewBy!='DRAFT'">{{videoFile.category.name | translate}}</span>
+                           <span *ngIf="videoFile.viewBy!='DRAFT'">{{videoFile.categoryName | translate}}</span>
                            <span *ngIf="videoFile.viewBy==='DRAFT'" translate>None</span>
                          </td>
                          <td class="text-center hidden-xs" >

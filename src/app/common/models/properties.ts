@@ -159,6 +159,8 @@ export class Properties {
   leadPipelines = "Lead Pipelines";
   dealPipelines = "Deal Pipelines";
   tags = "Tags";
+  spf = "SPF Configuration";
+  spfHeaderText = "Publish an SPF record with your DNS registrar";
 
   /********Error Messages************* */
   roleUpdatedMessage = "Your role has been changed.Please login again.";

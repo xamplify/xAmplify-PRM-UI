@@ -145,7 +145,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   redirectTo(user: User) {
-    this.loading = false;
     const roles = user.roles;
     if (this.authenticationService.isSuperAdmin()) {
       this.router.navigate(['/home/dashboard/admin-report']);
@@ -155,6 +154,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home/dashboard/add-company-profile']);
     }
   }
+
+  
   eventHandler(keyCode: any) { if (keyCode === 13) { this.login(); } }
   setCustomeResponse(responseType: string, responseMessage: string) {
     this.customResponse = new CustomResponse(responseType, responseMessage, true);

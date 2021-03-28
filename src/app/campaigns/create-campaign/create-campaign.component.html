@@ -718,7 +718,7 @@
                                                                         </td>
                                                                         <!-- --------------Category--------------------------- -->
                                                                         <td class="text-center">
-                                                                            {{savedVideoFile.category.name}}</td>
+                                                                            {{savedVideoFile.categoryName}}</td>
                                                                         <!-- --------------Published To--------------------------- -->
                                                                         <td class="text-center">
                                                                             <!-- <span class="view-by-banner">{{savedVideoFile.viewBy}}</span> -->
@@ -745,7 +745,7 @@
                                                                         </td>
                                                                         <!-- --------------Category--------------------------- -->
                                                                         <td class="text-center" *ngIf="videoFile.id!==videoId">
-                                                                            {{videoFile.category.name}}</td>
+                                                                            {{videoFile.categoryName}}</td>
                                                                         <!-- --------------Published To--------------------------- -->
                                                                         <td class="text-center" *ngIf="videoFile.id!==videoId">
                                                                             <!-- <span class="view-by-banner">{{videoFile.viewBy}}</span> -->
@@ -845,7 +845,7 @@
                                                                             </app-video-thumbnail>
                                                                         </td>
                                                                         <td class="text-center">
-                                                                            {{savedVideoFile.category.name}}</td>
+                                                                            {{savedVideoFile.categoryName}}</td>
                                                                         <td class="text-center">
                                                                             <!-- <span class="view-by-banner">{{savedVideoFile.viewBy}}</span> -->
                                                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="savedVideoFile.uploadedDate">
@@ -882,7 +882,7 @@
                                                                         </td>
                                                                         <!-- --------------Category--------------------------- -->
                                                                         <td class="text-center" *ngIf="videoFile.id!==videoId">
-                                                                            {{videoFile.category.name}} </td>
+                                                                            {{videoFile.categoryName}} </td>
                                                                         <!-- --------------Published To--------------------------- -->
                                                                         <td class="text-center" *ngIf="videoFile.id!==videoId">
                                                                             <!-- <span class="view-by-banner">{{videoFile.viewBy}}</span> -->
