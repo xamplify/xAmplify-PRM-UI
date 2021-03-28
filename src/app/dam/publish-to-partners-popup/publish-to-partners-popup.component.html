@@ -68,7 +68,7 @@
                        <tbody>
                           <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
                           <tr [class.partner-company-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1">
-                            <td>
+                            <td class="cw">
                               <div class="actions-block left-float">
                                 <a  (click)="viewTeamMembers(partner)" title="View/Hide Team Members">
                                   <i class="fa" [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}" aria-hidden="true"></i>
@@ -155,7 +155,7 @@
         </div>
      </div>
      <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
-        <button type="submit" class="btn green-haze" [disabled]="selectedTeamMemberIds?.length==0 && !isEdit" *ngIf="!sendSuccess" (click)="publish()">Publish</button>
+        <button type="submit" class="btn green-haze" [disabled]="selectedTeamMemberIds?.length==0 && !isEdit" *ngIf="!sendSuccess" (click)="publish()">Submit</button>
         <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
      </div>
   </div>
