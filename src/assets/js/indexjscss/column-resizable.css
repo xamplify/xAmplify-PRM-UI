@@ -64,6 +64,9 @@ span.ui-column-resizer {
 	float: right;
 }
 
+.left-float{
+	float:left !important;
+}
 .left{
 	float: left !important;
 }
@@ -259,3 +262,4 @@ span.ui-column-resizer {
 	margin: 14px;
 	margin-top: 1px;
 }
+

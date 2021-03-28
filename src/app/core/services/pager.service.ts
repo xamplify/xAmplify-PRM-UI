@@ -59,7 +59,6 @@ export class PagerService {
            return pagination;
 
         }catch(error){
-           // alert(error);
            console.error(error);
         }
     }

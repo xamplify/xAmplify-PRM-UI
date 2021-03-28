@@ -153,6 +153,14 @@ export class DamService {
     
   }
 
+  findPublishedPartnershipIdsByDamId(id:number){
+    return this.utilGetMethod("findPublishedPartnershipIds/" + id);
+  }
+
+  findPublishedPartnerIds(damId:number){
+    return this.utilGetMethod("findPublishedPartnerIds/" + damId);
+  }
+
   private utilGetMethod(url: string) {
     return this.http.get(this.URL + url + "?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)

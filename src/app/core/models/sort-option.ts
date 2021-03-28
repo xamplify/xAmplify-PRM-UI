@@ -268,6 +268,14 @@ export class SortOption {
     { 'name': 'Updated On(DESC)', 'value': 'updatedTime-DESC' }
   ];
 
+
+  partnerCompaniesDropDownOptions = [
+    { 'name': 'Company Name(A-Z)', 'value': 'companyName-ASC' },
+    { 'name': 'Company Name(Z-A)', 'value': 'companyName-DESC' },
+    { 'name': 'Created Time(ASC)', 'value': 'createdTime-ASC' },
+    { 'name': 'Created Time(DESC)', 'value': 'createdTime-DESC' }
+  ]
+
   groupsSortDropDownOptions = [
 		{ 'name': 'List name (A-Z)', 'value': 'name-ASC' },
 		{ 'name': 'List name (Z-A)', 'value': 'name-DESC' },
@@ -279,7 +287,6 @@ export class SortOption {
 		{ 'name': 'Company name (A-Z)', 'value': 'companyName-ASC' },
 		{ 'name': 'Company name (Z-A)', 'value': 'companyName-DESC' },
   ];
-
 
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
@@ -300,7 +307,7 @@ export class SortOption {
     public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[0];
     public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[3];
     public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];//This is used in multiple places.Be careful while changing it dude.
-    public selectedDamPartnerDropDownOption:any = this.activeUsersSortDropDownOptions[this.activeUsersSortDropDownOptions.length-1];
+    public selectedDamPartnerDropDownOption:any = this.partnerCompaniesDropDownOptions[this.partnerCompaniesDropDownOptions.length-1];
     public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
     public publishedPartnerAnalyticsSortOption: any = this.publishedPartnerAnalyticsDropDown[this.publishedPartnerAnalyticsDropDown.length-1];
     public mdfVendorsSortOption:any = this.mdfVendorsSortDropDownOptions[5];
