@@ -138,6 +138,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 								this.pagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
 								this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 							}
+							this.pagination.userId = this.loggedInUserId;
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.listAssets(this.pagination);
@@ -257,7 +258,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		});
 		asset.expand = !asset.expand;
 		if (asset.expand) {
-			//this.historyPagination.campaignId = asset.parentId;
 			this.historyPagination.campaignId = asset.id;
 			this.listAssetsHistory(this.historyPagination);
 		} else {
