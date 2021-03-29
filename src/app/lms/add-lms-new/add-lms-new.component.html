@@ -107,8 +107,12 @@
                         <div class="inline link" action="action_page.php" style="width: 100%;">
                           <input class="form-control" id="copy-link" type="text" readonly="readonly"
                             [ngModel]="completeLink" #link>
-                          <button type="button" (click)="editSlug()"><i class="fa fa-edit"></i></button>
-                          <button type="button" (click)="copyInputMessage(link)"><i class="fa fa-copy"></i></button>
+                          <button type="button" (click)="editSlug()"
+                            style="border-top-left-radius: 3px;border-bottom-left-radius: 3px"><i
+                              class="fa fa-edit"></i></button>
+                          <button type="button" (click)="copyInputMessage(link)"
+                            style="border-top-right-radius: 3px;border-bottom-right-radius: 3px;"><i
+                              class="fa fa-copy"></i></button>
                         </div>
                       </div>
                       <span *ngIf="!isSlugValid" class="required pull-left"
@@ -121,8 +125,8 @@
                     </label>
                     <div class="inline col-sm-8">
                       <div class="dropdown">
-                        <input type="text" class="form-control" [(ngModel)]="folderName"
-                          (click)="showDropDown()" readonly style="cursor: auto;">
+                        <input type="text" class="form-control" [(ngModel)]="folderName" (click)="showDropDown()"
+                          readonly style="cursor: auto;">
                         <div *ngIf="showFolderDropDown" id="folderDropDown" class="dropdown-content dropdown-scroller">
                           <input type="text" placeholder="Search.." id="myInput"
                             (input)="filterFolders(folderSearchValue)" #folderSearchValue>
@@ -139,8 +143,8 @@
                     <label class="control-label col-sm-4" style="text-align: right;" translate>Tags
                     </label>
                     <div class="inline col-sm-8">
-                      <div class="portlet light" style="width: 100%;">
-                        <div class="portlet-title tabbable-line ">
+                      <div class="portlet light" style="width: 100%;padding: 5px !important;">
+                        <div class="portlet-title tabbable-line " style="margin-bottom: 0px !important;">
                           <div class="inline" style="float: right;">
                             <div class="input-icon left" style="padding-bottom: 5px;">
                               <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
@@ -170,9 +174,9 @@
                                         [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tag.id)>-1">
                                     </label>
                                   </div>
-                                  <div class="col-sm-5">
+                                  <div class="col-sm-5" style="padding-left: 0px !important;">
                                     <div class="btn btn-primary" (click)="updateSelectedTags(tag,undefined)"
-                                      style="padding: 4px 10px;">
+                                      style="padding: 4px 10px;border-radius: 2px !important;">
                                       {{tag.tagName}}</div>
                                   </div>
                                 </td>
@@ -185,11 +189,11 @@
                                         [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
                                     </label>
                                   </div>
-                                  <div class="col-sm-5">
+                                  <div class="col-sm-5" style="padding-left: 5px !important;">
                                     <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
                                       class="btn btn-primary"
                                       (click)="updateSelectedTags(tagsListSecondColumn[i],undefined)"
-                                      style="padding: 4px 10px;">
+                                      style="padding: 4px 10px;border-radius: 2px !important;">
                                       {{tagsListSecondColumn[i].tagName}}</div>
                                   </div>
                                 </td>
@@ -556,6 +560,7 @@
                           <th class="hidden-xs" colspan="2" style="width: 10%" id="border-bottom">
                             <span class="gridHeader" translate>Company</span>
                           </th>
+                          <th class="hidden-xs text-center">Partner Details</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -574,6 +579,14 @@
                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{company.partnerCompanyName}}" translate>
                               <span><strong>{{company.partnerCompanyName}}</strong></span>
                             </h4>
+                          </td>
+                          <td class="text-center">
+                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{company.partnerFullName}}" translate>
+                              <span>{{company.partnerFullName}}</span>
+                            </h4>
+                            <h5 class="mb0 ellipsis" title="{{company.partnerEmailId}}">
+                              {{company.partnerEmailId}}
+                            </h5>
                           </td>
                         </tr>
                       </tbody>
