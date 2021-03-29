@@ -50,10 +50,10 @@ export class ManageLmsComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
     if (this.referenceService.isCreated) {
-      this.message = "Track Builder created successfully";
+      this.message = "Track created successfully";
       this.showMessageOnTop(this.message);
     } else if (this.referenceService.isUpdated) {
-      this.message = "Track Builder updated successfully";
+      this.message = "Track updated successfully";
       this.showMessageOnTop(this.message);
     }
     this.listLearningTracks(this.pagination);

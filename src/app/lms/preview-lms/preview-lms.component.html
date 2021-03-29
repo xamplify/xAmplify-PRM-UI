@@ -36,7 +36,7 @@
                         <div [hidden]="assetViewLoader">
                             <div class="page-bar">
                                 <div class="row">
-                                    <div class="col-md-8 col-lg-8 cpdam">
+                                    <div class="col-md-8 col-lg-8">
                                         <div class="portlet light cphdam">
                                             <div class="portlet-title port-heading">
                                                 <div class="caption" style="color:#000!important;">
@@ -52,9 +52,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 col-lg-4" style="padding: 6px 15px 0px 17px;">
+                                    <div class="col-md-4 col-lg-4">
                                         <div>
-                                            <div class="grid-box" style="min-height: 200px;">
+                                            <div class="grid-box" style="min-height: 200px;margin: 0px;">
                                                 <img class="img-class" src="{{assetDetails?.thumbnailPath}}" alt="No Image Found"><br>
                                                 <a class="btn btn-info" [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}" (click)="downloadAsset(assetDetails)">Download</a>
                                                 <a class="btn btn-info" (click)="assetPreview(assetDetails)">View</a>
@@ -90,9 +90,9 @@
                                             Type: <strong>{{content.assetType}}</strong>
                                         </h6>
                                     </div>
-                                    <div class="ribbon">
-                                        <span style="background-color: #5cb85c;" *ngIf="content.finished && !isCreatedUser" translate>Finished</span>
-                                        <span style="background-color: #819081;" *ngIf="i != 0  && !content.finished && !isCreatedUser && learningTrack.contents[i-1].finished" translate>In Progress</span>
+                                    <div *ngIf="!isCreatedUser" class="ribbon">
+                                        <span style="background-color: #5cb85c;" *ngIf="content.finished" translate>Finished</span>
+                                        <span style="background-color: #819081;" *ngIf="content.opened && !content.finished" translate>In Progress</span>
                                     </div>
                                     <div class="bar">
                                         <a [ngClass]="{'isDisabled' : i != 0 && learningTrack.followAssetSequence && !learningTrack.contents[i-1].finished && !isCreatedUser}" data-toggle="tooltip" data-placement="top" title="View" (click)="viewContent(content)">
@@ -151,10 +151,9 @@
                 <source [src]="filePath" [type]="fileType">
                 Your browser does not support the audio tag.
             </audio>
-            <!-- <div *ngIf="isFile && filePath?.length > 0 && viewer?.length > 0">
-                <ngx-doc-viewer [url]="filePath" [viewer]="viewer" disableContent="popout" style="width:100%;height:75vh;">
-                </ngx-doc-viewer>
-            </div> -->
+            <div *ngIf="isFile && filePath?.length > 0">
+                <iframe [src]="url" style="width:100%; height:75vh;" frameborder="0"></iframe>
+            </div>
         </div>
     </div>
 </ng-container>
