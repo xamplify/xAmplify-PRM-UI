@@ -9,6 +9,8 @@ import { SocialService } from 'app/social/services/social.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { DashboardReport } from 'app/core/models/dashboard-report';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { LinkedinService } from 'app/social/services/linkedin.service';
+import { Body } from '@angular/http/src/body';
 
 declare var  $: any;
 
@@ -24,7 +26,7 @@ export class SocialAccountsAnalyticsComponent implements OnInit {
   loggedInUserId: number = 0;
   socialAccountsLoader: HttpRequestLoader = new HttpRequestLoader();
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,public twitterService: TwitterService,
-    public facebookService: FacebookService, public socialService: SocialService,public dashboardService:DashboardService) { }
+    public facebookService: FacebookService, public socialService: SocialService,public dashboardService:DashboardService,public linkedinService: LinkedinService) { }
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -186,7 +188,10 @@ export class SocialAccountsAnalyticsComponent implements OnInit {
                                   this.getFriends(this.socialConnections[i]);
                               }
 
+                          }else if(this.socialConnections[i].source === 'LINKEDIN'){
+                            this.getTotalCountOfConnectionsAndFollowers(this.socialConnections[i]);
                           }
+                          
                       }
                   }
                   this.xtremandLogger.log('getFacebookAccounts() Finished.');
@@ -209,5 +214,20 @@ export class SocialAccountsAnalyticsComponent implements OnInit {
             () => this.xtremandLogger.log('finished')
         );
 }
+
+getTotalCountOfConnectionsAndFollowers(socialConnection: SocialConnection){
+    this.xtremandLogger.log('getTotalCountOfConnectionsAndFollowers() method invoke started.');
+    let data: any;
+    this.linkedinService.getTotalCountOfConnectionsAndFollowers(socialConnection)
+        .subscribe(
+            response =>{
+                data = response.data;
+                socialConnection.connectionCount = data.connectionCount;
+            },
+            error => this.xtremandLogger.log(error),
+            () => { }
+        );
+        
+    }
 
 }
