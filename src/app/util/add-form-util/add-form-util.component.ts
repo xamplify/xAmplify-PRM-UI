@@ -651,7 +651,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       } else if (type == 'Dollar') {
           symbol = "$"
       } else if (type == 'Yen') {
-          symbol = " ¥"
+          symbol = "¥"
       } else if (type == 'Pound') {
           symbol = "£"
       } else if (type == 'Euro') {
