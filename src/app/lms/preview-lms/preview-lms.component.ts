@@ -11,6 +11,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActivityType } from '../models/activity-type';
 import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.component'
 import { DamService } from '../../dam/services/dam.service';
+import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 
 
 declare var $, swal: any;
@@ -33,7 +34,6 @@ export class PreviewLmsComponent implements OnInit {
   loggedInUserId: number = 0;
   assetDetails: any;
   assetViewLoader: boolean = false;
-  //takeQuiz: boolean = true;
   loggedInUserCompanyId: number = 0;
   isCreatedUser: boolean = false;
   @ViewChild('previewPopupComponent') previewPopupComponent: PreviewPopupComponent;
@@ -47,12 +47,13 @@ export class PreviewLmsComponent implements OnInit {
   fileType: string = "";
   modalPopupLoader = false;
   imageTypes: Array<string> = ['jpg', 'jpeg', 'png'];
-  fileTypes: Array<string> = ['txt', 'pdf', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx']
+  fileTypes: Array<string> = ['txt', 'pdf', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx'];
+  url: SafeResourceUrl;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public lmsService: LmsService,
     private router: Router, public logger: XtremandLogger,
-    private damService: DamService) {
+    private damService: DamService, public sanitizer: DomSanitizer) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.getCompanyId();
   }
@@ -75,11 +76,12 @@ export class PreviewLmsComponent implements OnInit {
             } else {
               this.isCreatedUser = false;
             }
+            this.referenceService.stopLoader(this.httpRequestLoader);
           } else {
             this.referenceService.showSweetAlertErrorMessage('Company Id Not Found.Please try aftersometime');
             this.router.navigate(["/home/dashboard"]);
+            this.referenceService.stopLoader(this.httpRequestLoader);
           }
-          this.referenceService.stopLoader(this.httpRequestLoader);
         }, (error: any) => {
           this.referenceService.stopLoader(this.httpRequestLoader);
         },
@@ -94,23 +96,13 @@ export class PreviewLmsComponent implements OnInit {
 
   getBySlug() {
     this.referenceService.startLoader(this.httpRequestLoader);
-    //this.takeQuiz = true;
-    let self = this;
     this.lmsService.getBySlug(this.createdUserCompanyId, this.slug).subscribe(
       (result: any) => {
         if (result.statusCode == 200) {
           let learningTrack: LearningTrack = result.data;
           if (learningTrack != undefined) {
             this.learningTrack = learningTrack;
-            // $.each(this.learningTrack.contents, function (index: number, content: any) {
-            //   if (!content.finished) {
-            //     self.takeQuiz = false;
-            //   }
-            // });
           }
-          this.referenceService.stopLoader(this.httpRequestLoader);
-        } else {
-          swal("Please Contact Admin!", result.message, "error");
           this.referenceService.stopLoader(this.httpRequestLoader);
         }
       },
@@ -130,6 +122,8 @@ export class PreviewLmsComponent implements OnInit {
           if (result.statusCode == 200) {
             this.getBySlug();
             this.logger.info('Finished updatePartnerProgress()');
+            this.assetViewLoader = false;
+          } else {
             this.assetViewLoader = false;
           }
         },
@@ -151,8 +145,8 @@ export class PreviewLmsComponent implements OnInit {
         if (result.statusCode == 200) {
           this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED);
           this.logger.info('Finished downloadBeeTemplate()');
-          this.referenceService.stopLoader(this.httpRequestLoader);
         }
+        this.referenceService.stopLoader(this.httpRequestLoader);
       },
       (error: string) => {
         this.logger.error(this.referenceService.errorPrepender + " downloadBeeTemplate():" + error);
@@ -166,6 +160,7 @@ export class PreviewLmsComponent implements OnInit {
     this.assetDetails = asset;
     this.showAsset = true;
     this.referenceService.goToTop();
+    this.setProgressAndUpdate(asset.id, ActivityType.OPENED);
   }
 
   viewQuiz() {
@@ -214,18 +209,20 @@ export class PreviewLmsComponent implements OnInit {
         this.showFilePreview = true;
         this.isImage = true;
       } else if (this.fileTypes.includes(assetType)) {
-        // this.showFilePreview = true;
-        // this.isFile = true;
-        // if (assetType == 'xlsx' || assetType == 'xls') {
-        //   this.viewer = "office";
-        // }
-        this.referenceService.showSweetAlertInfoMessage();
+        this.showFilePreview = true;
+        this.isFile = true;
+        this.filePath = "https://docs.google.com/viewer?src=" + assetDetails.assetPath + "&embedded=true";
+        if (assetType == 'xlsx' || assetType == 'xls' || assetType == 'doc' || assetType == 'docx') {
+          this.viewer = "office";
+          this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
+        }
+        this.transformUrl();
       } else {
         this.referenceService.showSweetAlertErrorMessage('Unsupported file type, Please download the file to view.');
       }
     }
     if (this.showFilePreview || assetDetails.beeTemplate) {
-      this.setProgressAndUpdate(assetDetails.id, ActivityType.OPENED);
+      this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED);
     }
   }
 
@@ -275,6 +272,10 @@ export class PreviewLmsComponent implements OnInit {
         $("#asset-preview-modal").modal('hide');
       }
     );
+  }
+
+  transformUrl() {
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.filePath);
   }
 
 }

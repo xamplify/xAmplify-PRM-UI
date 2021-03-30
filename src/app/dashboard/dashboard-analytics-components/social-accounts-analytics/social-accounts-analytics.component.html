@@ -70,10 +70,14 @@ authenticationService.isVendor() || authenticationService.isVendorPartner() || a
                                           <b>Posts</b>
                                           <h4>-</h4>
                                       </a>
-                                      <a class="col-xs-4 social-stats">
-                                          <b>Connections</b>
-                                          <h4>-</h4>
+                                      <a *ngIf="socialConnection.page" class="col-xs-4 social-stats">
+                                          <b>Followers</b>
+                                          <h4>{{socialConnection.connectionCount}}</h4>
                                       </a>
+                                      <a *ngIf="!socialConnection.page" class="col-xs-4 social-stats">
+                                        <b>Connections</b>
+                                        <h4>{{socialConnection.connectionCount}}</h4>
+                                    </a>
                                   </section>
                                   <section *ngIf="socialConnection.source === 'GOOGLE'" class="profile-details">
                                       <a class="col-xs-4 social-stats">

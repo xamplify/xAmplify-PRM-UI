@@ -312,7 +312,7 @@ export class PublishToPartnersPopupComponent implements OnInit {
 					this.authenticationService.forceToLogout();
 				}
 			}, _error => {
-			  this.ngxLoading = false;
+			  this.stopLoaders();
 			  this.sendSuccess = false;
 			  this.referenceService.goToTop();
 			  this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);

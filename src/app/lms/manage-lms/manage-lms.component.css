@@ -1,6 +1,6 @@
 .img-track-list {
     height: 100px;
-    width: 125px;
+    width: 180px;
     margin: 0;
     background: #f2f4f9;
     border: solid 1px #008fd5;
@@ -9,7 +9,7 @@
 
 .img-grid-track {
     height: 80px;
-    width: 100px;
+    width: 145px;
     background: #f2f4f9;
     border: solid 1px #008fd5;
     border-radius: 1px;

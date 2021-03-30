@@ -51,7 +51,6 @@
             <form role="form" class="form-horizontal form-bordered form-label-stripped">
               <div class="portlet box">
                 <div class="">
-                  <ng-container *ngIf="!damUploadPostDto?.beeTemplate || isAdd">
                     <div class="col-md-12 col-lg-12">
                       <div class="form-group">
                         <!---Asset-->
@@ -117,7 +116,6 @@
                       </div >
                     </div>
                 </div>
-                </ng-container>
                 <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                   <div class="col-md-8 col-lg-8 col-xs-8 col-sm-8">
                     <div class="form-group">
@@ -146,7 +144,7 @@
               </div>
           </div>
           <div class="footer">
-          <button class="btn btn-info" id="right" style="margin-right: 7px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
+          <button class="btn btn-default" id="right" style="margin-right: 7px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
           <button [disabled]="!isValidForm"  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadOrUpdate()" translate>{{submitButtonText}}</button>
           </div>
           </form>
