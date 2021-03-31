@@ -139,14 +139,8 @@ export class SaveAsComponent implements OnInit {
                   this.userUserListWrapper.userList = this.contactListObject;
                   this.saveAssignedLeadsList(this.userUserListWrapper);
               } else {
-                  for (let i = 0; i < this.editContactsComponent.selectedContactListIds.length; i++) {
-                      for (let j = 0; j < this.editContactsComponent.totalListUsers.length; j++) {
-                          if (this.editContactsComponent.selectedContactListIds[i] == this.editContactsComponent.totalListUsers[j].id) {
-                              this.editContactsComponent.totalListUsers[j].legalBasis = selectedLegalBasisOptions;
-                              this.editContactsComponent.selectedContactForSave.push(this.editContactsComponent.totalListUsers[j]);
-                              break;
-                          }
-                      }
+            	  for (let i = 0; i < this.editContactsComponent.selectedContactForSave.length; i++) {
+                      this.editContactsComponent.selectedContactForSave[i].legalBasis = selectedLegalBasisOptions;
                   }
                   console.log(this.editContactsComponent.selectedContactForSave);
                   this.userUserListWrapper.users = this.editContactsComponent.selectedContactForSave;
