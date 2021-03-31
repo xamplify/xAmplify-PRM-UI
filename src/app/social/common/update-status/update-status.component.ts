@@ -267,7 +267,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						data => {
 							for (const i of Object.keys(data)) {
 								const socialStatusContent = data[i];
-								socialStatus.socialStatusContents.push(socialStatusContent);
+								if(socialStatus.validLink){
+									socialStatus.ogImage = socialStatusContent.completeFilePath;
+								}else{
+									socialStatus.socialStatusContents.push(socialStatusContent);
+								}
 							}
 							console.log(socialStatus);
 						},
@@ -540,9 +544,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	initializeSocialStatus() {
 		this.socialStatusList = [];
 		this.isAllSelected = false;
-		this.selectedAccounts = 0;
-		//added by Ajay
-		this.socialStatus = new SocialStatus();
+        this.selectedAccounts = 0;
+        //added by Ajay
+        this.socialStatus = new SocialStatus();
 
 		let socialStatus = new SocialStatus();
 		socialStatus.userId = this.userId;
@@ -1241,12 +1245,23 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 
 	onKeyPress(socialStatus: any) {
-		let enteredURL = socialStatus.statusMessage;
+		let enteredURL = socialStatus.statusMessage.trim();
 		if (enteredURL.length === 0) {
 			this.socialStatus.statusMessage = ""
 			this.clearRssOgTagsFeed(socialStatus);
 		} else {
 			this.getOgTagsData(socialStatus);
+
+			/*if (!this.isUrlValid(enteredURL))
+			{
+				this.socialStatus.statusMessage = enteredURL;
+				this.clearRssOgTagsFeed(socialStatus);
+			} else {
+				if (this.isUrlValid(enteredURL) && enteredURL !== this.savedURL) {
+					this.socialStatus.statusMessage = enteredURL;
+					this.getOgTagsData(socialStatus);
+				}
+			}*/
 		}
 	}
 
@@ -1257,14 +1272,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		return pattern.test(url);
 	}
 
-	getOgTagsData(socialStatus: any) {
-		let url = socialStatus.statusMessage;
+		getOgTagsData(socialStatus: any) { 
+        let url = socialStatus.statusMessage;  
 		let req = { "userId": this.userId, "q": url };
 		this.socialService.getOgMetaTags(req).subscribe(data => {
 			if (data.statusCode === 8105) {
 				let response = data.data;
 				if (response !== undefined && response !== '') {
 					socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
+					socialStatus.originalOgImage = socialStatus.ogImage;
 					socialStatus.ogTitle = response.title;
 					socialStatus.ogDescription = response.description;
 					socialStatus.validLink = true;
@@ -1273,18 +1289,18 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				}
 			} else {
 				this.clearRssOgTagsFeed(socialStatus);
-
-			}
+				
+			}            
 		}, error => {
 			this.clearRssOgTagsFeed(socialStatus);
-			console.log(error);
+            console.log(error);
 		}, () => console.log("Campaign Names Loaded"));
 	}
 
 
 
-	clearRssOgTagsFeed(socialStatus: any) {
-		socialStatus.ogImage = ""
+		clearRssOgTagsFeed(socialStatus: any) {
+        socialStatus.ogImage = ""
 		socialStatus.ogTitle = "";
 		socialStatus.ogDescription = "";
 		socialStatus.validLink = false;
@@ -1312,4 +1328,5 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			swal("Sorry! you are not authorized to update this account.", "", "info");
 		}
 	}
+
 }

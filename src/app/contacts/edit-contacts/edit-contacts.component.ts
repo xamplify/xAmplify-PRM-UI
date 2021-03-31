@@ -69,6 +69,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	csvContacts = [];
 
 	contactListObject: ContactList;
+	selectedUser: User;
 	selectedContactListName: string;
 	public validEmailPatternSuccess: boolean = true;
 	emailNotValid: boolean;
@@ -1735,7 +1736,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.selectedLegalBasisOptions = [];
 	}
 
-	checkAll(ev: any) {
+	checkAll(ev: any,  contacts:User[]) {
 		try {
 			if (ev.target.checked) {
 				console.log("checked");
@@ -1748,6 +1749,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					$('#campaignContactListTable_' + id).addClass('contact-list-selected');
 				});
 				this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
+				for(let i=0; i<contacts.length; i++){
+					this.selectedContactForSave.push(contacts[i]);
+				}
+				
 			} else {
 				$('[name="campaignContact[]"]').prop('checked', false);
 				$('#user_list_tb tr').removeClass("contact-list-selected");
@@ -1756,6 +1761,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				} else {
 					let currentPageContactIds = this.pagination.pagedItems.map(function(a) { return a.id; });
 					this.selectedContactListIds = this.refService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+				}
+				for(let i=0; i<contacts.length; i++){
+					const index = this.selectedContactForSave.indexOf(contacts[i]);
+		            this.selectedContactForSave.splice(index, 1);
 				}
 			}
 			ev.stopPropagation();
@@ -1827,7 +1836,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.xtremandLogger.log(this.allUsers);
 
 
-					this.loadAllContactListUsers(this.selectedContactListId, this.totalRecords, pagination.searchKey);
+					//this.loadAllContactListUsers(this.selectedContactListId, this.totalRecords, pagination.searchKey);
 
 
 					var contactIds = this.pagination.pagedItems.map(function(a) { return a.id; });
@@ -2429,17 +2438,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.saveAsListName = this.contactListName + '_copy';
 		return this.saveAsListName;
 	}
-	saveAs(showGDPR: boolean) {
-		try {
-			this.showGDPR = showGDPR;
-			if (this.showGDPR) {
-				this.saveAsListName = this.addCopyToField();
-			} else {
-				this.saveAsListName = this.contactListName;
-			}
-		} catch (error) {
-			this.xtremandLogger.error(error, "editContactComponent", "SaveAsNewListSweetAlert()");
-		}
+    saveAs(showGDPR: boolean) {
+        if (this.selectedContactForSave.length === 0) {
+            this.customResponse = new CustomResponse('ERROR', "Please select atleast one "+ (this.checkingContactTypeName).toLowerCase()+" to create the list", true);
+        } else {
+            try {
+                this.showGDPR = showGDPR;
+                if (this.showGDPR) {
+                    this.saveAsListName = this.addCopyToField();
+                } else {
+                    this.saveAsListName = this.contactListName;
+                }
+            } catch (error) {
+                this.xtremandLogger.error(error, "editContactComponent", "SaveAsNewListSweetAlert()");
+            }
+        }
 	}
 	closeSaveAsModal() {
 		this.saveAsListName = undefined;
@@ -2453,7 +2466,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.contactListObject = new ContactList;
 				this.contactListObject.name = name;
 				this.contactListObject.isPartnerUserList = this.isPartner;
-				if (this.selectedContactListIds.length == 0) {
+				if (this.selectedContactListIds.length ===0) {
 					let listUsers = [];
 					if (this.isPartner == true && this.addPartnerSave == true) {
 						listUsers = this.contactService.allPartners;
@@ -2493,27 +2506,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							() => this.xtremandLogger.info("allcontactComponent saveSelectedUsers() finished")
 						)
 				} else {
-					if (this.addPartnerSave == true) {
-						for (let i = 0; i < this.selectedContactListIds.length; i++) {
-							for (let j = 0; j < this.contactService.allPartners.length; j++) {
-								if (this.selectedContactListIds[i] == this.contactService.allPartners[j].id) {
-									this.contactService.allPartners[j].legalBasis = selectedLegalBasisOptions;
-									this.selectedContactForSave.push(this.contactService.allPartners[j]);
-									break;
-								}
-							}
-						}
-					} else {
-						for (let i = 0; i < this.selectedContactListIds.length; i++) {
-							for (let j = 0; j < this.totalListUsers.length; j++) {
-								if (this.selectedContactListIds[i] == this.totalListUsers[j].id) {
-									this.totalListUsers[j].legalBasis = selectedLegalBasisOptions;
-									this.selectedContactForSave.push(this.totalListUsers[j]);
-									break;
-								}
-							}
-						}
-					}
+						for (let i = 0; i < this.selectedContactForSave.length; i++) {
+                            this.selectedContactForSave[i].legalBasis = selectedLegalBasisOptions;
+                        }
 
 					console.log(this.selectedContactForSave);
 					this.contactService.saveContactList(this.selectedContactForSave, name, this.isPartner, isPublic)
@@ -3352,4 +3347,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}, 250);
 
 	}
+	
+    saveAsSelectedContacts(e, contact: User) {
+        if (e.target.checked) {
+            this.selectedContactForSave.push(contact);
+        } else {
+            const index = this.selectedContactForSave.indexOf(contact);
+            this.selectedContactForSave.splice(index, 1);
+        }
+        e.stopPropagation();
+    }
 }
