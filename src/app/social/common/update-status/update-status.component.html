@@ -248,7 +248,7 @@
                         </ng-template>
                     </div>
                     <div class="update-status-content col-xs-10 col-sm-11">
-                        <textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
+                        <textarea placeholder="What's happening?" rows="3" class="form-control form-group rounded-0 mb5"
                          [(ngModel)]="socialStatus.statusMessage" (input)="onKeyPress(socialStatus)"
                          [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
                         <h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
@@ -263,15 +263,25 @@
                             </div>
                         </section>
 
-                        <section *ngIf="socialStatus.validLink" class="update-status-content col-xs-10 col-sm-11" style="float:left">
-                            <div class="col-sm-2"><img src="{{socialStatus.ogImage}}" width="100%"></div>
-                            <div class="col-sm-10"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
+                        <section *ngIf="socialStatus.validLink" class="update-status-content col-xs-10 col-sm-12" style="float:left">
+                            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 ogImage" style="margin-top: 0px;">
+                                <img  src="{{socialStatus.ogImage}}"                                      
+                                     height="86" width="100%" alt="No Image Found">
+                                <label class="actions-group add-photos m0">
+                                        <i class="fa fa-cog ogImage-Gear-Icon" data-toggle="tooltip" data-placement="bottom" title="Click here to change the image"></i>
+                                        <input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" 
+                                          class="file-input js-tooltip">
+                                </label>
+                            </div>
+                            
+                            <div class="col-sm-9"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
                                     <span *ngIf="socialStatus.statusMessage?.length>160">..</span>
                             </a>
-                            <h6 contenteditable="true"><b>{{socialStatus.ogTitle}}</b></h6>
-                            <p contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</p>
+                            <textarea [(ngModel)]="socialStatus.ogTitle" contenteditable="true">{{socialStatus.ogTitle}}</textarea>
+                            <textarea [(ngModel)]="socialStatus.ogDescription" contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</textarea>
                             </div>
                         </section>
+
                         <section [hidden]="isSocialCampaign && alias" class="pull-left actions-group">
                             <label class="add-photos m0" title="Add photos" data-toggle="tooltip" data-placement="top">
                                 <i class="fa fa-image" aria-hidden="true"></i>
