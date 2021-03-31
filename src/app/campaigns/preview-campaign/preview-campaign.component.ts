@@ -1525,10 +1525,10 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
     this.ngxloading = true;
     let prefixUrl = "/home/campaigns/user-campaigns/";
     let suffixUrl =  user.userId+"/a";
-    if(campaign.channelCampaign){
-      this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
+    if(campaign.nurtureCampaign){
+      this.referenceService.goToRouter(prefixUrl + "/c/" +suffixUrl);
     }else{
-      this.referenceService.goToRouter(prefixUrl + "/c/" + suffixUrl);
+      this.referenceService.goToRouter(prefixUrl + "/p/" + suffixUrl);
     }
   }
 }
