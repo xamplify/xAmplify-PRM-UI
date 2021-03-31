@@ -879,8 +879,10 @@
                               class="fa fa-envelope" aria-hidden="true"></i>
                             </a>
                           </div>
-						</td>
-						<td></td>
+            </td>
+            <ng-container *ngIf="contactsByType.selectedCategory != 'non-active'">
+              <td></td>
+            </ng-container>
 						<ng-container *ngIf="authenticationService.module.isCampaign && ((!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) || !isPartner) && contactsByType.selectedCategory != 'invalid' &&  !assignLeads">
 							<td class="text-center">
                 <div>
