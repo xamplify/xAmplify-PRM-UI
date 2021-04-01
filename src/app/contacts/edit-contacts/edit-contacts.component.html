@@ -192,7 +192,7 @@
 															<li><a *ngIf="selectedAddContactsOption != 8 && !isSegmentation" id="save_button" (click)="saveContacts()">Save
 															</a></li>
 															<li><a id="saveAs_button"
-																*ngIf=" (selectedAddContactsOption == 8) && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST'))"
+																*ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST'))"
 																(click)="saveAs(true)" translate>Save As </a></li>
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8 && (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !sharedLeads"
@@ -205,7 +205,7 @@
 														</ul>
 													</div>
 													</div>
-										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0 && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) "
+										<button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) "
 															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070" translate>
 															Save As<!-- <i class="fa fa-save"></i> -->
 														</button>
