@@ -112,12 +112,14 @@ export class DamService {
   }
 
   getDamAnalyticsTilesInfo(damPartnerId: number) {
-    return this.http.get(this.URL + "showPartnerDetailsWithAnalyticsCount/" + damPartnerId + "?access_token=" + this.authenticationService.access_token)
+    let userId = this.authenticationService.getUserId();
+    return this.http.get(this.URL + "showPartnerDetailsWithAnalyticsCount/" + damPartnerId + "/"+userId+"?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   listDamAnalytics(pagination: Pagination) {
+    pagination.partnerId = this.authenticationService.getUserId();
     return this.utilPostListMethod("listDamAnalytics", pagination);
   }
   
