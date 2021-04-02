@@ -1,7 +1,7 @@
 <!-- BEGIN PAGE CONTENT-->
 <div class="page-bar">
 	<ul class="page-breadcrumb">
-		<li><i class="fa fa-home" aria-hidden="true"></i> 
+		<li><i class="fa fa-home" aria-hidden="true"></i>
 			<a [routerLink]="refService.homeRouter" translate>Home</a>
 			 <i	class="fa fa-angle-right" aria-hidden="true"></i>
 			</li>
@@ -178,7 +178,7 @@
 											<div *ngIf="!isSynchronizationList">
 											<!-- disabling cancel button condition
 											[disabled]="selectedAddContactsOption == 8 && !clickBoard"  -->
-														<button id="cancel_button" class="btn pull-right"
+														<button id="cancel_button" class="btn pull-right" [disabled]="selectedAddContactsOption === 9"
 															(click)="cancelContacts()" style="margin-left: 5px; background-color: white" translate>
 															Cancel<i class="fa fa-cancel"></i>
 														</button>
@@ -192,7 +192,7 @@
 															<li><a *ngIf="selectedAddContactsOption != 8 && !isSegmentation" id="save_button" (click)="saveContacts()">Save
 															</a></li>
 															<li><a id="saveAs_button"
-																*ngIf=" (selectedAddContactsOption == 8) && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST'))"
+																*ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST'))"
 																(click)="saveAs(true)" translate>Save As </a></li>
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8 && (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !sharedLeads"
@@ -205,7 +205,7 @@
 														</ul>
 													</div>
 													</div>
-										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0 && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) "
+										<button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) "
 															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070" translate>
 															Save As<!-- <i class="fa fa-save"></i> -->
 														</button>
@@ -253,7 +253,7 @@
 											</div>
 										</ng-container>
 								 <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-top: 10px;">
-									<div class="col-xs-2 col-md-2 col-sm-2" *ngIf="selectedAddContactsOption === 8">
+								<div class="col-xs-2 col-md-2 col-sm-2" >
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: right; cursor: pointer;"
 									data-toggle="modal" data-target="#filterModal">
@@ -841,7 +841,7 @@
 									<div class="page-bar" *ngIf="!showEditContactData">
 									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									<div class="btn-group pull-right">
-									<div class="col-xs-2 col-md-2 col-sm-2">
+									<div class="col-xs-2 col-md-2 col-sm-2" style="padding: 0;">
 									<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; padding-right: 20px;"
 									data-toggle="modal" data-target="#filterModal">

@@ -101,7 +101,9 @@ export class DamAnalyticsComponent implements OnInit {
         if(contactCompany!=undefined && contactCompany!="" && contactCompany!=null){
           this.damAnalyticsTilesDto.circleAlphabet = contactCompany.slice(0,1);
           }else{
-          this.damAnalyticsTilesDto.circleAlphabet = this.damAnalyticsTilesDto.emailId.slice(0,1);
+            if(this.damAnalyticsTilesDto.emailId!="" && this.damAnalyticsTilesDto.emailId!=null){
+              this.damAnalyticsTilesDto.circleAlphabet = this.damAnalyticsTilesDto.emailId.slice(0,1);
+            }
           }
           this.tilesLoader = false;
           this.stopLoaders();
