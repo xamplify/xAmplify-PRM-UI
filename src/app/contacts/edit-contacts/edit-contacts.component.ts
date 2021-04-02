@@ -2453,7 +2453,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.error(error, "editContactComponent", "SaveAsNewListSweetAlert()");
             }
         }
-	}
+	}    
+    editListName() {
+    	 this.saveAsListName = this.contactListName;
+    }
 	closeSaveAsModal() {
 		this.saveAsListName = undefined;
 		this.refService.namesArray = undefined;

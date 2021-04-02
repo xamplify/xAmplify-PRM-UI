@@ -167,7 +167,7 @@ refreshPage(){
 
 viewDetailedAnalytics(partner:any){
   this.loading = true;
-  this.referenceService.goToRouter("/home/dam/vda/"+this.damId+"/"+partner.damPartnerId);
+  this.referenceService.goToRouter("/home/dam/vda/"+this.damId+"/"+partner.damPartnerId+"/"+partner.userId);
 }
 
 

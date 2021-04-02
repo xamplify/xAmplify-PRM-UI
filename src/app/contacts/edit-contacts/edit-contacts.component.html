@@ -43,7 +43,7 @@
 						<div class="page-bar m0">
 							<div class="page-breadcrumb">
 								<span *ngIf="!isDefaultPartnerList" data-toggle="tooltip" data-placement="top" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
-								(click)="saveAs(false)">
+								(click)="editListName()">
 								<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
 									</span>
