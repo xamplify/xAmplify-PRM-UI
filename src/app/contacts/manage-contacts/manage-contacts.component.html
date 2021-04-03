@@ -797,9 +797,10 @@
                       <th scope="col" class="text-center">Email Opened</th>
                       <th scope="col" class="text-center">Clicked Urls</th>
                       <th scope="col" class="text-center">Campaign Analytics</th>
-					  </ng-container>
+					      </ng-container>
                       <th *ngIf="contactsByType.selectedCategory == 'non-active'"></th>
                       <th *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">Actions</th>
+                      <th *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all'"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -934,7 +935,14 @@
 								  <i	class="fa fa-line-chart" aria-hidden="true"></i>
 								  </a>
 								</div>
-							  </td>
+                </td>
+                <td *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all'" class="text-center">
+                  <div class="actions-block no-float">
+                    <a title="Delete" (click)="confirmDeleteContact(contact)">
+                    <i	class="fa fa-trash-o" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                  </td>
 						</ng-container>
                         <td *ngIf="contactsByType.selectedCategory == 'non-active' && isPartner"></td>
                         <ng-template #NA>N/A</ng-template>

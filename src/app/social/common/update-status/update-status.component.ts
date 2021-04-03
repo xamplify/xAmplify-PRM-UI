@@ -79,9 +79,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	events = [];
 	selectedSocialProviderId: number;
 	savedURL: string;
+	validURL: string;
 	categoryNames: any;
 	showRssFeed: boolean = false;
 	nurtureCampaign = false;
+	isSavedUrlIsInStatusMessage: boolean;
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
 		public authenticationService: AuthenticationService, private contactService: ContactService,
@@ -1286,6 +1288,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					socialStatus.validLink = true;
 					socialStatus.ogt = true;
 					this.savedURL = url;
+					this.validURL = this.savedURL;
 				}
 			} else {
 				this.clearRssOgTagsFeed(socialStatus);
@@ -1300,12 +1303,19 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 
 		clearRssOgTagsFeed(socialStatus: any) {
-        socialStatus.ogImage = ""
-		socialStatus.ogTitle = "";
-		socialStatus.ogDescription = "";
-		socialStatus.validLink = false;
-		socialStatus.ogt = false;
-		this.savedURL = '';
+			this.isSavedUrlIsInStatusMessage = socialStatus.statusMessage.includes(this.validURL);
+			if(this.isSavedUrlIsInStatusMessage){
+				this.savedURL = socialStatus.statusMessage;
+			}
+			else{
+				socialStatus.ogImage = ""
+				socialStatus.ogTitle = "";
+				socialStatus.ogDescription = "";
+				socialStatus.validLink = false;
+				socialStatus.ogt = false;
+				this.savedURL = '';
+			}
+        
 	}
 
 	listCategories() {
