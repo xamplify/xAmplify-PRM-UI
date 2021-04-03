@@ -27,6 +27,7 @@ export class ManageCampaignDealsComponent implements OnInit {
   @Output() viewCampaignDealForm = new EventEmitter<any>();
   @Output() editCampaignDealForm = new EventEmitter<any>();
   @Output() refreshCounts = new EventEmitter<any>();
+  @Output() showCommentsPopUp = new EventEmitter<any>();
 
   loggedInUserId : number;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
@@ -151,6 +152,10 @@ export class ManageCampaignDealsComponent implements OnInit {
       () => { }
   );
 
+ }
+
+ showComments(deal: any) {
+  this.showCommentsPopUp.emit(deal);
  }
 
 

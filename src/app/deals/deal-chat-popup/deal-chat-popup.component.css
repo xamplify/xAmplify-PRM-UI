@@ -1,0 +1,12 @@
+.frame {
+    height: 100px;      /* equals max image height */
+    line-height: 100px;
+    width: 100%;
+}    
+   
+.deal-details {
+    margin: auto;
+    width: 87%;
+    padding: 0px;
+    background-color: white;
+}

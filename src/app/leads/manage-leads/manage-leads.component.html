@@ -121,7 +121,7 @@
 
       <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
       <!-- -----------------------------Leads List-------------------------------------- -->
-      <div class="row" *ngIf="!showLeadForm">
+      <div class="row">
         <div class="col-md-12">
           <div class="tabbable tabbable-custom tabbable-noborder" id="header">
             <div class="tab-content" *ngIf="!showCampaignLeads">
@@ -278,6 +278,10 @@
                                 <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)"
                                   title="Delete Lead" id="lead">
                                   <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                </a>
+                                <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
+                                  <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
+                                  <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default" style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
                                 </a>
                               </ng-container>
                             </div>
@@ -519,14 +523,14 @@
               <app-manage-campaign-leads [partnerCompanyId]="selectedPartnerCompanyId" [campaignId]="selectedCampaignId"
               [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
               (viewCampaignLeadForm)="viewCampaignLeadForm($event)" (editCampaignLeadForm)="editCampaignLeadForm($event)" 
-              (registerDealForm)="registerDealForm($event)" (refreshCounts)="refreshCounts()">
+              (registerDealForm)="registerDealForm($event)" (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)">
               </app-manage-campaign-leads>
             </div>
           </div>
         </div><!-- End Of Tab Content -->
       </div>
 
-      <app-modal-popup-loader *ngIf="showLeadForm"> </app-modal-popup-loader>
+      <!-- <app-modal-popup-loader *ngIf="showLeadForm"> </app-modal-popup-loader> -->
       
       </div>
 
@@ -534,6 +538,8 @@
 
   </div>
 </div>
+
+<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
 
 <!-- Add Lead Model-->
 <app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitLeadSuccess()"
@@ -548,3 +554,4 @@
       <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
 	</div>
 </section>
+
