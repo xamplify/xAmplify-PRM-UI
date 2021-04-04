@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 import { Pagination } from '../../core/models/pagination';
 import { Lead } from '../models/lead';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { DealComments } from 'app/deal-registration/models/deal-comments';
 
 @Injectable()
 export class LeadsService {
@@ -136,7 +137,23 @@ export class LeadsService {
       .catch(this.handleError);
   }
 
-  
+  saveComment(comment: DealComments) {
+    return this.http.post(this.URL + `/comment/save?access_token=${this.authenticationService.access_token}`, comment)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getConversation(leadId:number, userId:number) {
+    return this.http.get(this.URL + `/${leadId}/chat/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  updateChatStatistics(comment: DealComments) {
+    return this.http.post(this.URL + `/chat/stats?access_token=${this.authenticationService.access_token}`, comment)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
   private extractData(res: Response) {
     let body = res.json();

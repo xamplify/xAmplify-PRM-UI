@@ -1,10 +1,9 @@
 import { User } from "../../core/models/user";
 
-export class DealComments {
-    
-   
+export class DealComments {    
      id:number;
      dealId:number;
+     leadId:number;
      propertyId:number;
      userName="";
      comment:string;
@@ -12,5 +11,8 @@ export class DealComments {
      parentId:number;
      user:User
      createdAt:Date;
-     
+     userId:number;
+     commentedByEmail: string;
+	commentedByFullName: string;
+	commentedByImage = "assets/images/icon-user-default.png";     
 }

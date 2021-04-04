@@ -221,6 +221,8 @@
                               <ng-container>
                                 <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
                                   <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                                  <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default"
+                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                 </a>
                                 <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
                                   id="deal">
@@ -229,6 +231,11 @@
                                 <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
                                   title="Delete Deal" id="deal">
                                   <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                </a>
+                                <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
+                                  <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
+                                  <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
+                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                                 </a>
                               </ng-container>
                             </div>
@@ -489,7 +496,7 @@
               <app-manage-campaign-deals [partnerCompanyId]="selectedPartnerCompanyId" [campaignId]="selectedCampaignId"
               [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
               (viewCampaignDealForm)="viewCampaignDealForm($event)" (editCampaignDealForm)="editCampaignDealForm($event)" 
-              (refreshCounts)="refreshCounts()">
+              (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)">
               </app-manage-campaign-deals>
             </div>
           </div>
@@ -511,5 +518,8 @@
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
       <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin" 
       (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
-	</div>
+  </div>
 </section>
+
+<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
+
