@@ -2416,12 +2416,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.loading = true;
 		this.customResponse = new CustomResponse();
 		this.contactService.deleteContactById(contact.id).subscribe(
-			_response=>{
+			response=>{
 				this.loading = false;
-				let message = contact.emailId+" deleted successfully";
-				this.listContactsByType(this.contactsByType.selectedCategory);
-				this.contactsCount();
-				this.customResponse = new CustomResponse('SUCCESS', message, true);
+				if(response.statusCode==200){
+					let message = contact.emailId+" deleted successfully";
+					this.listContactsByType(this.contactsByType.selectedCategory);
+					this.contactsCount();
+					this.customResponse = new CustomResponse('SUCCESS', message, true);
+				}else{
+					this.customResponse = new CustomResponse('ERROR', 'This contact cannot be deleted as it is shared by one of your vendors.', true);
+				}
+				
 			},
 			error=>{
 				this.loading = false;
