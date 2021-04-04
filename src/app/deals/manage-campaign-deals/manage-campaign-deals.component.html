@@ -107,6 +107,10 @@
                     title="Delete Deal" id="deal">
                     <i class="fa fa-trash mr5" aria-hidden="true"></i>
                   </a>
+                  <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
+                    <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
+                        style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">0</span>
+                  </a>
                 </ng-container>
               </div>
               <!-- <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"

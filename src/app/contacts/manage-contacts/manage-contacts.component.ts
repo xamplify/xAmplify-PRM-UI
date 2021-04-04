@@ -2397,7 +2397,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		let self = this;
 			swal({
 				title: 'Are you sure?',
-				text: "You won't be able to undo this action!",
+				text: "This will delete the contact from all the contact lists",
 				type: 'warning',
 				showCancelButton: true,
 				swalConfirmButtonColor: '#54a7e9',
@@ -2412,6 +2412,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	deleteContact(contact:any){
+		this.referenceService.goToTop();
 		this.loading = true;
 		this.customResponse = new CustomResponse();
 		this.contactService.deleteContactById(contact.id).subscribe(
@@ -2419,6 +2420,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.loading = false;
 				let message = contact.emailId+" deleted successfully";
 				this.listContactsByType(this.contactsByType.selectedCategory);
+				this.contactsCount();
 				this.customResponse = new CustomResponse('SUCCESS', message, true);
 			},
 			error=>{

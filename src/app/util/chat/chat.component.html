@@ -1,0 +1,27 @@
+<div class="comment-area comment-div" id="comment-area">
+    <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px;">        
+        <li [attr.class]="c.userId != loggedInUserId ? 'comment author-comment':'comment user-comment'">
+            <div class="info" style="padding-right: 15px; padding-left: 15px;">
+                <a title="{{c?.commentedByFullName}}">{{c?.commentedByFullName| slice:0:30}}<span
+                        *ngIf="c?.commentedByFullName?.length>30">...</span></a>
+                <span *ngIf="c?.createdAt">
+                    <app-timestamp-new [dateAndTime]="c.createdAt"> </app-timestamp-new>
+                </span>
+            </div>
+            <a class="avatar none">
+                <img src="{{c?.commentedByImage}}" width="35" alt="Profile Avatar" title="{{c.commentedByFullName}}" />
+            </a>
+            <p>{{c?.comment}}</p>
+        </li>
+    </ul>
+</div>
+
+<div class="write-new comment-text-area" *ngIf="enableWrite">
+    <textarea placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment"
+    [ngModelOptions]="{standalone: true}" maxlength="1000" (input)="validateComment(comment.comment)"></textarea>
+    <div>
+        <button (click)="postComment(comment)" *ngIf="comment.comment" class="btn btn-primary"
+            [disabled]="!comment.comment || isError "
+            [style.pointer-events]="comment.comment.length>0 ? 'auto' : 'none' ">Submit</button>
+    </div>
+</div>

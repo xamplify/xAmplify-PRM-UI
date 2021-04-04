@@ -25,5 +25,5 @@ export class Lead {
     pipelineId: number;  
     associatedUserId: number;
     associatedDealId: number;
-    
+    unReadChatCount: any;
 }

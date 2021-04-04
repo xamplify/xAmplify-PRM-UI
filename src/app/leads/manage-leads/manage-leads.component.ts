@@ -62,6 +62,8 @@ export class ManageLeadsComponent implements OnInit {
   showCampaignLeads = false;
   showLeadForm = false;
   showDealForm = false;
+  selectedLead: Lead;
+  isCommentSection = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -593,7 +595,10 @@ export class ManageLeadsComponent implements OnInit {
             this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
             //this.getCounts();  
             this.showLeads();            
-         }else{
+         } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") { 
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.leadsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);               
+        } else{
             this.referenceService.loading(this.httpRequestLoader, false);
             this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
          }
@@ -687,6 +692,17 @@ registerDealForm(leadId: any) {
   this.showDealForm = true;
   this.actionType = "add";
   this.leadId = leadId;
+}
+
+showComments(lead: any) {
+  this.selectedLead = lead;
+  this.isCommentSection = !this.isCommentSection;
+}
+
+addCommentModalClose(event: any) {
+  this.selectedLead.unReadChatCount = 0;
+ // console.log(this.selectedLead.unReadChatCount)
+  this.isCommentSection = !this.isCommentSection;
 }
  
 }

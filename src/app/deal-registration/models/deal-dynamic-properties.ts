@@ -13,6 +13,6 @@ export class DealDynamicProperties {
      propType:string;
      error:boolean;
      class:string;
-
+     unReadPropertyChatCount: any;
 
 }
