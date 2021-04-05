@@ -28,14 +28,6 @@
                           <div class="page-toolbar">
                              <div class="btn-group pull-right">
                                 <div class="inputs float-right" style="display: inline-flex;">
-                                   <div>
-                                      <select class="form-control" [(ngModel)]="sortOption.selectedDamPartnerDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                      <option
-                                      *ngFor="let option of sortOption.partnerCompaniesDropDownOptions"
-                                      [ngValue]="option">
-                                      {{option.name}}</option>
-                                      </select>
-                                   </div>
                                    <div class="portlet-input input-inline" id="search-div">
                                       <div class="input-icon right" id="icon">
                                          <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
