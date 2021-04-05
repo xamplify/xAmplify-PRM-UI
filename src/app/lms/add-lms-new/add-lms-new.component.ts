@@ -169,9 +169,14 @@ export class AddLmsNewComponent implements OnInit {
   isCkeditorLoaded: boolean = false;
   mediaLinkDisplayText: string = "";
   selectedAssetForMedia: any;
-  folderName:string = "";
-  showFolderDropDown:boolean = false;
+  folderName: string = "";
+  showFolderDropDown: boolean = false;
   filteredCategoryNames: any;
+
+  isGroupHeaderCheckBoxChecked: boolean = false;
+  paginatedSelectedGroupIds = [];
+  isCompanyHeaderCheckBoxChecked: boolean = false;
+  paginatedSelectedCompanyIds = [];
 
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public lmsService: LmsService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
@@ -271,9 +276,11 @@ export class AddLmsNewComponent implements OnInit {
             }
             if (this.learningTrack.companies !== undefined && this.learningTrack.companies.length > 0) {
               this.selectedPartnerCompanies = this.learningTrack.companies;
+              this.isCheckAllCompanies();
             }
             if (this.learningTrack.groups !== undefined && this.learningTrack.groups.length > 0) {
               this.selectedGroups = this.learningTrack.groups;
+              this.isCheckAllGroups();
             }
             if (this.learningTrack.tags !== undefined && this.learningTrack.tags.length > 0) {
               this.selectedTags = this.learningTrack.tags;
@@ -501,6 +508,7 @@ export class AddLmsNewComponent implements OnInit {
   listGroups(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
     this.referenceService.loading(this.groupsLoader, true);
+    let self = this;
     this.contactService.loadContactLists(pagination).subscribe(
       (response: any) => {
         pagination.totalRecords = response.totalRecords;
@@ -509,6 +517,7 @@ export class AddLmsNewComponent implements OnInit {
           group.createdDate = new Date(group.createdDate);
         });
         pagination = this.pagerService.getPagedItems(pagination, response.listOfUserLists);
+        this.isCheckAllGroups();
         this.referenceService.stopLoader(this.groupsLoader);
       },
       (error: any) => {
@@ -549,12 +558,14 @@ export class AddLmsNewComponent implements OnInit {
   listPartnerCompanies(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
     this.referenceService.loading(this.PartnerCompaniesLoader, true);
+    let self = this;
     this.lmsService.getPartnerCompanies(pagination).subscribe(
       (data: any) => {
         let response = data.data;
         pagination.totalRecords = response.totalRecords;
         this.PartnerCompaniesSortOption.totalRecords = response.totalRecords;
         pagination = this.pagerService.getPagedItems(pagination, response.data);
+        this.isCheckAllCompanies();
         this.referenceService.stopLoader(this.PartnerCompaniesLoader);
       },
       (error: any) => {
@@ -815,7 +826,7 @@ export class AddLmsNewComponent implements OnInit {
     this.imageChangedEvent = null;
     this.croppedImage = '';
     this.fileObj = null;
-    if(!this.isAdd){
+    if (!this.isAdd) {
       this.learningTrack.removeFeaturedImage = true;
     }
     this.featuredImagePath = "";
@@ -878,7 +889,7 @@ export class AddLmsNewComponent implements OnInit {
     this.fileObj = this.utilService.blobToFile(this.fileObj);
     //this.featuredImagePath = null;
     this.loadingcrop = false;
-    if(!this.isAdd){
+    if (!this.isAdd) {
       this.learningTrack.removeFeaturedImage = true;
     }
     this.featuredImagePath = "";
@@ -889,18 +900,62 @@ export class AddLmsNewComponent implements OnInit {
   changeSelectedGroups(group: any, event: any) {
     if (event.target.checked) {
       this.selectedGroups.push(group);
+      this.paginatedSelectedGroupIds.push(group.id);
     } else {
       let index = this.selectedGroups.findIndex(x => x.id == group.id);
       this.selectedGroups.splice(index, 1);
+      this.paginatedSelectedGroupIds.splice($.inArray(group.id, this.paginatedSelectedGroupIds), 1);
+    }
+    if (this.paginatedSelectedGroupIds.length == this.groupsPagination.pagedItems.length) {
+      this.isGroupHeaderCheckBoxChecked = true;
+    } else {
+      this.isGroupHeaderCheckBoxChecked = false;
+    }
+  }
+
+  isCheckAllGroups() {
+    let self = this;
+    this.paginatedSelectedGroupIds = [];
+    $.each(this.groupsPagination.pagedItems, function (index, group) {
+      if (self.isGroupSelected(group)) {
+        self.paginatedSelectedGroupIds.push(group.id)
+      }
+    });
+    if (this.paginatedSelectedGroupIds.length == this.groupsPagination.pagedItems.length) {
+      this.isGroupHeaderCheckBoxChecked = true;
+    } else {
+      this.isGroupHeaderCheckBoxChecked = false;
     }
   }
 
   changeSelectedpartnerCompanies(company: any, event: any) {
     if (event.target.checked) {
       this.selectedPartnerCompanies.push(company);
+      this.paginatedSelectedCompanyIds.push(company.id);
     } else {
       let index = this.selectedPartnerCompanies.findIndex(x => x.id == company.id);
       this.selectedPartnerCompanies.splice(index, 1);
+      this.paginatedSelectedCompanyIds.splice($.inArray(company.id, this.paginatedSelectedCompanyIds), 1);
+    }
+    if (this.paginatedSelectedCompanyIds.length == this.PartnerCompaniesPagination.pagedItems.length) {
+      this.isCompanyHeaderCheckBoxChecked = true;
+    } else {
+      this.isCompanyHeaderCheckBoxChecked = false;
+    }
+  }
+
+  isCheckAllCompanies() {
+    let self = this;
+    this.paginatedSelectedCompanyIds = [];
+    $.each(this.PartnerCompaniesPagination.pagedItems, function (index, partnerCompany) {
+      if (self.isPartnerCompanySelected(partnerCompany)) {
+        self.paginatedSelectedCompanyIds.push(partnerCompany.id)
+      }
+    });
+    if (this.paginatedSelectedCompanyIds.length == this.PartnerCompaniesPagination.pagedItems.length) {
+      this.isCompanyHeaderCheckBoxChecked = true;
+    } else {
+      this.isCompanyHeaderCheckBoxChecked = false;
     }
   }
 
@@ -1290,7 +1345,9 @@ export class AddLmsNewComponent implements OnInit {
         },
         (error: string) => {
           this.referenceService.stopLoader(this.httpRequestLoader);
-          this.learningTrack.published = false;
+          if (this.isAdd || !this.learningTrack.published) {
+            this.learningTrack.published = false;
+          }
           this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
         }
       )
@@ -1425,20 +1482,82 @@ export class AddLmsNewComponent implements OnInit {
     this.showFolderDropDown = !this.showFolderDropDown;
   }
 
-  updateFolderValue(folder:any){
+  updateFolderValue(folder: any) {
     this.folderName = folder.name;
     this.learningTrack.categoryId = folder.id
     this.filteredCategoryNames = this.categoryNames;
     this.showFolderDropDown = false;
   }
 
-  filterFolders(inputElement:any){
+  filterFolders(inputElement: any) {
     let value = inputElement.value;
-    if(value != undefined && value != null && value != ""){
+    if (value != undefined && value != null && value != "") {
       this.filteredCategoryNames = this.categoryNames.filter(
         item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
     } else {
       this.filteredCategoryNames = this.categoryNames;
     }
   }
+
+  checkAllGroups(ev: any) {
+    if (ev.target.checked) {
+      let self = this;
+      for (var i = 0; i < self.groupsPagination.pagedItems.length; i++) {
+        self.selectedGroups.push(self.groupsPagination.pagedItems[i]);
+        self.paginatedSelectedGroupIds.push(parseInt(self.groupsPagination.pagedItems[i].id));
+      }
+      this.selectedGroups = this.removeDuplicates(this.selectedGroups, 'id');
+      this.paginatedSelectedGroupIds = this.referenceService.removeDuplicates(this.paginatedSelectedGroupIds);
+      console.log(self.selectedGroups);
+    } else {
+      this.paginatedSelectedGroupIds = [];
+      for (let j = 0; j < this.groupsPagination.pagedItems.length; j++) {
+        var paginationId = this.groupsPagination.pagedItems[j].id;
+        this.selectedGroups = this.removeRowsFromGroupsOrComapniesListById(this.selectedGroups, paginationId);
+      }
+      console.log(this.selectedGroups);
+    }
+    ev.stopPropagation();
+  }
+
+  removeDuplicates(originalArray, prop) {
+    var newArray = [];
+    var lookupObject = {};
+    for (var i in originalArray) {
+      lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+    for (i in lookupObject) {
+      newArray.push(lookupObject[i]);
+    }
+    return newArray;
+  }
+
+  removeRowsFromGroupsOrComapniesListById(arrayList: any, id: any) {
+    for (let i = 0; i < arrayList.length; i++) {
+      if (arrayList[i].id === id) { arrayList.splice(i, 1); break; }
+    }
+    return arrayList;
+  }
+
+  checkAllCompanies(ev: any) {
+    if (ev.target.checked) {
+      let self = this;
+      for (var i = 0; i < self.PartnerCompaniesPagination.pagedItems.length; i++) {
+        self.selectedPartnerCompanies.push(self.PartnerCompaniesPagination.pagedItems[i]);
+        self.paginatedSelectedCompanyIds.push(parseInt(self.PartnerCompaniesPagination.pagedItems[i].id));
+      }
+      this.selectedPartnerCompanies = this.removeDuplicates(this.selectedPartnerCompanies, 'id');
+      this.paginatedSelectedCompanyIds = this.referenceService.removeDuplicates(this.paginatedSelectedCompanyIds);
+      console.log(self.selectedPartnerCompanies);
+    } else {
+      this.paginatedSelectedCompanyIds = [];
+      for (let j = 0; j < this.PartnerCompaniesPagination.pagedItems.length; j++) {
+        var paginationId = this.PartnerCompaniesPagination.pagedItems[j].id;
+        this.selectedPartnerCompanies = this.removeRowsFromGroupsOrComapniesListById(this.selectedPartnerCompanies, paginationId);
+      }
+      console.log(this.selectedPartnerCompanies);
+    }
+    ev.stopPropagation();
+  }
+
 }
