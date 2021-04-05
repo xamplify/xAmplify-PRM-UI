@@ -43,12 +43,12 @@ export class PreviewLmsComponent implements OnInit {
   isVideo: boolean = false;
   isFile: boolean = false;
   filePath: string = "";
-  viewer: string = "google";
   fileType: string = "";
   modalPopupLoader = false;
   imageTypes: Array<string> = ['jpg', 'jpeg', 'png'];
-  fileTypes: Array<string> = ['txt', 'pdf', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx'];
+  fileTypes: Array<string> = ['doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx'];
   url: SafeResourceUrl;
+  trackViewLoader: boolean = false;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public lmsService: LmsService,
@@ -95,7 +95,8 @@ export class PreviewLmsComponent implements OnInit {
 
 
   getBySlug() {
-    this.referenceService.startLoader(this.httpRequestLoader);
+    //this.referenceService.startLoader(this.httpRequestLoader);
+    this.trackViewLoader = true;
     this.lmsService.getBySlug(this.createdUserCompanyId, this.slug).subscribe(
       (result: any) => {
         if (result.statusCode == 200) {
@@ -103,12 +104,14 @@ export class PreviewLmsComponent implements OnInit {
           if (learningTrack != undefined) {
             this.learningTrack = learningTrack;
           }
-          this.referenceService.stopLoader(this.httpRequestLoader);
+          //this.referenceService.stopLoader(this.httpRequestLoader);
+          this.trackViewLoader = false;
         }
       },
       (error: string) => {
         this.referenceService.showServerError(this.httpRequestLoader);
-        this.referenceService.stopLoader(this.httpRequestLoader);
+        //this.referenceService.stopLoader(this.httpRequestLoader);
+        this.trackViewLoader = false;
       });
   }
 
@@ -211,19 +214,17 @@ export class PreviewLmsComponent implements OnInit {
       } else if (this.fileTypes.includes(assetType)) {
         this.showFilePreview = true;
         this.isFile = true;
-        this.filePath = "https://docs.google.com/viewer?src=" + assetDetails.assetPath + "&embedded=true";
-        if (assetType == 'xlsx' || assetType == 'xls' || assetType == 'doc' || assetType == 'docx') {
-          this.viewer = "office";
-          this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
-        }
+        this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
         this.transformUrl();
       } else {
-        this.referenceService.showSweetAlertErrorMessage('Unsupported file type, Please download the file to view.');
+        window.open(assetDetails.assetPath, '_blank');
+        //this.referenceService.showSweetAlertErrorMessage('Unsupported file type, Please download the file to view.');
       }
     }
-    if (this.showFilePreview || assetDetails.beeTemplate) {
-      this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED);
-    }
+    this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED);
+    // if (this.showFilePreview || assetDetails.beeTemplate) {
+    //   this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED);
+    // }
   }
 
   closeAssetPreview() {
@@ -233,7 +234,6 @@ export class PreviewLmsComponent implements OnInit {
     this.isVideo = false;
     this.isFile = false;
     this.filePath = "";
-    this.viewer = "google";
   }
 
   downloadAsset(assetDetails: any) {

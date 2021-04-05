@@ -442,9 +442,8 @@
                       <thead>
                         <tr>
                           <td align="center">
-                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                              (change)="checkAll($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()"
-                              id="checkAllExistingContacts" />
+                            <input type="checkbox" name="all" [(ngModel)]="isGroupHeaderCheckBoxChecked"
+                              (change)="checkAllGroups($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()" />
                           </td>
                           <th class="hidden-xs" colspan="2" style="width: 35%">
                             <span class="ui-column-resizer"
@@ -466,7 +465,7 @@
                         <tr role="row" *ngFor="let group of groupsPagination.pagedItems;let i = index"
                           style="vertical-align: middle;padding: 0px;">
                           <td class="text-center">
-                            <input type="checkbox" [checked]="isGroupSelected(group)"
+                            <input type="checkbox" name="trackGroup" [checked]="isGroupSelected(group)"
                               (change)="changeSelectedGroups(group,$event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()">
                           </td>
                           <td class="hidden-xs text-cente" style="width: 10%;">
@@ -553,8 +552,8 @@
                       <thead>
                         <tr>
                           <td align="center" style="width: 10%">
-                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                              (change)="checkAllPartnerCompanies($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()"
+                            <input type="checkbox" name="all" [(ngModel)]="isCompanyHeaderCheckBoxChecked"
+                              (change)="checkAllCompanies($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()"
                               id="checkAllExistingContacts" />
                           </td>
                           <th class="hidden-xs" colspan="2" style="width: 10%" id="border-bottom">
