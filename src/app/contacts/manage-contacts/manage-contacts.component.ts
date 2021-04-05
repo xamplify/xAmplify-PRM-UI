@@ -2424,7 +2424,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					this.contactsCount();
 					this.customResponse = new CustomResponse('SUCCESS', message, true);
 				}else{
-					this.customResponse = new CustomResponse('ERROR', 'This contact cannot be deleted as it is shared by one of your vendors.', true);
+					this.customResponse = new CustomResponse('ERROR', 'This contact cannot be deleted as it is shared by one of your vendors', true);
 				}
 				
 			},
