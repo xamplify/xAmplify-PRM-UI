@@ -2397,7 +2397,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		let self = this;
 			swal({
 				title: 'Are you sure?',
-				text: "This will delete the contact from all the contact lists",
+				text: "This contact will be deleted from all your contact lists.",
 				type: 'warning',
 				showCancelButton: true,
 				swalConfirmButtonColor: '#54a7e9',
