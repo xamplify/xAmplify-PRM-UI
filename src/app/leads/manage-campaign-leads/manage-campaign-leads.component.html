@@ -121,6 +121,10 @@
                   <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)" title="Delete Lead" id="lead">
                     <i class="fa fa-trash mr5" aria-hidden="true"></i>
                   </a>
+                  <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
+                    <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
+                    <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default" style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
+                  </a>
                 </ng-container>
               </div>
               

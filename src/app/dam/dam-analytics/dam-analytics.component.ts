@@ -38,6 +38,7 @@ export class DamAnalyticsComponent implements OnInit {
   selecteAssetDetails:any;
   selectedAssetName = "";
   initLoader = false;
+  partnerId:number = 0;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -52,6 +53,7 @@ export class DamAnalyticsComponent implements OnInit {
     this.vendorView = this.router.url.indexOf('vda')>-1;
     this.pagination.campaignId = parseInt(this.route.snapshot.params['damPartnerId']);
     this.damId = parseInt(this.route.snapshot.params['damId']);
+    this.partnerId = parseInt(this.route.snapshot.params['partnerId']);
     if(this.vendorView){
       this.checkDamAndPartnerId();
     }else{
@@ -77,7 +79,8 @@ export class DamAnalyticsComponent implements OnInit {
 
   checkDamAndPartnerId(){
     this.referenceService.goToTop();
-		this.damService.checkDamIdAndPartnerId(this.damId,this.pagination.campaignId).subscribe((result: any) => {
+    this.damService.checkDamIdAndPartnerId(this.damId,this.partnerId).
+      subscribe((result: any) => {
 			if (result.statusCode === 200) {
         this.getTilesInfo();
 			}else{
@@ -91,7 +94,12 @@ export class DamAnalyticsComponent implements OnInit {
 
   getTilesInfo(){
     this.tilesLoader = true;
-    this.damService.getDamAnalyticsTilesInfo(this.pagination.campaignId).
+    if(this.vendorView){
+      this.pagination.userId = this.partnerId;
+    }else{
+      this.pagination.userId = this.authenticationService.getUserId();
+    }
+    this.damService.getDamAnalyticsTilesInfo(this.pagination).
     subscribe((response)=>{
       this.damAnalyticsTilesDto = response.data.tilesInfo;
       if(this.damAnalyticsTilesDto!=undefined){
@@ -101,7 +109,9 @@ export class DamAnalyticsComponent implements OnInit {
         if(contactCompany!=undefined && contactCompany!="" && contactCompany!=null){
           this.damAnalyticsTilesDto.circleAlphabet = contactCompany.slice(0,1);
           }else{
-          this.damAnalyticsTilesDto.circleAlphabet = this.damAnalyticsTilesDto.emailId.slice(0,1);
+            if(this.damAnalyticsTilesDto.emailId!="" && this.damAnalyticsTilesDto.emailId!=null){
+              this.damAnalyticsTilesDto.circleAlphabet = this.damAnalyticsTilesDto.emailId.slice(0,1);
+            }
           }
           this.tilesLoader = false;
           this.stopLoaders();
@@ -125,6 +135,11 @@ export class DamAnalyticsComponent implements OnInit {
 
   
   listAnalytics(pagination: Pagination) {
+    if(this.vendorView){
+      this.pagination.partnerId = this.partnerId;
+    }else{
+      this.pagination.partnerId = this.authenticationService.getUserId();
+    }
 		this.referenceService.goToTop();
 		this.startLoaders();
 		this.damService.listDamAnalytics(pagination).subscribe((result: any) => {

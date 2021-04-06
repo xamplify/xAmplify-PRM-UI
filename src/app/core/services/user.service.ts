@@ -26,6 +26,7 @@ export class UserService {
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
     TAG_URL = this.URL + 'tag/';
+    ADMIN_URL = this.URL+'admin/';
     
     constructor(
         private http: Http,
@@ -393,6 +394,12 @@ export class UserService {
 
     deleteTag(tag: any){
         return this.http.post(this.TAG_URL+"delete?access_token=" + this.authenticationService.access_token, tag)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    findAdminsAndTeamMembers(pagination:Pagination){
+        return this.http.post(this.ADMIN_URL+"findAdminsAndTeamMembers?access_token=" + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }

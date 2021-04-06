@@ -46,6 +46,7 @@ import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { Pipeline } from 'app/dashboard/models/pipeline';
 import { UserService } from 'app/core/services/user.service';
+import { EnvService } from 'app/env.service';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -304,7 +305,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
                 private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
-				private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService
+				private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService,public envService:EnvService
             ){
                 
                 this.vanityUrlService.isVanityURLEnabled();
@@ -1340,6 +1341,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     /************Showing Video Preview****************/
     showPreview(videoFile:SaveVideoFile){
+	 let videoPath = "";
+        if(videoFile.videoPath.startsWith("https")){
+            videoPath = videoFile.videoPath;
+        }else{
+            videoPath = this.envService.SERVER_URL+"vod/"+videoFile.videoPath;
+        }
+     videoFile.videoPath = videoPath;
      this.createVideoFile = videoFile;
     }
      closeCreateModal(event: any){
@@ -1368,13 +1376,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     appendVideoData(videoFile:SaveVideoFile,divId:string,titleId:string){
        console.log(videoFile);
        let videoSelf = this;
-        var alias = videoFile.alias;
         var fullImagePath = videoFile.imagePath;
         var title = videoFile.title;
         if(title.length>50){
             title = title.substring(0, 50)+"...";
         }
-        var videoPath = videoFile.videoPath;
+        var videoPath = "";
+        if(videoFile.videoPath.startsWith("https")){
+            videoPath = videoFile.videoPath;
+        }else{
+            videoPath = this.envService.SERVER_URL+"vod/"+videoFile.videoPath;
+        }
         var is360 = videoFile.is360video;
         $("#"+divId).empty();
         $("#"+titleId).empty();

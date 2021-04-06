@@ -15,49 +15,71 @@
     <div [ngClass]="{'blur-content' : showFilePreview}">
         <ng-container *ngIf="learningTrack != undefined && !httpRequestLoader.isLoading">
             <section *ngIf="showLearningTrack">
-                <div class="page-bar padding">
-                    <div class="title padding_bottom">{{learningTrack.title}}</div>
-                    <div class="padding_bottom text-wrap">
-                        <div [innerHTML]="learningTrack.description"></div>
+                <div class="row">
+                    <div class="col-md-9 col-lg-9" style="padding-right: 0px;">
+                        <div class="page-bar" style="padding: 10px 10px;">
+                            <div class="col-md-12 col-lg-12" style="border-bottom: 2px solid #cac8c8;padding: 10px 0px 0px 0px;margin-bottom: 10px;">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6" style="padding: 3px 17px;">
+                                        <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;">{{learningTrack.title}}</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="padding_bottom text-wrap">
+                                <div [innerHTML]="learningTrack.description"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3">
+                        <div class="page-bar" style="padding: 10px 10px;">
+                            <img class="img-asset-class" [src]="learningTrack.featuredImage" alt="" onerror="this.src='assets/images/lms.jpg';" style="height: 140px !important;
+                                     width: 100% !important;">
+                        </div>
                     </div>
                 </div>
             </section>
             <section *ngIf="!showLearningTrack">
                 <div [ngClass]="{'page-bar ' : showAsset}">
-                    <a (click)="closeView()" class="pull-right close-circle" style="margin: 9px 5px;padding-top: 3px;padding-left: 5px;">
-                        <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-                    <div class="padding" style="font-size: 16px;">
-                        <label style="font-size: 16px;">Learning Track - </label>{{learningTrack.title}}
-                    </div>
-                    <app-form-preview *ngIf="!showAsset" [learningTrackId]="learningTrack.id" (notifyParent)="closeView($event)">
-                    </app-form-preview>
-                    <div *ngIf="showAsset" class="padding">
-                        <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
-                        <div [hidden]="assetViewLoader">
-                            <div class="page-bar">
-                                <div class="row">
-                                    <div class="col-md-8 col-lg-8 cpdam">
-                                        <div class="portlet light cphdam">
-                                            <div class="portlet-title port-heading">
-                                                <div class="caption" style="color:#000!important;">
-                                                    <h2>
-                                                        <strong>{{assetDetails?.assetName | slice:0:50}}</strong>
-                                                        <span *ngIf="assetDetails?.assetName?.length>50">..</span>
-                                                    </h2>
+                    <div class="col-md-12 col-lg-12" style="padding:0px;">
+                        <a (click)="closeView()" class="pull-right close-circle" style="margin: 9px 5px;padding-top: 3px;padding-left: 5px;">
+                            <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+                        <div class="padding" style="font-size: 16px;">
+                            <label style="font-size: 16px;">Learning Track - </label>{{learningTrack.title}}
+                        </div>
+                        <app-form-preview *ngIf="!showAsset" [learningTrackId]="learningTrack.id" (notifyParent)="closeView($event)">
+                        </app-form-preview>
+                        <div *ngIf="showAsset" class="padding">
+                            <div style="padding-top: 10px;padding-left: 5px;">
+                                <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
+                                <div [hidden]="assetViewLoader">
+                                    <div class="page-bar" style="margin-bottom: 10px!important;padding:0px 0px !important;">
+                                        <div class="row">
+                                            <div class="col-md-8 col-lg-8 cpdam">
+                                                <div class="portlet light cphdam">
+                                                    <div class="portlet-title port-heading">
+                                                        <div class="caption" style="color:#000!important;">
+                                                            <h4>
+                                                                <strong>{{assetDetails?.assetName |
+                                                                    slice:0:50}}</strong>
+                                                                <span *ngIf="assetDetails?.assetName?.length>50">..</span>
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-left: 10px;">
+                                                        {{assetDetails?.description}}
+                                                        <br>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div style="margin-left: 10px;">
-                                                {{assetDetails?.description}}
-                                                <br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-lg-4" style="padding: 6px 15px 0px 17px;">
-                                        <div>
-                                            <div class="grid-box" style="min-height: 200px;">
-                                                <img class="img-class" src="{{assetDetails?.thumbnailPath}}" alt="No Image Found"><br>
-                                                <a class="btn btn-info" [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}" (click)="downloadAsset(assetDetails)">Download</a>
-                                                <a class="btn btn-info" (click)="assetPreview(assetDetails)">View</a>
+                                            <div class="col-md-4 col-lg-4" style="padding: 6px 15px 0px 17px;">
+                                                <div>
+                                                    <div class="grid-box" style="min-height: 200px;margin-top: 0px;">
+                                                        <img class="img-class" src="{{assetDetails?.thumbnailPath}}" alt="No Image Found"><br>
+                                                        <a class="btn btn-info" [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}" (click)="downloadAsset(assetDetails)">Download</a>
+                                                        <a class="btn btn-info" (click)="assetPreview(assetDetails)">View</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -67,32 +89,30 @@
                     </div>
                 </div>
             </section>
-            <div *ngIf="showAsset || showLearningTrack" class="page-bar padding">
-                <div class="portlet light ">
-                    <div class="portlet-title tabbable-line ">
-                        <div class="caption caption-md ">
-                            <i class="icon-globe theme-font hide " aria-hidden="true "></i>
-                            <span class="caption-subject font-blue-madison bold uppercase ">Content</span>
+            <section *ngIf="showAsset || showLearningTrack">
+                <div class="page-bar">
+                    <div class="col-md-12 col-lg-12" style="border-bottom: 2px solid #cac8c8;
+                            padding: 10px 0px 0px 0px;
+                            margin-bottom: 10px;">
+                        <div style="padding: 3px;">
+                            <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;">Content</a>
                         </div>
                     </div>
-                    <app-grid-loader *ngIf="httpRequestLoader.isLoading">
-                    </app-grid-loader>
-                    <div class="row padding_bottom" *ngIf="!httpRequestLoader.isLoading">
+                    <div class="row padding_bottom">
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let content of learningTrack.contents ;let i =index" id="ContentListDiv_{{content.id}}">
                             <div [ngClass]="{'disable' : i != 0 && learningTrack.followAssetSequence && !learningTrack.contents[i-1].finished && !isCreatedUser}">
                                 <div class="grid-box" (click)="viewContent(content)">
-                                    <img class="img-asset-class" [src]="content.thumbnailPath" onerror="this.src='learningTrack.featuredImage';" alt="{{content.title}}">
-                                    <h4 class="ellipsis mt5 mb5 f-w-600" title="{{content.assetName}}">
-                                        {{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span><br><br>
+                                    <img class="image-fixed" [src]="content.thumbnailPath" onerror="this.src='learningTrack.featuredImage';" alt="{{content.title}}">
+                                    <h4 class="ellipsis mt5 mb5 f-w-600" title="{{content.assetName}}" style="text-align: left !important;padding: 5px 0px 5px 10px !important;">
+                                        {{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span><br>
                                     </h4>
-                                    <div>
-                                        <h6 title="{{content.assetType}}" translate>
-                                            Type: <strong>{{content.assetType}}</strong>
-                                        </h6>
-                                    </div>
-                                    <div class="ribbon">
-                                        <span style="background-color: #5cb85c;" *ngIf="content.finished && !isCreatedUser" translate>Finished</span>
-                                        <span style="background-color: #819081;" *ngIf="i != 0  && !content.finished && !isCreatedUser && learningTrack.contents[i-1].finished" translate>In Progress</span>
+                                    <h6 title="{{content.assetType}}" translate>
+                                        Type: <strong>{{content.assetType}}</strong>
+                                    </h6>
+                                    <div *ngIf="!isCreatedUser" class="ribbon">
+                                        <span style="background-color: #5cb85c;" *ngIf="content.finished" translate>Finished</span>
+                                        <span style="background-color: #819081;" *ngIf="content.opened && !content.finished" translate>In
+                                            Progress</span>
                                     </div>
                                     <div class="bar">
                                         <a [ngClass]="{'isDisabled' : i != 0 && learningTrack.followAssetSequence && !learningTrack.contents[i-1].finished && !isCreatedUser}" data-toggle="tooltip" data-placement="top" title="View" (click)="viewContent(content)">
@@ -104,16 +124,14 @@
                         </div>
                         <div class="col-md-3 col-sm-4 col-xs-12">
                             <div [ngClass]="{'disable' : !isCreatedUser && !learningTrack.enableQuiz}">
-                                <div class="grid-box" *ngIf="learningTrack.quiz">
-                                    <img class="img-asset-class" style="width: 100px;" [src]="learningTrack.featuredImage" alt="{{learningTrack.quiz.name}}">
-                                    <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack.quiz.name}}">
-                                        {{learningTrack.quiz.name | slice:0:25}} <span *ngIf="learningTrack.quiz.name?.length>25">...</span><br><br>
+                                <div class="grid-box" *ngIf="learningTrack.quiz" (click)="viewQuiz()">
+                                    <img class="image-fixed" [src]="learningTrack.featuredImage" alt="{{learningTrack.quiz.name}}">
+                                    <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack.quiz.name}}" style="text-align: left !important;padding: 5px 0px 5px 10px !important;">
+                                        {{learningTrack.quiz.name | slice:0:25}} <span *ngIf="learningTrack.quiz.name?.length>25">...</span><br>
                                     </h4>
-                                    <div>
-                                        <h6 title="Form" translate>
-                                            Type: <strong>Form</strong>
-                                        </h6>
-                                    </div>
+                                    <h6 title="Form" translate>
+                                        Type: <strong>Form</strong>
+                                    </h6>
                                     <div class="bar">
                                         <a *ngIf="!isCreatedUser" [ngClass]="{'isDisabled' : !learningTrack.enableQuiz}" data-toggle="tooltip" data-placement="top" title="View" (click)="viewQuiz()">
                                             <i class="fa fa-eye" aria-hidden="true"></i>
@@ -127,7 +145,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </ng-container>
     </div>
 </div>
@@ -151,10 +169,9 @@
                 <source [src]="filePath" [type]="fileType">
                 Your browser does not support the audio tag.
             </audio>
-            <!-- <div *ngIf="isFile && filePath?.length > 0 && viewer?.length > 0">
-                <ngx-doc-viewer [url]="filePath" [viewer]="viewer" disableContent="popout" style="width:100%;height:75vh;">
-                </ngx-doc-viewer>
-            </div> -->
+            <div *ngIf="isFile && filePath?.length > 0">
+                <iframe [src]="url" style="width:100%; height:75vh;" frameborder="0"></iframe>
+            </div>
         </div>
     </div>
 </ng-container>
@@ -181,49 +198,3 @@
         </div>
     </div>
 </div>
-
-
-<!-- <section *ngIf="!showLearningTrack">
-    <a (click)="closeView()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-        <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-    <app-form-preview *ngIf="!showAsset" [learningTrackId]="learningTrack.id" (notifyParent)="closeView($event)">
-    </app-form-preview>
-    <div *ngIf="showAsset" class="page-content" style="background: #fff;">
-        <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
-        <div [hidden]="assetViewLoader">
-            <div class="page-bar">
-                <div class="row">
-                    <div class="col-md-8 col-lg-8 cpdam">
-                        <div class="portlet light cphdam">
-                            <div class="portlet-title port-heading">
-                                <div class="caption" style="color:#000!important;">
-                                    <h2>
-                                        <strong>{{assetDetails?.assetName | slice:0:50}}</strong>
-                                        <span *ngIf="assetDetails?.assetName?.length>50">..</span>
-                                    </h2>
-                                </div>
-                            </div>
-                            <div style="margin-left: 10px;">
-                                {{assetDetails?.description}}
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-4" style="padding: 6px 40px 0px 17px;">
-                        <div>
-                            <div class="grid-box" style="min-height: 200px;">
-                                <img class="img-class" src="{{assetDetails?.thumbnailPath}}" alt="No Image Found"><br>
-                                <a class="btn btn-info">Download</a>
-                                <a class="btn btn-info">View</a>
-                                <h4>Published On :
-                                    <app-timestamp [showInLine]="'true'" [dateAndTime]="assetDetails?.displayTime">
-                                    </app-timestamp>
-                                </h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> -->
