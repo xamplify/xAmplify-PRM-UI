@@ -32,9 +32,17 @@
                         </div>
                     </div>
                     <div class="col-md-3 col-lg-3">
-                        <div class="page-bar" style="padding: 10px 10px;">
+                        <div class="page-bar" style="padding: 10px 10px;height: 230px;">
                             <img class="img-asset-class" [src]="learningTrack.featuredImage" alt="" onerror="this.src='assets/images/lms.jpg';" style="height: 140px !important;
-                                     width: 100% !important;">
+                                                         width: 100% !important;">
+                            <div class="center" style="padding-top: 10px;" title="{{learningTrack.createdByName}}" translate>
+                                Created By <strong>{{learningTrack.createdByName}}</strong>
+                            </div>
+                            <div class="center" style="padding-top: 10px;" title="{{learningTrack.createdTime}}" translate>
+                                Created On
+                                <strong><app-timestamp [showInLine]="'true'" [dateAndTime]="learningTrack.createdTime">
+                                </app-timestamp></strong>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,10 +50,13 @@
             <section *ngIf="!showLearningTrack">
                 <div [ngClass]="{'page-bar ' : showAsset}">
                     <div class="col-md-12 col-lg-12" style="padding:0px;">
-                        <a (click)="closeView()" class="pull-right close-circle" style="margin: 9px 5px;padding-top: 3px;padding-left: 5px;">
-                            <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-                        <div class="padding" style="font-size: 16px;">
-                            <label style="font-size: 16px;">Learning Track - </label>{{learningTrack.title}}
+                        <div style="padding: 10px 0px 0px 0px;
+                                                    margin-bottom: 10px;">
+                            <a (click)="closeView()" class="pull-right close-circle" style="padding-top: 3px;padding-left: 5px;">
+                                <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+                            <div style="padding: 3px;">
+                                <div class="title padding_bottom caption" style="font-size: 15px; padding-top: 10px;"><strong>{{learningTrack.title}}</strong></div>
+                            </div>
                         </div>
                         <app-form-preview *ngIf="!showAsset" [learningTrackId]="learningTrack.id" (notifyParent)="closeView($event)">
                         </app-form-preview>
@@ -78,6 +89,9 @@
                                                         <img class="img-class" src="{{assetDetails?.thumbnailPath}}" alt="No Image Found"><br>
                                                         <a class="btn btn-info" [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}" (click)="downloadAsset(assetDetails)">Download</a>
                                                         <a class="btn btn-info" (click)="assetPreview(assetDetails)">View</a>
+                                                        <div class="center" style="padding: 10px;margin: 0 !important;font-size: 14px;" title="{{assetDetails.assetType}}" translate>
+                                                            Type: <strong>{{assetDetails.assetType}}</strong>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

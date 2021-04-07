@@ -1004,3 +1004,10 @@ input.cmn-toggle-round-flat:checked+label:after {
     border: solid 1px #008fd5;
     border-radius: 1px;
 }
+
+.dropdown-icon {
+    position: absolute;
+    right: 0;
+    padding: 10px 10px;
+    font-size: medium !important;
+}
