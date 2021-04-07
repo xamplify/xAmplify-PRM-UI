@@ -178,6 +178,8 @@ export class AddLmsNewComponent implements OnInit {
   isCompanyHeaderCheckBoxChecked: boolean = false;
   paginatedSelectedCompanyIds = [];
 
+  ckeditorEvent: any;
+
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public lmsService: LmsService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -796,15 +798,11 @@ export class AddLmsNewComponent implements OnInit {
       this.learningTrack.quizId = 0;
     }
   }
-
-  updateDescription(form: Form, event) {
-    if (CKEDITOR != undefined) {
-      for (var instanceName in CKEDITOR.instances) {
-        CKEDITOR.instances[instanceName].updateElement();
-        this.learningTrack.description = CKEDITOR.instances[instanceName].getData();
-      }
+  
+  updateDescription(form: Form) {
+    if(form != null && form != undefined){
+      this.ckeditor.instance.insertHtml("<b><a href = \"" + form.ailasUrl + "\" target=\"_blank\">" + form.name + "</a></b>");
     }
-    this.learningTrack.description = this.learningTrack.description + "<b><a href = \"" + form.ailasUrl + "\" target=\"_blank\">" + form.name + "</a>";
     $('#formsList').modal('hide');
   }
 
@@ -996,7 +994,7 @@ export class AddLmsNewComponent implements OnInit {
   updateSlug(type: string) {
     if (type == "title") {
       if (this.learningTrack.id == undefined || this.learningTrack.id < 1) {
-        this.learningTrack.slug = this.learningTrack.title.replace(/[^a-zA-Z0-9_-]/g, '_');
+        this.learningTrack.slug = this.learningTrack.title.toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
       }
     } else if (type == "slug") {
       this.learningTrack.slug = this.learningTrack.slug.replace(/[^a-zA-Z0-9_-]/g, '_');
@@ -1458,9 +1456,9 @@ export class AddLmsNewComponent implements OnInit {
       let assetPath = this.selectedAssetForMedia.assetPath;
       if (assetPath != undefined) {
         if (this.mediaLinkDisplayText.length > 0) {
-          this.learningTrack.description = this.learningTrack.description + "<b><a href = \"" + assetPath + "\" target=\"_blank\">" + this.mediaLinkDisplayText + "</a>";
+          this.ckeditor.instance.insertHtml("<b><a href = \"" + assetPath + "\" target=\"_blank\">" + this.mediaLinkDisplayText + "</a></b>");
         } else {
-          this.learningTrack.description = this.learningTrack.description + "<b><a href = \"" + assetPath + "\" target=\"_blank\">" + assetPath + "</a>";
+          this.ckeditor.instance.insertHtml("<b><a href = \"" + assetPath + "\" target=\"_blank\">" + assetPath + "</a></b>");
         }
       }
     }
@@ -1490,12 +1488,16 @@ export class AddLmsNewComponent implements OnInit {
   }
 
   filterFolders(inputElement: any) {
-    let value = inputElement.value;
-    if (value != undefined && value != null && value != "") {
-      this.filteredCategoryNames = this.categoryNames.filter(
-        item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
-    } else {
+    if (inputElement == null || inputElement == undefined) {
       this.filteredCategoryNames = this.categoryNames;
+    } else {
+      let value = inputElement.value;
+      if (value != undefined && value != null && value != "") {
+        this.filteredCategoryNames = this.categoryNames.filter(
+          item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
+      } else {
+        this.filteredCategoryNames = this.categoryNames;
+      }
     }
   }
 
