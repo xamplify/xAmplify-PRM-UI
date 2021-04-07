@@ -240,4 +240,7 @@
     background-color: #ffffff!important;
 }
 
+.none-float{
+    float: none !important;
+}
 

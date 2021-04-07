@@ -192,20 +192,51 @@
                                     <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                                        <div class="table-responsive">
-                                          <table class='table tgrid table-hover table-sm' *ngIf="partnerGroupsPagination.pagedItems?.length>0" id="parnter-groups" aria-describedby="partnerGroupsDescription">
+                                          <table class='table tgrid table-condensed table-bordered' *ngIf="partnerGroupsPagination.pagedItems?.length>0" id="parnter-groups-table" aria-describedby="partnerGroupsDescription">
                                              <thead>
                                                 <tr>
-                                                   <th scope="col"><input type="checkbox" [(ngModel)]="isPartnerGroupHeaderCheckBoxChecked"  (change)="selectAllPartnerGroupsOfTheCurrentPage($event)"></th>
-                                                   <th scope="col">Company Name</th>
-                                                   <th scope="col">Count</th>
-                                                   <th scope="col">Created Time</th>
+                                                   <th scope="col" class="text-center">
+                                                      <input type="checkbox" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked" id="parnterGroupsHeaderCheckBox"  (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)"></th>
+                                                   <th scope="col" class="text-center">Group Name</th>
+                                                   <th scope="col" class="text-center">Count</th>
+                                                   <th scope="col" class="text-center">Created Time</th>
+                                                   <th scope="col" class="text-center">Preview</th>
                                                 </tr>
                                              </thead>
                                              <tbody>
+                                                <tr *ngFor="let partnerGroup of partnerGroupsPagination.pagedItems;let i = index;" id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1" (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)" >
+                                                   <td class="text-center">
+                                                     <input type="checkbox" id="{{partnerGroup.id}}"  [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1" name="partnerGroupsCheckBox[]"   value="{{partnerGroup.id}}" (click)="$event.stopPropagation();highlightPartnerGroupRowOnCheckBoxClick(partnerGroup.id,$event);">
+                                                  </td>
+                                                   <td title="{{partnerGroup?.groupName}}" class="text-center">
+                                                      <span>{{partnerGroup?.groupName | slice:0:40}}</span>
+                                                      <span *ngIf="partnerGroup?.groupName.length>40">...</span>
+                                                   </td>
+                                                   <td class="text-center">
+                                                      {{partnerGroup.numberOfPartners}}
+                                                    </td>
+                                                    <td class="text-center">
+                                                      <app-timestamp  [dateAndTime]="partnerGroup?.displayTime">
+                                                      </app-timestamp>
+                                                    </td>
+                                                    <td class="text-center">
+                                                       <div class="actions-block none-float" (click)="previewItems(partnerGroup.id)">
+                                                          <a><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                       </div>
+                                                    </td>
+                                                </tr>
                                                 </tbody>
                                             </table>    
                                        </div>
+                                       <!-- End of 24 -->
+                                       <div *ngIf="partnerGroupsPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                                          <strong>No Data Found.</strong>
+                                       </div>
                                     </ng-container>
+                                    <div *ngIf="partnerGroupsPagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+                                       <app-pagination [pagination]="partnerGroupsPagination" (notifyParent)="navigatePartnerGroups($event)" (notifyParentDropDown)="findPartnerGroups($event)">
+                                       </app-pagination>
+                                    </div>
                               </div>
                            </div>
                         </div>

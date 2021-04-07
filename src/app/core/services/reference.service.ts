@@ -22,7 +22,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { User } from '../../core/models/user';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
-
+import { Pagination } from 'app/core/models/pagination';
 declare var $, swal: any;
 
 @Injectable()
@@ -2152,6 +2152,65 @@ export class ReferenceService {
 	filterArrayList(array:Array<any>,itemToRemove:any){
 		return array.filter(item => item !== itemToRemove);
 	}
+
+	highlightRowOnRowCick(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any, parnterGroupsHeaderCheckBox: string, selectedCheckBoxValue: any, event: any) {
+		trId = trId + "-" + selectedCheckBoxValue;
+		let isChecked = $('#' + selectedCheckBoxValue).is(':checked');
+		if (isChecked) {
+			$('#' + selectedCheckBoxValue).prop("checked", false);
+			$(trId).removeClass('row-selected');
+			selectedCheckBoxIds.splice($.inArray(selectedCheckBoxValue, selectedCheckBoxIds), 1);
+		} else {
+			$('#' + selectedCheckBoxValue).prop("checked", true);
+			$(trId).addClass('row-selected');
+			selectedCheckBoxIds.push(selectedCheckBoxValue);
+		}
+		this.checkOrUnCheckHeaderCheckBox(tableId, checkBoxName, parnterGroupsHeaderCheckBox);
+		event.stopPropagation();
+	}
+
+	checkOrUnCheckHeaderCheckBox(tableId: string, checkBoxName: string, parnterGroupsHeaderCheckBox: string) {
+		var trLength = $('#' + tableId + ' tbody tr').length;
+		var selectedRowsLength = $('[name="' + checkBoxName + '[]"]:checked').length;
+		$('#'+parnterGroupsHeaderCheckBox).prop('checked',trLength == selectedRowsLength);
+	}
+
+	highlightRowByCheckBox(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any, parnterGroupsHeaderCheckBox: string, checkBoxValue: any, event: any) {
+		let isChecked = $('#' + checkBoxValue).is(':checked');
+		if (isChecked) {
+			$(trId).addClass('row-selected');
+			selectedCheckBoxIds.push(checkBoxValue);
+		} else {
+			$(trId).removeClass('row-selected');
+			selectedCheckBoxIds.splice($.inArray(checkBoxValue, selectedCheckBoxIds), 1);
+		}
+		this.checkOrUnCheckHeaderCheckBox(tableId, checkBoxName, parnterGroupsHeaderCheckBox);
+	}
+
+	selectOrUnselectAllOfTheCurrentPage(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any,pagination:Pagination,event: any){
+		if (event.target.checked) {
+			$('[name="'+checkBoxName+'[]"]').prop('checked', true);
+			$('[name="'+checkBoxName+'[]"]:checked').each(function(_index: number) {
+				var id = $(this).val();
+				selectedCheckBoxIds.push(parseInt(id));
+				$(trId).addClass('row-selected');
+			});
+			selectedCheckBoxIds = this.removeDuplicates(selectedCheckBoxIds);
+		} else {
+			$('[name="'+checkBoxName+'[]"]').prop('checked', false);
+			$('#'+tableId+ ' tr').removeClass("row-selected");
+			if (pagination.maxResults > 30 || (pagination.maxResults == pagination.totalRecords)) {
+				selectedCheckBoxIds = [];
+			} else {
+				selectedCheckBoxIds = this.removeDuplicates(selectedCheckBoxIds);
+				let currentPageSelectedIds = pagination.pagedItems.map(function(a) { return a.id; });
+				selectedCheckBoxIds = this.removeDuplicatesFromTwoArrays(selectedCheckBoxIds, currentPageSelectedIds);
+			}
+		}
+		event.stopPropagation();
+		return selectedCheckBoxIds;
+	}
+
 
 
 }
