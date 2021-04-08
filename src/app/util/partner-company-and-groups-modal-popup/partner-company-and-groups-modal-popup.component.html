@@ -247,7 +247,7 @@
          </div>
      </div>
      <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
-        <button type="submit" class="btn green-haze" [disabled]="selectedTeamMemberIds?.length==0 && !isEdit" *ngIf="!sendSuccess" (click)="publish()">Submit</button>
+        <button type="submit" class="btn green-haze" [disabled]="(selectedTeamMemberIds?.length==0 && selectedPartnerGroupIds?.length==0) && !isEdit" *ngIf="!sendSuccess" (click)="publish()">Submit</button>
         <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
      </div>
   </div>

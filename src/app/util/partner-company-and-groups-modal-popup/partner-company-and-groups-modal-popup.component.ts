@@ -30,6 +30,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	@Input() inputId: any;
 	@Input() moduleName: any;
 	@Output() notifyOtherComponent = new EventEmitter();
+	@Input() isPartnerGroupSelected: any;
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	sendSuccess = false;
 	responseMessage = "";
@@ -69,8 +70,24 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	openPopup() {
 		$('#partnerCompaniesPopup').modal('show');
-		this.findPublishedPartnershipIdsByInputId();
-		this.findPublishedPartnerIds();
+		if(this.isPartnerGroupSelected){
+
+		}else{
+			this.findPublishedPartnershipIdsByInputId();
+			this.findPublishedPartnerIds();
+		}
+		
+	}
+	findPublishedPartnerIds() {
+		this.damService.findPublishedPartnerIds(this.inputId).subscribe(
+			response => {
+				this.selectedTeamMemberIds = response.data;
+				if (response.data != undefined && response.data.length > 0) {
+					this.isEdit = true;
+				}
+			}, error => {
+				this.xtremandLogger.error(error);
+			});
 	}
 
 	findPublishedPartnershipIdsByInputId() {
@@ -179,17 +196,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 		}
 	}
 
-	findPublishedPartnerIds() {
-		this.damService.findPublishedPartnerIds(this.inputId).subscribe(
-			response => {
-				this.selectedTeamMemberIds = response.data;
-				if (response.data != undefined && response.data.length > 0) {
-					this.isEdit = true;
-				}
-			}, error => {
-				this.xtremandLogger.error(error);
-			});
-	}
+	
 
 	getTeamMembersAndAdmins(teamMembersPagination: Pagination) {
 		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
@@ -298,37 +305,44 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	}
 	/************Partner Company Checkbox related code ends here****************/
 	publish() {
-		if (this.selectedTeamMemberIds.length > 0 || this.isEdit) {
+		if (this.selectedTeamMemberIds.length > 0 || this.selectedPartnerGroupIds.length>0 || this.isEdit) {
+			let selectedType = $('.tab-pane.active').attr("id");
 			this.startLoaders();
 			this.damPublishPostDto.damId = this.inputId;
 			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
+			this.damPublishPostDto.partnerGroupIds = this.selectedPartnerGroupIds;
 			this.damPublishPostDto.publishedBy = this.loggedInUserId;
-			this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
-				this.referenceService.scrollToModalBodyTopByClass();
-				this.stopLoaders();
-				if (data.access) {
-					this.sendSuccess = true;
-					this.statusCode = data.statusCode;
-					if (data.statusCode == 200) {
-						this.responseMessage = "Published Successfully";
-					} else {
-						this.responseMessage = data.message;
-					}
-					this.resetFields();
-				} else {
-					this.ngxLoading = false;
-					this.authenticationService.forceToLogout();
-				}
-			}, _error => {
-				this.stopLoaders();
-				this.sendSuccess = false;
-				this.referenceService.goToTop();
-				this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-			});
+			this.damPublishPostDto.partnerGroupSelected = ('partnerGroups' == selectedType);
+			this.publishToPartnersOrGroups();
 		} else {
 			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one partner', true);
+			this.customResponse = new CustomResponse('ERROR', 'No Row Is Selected', true);
 		}
+	}
+
+	publishToPartnersOrGroups(){
+		this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
+			this.referenceService.scrollToModalBodyTopByClass();
+			this.stopLoaders();
+			if (data.access) {
+				this.sendSuccess = true;
+				this.statusCode = data.statusCode;
+				if (data.statusCode == 200) {
+					this.responseMessage = "Published Successfully";
+				} else {
+					this.responseMessage = data.message;
+				}
+				this.resetFields();
+			} else {
+				this.ngxLoading = false;
+				this.authenticationService.forceToLogout();
+			}
+		}, _error => {
+			this.stopLoaders();
+			this.sendSuccess = false;
+			this.referenceService.goToTop();
+			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+		});
 	}
 
 	startLoaders() {
@@ -384,6 +398,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	highlightSelectedPartnerGroupOnRowClick(partnerGroupId: any, event: any) {
 		this.referenceService.highlightRowOnRowCick('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
+		console.log(this.selectedPartnerGroupIds);
 	}
 
 	highlightPartnerGroupRowOnCheckBoxClick(partnerGroupId: any, event: any) {
