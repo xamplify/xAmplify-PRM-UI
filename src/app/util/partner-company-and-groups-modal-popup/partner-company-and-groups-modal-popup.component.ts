@@ -71,13 +71,28 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	openPopup() {
 		$('#partnerCompaniesPopup').modal('show');
 		if(this.isPartnerGroupSelected){
-
+			this.findPublishedPartnerGroupIdsByInputId();
 		}else{
 			this.findPublishedPartnershipIdsByInputId();
 			this.findPublishedPartnerIds();
 		}
 		
 	}
+
+	findPublishedPartnerGroupIdsByInputId() {
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.damService.findPublishedPartnerGroupIdsByDamId(this.inputId).subscribe(
+			response => {
+				this.selectedPartnerGroupIds = response.data;
+			}, error => {
+				this.xtremandLogger.error(error);
+				this.findPartnerGroups(this.partnerGroupsPagination);
+			}, () => {
+				this.findPartnerGroups(this.partnerGroupsPagination);
+			}
+		);
+	}
+
 	findPublishedPartnerIds() {
 		this.damService.findPublishedPartnerIds(this.inputId).subscribe(
 			response => {
@@ -361,6 +376,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		pagination.companyId = this.companyId;
+		pagination.campaignId = this.inputId;
 		this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;

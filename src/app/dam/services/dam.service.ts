@@ -157,6 +157,10 @@ export class DamService {
     return this.utilGetMethod("findPublishedPartnershipIds/" + id);
   }
 
+  findPublishedPartnerGroupIdsByDamId(id:number){
+    return this.utilGetMethod("findPublishedPartnerGroupIds/" + id);
+  }
+
   findPublishedPartnerIds(damId:number){
     return this.utilGetMethod("findPublishedPartnerIds/" + damId);
   }
