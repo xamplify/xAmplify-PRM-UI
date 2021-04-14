@@ -29,6 +29,7 @@ import { Country } from '../../../core/models/country';
 import { Timezone } from '../../../core/models/timezone';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { Validators } from '@angular/forms';
+import { PieChartGeoDistributionComponent } from 'app/social/twitter/pie-chart-geo-distribution/pie-chart-geo-distribution.component';
 declare var $, flatpickr, videojs, swal: any;
 
 @Component({
@@ -1253,35 +1254,29 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			this.clearRssOgTagsFeed(socialStatus);
 		} else {
 			this.getOgTagsData(socialStatus);
-
-			/*if (!this.isUrlValid(enteredURL))
-			{
-				this.socialStatus.statusMessage = enteredURL;
-				this.clearRssOgTagsFeed(socialStatus);
-			} else {
-				if (this.isUrlValid(enteredURL) && enteredURL !== this.savedURL) {
-					this.socialStatus.statusMessage = enteredURL;
-					this.getOgTagsData(socialStatus);
-				}
-			}*/
 		}
 	}
 
-
+	
 	isUrlValid(url: string): Boolean {
 		let regex = "^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$";
 		var pattern = new RegExp(regex);
 		return pattern.test(url);
+
 	}
 
 		getOgTagsData(socialStatus: any) { 
-        let url = socialStatus.statusMessage;  
+		let url = socialStatus.statusMessage;
 		let req = { "userId": this.userId, "q": url };
 		this.socialService.getOgMetaTags(req).subscribe(data => {
 			if (data.statusCode === 8105) {
 				let response = data.data;
 				if (response !== undefined && response !== '') {
-					socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
+					if(response.defaultOgImage){
+						socialStatus.ogImage = response.imageUrl;
+					}else{
+						socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
+					}
 					socialStatus.originalOgImage = socialStatus.ogImage;
 					socialStatus.ogTitle = response.title;
 					socialStatus.ogDescription = response.description;
@@ -1299,8 +1294,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
             console.log(error);
 		}, () => console.log("Campaign Names Loaded"));
 	}
-
-
 
 		clearRssOgTagsFeed(socialStatus: any) {
 			this.isSavedUrlIsInStatusMessage = socialStatus.statusMessage.includes(this.validURL);
