@@ -51,7 +51,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	partnerGroupsPagination: Pagination = new Pagination();
 	partnerGroupsSortOption: SortOption = new SortOption();
 	isParnterGroupHeaderCheckBoxChecked = false;
-	isPartnerGroupSelected = false;
+	isPublishedToPartnerGroup = false;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -70,15 +70,15 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	openPopup() {
 		$('#partnerCompaniesPopup').modal('show');
-		this.isPublishedToPartnerGroups();
+		this.findPublishedType();
 	}
 
-	isPublishedToPartnerGroups(){
+	findPublishedType(){
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.damService.isPublishedToPartnerGroups(this.inputId).subscribe(
 			response=>{
-				this.isPartnerGroupSelected = response.data;
-				if(this.isPartnerGroupSelected){
+				this.isPublishedToPartnerGroup = response.data;
+				if(this.isPublishedToPartnerGroup){
 					$('#partnerGroups-li').addClass('active');
 					$('#partnerGroups').addClass('tab-pane fade in active');
 				}else{
@@ -89,7 +89,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 				this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 				this.closePopup();
 			},()=>{
-				if(this.isPartnerGroupSelected){
+				if(this.isPublishedToPartnerGroup){
 					this.findPublishedPartnerGroupIdsByInputId();
 				}else{
 					this.findPublishedPartnershipIdsByInputId();
@@ -104,6 +104,9 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 		this.damService.findPublishedPartnerGroupIdsByDamId(this.inputId).subscribe(
 			response => {
 				this.selectedPartnerGroupIds = response.data;
+				if (response.data != undefined && response.data.length > 0) {
+					this.isEdit = true;
+				}
 			}, error => {
 				this.xtremandLogger.error(error);
 				this.findPartnerGroups(this.partnerGroupsPagination);
@@ -339,19 +342,43 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 		ev.stopPropagation();
 	}
 	/************Partner Company Checkbox related code ends here****************/
+	selectedTabName(){
+		return $('.tab-pane.active').attr("id");
+	}
+
 	publish() {
+		this.customResponse = new CustomResponse();
 		if (this.selectedTeamMemberIds.length > 0 || this.selectedPartnerGroupIds.length>0 || this.isEdit) {
-			let selectedType = $('.tab-pane.active').attr("id");
-			this.startLoaders();
+			let selectedType = this.selectedTabName();
+			this.damPublishPostDto.partnerGroupSelected = ('partnerGroups' == selectedType);
+			if(this.isEdit){
+			 if(this.damPublishPostDto.partnerGroupSelected  && !this.isPublishedToPartnerGroup){
+				alert("Published To Companies. But Now Publishing To Groups");
+				if(this.selectedPartnerGroupIds.length>0){
+					alert("Published To Groups");
+				}else{
+					this.referenceService.goToTop();
+					this.customResponse = new CustomResponse('ERROR', 'Please select atleast one group', true);
+				}
+			 }else if(!this.damPublishPostDto.partnerGroupSelected && this.isPublishedToPartnerGroup){
+				alert("Published To Groups. But Now Publishing To Companies");
+				if(this.selectedTeamMemberIds.length>0){
+						alert("Published To Companies");
+				}else{
+					this.referenceService.goToTop();
+					this.customResponse = new CustomResponse('ERROR', 'Please select atleast one company', true);
+				}
+			 }
+			}
+		//	this.startLoaders();
 			this.damPublishPostDto.damId = this.inputId;
 			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
 			this.damPublishPostDto.partnerGroupIds = this.selectedPartnerGroupIds;
 			this.damPublishPostDto.publishedBy = this.loggedInUserId;
-			this.damPublishPostDto.partnerGroupSelected = ('partnerGroups' == selectedType);
-			this.publishToPartnersOrGroups();
+			//this.publishToPartnersOrGroups();
 		} else {
 			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'No Row Is Selected', true);
+			this.customResponse = new CustomResponse('ERROR', 'Please Select', true);
 		}
 	}
 
