@@ -734,4 +734,10 @@ export class ContactService {
         .catch( this.handleError );
     }
 
+    deleteContactById(contactId:number){
+    	return this._http.get( this.contactsUrl + "deleteFromAllContactLists/"+contactId+"/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
 }

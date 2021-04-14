@@ -170,6 +170,7 @@
                                        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
                                        <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">
                                        </app-pagination>
+
                                     </div>
                               </div>
                               <div class="tab-pane fade" id="partnerGroups">Partner Groups Comes Here</div>

@@ -19,7 +19,7 @@ export const routes: Routes = [
 	{ path: "editp/:id", component: AddDamComponent },
 	{ path: "pda/:damPartnerId", component: DamAnalyticsComponent },
 	{ path: "partnerAnalytics/:damId", component: DamPublishedPartnersAnalyticsComponent },
-	{ path: "vda/:damId/:damPartnerId", component: DamAnalyticsComponent },
+	{ path: "vda/:damId/:damPartnerId/:partnerId", component: DamAnalyticsComponent },
 	{path:"select",component:SelectUploadTypeComponent}
 
 

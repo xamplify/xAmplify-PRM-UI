@@ -35,4 +35,6 @@ export class Deal {
    leadSource:string;
    
    sfCustomFieldsDataDto: Array<SfCustomFieldsDataDTO> = new Array<SfCustomFieldsDataDTO>();
+   unReadChatCount: any;
+   unReadPropertyChatCount: any;
 }

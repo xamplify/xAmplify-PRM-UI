@@ -125,11 +125,12 @@
                     </label>
                     <div class="inline col-sm-8">
                       <div class="dropdown">
-                        <input type="text" class="form-control" [(ngModel)]="folderName" (click)="showDropDown()"
-                          readonly style="cursor: auto;">
+                        <input type="text" class="form-control" [(ngModel)]="folderName" (click)="showDropDown();filterFolders(folderSearchValue)" readonly
+                          style="cursor: auto; display: inline-block;">
+                        <i class="fa fa-angle-down dropdown-icon" aria-hidden="true"></i>
                         <div *ngIf="showFolderDropDown" id="folderDropDown" class="dropdown-content dropdown-scroller">
-                          <input type="text" placeholder="Search.." id="myInput"
-                            (input)="filterFolders(folderSearchValue)" #folderSearchValue>
+                          <input type="text" placeholder="Search.." id="myInput" (input)="filterFolders(folderSearchValue)"
+                            #folderSearchValue>
                           <div class="dropdown-option" [ngClass]="{'dropdown-content-odd': 0 === i % 2}"
                             *ngFor="let category of filteredCategoryNames;let i=index"
                             (click)="updateFolderValue(category);validateAllSteps()">
@@ -166,34 +167,28 @@
                             <tbody>
                               <tr role="row" *ngFor="let tag of tagsListFirstColumn;let i = index"
                                 style="vertical-align: middle;padding: 0px;">
-                                <td style="padding: 5px;vertical-align: middle;">
+                                <td style="padding: 5px;vertical-align: middle;" (click)="updateSelectedTags(tag,$event.target.checked)">
                                   <div class="col-sm-2 col-sm-offset-2">
                                     <label class="form-check-label inline">
                                       <input type="checkbox" class="form-check-input "
-                                        (click)="updateSelectedTags(tag,$event.target.checked)"
                                         [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tag.id)>-1">
                                     </label>
                                   </div>
                                   <div class="col-sm-5" style="padding-left: 0px !important;">
-                                    <div class="btn btn-primary" (click)="updateSelectedTags(tag,undefined)"
-                                      style="padding: 4px 10px;border-radius: 2px !important;">
+                                    <div class="btn btn-primary" style="padding: 4px 10px;border-radius: 2px !important;">
                                       {{tag.tagName}}</div>
                                   </div>
                                 </td>
-                                <td style="padding: 5px;vertical-align: middle;">
+                                <td style="padding: 5px;vertical-align: middle;" (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)">
                                   <div class="col-sm-2 col-sm-offset-2">
                                     <label class="form-check-label inline">
                                       <input *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                        type="checkbox" class="form-check-input "
-                                        (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)"
-                                        [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
+                                        type="checkbox" class="form-check-input " [checked]="learningTrack.tagIds != undefined && learningTrack.tagIds.length > 0 && learningTrack.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
                                     </label>
                                   </div>
                                   <div class="col-sm-5" style="padding-left: 5px !important;">
                                     <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                      class="btn btn-primary"
-                                      (click)="updateSelectedTags(tagsListSecondColumn[i],undefined)"
-                                      style="padding: 4px 10px;border-radius: 2px !important;">
+                                      class="btn btn-primary" style="padding: 4px 10px;border-radius: 2px !important;">
                                       {{tagsListSecondColumn[i].tagName}}</div>
                                   </div>
                                 </td>
@@ -442,9 +437,8 @@
                       <thead>
                         <tr>
                           <td align="center">
-                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                              (change)="checkAll($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()"
-                              id="checkAllExistingContacts" />
+                            <input type="checkbox" name="all" [(ngModel)]="isGroupHeaderCheckBoxChecked"
+                              (change)="checkAllGroups($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()" />
                           </td>
                           <th class="hidden-xs" colspan="2" style="width: 35%">
                             <span class="ui-column-resizer"
@@ -466,7 +460,7 @@
                         <tr role="row" *ngFor="let group of groupsPagination.pagedItems;let i = index"
                           style="vertical-align: middle;padding: 0px;">
                           <td class="text-center">
-                            <input type="checkbox" [checked]="isGroupSelected(group)"
+                            <input type="checkbox" name="trackGroup" [checked]="isGroupSelected(group)"
                               (change)="changeSelectedGroups(group,$event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()">
                           </td>
                           <td class="hidden-xs text-cente" style="width: 10%;">
@@ -553,8 +547,8 @@
                       <thead>
                         <tr>
                           <td align="center" style="width: 10%">
-                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                              (change)="checkAllPartnerCompanies($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()"
+                            <input type="checkbox" name="all" [(ngModel)]="isCompanyHeaderCheckBoxChecked"
+                              (change)="checkAllCompanies($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()"
                               id="checkAllExistingContacts" />
                           </td>
                           <th class="hidden-xs" colspan="2" style="width: 10%" id="border-bottom">
@@ -734,7 +728,7 @@
                   <tbody>
                     <tr *ngFor="let form of formPagination.pagedItems ;let i =index">
                       <td>
-                        <input type="radio" (click)="updateDescription(form, $event)">
+                        <input type="radio" (click)="updateDescription(form)">
                       </td>
                       <td>
                         <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">

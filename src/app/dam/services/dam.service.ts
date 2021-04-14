@@ -111,8 +111,8 @@ export class DamService {
       .catch(this.handleError);
   }
 
-  getDamAnalyticsTilesInfo(damPartnerId: number) {
-    return this.http.get(this.URL + "showPartnerDetailsWithAnalyticsCount/" + damPartnerId + "?access_token=" + this.authenticationService.access_token)
+  getDamAnalyticsTilesInfo(pagination:Pagination) {
+    return this.http.get(this.URL + "showPartnerDetailsWithAnalyticsCount/" + pagination.campaignId + "/"+pagination.userId+"?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -121,8 +121,8 @@ export class DamService {
     return this.utilPostListMethod("listDamAnalytics", pagination);
   }
   
-  checkDamIdAndPartnerId(damId:number,damPartnerId:number){
-    return this.http.get(this.URL  + "checkDamAndPartnerId/"+damId+"/"+damPartnerId+"?access_token=" + this.authenticationService.access_token)
+  checkDamIdAndPartnerId(damId:number,partnerId:number){
+    return this.http.get(this.URL  + "checkDamAndPartnerId/"+damId+"/"+partnerId+"?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }

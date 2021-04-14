@@ -28,6 +28,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   @Output() editCampaignLeadForm = new EventEmitter<any>();
   @Output() registerDealForm = new EventEmitter<any>();  
   @Output() refreshCounts = new EventEmitter<any>();
+  @Output() showCommentsPopUp = new EventEmitter<any>();
 
   loggedInUserId : number;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
@@ -155,7 +156,10 @@ export class ManageCampaignLeadsComponent implements OnInit {
           },
       () => { }
   );
+ }
 
+ showComments(deal: any) {
+  this.showCommentsPopUp.emit(deal);
  }
 
 }

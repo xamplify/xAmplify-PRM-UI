@@ -37,19 +37,25 @@ import { AddDealComponent } from '../deals/add-deal/add-deal.component';
 import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
+import { ChatComponent } from 'app/util/chat/chat.component';
+import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popup.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
-                  BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
+                  BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, 
+                  CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
-        declarations: [CountLoaderComponent,AddDealComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,LefsideNavigationLoaderComponent],
+        declarations: [CountLoaderComponent,AddDealComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,
+                LefsideNavigationLoaderComponent,  ChatComponent, DealChatPopupComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule, TimepickerModule,
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
-                  NgxCurrencyModule,CountLoaderComponent,DragulaModule,AddDealComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent],
+                  NgxCurrencyModule,CountLoaderComponent,DragulaModule,AddDealComponent,SfDealComponent,BoxLoaderComponent,
+                  DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
+                   ChatComponent, DealChatPopupComponent],
         providers: [],
 })
 

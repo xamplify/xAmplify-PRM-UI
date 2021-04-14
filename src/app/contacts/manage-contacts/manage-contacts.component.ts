@@ -1524,9 +1524,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.sortOption = this.sortOptions[0];
 		this.showListOfContactList = false;
 		this.contactsByType.contacts = [];
-		if (this.showListOfContactList) {
-
-		}
 	}
 
 	sortByOption(event: any, selectedType: string) {
@@ -2394,6 +2391,48 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 );
         this.loading = false;
     }
-    
+	
+	
+	confirmDeleteContact(contact:any){
+		let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "This contact will be deleted from all your contact lists.",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, delete it!'
+
+			}).then(function () {
+				self.deleteContact(contact);
+			}, function (dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+	}
+
+	deleteContact(contact:any){
+		this.referenceService.goToTop();
+		this.loading = true;
+		this.customResponse = new CustomResponse();
+		this.contactService.deleteContactById(contact.id).subscribe(
+			response=>{
+				this.loading = false;
+				if(response.statusCode==200){
+					let message = contact.emailId+" deleted successfully";
+					this.listContactsByType(this.contactsByType.selectedCategory);
+					this.contactsCount();
+					this.customResponse = new CustomResponse('SUCCESS', message, true);
+				}else{
+					this.customResponse = new CustomResponse('ERROR', 'This contact cannot be deleted as it is shared by one of your vendors', true);
+				}
+				
+			},
+			error=>{
+				this.loading = false;
+				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			}
+		);
+	}
     
 }

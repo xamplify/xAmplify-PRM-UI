@@ -12,6 +12,8 @@ import { FormSubmitField } from '../../forms/models/form-submit-field';
 import { ColumnInfo } from '../../forms/models/column-info';
 import { Form } from '../../forms/models/form';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { FormService } from '../../forms/services/form.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 
 
 declare var $: any;
@@ -20,7 +22,7 @@ declare var $: any;
   selector: 'app-rsvp',
   templateUrl: './rsvp.component.html',
   styleUrls: ['./rsvp.component.css'],
-  providers: [Processor]
+  providers: [Processor, FormService]
 })
 export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('dataContainer') dataContainer: ElementRef;
@@ -45,8 +47,9 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   selectedType: string;
   selectedUtmType: string;
   hideForm = false;
+  isCaptchaValid = false;
   constructor(private changeDetectorRef: ChangeDetectorRef, public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
-  public authenticationService:AuthenticationService, private vanityURLService: VanityURLService) { }
+  public authenticationService:AuthenticationService, private vanityURLService: VanityURLService, private formService: FormService,  private logger: XtremandLogger) { }
 
   getEventCampaign (alias: string) {
     this.campaignService.getEventCampaignByAlias(alias)
@@ -102,7 +105,11 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
                                }
                        });
                 }
-                
+                if (dto.labelType == 'quiz_radio') {
+                  dto.choices = dto.radioButtonChoices;
+                } else if (dto.labelType == 'quiz_checkbox') {
+                  dto.choices = dto.checkBoxChoices;
+                }
             });
             
             this.authenticationService.formValues = this.eventcampaign.formDTOs[0].formLabelDTOs;
@@ -246,7 +253,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         const formField: any = { };
         formField.id = field.id;
         formField.value = $.trim(field.value);
-        if(field.labelType==="checkbox"){
+        if(field.labelType==="checkbox" || field.labelType === "quiz_checkbox"){
           formField.dropdownIds = field.value;
           formField.value = ""; 
         }
@@ -293,6 +300,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
       if(this.formPreviewComponent){
           this.form.formLabelDTOs = this.formPreviewComponent.form.formLabelDTOs;
           this.form.id = this.formPreviewComponent.form.id;
+          this.form.showCaptcha = this.formPreviewComponent.form.showCaptcha;
       }
       this.changeDetectorRef.detectChanges();
       /* this.authenticationService.formAlias = this.formAlias;*/
@@ -329,6 +337,10 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.authenticationService.isPartnerRsvp = false;
       this.isDataLoaded = false;
       this.responseMessage = '';
+  }
+
+  setEnableCaptcha(event:any){
+    this.isCaptchaValid = event;
   }
 
 }
