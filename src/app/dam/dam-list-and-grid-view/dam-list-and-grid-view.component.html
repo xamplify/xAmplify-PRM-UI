@@ -589,7 +589,7 @@
 <!---Publish Pop Up-->
 <ng-container *ngIf="showPublishPopup"> 
 <app-partner-company-and-groups-modal-popup
-	[companyId]="loggedInUserCompanyId" [isPartnerGroupSelected]="true" [inputId]="selectedAssetId" [moduleName]="'dam'"
+	[companyId]="loggedInUserCompanyId" [isPartnerGroupSelected]="false" [inputId]="selectedAssetId" [moduleName]="'dam'"
 	(notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-partner-company-and-groups-modal-popup>
 </ng-container>
 <!---Preview Pop Up-->
