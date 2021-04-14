@@ -19,6 +19,8 @@
             </ng-container>
          </div>
          <div class="col-md-12 col-lg-12 pl2 pr0"  *ngIf="!sendSuccess">
+            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message>
             <div>
                <div class="row">
                   <div class="col-md-12 col-lg-12">
@@ -26,10 +28,10 @@
                         <div class="panel-heading">
                            <ul class="nav nav-tabs">
                               <li class="active">
-                                 <a href="#partners" data-toggle="tab">Partners</a>
+                                 <a href="#partners" data-toggle="tab" (click)="findPartnerCompanies(pagination)">Partners</a>
                               </li>
                               <li>
-                                 <a href="#partnerGroups" data-toggle="tab">Partner Groups</a>
+                                 <a href="#partnerGroups" data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">Partner Groups</a>
                               </li>
                            </ul>
                         </div>
@@ -37,8 +39,6 @@
                            <div class="tab-content">
                               <div class="tab-pane fade in active" id="partners">
                                        <ng-container *ngIf="!sendSuccess">
-                                          <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-                                          </app-response-message>
                                           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
                                              <div class="row">
                                                 <div>
@@ -46,14 +46,6 @@
                                                       <div class="page-toolbar">
                                                          <div class="btn-group pull-right">
                                                             <div class="inputs float-right" style="display: inline-flex;">
-                                                               <div>
-                                                                  <select class="form-control" [(ngModel)]="sortOption.selectedDamPartnerDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                                                  <option
-                                                                  *ngFor="let option of sortOption.partnerCompaniesDropDownOptions"
-                                                                  [ngValue]="option">
-                                                                  {{option.name}}</option>
-                                                                  </select>
-                                                               </div>
                                                                <div class="portlet-input input-inline" id="search-div">
                                                                   <div class="input-icon right" id="icon">
                                                                      <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
@@ -74,7 +66,7 @@
                                           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                           <ng-container *ngIf="!httpRequestLoader.isLoading">
                                              <div class="table-responsive">
-                                                <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="dam-partnership-list-table" aria-describedby="damPartnersTableDescription">
+                                                <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="parnter-companies" aria-describedby="damPartnersTableDescription">
                                                    <thead>
                                                       <tr>
                                                          <th scope="col"></th>
@@ -170,10 +162,82 @@
                                        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
                                        <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">
                                        </app-pagination>
-
                                     </div>
                               </div>
-                              <div class="tab-pane fade" id="partnerGroups">Partner Groups Comes Here</div>
+                              <div class="tab-pane fade" id="partnerGroups">
+                                 <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
+                                    <div class="row">
+                                       <div>
+                                          <div class="col-xs-12">
+                                             <div class="page-toolbar">
+                                                <div class="btn-group pull-right">
+                                                   <div class="inputs float-right" style="display: inline-flex;">
+                                                      <div class="portlet-input input-inline" id="search-div">
+                                                         <div class="input-icon right" id="icon">
+                                                            <input type="text" id="sort-text" class="form-control" [(ngModel)]="partnerGroupsSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)">
+                                                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerGroupsSortOption.searchKey" (click)="partnerGroupsSortOption.searchKey='';searchPartnerGroups();"></button>
+                                                            <button type="submit" class="search-box-item-click" (click)="searchPartnerGroups()">
+                                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                            </button>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <br>
+                                    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                                    <ng-container *ngIf="!httpRequestLoader.isLoading">
+                                       <div class="table-responsive">
+                                          <table class='table tgrid table-condensed table-bordered' *ngIf="partnerGroupsPagination.pagedItems?.length>0" id="parnter-groups-table" aria-describedby="partnerGroupsDescription">
+                                             <thead>
+                                                <tr>
+                                                   <th scope="col" class="text-center">
+                                                      <input type="checkbox" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked" id="parnterGroupsHeaderCheckBox"  (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)"></th>
+                                                   <th scope="col" class="text-center">Group Name</th>
+                                                   <th scope="col" class="text-center">Count</th>
+                                                   <th scope="col" class="text-center">Created Time</th>
+                                                   <th scope="col" class="text-center">Preview</th>
+                                                </tr>
+                                             </thead>
+                                             <tbody>
+                                                <tr *ngFor="let partnerGroup of partnerGroupsPagination.pagedItems;let i = index;" id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1" (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)" >
+                                                   <td class="text-center">
+                                                     <input type="checkbox" id="{{partnerGroup.id}}"  [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1" name="partnerGroupsCheckBox[]"   value="{{partnerGroup.id}}" (click)="$event.stopPropagation();highlightPartnerGroupRowOnCheckBoxClick(partnerGroup.id,$event);">
+                                                  </td>
+                                                   <td title="{{partnerGroup?.groupName}}" class="text-center">
+                                                      <span>{{partnerGroup?.groupName | slice:0:40}}</span>
+                                                      <span *ngIf="partnerGroup?.groupName.length>40">...</span>
+                                                   </td>
+                                                   <td class="text-center">
+                                                      {{partnerGroup.numberOfPartners}}
+                                                    </td>
+                                                    <td class="text-center">
+                                                      <app-timestamp  [dateAndTime]="partnerGroup?.displayTime">
+                                                      </app-timestamp>
+                                                    </td>
+                                                    <td class="text-center">
+                                                       <div class="actions-block none-float" (click)="previewItems(partnerGroup.id)">
+                                                          <a><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                       </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>    
+                                       </div>
+                                       <!-- End of 24 -->
+                                       <div *ngIf="partnerGroupsPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                                          <strong>No Data Found.</strong>
+                                       </div>
+                                    </ng-container>
+                                    <div *ngIf="partnerGroupsPagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+                                       <app-pagination [pagination]="partnerGroupsPagination" (notifyParent)="navigatePartnerGroups($event)" (notifyParentDropDown)="findPartnerGroups($event)">
+                                       </app-pagination>
+                                    </div>
+                              </div>
                            </div>
                         </div>
                      </div>
@@ -181,11 +245,9 @@
                </div>
             </div>
          </div>
-
-        
      </div>
      <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
-        <button type="submit" class="btn green-haze" [disabled]="selectedTeamMemberIds?.length==0 && !isEdit" *ngIf="!sendSuccess" (click)="publish()">Submit</button>
+        <button type="submit" class="btn green-haze" [disabled]="(selectedTeamMemberIds?.length==0 && selectedPartnerGroupIds?.length==0) && !isEdit" *ngIf="!sendSuccess" (click)="publish()">Submit</button>
         <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
      </div>
   </div>
