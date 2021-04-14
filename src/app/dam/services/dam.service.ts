@@ -165,6 +165,10 @@ export class DamService {
     return this.utilGetMethod("findPublishedPartnerIds/" + damId);
   }
 
+  isPublishedToPartnerGroups(damId:number){
+    return this.utilGetMethod("isPublishedToPartnerGroups/" + damId);
+  }
+
   private utilGetMethod(url: string) {
     return this.http.get(this.URL + url + "?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)

@@ -27,17 +27,17 @@
                      <div class="panel with-nav-tabs panel-default">
                         <div class="panel-heading">
                            <ul class="nav nav-tabs">
-                              <li class="active">
+                              <li id="partners-li" >
                                  <a href="#partners" data-toggle="tab" (click)="findPartnerCompanies(pagination)">Partners</a>
                               </li>
-                              <li>
+                              <li id="partnerGroups-li">
                                  <a href="#partnerGroups" data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">Partner Groups</a>
                               </li>
                            </ul>
                         </div>
                         <div class="panel-body">
                            <div class="tab-content">
-                              <div class="tab-pane fade in active" id="partners">
+                              <div class="tab-pane fade in" id="partners">
                                        <ng-container *ngIf="!sendSuccess">
                                           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
                                              <div class="row">

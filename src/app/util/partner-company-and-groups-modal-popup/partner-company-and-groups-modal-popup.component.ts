@@ -30,7 +30,6 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	@Input() inputId: any;
 	@Input() moduleName: any;
 	@Output() notifyOtherComponent = new EventEmitter();
-	@Input() isPartnerGroupSelected: any;
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	sendSuccess = false;
 	responseMessage = "";
@@ -52,6 +51,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	partnerGroupsPagination: Pagination = new Pagination();
 	partnerGroupsSortOption: SortOption = new SortOption();
 	isParnterGroupHeaderCheckBoxChecked = false;
+	isPartnerGroupSelected = false;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -70,13 +70,33 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	openPopup() {
 		$('#partnerCompaniesPopup').modal('show');
-		if(this.isPartnerGroupSelected){
-			this.findPublishedPartnerGroupIdsByInputId();
-		}else{
-			this.findPublishedPartnershipIdsByInputId();
-			this.findPublishedPartnerIds();
-		}
-		
+		this.isPublishedToPartnerGroups();
+	}
+
+	isPublishedToPartnerGroups(){
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.damService.isPublishedToPartnerGroups(this.inputId).subscribe(
+			response=>{
+				this.isPartnerGroupSelected = response.data;
+				if(this.isPartnerGroupSelected){
+					$('#partnerGroups-li').addClass('active');
+					$('#partnerGroups').addClass('tab-pane fade in active');
+				}else{
+					$('#partners-li').addClass('active');
+					$('#partners').addClass('tab-pane fade in active');
+				}
+			},error=>{
+				this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
+				this.closePopup();
+			},()=>{
+				if(this.isPartnerGroupSelected){
+					this.findPublishedPartnerGroupIdsByInputId();
+				}else{
+					this.findPublishedPartnershipIdsByInputId();
+					this.findPublishedPartnerIds();
+				}
+			}
+		);
 	}
 
 	findPublishedPartnerGroupIdsByInputId() {
