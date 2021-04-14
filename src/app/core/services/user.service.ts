@@ -433,5 +433,11 @@ export class UserService {
         }
 
     }
+    
+    saveExcludedUser(user: User, loggedInUserId : number) {
+    	 return this.http.post(this.URL + "admin/save-excluded-user/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, user)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 }

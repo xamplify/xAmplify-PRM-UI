@@ -46,6 +46,7 @@ import { DragulaService } from 'ng2-dragula';
 import { Pipeline } from '../../models/pipeline';
 import { PipelineStage } from '../../models/pipeline-stage';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+
 declare var swal, $, videojs: any;
 
 @Component({
@@ -57,7 +58,10 @@ declare var swal, $, videojs: any;
 	providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
-
+	isEmailExist :boolean = false;
+	validEmailPatternSuccess : boolean ;
+	validEmailPattern : boolean = false;
+	addContactuser: User = new User();
 	defaultVideoPlayer: DefaultVideoPlayer;
 	tempDefaultVideoPlayerSettings: any;
 	videoJSplayer: any;
@@ -214,7 +218,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-			PagerService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService) {
+		PagerService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
@@ -1584,7 +1588,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.listAllPipelines(this.pipelinePagination);
 		} else if (this.activeTabName == "tags") {
 			this.activeTabHeader = this.properties.tags;
-		} 
+		} else if (this.activeTabName == "exclude") {
+            this.activeTabHeader = this.properties.exclude;
+        } 
 
 		this.referenceService.goToTop();
 	}
@@ -2654,5 +2660,75 @@ configSalesforce() {
 		this.listAllPipelines(this.pipelinePagination);
 	}
 	pipelineEventHandler(keyCode: any) { if (keyCode === 13) { this.searchPipelines(); } }
+	
+	
+	
+    public contacts: Array<Object> = [
+        { id: 1, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' },
+        { id: 2, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' },
+        { id: 3, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' },
+        { id: 4, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' }
+    ];
+
+    addContactModalOpen() {
+    	this.addContactuser = new User();
+        $('#addContactModal').modal();
+    	
+    }
+    
+    addContactModalClose() {
+        $( '#addContactModal' ).modal( 'toggle' );
+       $( "#addContactModal .close" ).click();
+        $( '#addContactModal' ).modal( 'hide' );        
+        //$( 'body' ).removeClass( 'modal-open' );
+        //$( '.modal-backdrop fade in' ).remove();
+       // $( ".modal-backdrop in" ).css( "display", "none" );       
+    }
+    
+    validateEmail(emailId: string) {
+        const lowerCaseEmail = emailId.toLowerCase();
+        if (this.validateEmailAddress(lowerCaseEmail)) {
+            this.validEmailPattern = true;
+        }
+    }
+    
+    validateEmailAddress( emailId: string ) {
+        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
+        return EMAIL_ID_PATTERN.test( emailId );
+    }
+    
+    checkingEmailPattern( emailId: string ) {        
+        if ( this.validateEmailAddress( emailId ) ) {
+            this.validEmailPatternSuccess = true;
+        } else{
+        	this.validEmailPatternSuccess = false;
+        }    
+    }
+      
+    saveExcludedUser(excludedUser: User) {
+        this.userService.saveExcludedUser(excludedUser, this.loggedInUserId)
+            .subscribe(
+            data => {
+                this.ngxloading = true;
+                if (data.statusCode == 200) {
+                    this.addContactModalClose();
+                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PASSWORD_UPDATED, true);
+                } else if (data.statusCode == 401) { 
+                	   this.ngxloading = false;
+                	this.validEmailPatternSuccess = false;
+                } else if (data.statusCode == 402) {
+                	this.ngxloading = false;
+                	this.isEmailExist = true;
+                }                
+            },
+            error => {
+                this.ngxloading = false;
+            },
+            () => { }
+            );
+    }
+	
+	
+	
 
 }
