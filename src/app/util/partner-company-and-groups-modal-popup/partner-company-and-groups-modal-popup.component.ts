@@ -52,6 +52,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	partnerGroupsSortOption: SortOption = new SortOption();
 	isParnterGroupHeaderCheckBoxChecked = false;
 	isPublishedToPartnerGroup = false;
+	modalPopupLoader: boolean;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -74,6 +75,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	}
 
 	findPublishedType(){
+		this.modalPopupLoader = true;
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.damService.isPublishedToPartnerGroups(this.inputId).subscribe(
 			response=>{
@@ -89,6 +91,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 				this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 				this.closePopup();
 			},()=>{
+				this.modalPopupLoader = false;
 				if(this.isPublishedToPartnerGroup){
 					this.findPublishedPartnerGroupIdsByInputId();
 				}else{
@@ -117,13 +120,16 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	}
 
 	findPublishedPartnerIds() {
+		this.referenceService.startLoader(this.httpRequestLoader);
 		this.damService.findPublishedPartnerIds(this.inputId).subscribe(
 			response => {
 				this.selectedTeamMemberIds = response.data;
 				if (response.data != undefined && response.data.length > 0) {
 					this.isEdit = true;
 				}
+				this.referenceService.stopLoader(this.httpRequestLoader);
 			}, error => {
+				this.referenceService.stopLoader(this.httpRequestLoader);
 				this.xtremandLogger.error(error);
 			});
 	}
