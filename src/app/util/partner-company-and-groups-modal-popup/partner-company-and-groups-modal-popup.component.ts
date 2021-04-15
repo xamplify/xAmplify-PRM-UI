@@ -352,34 +352,73 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 			let selectedType = this.selectedTabName();
 			this.damPublishPostDto.partnerGroupSelected = ('partnerGroups' == selectedType);
 			if(this.isEdit){
-			 if(this.damPublishPostDto.partnerGroupSelected  && !this.isPublishedToPartnerGroup){
-				alert("Published To Companies. But Now Publishing To Groups");
-				if(this.selectedPartnerGroupIds.length>0){
-					alert("Published To Groups");
-				}else{
-					this.referenceService.goToTop();
-					this.customResponse = new CustomResponse('ERROR', 'Please select atleast one group', true);
-				}
-			 }else if(!this.damPublishPostDto.partnerGroupSelected && this.isPublishedToPartnerGroup){
-				alert("Published To Groups. But Now Publishing To Companies");
-				if(this.selectedTeamMemberIds.length>0){
-						alert("Published To Companies");
-				}else{
-					this.referenceService.goToTop();
-					this.customResponse = new CustomResponse('ERROR', 'Please select atleast one company', true);
-				}
-			 }
+				this.publishOrUnPublishToGroupsOrCompanies();
+			}else{
+				this.setValuesAndPublish();
 			}
-		//	this.startLoaders();
-			this.damPublishPostDto.damId = this.inputId;
-			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
-			this.damPublishPostDto.partnerGroupIds = this.selectedPartnerGroupIds;
-			this.damPublishPostDto.publishedBy = this.loggedInUserId;
-			//this.publishToPartnersOrGroups();
 		} else {
 			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'Please Select', true);
+			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one row', true);
 		}
+	}
+
+	publishOrUnPublishToGroupsOrCompanies(){
+		if(this.damPublishPostDto.partnerGroupSelected  && !this.isPublishedToPartnerGroup){
+			this.unPublishToCompaniesAndPublishToGroups();
+		 }else if(!this.damPublishPostDto.partnerGroupSelected && this.isPublishedToPartnerGroup){
+			this.unPublishToGroupsAndPublishToCompanies();
+		 }else{
+			 this.setValuesAndPublish();
+		 }
+	}
+
+
+	unPublishToCompaniesAndPublishToGroups(){
+			if(this.selectedPartnerGroupIds.length>0){
+				this.showSweetAlertAndProceed();
+			}else{
+				this.referenceService.goToTop();
+				this.customResponse = new CustomResponse('ERROR', 'Please select atleast one group', true);
+			}
+	}
+
+	unPublishToGroupsAndPublishToCompanies(){
+		if(this.selectedTeamMemberIds.length>0){
+			this.showSweetAlertAndProceed();
+		}else{
+			this.referenceService.goToTop();
+			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one company', true);
+		}
+	}
+
+	showSweetAlertAndProceed(){
+		let self = this;
+				swal({
+					title: 'Are you sure?',
+					text: "Existing data will be deleted",
+					type: 'warning',
+					showCancelButton: true,
+					swalConfirmButtonColor: '#54a7e9',
+					swalCancelButtonColor: '#999',
+					confirmButtonText: 'Yes, delete it!'
+				}).then(function () {
+					self.setValuesAndPublish();
+				}, function (dismiss: any) {
+				});
+	}
+
+	setValuesAndPublish(){
+		this.startLoaders();
+		this.damPublishPostDto.damId = this.inputId;
+		if(this.selectedTabName()=="partners"){
+			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
+			this.damPublishPostDto.partnerGroupIds = [];
+		}else{
+			this.damPublishPostDto.partnerGroupIds = this.selectedPartnerGroupIds;
+			this.damPublishPostDto.partnerIds = [];
+		}
+		this.damPublishPostDto.publishedBy = this.loggedInUserId;
+		this.publishToPartnersOrGroups();
 	}
 
 	publishToPartnersOrGroups(){
