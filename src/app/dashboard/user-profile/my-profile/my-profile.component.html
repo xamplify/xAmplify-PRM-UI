@@ -1189,41 +1189,44 @@
 																		style="font-size: 12px; margin-left: 5px;"></i>
 																</button>
 															</div>
-															
-															
 
-															<div class="clearfix">
+															<div style="margin-top: 10px;" *ngIf="excludeUserPagination.pagedItems?.length === 0" class="alert alert-info">
+																<strong>No Records Found.</strong>
+															</div>
+
+															<div class="clearfix" *ngIf="excludeUserPagination.pagedItems?.length>0" >
 										<div class="col-xs-12 p0" style="margin-top: 10px;">
 											<div class="table-responsive">
 												<table class='table tgrid'
-													*ngIf="(contacts?.length > 0)">
+													*ngIf="excludeUserPagination.pagedItems?.length>0" >
 													<thead>
 														<tr>
-															<th class='text-center'><input type="checkbox"
+															<!-- <th class='text-center'><input type="checkbox"
 																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
 																(change)="checkAll($event)"
-																id="checkAllExistingContacts"/></th>
+																id="checkAllExistingContacts"/></th> -->
 															<th style="width: 25%"  translate>Name</th>
 															<th style="width: 25%"  translate>Time</th>										
 														<th class='text-center' style="width:16%"  translate>ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
-														<ng-container
-															*ngFor="let newContact of contacts; let i = index">
+														<ng-container *ngFor="let user of excludeUserPagination.pagedItems ;let i =index">															
 														<tr class='row_{{i}}' style="background-color: #73c5be;">
-															<td align="center"><input type="checkbox" checked="newContact.checked"></td>
+															<!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
 															<td>
-															<app-user-info  [userInfo]="newContact"> </app-user-info>
+															<app-user-info  [userInfo]="user"> </app-user-info>
 															</td>
 															<td>
-															{{newContact.name}}
+															<h6>
+                        <app-timestamp [dateAndTime]="user.time"> </app-timestamp>
+                      </h6>
 															</td>
 																<td align="center" >
 															<div class="actions-block override-actions" style="width:170px" >
-															  	<a data-toggle="tooltip" data-placement="top" title="edit" (click)="alert('hi')" >
+															  	<!-- <a data-toggle="tooltip" data-placement="top" title="edit" (click)="alert('hi')" >
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-																 </a>
+																 </a> -->
 																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="alert('hi')" >
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
@@ -1236,6 +1239,12 @@
 											</div>
 										</div>
 									</div>
+									
+									<!-- paignation added-->
+									 <div *ngIf="excludeUserPagination.pagedItems.length !== 0" class="pg8">
+                                            <app-pagination [type]="'excludeUsers'" [pagination]="excludeUserPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedUsers($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                        </div>
+									<!-- paignation end-->
 
 															<!-- new -->
 														</fieldset>
@@ -1243,18 +1252,6 @@
 													</tbody>
 												</table>
 											</form>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 										</div>
@@ -1504,6 +1501,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <div class="textCss"></div>
             <span class="danger" *ngIf="!validEmailPatternSuccess" translate>Please enter a valid email address</span>
             <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>
+            <span class="danger" *ngIf="!validEmailFormat" translate>The entered email is not formatted properly</span>
            </div>
          </div>
         <div class="form-group">
@@ -1524,7 +1522,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
     <div class="modal-footer" style="border:none">
       <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
-      <button  type="submit" class="btn green"  (click)="saveExcludedUser(addContactuser)"  [disabled]="!validEmailPattern" translate>Add</button>
+      <button  type="submit" class="btn green"  (click)="saveExcludedUser(addContactuser)"  [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
     </div>
   </div>
 </div>

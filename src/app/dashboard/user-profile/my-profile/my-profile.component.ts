@@ -46,6 +46,7 @@ import { DragulaService } from 'ng2-dragula';
 import { Pipeline } from '../../models/pipeline';
 import { PipelineStage } from '../../models/pipeline-stage';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { ExcludeUser } from "../../models/exclude-user";
 
 declare var swal, $, videojs: any;
 
@@ -58,8 +59,9 @@ declare var swal, $, videojs: any;
 	providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
-	isEmailExist :boolean = false;
-	validEmailPatternSuccess : boolean ;
+	validEmailFormat  = true;
+	validEmailPatternSuccess : boolean = true ;
+	isEmailExist :boolean = false;	
 	validEmailPattern : boolean = false;
 	addContactuser: User = new User();
 	defaultVideoPlayer: DefaultVideoPlayer;
@@ -208,6 +210,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	pipelineStageErrorMessage = "";
 	requiredStageMessage = "Required atleast one valid stage.";
 	pipelinePreview = false;
+	excludeUserPagination: Pagination = new Pagination();
 
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
@@ -1590,6 +1593,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.tags;
 		} else if (this.activeTabName == "exclude") {
             this.activeTabHeader = this.properties.exclude;
+            this.excludeUserPagination= new Pagination();
+            this.excludeUserPagination.pageIndex = 1;
+            this.excludeUserPagination.maxResults = 12;
+            this.listExcludedUsers(this.excludeUserPagination);
         } 
 
 		this.referenceService.goToTop();
@@ -1796,6 +1803,11 @@ configSalesforce() {
 		this.customResponse = new CustomResponse();
 		this.categoryPagination.pageIndex = event.page;
 		this.listCategories(this.categoryPagination);
+		if (event.type === 'excludeUsers') {
+	          this.excludeUserPagination.pageIndex = event.page;
+	           this.listExcludedUsers(this.excludeUserPagination);
+	      } 
+		
 	}
 
 	getAllFilteredResults(pagination: Pagination) {
@@ -2663,27 +2675,18 @@ configSalesforce() {
 	
 	
 	
-    public contacts: Array<Object> = [
+    /*public contacts: Array<Object> = [
         { id: 1, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' },
         { id: 2, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' },
         { id: 3, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' },
         { id: 4, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' }
-    ];
+    ];*/
 
     addContactModalOpen() {
     	this.addContactuser = new User();
         $('#addContactModal').modal();
     	
-    }
-    
-    addContactModalClose() {
-        $( '#addContactModal' ).modal( 'toggle' );
-       $( "#addContactModal .close" ).click();
-        $( '#addContactModal' ).modal( 'hide' );        
-        //$( 'body' ).removeClass( 'modal-open' );
-        //$( '.modal-backdrop fade in' ).remove();
-       // $( ".modal-backdrop in" ).css( "display", "none" );       
-    }
+    } 
     
     validateEmail(emailId: string) {
         const lowerCaseEmail = emailId.toLowerCase();
@@ -2697,25 +2700,43 @@ configSalesforce() {
         return EMAIL_ID_PATTERN.test( emailId );
     }
     
-    checkingEmailPattern( emailId: string ) {        
+    addContactModalClose() {
+        $( '#addContactModal' ).modal( 'toggle' );
+       $( "#addContactModal .close" ).click();
+        $( '#addContactModal' ).modal( 'hide' );
+        this.validEmailPatternSuccess = true;
+        this.validEmailFormat  = true;
+        this.isEmailExist  = false;
+        $( 'body' ).removeClass( 'modal-open' );
+       $( '.modal-backdrop fade in' ).remove();
+       $( ".modal-backdrop in" ).css( "display", "none" );       
+    }
+
+    checkingEmailPattern( emailId: string ) { 
+    	this.validEmailFormat  = true;
+    	 this.isEmailExist  = false;
+        this.validEmailPatternSuccess = false;
         if ( this.validateEmailAddress( emailId ) ) {
             this.validEmailPatternSuccess = true;
         } else{
-        	this.validEmailPatternSuccess = false;
+            this.validEmailPatternSuccess = false;
         }    
     }
       
     saveExcludedUser(excludedUser: User) {
+    	this.validEmailFormat  = true;   
+        this.isEmailExist  = false;
         this.userService.saveExcludedUser(excludedUser, this.loggedInUserId)
             .subscribe(
             data => {
                 this.ngxloading = true;
                 if (data.statusCode == 200) {
                     this.addContactModalClose();
-                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PASSWORD_UPDATED, true);
+                    this.customResponse = new CustomResponse('SUCCESS', "User added successfully", true);
+                    this.listExcludedUsers(this.excludeUserPagination);
                 } else if (data.statusCode == 401) { 
                 	   this.ngxloading = false;
-                	this.validEmailPatternSuccess = false;
+                	this.validEmailFormat = false;
                 } else if (data.statusCode == 402) {
                 	this.ngxloading = false;
                 	this.isEmailExist = true;
@@ -2728,6 +2749,20 @@ configSalesforce() {
             );
     }
 	
+    listExcludedUsers(excludeUserPagination:Pagination) {
+        this.userService.listExcludedUsers(this.loggedInUserId, excludeUserPagination)
+            .subscribe(
+            response => {  
+            	response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
+            	excludeUserPagination.totalRecords  = response.data.totalRecords;
+            	excludeUserPagination = this.pagerService.getPagedItems(excludeUserPagination, response.data.data);
+            },
+            error => {
+                this.ngxloading = false;
+            },
+            () => { }
+            );
+    }
 	
 	
 
