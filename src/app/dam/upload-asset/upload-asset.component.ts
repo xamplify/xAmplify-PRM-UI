@@ -95,13 +95,11 @@ export class UploadAssetComponent implements OnInit {
 			this.uploadedAssetName  = "";
 			this.customResponse = new CustomResponse();
 			let file = files[0];
-			console.log(file);
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
 			if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
 			}else{
-				console.log(file);
 				this.formData.append("uploadedFile", file, file['name']);
 				this.uploadedAssetName = file['name'];
 			}
