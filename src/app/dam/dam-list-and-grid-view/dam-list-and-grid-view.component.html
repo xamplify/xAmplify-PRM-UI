@@ -406,7 +406,7 @@
                        </div>
                     </div>
                     <div style="margin-left: 10px;">
-                       <h2>
+                       <h2 title="{{assetDetailsViewDto?.assetName}}">
                         <strong>{{assetDetailsViewDto?.assetName | slice:0:50}}</strong>
                         <span *ngIf="assetDetailsViewDto?.assetName?.length>50">..</span>
                        </h2><br>
@@ -510,7 +510,6 @@
 </div>
 <!---Publish Pop Up-->
 <ng-container *ngIf="showPublishPopup">
-   <!-- <app-publish-to-partners [companyId]="loggedInUserCompanyId" [assetId]="selectedAssetId" (notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-publish-to-partners> -->
    <app-publish-to-partners-popup [companyId]="loggedInUserCompanyId" [assetId]="selectedAssetId" (notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-publish-to-partners-popup>
 </ng-container>
 <!---Preview Pop Up-->
