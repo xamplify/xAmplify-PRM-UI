@@ -1,0 +1,17 @@
+<div class="page-content" [ngClass]="{'form-background' : !showTracksPlayBook && !showAsset}">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i *ngIf="isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="isCreatedUser" [routerLink]="['/home/playbook/manage']">Manage Play Books</a>
+                <i *ngIf="!isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="!isCreatedUser" [routerLink]="['/home/playbook/shared']">shared Play Books</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a>View Play Book</a>
+            </li>
+        </ul>
+    </div>
+    <app-preview-tracks-play-book [type]="type" [showTracksPlayBook]="showTracksPlayBook" [showAsset]="showAsset" [isCreatedUser]="isCreatedUser" (notifyShowTracksPlayBook)="changeShowTracksPlayBook($event)" (notifyShowAsset)="changeShowAsset($event)" (notifyCreatedUser)="changeIsCreatedUser($event)"></app-preview-tracks-play-book>
+</div>

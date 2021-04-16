@@ -413,6 +413,74 @@
                 </a>
              </li> 
          </ng-container>
+         <!------Play Book----------->
+         <!---Vendor And Partner-->
+         <!-- <ng-container *ngIf="lmsAccess && lmsAccessAsPartner">
+            <li  [ngClass]="{'active': location.path().includes('playbook')}">
+                <a href="javascript:;" (click)="openOrCloseTabs('playbook')">
+                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                    <span class="title" translate>Play Book</span>
+                    <span class="arrow"></span>
+                    <span class="selected"></span>
+                </a>
+                <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': playbook? 'block': 'none' }" >
+                    <li>
+                        <a [routerLink]="['/home/playbook/add']">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <span class="title" translate>Add Play Books</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/home/playbook/manage']">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span class="title" translate>Manage Play Books</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/home/playbook/shared']">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span class="title" translate>Manage Shared Play Books</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+         </ng-container> -->
+         <!--Only Play Book Access As Vendor-->
+         <!-- <ng-container *ngIf="lmsAccess && !lmsAccessAsPartner">
+            <li  [ngClass]="{'active': location.path().includes('playbook')}">
+                <a href="javascript:;" (click)="openOrCloseTabs('playbook')">
+                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                    <span class="title" translate>Play Book</span>
+                    <span class="arrow"></span>
+                    <span class="selected"></span>
+                </a>
+                <ul style="overflow-y: scroll;" class="sub-menu" [ngStyle]="{'display': playbook? 'block': 'none' }" >
+                    <li>
+                        <a [routerLink]="['/home/playbook/add']">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <span class="title" translate>Add Play Books</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/home/playbook/manage']">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span class="title" translate>Manage Play Books</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+         </ng-container> -->
+        <!--Only Play Book Acess As Partner-->
+        <!-- <ng-container *ngIf="!lmsAccess && lmsAccessAsPartner">
+            <li [ngClass]="{'active': location.path().includes('playbook')}">
+                <a [routerLink]="['/home/playbook/shared']">
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                <span class="title">Play Book</span>
+                <span class="arrow"></span>
+                <span class="selected"></span>
+                </a>
+             </li> 
+         </ng-container> -->
         </ul>
     </ng-container>
         <!-- END SIDEBAR MENU -->
