@@ -385,7 +385,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		
+		this.addContactModalClose();
 		try {
 			if (this.referenceService.integrationCallBackStatus) {
 				this.activeTabName = 'integrations';
@@ -2672,20 +2672,10 @@ configSalesforce() {
 		this.listAllPipelines(this.pipelinePagination);
 	}
 	pipelineEventHandler(keyCode: any) { if (keyCode === 13) { this.searchPipelines(); } }
-	
-	
-	
-    /*public contacts: Array<Object> = [
-        { id: 1, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' },
-        { id: 2, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' },
-        { id: 3, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' },
-        { id: 4, firstName: 'Sentence 1', lastName: 'Sentence 1', emailId: 'Sentence 1' }
-    ];*/
 
     addContactModalOpen() {
     	this.addContactuser = new User();
-        $('#addContactModal').modal();
-    	
+    	$('#addContactModal').modal('show');    	
     } 
     
     validateEmail(emailId: string) {
@@ -2701,15 +2691,13 @@ configSalesforce() {
     }
     
     addContactModalClose() {
-        $( '#addContactModal' ).modal( 'toggle' );
-       $( "#addContactModal .close" ).click();
-        $( '#addContactModal' ).modal( 'hide' );
+        $('#addContactModal').modal('toggle');
+        $("#addContactModal .close").click();
+        $('#addContactModal').modal('hide');
+        $('.modal').removeClass('show');
         this.validEmailPatternSuccess = true;
-        this.validEmailFormat  = true;
-        this.isEmailExist  = false;
-        $( 'body' ).removeClass( 'modal-open' );
-       $( '.modal-backdrop fade in' ).remove();
-       $( ".modal-backdrop in" ).css( "display", "none" );       
+        this.validEmailFormat = true;
+        this.isEmailExist = false;
     }
 
     checkingEmailPattern( emailId: string ) { 
@@ -2724,16 +2712,17 @@ configSalesforce() {
     }
       
     saveExcludedUser(excludedUser: User) {
+    	this.ngxloading = true;
     	this.validEmailFormat  = true;   
         this.isEmailExist  = false;
         this.userService.saveExcludedUser(excludedUser, this.loggedInUserId)
             .subscribe(
             data => {
-                this.ngxloading = true;
                 if (data.statusCode == 200) {
                     this.addContactModalClose();
                     this.customResponse = new CustomResponse('SUCCESS', "User added successfully", true);
                     this.listExcludedUsers(this.excludeUserPagination);
+                    this.ngxloading = false;
                 } else if (data.statusCode == 401) { 
                 	   this.ngxloading = false;
                 	this.validEmailFormat = false;
@@ -2750,12 +2739,14 @@ configSalesforce() {
     }
 	
     listExcludedUsers(excludeUserPagination:Pagination) {
+    	this.ngxloading = true;
         this.userService.listExcludedUsers(this.loggedInUserId, excludeUserPagination)
             .subscribe(
             response => {  
             	response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
             	excludeUserPagination.totalRecords  = response.data.totalRecords;
             	excludeUserPagination = this.pagerService.getPagedItems(excludeUserPagination, response.data.data);
+            	this.ngxloading = false;
             },
             error => {
                 this.ngxloading = false;
