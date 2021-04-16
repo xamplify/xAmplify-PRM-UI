@@ -445,5 +445,13 @@ export class UserService {
            .map(this.extractData)
            .catch(this.handleError);
    }
+    
+    deleteExcludedUser(loggedInUserId : number, excludedUserId : number){
+    	return this.http.get(this.URL + "delete-excluded-user/"+ excludedUserId+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    	
+    }
+    
 
 }

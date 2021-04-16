@@ -159,7 +159,9 @@ export class Properties {
   leadPipelines = "Lead Pipelines";
   dealPipelines = "Deal Pipelines";
   tags = "Tags";
-  exclude = "Exclude Domian or Exclude contact"
+  exclude = "Exclude Domian or Contact"
+  exclude_add =  "User added successfully";
+  exclude_delete =  "User deleted successfully";
 
   /********Error Messages************* */
   roleUpdatedMessage = "Your role has been changed.Please login again.";

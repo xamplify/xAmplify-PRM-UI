@@ -1207,7 +1207,7 @@
 																id="checkAllExistingContacts"/></th> -->
 															<th style="width: 25%"  translate>Name</th>
 															<th style="width: 25%"  translate>Time</th>										
-														<th class='text-center' style="width:16%"  translate>ACTIONS</th>
+														<th style="width:16%"  translate>ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -1222,12 +1222,9 @@
                         <app-timestamp [dateAndTime]="user.time"> </app-timestamp>
                       </h6>
 															</td>
-																<td align="center" >
-															<div class="actions-block override-actions" style="width:170px" >
-															  	<!-- <a data-toggle="tooltip" data-placement="top" title="edit" (click)="alert('hi')" >
-																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-																 </a> -->
-																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="alert('hi')" >
+																<td >
+															<div class="actions-block override-actions"  style="float:none;">
+																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="deleteExcludedUser(user.userId)" >
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
                                                             </div>
@@ -1474,7 +1471,7 @@
     </div>
 </div>
 
-<!------------------------------Add exclude cotact ---------->
+<!------------------------------Add exclude cotact popup---------->
 
 <div id="addContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">

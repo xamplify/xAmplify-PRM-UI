@@ -2720,7 +2720,7 @@ configSalesforce() {
             data => {
                 if (data.statusCode == 200) {
                     this.addContactModalClose();
-                    this.customResponse = new CustomResponse('SUCCESS', "User added successfully", true);
+                    this.customResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
                     this.listExcludedUsers(this.excludeUserPagination);
                     this.ngxloading = false;
                 } else if (data.statusCode == 401) { 
@@ -2755,6 +2755,23 @@ configSalesforce() {
             );
     }
 	
+    deleteExcludedUser(userId:number){
+        this.ngxloading = true;
+        this.userService.deleteExcludedUser(this.loggedInUserId, userId)
+            .subscribe(
+            response => {  
+            	 if (response.statusCode == 200) {
+            		 this.customResponse = new CustomResponse('SUCCESS', this.properties.exclude_delete, true);
+            		 this.listExcludedUsers(this.excludeUserPagination);            		 
+            	 }
+                this.ngxloading = false;
+            },
+            error => {
+                this.ngxloading = false;
+            },
+            () => { }
+            );
+    }
 	
 
 }
