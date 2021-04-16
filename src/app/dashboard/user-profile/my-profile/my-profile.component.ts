@@ -1577,10 +1577,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == "leadPipelines") {
 			this.activeTabHeader = this.properties.leadPipelines;
 			this.pipelinePagination = new Pagination();
+			this.pipelineResponse = new CustomResponse();
 			this.listAllPipelines(this.pipelinePagination);
 		} else if (this.activeTabName == "dealPipelines") {
 			this.activeTabHeader = this.properties.dealPipelines;
 			this.pipelinePagination = new Pagination();
+			this.pipelineResponse = new CustomResponse();
 			this.listAllPipelines(this.pipelinePagination);
 		} else if (this.activeTabName == "tags") {
 			this.activeTabHeader = this.properties.tags;
@@ -2614,6 +2616,9 @@ configSalesforce() {
 						this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
 						this.pipelinePagination.pageIndex = 1;
 						this.listAllPipelines(this.pipelinePagination);
+					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") { 
+						this.referenceService.loading(this.httpRequestLoader, false);
+						this.pipelineResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);               
 					} else {
 						this.closePipelineModal();
 						this.pipelineResponse = new CustomResponse('ERROR', data.message, true);

@@ -162,12 +162,13 @@ export class SfDealComponent implements OnInit {
   }
 
   validateEmailId(columnInfo: ColumnInfo) {
-    if (!this.referenceService.validateEmailId($.trim(columnInfo.value))) {
-      columnInfo.errorMessage = "Please enter a valid email address";
-      columnInfo.divClass = "error";
-      this.isDealRegistrationFormValid = true;
-    } else {
-      columnInfo.divClass = "success";
+    columnInfo.divClass = "success";
+    if (columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
+      if (!this.referenceService.validateEmailId($.trim(columnInfo.value))) {
+        columnInfo.errorMessage = "Please enter a valid email address";
+        columnInfo.divClass = "error";
+        this.isDealRegistrationFormValid = true;
+      }
     }
   }
 
@@ -191,13 +192,14 @@ export class SfDealComponent implements OnInit {
   }
 
   validateWebsiteURL(columnInfo: ColumnInfo) {
-    if (!this.referenceService.validateWebsiteURL($.trim(columnInfo.value))) {
-      columnInfo.errorMessage = "Please enter a valid URL";
-      columnInfo.divClass = "error";
-      this.isDealRegistrationFormValid = true;
-    } else {
-      columnInfo.divClass = "success";
-    }
+    columnInfo.divClass = "success";
+    if (columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
+      if (!this.referenceService.validateWebsiteURL($.trim(columnInfo.value))) {
+        columnInfo.errorMessage = "Please enter a valid URL";
+        columnInfo.divClass = "error";
+        this.isDealRegistrationFormValid = true;
+      }
+    }    
   }
 
   validatePhoneNumber(columnInfo: ColumnInfo) {
