@@ -137,5 +137,13 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.dashboardType = DashboardType.DETAILED_DASHBOARD;
     }
   }
+
+  updateLmsAndPlaybooks(){
+    let isDamChecked = $('#damCheckBox').is(':checked');
+    if(!isDamChecked){
+      this.campaignAccess.lms = false;
+      this.campaignAccess.playbooks = false;
+  }
+  }
   
 }

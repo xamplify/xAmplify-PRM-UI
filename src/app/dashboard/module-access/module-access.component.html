@@ -180,16 +180,6 @@
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<tr>
-								<th scope="row">DAM</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.dam"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">LMS</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.lms"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
 								<th scope="row">Dashboard Type</th>
 								<td>
 									<select  class="form-control" id="dashboardType" (change)="selectDashboardType()">
@@ -199,6 +189,25 @@
 									</select>
 								</td>
 							</tr>
+							<tr>
+								<th scope="row">DAM</th>
+								<td>
+								<input type="checkbox" [(ngModel)]="campaignAccess.dam" id="damCheckBox"
+										[ngModelOptions]="{standalone: true}" (click)="updateLmsAndPlaybooks()"></td>
+							</tr>
+							<ng-container *ngIf="campaignAccess?.dam">
+							<tr>
+								<th scope="row">LMS</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.lms"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th scope="row">PlayBooks</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.playbooks"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							</ng-container>
+							
 						</tbody>
 					</table>
 				</div>

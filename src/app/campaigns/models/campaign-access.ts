@@ -25,4 +25,5 @@ export class CampaignAccess {
   lms = false;
   dashboardType:DashboardType;
   dashboardTypeInString = "";
+  playbooks = false;
 }
