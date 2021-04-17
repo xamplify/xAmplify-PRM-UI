@@ -415,7 +415,7 @@
          </ng-container>
          <!------Play Book----------->
          <!---Vendor And Partner-->
-         <!-- <ng-container *ngIf="lmsAccess && lmsAccessAsPartner">
+         <ng-container *ngIf="playbookAccess && playbookAccessAsPartner">
             <li  [ngClass]="{'active': location.path().includes('playbook')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('playbook')">
                     <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -446,7 +446,7 @@
             </li>
          </ng-container> -->
          <!--Only Play Book Access As Vendor-->
-         <!-- <ng-container *ngIf="lmsAccess && !lmsAccessAsPartner">
+          <ng-container *ngIf="playbookAccess && !playbookAccessAsPartner">
             <li  [ngClass]="{'active': location.path().includes('playbook')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('playbook')">
                     <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -469,9 +469,9 @@
                     </li>
                 </ul>
             </li>
-         </ng-container> -->
+         </ng-container>
         <!--Only Play Book Acess As Partner-->
-        <!-- <ng-container *ngIf="!lmsAccess && lmsAccessAsPartner">
+         <ng-container *ngIf="!playbookAccess && playbookAccessAsPartner">
             <li [ngClass]="{'active': location.path().includes('playbook')}">
                 <a [routerLink]="['/home/playbook/shared']">
                 <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -480,10 +480,9 @@
                 <span class="selected"></span>
                 </a>
              </li> 
-         </ng-container> -->
+         </ng-container>
         </ul>
     </ng-container>
-        <!-- END SIDEBAR MENU -->
     </div>
 </div>
 
