@@ -1,7 +1,7 @@
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { Criteria } from '../../contacts/models/criteria';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-
+import { TracksPlayBookType } from '../../tracks-play-book-util/models/tracks-play-book-type.enum';
 export class Pagination {
     
 	pageIndex = 1;
@@ -76,6 +76,7 @@ export class Pagination {
 	parentCampaignId:number = 0;
 	sharedLeads : boolean = false;
 	learningTrackId: number = 0;
+	lmsType:string = TracksPlayBookType[TracksPlayBookType.TRACK];
 
 
 }

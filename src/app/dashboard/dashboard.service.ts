@@ -253,6 +253,18 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    getDnsConfigurationDetails(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + `superadmin/getDnsConfigurationDetails/${companyId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    updateDnsConfigurationDetails(companyId:number,isDnsConfigured:boolean){
+        return this.http.get(this.authenticationService.REST_URL + `superadmin/updateDnsConfiguration/${companyId}/${isDnsConfigured}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
 
     changeAccess(campaignAccess: any) {

@@ -1625,4 +1625,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           this.campaignAccess.dashboardType = DashboardType.DETAILED_DASHBOARD;
         }
       }
+
+      updateLmsAndPlayBooks(){
+      let isDamChecked = $('#damCheckBoxC').is(':checked');
+          if(!isDamChecked){
+              this.campaignAccess.lms = false;
+              this.campaignAccess.playbooks = false;
+          }
+      }
 }

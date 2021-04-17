@@ -1,0 +1,174 @@
+.title {
+    font-size: 25px;
+    text-align: left;
+}
+
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.padding {
+    padding: 5px 15px;
+}
+
+.padding_bottom {
+    padding-bottom: 10px;
+}
+
+.text-wrap {
+    overflow-wrap: break-word;
+    padding: 5px;
+    overflow: auto;
+    height: 160px;
+}
+
+.cpdam {
+    padding: 5px 0px 0px 10px;
+}
+
+.cphdam {
+    padding: 0px 0px!important;
+    min-height: 200px;
+}
+
+.port-heading {
+    padding-left: 10px!important;
+    padding-top: 10px!important;
+    background: #f1f1f1;
+}
+
+.form-background {
+    background: none;
+}
+
+.disable {
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.blur-content {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.overlay {
+    width: 85%;
+    position: fixed;
+    z-index: 1;
+    top: 10%;
+    left: 0;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.9);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.overlay-content {
+    position: relative;
+    top: 10%;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.overlay a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.overlay a:hover,
+.overlay a:focus {
+    color: #f1f1f1;
+}
+
+.overlay .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+}
+
+@media screen and (max-height: 450px) {
+    .overlay a {
+        font-size: 20px
+    }
+    .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+    }
+}
+
+.img-asset-class {
+    height: 90px;
+    width: 100px;
+    background: #f2f4f9;
+    border: solid 1px #008fd5;
+    border-radius: 1px;
+}
+
+.page-bar {
+    padding: 0px 10px;
+    background-color: #ffffff;
+    margin-bottom: 20px;
+    border-radius: 5px!important;
+}
+
+.image-fixed {
+    max-height: 160px;
+    width: 100%;
+    overflow: hidden;
+    background-size: cover;
+    background-position: top;
+    margin: 0px;
+    border-radius: 4px 4px 0px 0px;
+}
+
+.grid-box h6 {
+    text-align: left;
+    margin: 0px 0 5px 12px!important;
+}
+
+.bar {
+    background: #54a7e9;
+    width: 100%;
+    height: 58px!important;
+    position: absolute;
+    bottom: 0px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+.portlet.light {
+    padding: 5px 5px 10px 10px;
+    background-color: #fff;
+    border-radius: 6px !important;
+}
+
+.text-wrap {
+    overflow-wrap: break-word;
+    padding-top: 10px;
+    height: 185px;
+}
+
+.page-content-wrapper .page-content {
+    margin-left: 195px;
+    margin-top: 0px;
+    min-height: 600px;
+    padding: 15px 15px 10px 15px !important;
+}
+
+body {
+    background-color: #f1f3fa !important;
+    padding: 0;
+    margin: 0;
+}

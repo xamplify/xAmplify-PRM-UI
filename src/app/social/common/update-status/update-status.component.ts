@@ -85,6 +85,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	showRssFeed: boolean = false;
 	nurtureCampaign = false;
 	isSavedUrlIsInStatusMessage: boolean;
+	removeOgTags: boolean = false;
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
 		public authenticationService: AuthenticationService, private contactService: ContactService,
@@ -467,6 +468,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						$('#calendar').fullCalendar('removeEvents');
 						this.socialStatusResponse = data;
 						this.customResponse.statusText = null;
+						this.socialStatusList.forEach(data => {
+							data.removeOgTags = false;
+							});
 					},
 					error => {
 						this.loading = false;
@@ -1257,7 +1261,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	
+
 	isUrlValid(url: string): Boolean {
 		let regex = "^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$";
 		var pattern = new RegExp(regex);
@@ -1330,6 +1334,19 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		} else {
 			swal("Sorry! you are not authorized to update this account.", "", "info");
 		}
+	}
+
+	closeOgTags(targetSocialStatus: SocialStatus){
+		this.socialStatusList.forEach(data => {
+			if(data.socialStatusProvider.socialConnection.id === targetSocialStatus.socialStatusProvider.socialConnection.id){
+				data.ogDescription = null;
+				data.ogImage = null;
+				data.ogTitle = null;
+				data.ogImagePath = null;
+				data.originalOgImage = null;
+				data.removeOgTags = true;
+			}	
+		});
 	}
 
 }

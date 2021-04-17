@@ -31,7 +31,10 @@ export class ModuleAccessComponent implements OnInit {
   ngxLoading = false;
   roleId:number = 0;
   dashboardTypeInString = "";
-
+  dnsConfigured = false;
+  dnsLoader = false;
+  dnsError = false;
+  dnsErrorMessage = "";
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
   ngOnInit() {
     this.companyId = this.route.snapshot.params['alias'];
@@ -39,7 +42,51 @@ export class ModuleAccessComponent implements OnInit {
     this.companyProfilename = this.route.snapshot.params['companyProfileName'];
     this.getCompanyAndUserDetails();
     this.getModuleAccessByCompanyId();
+    this.getDnsConfiguredDetails();
   }
+
+  getDnsConfiguredDetails(){
+    this.startDnsLoader();
+    this.dashboardService.getDnsConfigurationDetails(this.companyId).subscribe(result => {
+      this.dnsLoader = false;
+      this.dnsError = false;
+      this.dnsConfigured = result.data; 
+
+    }, _error => {
+      this.stopLoaderWithErrorMessage('DNS Configuration Details Not Found.');
+    });
+  }
+
+  startDnsLoader(){
+    this.dnsLoader = true;
+    this.dnsError = false;
+    this.dnsErrorMessage = '';
+  }
+
+  updateDnsConfiguration(){
+    this.startDnsLoader();
+    this.dashboardService.updateDnsConfigurationDetails(this.companyId,this.dnsConfigured).
+    subscribe(result => {
+      this.dnsLoader = false;
+      if(result.statusCode==200){
+        this.dnsError = false;
+        this.referenceService.showSweetAlertSuccessMessage('DNS Configuration Updated Successfully');
+      }else{
+        this.stopLoaderWithErrorMessage('Unable to update DNS Configuartion.');
+      }
+      this.dnsError = false;
+    }, _error => {
+        this.stopLoaderWithErrorMessage('Unable to update DNS Configuartion.');
+    });
+  }
+
+  stopLoaderWithErrorMessage(message:string){
+    this.dnsLoader = false;
+    this.dnsError = true;
+    this.dnsErrorMessage = message;
+  }
+
+
   getCompanyAndUserDetails() {
     this.dashboardService.getCompanyDetailsAndUserId(this.companyId, this.userAlias).subscribe(result => {
       this.companyLoader = false;
@@ -136,6 +183,14 @@ export class ModuleAccessComponent implements OnInit {
     }else if(selectedDashboard==DashboardType[DashboardType.DETAILED_DASHBOARD]){
       this.campaignAccess.dashboardType = DashboardType.DETAILED_DASHBOARD;
     }
+  }
+
+  updateLmsAndPlaybooks(){
+    let isDamChecked = $('#damCheckBox').is(':checked');
+    if(!isDamChecked){
+      this.campaignAccess.lms = false;
+      this.campaignAccess.playbooks = false;
+  }
   }
   
 }

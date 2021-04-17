@@ -109,7 +109,7 @@
           <div class="form-check">
             <label class="form-check-label">
               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" [checked]="columnInfo.value==='true'"
-                class="form-check-input" (click)="updateCheckBoxModel(columnInfo,checkBox,$event)"
+                class="form-check-input" (click)="updateCheckBoxModel(columnInfo, $event)"
                 [disabled]="isVendor || isPreview">
               {{checkBox.name}}
             </label>
