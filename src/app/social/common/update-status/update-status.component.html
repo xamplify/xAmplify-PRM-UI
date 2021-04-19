@@ -1,657 +1,685 @@
 <div class="page-content">
-	<ngx-loading [show]="loading"></ngx-loading>
-	<div class="page-bar rounded-0 margin-bottom-10px">
-		<ul class="page-breadcrumb">
-			<li>
-				<i class="fa fa-home" aria-hidden="true"></i>
-				<a [routerLink]="referenceService.homeRouter">Home</a>
-			</li>
-	  <li *ngIf="location.includes('/social/update-status')" style="color: #808680;">
-		<i class="fa fa-angle-right" aria-hidden="true"></i>
-		Update Status</li>
-		</ul>
-	</div>
-	<div class="row" [hidden]="isRedirectEnabled">
-		<div class="col-md-3 col-sm-12">
-			<div class="col-sm-12 dashboard-stat2 pt0" [ngClass]="{'disabled': isEditSocialStatus}">
-				<ng-container>
-					<h6 class="caption-subject font-red-sunglo uppercase bold mt0">SOCIAL ACCOUNTS</h6>
-					<div class="clearfix"></div>
-				</ng-container>
+    <ngx-loading [show]="loading"></ngx-loading>
+    <div class="page-bar rounded-0 margin-bottom-10px">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+            </li>
+      <li *ngIf="location.includes('/social/update-status')" style="color: #808680;">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        Update Status</li>
+        </ul>
+    </div>
+    <div class="row" [hidden]="isRedirectEnabled">
+        <div class="col-md-3 col-sm-12">
+            <div class="col-sm-12 dashboard-stat2 pt0" [ngClass]="{'disabled': isEditSocialStatus}">
+                <ng-container>
+                    <h6 class="caption-subject font-red-sunglo uppercase bold mt0">SOCIAL ACCOUNTS</h6>
+                    <div class="clearfix"></div>
+                </ng-container>
 
 <ul class="list-group m0 p0">
-	<li class="list-group-item p10" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
-		<div (click)="toggleSelectAll()">
-			<i class="fa fa-square-o" *ngIf="!isAllSelected" aria-hidden="true"></i>
-			<i class="fa fa-check-square" *ngIf="isAllSelected" aria-hidden="true"></i>
-			<span class="ml10">Select All <strong *ngIf="selectedAccounts > 0">({{selectedAccounts}})</strong></span>
-		</div>
-	</li>
-	<li *ngFor="let socialStatusProvider of socialStatusProviders; let i = index" (click)="toggleSocialStatusProvider(socialStatusProvider)"
-		class="list-group-item profile-box" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}">
-		<div class="profile-selected">
-			<i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected" aria-hidden="true"></i>
-			<i class="fa fa-check-square" *ngIf="socialStatusProvider.selected" aria-hidden="true"></i>
-		</div>
-		<div class="profile-image-box">
-			<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
-			<img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png" alt="">
-		</div>
-		<div class="profile-name">
-				<h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
-					class="heading-primary">
-					<strong>{{socialStatusProvider.socialConnection.profileName}}</strong>
-				</h5>
-				<h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
-					class="heading-primary">
-					<strong>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</strong>
-				</h5>
-				<h6 class="m0">
-					{{socialStatusProvider.socialConnection.source | titlecase}}
-					<span *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-						<span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
-						<span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
-					</span>
-				</h6>
-		</div>
-		<div class="clearfix"></div>
-	</li>
+    <li class="list-group-item p10" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
+        <div (click)="toggleSelectAll()">
+            <i class="fa fa-square-o" *ngIf="!isAllSelected" aria-hidden="true"></i>
+            <i class="fa fa-check-square" *ngIf="isAllSelected" aria-hidden="true"></i>
+            <span class="ml10">Select All <strong *ngIf="selectedAccounts > 0">({{selectedAccounts}})</strong></span>
+        </div>
+    </li>
+    <li *ngFor="let socialStatusProvider of socialStatusProviders; let i = index" (click)="toggleSocialStatusProvider(socialStatusProvider)"
+        class="list-group-item profile-box" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}">
+        <div class="profile-selected">
+            <i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected" aria-hidden="true"></i>
+            <i class="fa fa-check-square" *ngIf="socialStatusProvider.selected" aria-hidden="true"></i>
+        </div>
+        <div class="profile-image-box">
+            <img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+            <img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png" alt="">
+        </div>
+        <div class="profile-name">
+                <h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
+                    class="heading-primary">
+                    <strong>{{socialStatusProvider.socialConnection.profileName}}</strong>
+                </h5>
+                <h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
+                    class="heading-primary">
+                    <strong>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</strong>
+                </h5>
+                <h6 class="m0">
+                    {{socialStatusProvider.socialConnection.source | titlecase}}
+                    <span *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+                        <span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
+                        <span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
+                    </span>
+                    <span *ngIf="socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+                        <span *ngIf="!socialStatusProvider.socialConnection.page">Profile</span>
+                        <span *ngIf="socialStatusProvider.socialConnection.page">Page</span>
+                    </span>
+                </h6>
+        </div>
+        <div class="clearfix"></div>
+    </li>
 </ul>
 
 <div class="text-center mt10">
-	<button class="btn btn-sm btn-primary" data-target="#manageAccountsModal" data-toggle="modal">Manage Accounts</button>
+    <button class="btn btn-sm btn-primary" data-target="#manageAccountsModal" data-toggle="modal">Manage Accounts</button>
 </div>
-			</div>
-			<div class="col-sm-12 alert alert-info rounded-0 custom-alert">
-				<h5>Tweet with media must have exactly 1 gif or video or up to 4 photos.</h5>
-				<h5>
-					<strong>Image specifications:</strong>
-				</h5>
-				<ul style="margin-left: -23px; margin-bottom:5px">
-					<li>Supported image media types: JPG, PNG, GIF, WEBP</li>
-					<li>Image Size
-						<=3 MB</li>
-				</ul>
-			</div>
+            </div>
+            <div class="col-sm-12 alert alert-info rounded-0 custom-alert">
+                <h5>Tweet with media must have exactly 1 gif or video or up to 4 photos.</h5>
+                <h5>
+                    <strong>Image specifications:</strong>
+                </h5>
+                <ul style="margin-left: -23px; margin-bottom:5px">
+                    <li>Supported image media types: JPG, PNG, GIF, WEBP</li>
+                    <li>Image Size
+                        <=3 MB</li>
+                </ul>
+            </div>
 
-		</div>
+        </div>
 
-		<div class="col-md-9 col-sm-12" *ngIf='socialStatusProviders?.length === 0'>
-			<div class='alert alert-info'>
-				<h4 class='m0 bold'><i class="fa fa-exclamation-circle pr10" aria-hidden="true"></i> You have not added any social accounts.</h4>
-			</div>
-		</div>
-		<div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatusProviders?.length === 0}" id="us-right">
-			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
-				<div class="portlet-body clearfix p10">
-					<div class="col-sm-7 col-xs-12">
-						<div class="form-group m0">
-							<label for="campaignName">
-								<h6 class="caption-subject font-red-sunglo uppercase bold m0">Campaign</h6>
-							</label>
-							<input type="text" autocomplete="off" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName" (input)="validateCampaignName(socialCampaign.campaignName)">
-							<span *ngIf="isCampaignNameExist" style="color:red">Campaign already exists</span>
-						</div>
-					</div>
-					<div class="col-sm-5 col-xs-12">
-						<div>
-							<h6 class="caption-subject font-red-sunglo uppercase bold m0">Additional Setting</h6>
-							<section class="mt5 mb5">
-								<switch [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-									(statusChange)="socialCampaign.emailOpened = !socialCampaign.emailOpened">
-								</switch>
-								<h5 class="pl10 inline">Notify me when email is opened</h5>
-							</section>
-						</div>
-					</div>
+        <div class="col-md-9 col-sm-12" *ngIf='socialStatusProviders?.length === 0'>
+            <div class='alert alert-info'>
+                <h4 class='m0 bold'><i class="fa fa-exclamation-circle pr10" aria-hidden="true"></i> You have not added any social accounts.</h4>
+            </div>
+        </div>
+        <div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatusProviders?.length === 0}" id="us-right">
+            <div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
+                <div class="portlet-body clearfix p10">
+                    <div class="col-sm-7 col-xs-12">
+                        <div class="form-group m0">
+                            <label for="campaignName">
+                                <h6 class="caption-subject font-red-sunglo uppercase bold m0">Campaign</h6>
+                            </label>
+                            <input type="text" autocomplete="off" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName" (input)="validateCampaignName(socialCampaign.campaignName)">
+                            <span *ngIf="isCampaignNameExist" style="color:red">Campaign already exists</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-xs-12">
+                        <div>
+                            <h6 class="caption-subject font-red-sunglo uppercase bold m0">Additional Setting</h6>
+                            <section class="mt5 mb5">
+                                <switch [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                    [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+                                    (statusChange)="socialCampaign.emailOpened = !socialCampaign.emailOpened">
+                                </switch>
+                                <h5 class="pl10 inline">Notify me when email is opened</h5>
+                            </section>
+                        </div>
+                    </div>
 
-					<div class="col-sm-7 col-xs-12 margin-top-folder" *ngIf="!alias">
-						<h5 class="pr10 font-red-sunglo inline" [ngClass]="{'f-w-600': socialCampaign.channelCampaign}">Through Partner</h5>
-								<switch [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-									(statusChange)="socialCampaign.channelCampaign = !socialCampaign.channelCampaign">
-								</switch>
-								<h5 class="pl10  font-red-sunglo inline" [ngClass]="{'f-w-600': !socialCampaign.channelCampaign}">To Partner</h5>
-					</div>
+                    <div class="col-sm-7 col-xs-12 margin-top-folder" *ngIf="!alias">
+                        <h5 class="pr10 font-red-sunglo inline" [ngClass]="{'f-w-600': socialCampaign.channelCampaign}">Through Partner</h5>
+                                <switch [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                    [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+                                    (statusChange)="socialCampaign.channelCampaign = !socialCampaign.channelCampaign">
+                                </switch>
+                                <h5 class="pl10  font-red-sunglo inline" [ngClass]="{'f-w-600': !socialCampaign.channelCampaign}">To Partner</h5>
+                    </div>
 
 
-					<div class="col-sm-7 col-xs-12 margin-top-folder">
-						<div class="form-group">
-							<label class="font-red-sunglo">Folder</label>
-							<select class="form-control" name="socialCampaign.categoryId" [(ngModel)]="socialCampaign.categoryId" style="width: 100%">
-								<option *ngFor="let category of categoryNames"
-									[ngValue]="category.id">
-									 {{category.name}}
-								</option>
-							</select>
-						</div>
-					</div>
-				</div>
-			</div>
+                    <div class="col-sm-7 col-xs-12 margin-top-folder">
+                        <div class="form-group">
+                            <label class="font-red-sunglo">Folder</label>
+                            <select class="form-control" name="socialCampaign.categoryId" [(ngModel)]="socialCampaign.categoryId" style="width: 100%">
+                                <option *ngFor="let category of categoryNames"
+                                    [ngValue]="category.id">
+                                     {{category.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign && alias">
-				<h6 _ngcontent-c6="" class="caption-subject font-red-sunglo uppercase bold m10">Original Posts</h6>
-				<div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of socialCampaign.socialStatusList">
-		              <app-social-status [socialStatus]="socialStatus"></app-social-status>
-				</div>
-			</div>
+            <div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign && alias">
+                <h6 _ngcontent-c6="" class="caption-subject font-red-sunglo uppercase bold m10">Original Posts</h6>
+                <div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of socialCampaign.socialStatusList">
+                      <app-social-status [socialStatus]="socialStatus"></app-social-status>
+                </div>
+            </div>
 
-			<div class="col-sm-12 dashboard-stat2 p0 clearfix">
-				<div class="clearfix">
-				<button class="pull-right mr10" *ngIf="socialStatusResponse?.length > 0" (click)="resetCustomResponse()">Clear All</button></div>
-				<section class='col-sm-12 p10'>
-					<div *ngIf="customResponse.statusText !== null" class="alert alert-dismissible m0" role="alert" [ngClass]="{
-									'alert-info': customResponse.type === 0,
-	                				'alert-success': customResponse.type === 1,
-	                				'alert-warning': customResponse.type === 2,
-	                				'alert-danger': customResponse.type === 3}">
-							<div class="pull-right">
-								<i class="fa fa-times-circle" aria-hidden="true" (click)="customResponse.statusText = null"></i>
-							</div>
-							<h4>
-							<i class="fa" [ngClass]="{
-									'fa-circle-o-notch fa-spin fa-3x fa-fw margin-bottom': customResponse.type === 0,
-									'fa-check-circle-o': customResponse.type === 1,
-	                				'fa-exclamation-circle': customResponse.type === 2,
-	                				'fa-times': customResponse.type === 3}"></i>
-							<span class="ml10 f-w-600">{{customResponse.statusText}}</span>
-							</h4>
-							<h5 *ngIf="isRedirectEnabled">You will be automatically redirected in a few seconds.</h5>	
-						<ng-container *ngIf='customResponse.statusArray'>
-							<h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
-						</ng-container>
-					</div>
-				
-				<div *ngIf="socialStatusResponse?.length > 0">
-					<div *ngFor="let socialStatus of socialStatusResponse">
-						<div class="social-status-response alert alert-dismissible" [ngClass]="{
-									'alert-success': socialStatus.publishStatus !== 'FAILURE',
-	                				'alert-danger': socialStatus.publishStatus === 'FAILURE'}">
-							<div class="pull-right">
-								<i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
-							</div>
-							<div class="profile-image-box ml0">
-								<img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-								<img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
-							</div>
-							<div class="profile-name">
-								<h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
-									class="heading-primary">
-									<b>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</b>
-								</h5>
-								<h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
-									class="heading-primary">
-									<b>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</b>
-								</h5>
-								<h6 class="m0">
-									{{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
-									<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-										<span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
-										<span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
-									</span>
-								</h6>
-							<div class="error-block mt10" *ngIf="socialStatus.publishStatus === 'FAILURE'">
-								<h5>{{socialStatus.publishMessage}}</h5>
-							</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				</section>
+            <div class="col-sm-12 dashboard-stat2 p0 clearfix">
+                <div class="clearfix">
+                <button class="pull-right mr10" *ngIf="socialStatusResponse?.length > 0" (click)="resetCustomResponse()">Clear All</button></div>
+                <section class='col-sm-12 p10'>
+                    <div *ngIf="customResponse.statusText !== null" class="alert alert-dismissible m0" role="alert" [ngClass]="{
+                                    'alert-info': customResponse.type === 0,
+                                    'alert-success': customResponse.type === 1,
+                                    'alert-warning': customResponse.type === 2,
+                                    'alert-danger': customResponse.type === 3}">
+                            <div class="pull-right">
+                                <i class="fa fa-times-circle" aria-hidden="true" (click)="customResponse.statusText = null"></i>
+                            </div>
+                            <h4>
+                            <i class="fa" [ngClass]="{
+                                    'fa-circle-o-notch fa-spin fa-3x fa-fw margin-bottom': customResponse.type === 0,
+                                    'fa-check-circle-o': customResponse.type === 1,
+                                    'fa-exclamation-circle': customResponse.type === 2,
+                                    'fa-times': customResponse.type === 3}"></i>
+                            <span class="ml10 f-w-600">{{customResponse.statusText}}</span>
+                            </h4>
+                            <h5 *ngIf="isRedirectEnabled">You will be automatically redirected in a few seconds.</h5>   
+                        <ng-container *ngIf='customResponse.statusArray'>
+                            <h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
+                        </ng-container>
+                    </div>
+                
+                <div *ngIf="socialStatusResponse?.length > 0">
+                    <div *ngFor="let socialStatus of socialStatusResponse">
+                        <div class="social-status-response alert alert-dismissible" [ngClass]="{
+                                    'alert-success': socialStatus.publishStatus !== 'FAILURE',
+                                    'alert-danger': socialStatus.publishStatus === 'FAILURE'}">
+                            <div class="pull-right">
+                                <i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
+                            </div>
+                            <div class="profile-image-box ml0">
+                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
+                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
+                            </div>
+                            <div class="profile-name">
+                                <h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                    class="heading-primary">
+                                    <b>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</b>
+                                </h5>
+                                <h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
+                                    class="heading-primary">
+                                    <b>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</b>
+                                </h5>
+                                <h6 class="m0">
+                                    {{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
+                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
+                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
+                                    </span>
+                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.page">Profile</span>
+                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.page">Page</span>
+                                    </span>
+                                </h6>
+                            <div class="error-block mt10" *ngIf="socialStatus.publishStatus === 'FAILURE'">
+                                <h5>{{socialStatus.publishMessage}}</h5>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </section>
 
-				<ng-container *ngIf="selectedAccounts > 0">
-					<h6 class="caption-subject font-red-sunglo uppercase bold m10">Selected Accounts</h6>
-					<div *ngFor="let socialStatusProvider of socialStatusProviders">
-						<ng-container *ngIf="socialStatusProvider.selected">
-						<div class="profile-image-box" data-toggle="tooltip" data-placement="top" style="margin: 0 5px"
-							[attr.title]="socialStatusProvider.socialConnection.profileName ? socialStatusProvider.socialConnection.profileName :
-								socialStatusProvider.socialConnection.firstName">
-							<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-							<img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
-						</div>
-						</ng-container>
-					</div>
-					<div class="clearfix m10" style="padding: 1em"></div>
-				</ng-container>
-				<div *ngIf="!alias">
-				<div class="p10" *ngFor="let socialStatus of socialStatusList" [hidden]="isSocialCampaign && alias" >
-					<div class="update-status-profile col-xs-2 col-sm-1">
-						<ng-container *ngIf="socialStatusList.length === 1 && (selectedAccounts > 1 || selectedAccounts < 1) && !isCustomizeButtonClicked; then defaultProfile"></ng-container>
-						<ng-container *ngIf="socialStatusList.length === 1 && selectedAccounts === 1 && !isCustomizeButtonClicked; then socialProfile"></ng-container>
-						<ng-container *ngIf="isCustomizeButtonClicked">
-							<ng-container *ngIf="socialStatusList.length > 1; then socialProfile"></ng-container>
-							<ng-container *ngIf="socialStatusList.length === 1 && selectedAccounts === 1; then socialProfile"></ng-container>
-							<ng-container *ngIf="socialStatusList.length === 1 && selectedAccounts < 1; then defaultProfile"></ng-container>
-						</ng-container>
-						<ng-template #defaultProfile>
-							<div class="profile-image-box">
-								<img class="profile-image" src="assets/images/social/avatar.png">
-								<img class="profile-icon" src="assets/images/social/share-icon.png">
-							</div>
-						</ng-template>
-						<ng-template #socialProfile>
-							<div *ngIf = "socialStatus.socialStatusProvider" class="profile-image-box" data-toggle="tooltip" data-placement="top"
-								[attr.title]="socialStatus.socialStatusProvider.socialConnection.profileName ? socialStatus.socialStatusProvider.socialConnection.profileName :
-									socialStatus.socialStatusProvider.socialConnection.firstName">
-								<img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-								<img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
-							</div>
-						</ng-template>
-					</div>
-					<div class="update-status-content col-xs-10 col-sm-11">
-						<textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
-						 [(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
-						<h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
+                <ng-container *ngIf="selectedAccounts > 0">
+                    <h6 class="caption-subject font-red-sunglo uppercase bold m10">Selected Accounts</h6>
+                    <div *ngFor="let socialStatusProvider of socialStatusProviders">
+                        <ng-container *ngIf="socialStatusProvider.selected">
+                        <div class="profile-image-box" data-toggle="tooltip" data-placement="top" style="margin: 0 5px"
+                            [attr.title]="socialStatusProvider.socialConnection.profileName ? socialStatusProvider.socialConnection.profileName :
+                                socialStatusProvider.socialConnection.firstName">
+                            <img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
+                            <img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
+                        </div>
+                        </ng-container>
+                    </div>
+                    <div class="clearfix m10" style="padding: 1em"></div>
+                </ng-container>
+                <div *ngIf="!alias">
+                <div class="p10" *ngFor="let socialStatus of socialStatusList" [hidden]="isSocialCampaign && alias" >
+                    <div class="update-status-profile col-xs-2 col-sm-1">
+                        <ng-container *ngIf="socialStatusList.length === 1 && (selectedAccounts > 1 || selectedAccounts < 1) && !isCustomizeButtonClicked; then defaultProfile"></ng-container>
+                        <ng-container *ngIf="socialStatusList.length === 1 && selectedAccounts === 1 && !isCustomizeButtonClicked; then socialProfile"></ng-container>
+                        <ng-container *ngIf="isCustomizeButtonClicked">
+                            <ng-container *ngIf="socialStatusList.length > 1; then socialProfile"></ng-container>
+                            <ng-container *ngIf="socialStatusList.length === 1 && selectedAccounts === 1; then socialProfile"></ng-container>
+                            <ng-container *ngIf="socialStatusList.length === 1 && selectedAccounts < 1; then defaultProfile"></ng-container>
+                        </ng-container>
+                        <ng-template #defaultProfile>
+                            <div class="profile-image-box">
+                                <img class="profile-image" src="assets/images/social/avatar.png">
+                                <img class="profile-icon" src="assets/images/social/share-icon.png">
+                            </div>
+                        </ng-template>
+                        <ng-template #socialProfile>
+                            <div *ngIf = "socialStatus.socialStatusProvider" class="profile-image-box" data-toggle="tooltip" data-placement="top"
+                                [attr.title]="socialStatus.socialStatusProvider.socialConnection.profileName ? socialStatus.socialStatusProvider.socialConnection.profileName :
+                                    socialStatus.socialStatusProvider.socialConnection.firstName">
+                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
+                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="update-status-content col-xs-10 col-sm-11">
+                        <textarea placeholder="What's happening?" rows="3" class="form-control form-group rounded-0 mb5"
+                         [(ngModel)]="socialStatus.statusMessage" (input)="onKeyPress(socialStatus)"
+                         [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
+                        <h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
 
-						<section class="" [hidden]="isSocialCampaign && alias">
-							<div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
-								<span (click)="removeItem(socialStatus, socialStatusContent)">
-									<i class="fa fa-times-circle"></i>
-								</span>
-								<img async *ngIf="socialStatusContent.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
-								<img async *ngIf="socialStatusContent.fileType === 'video'" src="{{socialStatusContent.filePath}}" (error)="videoUtilService.errorVideoHandler($event)">
-							</div>
-						</section>
+                        <section class="" [hidden]="isSocialCampaign && alias">
+                            <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
+                                <span (click)="removeItem(socialStatus, socialStatusContent)">
+                                    <i class="fa fa-times-circle"></i>
+                                </span>
+                                <img async *ngIf="socialStatusContent.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
+                                <img async *ngIf="socialStatusContent.fileType === 'video'" src="{{socialStatusContent.filePath}}" (error)="videoUtilService.errorVideoHandler($event)">
+                            </div>
+                        </section>
 
-						<section *ngIf="socialStatus.validLink" class="row">
-							<div class="col-sm-2"><img src="{{socialStatus.ogImage}}" width="100%"></div>
-							<div class="col-sm-10"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
-									<span *ngIf="socialStatus.statusMessage?.length>160">..</span>
-							</a>
-							<h6 contenteditable="true"><b>{{socialStatus.ogTitle}}</b></h6>
-							<p contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</p>
-							</div>
-						</section>
-						<section [hidden]="isSocialCampaign && alias" class="pull-left actions-group">
-							<label class="add-photos m0" title="Add photos" data-toggle="tooltip" data-placement="top">
-								<i class="fa fa-image" aria-hidden="true"></i>
-								<input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
-							</label>
-							<span *ngIf="!authenticationService.module.isPrm &&!authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
-								<i class="fa fa-video-camera" aria-hidden="true"></i>
-							</span>
-							<span *ngIf="showRssFeed" class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
-								<i class="fa fa-rss-square" aria-hidden="true"></i>
-							</span>
-						</section>
-					</div>
-					<div class="clearfix"></div>
-					</div>
-				</div>
+                        <section *ngIf="socialStatus.validLink" class="update-status-content col-xs-10 col-sm-12" style="float:left">
+                            <button type='button' class='close' onclick='$(this).parent().remove();' (click) = "closeOgTags(socialStatus)">×</button>                            
+                            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 ogImage" style="margin-top: 0px;">
+                                <img  src="{{socialStatus.ogImage}}"                                      
+                                     height="86" width="100%" alt="No Image Found">
+                                <label class="actions-group add-photos m0">
+                                        <i class="fa fa-cog ogImage-Gear-Icon" data-toggle="tooltip" data-placement="bottom" title="Click here to change the image"></i>
+                                        <input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" 
+                                          class="file-input js-tooltip">
+                                </label>
+                            </div>
+                            
+                            <div class="col-sm-9"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
+                                    <span *ngIf="socialStatus.statusMessage?.length>160">..</span>
+                            </a>
+                            <textarea [(ngModel)]="socialStatus.ogTitle" contenteditable="true">{{socialStatus.ogTitle}}</textarea>
+                            <textarea [(ngModel)]="socialStatus.ogDescription" contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</textarea>
+                            </div>
+                        </section>
 
-					<section *ngIf="isSocialCampaign && alias">
-						<div *ngFor="let ssp of socialStatusProviders">
-							<div *ngIf="ssp.selected" class="mb10">
-							<div class="col-xs-1">
-							<div class="update-status-profile col-xs-2 col-sm-1">
-								<div class="profile-image-box" data-toggle="tooltip" data-placement="top"
-									[attr.title]="ssp.socialConnection.profileName ? ssp.socialConnection.profileName : ssp.socialConnection.firstName">
-									<img class="profile-image" src="{{ssp.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-									<img class="profile-icon" src="assets/images/social/{{ssp.socialConnection.source}}.png">
-								</div>
-							</div>
-							</div>
-							<div class="col-xs-11">
-								<ul class="list-group m0 p0">
-									<li *ngFor="let socialStatus of ssp.socialStatusList" class="list-group-item profile-box"
-										[ngClass]="{'checked': socialStatus.selected, 'unchecked': !socialStatus.selected}">
-										<div class="col-sm-4 col-xs-12 p0">
-											<div class="profile-selected" (click)="socialStatus.selected = !socialStatus.selected;">
-												<i class="fa fa-square-o" *ngIf="!socialStatus.selected"></i>
-												<i class="fa fa-check-square" *ngIf="socialStatus.selected"></i>
-											</div>
-											<div class="profile-image-box">
-												<img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-												<img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
-											</div>
-											<div class="profile-name">
-												<h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
-													class="heading-primary">
-													<b>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</b>
-												</h5>
-												<h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
-													class="heading-primary">
-													<b>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</b>
-												</h5>
-												<h6 class="m0">
-													{{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
-													<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-														<span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
-														<span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
-													</span>
-												</h6>
-											</div>
-										</div>
-										<div class="col-sm-8 col-xs-12">
-											<div class="status-message" [ngClass]="{'hidden': socialStatus.statusMessage?.length == 0, 'col-xs-8': socialStatus.socialStatusContents.length > 0, 'col-xs-12': socialStatus.socialStatusContents.length === 0}">
-												<ng-container *ngIf="isUrl(socialStatus.statusMessage); else plaintext">
-													<a [href]="socialStatus.statusMessage" target="_blank">{{socialStatus.statusMessage}}</a>
-												</ng-container>
-												<ng-template #plaintext>{{socialStatus.statusMessage}}</ng-template>
-											</div>
-											<div class="status-media" [ngClass]="{'col-xs-4':socialStatus.statusMessage?.length > 0, 'col-xs-12': socialStatus.statusMessage?.length === 0}">
-												<ng-container *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
-													<div class="image-wrapper col-xs-6">
-														<img class="img-responsive" async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
-														<video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
-															<source src="{{socialStatusContent.filePath}}" type="video/mp4">
-														</video>
-													</div>
-												</ng-container>
-											</div>
-										</div>
-									<div class="clearfix"></div>
-								</li>
-							</ul>
-							</div>
-				<div class='clearfix'></div>
-							</div>
-						</div>
-					</section>
-				<div class="col-sm-12 form-inline form-group hidden text-right" id="schedule-option-div" style="border-top: 2px dashed #ccc;padding-top: 15px;">
-					<div class="form-group col-sm-3" id="form-calendar">
-						<label class="pull-left">Date</label>
-						<input type="text" class="form-control flatpickr" style="width:100%" placeholder="Select date" [(ngModel)]="scheduledTimeInString"/>
-    					<!--<i class="fa fa-calendar flatpickr"></i>-->
-					</div>
-					<div class="form-group col-sm-3">
-						<label class="pull-left">Country</label>
-						<select class="form-control" style="width: 100%" [(ngModel)]="countryId" (change)="onSelectCountry($event.target.value)" id="countryName">
-							<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-						</select>
-					</div>
-					<div class="form-group col-sm-3">
-						<label class="pull-left">TimeZone </label>
-						<select class="form-control" style="width: 100%" id="timezoneId">
-							<ng-container *ngIf="timezones?.length === 1">
-								<option *ngFor="let timezone of timezones" [value]="timezone.timezoneId" selected>
-									{{timezone.cityName}}
-								</option>
-							</ng-container>
-							<ng-container *ngIf="timezones?.length>1">
-								<option *ngFor="let timezone of timezones" [value]="timezone.timezoneId">
-									{{timezone.cityName}}
-								</option>
-							</ng-container>
-						</select>
-					</div>
-					<div class="form-group col-sm-3 mt5 p0">
-						<br>
-						<div class="col-xs-6 p0">
-							<button type="button" class="btn btn-primary btn-block" (click)="shareLater()">Schedule</button>
-						</div>
-						<div class="col-xs-6 p0">
-							<button type="button" class="btn btn-default btn-block" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-12 m0 p0" id="post-actions-button-group">
-					<div class="col-xs-12 col-sm-6 pr10 pull-right">
-						<div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
-							<button type="button" class="btn btn-primary rounded-0" (click)="shareNow()">Post Now</button>
-							<button type="button" style="min-width: 32px;" class="btn btn-primary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu pull-right">
-								<li><a (click)="showScheduleOption('schedule-option-div')">Schedule</a></li>
-							</ul>
-						</div>
-						<div *ngIf="!alias && (selectedAccounts > 1 && isCustomizeButtonClicked)">
-							<button type="button" class="btn pull-right mr10" (click)="undoCustomizeEachNetwork()">
-								<span ><i class="fa fa-undo" aria-hidden="true" ></i> Undo</span>							
-							</button>
-						</div>
-						<ng-container *ngIf="selectedAccounts > 1 && !isCustomizeButtonClicked">
-							<button class="btn btn-primary pull-right" (click)="customizeEachNetwork()">Customize for each network</button>
-						</ng-container>
-						<span *ngIf="socialStatusList[0]?.id != null" [hidden]="socialStatusList[0]?.userId != userId">
-								<button type="button" class="btn btn-primary rounded-0 pull-right mr10" (click)="initializeSocialStatus()">Cancel</button>
-							<ng-container *ngIf="socialStatusList[0]?.socialStatusProvider.socialConnection.source !== 'LINKEDIN'">
-								<button type="button" class="btn btn-danger rounded-0 pull-right mr10" (click)="deleteStatus(socialStatusList[0])">
-									<i class="fa fa-trash-o"></i> Delete
-								</button>
-							</ng-container>
-						</span>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
-				<div class="portlet-body clearfix p10">
-					<ng-container >
-						<div class="form-group m0 pull-right">
-							<!--<h5 class="pr10 inline">Partner Contacts</h5>
-							<switch [status]="socialCampaign.isPartner" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-							 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-							 (statusChange)="toggleContactLists()">
-							</switch>-->
-						</div>
-					</ng-container>
+                        <section [hidden]="isSocialCampaign && alias" class="pull-left actions-group">
+                            <label class="add-photos m0" title="Add photos" data-toggle="tooltip" data-placement="top">
+                                <i class="fa fa-image" aria-hidden="true"></i>
+                                <input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
+                            </label>
+                            <span *ngIf="!authenticationService.module.isPrm &&!authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
+                                <i class="fa fa-video-camera" aria-hidden="true"></i>
+                            </span>
+                            <span *ngIf="showRssFeed" class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
+                                <i class="fa fa-rss-square" aria-hidden="true"></i>
+                            </span>
+                        </section>
+                    </div>
+                    <div class="clearfix"></div>
+                    </div>
+                </div>
 
-					<div class="row">
-						<div class="col-sm-8 col-xs-12">
-							<h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Recipient Lists <span *ngIf="alias">(optional)</span></h6>
-						</div>
-						<div class="col-sm-4 col-xs-12">
-							<div style="position: relative; padding-bottom: 5px;">
+                    <section *ngIf="isSocialCampaign && alias">
+                        <div *ngFor="let ssp of socialStatusProviders">
+                            <div *ngIf="ssp.selected" class="mb10">
+                            <div class="col-xs-1">
+                            <div class="update-status-profile col-xs-2 col-sm-1">
+                                <div class="profile-image-box" data-toggle="tooltip" data-placement="top"
+                                    [attr.title]="ssp.socialConnection.profileName ? ssp.socialConnection.profileName : ssp.socialConnection.firstName">
+                                    <img class="profile-image" src="{{ssp.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
+                                    <img class="profile-icon" src="assets/images/social/{{ssp.socialConnection.source}}.png">
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-xs-11">
+                                <ul class="list-group m0 p0">
+                                    <li *ngFor="let socialStatus of ssp.socialStatusList" class="list-group-item profile-box"
+                                        [ngClass]="{'checked': socialStatus.selected, 'unchecked': !socialStatus.selected}">
+                                        <div class="col-sm-4 col-xs-12 p0">
+                                            <div class="profile-selected" (click)="socialStatus.selected = !socialStatus.selected;">
+                                                <i class="fa fa-square-o" *ngIf="!socialStatus.selected"></i>
+                                                <i class="fa fa-check-square" *ngIf="socialStatus.selected"></i>
+                                            </div>
+                                            <div class="profile-image-box">
+                                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
+                                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
+                                            </div>
+                                            <div class="profile-name">
+                                                <h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                                    class="heading-primary">
+                                                    <b>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</b>
+                                                </h5>
+                                                <h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
+                                                    class="heading-primary">
+                                                    <b>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</b>
+                                                </h5>
+                                                <h6 class="m0">
+                                                    {{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
+                                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+                                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
+                                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
+                                                    </span> 
+                                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+                                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.page">Profile</span>
+                                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.page">Page</span>
+                                                    </span>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8 col-xs-12">
+                                            <div class="status-message" [ngClass]="{'hidden': socialStatus.statusMessage?.length == 0, 'col-xs-8': socialStatus.socialStatusContents.length > 0, 'col-xs-12': socialStatus.socialStatusContents.length === 0}">
+                                                <ng-container *ngIf="isUrl(socialStatus.statusMessage); else plaintext">
+                                                    <a [href]="socialStatus.statusMessage" target="_blank">{{socialStatus.statusMessage}}</a>
+                                                </ng-container>
+                                                <ng-template #plaintext>{{socialStatus.statusMessage}}</ng-template>
+                                            </div>
+                                            <div class="status-media" [ngClass]="{'col-xs-4':socialStatus.statusMessage?.length > 0, 'col-xs-12': socialStatus.statusMessage?.length === 0}">
+                                                <ng-container *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
+                                                    <div class="image-wrapper col-xs-6">
+                                                        <img class="img-responsive" async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
+                                                        <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
+                                                            <source src="{{socialStatusContent.filePath}}" type="video/mp4">
+                                                        </video>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    <div class="clearfix"></div>
+                                </li>
+                            </ul>
+                            </div>
+                <div class='clearfix'></div>
+                            </div>
+                        </div>
+                    </section>
+                <div class="col-sm-12 form-inline form-group hidden text-right" id="schedule-option-div" style="border-top: 2px dashed #ccc;padding-top: 15px;">
+                    <div class="form-group col-sm-3" id="form-calendar">
+                        <label class="pull-left">Date</label>
+                        <input type="text" class="form-control flatpickr" style="width:100%" placeholder="Select date" [(ngModel)]="scheduledTimeInString"/>
+                        <!--<i class="fa fa-calendar flatpickr"></i>-->
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label class="pull-left">Country</label>
+                        <select class="form-control" style="width: 100%" [(ngModel)]="countryId" (change)="onSelectCountry($event.target.value)" id="countryName">
+                            <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label class="pull-left">TimeZone </label>
+                        <select class="form-control" style="width: 100%" id="timezoneId">
+                            <ng-container *ngIf="timezones?.length === 1">
+                                <option *ngFor="let timezone of timezones" [value]="timezone.timezoneId" selected>
+                                    {{timezone.cityName}}
+                                </option>
+                            </ng-container>
+                            <ng-container *ngIf="timezones?.length>1">
+                                <option *ngFor="let timezone of timezones" [value]="timezone.timezoneId">
+                                    {{timezone.cityName}}
+                                </option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-3 mt5 p0">
+                        <br>
+                        <div class="col-xs-6 p0">
+                            <button type="button" class="btn btn-primary btn-block" (click)="shareLater()">Schedule</button>
+                        </div>
+                        <div class="col-xs-6 p0">
+                            <button type="button" class="btn btn-default btn-block" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 m0 p0" id="post-actions-button-group">
+                    <div class="col-xs-12 col-sm-6 pr10 pull-right">
+                        <div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
+                            <button type="button" class="btn btn-primary rounded-0" (click)="shareNow()">Post Now</button>
+                            <button type="button" style="min-width: 32px;" class="btn btn-primary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a (click)="showScheduleOption('schedule-option-div')">Schedule</a></li>
+                            </ul>
+                        </div>
+                        <div *ngIf="!alias && (selectedAccounts > 1 && isCustomizeButtonClicked)">
+                            <button type="button" class="btn pull-right mr10" (click)="undoCustomizeEachNetwork()">
+                                <span ><i class="fa fa-undo" aria-hidden="true" ></i> Undo</span>                           
+                            </button>
+                        </div>
+                        <ng-container *ngIf="selectedAccounts > 1 && !isCustomizeButtonClicked">
+                            <button class="btn btn-primary pull-right" (click)="customizeEachNetwork()">Customize for each network</button>
+                        </ng-container>
+                        <span *ngIf="socialStatusList[0]?.id != null" [hidden]="socialStatusList[0]?.userId != userId">
+                                <button type="button" class="btn btn-primary rounded-0 pull-right mr10" (click)="initializeSocialStatus()">Cancel</button>
+                            <ng-container *ngIf="socialStatusList[0]?.socialStatusProvider.socialConnection.source !== 'LINKEDIN'">
+                                <button type="button" class="btn btn-danger rounded-0 pull-right mr10" (click)="deleteStatus(socialStatusList[0])">
+                                    <i class="fa fa-trash-o"></i> Delete
+                                </button>
+                            </ng-container>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
+                <div class="portlet-body clearfix p10">
+                    <ng-container >
+                        <div class="form-group m0 pull-right">
+                            <!--<h5 class="pr10 inline">Partner Contacts</h5>
+                            <switch [status]="socialCampaign.isPartner" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                             [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+                             (statusChange)="toggleContactLists()">
+                            </switch>-->
+                        </div>
+                    </ng-container>
+
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-12">
+                            <h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Recipient Lists <span *ngIf="alias">(optional)</span></h6>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <div style="position: relative; padding-bottom: 5px;">
                           <input type="text" [(ngModel)]="contactListsPagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
                           placeholder="Search for a list">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactListsPagination.searchKey" (click)="resetSearchContactList()"></button>
                           <button type="submit" class="search-box-item-click" (click)="searchContactList()"><i class="fa fa-search" aria-hidden="true"></i></button>
                         </div>
-						</div>
-					</div>
+                        </div>
+                    </div>
 
-					<section *ngIf="contactListsPagination.pagedItems?.length === 0 && !contactListsPagination.isLoading">
-						<div class='alert alert-info' role='alert'>
-							<h4 class='m0'>No data found.</h4>
-						</div>
-					</section>
-					<section *ngIf="contactListsPagination.pagedItems?.length === 0 &&contactListsPagination.isLoading">
-						<app-list-loader></app-list-loader>
-					</section>
-					<section *ngIf="contactListsPagination.pagedItems?.length > 0">
-						<ngx-loading [show]="contactListsPagination.isLoading"></ngx-loading>
-						<div class="table-responsive">
-							<table class="table tgrid" id='contact-list-table'>
-								<thead>
-									<tr>
-										<th style="width: 5%">Select</th>
-										<th>List Name</th>
-										<th>Created On</th>
-										<!-- <th>Recipients</th> -->
-										<th>Type</th>
-										<th>Preview</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr *ngFor="let contactList of contactListsPagination.pagedItems">
-										<td class='m0 text-center'>
-											<input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)"
-											[checked]="socialCampaign.userListIds.indexOf(contactList.id)>-1">
-										</td>
-										<td>
-											<h5 class="m0 f-w-600" title="{{contactList.name}}">
-												<span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
-												<span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
-											</h5>
-											<!-- <h6 title="{{contactList.uploadedBy}}" style="margin: 5px 0;">
-												<span *ngIf="contactList.uploadedBy?.length<=50">By {{contactList.uploadedBy}}</span>
-												<span *ngIf="contactList.uploadedBy?.length>50">By {{contactList.uploadedBy | slice:0:50}}...</span>
-											</h6> -->
-										</td>
-										<td>{{contactList.createdDate | date:'mediumDate'}}</td>
-										<!-- <td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td> -->
-										<td *ngIf="!nurtureCampaign">
-												<span *ngIf="contactList.partnerUserList">partner</span>
-												<span *ngIf="!contactList.partnerUserList">contact</span>
-										</td>
-										<td *ngIf="nurtureCampaign">
-											<span>{{contactList?.type}}</span>
-										</td>
-										<td class='m0'>
-											<a class="actions-block pull-left"><i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<app-pagination [pagination]="contactListsPagination" [type]="'updatestatuscontactlists'" (notifyParent)="setPage($event)"
-						 (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
-					</section>
-				</div>
-			</div>
-			<div [hidden]="isSocialCampaign">
-				<div class="col-sm-12 dashboard-stat2">
-					<ngx-loading [show]="loadingCalendar"></ngx-loading>
-					<div id='calendar' class="p10"></div>
-				</div>
-			</div>
+                    <section *ngIf="contactListsPagination.pagedItems?.length === 0 && !contactListsPagination.isLoading">
+                        <div class='alert alert-info' role='alert'>
+                            <h4 class='m0'>No data found.</h4>
+                        </div>
+                    </section>
+                    <section *ngIf="contactListsPagination.pagedItems?.length === 0 &&contactListsPagination.isLoading">
+                        <app-list-loader></app-list-loader>
+                    </section>
+                    <section *ngIf="contactListsPagination.pagedItems?.length > 0">
+                        <ngx-loading [show]="contactListsPagination.isLoading"></ngx-loading>
+                        <div class="table-responsive">
+                            <table class="table tgrid" id='contact-list-table'>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">Select</th>
+                                        <th>List Name</th>
+                                        <th>Created On</th>
+                                        <!-- <th>Recipients</th> -->
+                                        <th>Type</th>
+                                        <th>Preview</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let contactList of contactListsPagination.pagedItems">
+                                        <td class='m0 text-center'>
+                                            <input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)"
+                                            [checked]="socialCampaign.userListIds.indexOf(contactList.id)>-1">
+                                        </td>
+                                        <td>
+                                            <h5 class="m0 f-w-600" title="{{contactList.name}}">
+                                                <span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
+                                                <span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
+                                            </h5>
+                                            <!-- <h6 title="{{contactList.uploadedBy}}" style="margin: 5px 0;">
+                                                <span *ngIf="contactList.uploadedBy?.length<=50">By {{contactList.uploadedBy}}</span>
+                                                <span *ngIf="contactList.uploadedBy?.length>50">By {{contactList.uploadedBy | slice:0:50}}...</span>
+                                            </h6> -->
+                                        </td>
+                                        <td>{{contactList.createdDate | date:'mediumDate'}}</td>
+                                        <!-- <td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td> -->
+                                        <td *ngIf="!nurtureCampaign">
+                                                <span *ngIf="contactList.partnerUserList">partner</span>
+                                                <span *ngIf="!contactList.partnerUserList">contact</span>
+                                        </td>
+                                        <td *ngIf="nurtureCampaign">
+                                            <span>{{contactList?.type}}</span>
+                                        </td>
+                                        <td class='m0'>
+                                            <a class="actions-block pull-left"><i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <app-pagination [pagination]="contactListsPagination" [type]="'updatestatuscontactlists'" (notifyParent)="setPage($event)"
+                         (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
+                    </section>
+                </div>
+            </div>
+            <div [hidden]="isSocialCampaign">
+                <div class="col-sm-12 dashboard-stat2">
+                    <!-- <ngx-loading [show]="loadingCalendar"></ngx-loading> -->
+                    <div id='calendar' class="p10"></div>
+                </div>
+            </div>
 
-		</div>
-	</div>
+        </div>
+    </div>
 
-	<!------------Show Success Message-------------->
-	<div [hidden]="!isRedirectEnabled">
-		<div class="portlet light shadow">
-			<div class="portlet-body clearfix">
-				<section class='col-sm-12 p10'>
-					<div *ngIf="customResponse.statusText !== null" class="alert alert-dismissible m0" role="alert" [ngClass]="{
-									'alert-info': customResponse.type === 0,
-	                				'alert-success': customResponse.type === 1,
-	                				'alert-warning': customResponse.type === 2,
-	                				'alert-danger': customResponse.type === 3}">
-							<div class="pull-right">
-								<i class="fa fa-times-circle" aria-hidden="true" (click)="customResponse.statusText = null"></i>
-							</div>
-							<h4>
-							<i aria-hidden="true" class="fa" [ngClass]="{
-									'fa-circle-o-notch fa-spin fa-3x fa-fw margin-bottom': customResponse.type === 0,
-									'fa-check-circle-o': customResponse.type === 1,
-	                				'fa-exclamation-circle': customResponse.type === 2,
-	                				'fa-times': customResponse.type === 3}"></i>
-							<span class="ml10 f-w-600">{{customResponse.statusText}}</span>
-							</h4>
-						<ng-container *ngIf='customResponse.statusArray'>
-							<h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
-						</ng-container>
-					</div>
-				
-				<div *ngIf="socialStatusResponse?.length > 0">
-					<div *ngFor="let socialStatus of socialStatusResponse">
-						<div class="social-status-response alert alert-dismissible" [ngClass]="{
-									'alert-success': socialStatus.publishStatus !== 'FAILURE',
-	                				'alert-danger': socialStatus.publishStatus === 'FAILURE'}">
-							<div class="pull-right">
-								<i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
-							</div>
-							<div class="profile-image-box ml0">
-								<img alt="No Image Found" class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-								<img  alt="No Image Found" class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
-							</div>
-							<div class="profile-name">
-								<h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
-									class="heading-primary">
-									<strong>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</strong>
-								</h5>
-								<h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
-									class="heading-primary">
-									<strong>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</strong>
-								</h5>
-								<h6 class="m0">
-									{{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
-									<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-										<span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
-										<span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
-									</span>
-								</h6>
-							<div class="error-block mt10" *ngIf="socialStatus.publishStatus === 'FAILURE'">
-								<h5>{{socialStatus.publishMessage}}</h5>
-							</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<br>
-				<div class="pull-right">
-					<button class="btn btn-primary" (click)="goToManage()">Manage Campaigns</button>
-				</div>
-				</section>
-			</div></div>
-		</div>
+    <!------------Show Success Message-------------->
+    <div [hidden]="!isRedirectEnabled">
+        <div class="portlet light shadow">
+            <div class="portlet-body clearfix">
+                <section class='col-sm-12 p10'>
+                    <div *ngIf="customResponse.statusText !== null" class="alert alert-dismissible m0" role="alert" [ngClass]="{
+                                    'alert-info': customResponse.type === 0,
+                                    'alert-success': customResponse.type === 1,
+                                    'alert-warning': customResponse.type === 2,
+                                    'alert-danger': customResponse.type === 3}">
+                            <div class="pull-right">
+                                <i class="fa fa-times-circle" aria-hidden="true" (click)="customResponse.statusText = null"></i>
+                            </div>
+                            <h4>
+                            <i aria-hidden="true" class="fa" [ngClass]="{
+                                    'fa-circle-o-notch fa-spin fa-3x fa-fw margin-bottom': customResponse.type === 0,
+                                    'fa-check-circle-o': customResponse.type === 1,
+                                    'fa-exclamation-circle': customResponse.type === 2,
+                                    'fa-times': customResponse.type === 3}"></i>
+                            <span class="ml10 f-w-600">{{customResponse.statusText}}</span>
+                            </h4>
+                        <ng-container *ngIf='customResponse.statusArray'>
+                            <h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
+                        </ng-container>
+                    </div>
+                
+                <div *ngIf="socialStatusResponse?.length > 0">
+                    <div *ngFor="let socialStatus of socialStatusResponse">
+                        <div class="social-status-response alert alert-dismissible" [ngClass]="{
+                                    'alert-success': socialStatus.publishStatus !== 'FAILURE',
+                                    'alert-danger': socialStatus.publishStatus === 'FAILURE'}">
+                            <div class="pull-right">
+                                <i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
+                            </div>
+                            <div class="profile-image-box ml0">
+                                <img alt="No Image Found" class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
+                                <img  alt="No Image Found" class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
+                            </div>
+                            <div class="profile-name">
+                                <h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                    class="heading-primary">
+                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</strong>
+                                </h5>
+                                <h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
+                                    class="heading-primary">
+                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</strong>
+                                </h5>
+                                <h6 class="m0">
+                                    {{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
+                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
+                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
+                                    </span>
+                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.page">Profile</span>
+                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.page">Page</span>
+                                    </span>
+                                </h6>
+                            <div class="error-block mt10" *ngIf="socialStatus.publishStatus === 'FAILURE'">
+                                <h5>{{socialStatus.publishMessage}}</h5>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="pull-right">
+                    <button class="btn btn-primary" (click)="goToManage()">Manage Campaigns</button>
+                </div>
+                </section>
+            </div></div>
+        </div>
 
-	<div class="modal right fade-scale" id="listVideosModal" tabindex="-1" role="dialog" aria-labelledby="listVideosModalLabel" data-keyboard="false"
-	 data-backdrop="static">
-		<div class="modal-dialog" role="document" style="width: 80%; right: 0;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a class="close-circle" (click)="closeListVideosModal();">
-						<i class="fa fa-times"></i>
-					</a>
-					<h4 class="modal-title" id="listVideosModalLabel">List Of Videos</h4>
-				</div>
-				<div class="modal-body clearfix">
-					<div class="row">
-						<div class="col-xs-12" id="preview-section">
-							<div id="newPlayerVideo"></div>
-						</div>
-						<div *ngIf="videosPagination.pagedItems?.length > 0" class="col-xs-12">
-							<div class="table-responsive">
-								<table class="table table-hover" id="list-videos-table">
-									<tbody>
-										<tr style="cursor: pointer;" *ngFor="let video of videosPagination.pagedItems; let i = index" [ngClass]="{'highlight': selectedVideo === video}">
-											<td (click)="selectVideo(video)">
-												<!--<input type="radio" name="videoPath" [checked]="i === 0" class='align-middle'>-->
-												<div class="select-video">
-													<i class="fa fa-circle-o" *ngIf="selectedVideo !== video"></i>
-													<i class="fa fa-check-circle-o" *ngIf="selectedVideo === video"></i>
-												</div>
-												<div class="thumbnail-wrapper">
-													<img src="{{video.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)">
-													<h6 class="duration">{{videoUtilService.truncateHourZeros(video.videoLength)}}</h6>
-												</div>
-												<div class="video-title">
-													<h5>{{video.title | slice:0:150}}<span *ngIf="video.title?.length>150">...</span></h5>
-												</div>
-											</td>
-											<!--<td>
-												<a (click)="previewVideo(video); isPreviewVideo != isPreviewVideo"><i class="fa fa-eye" aria-hidden="true"></i></a>
-											</td>-->
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<!--pager here  -->
-							<app-pagination *ngIf="videosPagination.pagedItems?.length > 0" [pagination]="videosPagination" [type]="'updatestatusvideos'"
-							 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" (click)="closeListVideosModal()">Close</button>
-					<button type="button" class="btn btn-primary" style="color:white" (click)="addVideo()">Select</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- modal -->
+    <div class="modal right fade-scale" id="listVideosModal" tabindex="-1" role="dialog" aria-labelledby="listVideosModalLabel" data-keyboard="false"
+     data-backdrop="static">
+        <div class="modal-dialog" role="document" style="width: 80%; right: 0;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close-circle" (click)="closeListVideosModal();">
+                        <i class="fa fa-times"></i>
+                    </a>
+                    <h4 class="modal-title" id="listVideosModalLabel">List Of Videos</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="row">
+                        <div class="col-xs-12" id="preview-section">
+                            <div id="newPlayerVideo"></div>
+                        </div>
+                        <div *ngIf="videosPagination.pagedItems?.length > 0" class="col-xs-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="list-videos-table">
+                                    <tbody>
+                                        <tr style="cursor: pointer;" *ngFor="let video of videosPagination.pagedItems; let i = index" [ngClass]="{'highlight': selectedVideo === video}">
+                                            <td (click)="selectVideo(video)">
+                                                <!--<input type="radio" name="videoPath" [checked]="i === 0" class='align-middle'>-->
+                                                <div class="select-video">
+                                                    <i class="fa fa-circle-o" *ngIf="selectedVideo !== video"></i>
+                                                    <i class="fa fa-check-circle-o" *ngIf="selectedVideo === video"></i>
+                                                </div>
+                                                <div class="thumbnail-wrapper">
+                                                    <img src="{{video.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)">
+                                                    <h6 class="duration">{{videoUtilService.truncateHourZeros(video.videoLength)}}</h6>
+                                                </div>
+                                                <div class="video-title">
+                                                    <h5>{{video.title | slice:0:150}}<span *ngIf="video.title?.length>150">...</span></h5>
+                                                </div>
+                                            </td>
+                                            <!--<td>
+                                                <a (click)="previewVideo(video); isPreviewVideo != isPreviewVideo"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            </td>-->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--pager here  -->
+                            <app-pagination *ngIf="videosPagination.pagedItems?.length > 0" [pagination]="videosPagination" [type]="'updatestatusvideos'"
+                             (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" (click)="closeListVideosModal()">Close</button>
+                    <button type="button" class="btn btn-primary" style="color:white" (click)="addVideo()">Select</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal -->
 </div>
 <app-connect-accounts></app-connect-accounts>
 
 <div class="modal right fade" id="manageAccountsModal" tabindex="-1" role="dialog" aria-labelledby="manageAccountsModalLabel" data-keyboard="false" data-backdrop="static">
-	<div class="modal-dialog" role="document" style="width: 40%;">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="closeModal()">
-					<i class="fa fa-times"></i>
-				</a>
-				<h4 id="manageAccountsModalLabel" class="modal-title caption-subject font-red-sunglo">Manage Accounts</h4>
-			</div>
-			<div class="modal-body">
-				<div *ngIf="socialConnections?.length > 0">
+    <div class="modal-dialog" role="document" style="width: 40%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" data-dismiss="modal" (click)="closeModal()">
+                    <i class="fa fa-times"></i>
+                </a>
+                <h4 id="manageAccountsModalLabel" class="modal-title caption-subject font-red-sunglo">Manage Accounts</h4>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="socialConnections?.length > 0">
                   <div class="col-sm-6 col-xs-12 box" *ngFor="let socialConnection of socialConnections;let i = index">
                     <div class="portlet light block" [ngClass]="{'checked': socialConnection.active, 'unchecked': !socialConnection.active}"
-                      (click)="socialConnection.active = !socialConnection.active">
+                      (click)="toggleEnable(socialConnection)">
                       <div class="portlet-body">
                         <div class="pt10">
                           <div style="display: block; height: 20px;">
@@ -659,7 +687,7 @@
                             <i class="fa fa-social pull-right fa-{{socialConnection.source | lowercase}} fa-{{socialConnection.source | lowercase}}-color"></i>
                              </div>
                           <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}"
-						  (error)="$event.target.src = 'assets/images/social/avatar.png'">
+                          (error)="$event.target.src = 'assets/images/social/avatar.png'">
                         </div>
                         <div class="clearfix">
                           <br>
@@ -676,55 +704,55 @@
                     </div>
                   </div>
                 </div>
-				<div class="clearfix"></div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" (click)="save()">Save</button>
-			</div>
-		</div>
-	</div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <div class="modal right fade" id="contactsModal" tabindex="-1" role="dialog" aria-labelledby="contactsModalLabel" data-keyboard="false"
  data-backdrop="static">
-	<div class="modal-dialog" role="document" style="width: 40%;">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="closeModal()">
-					<i class="fa fa-times"></i>
-				</a>
-				<h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">{{previewContactList.name | slice:0:35}}<span *ngIf="previewContactList.name?.length>35">...</span></h4>
-			</div>
-			<div class="modal-body">
-				<div class="table-responsive">
-					<table class="table tgrid">
-						<thead>
-							<tr>
-								<th>Email Address</th>
-								<th>First Name</th>
-								<th>Last Name</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let contact of contactsPagination.pagedItems">
-								<td>{{contact.emailId}}</td>
-								<td>{{contact.firstName}}</td>
-								<td>{{contact.lastName}}</td>
-							</tr>
-						</tbody>
-					</table>
-					<app-pagination  style="margin-left: -10px;" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
-					 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog" role="document" style="width: 40%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" data-dismiss="modal" (click)="closeModal()">
+                    <i class="fa fa-times"></i>
+                </a>
+                <h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo">{{previewContactList.name | slice:0:35}}<span *ngIf="previewContactList.name?.length>35">...</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table tgrid">
+                        <thead>
+                            <tr>
+                                <th>Email Address</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let contact of contactsPagination.pagedItems">
+                                <td>{{contact.emailId}}</td>
+                                <td>{{contact.firstName}}</td>
+                                <td>{{contact.lastName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <app-pagination  style="margin-left: -10px;" *ngIf="contactsPagination.pagedItems?.length > 0" [pagination]="contactsPagination" [type]="'updatestatuscontacts'"
+                     (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id='fc-{{item.socialStatus.id}}-{{item.socialStatusProvider.id}}' *ngFor="let item of socialStatusDtos" class='clearfix m10 hidden'>
-	<app-social-status [socialStatus]="item.socialStatus"></app-social-status>	
+    <app-social-status [socialStatus]="item.socialStatus"></app-social-status>  
 </div>
 
 <!--RSS Modal -->
@@ -735,9 +763,9 @@
         <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
         <h4 class="modal-title" id="rssModalLabel">RSS Feeds</h4>
       </div>
-		<div class="modal-body" style="background: #f1f3fa">
-			<app-feed-update (selectedFeed)='addToPost($event)' (navigateUrl)='navigateRssHome($event)'></app-feed-update>
-		</div>
+        <div class="modal-body" style="background: #f1f3fa">
+            <app-feed-update (selectedFeed)='addToPost($event)' (navigateUrl)='navigateRssHome($event)'></app-feed-update>
+        </div>
       <!-- <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>

@@ -21,6 +21,7 @@ import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component
 import { SfCustomFieldsDataDTO } from 'app/deal-registration/models/sfcustomfieldsdata';
 import {Properties} from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -87,11 +88,12 @@ export class AddDealComponent implements OnInit {
   pipelineStageIdError: boolean = true;
   isDealRegistrationFormValid: boolean = true;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+  property: DealDynamicProperties = new DealDynamicProperties();
 
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
   
-  constructor(public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
+  constructor(private logger: XtremandLogger, public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -337,12 +339,13 @@ export class AddDealComponent implements OnInit {
   }
 
   isSalesForceEnabled() {
+    this.showSfForm = false;
     this.dealsService.isSalesForceEnabled(this.deal.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
           if (response.statusCode == 200) {
             this.showSfForm = response.data;
-          }
+          } 
         },
         error => {
           console.log(error);
@@ -822,6 +825,83 @@ setSfFormFieldValues() {
           this.deal.sfCustomFieldsDataDto = sfCfDataList;
       }
   }
+}
+
+addProperties() {
+  this.property = new DealDynamicProperties();
+  let length = this.propertiesComments.length;
+  length = length + 1;
+  var id = 'property-' + length;
+  this.property.divId = id;
+  this.property.propType = 'PROPERTY';
+  this.property.isSaved = false;
+  this.property.error = true;
+  this.propertiesComments.push(this.property);
+
+  this.submitButtonStatus()
+
+}
+
+isEven(n) {
+  if (n % 2 === 0) { return true; }
+  return false;
+}
+
+showAlert(i: number, question: DealDynamicProperties) {
+  if (question.isSaved) {
+      this.deleteComment(i, question);
+
+  } else {
+      this.remove(i, question.id);
+  }
+}
+
+commentsection(property: DealDynamicProperties) {
+  property.isCommentSection = !property.isCommentSection;  
+  property.unReadPropertyChatCount = 0;
+  
+}
+
+deleteComment(i: number, comment: DealDynamicProperties) {
+  try {
+      this.logger.info("Comment in sweetAlert() " + comment.id);
+      let self = this;
+      swal({
+          title: 'Are you sure?',
+          text: "You won't be able to undo this action!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#54a7e9',
+          cancelButtonColor: '#999',
+          confirmButtonText: 'Yes, delete it!'
+
+      }).then(function (myData: any) {
+          console.log("deleteComment showAlert then()" + comment);
+          self.dealsService.deleteProperty(comment).subscribe(response => {
+              self.remove(i, comment.id)
+
+          }, error => this.logger.error(error, "DealComponent", "deleteComment()"))
+      }, function (dismiss: any) {
+          console.log('you clicked on option' + dismiss);
+      });
+  } catch (error) {
+      this.logger.error(error, "DealComponent", "deleteCommentAlert()");
+  }
+}
+
+remove(i, id) {
+  if (id)
+      console.log(id)
+  var index = 1;
+
+  this.propertiesComments = this.propertiesComments.filter(property => property.divId !== 'property-' + i)
+      .map(property => {
+          property.divId = 'property-' + index++;
+          return property;
+      });
+  this.submitButtonStatus()
+
+
 }
 
 }

@@ -16,16 +16,18 @@
     text-overflow: ellipsis;
 }
 
+
 .partners-text {
     font-size: 14px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #0000005c;
+    /* color: #0000005c; */
+    font-weight: bold;
 }
 
 .icon1 {
-    background: #aae2d0;
+    background: #5C9BD1;
     padding: 12px 12px;
     border-radius: 3px;
     color: #fff;
@@ -37,7 +39,7 @@
 
 
 .icon2 {
-    background: #aadae2;
+    background: #3faba4;
     padding: 12px 12px;
     border-radius: 3px;
     color: #fff;
@@ -47,7 +49,7 @@
 }
 
 .icon3 {
-    background: #eac2af;
+    background:#E87E04;
     padding: 12px 12px;
     border-radius: 3px;
     color: #fff;
@@ -64,6 +66,7 @@
     margin: 0px;
     text-align: right;
     font-size: 14px!important;
+     color:#00000085;
 }
 
 .text {

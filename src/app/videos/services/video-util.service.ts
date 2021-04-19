@@ -28,8 +28,8 @@ export class VideoUtilService {
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Title (A-Z)', 'value': 'title-ASC' },
         { 'name': 'Title (Z-A)', 'value': 'title-DESC' },
-        { 'name': 'Upload Date (ASC)', 'value': 'updatedTime-ASC' },
-        { 'name': 'Upload Date (DESC)', 'value': 'updatedTime-DESC' },
+        { 'name': 'Upload Date (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Upload Date (DESC)', 'value': 'createdTime-DESC' },
         // { 'name': 'Type (ASC)', 'value': 'viewBy-ASC' },
         // { 'name': 'Type (DESC)', 'value': 'viewBy-DESC' },
     ];

@@ -120,6 +120,12 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    findPartnerCompanies(pagination:Pagination){
+        const apiUrl = this.URL + 'partnership/findPartnerCompanies?access_token=' + this.authenticationService.access_token
+        return this.httpClient.post( apiUrl,pagination )
+            .catch( this.handleError );
+    }
+
 
     
     

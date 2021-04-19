@@ -807,12 +807,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					} else {
 						this.editContactComponent.isHeaderCheckBoxChecked = false;
 					}
-					if (!this.searchKey) {
+					/*if (!this.searchKey) {
 						this.loadAllPartnerInList(pagination.totalRecords);
 					} else {
 						this.pageLoader = false;
 
-					}
+					}*/
+					this.pageLoader = false;
 
 				},
 				error => this.xtremandLogger.error(error),
@@ -2415,23 +2416,29 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 
-	saveAsChange(showGDPR: boolean) {
-		this.hasAccess().subscribe(
-			data => {
-				if (data) {
-					try {
-						this.showGDPR = showGDPR;
-						this.isSaveAsList = true;
-						this.saveAsListName = this.editContactComponent.addCopyToField();
+    saveAsChange(showGDPR: boolean) {
 
-					} catch (error) {
-						this.xtremandLogger.error(error, "Add Partner component", "saveAsChange()");
-					}
-				} else {
-					this.authenticationService.forceToLogout();
-				}
-			}
-		);
+        if (this.editContactComponent.selectedContactForSave.length === 0) {
+        	this.customResponse = new CustomResponse('ERROR', "Please select atleast one partner to create the list", true);
+
+        } else {
+            this.hasAccess().subscribe(
+                data => {
+                    if (data) {
+                        try {
+                            this.showGDPR = showGDPR;
+                            this.isSaveAsList = true;
+                            this.saveAsListName = this.editContactComponent.addCopyToField();
+
+                        } catch (error) {
+                            this.xtremandLogger.error(error, "Add Partner component", "saveAsChange()");
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                }
+            );
+        }
 	}
 	saveAsInputChecking() {
 		try {
@@ -3638,5 +3645,4 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			self.router.navigate(["/home/campaigns/user-campaigns/pa/" + contact.id]);
 		}, 250);
 	}
-
 }

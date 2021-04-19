@@ -12,13 +12,15 @@ import { DealRegistrationService } from '../../deal-registration/services/deal-r
 import { DealsService } from '../../deals/services/deals.service';
 import {Properties} from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
+
 declare var swal, $, videojs: any;
 
 @Component({
   selector: 'app-add-lead',
   templateUrl: './add-lead.component.html',
   styleUrls: ['./add-lead.component.css'],
-  providers: [ HttpRequestLoader, CountryNames,Properties, DealsService],
+  providers: [ HttpRequestLoader, CountryNames,Properties, DealsService,RegularExpressions],
 })
 export class AddLeadComponent implements OnInit {
   @Input() public leadId: any;
@@ -43,8 +45,6 @@ export class AddLeadComponent implements OnInit {
   stages = new Array<PipelineStage>();
   isValid = true;
   errorMessage = "";
-  WEBSITE_PATTERN = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
-  EMAIL_PATTERN = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
   leadModalResponse: CustomResponse = new CustomResponse();
   ngxloading : boolean;
   hasCampaignPipeline = false;
@@ -55,7 +55,7 @@ export class AddLeadComponent implements OnInit {
 
   constructor(public properties:Properties,public authenticationService: AuthenticationService, private leadsService: LeadsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames, 
-    private dealsService: DealsService) {
+    private dealsService: DealsService,public regularExpressions:RegularExpressions) {
       this.loggedInUserId = this.authenticationService.getUserId();
       if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
         this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -276,6 +276,8 @@ export class AddLeadComponent implements OnInit {
   resetPipelines() {
     this.lead.pipelineId = 0;
     this.lead.pipelineStageId = 0;
+    this.hasCampaignPipeline = false;
+    this.hasSfPipeline = false;
     this.getPipelines();
   }
 
@@ -395,10 +397,10 @@ export class AddLeadComponent implements OnInit {
     } else if (this.lead.email == undefined || this.lead.email == "") {
       this.isValid = false;
       this.errorMessage = "Please fill email field";
-    } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.EMAIL_PATTERN.test(this.lead.email)){
+    } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)){
       this.isValid = false;
       this.errorMessage = "Please fill Valid Email Id";          
-    } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.WEBSITE_PATTERN.test(this.lead.website)){
+    } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)){
       this.isValid = false;
       this.errorMessage = "Please fill Valid Website";      
     }

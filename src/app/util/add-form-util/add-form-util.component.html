@@ -248,7 +248,7 @@
                                                                     <ng-container *ngIf="type=='Rupee'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
-                                                                            â‚¹</option>
+                                                                            ₹</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='Dollar'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
@@ -258,17 +258,17 @@
                                                                     <ng-container *ngIf="type=='Yen'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
-                                                                            Â¥</option>
+                                                                            ¥</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='Pound'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
-                                                                            Â£</option>
+                                                                            £</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='Euro'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
-                                                                            â‚¬</option>
+                                                                            €</option>
                                                                     </ng-container>
                                                                 </ng-container>
                                                             </select>
@@ -402,6 +402,7 @@
                         <!-- End Of Row---- -->
                         <div id="bottom-right">
                             <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="validateForm()">{{buttonName}}</button>
+                            <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="saveAs()">Save As</button>
                             <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true">Cancel</button>
                         </div>
                     </div>

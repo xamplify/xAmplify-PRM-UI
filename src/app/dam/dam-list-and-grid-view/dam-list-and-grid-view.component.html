@@ -114,8 +114,8 @@
                               <i class="fa"
                                   [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                               </a>
-                              <a *ngIf="asset?.beeTemplate && !isPartnerView"  title="Add" (click)="addOrEdit(asset.id)">
-                                 <i class="fa fa-plus" aria-hidden="true"></i>
+                              <a *ngIf="asset?.beeTemplate && !isPartnerView"  title="Design" (click)="addOrEdit(asset.id)">
+                                 <i class="fa fa-paint-brush" aria-hidden="true"></i>
                               </a>
                               <a *ngIf="(asset?.beeTemplate && isPartnerView)"  title="Edit" (click)="addOrEdit(asset.id)">
                                  <i class="fa fa-edit" aria-hidden="true"></i>
@@ -189,8 +189,8 @@
                                           </td>
                                           <td id="actions-row">
                                              <div class="actions-block override-actions custom-width-icon">
-                                                   <a  title="Add" (click)="addOrEdit(asset.id)">
-                                                      <i class="fa fa-plus" aria-hidden="true"></i>
+                                                   <a  title="Design" (click)="addOrEdit(asset.id)">
+                                                      <i class="fa fa-paint-brush" aria-hidden="true"></i>
                                                       </a>
                                                       <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                                                          <i class="fa fa-edit" aria-hidden="true"></i>
@@ -271,8 +271,8 @@
                         <a *ngIf="asset?.history && !isPartnerView "  title="History" (click)="viewGirdHistory(asset)">
                            <i class="fa" [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
                            </a>
-                           <a *ngIf="asset?.beeTemplate && !isPartnerView"  title="Add"  (click)="addOrEdit(asset.id)">
-                               <i class="fa fa-plus" aria-hidden="true"></i>
+                           <a *ngIf="asset?.beeTemplate && !isPartnerView"  title="Design"  (click)="addOrEdit(asset.id)">
+                               <i class="fa fa-paint-brush" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="asset?.beeTemplate && isPartnerView"  title="Edit"  (click)="addOrEdit(asset.id)">
                               <i class="fa fa-edit" aria-hidden="true"></i>
@@ -353,8 +353,8 @@
                            <span *ngIf="asset?.published" translate>Published</span>
                        </div>
                        <div class="bar auto-height">
-                           <a *ngIf="asset?.beeTemplate"  title="Add"  (click)="addOrEdit(asset.id)">
-                               <i class="fa fa-plus" aria-hidden="true"></i>
+                           <a *ngIf="asset?.beeTemplate"  title="Design"  (click)="addOrEdit(asset.id)">
+                               <i class="fa fa-paint-brush" aria-hidden="true"></i>
                            </a>
                            <a *ngIf="!isPartnerView"  title="Edit" (click)="editDetails(asset.id)">
                               <i class="fa fa-edit" aria-hidden="true"></i>
@@ -406,7 +406,7 @@
                        </div>
                     </div>
                     <div style="margin-left: 10px;">
-                       <h2>
+                       <h2 title="{{assetDetailsViewDto?.assetName}}">
                         <strong>{{assetDetailsViewDto?.assetName | slice:0:50}}</strong>
                         <span *ngIf="assetDetailsViewDto?.assetName?.length>50">..</span>
                        </h2><br>
@@ -510,7 +510,7 @@
 </div>
 <!---Publish Pop Up-->
 <ng-container *ngIf="showPublishPopup">
-   <app-publish-to-partners [companyId]="loggedInUserCompanyId" [assetId]="selectedAssetId" (notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-publish-to-partners>
+   <app-publish-to-partners-popup [companyId]="loggedInUserCompanyId" [assetId]="selectedAssetId" (notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-publish-to-partners-popup>
 </ng-container>
 <!---Preview Pop Up-->
 <div class="modal fade right" id="asset-preview-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">

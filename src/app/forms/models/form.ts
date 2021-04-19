@@ -44,5 +44,6 @@ export class Form {
     isValidFormSubmissionUrl = true;
     isValidColorCode = true;
     quizForm = false;
+    saveAs = false;
 	
 }

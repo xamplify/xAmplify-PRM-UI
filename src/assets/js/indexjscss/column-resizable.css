@@ -45,6 +45,7 @@ span.ui-column-resizer {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	min-height: 30px;
 }
 
 #border-bottom-padding {
@@ -61,6 +62,13 @@ span.ui-column-resizer {
 
 #right {
 	float: right;
+}
+
+.left-float{
+	float:left !important;
+}
+.left{
+	float: left !important;
 }
 
 .margin-space {
@@ -254,3 +262,4 @@ span.ui-column-resizer {
 	margin: 14px;
 	margin-top: 1px;
 }
+

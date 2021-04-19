@@ -46,6 +46,7 @@ import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { Pipeline } from 'app/dashboard/models/pipeline';
 import { UserService } from 'app/core/services/user.service';
+import { EnvService } from 'app/env.service';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -304,7 +305,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
                 private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
-				private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService
+				private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService,public envService:EnvService
             ){
                 
                 this.vanityUrlService.isVanityURLEnabled();
@@ -315,6 +316,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         this.enableLeads = data.enableLeads;
                         this.salesEnablement = data.salesEnablement;
                         this.isSalesforceIntegrated();
+                        //this.listCampaignPipelines();
                     });
                 })
                
@@ -1195,7 +1197,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.videoFileService.loadCampaignVideos(pagination,pagination.videoCategoryId)
             .subscribe(
             (result:any) => {
-                this.campaignVideos = result.listOfMobinars;
+                this.campaignVideos = result.list;
                 this.categories = result.categories;
                 pagination.totalRecords = result.totalRecords;
                 this.videosPagination = this.pagerService.getPagedItems(pagination, this.campaignVideos);
@@ -1339,6 +1341,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     /************Showing Video Preview****************/
     showPreview(videoFile:SaveVideoFile){
+	 let videoPath = "";
+        if(videoFile.videoPath.startsWith("https")){
+            videoPath = videoFile.videoPath;
+        }else{
+            videoPath = this.envService.SERVER_URL+"vod/"+videoFile.videoPath;
+        }
+     videoFile.videoPath = videoPath;
      this.createVideoFile = videoFile;
     }
      closeCreateModal(event: any){
@@ -1367,13 +1376,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     appendVideoData(videoFile:SaveVideoFile,divId:string,titleId:string){
        console.log(videoFile);
        let videoSelf = this;
-        var alias = videoFile.alias;
         var fullImagePath = videoFile.imagePath;
         var title = videoFile.title;
         if(title.length>50){
             title = title.substring(0, 50)+"...";
         }
-        var videoPath = videoFile.videoPath;
+        var videoPath = "";
+        if(videoFile.videoPath.startsWith("https")){
+            videoPath = videoFile.videoPath;
+        }else{
+            videoPath = this.envService.SERVER_URL+"vod/"+videoFile.videoPath;
+        }
         var is360 = videoFile.is360video;
         $("#"+divId).empty();
         $("#"+titleId).empty();
@@ -3373,16 +3386,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loading = true;
             this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
                 let response = data;
-                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {          
+                    this.salesforceIntegrated = true;  
+                    this.listCampaignPipelines();        
                     this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
                         let cfResponse = data;
+                        //this.listCampaignPipelines();
                         if (cfResponse.statusCode === 200) {
-                            this.salesforceIntegrated = true;
+                            //this.salesforceIntegrated = true;
 							this.showConfigurePipelines = false;
-                        } else if (cfResponse.statusCode === 400) {
+                        } else if (cfResponse.statusCode === 400) {                            
                             swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
-                        }
-                        this.listCampaignPipelines();
+                        } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
+                            swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
+                        }                        
                     }, error => {
                         this.logger.error(error, "Error in salesforce checkIntegrations()");
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));

@@ -110,7 +110,7 @@
 						</div>
 						<div class="col-xs-12 col-sm-12 p0"
 							*ngIf="authenticationService.formAlias">
-							<app-form-preview #formPreviewComponent></app-form-preview>
+							<app-form-preview #formPreviewComponent (captchaValue)="setEnableCaptcha($event)"></app-form-preview>
 						</div>
 						
 					</div>
@@ -148,7 +148,7 @@
 									<button style="margin-bottom: 10px;"
 										[class.save-button-align-class]="!eventcampaign?.inviteOthers"
 										(click)="campaignRsvp.eventCampaignRsvp = 'YES'" type="button"
-										class="btn btn-primary" [disabled]="rsvpSavingProcessing"
+										class="btn btn-primary" [disabled]="rsvpSavingProcessing || (form.showCaptcha && !isCaptchaValid)"
 										(click)="saveEventCampaignRsvp()">Submit</button>
 								</div>
 							</div>

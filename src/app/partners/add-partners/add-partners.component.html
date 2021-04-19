@@ -604,7 +604,7 @@
                                         <thead *ngIf="pagination.pagedItems?.length != 0">
                                             <tr>
                                                 <th class='text-center'>
-                                                    <input type="checkbox" name="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked" (change)="editContactComponent.checkAll($event)" id="checkAllExistingContacts" /></th>
+                                                    <input type="checkbox" name="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked" (change)="editContactComponent.checkAll($event, partners)" id="checkAllExistingContacts" /></th>
                                                 <th style="width: 23%;" translate>Entity info</th>
                                                 <!-- <th style="width: 26%;" class="hidden-xs">PHONE</th> -->
                                                 <!-- <th class="hidden-xs">JOB TITLE</th> -->
@@ -623,7 +623,7 @@
                                                 <tr class='row_{{i}}'>
                                                     <td class="text-center" *ngIf="!isCampaignDraftContactList ">
                                                         <input type="checkbox" [checked]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1" class="chk" [class.contact-list-selected]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1" lang="{{contact.id}}" name="campaignContact[]"
-                                                            value="{{contact.id}}" id="{{contact.id}}" (click)="editContactComponent.highlightRow(contact.id,$event)" />
+                                                            (change)="editContactComponent.saveAsSelectedContacts($event, contact)" value="{{contact.id}}" id="{{contact.id}}" (click)="editContactComponent.highlightRow(contact.id,$event)" />
                                                     </td>
                                                     <td>
                                                         <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact"> </app-user-info>

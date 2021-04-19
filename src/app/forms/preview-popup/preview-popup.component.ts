@@ -22,7 +22,7 @@ declare var swal, $: any;
     selector: 'app-preview-popup',
     templateUrl: './preview-popup.component.html',
     styleUrls: ['./preview-popup.component.css'],
-    providers: [HttpRequestLoader, Pagination, SortOption]
+    providers: [HttpRequestLoader, Pagination, SortOption, FormService]
 })
 export class PreviewPopupComponent implements OnInit {
     form: Form = new Form();
@@ -40,6 +40,7 @@ export class PreviewPopupComponent implements OnInit {
     formBackgroundImage = "";
     pageBackgroundColor = "";
     siteKey = "";
+
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
         public router: Router, private vanityUrlService: VanityURLService, public sanitizer: DomSanitizer) {

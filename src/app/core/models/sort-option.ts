@@ -207,12 +207,10 @@ export class SortOption {
       { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
       { 'name': 'Company Name (A-Z)', 'value': 'contactCompany-ASC' },
       { 'name': 'Company Name (Z-A)', 'value': 'contactCompany-DESC' },
-      { 'name': 'View Count (DESC)', 'value': 'views-DESC' },
-      { 'name': 'View Count (ASC)', 'value': 'views-ASC' },
-      { 'name': 'Download Count (DESC)', 'value': 'download-DESC' },
-      { 'name': 'Downlad Count (ASC)', 'value': 'downloads-ASC' },
-      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
-      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
+      { 'name': 'View Count (DESC)', 'value': 'viewCount-DESC' },
+      { 'name': 'View Count (ASC)', 'value': 'viewCount-ASC' },
+      { 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' },
+      { 'name': 'Downlad Count (ASC)', 'value': 'downloadCount-ASC' }
     ];
 
     mdfVendorsSortDropDownOptions = [
@@ -269,6 +267,24 @@ export class SortOption {
   ];
 
 
+  partnerCompaniesDropDownOptions = [
+    { 'name': 'Company Name(A-Z)', 'value': 'companyName-ASC' },
+    { 'name': 'Company Name(Z-A)', 'value': 'companyName-DESC' },
+    { 'name': 'Created Time(ASC)', 'value': 'createdTime-ASC' },
+    { 'name': 'Created Time(DESC)', 'value': 'createdTime-DESC' }
+  ]
+
+  groupsSortDropDownOptions = [
+		{ 'name': 'List name (A-Z)', 'value': 'name-ASC' },
+		{ 'name': 'List name (Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Creation date (ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Creation date (DESC)', 'value': 'createdTime-DESC' },
+  ];
+
+  partnerCompanySortDropDownOptions = [
+		{ 'name': 'Company name (A-Z)', 'value': 'companyName-ASC' },
+		{ 'name': 'Company name (Z-A)', 'value': 'companyName-DESC' },
+  ];
 
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
@@ -289,9 +305,9 @@ export class SortOption {
     public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[0];
     public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[3];
     public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];//This is used in multiple places.Be careful while changing it dude.
-    public selectedDamPartnerDropDownOption:any = this.activeUsersSortDropDownOptions[this.activeUsersSortDropDownOptions.length-1];
+    public selectedDamPartnerDropDownOption:any = this.partnerCompaniesDropDownOptions[this.partnerCompaniesDropDownOptions.length-1];
     public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
-    public publishedPartnerAnalyticsSortOption: any = this.publishedPartnerAnalyticsDropDown[this.publishedPartnerAnalyticsDropDown.length-1];
+    public publishedPartnerAnalyticsSortOption: any = this.publishedPartnerAnalyticsDropDown[4];
     public mdfVendorsSortOption:any = this.mdfVendorsSortDropDownOptions[5];
 	  public userLevelCampaignAnalyticsSortOption:any = this.userLevelCampaignAnalyticsSortDropDownOptions[this.userLevelCampaignAnalyticsSortDropDownOptions.length-1];
     public damSortOption:any = this.damSortDropDownOptions[this.damSortDropDownOptions.length-1];
@@ -301,6 +317,7 @@ export class SortOption {
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;
     public selectedTagDropDownOption:any = this.tagSortDropDownOptions[3];
-
+    public selectedGroupsDropDownOption:any = this.groupsSortDropDownOptions[3];
+    public selectedPartnerCompanyDropDownOption = this.partnerCompanySortDropDownOptions[0];
 
 }

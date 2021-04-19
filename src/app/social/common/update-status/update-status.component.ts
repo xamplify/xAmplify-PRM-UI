@@ -29,6 +29,7 @@ import { Country } from '../../../core/models/country';
 import { Timezone } from '../../../core/models/timezone';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { Validators } from '@angular/forms';
+import { PieChartGeoDistributionComponent } from 'app/social/twitter/pie-chart-geo-distribution/pie-chart-geo-distribution.component';
 declare var $, flatpickr, videojs, swal: any;
 
 @Component({
@@ -79,9 +80,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	events = [];
 	selectedSocialProviderId: number;
 	savedURL: string;
+	validURL: string;
 	categoryNames: any;
-	showRssFeed:boolean = false;
+	showRssFeed: boolean = false;
 	nurtureCampaign = false;
+	isSavedUrlIsInStatusMessage: boolean;
+	removeOgTags: boolean = false;
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
 		public authenticationService: AuthenticationService, private contactService: ContactService,
@@ -267,7 +271,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						data => {
 							for (const i of Object.keys(data)) {
 								const socialStatusContent = data[i];
-								socialStatus.socialStatusContents.push(socialStatusContent);
+								if(socialStatus.validLink){
+									socialStatus.ogImage = socialStatusContent.completeFilePath;
+								}else{
+									socialStatus.socialStatusContents.push(socialStatusContent);
+								}
 							}
 							console.log(socialStatus);
 						},
@@ -460,6 +468,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						$('#calendar').fullCalendar('removeEvents');
 						this.socialStatusResponse = data;
 						this.customResponse.statusText = null;
+						this.socialStatusList.forEach(data => {
+							data.removeOgTags = false;
+							});
 					},
 					error => {
 						this.loading = false;
@@ -540,7 +551,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	initializeSocialStatus() {
 		this.socialStatusList = [];
 		this.isAllSelected = false;
-		this.selectedAccounts = 0;
+        this.selectedAccounts = 0;
+        //added by Ajay
+        this.socialStatus = new SocialStatus();
+
 		let socialStatus = new SocialStatus();
 		socialStatus.userId = this.userId;
 		this.socialCampaign.userListIds = [];
@@ -564,17 +578,17 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						this.populateRssFeed(this.referenceService.selectedFeed);
 						this.referenceService.selectedFeed = "";
 					} else if (this.socialService.selectedCustomFeed != "" && this.socialService.selectedCustomFeed !== undefined) {
-						this.setSocialShareData(this.socialService.selectedCustomFeed,false);
+						this.setSocialShareData(this.socialService.selectedCustomFeed, false);
 						this.socialService.selectedCustomFeed = "";
-					}else if(this.socialService.partnerFeed != "" && this.socialService.partnerFeed !== undefined){
-						this.setSocialShareData(this.socialService.partnerFeed,true);
+					} else if (this.socialService.partnerFeed != "" && this.socialService.partnerFeed !== undefined) {
+						this.setSocialShareData(this.socialService.partnerFeed, true);
 						this.socialService.partnerFeed = "";
 					}
 				});
 	}
 
-	
-	setSocialShareData(selectedFeed:any,isPartnerFeed:boolean){
+
+	setSocialShareData(selectedFeed: any, isPartnerFeed: boolean) {
 		this.socialStatus = new SocialStatus();
 		this.socialStatus.statusMessage = selectedFeed.statusMessage;
 		let images = selectedFeed.socialStatusContents;
@@ -589,14 +603,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			self.socialStatus.socialStatusContents.push(socialStatusContent);
 		});
 		this.socialStatus.userId = this.userId;
-		if(isPartnerFeed){
+		if (isPartnerFeed) {
 			this.socialStatus.parentFeed = new SocialStatus();
 			this.socialStatus.parentFeed.id = selectedFeed.id;
 		}
 		this.socialStatusList[0] = this.socialStatus;
 	}
-	
-	
+
+
 
 	listSocialStatusProviders() {
 		this.socialStatusProviders = new Array<SocialStatusProvider>();
@@ -659,7 +673,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				if (result.totalRecords > 0) {
 					$('#preview-section').show();
 					videosPagination.totalRecords = result.totalRecords;
-					videosPagination = this.pagerService.getPagedItems(videosPagination, result.listOfMobinars);
+					videosPagination = this.pagerService.getPagedItems(videosPagination, result.list);
 					// this.previewVideo(videosPagination.pagedItems[0]);
 				}
 			});
@@ -686,9 +700,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 
 	loadContactLists(contactListsPagination: Pagination) {
-		if(this.alias!=undefined){
+		if (this.alias != undefined) {
 			this.loadContactsLeadsAndPartners(contactListsPagination);
-		}else{
+		} else {
 			contactListsPagination.filterValue = (this.alias === undefined) ? true : false;
 			contactListsPagination.filterKey = "isPartnerUserList";
 			contactListsPagination.isLoading = true;
@@ -706,33 +720,33 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					() => contactListsPagination.isLoading = false
 				);
 		}
-		
+
 	}
 
-	loadContactsLeadsAndPartners(contactListsPagination: Pagination){
-		if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+	loadContactsLeadsAndPartners(contactListsPagination: Pagination) {
+		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.contactListsPagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.contactListsPagination.vanityUrlFilter = true;
-		   }
-		if(this.socialCampaign.nurtureCampaign){
+		}
+		if (this.socialCampaign.nurtureCampaign) {
 			contactListsPagination.editCampaign = true;
 			contactListsPagination.campaignId = this.socialCampaign.campaignId;
 			contactListsPagination.parentCampaignId = this.socialCampaign.parentCampaignId;
-		}else{
+		} else {
 			contactListsPagination.editCampaign = false;
 			contactListsPagination.parentCampaignId = this.socialCampaign.campaignId;
 		}
 		contactListsPagination.userId = this.authenticationService.getUserId();
 		this.campaignService.listCampaignUsers(contactListsPagination)
-		.subscribe(
-		(response: any) => {
-			let data = response.data;
-			contactListsPagination.totalRecords = data.totalRecords;
-			contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.list);
-		},
-		(error: string) => this.logger.errorPage(error),
-		() => this.logger.info("Finished loadContactList()")
-		);
+			.subscribe(
+				(response: any) => {
+					let data = response.data;
+					contactListsPagination.totalRecords = data.totalRecords;
+					contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.list);
+				},
+				(error: string) => this.logger.errorPage(error),
+				() => this.logger.info("Finished loadContactList()")
+			);
 	}
 
 	/*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
@@ -832,15 +846,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 				element.find('.fc-right-block')
 					.after($(`<div id = ${event.id} class="fc-left-block col-xs-1 p0"> ${str} </div>`));
-				/*$(element).popover({
-					container: 'body',
-					html: true,
-					placement: 'auto',
-					trigger: 'hover',
-					content: function() {
-						return $('#fc-' + event.id).html();
-					}
-				});*/
+                /*$(element).popover({
+                    container: 'body',
+                    html: true,
+                    placement: 'auto',
+                    trigger: 'hover',
+                    content: function() {
+                        return $('#fc-' + event.id).html();
+                    }
+                });*/
 			},
 			eventClick: function(event) {
 				self.editSocialStatus(event.data.socialStatus);
@@ -954,7 +968,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			if (this.alias) {
 				this.nurtureCampaign = true;
 				this.getSocialCampaign(this.alias);
-			}else{
+			} else {
 				this.nurtureCampaign = false;
 				this.loadContactLists(this.contactListsPagination);
 			}
@@ -964,23 +978,23 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 		/*************Check Rss Feed Access*********** */
 		this.showRssFeedButton();
-		
+
 	}
 
-	showRssFeedButton(){
+	showRssFeedButton() {
 		this.loading = true;
 		this.socialService.hasRssFeedAccess(this.userId)
-        .subscribe(
-          data => {
-			this.showRssFeed = data.access;
-          },
-          error => {
-            this.loading = false;
-          },
-          () => {
-            this.loading = false;
-          }
-        );
+			.subscribe(
+				data => {
+					this.showRssFeed = data.access;
+				},
+				error => {
+					this.loading = false;
+				},
+				() => {
+					this.loading = false;
+				}
+			);
 
 	}
 
@@ -1237,59 +1251,68 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.socialStatusList[0] = this.socialStatus;
 	}
 
-	onKeyPress(event: KeyboardEvent) {
-		if (this.socialStatusList.length !== 0 && this.socialStatusList[0].statusMessage !== undefined) {
-			let enteredURL = this.socialStatusList[0].statusMessage.toLowerCase();
-			if (enteredURL.length === 0) {
-				this.socialStatus.statusMessage = ""
-				this.clearRssOgTagsFeed();
-			} else {
-				if (!this.isUrlValid(enteredURL)) {
-					this.socialStatus.statusMessage = enteredURL;
-					this.clearRssOgTagsFeed();
-				} else {
-					if (this.isUrlValid(enteredURL) && enteredURL !== this.savedURL) {
-						this.getOgTagsData(enteredURL);
-					}
-				}
-			}
+	onKeyPress(socialStatus: any) {
+		let enteredURL = socialStatus.statusMessage.trim();
+		if (enteredURL.length === 0) {
+			this.socialStatus.statusMessage = ""
+			this.clearRssOgTagsFeed(socialStatus);
+		} else {
+			this.getOgTagsData(socialStatus);
 		}
 	}
+
 
 	isUrlValid(url: string): Boolean {
 		let regex = "^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$";
 		var pattern = new RegExp(regex);
 		return pattern.test(url);
+
 	}
 
-	getOgTagsData(url: string) {
+		getOgTagsData(socialStatus: any) { 
+		let url = socialStatus.statusMessage;
 		let req = { "userId": this.userId, "q": url };
 		this.socialService.getOgMetaTags(req).subscribe(data => {
-			let response = data.data;
-			if (response !== undefined && response !== '') {
-				this.socialStatus.statusMessage = response.link;
-				this.socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
-				this.socialStatus.ogTitle = response.title;
-				this.socialStatus.ogDescription = response.description;
-				this.socialStatus.validLink = true;
-				this.socialStatus.ogt = true;
-				this.socialStatusList[0] = this.socialStatus;
-				this.savedURL = url;
-			}
+			if (data.statusCode === 8105) {
+				let response = data.data;
+				if (response !== undefined && response !== '') {
+					if(response.defaultOgImage){
+						socialStatus.ogImage = response.imageUrl;
+					}else{
+						socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
+					}
+					socialStatus.originalOgImage = socialStatus.ogImage;
+					socialStatus.ogTitle = response.title;
+					socialStatus.ogDescription = response.description;
+					socialStatus.validLink = true;
+					socialStatus.ogt = true;
+					this.savedURL = url;
+					this.validURL = this.savedURL;
+				}
+			} else {
+				this.clearRssOgTagsFeed(socialStatus);
+				
+			}            
 		}, error => {
-			this.clearRssOgTagsFeed();
-			console.log(error);
+			this.clearRssOgTagsFeed(socialStatus);
+            console.log(error);
 		}, () => console.log("Campaign Names Loaded"));
 	}
 
-	clearRssOgTagsFeed() {
-		this.socialStatus.ogImage = ""
-		this.socialStatus.ogTitle = "";
-		this.socialStatus.ogDescription = "";
-		this.socialStatus.validLink = false;
-		this.socialStatus.ogt = false;
-		this.socialStatusList[0] = this.socialStatus;
-		this.savedURL = '';
+		clearRssOgTagsFeed(socialStatus: any) {
+			this.isSavedUrlIsInStatusMessage = socialStatus.statusMessage.includes(this.validURL);
+			if(this.isSavedUrlIsInStatusMessage){
+				this.savedURL = socialStatus.statusMessage;
+			}
+			else{
+				socialStatus.ogImage = ""
+				socialStatus.ogTitle = "";
+				socialStatus.ogDescription = "";
+				socialStatus.validLink = false;
+				socialStatus.ogt = false;
+				this.savedURL = '';
+			}
+        
 	}
 
 	listCategories() {
@@ -1304,4 +1327,26 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			error => { this.logger.error("error in getCategoryNamesByUserId(" + this.userId + ")", error); },
 			() => this.logger.info("Finished listCategories()"));
 	}
+
+	toggleEnable(socialConnection: SocialConnection) {
+		if (socialConnection.canSaveSocialConnections) {
+			socialConnection.active = !socialConnection.active;
+		} else {
+			swal("Sorry! you are not authorized to update this account.", "", "info");
+		}
+	}
+
+	closeOgTags(targetSocialStatus: SocialStatus){
+		this.socialStatusList.forEach(data => {
+			if(data.socialStatusProvider.socialConnection.id === targetSocialStatus.socialStatusProvider.socialConnection.id){
+				data.ogDescription = null;
+				data.ogImage = null;
+				data.ogTitle = null;
+				data.ogImagePath = null;
+				data.originalOgImage = null;
+				data.removeOgTags = true;
+			}	
+		});
+	}
+
 }

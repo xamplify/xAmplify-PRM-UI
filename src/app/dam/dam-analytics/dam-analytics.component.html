@@ -1,7 +1,7 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
    <ng-container *ngIf="initLoader">
-      <app-modal-popup-loader></app-modal-popup-loader>>
+      <app-modal-popup-loader></app-modal-popup-loader>
    </ng-container>
    <ng-container *ngIf="!initLoader">
   <div class="page-bar">
@@ -36,7 +36,9 @@
       <div class="page-bar">
          <ul class="page-breadcrumb">
             <li>
-               <span><strong class="bold-asset">Asset Name </strong>: {{selectedAssetName | slice:0:50}}
+               <span>
+                  <strong class="bold-asset">Asset Name </strong>: 
+                  <span title="{{selectedAssetName}}">{{selectedAssetName | slice:0:50}}</span>
                   <span *ngIf="selectedAssetName?.length>50">..</span></span>
             </li>
          </ul>

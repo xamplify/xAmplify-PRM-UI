@@ -38,6 +38,7 @@ import { UserLevelTimelineComponent } from './user-level-timeline/user-level-tim
 import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
 
 import { LeadsService } from '../leads/services/leads.service';
+import { SpfModalPopupComponent } from './spf-modal-popup/spf-modal-popup.component';
 
 @NgModule({
   imports: [
@@ -73,7 +74,8 @@ import { LeadsService } from '../leads/services/leads.service';
     CampaignWorkFlowsUtilComponent,
     ClickedUrlsVendorAnalyticsComponent,
     UserLevelTimelineComponent,
-    UserCampaignsListUtilComponent
+    UserCampaignsListUtilComponent,
+    SpfModalPopupComponent
   ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],

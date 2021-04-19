@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 import { Pagination } from '../../core/models/pagination';
 import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { DealDynamicProperties } from 'app/deal-registration/models/deal-dynamic-properties';
 
 @Injectable()
 export class DealsService {
@@ -120,6 +121,23 @@ listCampaignsForPartner(pagination: Pagination) {
     .catch(this.handleError);
 }
 
+deleteProperty(comment: DealDynamicProperties) {
+  return this.http.post(this.URL + `properties/delete?access_token=${this.authenticationService.access_token}`, comment)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+getConversationByProperty(propertyId:number, userId:number) {
+  return this.http.get(this.URL + `/property/${propertyId}/chat/${userId}?access_token=${this.authenticationService.access_token}`)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getConversation(dealId:number, userId:number) {
+  return this.http.get(this.URL + `/${dealId}/chat/${userId}?access_token=${this.authenticationService.access_token}`)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
 	private extractData(res: Response) {
     let body = res.json();
     return body || {};

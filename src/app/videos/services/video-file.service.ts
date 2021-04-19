@@ -91,7 +91,7 @@ export class VideoFileService {
             url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
         } else {
             if (this.videoType === 'myVideos') {
-                url = this.URL + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
+                url = this.URL + 'loadVideos/'+this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
             } else if (this.videoType === 'partnerVideos') {
                 url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
             }
@@ -249,7 +249,7 @@ export class VideoFileService {
     }
     loadCampaignVideos(pagination: Pagination, categoryId: number) {
         console.log(pagination);
-        const url = this.URL + categoryId +
+        const url = this.URL + 'loadVideos/'+ categoryId +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         console.log(url);
         return this.http.post(url, pagination)

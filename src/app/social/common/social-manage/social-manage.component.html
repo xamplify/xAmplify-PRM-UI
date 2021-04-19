@@ -74,7 +74,7 @@
 
                 <div *ngIf="socialConnections?.length > 0">
                   <div class="col-md-3 col-sm-4 col-xs-12 box" *ngFor="let socialConnection of socialConnections;let i = index">
-                    <div (click)="confirmRemoveAccount(socialConnection)" class="delete-account">
+                    <div (click)="confirmRemoveAccount(socialConnection)" *ngIf="socialConnection.canSaveSocialConnections" class="delete-account">
                       <i class="fa fa-trash-o fa-2x pull-right" style="color: red;" ></i>
                     </div>
                     <div class="portlet light block" (click)="confirmDialog(socialConnection)" [ngClass]="{'checked': socialConnection.active, 'unchecked': !socialConnection.active}">

@@ -1464,15 +1464,10 @@ a.disabled {
                     </div>
                   <div id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate && !reDistributeEvent && !reDistributeEventManage">
                       <div >
-                        <label for="days" id="email-template-{{reply.divId}}">Select Email Template<b style="color: red">*</b></label>
+                        <label for="days" id="email-template-{{reply.divId}}">Select Email Template
+							<strong style="color: red">*</strong></label>
                       </div>
                       <div [hidden]="eventCampaign.nurtureCampaign || isPreviewEvent">
-                        <ul class="mix-filter col-xs-8 p0"  *ngIf="!isOnlyPartner" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
-                          <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">All Email</li>
-                          <li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich</li>
-                          <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">Uploaded Regular</li>
-                          <li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">Partner</li>
-                        </ul>
                         <div class="input-icon pull-right col-xs-3" style="padding-right: 0px;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
                           <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
                           placeholder="Search" (keypress)="eventReplyHandler($event.keyCode, reply)">
@@ -1499,8 +1494,8 @@ a.disabled {
                                       </span>
                                        <span class="ng-scope"> <a
                                         class="item__preview item__preview--image img-container custom"
-                                        target="_BLANK"> <img
-                                          class="thumb ng-scope" style="width:98px !important" src="{{reply.emailTemplate.subject}}">
+										target="_BLANK"> 
+										<img alt="" class="thumb ng-scope" style="width:98px !important" src="{{reply.emailTemplate.subject}}">
                                       </a> <a href="javascript:;"> </a>
                                       </span>
                                     </div>
@@ -1519,7 +1514,7 @@ a.disabled {
                                         <div class="item__actions">
                                           <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                             data-toggle="tooltip" data-placement="top"
-                                            title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(reply.emailTemplate)">
+                                            title="Preview"  (click)="$event.stopPropagation();getTemplateById(reply.emailTemplate)">
                                               <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                            </a>
                                           </span>
@@ -1534,7 +1529,6 @@ a.disabled {
                            <ul [hidden]="reDistributeEvent || reDistributeEventManage || isPreviewEvent" class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
                             <li (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.list__item--selected]="emailTemplate.id==reply.selectedEmailTemplateId"
                                 *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id" class="list__item">
-                              <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
                               <div class="flex-row">
                                 <div class="item__select-box-wrapper">
                                   <span class="select-box">
@@ -1547,15 +1541,15 @@ a.disabled {
                                   </span>
                                    <span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
                                     target="_BLANK">
-                                     <img  class="thumb ng-scope" style="width: 98px !important;" src="{{emailTemplate.subject}}">
+                                     <img  class="thumb ng-scope" style="width: 98px !important;" src="{{emailTemplate.subject}}" alt="">
                                   </a> <a href="javascript:;"> </a>
                                   </span>
                                 </div>
                                 <div class="item__content">
                                   <div class="flex-row">
                                     <span class="item__name" data-toggle="tooltip"
-                                      [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
-                                      <span *ngIf="emailTemplate.name?.length>18">...</span></b>
+                                      [title]="emailTemplate.name"><strong>{{emailTemplate.name | slice:0:18}}
+                                      <span *ngIf="emailTemplate.name?.length>18">...</span></strong>
                                     </span>
                                     <div class="item__last-modified">
                                       <span [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
@@ -1567,7 +1561,8 @@ a.disabled {
                                     </div>
                                     <div class="item__actions">
                                       <span> <a class="fm external-link" target="_BLANK"
-                                          data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)"> <!-- (click)="preview(file)"  -->
+										  data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();
+										  getTemplateById(emailTemplate)">
                                           <i class="fa fa-external-link-square" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
                                       </a>
                                       </span>
@@ -1702,11 +1697,11 @@ a.disabled {
       <div class="modal-content">
         <div class="modal-header">
           <a class="close-circle" data-dismiss="modal" (click)="closeModal()">
-            <i class="fa fa-times"></i>
+            <i class="fa fa-times" aria-hidden="true"></i>
           </a>
-          <h4 id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo" style="font-weight: 600;color: #635e5e !important;">
-            <span *ngIf="previewContactList.name?.length<20">{{previewContactList.name}}</span>
-            <span *ngIf="previewContactList.name?.length>20">{{previewContactList.name | slice:0:20}}</span>
+          <h4  id="contactsModalLabel" class="modal-title caption-subject font-red-sunglo" style="font-weight: 600;color: #635e5e !important;">
+            <span title="{{previewContactList?.name}}">{{previewContactList.name | slice:0:50}}</span>
+            <span *ngIf="previewContactList?.name.length>50">..</span>
           </h4>
         </div>
         <div class="modal-body">

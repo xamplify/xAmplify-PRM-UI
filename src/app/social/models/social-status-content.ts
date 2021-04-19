@@ -8,6 +8,7 @@ export class SocialStatusContent {
   filePath: string;
   fileName: string;
   fileSize: number;
+  completeFilePath: string;
 
   createdTime: Date;
   updatedTime: Date;

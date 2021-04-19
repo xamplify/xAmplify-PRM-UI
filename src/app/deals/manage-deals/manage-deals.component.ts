@@ -15,6 +15,7 @@ import { UserService } from 'app/core/services/user.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { Roles } from '../../core/models/roles';
 import { DealsService } from '../services/deals.service';
+import { LeadsService } from '../../leads/services/leads.service';
 import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 declare var swal, $, videojs: any;
@@ -23,7 +24,7 @@ declare var swal, $, videojs: any;
   selector: 'app-manage-deals',
   templateUrl: './manage-deals.component.html',
   styleUrls: ['./manage-deals.component.css'],
-  providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue],
+  providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue, LeadsService],
 })
 export class ManageDealsComponent implements OnInit {
   loggedInUserId: number = 0;
@@ -59,6 +60,8 @@ export class ManageDealsComponent implements OnInit {
   selectedPartnerCompanyName = "";
   showPartnerList = false;
   showCampaignDeals = false;
+  selectedDeal: Deal;
+  isCommentSection = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -399,7 +402,6 @@ export class ManageDealsComponent implements OnInit {
 
   closeDealForm() {
     this.showDealForm = false;
-    //this.getCounts();    
     this.showDeals();
   }
 
@@ -445,7 +447,6 @@ export class ManageDealsComponent implements OnInit {
     this.showDealForm = true;   
     this.actionType = "view";
     this.dealId = deal.id;
-    
   }
 
   editDeal(deal: Deal) {
@@ -603,6 +604,7 @@ export class ManageDealsComponent implements OnInit {
     this.showDealForm = true;   
     this.actionType = "view";
     this.dealId = dealId;
+    
   }
 
   editCampaignDealForm(dealId: any) {
@@ -613,6 +615,16 @@ export class ManageDealsComponent implements OnInit {
 
   refreshCounts() {
     this.getCounts();
+  }
+
+  showComments(deal: any) {
+    this.selectedDeal = deal;
+    this.isCommentSection = !this.isCommentSection;
+  }
+
+  addCommentModalClose(event: any) {
+    this.selectedDeal.unReadChatCount = 0;
+    this.isCommentSection = !this.isCommentSection;
   }
 
 }

@@ -85,7 +85,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   editForm = false;
   portletBody = 'portlet-body';
   portletBodyBlur = 'portlet-body';
-  buttonName = "Save Form";
+  buttonName = "Save";
   existingFormName = "";
   isFullScreenView = false;
   toolTip = "Maximize";
@@ -167,6 +167,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   formSubmissionUrlErrorMessage = "";
   colorCodeErrorMessage = 'Enter a valid color code';
   defaultAnswerErrorMessage = "Quiz question without default answer is not allowed";
+  isSaveAs = false;
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
@@ -259,7 +260,11 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.formHeader = "EDIT MDF FORM"; 
         this.removeBlurClass();
       }else{
-        this.formHeader = "CREATE FORM"; 
+         if(this.router.url.indexOf('edit')>-1){
+            this.formHeader = "EDIT FORM"; 
+         }else{
+            this.formHeader = "CREATE FORM"; 
+         }
         this.listFormNames();
         this.listCategories();
         if (this.isAdd) {
@@ -646,7 +651,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       } else if (type == 'Dollar') {
           symbol = "$"
       } else if (type == 'Yen') {
-          symbol = " ¥"
+          symbol = "¥"
       } else if (type == 'Pound') {
           symbol = "£"
       } else if (type == 'Euro') {
@@ -697,11 +702,6 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               const invalidQuizChoicesDivCount = this.columnInfos.filter((item) => item.editQuizChoiceDivClass === this.borderErrorClass).length;
               const totalCount = invalidLabelDivCount + invalidChoicesDivCount + invalidQuizChoicesDivCount;
               if (totalCount == 0 && this.form.isValid) {
-                //   $.each(this.columnInfos, function(index: number, value: ColumnInfo){
-                //       if(value.labelType === 'quiz'){
-                //           value.labelType = value.labelType + "_" +value.choiceType;
-                //       }
-                //   })
                   this.saveOrUpdateForm();
               } else {
                   let message = "";
@@ -879,7 +879,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if (!this.form.companyLogo) {
           this.form.companyLogo = this.companyLogoImageUrlPath;
       }
-      if (this.isAdd) {
+      if (this.isAdd || this.isSaveAs) {
+          this.form.saveAs = this.isSaveAs;
           this.save(this.form);
       } else {
           this.update(this.form);
@@ -1046,6 +1047,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               this.isValidPageBackgroundColor = true;
           }
       } catch (error) { console.log(error); }
+      this.checkValideColorCodes();
   }
 
   characterSize() {
@@ -1546,9 +1548,18 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
         this.pageBackgroundColor = colorCode;
         this.isValidPageBackgroundColor = true;
     }
+    this.checkValideColorCodes();
+}
+
+checkValideColorCodes(){
     if (this.isValidBackgroundColor && this.isValidLabelColor && this.isValidButtonBackgroundColor && this.isValidButtonValueColor && this.isValidTitleColor && this.isValidBorderColor && this.isValidPageBackgroundColor) {
         this.form.isValidColorCode = true;
     }
+}
+
+saveAs(){
+	this.isSaveAs = true;
+	this.validateForm();
 }
 
 }

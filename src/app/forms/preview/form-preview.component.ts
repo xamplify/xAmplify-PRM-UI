@@ -54,6 +54,7 @@ export class FormPreviewComponent implements OnInit {
   siteKey = "";
   @Input() learningTrackId:number;
   @Output() notifyParent: EventEmitter<any>;
+  @Output() captchaValue: EventEmitter<any>;
 
   resolved(captchaResponse: string) {
     if(captchaResponse){
@@ -61,6 +62,7 @@ export class FormPreviewComponent implements OnInit {
         (response: any) => {
           console.log(response);
           this.enableButton = response;
+          this.captchaValue.emit(this.enableButton);
         },
         (error: string) => {
           this.logger.errorPage(error);
@@ -68,6 +70,7 @@ export class FormPreviewComponent implements OnInit {
       );
     }else{
       this.enableButton = false;
+      this.captchaValue.emit(this.enableButton);
     }
   }
   constructor(private route: ActivatedRoute, public envService: EnvService, private referenceService: ReferenceService,
@@ -76,6 +79,7 @@ export class FormPreviewComponent implements OnInit {
     private landingPageService: LandingPageService, public deviceService: Ng2DeviceService, public utilService: UtilService, public sanitizer: DomSanitizer, private vanityURLService: VanityURLService) {
       this.siteKey = this.envService.captchaSiteKey;
       this.notifyParent = new EventEmitter<any>();
+      this.captchaValue = new EventEmitter<any>();
 
   }
 

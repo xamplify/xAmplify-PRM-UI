@@ -522,3 +522,24 @@ outline:none;
 .margin-top-folder{
 	margin-top: 15px;
 }
+
+.ogImage{
+	margin-top: 0px;
+    padding: 10px 0px;
+    border: 1px solid #cac8c8;
+    border-radius: 10px;
+}
+.ogImage-Gear-Icon{
+	position: absolute;
+    right: 6px;
+    top: 6px;
+	font-size: 15px;
+	cursor: pointer;
+}
+
+#close {
+    float:right;
+    display:inline-block;
+    padding:2px 5px;
+    background:#ccc;
+}
