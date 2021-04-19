@@ -212,6 +212,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	pipelinePreview = false;
 	excludeUserPagination: Pagination = new Pagination();
 	excludeUsersOrDomains = false;
+	isUpdateUser = false;
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
 	public hubSpotCurrentUser: any;
