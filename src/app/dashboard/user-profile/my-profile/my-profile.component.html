@@ -133,8 +133,18 @@
                                 <a (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
+                            <ng-container *ngIf="excludeUsersOrDomains">
+                                <li [ngClass]="{'active-tab': activeTabName == 'exclude'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                                authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
+                                 authenticationService.superiorRole != 'Partner'">
+                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}" (click)="activateTab('exclude');clearCustomResponse()"> {{properties.exclude | translate}}</a>
+                                </li>
+                            </ng-container>
+                               
+
                             <li  [ngClass]="{'active-tab': activeTabName == 'spf'}" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}" (click)="activateTab('spf');clearCustomResponse()">{{properties.spf | translate}}</a>
+
                             </li>
                         </ng-container>
                           
@@ -1162,6 +1172,96 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--Exclude functionality code-->
+										<div class="tab-pane hidden-xs"
+											[ngClass]="{'active': activeTabName == 'exclude'}">
+											<app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
+											</app-dashboard-loader>
+											<app-response-message [customResponse]="gdprCustomResponse"
+												*ngIf="gdprCustomResponse.isVisible"></app-response-message>
+
+											<form action="#" novalidate=""
+												class="ng-untouched ng-pristine ng-valid"
+												*ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+												<table class="table table-light"
+													style="border: 0px !important; background-color: transparent !important">
+													<tbody>
+														<fieldset>
+															<legend>Exclude contact</legend>
+															<!-- new -->
+
+															<div class="btn-group">
+																<button id="add_contact" class="btn green"
+																	(click)="addContactModalOpen()" translate>
+																	One at a Time <i class="fa fa-plus"
+																		style="font-size: 12px; margin-left: 5px;"></i>
+																</button>
+															</div>
+
+															<div style="margin-top: 10px;" *ngIf="excludeUserPagination.pagedItems?.length === 0" class="alert alert-info">
+																<strong>No Records Found.</strong>
+															</div>
+
+															<div class="clearfix" *ngIf="excludeUserPagination.pagedItems?.length>0" >
+										<div class="col-xs-12 p0" style="margin-top: 10px;">
+											<div class="table-responsive">
+												<table class='table tgrid'
+													*ngIf="excludeUserPagination.pagedItems?.length>0" >
+													<thead>
+														<tr>
+															<!-- <th class='text-center'><input type="checkbox"
+																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+																(change)="checkAll($event)"
+																id="checkAllExistingContacts"/></th> -->
+															<th style="width: 25%"  translate>Name</th>
+															<th style="width: 25%"  translate>Time</th>										
+														<th style="width:16%"  translate>ACTIONS</th>
+														</tr>
+													</thead>
+													<tbody>
+														<ng-container *ngFor="let user of excludeUserPagination.pagedItems ;let i =index">															
+														<tr class='row_{{i}}' style="background-color: #FFFFFF;">
+															<!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+															<td>
+															<app-user-info  [userInfo]="user"> </app-user-info>
+															</td>
+															<td>
+															<h6>
+                        <app-timestamp [dateAndTime]="user.time"> </app-timestamp>
+                      </h6>
+															</td>
+																<td >
+															<div class="actions-block override-actions"  style="float:none;">
+																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="deleteExcludedUser(user.userId)" >
+																		<i class="fa fa-trash-o" aria-hidden="true"></i>
+																</a>
+                                                            </div>
+															</td>
+															
+														</ng-container>
+												</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									
+									<!-- paignation added-->
+									 <div *ngIf="excludeUserPagination.pagedItems.length !== 0" class="pg8">
+                                            <app-pagination [type]="'excludeUsers'" [pagination]="excludeUserPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedUsers($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                        </div>
+									<!-- paignation end-->
+
+															<!-- new -->
+														</fieldset>
+														<br>
+													</tbody>
+												</table>
+											</form>
+
+
+										</div>
+										<!--Exclude functionality code-->
+                                    
                                 </div>
                             </div>
                         </div>
@@ -1378,3 +1478,64 @@
         </div>
     </div>
 </div>
+
+<!------------------------------Add exclude cotact popup---------->
+
+<div id="addContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+<div class="modal-dialog  accounts-modal" style="position: relative !important;">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></button>
+      <!-- <a class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></a> -->
+      <h4 class="modal-title size-font" *ngIf="!isUpdateUser" translate>Add Contact</h4>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal" autocomplete="off">
+
+      <div class="form-group">
+            <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
+                <span class="star"> *</span>
+            </label>
+           <div class="form-group col-xs-10 col-sm-10" >
+              <input type="email" style="border: none" class="form-control padding-mobile" id="email1"
+              (blur)="checkingEmailPattern(addContactuser.emailId)"  (input)="validateEmail(addContactuser.emailId)"
+              [(ngModel)]="addContactuser.emailId"  [ngModelOptions]="{standalone: true}"
+              placeholder="Email *" autocomplete="off" maxlength="250">
+            <div class="textCss"></div>
+            <span class="danger" *ngIf="!validEmailPatternSuccess" translate>Please enter a valid email address</span>
+            <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>
+            <span class="danger" *ngIf="!validEmailFormat" translate>The entered email is not formatted properly</span>
+           </div>
+         </div>
+        <div class="form-group">
+          <label class="control-label col-xs-2 col-sm-2" for="name"style="color: blue">
+          </label>
+          <div class="form-group col-xs-5 col-sm-5">
+            <input type="name" style="border: none" class="form-control padding-mobile" id="firstName"
+              [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="First Name" maxlength="250">
+            <div class="textCss"></div>
+          </div>
+          <div class="form-group col-xs-6 col-sm-5">
+            <input type="name" style="border: none" class="form-control padding-mobile" id="lastName"
+            [(ngModel)]="addContactuser.lastName" [ngModelOptions]="{standalone: true}" placeholder="Last Name" maxlength="250">
+            <div class="textCss"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer" style="border:none">
+      <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
+      <button  type="submit" class="btn green"  (click)="saveExcludedUser(addContactuser)"  [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+

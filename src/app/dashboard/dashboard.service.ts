@@ -247,6 +247,12 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    getModulesAccessByUserId() {
+        return this.http.get(this.authenticationService.REST_URL + `admin/getModulesAccessByLoggedInUserId/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     getCompanyDetailsAndUserId(companyId: number, userAlias: string) {
         return this.http.get(this.authenticationService.REST_URL + `superadmin/getUserAndCompanyDetails/${companyId}/${userAlias}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)

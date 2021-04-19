@@ -227,7 +227,11 @@
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							</ng-container>
-							
+							<tr>
+								<th scope="row">Exclude Users/Domains</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.excludeUsersOrDomains"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
 						</tbody>
 					</table>
 				</div>

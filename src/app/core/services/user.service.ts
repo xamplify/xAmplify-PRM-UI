@@ -440,5 +440,25 @@ export class UserService {
         }
 
     }
+    
+    saveExcludedUser(user: User, loggedInUserId : number) {
+    	 return this.http.post(this.URL + "save-excluded-user/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, user)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    listExcludedUsers(loggedInUserId : number, excludeUserPagination:Pagination) {
+        return this.http.post(this.URL + "list-excluded-users/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludeUserPagination)
+           .map(this.extractData)
+           .catch(this.handleError);
+   }
+    
+    deleteExcludedUser(loggedInUserId : number, excludedUserId : number){
+    	return this.http.get(this.URL + "delete-excluded-user/"+ excludedUserId+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    	
+    }
+    
 
 }
