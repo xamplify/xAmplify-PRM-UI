@@ -211,7 +211,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	requiredStageMessage = "Required atleast one valid stage.";
 	pipelinePreview = false;
 	excludeUserPagination: Pagination = new Pagination();
-
+	excludeUsersOrDomains = false;
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
 	public hubSpotCurrentUser: any;
@@ -438,13 +438,23 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					localStorage.setItem('isSalesForceAuth', 'yes');
 				}
 			}, false);
-
+			this.getModuleAccessByUser();
 		} catch (error) {
 			this.hasClientErrors = true;
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
 	}
+
+	getModuleAccessByUser() {
+		this.ngxloading = true;
+		this.dashBoardService.getModulesAccessByUserId().subscribe(result => {
+			this.excludeUsersOrDomains = result.excludeUsersOrDomains;
+			this.ngxloading = false;
+		  }, _error => {
+			this.ngxloading = false;
+		  });
+	  }
 
 	getRoles(){
 		this.ngxloading = true;

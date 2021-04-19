@@ -26,4 +26,5 @@ export class CampaignAccess {
   dashboardType:DashboardType;
   dashboardTypeInString = "";
   playbooks = false;
+  excludeUsersOrDomains = false;
 }
