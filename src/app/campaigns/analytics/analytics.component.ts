@@ -1117,7 +1117,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           data => {
             this.campaign = data;
             this.isChannelCampaign = data.channelCampaign;
-            if (this.campaign.nurtureCampaign && this.campaign.userId != this.loggedInUserId && !this.authenticationService.isPartnerTeamMember && !this.isOnlyPartner) {
+            if (this.campaign.nurtureCampaign && this.campaign.userId != this.loggedInUserId && !this.authenticationService.isPartnerTeamMember && !this.isOnlyPartner
+            		&& !this.authenticationService.isVendorAndPartnerTeamMember  && !this.authenticationService.isOrgAdminAndPartnerTeamMember ) {
               this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
               this.isDataShare = this.campaign.dataShare;
               this.isNavigatedThroughAnalytics = true;

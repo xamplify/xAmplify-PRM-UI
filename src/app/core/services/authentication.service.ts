@@ -44,6 +44,8 @@ export class AuthenticationService {
   roleName: Roles = new Roles();
   isAddedByVendor = false;
   isPartnerTeamMember = false;
+  isVendorAndPartnerTeamMember = false;
+  isOrgAdminAndPartnerTeamMember = false;
   superiorRole = '';
   selectedVendorId: number;
   venorMyProfileReport: any;
