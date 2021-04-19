@@ -53,6 +53,9 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	isParnterGroupHeaderCheckBoxChecked = false;
 	isPublishedToPartnerGroup = false;
 	modalPopupLoader: boolean;
+	showUsersPreview = false;
+	selectedPartnerGroupName = "";
+	selectedPartnerGroupId:number=0;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -506,7 +509,6 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	highlightSelectedPartnerGroupOnRowClick(partnerGroupId: any, event: any) {
 		this.referenceService.highlightRowOnRowCick('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
-		console.log(this.selectedPartnerGroupIds);
 	}
 
 	highlightPartnerGroupRowOnCheckBoxClick(partnerGroupId: any, event: any) {
@@ -516,8 +518,18 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	selectOrUnselectAllPartnerGroupsOfTheCurrentPage(event:any){
 		this.selectedPartnerGroupIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds,this.partnerGroupsPagination,event);
 	}
-
-
+	
+	previewUserListUsers(partnerGroup:any){
+		this.showUsersPreview = true;
+		this.selectedPartnerGroupName = partnerGroup.groupName;
+		this.selectedPartnerGroupId = partnerGroup.id;
+	}
+	
+	resetValues(){
+		this.showUsersPreview = false;
+		this.selectedPartnerGroupName ="";
+		this.selectedPartnerGroupId = 0;
+	}
 
 
 }

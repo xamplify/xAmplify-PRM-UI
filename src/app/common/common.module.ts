@@ -85,6 +85,7 @@ import { AddTagsUtilComponent } from 'app/util/add-tags-util/add-tags-util.compo
 import { CampaignsLaunchedByPartnersComponent } from 'app/util/campaigns-launched-by-partners/campaigns-launched-by-partners.component';
 import { SpfDescriptionComponent } from 'app/util/spf-description/spf-description.component';
 import { PartnerCompanyAndGroupsModalPopupComponent } from 'app/util/partner-company-and-groups-modal-popup/partner-company-and-groups-modal-popup.component';
+import { PreviewUserListComponent } from 'app/util/preview-user-list/preview-user-list.component';
 
 
 
@@ -101,7 +102,7 @@ import { PartnerCompanyAndGroupsModalPopupComponent } from 'app/util/partner-com
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
 		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent,
-		ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent,PartnerCompanyAndGroupsModalPopupComponent],
+		ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent],
 
 
 
@@ -115,7 +116,7 @@ import { PartnerCompanyAndGroupsModalPopupComponent } from 'app/util/partner-com
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
 		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent,PartnerCompanyAndGroupsModalPopupComponent]
+		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent]
 
 
 })

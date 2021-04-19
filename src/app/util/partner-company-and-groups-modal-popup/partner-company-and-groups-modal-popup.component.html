@@ -223,7 +223,7 @@
                                                       </app-timestamp>
                                                     </td>
                                                     <td class="text-center">
-                                                       <div class="actions-block none-float" (click)="previewItems(partnerGroup.id)">
+                                                       <div class="actions-block none-float" (click)="$event.stopPropagation();previewUserListUsers(partnerGroup)">
                                                           <a><i class="fa fa-eye" aria-hidden="true"></i></a>
                                                        </div>
                                                     </td>
@@ -256,3 +256,6 @@
   </div>
 </div>
 </div>
+<ng-container *ngIf="showUsersPreview">
+<app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+</ng-container>
