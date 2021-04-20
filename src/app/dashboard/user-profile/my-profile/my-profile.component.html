@@ -1177,9 +1177,7 @@
 											[ngClass]="{'active': activeTabName == 'exclude'}">
 											<app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
 											</app-dashboard-loader>
-											<app-response-message [customResponse]="gdprCustomResponse"
-												*ngIf="gdprCustomResponse.isVisible"></app-response-message>
-
+											<app-response-message [customResponse]="excludeUserCustomResponse"></app-response-message>
 											<form action="#" novalidate=""
 												class="ng-untouched ng-pristine ng-valid"
 												*ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">

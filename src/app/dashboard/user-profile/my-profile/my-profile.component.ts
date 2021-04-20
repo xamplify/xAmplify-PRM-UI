@@ -139,6 +139,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	sfRedirectURL: string;
 	/*****************GDPR************************** */
 	gdprSetting: GdprSetting = new GdprSetting();
+	excludeUserCustomResponse  : CustomResponse = new CustomResponse(); 
 	gdprCustomResponse : CustomResponse = new CustomResponse();
 	gdprSettingLoaded = false;
 	category: Category = new Category();
@@ -2717,6 +2718,7 @@ configSalesforce() {
         this.validEmailPatternSuccess = true;
         this.validEmailFormat = true;
         this.isEmailExist = false;
+        this.validEmailPattern = false;
     }
 
     checkingEmailPattern( emailId: string ) { 
@@ -2739,7 +2741,7 @@ configSalesforce() {
             data => {
                 if (data.statusCode == 200) {
                     this.addContactModalClose();
-                    this.customResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
+                    this.excludeUserCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
                     this.listExcludedUsers(this.excludeUserPagination);
                     this.ngxloading = false;
                 } else if (data.statusCode == 401) { 
@@ -2780,7 +2782,7 @@ configSalesforce() {
             .subscribe(
             response => {  
             	 if (response.statusCode == 200) {
-            		 this.customResponse = new CustomResponse('SUCCESS', this.properties.exclude_delete, true);
+            		 this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_delete, true);
             		 this.listExcludedUsers(this.excludeUserPagination);            		 
             	 }
                 this.ngxloading = false;
