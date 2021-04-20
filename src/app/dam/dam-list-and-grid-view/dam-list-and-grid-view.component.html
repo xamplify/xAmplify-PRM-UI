@@ -280,7 +280,7 @@
 						*ngFor="let asset of pagination.pagedItems ;let i =index"
 						id="assetList_{{asset.id}}">
 						<div class="grid-box min-h">
-							<img class="img-class" src="{{asset?.thumbnailPath}}"
+							<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
 								alt="{{asset?.assetName}}">
 							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
 								{{asset?.assetName | slice:0:25}} <span
@@ -378,7 +378,7 @@
 						*ngFor="let asset of historyPagination.pagedItems ;let i =index"
 						id="assetList_{{asset.id}}">
 						<div class="grid-box">
-							<img class="img-class" src="{{asset?.thumbnailPath}}"
+							<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
 								alt="{{asset?.assetName}}">
 							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
 								{{asset?.assetName | slice:0:25}} <span
