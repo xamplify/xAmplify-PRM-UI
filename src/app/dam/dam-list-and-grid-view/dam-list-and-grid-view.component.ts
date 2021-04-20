@@ -191,10 +191,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if (result.statusCode === 200) {
 				let data = result.data;
 				pagination.totalRecords = data.totalRecords;
-				$.each(data.assets, function (_index: number, asset: any) {
+				$.each(data.list, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.publishedTimeInUTCString);
 				});
-				pagination = this.pagerService.getPagedItems(pagination, data.assets);
+				pagination = this.pagerService.getPagedItems(pagination, data.list);
 			}
 			this.stopLoaders();
 		}, error => {
