@@ -160,7 +160,7 @@ export class Properties {
   dealPipelines = "Deal Pipelines";
   tags = "Tags";
 
-  exclude = "Exclude Domian or Contact"
+  exclude = "Exclude Domain or Contact"
   exclude_add =  "User added successfully";
   exclude_delete =  "User deleted successfully";
 
