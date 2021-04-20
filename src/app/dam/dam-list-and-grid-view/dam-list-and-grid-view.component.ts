@@ -58,6 +58,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	beeTemplatePreview = false;
 	assetPath = "";
 	imageLoading = false;
+	damViewStatusCode = 200;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
@@ -516,6 +517,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	viewDetails(asset: any) {
+		this.damViewStatusCode = 200;
 		this.selectedAsset = asset;
 		this.assetDetailsPreview = true;
 		this.selectedAssetId = asset.id;
@@ -523,10 +525,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.damService.getSharedAssetDetailsById(asset.id)
 			.subscribe(
 				(response: any) => {
+					this.damViewStatusCode = response.statusCode;
 					if (response.access) {
 						if (response.statusCode == 200) {
 							this.assetDetailsViewDto = response.data;
 							this.assetDetailsViewDto.displayTime = new Date(this.assetDetailsViewDto.publishedTimeInUTCString);
+						}else if(response.statusCode==404){
+							this.referenceService.goToPageNotFound();
 						}
 					} else {
 						this.authenticationService.forceToLogout();
@@ -536,36 +541,36 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					this.xtremandLogger.errorPage(error);
 				},
 				() => {
-					this.utilService.getJSONLocation().subscribe(
-						(response: any) => {
-							let damAnalyticsPostDto = new DamAnalyticsPostDto();
-							let geoLocationDetails = new GeoLocationAnalytics();
-							let deviceInfo = this.deviceService.getDeviceInfo();
-							if ( deviceInfo.device === 'unknown' ) {
-								deviceInfo.device = 'computer';
+					if(this.damViewStatusCode==200){
+						this.utilService.getJSONLocation().subscribe(
+							(response: any) => {
+								let damAnalyticsPostDto = new DamAnalyticsPostDto();
+								let geoLocationDetails = new GeoLocationAnalytics();
+								let deviceInfo = this.deviceService.getDeviceInfo();
+								if ( deviceInfo.device === 'unknown' ) {
+									deviceInfo.device = 'computer';
+								}
+								geoLocationDetails.openedTime = new Date();
+								geoLocationDetails.deviceType = deviceInfo.device;
+								geoLocationDetails.os =deviceInfo.os;
+								geoLocationDetails.city = response.city;
+								geoLocationDetails.country = response.country;
+								geoLocationDetails.isp = response.isp;
+								geoLocationDetails.ipAddress = response.query;
+								geoLocationDetails.state = response.regionName;
+								geoLocationDetails.zip = response.zip;
+								geoLocationDetails.latitude = response.lat;
+								geoLocationDetails.longitude = response.lon;
+								geoLocationDetails.countryCode = response.countryCode;
+								geoLocationDetails.timezone = response.timezone;
+								damAnalyticsPostDto.geoLocationDetails = geoLocationDetails;
+								damAnalyticsPostDto.damPartnerId = asset.id;
+								this.saveAnalytics(damAnalyticsPostDto);
+							}, (_error: any) => {
+								this.xtremandLogger.error("Error In Fetching Location Details");
 							}
-							geoLocationDetails.openedTime = new Date();
-							geoLocationDetails.deviceType = deviceInfo.device;
-							geoLocationDetails.os =deviceInfo.os;
-							geoLocationDetails.city = response.city;
-							geoLocationDetails.country = response.country;
-							geoLocationDetails.isp = response.isp;
-							geoLocationDetails.ipAddress = response.query;
-							geoLocationDetails.state = response.regionName;
-							geoLocationDetails.zip = response.zip;
-							geoLocationDetails.latitude = response.lat;
-							geoLocationDetails.longitude = response.lon;
-							geoLocationDetails.countryCode = response.countryCode;
-							geoLocationDetails.timezone = response.timezone;
-							damAnalyticsPostDto.geoLocationDetails = geoLocationDetails;
-							damAnalyticsPostDto.damPartnerId = asset.id;
-							this.saveAnalytics(damAnalyticsPostDto);
-						}, (_error: any) => {
-							this.xtremandLogger.error("Error In Fetching Location Details");
-						}
-					);
-
-
+						);
+					}
 				}
 			);
 	}
