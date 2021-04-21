@@ -1,0 +1,167 @@
+<div class="page-content">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="page-bar">
+      <ul class="page-breadcrumb">
+          <li>
+            <i class="fa fa-home" aria-hidden="true"></i> 
+            <a [routerLink]="referenceService?.homeRouter" translate>Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+          <li><a translate>Select Module</a></li>
+      </ul>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="portlet light">
+        <div class="portlet-title">
+          <div class="caption" translate>
+              <i class="fa fa-cogs" aria-hidden="true"></i>Select Module
+          </div>
+      </div>
+      <div class="portlet-body">
+        <div class="row mtop" *ngIf="authenticationService?.user?.hasCompany">
+          <!--------Videos------------->
+          <div *ngIf="authenticationService?.module.isVideo" class="col-md-3">
+            <div class="portlet light cpad  hover-effect pointer">
+                <div class="portlet-body">
+                    <div class="img1">
+                        <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/upload-dam-icons.png">
+                    </div>
+                    <div class="text">
+                        <h4 class="header-text-css" translate>Videos</h4>
+                        <p class="header-description-css" translate>
+                            Upload and manage content/videos 
+                        </p>
+                    </div>
+                    <div class="text">
+                        <h5>
+                            <a class="pltpx" (click)="navigate('content/upload')">
+                              <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                              <span class="design-name" translate>Upload Content / Video</span></a>
+                        </h5>
+                    </div>
+                    <div class="text">
+                        <h5>
+                            <a class="prfpx" (click)="navigate('content/videos')">
+                              <i class="fa fa-file-video-o" aria-hidden="true"></i>
+                              <span  class="design-name" translate>Manage Videos</span></a>
+                        </h5>
+                    </div>
+                    <div class="text bordernone">
+                      <h5>
+                          <a class="prtpx" (click)="navigate('content/manage')">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span  class="design-name" translate>Manage Content</span></a>
+                      </h5>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <!--------DAM------------->
+        <div  class="col-md-3">
+          <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet-body">
+                  <div class="img1">
+                      <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/upload-dam-icons.png">
+                  </div>
+                  <div class="text">
+                      <h4 class="header-text-css" translate>DAM</h4>
+                      <p class="header-description-css" translate>
+                          Upload and manage assets
+                      </p>
+                  </div>
+                  <div class="text">
+                      <h5>
+                          <a class="prfpx" (click)="navigate('dam/manage')">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span  class="design-name" translate>Manage My Assets</span></a>
+                      </h5>
+                  </div>
+                  <div class="text">
+                    <h5>
+                        <a class="prtfpx" (click)="navigate('dam/shared')">
+                          <i class="fa fa-list" aria-hidden="true"></i>
+                          <span  class="design-name" translate>Manage Shared Assets</span></a>
+                    </h5>
+                </div>
+              </div>
+          </div>
+      </div>
+      <!--------Learning Track------------->
+      <div  class="col-md-3">
+        <div class="portlet light cpad  hover-effect pointer">
+            <div class="portlet-body">
+                <div class="img1">
+                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/email-design.png">
+                </div>
+                <div class="text">
+                    <h4 class="header-text-css" translate>Track Builder</h4>
+                    <p class="header-description-css" translate>
+                        Add and manage tracks
+                    </p>
+                </div>
+                <div class="text">
+                    <h5>
+                        <a class="prspx" (click)="navigate('tracks/add')">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          <span class="design-name" translate>Add Tracks</span></a>
+                    </h5>
+                </div>
+                <div class="text">
+                    <h5>
+                        <a class="prfpx" (click)="navigate('tracks/manage')">
+                          <i class="fa fa-list" aria-hidden="true"></i>
+                          <span  class="design-name" translate>Manage Tracks</span></a>
+                    </h5>
+                </div>
+                <div class="text bordernone">
+                  <h5>
+                      <a (click)="navigate('tracks/shared')">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <span  class="design-name" translate>Manage Shared Tracks</span></a>
+                  </h5>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!--------Play Books------------->
+    <div  class="col-md-3">
+      <div class="portlet light cpad  hover-effect pointer">
+          <div class="portlet-body">
+              <div class="img1">
+                  <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/email-design.png">
+              </div>
+              <div class="text">
+                  <h4 class="header-text-css" translate>Play Book</h4>
+                  <p class="header-description-css" translate>
+                    Add and manage playbooks
+                  </p>
+              </div>
+              <div class="text">
+                  <h5>
+                      <a class="prspx" (click)="navigate('playbook/add')">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        <span class="design-name" translate>Add Play Books</span></a>
+                  </h5>
+              </div>
+              <div class="text">
+                  <h5>
+                      <a class="prfpx" (click)="navigate('playbook/manage')">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <span  class="design-name" translate>Manage Play Books</span></a>
+                  </h5>
+              </div>
+              <div class="text bordernone">
+                <h5>
+                    <a  (click)="navigate('playbook/shared')">
+                      <i class="fa fa-list" aria-hidden="true"></i>
+                      <span  class="design-name" translate>Manage Shared Play Books</span></a>
+                </h5>
+            </div>
+          </div>
+      </div>
+    </div>
+        </div>
+      </div>
+        </div>
+    </div>
+  </div>
+  </div>

@@ -201,6 +201,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     module.isVendorTierAndPartner = false;
     module.isVendorTierAndPartnerTeamMember = false;
     module.isAddingPartnersAccess = false;
+	module.damAccessAsPartner = false;
+    module.damAccess = false;
+	module.lmsAccess = false;
+	module.lmsAccessAsPartner = false;
+	module.playbookAccess = false;
+	module.playbookAccessAsPartner = false;
+	module.hasPartnerLandingPageAccess = false;
     this.authenticationService.isAddedByVendor = false;
     this.authenticationService.isPartnerTeamMember = false;
     this.authenticationService.loggedInUserRole = "";
@@ -213,6 +220,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authenticationService.lmsAccess = false;
     this.authenticationService.mdf = false;
     this.authenticationService.leadsAndDeals = false;
+	this.authenticationService.isVendorAndPartnerTeamMember = false;
+	this.authenticationService.isOrgAdminAndPartnerTeamMember = false;
   }
 
   ngOnInit() {

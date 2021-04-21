@@ -33,6 +33,12 @@ export class Module {
     damAccess = false;
     damAccessAsPartner = false;
 
+	lmsAccess = false;
+	lmsAccessAsPartner = false;
+	
+	playbookAccess = false;
+	playbookAccessAsPartner = false;
+
 	isPrm = false;
 	isPrmTeamMember = false;
 	isPrmAndPartner = false;
