@@ -23,10 +23,10 @@
             <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
                     <div class="img1">
-                        <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/upload-dam-icons.png">
+                        <img alt="Content/Videos" class="pricing-head-img img-responsive mauto" src="assets/images/upload-dam-icons.png">
                     </div>
                     <div class="text">
-                        <h4 class="header-text-css" translate>Videos</h4>
+                        <h4 class="header-text-css" translate>Content / Videos</h4>
                         <p class="header-description-css" translate>
                             Upload and manage content/videos 
                         </p>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <!--------DAM------------->
-        <div  class="col-md-3">
+        <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  class="col-md-3">
           <div class="portlet light cpad  hover-effect pointer">
               <div class="portlet-body">
                   <div class="img1">
@@ -68,14 +68,14 @@
                           Upload and manage assets
                       </p>
                   </div>
-                  <div class="text">
+                  <div *ngIf="authenticationService?.module?.damAccess" class="text">
                       <h5>
                           <a class="prfpx" (click)="navigate('dam/manage')">
                             <i class="fa fa-list" aria-hidden="true"></i>
                             <span  class="design-name" translate>Manage My Assets</span></a>
                       </h5>
                   </div>
-                  <div class="text">
+                  <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text bordernone">
                     <h5>
                         <a class="prtfpx" (click)="navigate('dam/shared')">
                           <i class="fa fa-list" aria-hidden="true"></i>
@@ -86,7 +86,7 @@
           </div>
       </div>
       <!--------Learning Track------------->
-      <div  class="col-md-3">
+      <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"   class="col-md-3">
         <div class="portlet light cpad  hover-effect pointer">
             <div class="portlet-body">
                 <div class="img1">
@@ -98,7 +98,8 @@
                         Add and manage tracks
                     </p>
                 </div>
-                <div class="text">
+                <ng-container *ngIf="authenticationService?.module?.lmsAccess">
+                  <div class="text">
                     <h5>
                         <a class="prspx" (click)="navigate('tracks/add')">
                           <i class="fa fa-plus" aria-hidden="true"></i>
@@ -112,7 +113,8 @@
                           <span  class="design-name" translate>Manage Tracks</span></a>
                     </h5>
                 </div>
-                <div class="text bordernone">
+                </ng-container>
+                <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text bordernone">
                   <h5>
                       <a (click)="navigate('tracks/shared')">
                         <i class="fa fa-list" aria-hidden="true"></i>
@@ -123,7 +125,7 @@
         </div>
     </div>
     <!--------Play Books------------->
-    <div  class="col-md-3">
+    <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  class="col-md-3">
       <div class="portlet light cpad  hover-effect pointer">
           <div class="portlet-body">
               <div class="img1">
@@ -132,10 +134,11 @@
               <div class="text">
                   <h4 class="header-text-css" translate>Play Book</h4>
                   <p class="header-description-css" translate>
-                    Add and manage playbooks
+                    Add and manage play books
                   </p>
               </div>
-              <div class="text">
+              <ng-container *ngIf="authenticationService?.module?.playbookAccess">
+                <div class="text">
                   <h5>
                       <a class="prspx" (click)="navigate('playbook/add')">
                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -149,7 +152,8 @@
                         <span  class="design-name" translate>Manage Play Books</span></a>
                   </h5>
               </div>
-              <div class="text bordernone">
+              </ng-container>
+              <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text bordernone">
                 <h5>
                     <a  (click)="navigate('playbook/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -159,9 +163,9 @@
           </div>
       </div>
     </div>
-        </div>
-      </div>
-        </div>
+    </div>
+    </div>
+    </div>
     </div>
   </div>
   </div>
