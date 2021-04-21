@@ -85,6 +85,10 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit {
           // });
           this.referenceService.stopLoader(this.httpRequestLoader);
           this.initLoader = false;
+        } else {
+          this.referenceService.stopLoader(this.httpRequestLoader);
+          this.initLoader = false;
+          this.referenceService.showSweetAlertErrorMessage(response.message);
         }
       });
     (error: any) => {
@@ -143,6 +147,9 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit {
           this.detailedAnalyticsSortOption.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, data.data);
           this.referenceService.stopLoader(this.detailedAnalyticsLoader);
+        } else {
+          this.referenceService.stopLoader(this.httpRequestLoader);
+          this.referenceService.showSweetAlertErrorMessage(response.message);
         }
       });
     (error: any) => {
