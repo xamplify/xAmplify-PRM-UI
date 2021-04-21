@@ -2850,7 +2850,7 @@ configSalesforce() {
         data => {
             if (data.statusCode == 200) {
                 this.addDomainModalClose();
-                this.excludeDomainCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_domain_add, true);
+                this.excludeDomainCustomResponse  = new CustomResponse('SUCCESS', data.message, true);
                 this.listExcludedDomains(this.excludeDomainPagination);
                 this.ngxloading = false;
             } else if (data.statusCode == 401) { 
@@ -2891,7 +2891,7 @@ configSalesforce() {
             .subscribe(
             response => {
                 if (response.statusCode == 200) {
-                    this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_domain_delete, true);
+                    this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', response.message, true);
                     this.listExcludedDomains(this.excludeDomainPagination);
                 }
                 this.ngxloading = false;
