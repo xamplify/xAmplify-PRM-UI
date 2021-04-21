@@ -63,7 +63,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     playbook = false;
     playbookAccessAsPartner: false;
     playbookAccess = false;
-
+    showContent = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -320,13 +320,19 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.lmsAccess = data.lms;
             this.authService.lmsAccess = data.lms;
             this.lmsAccessAsPartner = data.lmsAccessAsPartner;
+			this.authService.module.lmsAccess = data.lms;
+			this.authService.module.lmsAccessAsPartner = data.lmsAccessAsPartner;
             this.authService.leadsAndDeals = data.enableLeads;
             this.authService.mdf = data.mdf;
             this.authService.module.hasPartnerLandingPageAccess = data.pagesAccessAsPartner;
             this.playbookAccess = data.playbook;
             this.playbookAccessAsPartner = data.playbookAccessAsPartner;
-
-
+			this.authService.module.playbookAccess = data.playbook;
+            this.authService.module.playbookAccessAsPartner = data.playbookAccessAsPartner;
+            this.showContent = (this.authService.module.isVideo || this.authService.module.damAccess || this.authService.module.damAccessAsPartner ||
+                    this.authService.module.lmsAccess || this.authService.module.lmsAccessAsPartner || this.authService.module.playbookAccess ||
+                    this.authService.module.playbookAccessAsPartner);
+            this.authService.module.showContent = this.showContent;
         },
           error => {
             this.loading = false;

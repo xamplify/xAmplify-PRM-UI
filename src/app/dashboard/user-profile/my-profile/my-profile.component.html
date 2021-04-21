@@ -1191,7 +1191,7 @@
 															<div class="btn-group">
 																<button id="add_contact" class="btn green"
 																	(click)="addContactModalOpen()" translate>
-																	One at a Time <i class="fa fa-plus"
+																	Add <i class="fa fa-plus"
 																		style="font-size: 12px; margin-left: 5px;"></i>
 																</button>
 															</div>
@@ -1246,6 +1246,85 @@
 									<!-- paignation added-->
 									 <div *ngIf="excludeUserPagination.pagedItems.length !== 0" class="pg8">
                                             <app-pagination [type]="'excludeUsers'" [pagination]="excludeUserPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedUsers($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                        </div>
+									<!-- paignation end-->
+
+															<!-- new -->
+														</fieldset>
+														<br>
+													</tbody>
+												</table>
+											</form>
+											
+											<app-response-message [customResponse]="excludeDomainCustomResponse"></app-response-message>
+											<form action="#" novalidate=""
+												class="ng-untouched ng-pristine ng-valid"
+												*ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+												<table class="table table-light"
+													style="border: 0px !important; background-color: transparent !important">
+													<tbody>
+														<fieldset>
+															<legend>Exclude Domain</legend>
+															<!-- new -->
+
+															<div class="btn-group">
+																<button id="add_contact" class="btn green"
+																	(click)="addDomainModalOpen()" translate>
+																	Add <i class="fa fa-plus"
+																		style="font-size: 12px; margin-left: 5px;"></i>
+																</button>
+															</div>
+
+															<div style="margin-top: 10px;" *ngIf="excludeDomainPagination.pagedItems?.length === 0" class="alert alert-info">
+																<strong>No Records Found.</strong>
+															</div>
+
+															<div class="clearfix" *ngIf="excludeDomainPagination.pagedItems?.length>0" >
+										<div class="col-xs-12 p0" style="margin-top: 10px;">
+											<div class="table-responsive">
+												<table class='table tgrid'
+													*ngIf="excludeUserPagination.pagedItems?.length>0" >
+													<thead>
+														<tr>
+															<!-- <th class='text-center'><input type="checkbox"
+																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+																(change)="checkAll($event)"
+																id="checkAllExistingContacts"/></th> -->
+															<th style="width: 25%"  translate>Name</th>
+															<th style="width: 25%"  translate>Time</th>										
+														<th style="width:16%"  translate>ACTIONS</th>
+														</tr>
+													</thead>
+													<tbody>
+														<ng-container *ngFor="let obj of excludeDomainPagination.pagedItems ;let i =index">															
+														<tr class='row_{{i}}' style="background-color: #FFFFFF;">
+															<!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+															<td><h6>
+															{{obj.domainName}}  </h6>
+															</td>
+															<td>
+															<h6>
+                        <app-timestamp [dateAndTime]="obj.time"> </app-timestamp>
+                      </h6>
+															</td>
+																<td >
+															<div class="actions-block override-actions"  style="float:none;">
+																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="deleteExcludedDomain(obj.domainName)" >
+																		<i class="fa fa-trash-o" aria-hidden="true"></i>
+																</a>
+                                                            </div>
+															</td>
+															
+														</ng-container>
+												</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									
+									<!-- paignation added-->
+									 <div *ngIf="excludeDomainPagination.pagedItems.length !== 0" class="pg8">
+                                            <app-pagination [type]="'excludedDomains'" [pagination]="excludeDomainPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedDomains($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
                                         </div>
 									<!-- paignation end-->
 
@@ -1531,6 +1610,43 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 </div>
 
 
+<div id="addDomainModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+<div class="modal-dialog  accounts-modal" style="position: relative !important;">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close-circle" data-dismiss="modal" (click)="addDomainModalClose()"><i class="fa fa-times"></i></button>
+      <h4 class="modal-title size-font"  translate>Add Domain</h4>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal" autocomplete="off">
+
+      <div class="form-group">
+            <label class="control-label col-xs-2 col-sm-2" for="domain" style="color: #00bcd4; right: 11px !important">
+                <span class="star"> *</span>
+            </label>
+           <div class="form-group col-xs-10 col-sm-10" >
+              <input type="text" style="border: none" class="form-control padding-mobile" id="domain"   (input)="validateDomain(domain)"         
+              [(ngModel)]="domain"  [ngModelOptions]="{standalone: true}"
+              placeholder="Domain Name *" autocomplete="off" maxlength="250">
+            <div class="textCss"></div>
+            <span class="danger" *ngIf="isDomainExist" translate>This domain name has already been added</span>
+            <span class="danger" *ngIf="!validDomainFormat" translate>This domain name is not formatted properly</span>
+         <!--    <span class="danger" *ngIf="!validEmailPatternSuccess" translate>Please enter a valid email address</span>
+            <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>
+            <span class="danger" *ngIf="!validEmailFormat" translate>The entered email is not formatted properly</span> -->
+           </div>
+         </div>
+      </form>
+    </div>
+    <div class="modal-footer" style="border:none">
+      <button class="btn btn-default" (click)="addDomainModalClose()" translate>Cancel</button>
+      <button  type="submit" class="btn green"  (click)="saveExcludedDomain(domain)" [disabled]="!validDomainPattern"  translate>Add</button>
+    </div>
+  </div>
+</div>
+</div>
 
 
 

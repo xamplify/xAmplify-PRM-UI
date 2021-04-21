@@ -460,5 +460,25 @@ export class UserService {
     	
     }
     
+    saveExcludedDomain(domain: string, loggedInUserId : number){
+    	 return this.http.get(this.URL + "save-excluded-domain/"+ domain+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
+         .map(this.extractData)
+         .catch(this.handleError);
+    	
+    }
+    
+    listExcludedDomains(loggedInUserId : number, excludeDomainPagination:Pagination) {
+        return this.http.post(this.URL + "list-excluded-domains/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludeDomainPagination)
+           .map(this.extractData)
+           .catch(this.handleError);
+   }
+    
+    deleteExcludedDomain(loggedInUserId : number, domain : string){
+        return this.http.get(this.URL + "delete-excluded-domain/"+ domain+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+        
+    }
+    
 
 }

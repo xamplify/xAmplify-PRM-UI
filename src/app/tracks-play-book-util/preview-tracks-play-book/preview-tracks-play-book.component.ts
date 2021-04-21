@@ -292,4 +292,28 @@ export class PreviewTracksPlayBookComponent implements OnInit {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.filePath);
   }
 
+  saveAsPlayBook(){
+    this.referenceService.startLoader(this.httpRequestLoader);
+    let self = this;
+    let tracksPlayBook: TracksPlayBook = new TracksPlayBook();
+    tracksPlayBook.id = this.tracksPlayBook.id;
+    tracksPlayBook.userId = this.loggedInUserId;
+    tracksPlayBook.type = this.type;
+    this.tracksPlayBookUtilService.saveAsPlayBook(tracksPlayBook).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          self.customResponse = new CustomResponse('SUCCESS', "Saved to play books successfully.", true);
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        } else {
+          swal("Please Contact Admin!", response.message, "error");
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+      },
+      (error: string) => {
+        this.logger.errorPage(error);
+        this.referenceService.showServerError(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      });
+  }
+
 }

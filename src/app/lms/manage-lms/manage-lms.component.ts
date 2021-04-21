@@ -24,9 +24,4 @@ export class ManageLmsComponent implements OnInit {
   ngOnInit() {
   }
 
-	changePartnerView(event:any){
-		
-	}
-	
-
 }

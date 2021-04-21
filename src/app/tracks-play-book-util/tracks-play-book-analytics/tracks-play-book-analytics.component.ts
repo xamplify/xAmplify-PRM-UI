@@ -65,6 +65,9 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
           pagination = this.pagerService.getPagedItems(pagination, data.data);
           this.referenceService.stopLoader(this.httpRequestLoader);
           this.initLoader = false;
+        } else{
+          this.referenceService.showSweetAlertErrorMessage(response.message);
+          this.referenceService.stopLoader(this.httpRequestLoader);
         }
       });
     (error: any) => {

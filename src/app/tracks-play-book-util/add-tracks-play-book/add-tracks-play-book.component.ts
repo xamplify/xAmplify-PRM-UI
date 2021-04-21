@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output,  ViewChild, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
@@ -138,6 +138,7 @@ export class AddTracksPlayBookComponent implements OnInit {
   loadingcrop = false;
   featuredImagePath = "";
   existingSlug = "";
+  existingTitle = "";
   openAddTagPopup: boolean = false;
   pagination: Pagination = new Pagination();
   @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
@@ -228,9 +229,9 @@ export class AddTracksPlayBookComponent implements OnInit {
 
   goToManageSectionWithError() {
     this.referenceService.showSweetAlertErrorMessage("Invalid Id");
-    if(this.type == TracksPlayBookType[TracksPlayBookType.TRACK]){
+    if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
       this.referenceService.goToRouter("/home/tracks");
-    } else if(this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]){
+    } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
       this.referenceService.goToRouter("/home/playbook");
     }
   }
@@ -267,6 +268,7 @@ export class AddTracksPlayBookComponent implements OnInit {
             this.tracksPlayBook = tracksPlayBook;
             this.featuredImagePath = this.tracksPlayBook.featuredImage;
             this.existingSlug = this.tracksPlayBook.slug;
+            this.existingTitle = this.tracksPlayBook.title;
             this.completeLink = this.linkPrefix + this.tracksPlayBook.slug;
             if (this.tracksPlayBook.quiz !== undefined) {
               this.tracksPlayBook.quizId = this.tracksPlayBook.quiz.id;
@@ -703,9 +705,9 @@ export class AddTracksPlayBookComponent implements OnInit {
         (result: any) => {
           if (result !== "") {
             this.loggedInUserCompanyId = result;
-            if(this.type == TracksPlayBookType[TracksPlayBookType.TRACK]){
+            if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
               this.linkPrefix = this.authenticationService.APP_URL + "home/tracks/tb/" + this.loggedInUserCompanyId + "/";
-            } else if(this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]){
+            } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
               this.linkPrefix = this.authenticationService.APP_URL + "home/playbook/pb/" + this.loggedInUserCompanyId + "/";
             }
             this.completeLink = this.linkPrefix;
@@ -1099,6 +1101,29 @@ export class AddTracksPlayBookComponent implements OnInit {
         } else {
           this.removeErrorMessage("slug");
         }
+        this.validateAllSteps();
+      },
+      (error: string) => {
+        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+      }
+    );
+  }
+
+  validateTitleForCompany() {
+    let titleObject: TracksPlayBook = new TracksPlayBook();
+    let self = this;
+    titleObject.userId = this.loggedInUserId;
+    titleObject.title = this.tracksPlayBook.title;
+    titleObject.type = this.type;
+    this.tracksPlayBookUtilService.validateTitle(titleObject).subscribe(
+      (response: any) => {
+        let isTitleValid = response.data;
+        if (!isTitleValid) {
+          this.addErrorMessage("title", "Title already exists");
+        } else {
+          this.removeErrorMessage("title");
+        }
+        this.validateAllSteps();
       },
       (error: string) => {
         this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
@@ -1111,6 +1136,8 @@ export class AddTracksPlayBookComponent implements OnInit {
       this.addErrorMessage("title", "Title can not be empty");
     } else if (this.tracksPlayBook.title != undefined && this.tracksPlayBook.title.length < 3) {
       this.addErrorMessage("title", "Title should have atleast 3 characters");
+    } else if ((this.isAdd || (!this.isAdd && this.existingTitle !== this.tracksPlayBook.title))) {
+      this.validateTitleForCompany();
     } else {
       this.removeErrorMessage("title");
     }
@@ -1318,11 +1345,14 @@ export class AddTracksPlayBookComponent implements OnInit {
               this.referenceService.isUpdated = true;
               this.referenceService.isCreated = false;
             }
-            if(this.type == TracksPlayBookType[TracksPlayBookType.TRACK]){
+            if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
               this.router.navigate(["/home/tracks/manage"]);
-            } else if(this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]){
+            } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
               this.router.navigate(["/home/playbook/manage"]);
-            } 
+            }
+          } else {
+            this.referenceService.showSweetAlertErrorMessage(data.message);
+            this.referenceService.stopLoader(this.httpRequestLoader);
           }
         },
         (error: string) => {
@@ -1334,11 +1364,11 @@ export class AddTracksPlayBookComponent implements OnInit {
         }
       )
     } else {
-      if(this.type == TracksPlayBookType[TracksPlayBookType.TRACK]){
+      if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
         this.lmsResponse = new CustomResponse('ERROR', "Invalid Track Builder", true);
-      } else if(this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]){
+      } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
         this.lmsResponse = new CustomResponse('ERROR', "Invalid Play Book", true);
-      } 
+      }
       this.referenceService.goToTop();
     }
   }

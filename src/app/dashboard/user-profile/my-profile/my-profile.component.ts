@@ -59,10 +59,14 @@ declare var swal, $, videojs: any;
 	providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+	domain : string;
 	validEmailFormat  = true;
 	validEmailPatternSuccess : boolean = true ;
-	isEmailExist :boolean = false;	
+	isEmailExist :boolean = false;		
 	validEmailPattern : boolean = false;
+	isDomainExist : boolean = false;
+	validDomainFormat : boolean = true ;
+	validDomainPattern : boolean = false;
 	addContactuser: User = new User();
 	defaultVideoPlayer: DefaultVideoPlayer;
 	tempDefaultVideoPlayerSettings: any;
@@ -140,6 +144,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/*****************GDPR************************** */
 	gdprSetting: GdprSetting = new GdprSetting();
 	excludeUserCustomResponse  : CustomResponse = new CustomResponse(); 
+	excludeDomainCustomResponse  : CustomResponse = new CustomResponse(); 
 	gdprCustomResponse : CustomResponse = new CustomResponse();
 	gdprSettingLoaded = false;
 	category: Category = new Category();
@@ -212,6 +217,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	requiredStageMessage = "Required atleast one valid stage.";
 	pipelinePreview = false;
 	excludeUserPagination: Pagination = new Pagination();
+	excludeDomainPagination: Pagination = new Pagination();
 	excludeUsersOrDomains = false;
 	isUpdateUser = false;
 	/*******************VANITY******************* */
@@ -1609,8 +1615,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.activeTabHeader = this.properties.exclude;
             this.excludeUserPagination= new Pagination();
             this.excludeUserPagination.pageIndex = 1;
-            this.excludeUserPagination.maxResults = 12;
+            this.excludeUserPagination.maxResults = 5;
             this.listExcludedUsers(this.excludeUserPagination);
+            this.excludeDomainPagination = new Pagination();
+            this.excludeDomainPagination.pageIndex = 1;
+            this.excludeDomainPagination.maxResults = 5;
+            this.listExcludedDomains(this.excludeDomainPagination);
 
 		} else if(this.activeTabName =="spf"){
 			this.activeTabHeader = this.properties.spfHeaderText;
@@ -1822,8 +1832,13 @@ configSalesforce() {
 		this.listCategories(this.categoryPagination);
 		if (event.type === 'excludeUsers') {
 	          this.excludeUserPagination.pageIndex = event.page;
+	          this.excludeUserPagination.maxResults = 5;
 	           this.listExcludedUsers(this.excludeUserPagination);
-	      } 
+	      }else if (event.type === 'excludedDomains') {
+              this.excludeDomainPagination.pageIndex = event.page;
+              this.excludeDomainPagination.maxResults = 5;
+              this.listExcludedDomains(this.excludeDomainPagination);
+         } 
 		
 	}
 
@@ -2793,6 +2808,101 @@ configSalesforce() {
             () => { }
             );
     }
+    
+    addDomainModalOpen() {
+        this.domain = null;
+        $('#addDomainModal').modal('show');
+    }
+
+
+    addDomainModalClose() {
+        $('#addDomainModal').modal('toggle');
+        $("#addDomainModal .close").click();
+        $('#addDomainModal').modal('hide');
+        $('.modal').removeClass('show');
+        this.domain = null;
+        this.isDomainExist = false;
+        this.validDomainFormat = true;
+        this.validDomainPattern = false;
+    }
+    
+    validateDomain(domain: string) {
+        const lowerCaseDomain = domain.toLowerCase();
+        if (this.validateDomainName(lowerCaseDomain)) {
+            this.validDomainFormat = true;
+            this.validDomainPattern = true;
+        }else{
+        	 this.validDomainPattern = false;
+        }
+    }
+    
+    validateDomainName( domain: string ) {
+        var DOMAIN_NAME_PATTERN = this.regularExpressions.DOMAIN_PATTERN;
+        return DOMAIN_NAME_PATTERN.test( domain );
+    }
+    
+    saveExcludedDomain(domain:string){
+    	this.ngxloading = true;
+    	this.isDomainExist = false;
+    	this.validDomainFormat = true;
+        this.userService.saveExcludedDomain(domain, this.loggedInUserId)
+        .subscribe(
+        data => {
+            if (data.statusCode == 200) {
+                this.addDomainModalClose();
+                this.excludeDomainCustomResponse  = new CustomResponse('SUCCESS', data.message, true);
+                this.listExcludedDomains(this.excludeDomainPagination);
+                this.ngxloading = false;
+            } else if (data.statusCode == 401) { 
+                   this.ngxloading = false;
+                   this.isDomainExist = true;
+            } else if (data.statusCode == 402) {
+            	this.validDomainFormat = false;
+                this.ngxloading = false;
+            }                
+        },
+        error => {
+            this.ngxloading = false;
+        },
+        () => { }
+        );
+    }
+    
+    listExcludedDomains(excludeDomainPagination: Pagination) {
+        this.ngxloading = true;
+        this.userService.listExcludedDomains(this.loggedInUserId, excludeDomainPagination)
+            .subscribe(
+            response => {
+                response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
+                excludeDomainPagination.totalRecords = response.data.totalRecords;
+                excludeDomainPagination = this.pagerService.getPagedItems(excludeDomainPagination, response.data.data);
+                this.ngxloading = false;
+            },
+            error => {
+                this.ngxloading = false;
+            },
+            () => { }
+            );
+    }
+    
+    deleteExcludedDomain(domain: string) {
+        this.ngxloading = true;
+        this.userService.deleteExcludedDomain(this.loggedInUserId, domain)
+            .subscribe(
+            response => {
+                if (response.statusCode == 200) {
+                    this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', response.message, true);
+                    this.listExcludedDomains(this.excludeDomainPagination);
+                }
+                this.ngxloading = false;
+            },
+            error => {
+                this.ngxloading = false;
+            },
+            () => { }
+            );
+    }
+    
 	
 
 }

@@ -7,5 +7,6 @@ export class RegularExpressions {
     URL_PATTERN = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
     ALPHA_NUMERIC =/^[a-z0-9]+$/;
     COLOR_CODE_PATTERN = /^#([0-9a-fA-F]{3}){1,2}$/;
+    DOMAIN_PATTERN = /\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/;
 
 }

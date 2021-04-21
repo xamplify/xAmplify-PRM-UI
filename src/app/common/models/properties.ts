@@ -163,6 +163,8 @@ export class Properties {
   exclude = "Exclude Domain or Contact"
   exclude_add =  "User added successfully";
   exclude_delete =  "User deleted successfully";
+  exclude_domain_add =  "Domain added successfully";
+  exclude_domain_delete =  "Domain deleted successfully";
 
   spf = "SPF Configuration";
   spfHeaderText = "Publish an SPF record with your DNS registrar";
