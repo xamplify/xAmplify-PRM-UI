@@ -8,7 +8,10 @@
           <li><a translate>Select Module</a></li>
       </ul>
   </div>
-  <div class="row">
+  <div class="alert alert-info" *ngIf="!authenticationService?.module?.showContent">
+    <strong>No Modules Found</strong>
+  </div>
+  <div class="row" *ngIf="authenticationService?.module?.showContent">
     <div class="col-md-12">
       <div class="portlet light">
         <div class="portlet-title">
@@ -23,7 +26,7 @@
             <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
                     <div class="img1">
-                        <img alt="Content/Videos" class="pricing-head-img img-responsive mauto" src="assets/images/upload-dam-icons.png">
+                        <img alt="Content/Videos" class="pricing-head-img img-responsive mauto" src="assets/images/content-video.png">
                     </div>
                     <div class="text">
                         <h4 class="header-text-css" translate>Content / Videos</h4>
@@ -60,7 +63,7 @@
           <div class="portlet light cpad  hover-effect pointer">
               <div class="portlet-body">
                   <div class="img1">
-                      <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/upload-dam-icons.png">
+                      <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/dam.png">
                   </div>
                   <div class="text">
                       <h4 class="header-text-css" translate>DAM</h4>
@@ -90,7 +93,7 @@
         <div class="portlet light cpad  hover-effect pointer">
             <div class="portlet-body">
                 <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/email-design.png">
+                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/playbook.png">
                 </div>
                 <div class="text">
                     <h4 class="header-text-css" translate>Track Builder</h4>
@@ -129,7 +132,7 @@
       <div class="portlet light cpad  hover-effect pointer">
           <div class="portlet-body">
               <div class="img1">
-                  <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/email-design.png">
+                  <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/track.png">
               </div>
               <div class="text">
                   <h4 class="header-text-css" translate>Play Book</h4>

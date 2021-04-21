@@ -50,5 +50,6 @@ export class Module {
     isVendorTierAndPartnerTeamMember = false;
     
     showCampaignsAnalyticsDivInDashboard = false;
+    showContent = false;
 
 }
