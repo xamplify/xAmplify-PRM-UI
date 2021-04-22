@@ -69,7 +69,10 @@
                   <div class="text">
                     <h4 class="header-text-css" translate>DAM</h4>
                     <p class="header-description-css" translate>
-                      Upload and manage assets
+                      <ng-container *ngIf="authenticationService?.module?.damAccess">
+                        <span>Upload and manage assets</span><br>
+                      </ng-container>
+                      <span *ngIf="authenticationService?.module?.damAccessAsPartner">Manage assets shared by vendor</span>
                     </p>
                   </div>
                   <ng-container *ngIf="authenticationService?.module?.damAccess">
@@ -108,7 +111,10 @@
                   <div class="text">
                     <h4 class="header-text-css" translate>Track Builder</h4>
                     <p class="header-description-css" translate>
-                      Add and manage tracks
+                      <ng-container *ngIf="authenticationService?.module?.lmsAccess">
+                        <span>Add and manage tracks</span><br>
+                      </ng-container>
+                      <span *ngIf="authenticationService?.module?.lmsAccessAsPartner">Manage tracks shared by vendor</span>
                     </p>
                   </div>
                   <ng-container *ngIf="authenticationService?.module?.lmsAccess">
@@ -147,7 +153,10 @@
                   <div class="text">
                     <h4 class="header-text-css" translate>Play Book</h4>
                     <p class="header-description-css" translate>
-                      Add and manage play books
+                      <ng-container *ngIf="authenticationService?.module?.playbookAccess">
+                        <span>Add and manage play books</span><br>
+                      </ng-container>
+                      <span *ngIf="authenticationService?.module?.playbookAccessAsPartner">Manage play books shared by vendor</span>
                     </p>
                   </div>
                   <ng-container *ngIf="authenticationService?.module?.playbookAccess">

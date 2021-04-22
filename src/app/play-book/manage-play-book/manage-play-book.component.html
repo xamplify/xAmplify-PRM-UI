@@ -5,9 +5,10 @@
             <li>
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
-                <i *ngIf="!isPartnerView" class="fa fa-angle-right" aria-hidden="true"></i>
+                <i  class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+                <i  class="fa fa-angle-right" aria-hidden="true"></i>
                 <a *ngIf="!isPartnerView" [routerLink]="['/home/playbook/manage']">Manage Play Books</a>
-                <i *ngIf="isPartnerView" class="fa fa-angle-right" aria-hidden="true"></i>
                 <a *ngIf="isPartnerView" [routerLink]="['/home/playbook/shared']">Shared Play Books</a>
             </li>
         </ul>

@@ -11,6 +11,15 @@
                               <i class="fa fa-angle-right" aria-hidden="true"></i>
                           </li>
                           <li>
+				              <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+								<i class="fa fa-angle-right" aria-hidden="true"></i>
+            			</li>
+            			<li>
+			              <a *ngIf="isAdd" (click)="goToSelect()" translate>Design/Upload</a>
+			              <a *ngIf="!isAdd" (click)="goToManageDam()" translate>Manage</a>    
+			              <i class="fa fa-angle-right" aria-hidden="true"></i>
+            			</li>
+                          <li>
                               <a>Design Template</a>
                           </li>
                       </ul>
