@@ -38,6 +38,6 @@ export class ManageDamComponent implements OnInit {
 	}
 	goToDam(){
 		this.loading = true;
-		this.referenceService.goToRouter("/home/dam/shared");
+		this.referenceService.goToRouter("/home/dam/manage");
 	}
 }

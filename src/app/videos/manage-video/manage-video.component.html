@@ -3,8 +3,19 @@
    <div>
      <div class="page-bar">
        <ul class="page-breadcrumb">
-         <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a (click)="gotoHome()" translate>Home</a><i class="fa fa-angle-right"></i></li>
-         <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a><i class="fa fa-angle-right"></i></li>
+         <li *ngIf="!authenticationService.isSuperAdmin()">
+           <i class="fa fa-home" aria-hidden="true"></i> 
+           <a (click)="gotoHome()" translate>Home</a>
+           <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="!authenticationService.isSuperAdmin()">
+            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+           </li>
+         <li *ngIf="authenticationService.isSuperAdmin()">
+           <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
+           <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
          <li><a (click)="backToManageVideos()" translate>Manage Videos</a> </li>
          <li *ngIf="editVideo" style="color: #888;" translate><i class="fa fa-angle-right"></i>Edit Video </li>
          <li *ngIf="playVideo" style="color: #888;" translate><i class="fa fa-angle-right"></i>Play Videos </li>
