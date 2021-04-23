@@ -65,6 +65,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     playbookAccess = false;
     showContent = false;
     contentDivs:Array<boolean> = new Array<boolean>();
+    isVendorTier = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -155,7 +156,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     this.authService.module.isVendor = true;
                 }
                 if (roles.indexOf(this.roleName.vendorTierRole) > -1){
-                    this.authService.module.isVendorTier = true;
+                    this.isVendorTier = true;
                 }
 				if(roles.indexOf(this.roleName.prmRole)>-1){
 					this.authService.module.isPrm = true;
