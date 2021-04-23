@@ -189,7 +189,9 @@
       </div>
       <app-pagination [pagination]="pagination" [type]="'admin-reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
     </div>
-
+<!-----------Partner Companies------->
+  <app-admin-partner-companies *ngIf="!detailsTielsView"></app-admin-partner-companies>
+  
     <section *ngIf="detailsTielsView">
       <div class="portlet light">
         <div class="portlet-title">
