@@ -2774,15 +2774,15 @@ configSalesforce() {
             );
     }
 	
-    listExcludedUsers(excludeUserPagination:Pagination) {
-    	this.ngxloading = true;
+    listExcludedUsers(excludeUserPagination: Pagination) {
+        this.ngxloading = true;
         this.userService.listExcludedUsers(this.loggedInUserId, excludeUserPagination)
             .subscribe(
-            response => {  
-            	response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
-            	excludeUserPagination.totalRecords  = response.data.totalRecords;
-            	excludeUserPagination = this.pagerService.getPagedItems(excludeUserPagination, response.data.data);
-            	this.ngxloading = false;
+            response => {
+                response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
+                excludeUserPagination.totalRecords = response.data.totalRecords;
+                excludeUserPagination = this.pagerService.getPagedItems(excludeUserPagination, response.data.data);
+                this.ngxloading = false;
             },
             error => {
                 this.ngxloading = false;
@@ -2790,6 +2790,26 @@ configSalesforce() {
             () => { }
             );
     }
+
+    showDeleteExcludedUserAlert(userId:number){
+        let self = this;
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to undo this action!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
+            confirmButtonText: 'Yes, delete it!'
+
+        }).then(function() {
+            self.deleteExcludedUser(userId);
+        }, function(dismiss: any) {
+            console.log('you clicked on option' + dismiss);
+        });
+    }
+    
+    
 	
     deleteExcludedUser(userId:number){
         this.ngxloading = true;
@@ -2883,6 +2903,24 @@ configSalesforce() {
             },
             () => { }
             );
+    }
+    
+    showDeleteExcludedDomainAlert(domain: string) {
+        let self = this;
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to undo this action!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
+            confirmButtonText: 'Yes, delete it!'
+
+        }).then(function() {
+            self.deleteExcludedDomain(domain);
+        }, function(dismiss: any) {
+            console.log('you clicked on option' + dismiss);
+        });
     }
     
     deleteExcludedDomain(domain: string) {
