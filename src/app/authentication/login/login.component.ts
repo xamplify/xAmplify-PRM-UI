@@ -196,7 +196,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     module.isPrmTeamMember = false;
     module.isPrmAndPartner = false;
     module.isPrmAndPartnerTeamMember = false;
-    module.isVendorTier = false;
     module.isVendorTierTeamMember = false;
     module.isVendorTierAndPartner = false;
     module.isVendorTierAndPartnerTeamMember = false;
@@ -209,12 +208,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     module.playbookAccessAsPartner = false;
     module.hasPartnerLandingPageAccess = false;
     module.showContent = false;
+    module.contentLoader = false;
     this.authenticationService.isAddedByVendor = false;
     this.authenticationService.isPartnerTeamMember = false;
     this.authenticationService.loggedInUserRole = "";
     this.authenticationService.hasOnlyPartnerRole = false;
     module.isOnlyPartner = false;
     module.isReDistribution = false;
+    module.contentDivsCount = 0;
     this.authenticationService.isShowRedistribution = false;
     this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     this.authenticationService.partnershipEstablishedOnlyWithPrm = false;

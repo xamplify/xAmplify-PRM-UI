@@ -64,6 +64,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     playbookAccessAsPartner: false;
     playbookAccess = false;
     showContent = false;
+    contentDivs:Array<boolean> = new Array<boolean>();
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -276,6 +277,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 
     listLeftSideBarNavItems(){
         this.loading = true;
+        this.authService.module.contentLoader = true;
         let vanityUrlPostDto = {};
         if(this.authService.companyProfileName !== undefined && this.authService.companyProfileName !== ''){
             vanityUrlPostDto['vendorCompanyProfileName'] = this.authService.companyProfileName;
@@ -285,7 +287,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.dashBoardService.listLeftSideNavBarItems(vanityUrlPostDto)
         .subscribe(
           data => {
-            this.loading = false;
             this.rssFeedAccess = data.rssFeeds;
             this.authService.module.isContact = data.contacts;
             this.mdfAccess = data.mdf;
@@ -330,12 +331,24 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			this.authService.module.playbookAccess = data.playbook;
             this.authService.module.playbookAccessAsPartner = data.playbookAccessAsPartner;
             this.showContent = (this.authService.module.isVideo || this.authService.module.damAccess || this.authService.module.damAccessAsPartner ||
-                    this.authService.module.lmsAccess || this.authService.module.lmsAccessAsPartner || this.authService.module.playbookAccess ||
-                    this.authService.module.playbookAccessAsPartner);
+            this.authService.module.lmsAccess || this.authService.module.lmsAccessAsPartner || this.authService.module.playbookAccess ||
+            this.authService.module.playbookAccessAsPartner);
             this.authService.module.showContent = this.showContent;
+            if(this.showContent){
+                this.contentDivs.push(this.authService.module.isVideo);
+                this.contentDivs.push(this.authService.module.damAccess || this.authService.module.damAccessAsPartner);
+                this.contentDivs.push(this.authService.module.lmsAccess || this.authService.module.lmsAccessAsPartner);
+                this.contentDivs.push(this.authService.module.playbookAccess || this.authService.module.playbookAccessAsPartner);
+                this.contentDivs.push();
+                const count = this.contentDivs.filter((value) => value).length;
+                this.authService.module.contentDivsCount = count;
+            }else{
+                this.authService.module.contentDivsCount = 0;
+            }
         },
           error => {
             this.loading = false;
+            this.authService.module.contentLoader = false;
             this.authService.leftSideMenuLoader = false;
             this.rssFeedAccess = false;
             this.mdfAccess = false;
@@ -348,9 +361,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
           },
           () => {
             this.loading = false;
+            this.authService.module.contentLoader = false;
             this.authService.leftSideMenuLoader = false;
           }
         );
+
+      
     }
 
     

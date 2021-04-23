@@ -423,7 +423,7 @@ export class DashboardService {
 
 
     listLeftSideNavBarItems(vanityUrlPostDto: any) {
-        const url = this.moduleUrl + 'showRssFeedOption?access_token=' + this.authenticationService.access_token;
+        const url = this.moduleUrl + 'findLeftMenuItems?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, vanityUrlPostDto)
             .map(this.extractData)
             .catch(this.handleError);
