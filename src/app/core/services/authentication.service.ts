@@ -509,6 +509,8 @@ export class AuthenticationService {
     module.isVendorTierAndPartnerTeamMember = false;
     module.showCampaignsAnalyticsDivInDashboard = false;
     module.showContent = false;
+    module.contentDivsCount = 0;
+    module.contentLoader = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;
@@ -516,8 +518,8 @@ export class AuthenticationService {
     this.partnershipEstablishedOnlyWithPrm = false;
     this.folders = false;
     this.lmsAccess = false;
-	this.isVendorAndPartnerTeamMember = false;
-	this.isOrgAdminAndPartnerTeamMember = false;
+	  this.isVendorAndPartnerTeamMember = false;
+	  this.isOrgAdminAndPartnerTeamMember = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){

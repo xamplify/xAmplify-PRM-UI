@@ -38,6 +38,11 @@ export class ManageDamComponent implements OnInit {
 	}
 	goToDam(){
 		this.loading = true;
-		this.referenceService.goToRouter("/home/dam/manage");
+		if(this.isPartnerView){
+			this.referenceService.goToRouter("/home/dam/shared");
+		}else{
+			this.referenceService.goToRouter("/home/dam/manage");
+		}
+		
 	}
 }

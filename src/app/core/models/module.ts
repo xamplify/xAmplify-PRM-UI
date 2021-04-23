@@ -51,5 +51,7 @@ export class Module {
     
     showCampaignsAnalyticsDivInDashboard = false;
     showContent = false;
+    contentDivsCount = 0;
+    contentLoader = false;
 
 }

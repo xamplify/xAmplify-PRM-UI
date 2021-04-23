@@ -271,6 +271,8 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+   
+
 
 
     changeAccess(campaignAccess: any) {
@@ -303,6 +305,20 @@ export class DashboardService {
     listAllApprovedUsers(pagination: Pagination) {
         const url = this.superAdminUrl + 'listAllAccounts?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listAllPartners(pagination: Pagination) {
+        const url = this.superAdminUrl + 'findPartnerCompaniesAndModulesAccess?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    updatePartnerModuleAccess(campaignAccess: any){
+        const url = this.superAdminUrl + 'updatePartnerModules?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, campaignAccess)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -423,7 +439,7 @@ export class DashboardService {
 
 
     listLeftSideNavBarItems(vanityUrlPostDto: any) {
-        const url = this.moduleUrl + 'showRssFeedOption?access_token=' + this.authenticationService.access_token;
+        const url = this.moduleUrl + 'findLeftMenuItems?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, vanityUrlPostDto)
             .map(this.extractData)
             .catch(this.handleError);

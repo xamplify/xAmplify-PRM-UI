@@ -1230,7 +1230,7 @@
 															</td>
 																<td >
 															<div class="actions-block override-actions"  style="float:none;">
-																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="deleteExcludedUser(user.userId)" >
+																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedUserAlert(user.userId)" >
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
                                                             </div>
@@ -1309,7 +1309,7 @@
 															</td>
 																<td >
 															<div class="actions-block override-actions"  style="float:none;">
-																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="deleteExcludedDomain(obj.domainName)" >
+																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedDomainAlert(obj.domainName)" >
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
                                                             </div>
@@ -1569,7 +1569,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
     <div class="modal-body">
       <form class="form-horizontal" autocomplete="off">
-
       <div class="form-group">
             <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
                 <span class="star"> *</span>
@@ -1585,20 +1584,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <span class="danger" *ngIf="!validEmailFormat" translate>The entered email is not formatted properly</span>
            </div>
          </div>
-        <div class="form-group">
-          <label class="control-label col-xs-2 col-sm-2" for="name"style="color: blue">
-          </label>
-          <div class="form-group col-xs-5 col-sm-5">
-            <input type="name" style="border: none" class="form-control padding-mobile" id="firstName"
-              [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="First Name" maxlength="250">
-            <div class="textCss"></div>
-          </div>
-          <div class="form-group col-xs-6 col-sm-5">
-            <input type="name" style="border: none" class="form-control padding-mobile" id="lastName"
-            [(ngModel)]="addContactuser.lastName" [ngModelOptions]="{standalone: true}" placeholder="Last Name" maxlength="250">
-            <div class="textCss"></div>
-          </div>
-        </div>
       </form>
     </div>
     <div class="modal-footer" style="border:none">
