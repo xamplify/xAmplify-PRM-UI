@@ -59,6 +59,8 @@ declare var swal, $, videojs: any;
 	providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+	public searchExcludedUserKey: string=null;
+    public searchExcludedDomainKey: string=null;
 	domain : string;
 	validEmailFormat  = true;
 	validEmailPatternSuccess : boolean = true ;
@@ -2776,6 +2778,9 @@ configSalesforce() {
 	
     listExcludedUsers(excludeUserPagination: Pagination) {
         this.ngxloading = true;
+        if(this.searchExcludedUserKey!=null){
+        	excludeUserPagination.searchKey = this.searchExcludedUserKey;
+        }
         this.userService.listExcludedUsers(this.loggedInUserId, excludeUserPagination)
             .subscribe(
             response => {
@@ -2890,6 +2895,9 @@ configSalesforce() {
     
     listExcludedDomains(excludeDomainPagination: Pagination) {
         this.ngxloading = true;
+        if(this.searchExcludedDomainKey!=null){
+        	excludeDomainPagination.searchKey = this.searchExcludedDomainKey;
+        }
         this.userService.listExcludedDomains(this.loggedInUserId, excludeDomainPagination)
             .subscribe(
             response => {
@@ -2941,6 +2949,19 @@ configSalesforce() {
             );
     }
     
+    search(type: string) {
+        try {
+            if (type === 'excludeUsers') {
+                this.excludeUserPagination.pageIndex = 1;
+                this.listExcludedUsers(this.excludeUserPagination);
+            } else if (type === 'excludedDomains') {
+                this.excludeDomainPagination.pageIndex = 1;
+                this.listExcludedDomains(this.excludeDomainPagination);
+            }
+        } catch (error) {
+            // this.xtremandLogger.error(error, "ManageContactsComponent", "sorting()");
+        }
+    }
 	
 
 }

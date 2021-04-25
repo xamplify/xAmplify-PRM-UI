@@ -231,4 +231,10 @@ logoutAllUsers(){
     );
 }
 
+download(csvName:string){
+	const url =this.authenticationService.REST_URL + "superadmin/" + csvName +'?access_token='+this.authenticationService.access_token;
+	window.location.assign(url);
+
+}
+
 }

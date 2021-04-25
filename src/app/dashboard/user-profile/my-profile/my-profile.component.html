@@ -1185,7 +1185,7 @@
 													style="border: 0px !important; background-color: transparent !important">
 													<tbody>
 														<fieldset>
-															<legend>Exclude contact</legend>
+															<legend>Exclude A User</legend>
 															<!-- new -->
 
 															<div class="btn-group">
@@ -1194,6 +1194,22 @@
 																	Add <i class="fa fa-plus"
 																		style="font-size: 12px; margin-left: 5px;"></i>
 																</button>
+															</div>
+
+															<div class="portlet-input input-inline search-class" style="float:right;"
+																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+																<div class="input-icon right">
+																	<input type="text" [(ngModel)]="searchExcludedUserKey"
+																		[ngModelOptions]="{standalone: true}"
+																		class="form-control" placeholder="Search for a user">
+																	<button *ngIf="searchExcludedUserKey"
+																		class="glyphicon glyphicon-remove search-box-item-clear"
+																		(click)="searchExcludedUserKey='';search('excludeUsers')"></button>
+																	<button type="submit" class="search-box-item-click"
+																		(click)="search('excludeUsers')">
+																		<i class="fa fa-search"></i>
+																	</button>
+																</div>
 															</div>
 
 															<div style="margin-top: 10px;" *ngIf="excludeUserPagination.pagedItems?.length === 0" class="alert alert-info">
@@ -1264,7 +1280,7 @@
 													style="border: 0px !important; background-color: transparent !important">
 													<tbody>
 														<fieldset>
-															<legend>Exclude Domain</legend>
+															<legend>Exclude A Domain</legend>
 															<!-- new -->
 
 															<div class="btn-group">
@@ -1273,6 +1289,23 @@
 																	Add <i class="fa fa-plus"
 																		style="font-size: 12px; margin-left: 5px;"></i>
 																</button>
+															</div>
+
+															<div class="portlet-input input-inline search-class"
+																style="float: right;"
+																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+																<div class="input-icon right">
+																	<input type="text" [(ngModel)]="searchExcludedDomainKey"
+																		[ngModelOptions]="{standalone: true}"
+																		class="form-control" placeholder="Search for a domain">
+																	<button *ngIf="searchExcludedDomainKey"
+																		class="glyphicon glyphicon-remove search-box-item-clear"
+																		(click)="searchExcludedDomainKey='';search('excludedDomains')"></button>
+																	<button type="submit" class="search-box-item-click"
+																		(click)="search('excludedDomains')">
+																		<i class="fa fa-search"></i>
+																	</button>
+																</div>
 															</div>
 
 															<div style="margin-top: 10px;" *ngIf="excludeDomainPagination.pagedItems?.length === 0" class="alert alert-info">
