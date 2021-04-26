@@ -4,6 +4,8 @@
             <li>
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                 <i *ngIf="isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
                 <a *ngIf="isCreatedUser" [routerLink]="['/home/tracks/manage']">Manage Tracks</a>
                 <i *ngIf="!isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
