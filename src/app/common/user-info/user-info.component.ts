@@ -14,6 +14,7 @@ export class UserInfoComponent implements OnInit {
     @Input() isContactCompanyInfo: boolean;
     @Input() isFromAdminList: boolean;
     @Input() isLeadInfo: boolean;
+    @Input() isExclusion : boolean=false;
     backgroudColor: any;
     constructor() { }
 
