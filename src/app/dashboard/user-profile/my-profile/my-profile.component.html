@@ -134,9 +134,7 @@
                                     {{properties.tags | translate}} </a>
                             </li>
                             <ng-container *ngIf="excludeUsersOrDomains">
-                                <li [ngClass]="{'active-tab': activeTabName == 'exclude'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                                authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
-                                 authenticationService.superiorRole != 'Partner'">
+                                <li [ngClass]="{'active-tab': activeTabName == 'exclude'}" class="hidden-xs" >
                                  <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}" (click)="activateTab('exclude');clearCustomResponse()"> {{properties.exclude | translate}}</a>
                                 </li>
                             </ng-container>
@@ -1188,7 +1186,8 @@
 															<legend>Exclude A User</legend>
 															<!-- new -->
 
-															<div class="btn-group">
+															<div class="btn-group" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
 																<button id="add_contact" class="btn green"
 																	(click)="addContactModalOpen()" translate>
 																	Add <i class="fa fa-plus"
@@ -1199,7 +1198,7 @@
 															<div class="portlet-input input-inline search-class" style="float:right;"
 																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
 																<div class="input-icon right">
-																	<input type="text" [(ngModel)]="searchExcludedUserKey"
+																	<input type="text" [(ngModel)]="searchExcludedUserKey" (keydown.enter)="searchData('excludeUsers')"
 																		[ngModelOptions]="{standalone: true}"
 																		class="form-control" placeholder="Search for a user">
 																	<button *ngIf="searchExcludedUserKey"
@@ -1212,7 +1211,7 @@
 																</div>
 															</div>
 
-															<div style="margin-top: 10px;" *ngIf="excludeUserPagination.pagedItems?.length === 0" class="alert alert-info">
+															<div style="margin-top: 40px;" *ngIf="excludeUserPagination.pagedItems?.length === 0" class="alert alert-info">
 																<strong>No Records Found.</strong>
 															</div>
 
@@ -1244,8 +1243,9 @@
                         <app-timestamp [dateAndTime]="user.time"> </app-timestamp>
                       </h6>
 															</td>
-																<td >
-															<div class="actions-block override-actions"  style="float:none;">
+																<td  >
+															<div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
 																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedUserAlert(user.userId)" >
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
@@ -1283,7 +1283,8 @@
 															<legend>Exclude A Domain</legend>
 															<!-- new -->
 
-															<div class="btn-group">
+															<div class="btn-group" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
 																<button id="add_contact" class="btn green"
 																	(click)="addDomainModalOpen()" translate>
 																	Add <i class="fa fa-plus"
@@ -1295,7 +1296,7 @@
 																style="float: right;"
 																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
 																<div class="input-icon right">
-																	<input type="text" [(ngModel)]="searchExcludedDomainKey"
+																	<input type="text" [(ngModel)]="searchExcludedDomainKey" (keydown.enter)="searchData('excludedDomains')"
 																		[ngModelOptions]="{standalone: true}"
 																		class="form-control" placeholder="Search for a domain">
 																	<button *ngIf="searchExcludedDomainKey"
@@ -1308,7 +1309,7 @@
 																</div>
 															</div>
 
-															<div style="margin-top: 10px;" *ngIf="excludeDomainPagination.pagedItems?.length === 0" class="alert alert-info">
+															<div style="margin-top: 40px;" *ngIf="excludeDomainPagination.pagedItems?.length === 0" class="alert alert-info">
 																<strong>No Records Found.</strong>
 															</div>
 
@@ -1341,7 +1342,8 @@
                       </h6>
 															</td>
 																<td >
-															<div class="actions-block override-actions"  style="float:none;">
+															<div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
 																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedDomainAlert(obj.domainName)" >
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>

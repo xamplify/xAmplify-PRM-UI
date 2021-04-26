@@ -335,6 +335,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.authService.module.lmsAccess || this.authService.module.lmsAccessAsPartner || this.authService.module.playbookAccess ||
             this.authService.module.playbookAccessAsPartner);
             this.authService.module.showContent = this.showContent;
+            this.authService.module.isPartnerSuperVisor = roleDisplayDto.partnerSuperVisor;
             if(this.showContent){
                 this.contentDivs.push(this.authService.module.isVideo);
                 this.contentDivs.push(this.authService.module.damAccess || this.authService.module.damAccessAsPartner);

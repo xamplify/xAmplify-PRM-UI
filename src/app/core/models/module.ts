@@ -53,5 +53,5 @@ export class Module {
     showContent = false;
     contentDivsCount = 0;
     contentLoader = false;
-
+    isPartnerSuperVisor : boolean = false;
 }

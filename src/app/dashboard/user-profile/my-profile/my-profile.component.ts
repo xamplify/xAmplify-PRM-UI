@@ -59,6 +59,7 @@ declare var swal, $, videojs: any;
 	providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+	isPartnerSuperVisor :boolean = false;
 	public searchExcludedUserKey: string=null;
     public searchExcludedDomainKey: string=null;
 	domain : string;
@@ -388,6 +389,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 			this.initializeForm();
 			this.checkIntegrations();
+			this.isPartnerSuperVisor = this.authenticationService.module.isPartnerSuperVisor;
 		} catch (error) {
 			this.hasClientErrors = true;
 			this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
@@ -2961,6 +2963,12 @@ configSalesforce() {
         } catch (error) {
             // this.xtremandLogger.error(error, "ManageContactsComponent", "sorting()");
         }
+    }
+    
+    searchData(type: string) {
+    	   this.addContactModalClose();
+    	   this.addDomainModalClose();
+        this.search(type);
     }
 	
 
