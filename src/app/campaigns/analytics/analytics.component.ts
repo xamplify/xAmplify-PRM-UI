@@ -2201,6 +2201,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.contactListDeleteError = true;
     }
   }
+  
+  getSelectedListOfContacts(id: number) {
+	  this.contactListInfoPagination = new Pagination();
+	  this.contactListInfoPagination.pageIndex= 1;
+	  this.contactListInfoPagination.maxResults = 12;
+	  this.getListOfContacts(id);
+  }
   getListOfContacts(id: number) {
     try {
       this.contactListId = id;
