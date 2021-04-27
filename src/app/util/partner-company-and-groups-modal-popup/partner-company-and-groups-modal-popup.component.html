@@ -88,9 +88,9 @@
                                                             </a>
                                                           </div>
                                                         </td>
-                                                        <td  title="{{partner?.companyName}}">
-                                                          <div>
-                                                             <img class="img-c-h" alt="No Image Found" [src]="authenticationService.MEDIA_URL+partner.companyLogo">
+                                                        <td style="width: 10%;" title="{{partner?.companyName}}">
+                                                          <div class="thumbnail-wrapper">
+                                                             <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';" [src]="authenticationService.MEDIA_URL+partner.companyLogo">
                                                           </div>
                                                        </td>
                                                       <td title="{{partner?.companyName}}">
