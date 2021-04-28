@@ -276,6 +276,8 @@ export class AddLeadComponent implements OnInit {
   resetPipelines() {
     this.lead.pipelineId = 0;
     this.lead.pipelineStageId = 0;
+    this.hasCampaignPipeline = false;
+    this.hasSfPipeline = false;
     this.getPipelines();
   }
 

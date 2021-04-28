@@ -1117,7 +1117,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           data => {
             this.campaign = data;
             this.isChannelCampaign = data.channelCampaign;
-            if (this.campaign.nurtureCampaign && this.campaign.userId != this.loggedInUserId && !this.authenticationService.isPartnerTeamMember && !this.isOnlyPartner) {
+            if (this.campaign.nurtureCampaign && this.campaign.userId != this.loggedInUserId && !this.authenticationService.isPartnerTeamMember && !this.isOnlyPartner
+            		&& !this.authenticationService.isVendorAndPartnerTeamMember  && !this.authenticationService.isOrgAdminAndPartnerTeamMember ) {
               this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
               this.isDataShare = this.campaign.dataShare;
               this.isNavigatedThroughAnalytics = true;
@@ -2199,6 +2200,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     } else {
       this.contactListDeleteError = true;
     }
+  }
+  
+  getSelectedListOfContacts(id: number) {
+	  this.contactListInfoPagination = new Pagination();
+	  this.contactListInfoPagination.pageIndex= 1;
+	  this.contactListInfoPagination.maxResults = 12;
+	  this.getListOfContacts(id);
   }
   getListOfContacts(id: number) {
     try {

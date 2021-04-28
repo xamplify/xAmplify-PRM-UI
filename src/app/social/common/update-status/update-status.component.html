@@ -264,6 +264,7 @@
                         </section>
 
                         <section *ngIf="socialStatus.validLink" class="update-status-content col-xs-10 col-sm-12" style="float:left">
+                            <button type='button' class='close' onclick='$(this).parent().remove();' (click) = "closeOgTags(socialStatus)">×</button>                            
                             <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 ogImage" style="margin-top: 0px;">
                                 <img  src="{{socialStatus.ogImage}}"                                      
                                      height="86" width="100%" alt="No Image Found">

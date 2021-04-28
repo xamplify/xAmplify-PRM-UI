@@ -1,0 +1,21 @@
+<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+                <i *ngIf="!isAdd" class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="!isAdd" [routerLink]="['/home/playbook/manage']">Manage Play Books</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="isAdd">Add Play Book</a>
+                <a *ngIf="!isAdd">Edit Play Book</a>
+            </li>
+        </ul>
+        <div id="folder-margin-xamp">
+            <button class="add-button-xamplify" style="margin-left: 5px;float: right;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+        </div>
+    </div>
+    <app-add-tracks-play-book #addTracksPlayBookComponent [type]="type"></app-add-tracks-play-book>
+</div>

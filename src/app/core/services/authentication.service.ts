@@ -44,6 +44,8 @@ export class AuthenticationService {
   roleName: Roles = new Roles();
   isAddedByVendor = false;
   isPartnerTeamMember = false;
+  isVendorAndPartnerTeamMember = false;
+  isOrgAdminAndPartnerTeamMember = false;
   superiorRole = '';
   selectedVendorId: number;
   venorMyProfileReport: any;
@@ -491,6 +493,11 @@ export class AuthenticationService {
     module.isPartnershipEstablishedOnlyWithVendorTier = false;
     module.damAccessAsPartner = false;
     module.damAccess = false;
+	  module.lmsAccess = false;
+	  module.lmsAccessAsPartner = false;
+	  module.playbookAccess = false;
+	  module.playbookAccessAsPartner = false;
+	  module.hasPartnerLandingPageAccess = false;
     module.isMarketing = false;
     module.isPrm = false;
     module.isPrmTeamMember = false;
@@ -501,6 +508,9 @@ export class AuthenticationService {
     module.isVendorTierAndPartner = false;
     module.isVendorTierAndPartnerTeamMember = false;
     module.showCampaignsAnalyticsDivInDashboard = false;
+    module.showContent = false;
+    module.contentDivsCount = 0;
+    module.contentLoader = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;
@@ -508,6 +518,8 @@ export class AuthenticationService {
     this.partnershipEstablishedOnlyWithPrm = false;
     this.folders = false;
     this.lmsAccess = false;
+	  this.isVendorAndPartnerTeamMember = false;
+	  this.isOrgAdminAndPartnerTeamMember = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){

@@ -207,4 +207,14 @@ export class AddDamComponent implements OnInit {
     this.referenceService.showSweetAlertInfoMessage();
   }
 
+	goToManageDam() {
+		this.ngxloading = true;
+		this.referenceService.goToRouter("home/dam/manage");
+	}
+	
+	goToSelect(){
+		this.ngxloading = true;
+		this.referenceService.goToRouter("home/dam/select");
+	}
+
 }

@@ -86,8 +86,11 @@ import { CampaignsLaunchedByPartnersComponent } from 'app/util/campaigns-launche
 import { SpfDescriptionComponent } from 'app/util/spf-description/spf-description.component';
 import { PartnerCompanyAndGroupsModalPopupComponent } from 'app/util/partner-company-and-groups-modal-popup/partner-company-and-groups-modal-popup.component';
 import { PreviewUserListComponent } from 'app/util/preview-user-list/preview-user-list.component';
-
-
+import { AddTracksPlayBookComponent } from 'app/tracks-play-book-util/add-tracks-play-book/add-tracks-play-book.component'
+import { ManageTracksPlayBookComponent } from 'app/tracks-play-book-util/manage-tracks-play-book/manage-tracks-play-book.component'
+import { PreviewTracksPlayBookComponent } from 'app/tracks-play-book-util/preview-tracks-play-book/preview-tracks-play-book.component'
+import { TracksPlayBookAnalyticsComponent } from 'app/tracks-play-book-util/tracks-play-book-analytics/tracks-play-book-analytics.component';
+import { TracksPlayBookPartnerAnalyticsComponent } from 'app/tracks-play-book-util/tracks-play-book-partner-analytics/tracks-play-book-partner-analytics.component';
 
 @NgModule({
     imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule,TagInputModule, TranslateModule,DragulaModule,ColorPickerModule,CKEditorModule],
@@ -100,9 +103,10 @@ import { PreviewUserListComponent } from 'app/util/preview-user-list/preview-use
 		 LandingPageLoaderComponent, DashboardLoaderComponent,ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, 
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
-		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent,
-		ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent],
+		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
+		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent, ManageTracksPlayBookComponent,PreviewTracksPlayBookComponent,
+	    TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent],
+
 
 
 
@@ -115,8 +119,9 @@ import { PreviewUserListComponent } from 'app/util/preview-user-list/preview-use
 		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent, 
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
-		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent]
+		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, AddTracksPlayBookComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
+		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent, ManageTracksPlayBookComponent,PreviewTracksPlayBookComponent, TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent]
+
 
 
 })

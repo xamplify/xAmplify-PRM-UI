@@ -133,8 +133,16 @@
                                 <a (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
+                            <ng-container *ngIf="excludeUsersOrDomains">
+                                <li [ngClass]="{'active-tab': activeTabName == 'exclude'}" class="hidden-xs" >
+                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}" (click)="activateTab('exclude');clearCustomResponse()"> {{properties.exclude | translate}}</a>
+                                </li>
+                            </ng-container>
+                               
+
                             <li  [ngClass]="{'active-tab': activeTabName == 'spf'}" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}" (click)="activateTab('spf');clearCustomResponse()">{{properties.spf | translate}}</a>
+
                             </li>
                         </ng-container>
                           
@@ -1162,6 +1170,226 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--Exclude functionality code-->
+										<div class="tab-pane hidden-xs"
+											[ngClass]="{'active': activeTabName == 'exclude'}">
+											<app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
+											</app-dashboard-loader>
+											<app-response-message [customResponse]="excludeUserCustomResponse"></app-response-message>
+											<form action="#" novalidate=""
+												class="ng-untouched ng-pristine ng-valid"
+												*ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+												<table class="table table-light"
+													style="border: 0px !important; background-color: transparent !important">
+													<tbody>
+														<fieldset>
+															<legend>Exclude A User</legend>
+															<!-- new -->
+
+															<div class="btn-group" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
+																<button id="add_contact" class="btn green"
+																	(click)="addContactModalOpen()" translate>
+																	Add <i class="fa fa-plus"
+																		style="font-size: 12px; margin-left: 5px;"></i>
+																</button>
+															</div>
+
+															<div class="portlet-input input-inline search-class" style="float:right;"
+																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+																<div class="input-icon right">
+																	<input type="text" [(ngModel)]="searchExcludedUserKey" (keydown.enter)="searchData('excludeUsers')"
+																		[ngModelOptions]="{standalone: true}"
+																		class="form-control" placeholder="Search for a user">
+																	<button *ngIf="searchExcludedUserKey"
+																		class="glyphicon glyphicon-remove search-box-item-clear"
+																		(click)="searchExcludedUserKey='';search('excludeUsers')"></button>
+																	<button type="submit" class="search-box-item-click"
+																		(click)="search('excludeUsers')">
+																		<i class="fa fa-search"></i>
+																	</button>
+																</div>
+															</div>
+
+															<div style="margin-top: 10px;" *ngIf="excludeUserPagination.pagedItems?.length === 0
+															&& (authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )" class="alert alert-info">
+																<strong>No Records Found.</strong>
+															</div>
+															
+															<div style="margin-top: 42px;" *ngIf="excludeUserPagination.pagedItems?.length === 0
+															&& !(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )" class="alert alert-info">
+																<strong>No Records Found.</strong>
+															</div>
+
+															<div class="clearfix" *ngIf="excludeUserPagination.pagedItems?.length>0" >
+										<div class="col-xs-12 p0" style="margin-top: 10px;">
+											<div class="table-responsive">
+												<table class='table tgrid'
+													*ngIf="excludeUserPagination.pagedItems?.length>0" >
+													<thead>
+														<tr>
+															<!-- <th class='text-center'><input type="checkbox"
+																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+																(change)="checkAll($event)"
+																id="checkAllExistingContacts"/></th> -->
+															<th style="width: 25%"  translate>Name</th>
+															<th style="width: 25%"  translate>Time</th>										
+														<th style="width:16%"  translate>ACTIONS</th>
+														</tr>
+													</thead>
+													<tbody>
+														<ng-container *ngFor="let user of excludeUserPagination.pagedItems ;let i =index">															
+														<tr class='row_{{i}}' style="background-color: #FFFFFF;">
+															<!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+															<td>
+															<app-user-info  [userInfo]="user" [isExclusion]="true"> </app-user-info>
+															</td>
+															<td>
+															<h6>
+                        <app-timestamp [dateAndTime]="user.time"> </app-timestamp>
+                      </h6>
+															</td>
+																<td  >
+															<div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
+																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedUserAlert(user.userId)" >
+																		<i class="fa fa-trash-o" aria-hidden="true"></i>
+																</a>
+                                                            </div>
+															</td>
+															
+														</ng-container>
+												</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									
+									<!-- paignation added-->
+									 <div *ngIf="excludeUserPagination.pagedItems.length !== 0" class="pg8">
+                                            <app-pagination [type]="'excludeUsers'" [pagination]="excludeUserPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedUsers($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                        </div>
+									<!-- paignation end-->
+
+															<!-- new -->
+														</fieldset>
+														<br>
+													</tbody>
+												</table>
+											</form>
+											
+											<app-response-message [customResponse]="excludeDomainCustomResponse"></app-response-message>
+											<form action="#" novalidate=""
+												class="ng-untouched ng-pristine ng-valid"
+												*ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+												<table class="table table-light"
+													style="border: 0px !important; background-color: transparent !important">
+													<tbody>
+														<fieldset>
+															<legend>Exclude A Domain</legend>
+															<!-- new -->
+
+															<div class="btn-group" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
+																<button id="add_contact" class="btn green"
+																	(click)="addDomainModalOpen()" translate>
+																	Add <i class="fa fa-plus"
+																		style="font-size: 12px; margin-left: 5px;"></i>
+																</button>
+															</div>
+
+															<div class="portlet-input input-inline search-class"
+																style="float: right;"
+																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+																<div class="input-icon right">
+																	<input type="text" [(ngModel)]="searchExcludedDomainKey" (keydown.enter)="searchData('excludedDomains')"
+																		[ngModelOptions]="{standalone: true}"
+																		class="form-control" placeholder="Search for a domain">
+																	<button *ngIf="searchExcludedDomainKey"
+																		class="glyphicon glyphicon-remove search-box-item-clear"
+																		(click)="searchExcludedDomainKey='';search('excludedDomains')"></button>
+																	<button type="submit" class="search-box-item-click"
+																		(click)="search('excludedDomains')">
+																		<i class="fa fa-search"></i>
+																	</button>
+																</div>
+															</div>
+
+															<div style="margin-top: 10px;" *ngIf="excludeDomainPagination.pagedItems?.length === 0 &&
+															(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor)"  class="alert alert-info">
+																<strong>No Records Found.</strong>
+															</div>
+															
+															<div style="margin-top: 42px;" *ngIf="excludeDomainPagination.pagedItems?.length === 0 &&
+															!(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )" class="alert alert-info">
+																<strong>No Records Found.</strong>
+															</div>
+
+															<div class="clearfix" *ngIf="excludeDomainPagination.pagedItems?.length>0" >
+										<div class="col-xs-12 p0" style="margin-top: 10px;">
+											<div class="table-responsive">
+												<table class='table tgrid'
+													*ngIf="excludeDomainPagination.pagedItems?.length>0" >
+													<thead>
+														<tr>
+															<!-- <th class='text-center'><input type="checkbox"
+																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+																(change)="checkAll($event)"
+																id="checkAllExistingContacts"/></th> -->
+															<th style="width: 25%"  translate>Name</th>
+															<th style="width: 25%"  translate>Time</th>										
+														<th style="width:16%"  translate>ACTIONS</th>
+														</tr>
+													</thead>
+													<tbody>
+														<ng-container *ngFor="let obj of excludeDomainPagination.pagedItems ;let i =index">															
+														<tr class='row_{{i}}' style="background-color: #FFFFFF;">
+															<!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+															<td><h6>
+															{{obj.domainName}}  </h6>
+															</td>
+															<td>
+															<h6>
+                        <app-timestamp [dateAndTime]="obj.time"> </app-timestamp>
+                      </h6>
+															</td>
+																<td >
+															<div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
+																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedDomainAlert(obj.domainName)" >
+																		<i class="fa fa-trash-o" aria-hidden="true"></i>
+																</a>
+                                                            </div>
+															</td>
+															
+														</ng-container>
+												</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									
+									<!-- paignation added-->
+									 <div *ngIf="excludeDomainPagination.pagedItems.length !== 0" class="pg8">
+                                            <app-pagination [type]="'excludedDomains'" [pagination]="excludeDomainPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedDomains($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                        </div>
+									<!-- paignation end-->
+
+															<!-- new -->
+														</fieldset>
+														<br>
+													</tbody>
+												</table>
+											</form>
+
+
+										</div>
+										<!--Exclude functionality code-->
+                                    
                                 </div>
                             </div>
                         </div>
@@ -1378,3 +1606,85 @@
         </div>
     </div>
 </div>
+
+<!------------------------------Add exclude cotact popup---------->
+<div id="addContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+<div class="modal-dialog  accounts-modal" style="position: relative !important;">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></button>
+      <!-- <a class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></a> -->
+      <h4 class="modal-title size-font" *ngIf="!isUpdateUser" translate>Add Contact</h4>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal" autocomplete="off">
+      <div class="form-group">
+            <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
+                <span class="star"> *</span>
+            </label>
+           <div class="form-group col-xs-10 col-sm-10" >
+              <input type="email" style="border: none" class="form-control padding-mobile" id="email1"
+              (blur)="checkingEmailPattern(addContactuser.emailId)"  (input)="validateEmail(addContactuser.emailId)"
+              [(ngModel)]="addContactuser.emailId"  [ngModelOptions]="{standalone: true}"
+              placeholder="Email *" autocomplete="off" maxlength="250">
+            <div class="textCss"></div>
+            <span class="danger" *ngIf="!validEmailPatternSuccess" translate>Please enter a valid email address</span>
+            <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>
+            <span class="danger" *ngIf="!validEmailFormat" translate>The entered email is not formatted properly</span>
+           </div>
+         </div>
+      </form>
+    </div>
+    <div class="modal-footer" style="border:none">
+      <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
+      <button  type="submit" class="btn green"  (click)="saveExcludedUser(addContactuser)"  [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div id="addDomainModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+<div class="modal-dialog  accounts-modal" style="position: relative !important;">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close-circle" data-dismiss="modal" (click)="addDomainModalClose()"><i class="fa fa-times"></i></button>
+      <h4 class="modal-title size-font"  translate>Add Domain</h4>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal" autocomplete="off">
+
+      <div class="form-group">
+            <label class="control-label col-xs-2 col-sm-2" for="domain" style="color: #00bcd4; right: 11px !important">
+                <span class="star"> *</span>
+            </label>
+           <div class="form-group col-xs-10 col-sm-10" >
+              <input type="text" style="border: none" class="form-control padding-mobile" id="domain"   (input)="validateDomain(domain)"         
+              [(ngModel)]="domain"  [ngModelOptions]="{standalone: true}"
+              placeholder="Domain Name *" autocomplete="off" maxlength="250">
+            <div class="textCss"></div>
+            <span class="danger" *ngIf="isDomainExist" translate>This domain name has already been added</span>
+            <span class="danger" *ngIf="!validDomainFormat" translate>This domain name is not formatted properly</span>
+         <!--    <span class="danger" *ngIf="!validEmailPatternSuccess" translate>Please enter a valid email address</span>
+            <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>
+            <span class="danger" *ngIf="!validEmailFormat" translate>The entered email is not formatted properly</span> -->
+           </div>
+         </div>
+      </form>
+    </div>
+    <div class="modal-footer" style="border:none">
+      <button class="btn btn-default" (click)="addDomainModalClose()" translate>Cancel</button>
+      <button  type="submit" class="btn green"  (click)="saveExcludedDomain(domain)" [disabled]="!validDomainPattern"  translate>Add</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+

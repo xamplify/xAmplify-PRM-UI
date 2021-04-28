@@ -1,0 +1,19 @@
+<div class="page-content">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="['/home/playbook/manage']">Manage Play Books</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a (click)="routeToAnalytics()">Analytics</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a>Partner Analytics</a>
+            </li>
+        </ul>
+    </div>
+    <app-tracks-play-book-partner-analytics [type]="type" (notifyAnalyticsRouter)="updateAnalyticsRouter($event)"></app-tracks-play-book-partner-analytics>
+</div>

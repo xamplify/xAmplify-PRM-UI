@@ -6,14 +6,19 @@
             <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li><a (click)="goToDam()" translate>DAM</a></li>
+         <li>
+            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+					<i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li>
+            <a (click)="goToDam()" translate>DAM</a></li>
       </ul>
-      <div  id="right">
+      <!-- <div  id="right">
          <button id="uploadDamButton" *ngIf="!isPartnerView" class="btn btn-primary" (click)="goToUploadComponent()"  translate>
             <span class="hidden-xs" translate>Design / Upload</span>
             <i class="fa fa-upload" data-toggle="tooltip" aria-hidden="true"></i>
          </button>
-     </div>
+     </div> -->
    </div>
    <!---Component Comes here-->
    <app-dam-list-and-grid-view></app-dam-list-and-grid-view>

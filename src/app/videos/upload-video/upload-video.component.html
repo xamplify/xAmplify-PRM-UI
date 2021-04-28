@@ -1,7 +1,15 @@
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter" translate>Home</a> <i class="fa fa-angle-right"></i></li>
+			<li>
+				<i class="fa fa-home" aria-hidden="true"></i>
+				 <a [routerLink]="refService.homeRouter" translate>Home</a>
+				 <i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li>
+				<a [routerLink]="refService?.selectModuleRouter" translate>Select Module</a> 
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
 			<li style="color:#888" translate>Upload Content</li>
 		</ul>
 	</div>
