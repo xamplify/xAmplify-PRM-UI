@@ -13,6 +13,7 @@ import { HttpClient } from "@angular/common/http";
 @Injectable()
 export class DamService {
   URL = this.authenticationService.REST_URL + "dam/";
+  playbooksUrl = this.authenticationService.REST_URL+"playbooks/"
   constructor(private http: HttpClient, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
   list(pagination: Pagination) {
@@ -150,24 +151,47 @@ export class DamService {
 
   previewAssetById(id:number){
     return this.utilGetMethod("previewAssetById/" + id);
-    
   }
 
-  findPublishedPartnershipIdsByDamId(id:number){
-    return this.utilGetMethod("findPublishedPartnershipIds/" + id);
+  /**********Partners / Partner List Modal Popup APIS*************/
+  findPublishedPartnershipIdsByDamId(id:number,moduleName:string){
+    let url = this.findApiPrefixUrlByModule(moduleName);
+    return this.callGetMethod(url+"findPublishedPartnershipIds/"+id);
   }
 
-  findPublishedPartnerGroupIdsByDamId(id:number){
-    return this.utilGetMethod("findPublishedPartnerGroupIds/" + id);
+  findPublishedPartnerGroupIdsByDamId(id:number,moduleName:string){
+    let url = this.findApiPrefixUrlByModule(moduleName);
+    return this.callGetMethod(url+"findPublishedPartnerGroupIds/"+id);
   }
 
-  findPublishedPartnerIds(damId:number){
-    return this.utilGetMethod("findPublishedPartnerIds/" + damId);
+  findPublishedPartnerIds(damId:number,moduleName:string){
+    let url = this.findApiPrefixUrlByModule(moduleName);
+    return this.callGetMethod(url+"findPublishedPartnerIds/"+damId);
   }
 
-  isPublishedToPartnerGroups(damId:number){
-    return this.utilGetMethod("isPublishedToPartnerGroups/" + damId);
+  isPublishedToPartnerGroups(damId:number,moduleName:string){
+    let url = this.findApiPrefixUrlByModule(moduleName);
+    return this.callGetMethod(url+"isPublishedToPartnerGroups/"+damId);
   }
+
+  private findApiPrefixUrlByModule(moduleName:string){
+    let url = "";
+    if("dam"==moduleName){
+       url= this.URL;
+    }else if("playbooks"==moduleName){
+      url = this.playbooksUrl;
+    }
+    return url;
+  }
+
+  private callGetMethod(url:string){
+    return this.http.get(url + "?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
+  /**********Partners / Partner List Modal Popup APIS*************/
 
   private utilGetMethod(url: string) {
     return this.http.get(this.URL + url + "?access_token=" + this.authenticationService.access_token)

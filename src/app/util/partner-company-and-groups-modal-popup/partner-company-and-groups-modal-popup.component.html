@@ -5,7 +5,7 @@
            <button type="button" class="close-circle" (click)="closePopup()">
            <i class="fa fa-times" aria-hidden="true"></i>
            </button>
-           <h4 class="modal-title text-center">Publish To Partners/Partner Groups</h4>
+           <h4 class="modal-title text-center">Publish To Partners/Partner Lists</h4>
         </div>
         <div class="modal-body">
          <div class="thank-you-pop" *ngIf="sendSuccess">
@@ -34,7 +34,7 @@
                                  <a href="#partners" data-toggle="tab" (click)="findPartnerCompanies(pagination)">Partners</a>
                               </li>
                               <li id="partnerGroups-li">
-                                 <a href="#partnerGroups" data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">Partner Groups</a>
+                                 <a href="#partnerGroups" data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">Partner Lists</a>
                               </li>
                            </ul>
                         </div>
@@ -200,7 +200,7 @@
                                                 <tr>
                                                    <th scope="col" class="text-center">
                                                       <input type="checkbox" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked" id="parnterGroupsHeaderCheckBox"  (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)"></th>
-                                                   <th scope="col" class="text-center">Group Name</th>
+                                                   <th scope="col" class="text-center">List Name</th>
                                                    <th scope="col" class="text-center">Count</th>
                                                    <th scope="col" class="text-center">Created Time</th>
                                                    <th scope="col" class="text-center">Preview</th>

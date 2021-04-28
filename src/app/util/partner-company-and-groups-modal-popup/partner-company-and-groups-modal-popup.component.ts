@@ -80,7 +80,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	findPublishedType(){
 		this.modalPopupLoader = true;
 		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.isPublishedToPartnerGroups(this.inputId).subscribe(
+		this.damService.isPublishedToPartnerGroups(this.inputId,this.moduleName).subscribe(
 			response=>{
 				this.isPublishedToPartnerGroup = response.data;
 				if(this.isPublishedToPartnerGroup){
@@ -107,7 +107,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	findPublishedPartnerGroupIdsByInputId() {
 		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.findPublishedPartnerGroupIdsByDamId(this.inputId).subscribe(
+		this.damService.findPublishedPartnerGroupIdsByDamId(this.inputId,this.moduleName).subscribe(
 			response => {
 				this.selectedPartnerGroupIds = response.data;
 				if (response.data != undefined && response.data.length > 0) {
@@ -124,7 +124,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	findPublishedPartnerIds() {
 		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.findPublishedPartnerIds(this.inputId).subscribe(
+		this.damService.findPublishedPartnerIds(this.inputId,this.moduleName).subscribe(
 			response => {
 				this.selectedTeamMemberIds = response.data;
 				if (response.data != undefined && response.data.length > 0) {
@@ -139,7 +139,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	findPublishedPartnershipIdsByInputId() {
 		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.findPublishedPartnershipIdsByDamId(this.inputId).subscribe(
+		this.damService.findPublishedPartnershipIdsByDamId(this.inputId,this.moduleName).subscribe(
 			response => {
 				this.selectedPartnershipIds = response.data;
 			}, error => {
