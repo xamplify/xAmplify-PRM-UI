@@ -740,4 +740,10 @@ export class ContactService {
         .catch( this.handleError );
     }
 
+    findUsersByUserListId(pagination:Pagination){
+        return this._http.post( this.contactsUrl + "findUsersByUserListId?access_token=" + this.authenticationService.access_token, pagination)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
 }

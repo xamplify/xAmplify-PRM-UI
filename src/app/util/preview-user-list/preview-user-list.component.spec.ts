@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublishToPartnersComponent } from './publish-to-partners.component';
+import { PreviewUserListComponent } from './preview-user-list.component';
 
-describe('PublishToPartnersComponent', () => {
-  let component: PublishToPartnersComponent;
-  let fixture: ComponentFixture<PublishToPartnersComponent>;
+describe('PreviewUserListComponent', () => {
+  let component: PreviewUserListComponent;
+  let fixture: ComponentFixture<PreviewUserListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PublishToPartnersComponent ]
+      declarations: [ PreviewUserListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PublishToPartnersComponent);
+    fixture = TestBed.createComponent(PreviewUserListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

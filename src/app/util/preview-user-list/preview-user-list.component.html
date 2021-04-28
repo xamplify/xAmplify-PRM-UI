@@ -1,0 +1,52 @@
+<div class="modal fade right" id="userListUsersPreviewPopup" tabindex="-1" role="dialog" aria-labelledby="userListUsersPreviewPopup" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog full-width" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" (click)="closePopup()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+          <h4 class="modal-title center-align" title="{{userListName}}">
+            <strong>{{userListName|slice:0:50}}<span *ngIf="userListName?.length>50">...</span></strong>
+        </h4>
+        </div>
+        <div class="modal-body">
+          <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+          </app-response-message>
+          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <ng-container *ngIf="!httpRequestLoader.isLoading && !customResponse.isVisible">
+          <div class="table-responsive">
+            <table class='table tgrid table-condensed table-bordered' *ngIf="pagination.pagedItems?.length>0" id="user-list-users" aria-describedby="userListUsersTableDescription">
+              <thead>
+                <tr>
+                   <th scope="col">EmailId</th>
+                   <th scope="col">First Name</th>
+                   <th scope="col">Last Name</th>
+                </tr>
+             </thead>
+             <tbody>
+              <tr *ngFor="let user of pagination.pagedItems ;let i =index">
+                <td  [ngClass]="[ user?.validEmail ? 'valid' : 'invalid']" [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">
+                  {{user.emailId}}
+                </td>
+                  <td>
+                    {{user.firstname}}
+                  </td>
+                  <td>
+                      {{user.lastname}}
+                  </td>
+                </tr>
+             </tbody>
+              </table>
+            </div>
+            <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+              <strong>No Data Found.</strong>
+           </div>
+          </ng-container>
+          <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+            <app-pagination [pagination]="pagination" (notifyParent)="navigateUsers($event)" (notifyParentDropDown)="findUsersByUserListId($event)">
+            </app-pagination>
+         </div>
+        </div>
+    </div>
+    </div>
+</div>

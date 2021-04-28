@@ -76,7 +76,7 @@
                     </div>
                  </div>
                  <div class="{{tileClass}}">
-                    <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                    <a class="dashboard-stat dashboard-stat-lighter green-soft min-h">
                        <div class="visual">
                           <i aria-hidden="true" class=""></i>
                        </div>
@@ -85,13 +85,13 @@
                           <div class="desc">Total Views</div>
                        </div>
                        <span class="morePadding">
-                    <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                    <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
                     <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
                     </span>
                     </a>
                  </div>
                  <div  class="{{tileClass}}">
-                    <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                    <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h">
                        <div class="visual">
                           <i aria-hidden="true" class=""></i>
                        </div>
@@ -100,7 +100,7 @@
                           <div class="desc">Total Downloads</div>
                        </div>
                        <span class="morePadding">
-                    <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                    <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
                     <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
                     </span>
                     </a>
@@ -148,10 +148,10 @@
                      <table class='table tgrid' aria-describedby="dam-analytics-list">
                         <thead>
                            <tr>
-                              <th scope="row"  translate>View / Download Time</th>
+                              <th scope="row"  translate>{{viewOrDownloadText}} Time</th>
                               <th scope="row"  translate>Location</th>
                               <th scope="row" translate>Device</th>
-                              <th scope="row" class="text-center" translate >View / Download</th>
+                              <th scope="row" class="text-center" translate >{{viewOrDownloadText}}</th>
                            </tr>
                         </thead>
                         <tbody>

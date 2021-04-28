@@ -122,6 +122,15 @@ export class ParterService {
 
     findPartnerCompanies(pagination:Pagination){
         const apiUrl = this.URL + 'partnership/findPartnerCompanies?access_token=' + this.authenticationService.access_token
+        return this.findPartnerCompainesOrGroups(apiUrl,pagination);
+    }
+
+    findPartnerGroups(pagination:Pagination){
+        const apiUrl = this.URL + 'partnership/findPartnerGroups?access_token=' + this.authenticationService.access_token
+        return this.findPartnerCompainesOrGroups(apiUrl,pagination);
+    }
+
+    findPartnerCompainesOrGroups(apiUrl:string,pagination:Pagination){
         return this.httpClient.post( apiUrl,pagination )
             .catch( this.handleError );
     }

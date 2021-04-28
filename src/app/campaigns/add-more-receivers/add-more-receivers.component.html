@@ -132,18 +132,17 @@
     <div class="modal-dialog modal-css" role="document" style="right:0">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close">
-							<i class="fa fa-times"></i>
+                <button type="button" class="close-circle" data-dismiss="modal" (click)="closeModelPopup()" aria-label="Close">
+					<i class="fa fa-times" aria-hidden="true"></i>
 						</button>
                 <div>
-                    <h4 class="modal-title" id="user-list-name" align="center" title="{{listName}}">
-                        <b>{{listName|slice:0:20}}<span *ngIf="listName?.length>20">...</span></b>
+                    <h4 class="modal-title center-align" id="user-list-name"  title="{{listName}}">
+                        <strong>{{listName|slice:0:50}}<span *ngIf="listName?.length>50">...</span></strong>
                     </h4>
                 </div>
             </div>
-            <!-- <app-loader [model]="contactListDetailLoader.isHorizontalCss" *ngIf="contactListDetailLoader.isLoading"></app-loader> -->
+            <app-loader [model]="contactListDetailLoader.isHorizontalCss" *ngIf="contactListDetailLoader.isLoading"></app-loader>
             <div class="modal-body" id="users-modal-body"></div>
-           <!--  <app-error-pages *ngIf="contactListDetailLoader.isServerError"></app-error-pages> -->
             <div class="modal-footer">
                 <app-pagination style="float: left;" class="pg8" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true" (notifyParent)="setPagePagination($event)"></app-pagination>
                 <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
