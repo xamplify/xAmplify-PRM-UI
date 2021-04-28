@@ -41,7 +41,7 @@ import { VanityAddContactsComponent } from './contacts/vanity-add-contacts/vanit
 import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchronize-contacts/vanity-synchronize-contacts.component';
 import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
 import { LogoutComponent } from 'app/authentication/logout/logout.component';
-
+import {SelectContentModulesComponent} from 'app/core/select-content-modules/select-content-modules.component';
 
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
@@ -88,6 +88,8 @@ export const routes: Routes = [
 			{ path: 'leads', loadChildren: 'app/leads/leads.module#LeadsModule',  data: { preload: false } },
 			{ path: 'deal', loadChildren: 'app/deals/deals.module#DealsModule', data: { preload: false } },
 			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule',  data: { preload: false } },
+			{ path: 'playbook', loadChildren: 'app/play-book/play-book.module#PlayBookModule',  data: { preload: false } },
+			{ path: 'select-modules', component: SelectContentModulesComponent },
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent }
 		]
 	},

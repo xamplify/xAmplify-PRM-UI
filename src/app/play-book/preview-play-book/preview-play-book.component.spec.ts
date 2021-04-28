@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddLmsNewComponent } from './add-lms-new.component';
+import { PreviewPlayBookComponent } from './preview-play-book.component';
 
-describe('AddLmsNewComponent', () => {
-  let component: AddLmsNewComponent;
-  let fixture: ComponentFixture<AddLmsNewComponent>;
+describe('PreviewPlayBookComponent', () => {
+  let component: PreviewPlayBookComponent;
+  let fixture: ComponentFixture<PreviewPlayBookComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddLmsNewComponent ]
+      declarations: [ PreviewPlayBookComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddLmsNewComponent);
+    fixture = TestBed.createComponent(PreviewPlayBookComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

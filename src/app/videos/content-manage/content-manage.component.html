@@ -7,11 +7,15 @@
 					<i class="fa fa-home" aria-hidden="true"></i>
 					 <a	[routerLink]="referenceService.homeRouter" translate>Home</a>
 					<i	class="fa fa-angle-right" aria-hidden="true"></i></li>
-        	<li *ngIf="authenticationService.isSuperAdmin()">
-				<i	class="fa fa-home" aria-hidden="true"></i>
-		  		<a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
-		  		<i class="fa fa-angle-right" aria-hidden="true"></i>
-			</li>
+					<li *ngIf="!authenticationService.isSuperAdmin()">
+						<a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+						<i class="fa fa-angle-right" aria-hidden="true"></i>
+					</li>
+        	     <li *ngIf="authenticationService.isSuperAdmin()">
+					<i	class="fa fa-home" aria-hidden="true"></i>
+					<a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
+					<i class="fa fa-angle-right" aria-hidden="true"></i>
+				</li>
 				<li><a translate>Manage content</a></li>
 			</ul>
 			<a class="close-circle" title="Refresh" id="custom-align-padding" [routerLink]="['/home/content/manage']"><i class="fa fa-refresh" aria-hidden="true"></i></a>	

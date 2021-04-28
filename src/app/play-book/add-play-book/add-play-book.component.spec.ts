@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableEditableComponent } from './table-editable.component';
+import { AddPlayBookComponent } from './add-play-book.component';
 
-describe('TableEditableComponent', () => {
-  let component: TableEditableComponent;
-  let fixture: ComponentFixture<TableEditableComponent>;
+describe('AddPlayBookComponent', () => {
+  let component: AddPlayBookComponent;
+  let fixture: ComponentFixture<AddPlayBookComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableEditableComponent ]
+      declarations: [ AddPlayBookComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TableEditableComponent);
+    fixture = TestBed.createComponent(AddPlayBookComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

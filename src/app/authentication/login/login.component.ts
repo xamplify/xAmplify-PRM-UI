@@ -196,23 +196,34 @@ export class LoginComponent implements OnInit, OnDestroy {
     module.isPrmTeamMember = false;
     module.isPrmAndPartner = false;
     module.isPrmAndPartnerTeamMember = false;
-    module.isVendorTier = false;
     module.isVendorTierTeamMember = false;
     module.isVendorTierAndPartner = false;
     module.isVendorTierAndPartnerTeamMember = false;
     module.isAddingPartnersAccess = false;
+	  module.damAccessAsPartner = false;
+    module.damAccess = false;
+    module.lmsAccess = false;
+    module.lmsAccessAsPartner = false;
+    module.playbookAccess = false;
+    module.playbookAccessAsPartner = false;
+    module.hasPartnerLandingPageAccess = false;
+    module.showContent = false;
+    module.contentLoader = false;
     this.authenticationService.isAddedByVendor = false;
     this.authenticationService.isPartnerTeamMember = false;
     this.authenticationService.loggedInUserRole = "";
     this.authenticationService.hasOnlyPartnerRole = false;
     module.isOnlyPartner = false;
     module.isReDistribution = false;
+    module.contentDivsCount = 0;
     this.authenticationService.isShowRedistribution = false;
     this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     this.authenticationService.partnershipEstablishedOnlyWithPrm = false;
     this.authenticationService.lmsAccess = false;
     this.authenticationService.mdf = false;
     this.authenticationService.leadsAndDeals = false;
+	  this.authenticationService.isVendorAndPartnerTeamMember = false;
+	  this.authenticationService.isOrgAdminAndPartnerTeamMember = false;
   }
 
   ngOnInit() {

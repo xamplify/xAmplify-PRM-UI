@@ -10,6 +10,10 @@
          <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
           <i class="fa fa-angle-right" aria-hidden="true"></i>
        </li>
+          <li>
+            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
          <li>
             <a (click)="goToDam()" translate>DAM</a> 
             <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -36,7 +40,9 @@
       <div class="page-bar">
          <ul class="page-breadcrumb">
             <li>
-               <span><strong class="bold-asset">Asset Name </strong>: {{selectedAssetName | slice:0:50}}
+               <span>
+                  <strong class="bold-asset">Asset Name </strong>: 
+                  <span title="{{selectedAssetName}}">{{selectedAssetName | slice:0:50}}</span>
                   <span *ngIf="selectedAssetName?.length>50">..</span></span>
             </li>
          </ul>

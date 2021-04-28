@@ -1,0 +1,19 @@
+<div class="page-content">
+    <!-- --------------Heading -->
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i  class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+                <i  class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="!isPartnerView" [routerLink]="['/home/playbook/manage']">Manage Play Books</a>
+                <a *ngIf="isPartnerView" [routerLink]="['/home/playbook/shared']">Shared Play Books</a>
+            </li>
+        </ul>
+    </div>
+    <ng-container *ngIf="type">
+        <app-manage-tracks-play-book [type]="type"></app-manage-tracks-play-book>
+    </ng-container>
+</div>

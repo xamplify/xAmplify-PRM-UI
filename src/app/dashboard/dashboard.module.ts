@@ -60,6 +60,7 @@ import { RedistributedCampaignsWordcloudMapComponent } from './dashboard-analyti
 import { LeadsAndDealsBubbleChartComponent } from './dashboard-analytics-components/leads-and-deals-bubble-chart/leads-and-deals-bubble-chart.component';
 import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashboard.component';
 import { SpfComponent } from './spf/spf.component';
+import { AdminPartnerCompaniesComponent } from './admin-partner-companies/admin-partner-companies.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -95,7 +96,8 @@ import { SpfComponent } from './spf/spf.component';
         RedistributedCampaignsWordcloudMapComponent,
         LeadsAndDealsBubbleChartComponent,
         DetailedDashboardComponent,
-        SpfComponent
+        SpfComponent,
+        AdminPartnerCompaniesComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

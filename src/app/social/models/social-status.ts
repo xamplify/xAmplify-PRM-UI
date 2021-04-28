@@ -38,5 +38,5 @@ export class SocialStatus {
   collectionId: number;
   originalOgImage: string;
   ogImagePath: string;
-  
+  removeOgTags: boolean;
 }

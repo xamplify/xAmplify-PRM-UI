@@ -16,6 +16,9 @@
 		<span class='uppercase' *ngIf="!isPartnerInfo && userInfo?.email?.length > 0">
 			{{userInfo?.email.trim() |slice:0:1}}
 		</span>
+		
+		<span class='uppercase' *ngIf="isExclusion">
+			{{userInfo?.emailId |slice:0:1}} </span>
 
 	</span>
 	<span class="ml10" *ngIf="(userInfo?.firstName |slice:0:1)==null && (userInfo?.emailId |slice:0:1)==null 

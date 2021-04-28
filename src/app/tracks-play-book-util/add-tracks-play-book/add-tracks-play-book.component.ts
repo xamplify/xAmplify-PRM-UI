@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { LmsService } from '../services/lms.service';
+import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Form } from '../../forms/models/form';
@@ -18,26 +18,26 @@ import { UtilService } from '../../core/services/util.service';
 import { Tag } from 'app/dashboard/models/tag'
 import { UserService } from '../../core/services/user.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { LearningTrack } from '../models/learningTrack'
+import { TracksPlayBook } from '../models/tracks-play-book'
 import { DragulaService } from 'ng2-dragula';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
-import { LmsDto } from '../models/lms-dto'
+import { TracksPlayBookDto } from '../models/tracks-play-book-dto'
 import { DamService } from '../../dam/services/dam.service'
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { ContactService } from '../../contacts/services/contact.service'
 import { ImageCropperComponent } from 'ng2-img-cropper';
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import { TracksPlayBookType } from '../models/tracks-play-book-type.enum'
 
 declare var $, swal, CKEDITOR: any;
-
 @Component({
-  selector: 'app-add-lms-new',
-  templateUrl: './add-lms-new.component.html',
-  styleUrls: ['./add-lms-new.component.css'],
+  selector: 'app-add-tracks-play-book',
+  templateUrl: './add-tracks-play-book.component.html',
+  styleUrls: ['./add-tracks-play-book.component.css'],
   providers: [HttpRequestLoader, Pagination, SortOption, FormService, RegularExpressions, DamService, ContactService]
 })
-export class AddLmsNewComponent implements OnInit {
+export class AddTracksPlayBookComponent implements OnInit {
 
   activeTabName: string = "";
   defaultTabClass = "col-block width";
@@ -55,12 +55,10 @@ export class AddLmsNewComponent implements OnInit {
   formError = false;
   customResponse: CustomResponse = new CustomResponse();
   folderOrTagsCustomResponse: CustomResponse = new CustomResponse();
-  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   isPartnerView = false;
   SubmitButtonValue = "Save"
   SubmitAndPublishButtonValue = "Save & Publish"
-  //heading = "Add New Learning Track"
   formsError: boolean = false;
   formPagination: Pagination = new Pagination();
   formSortOption: SortOption = new SortOption();
@@ -79,9 +77,8 @@ export class AddLmsNewComponent implements OnInit {
   selectedTags: Array<Tag> = new Array<Tag>();
   categoryNames: any;
   selectedFolder: Array<any> = new Array<any>();
-  learningTrack: LearningTrack = new LearningTrack();
+  tracksPlayBook: TracksPlayBook = new TracksPlayBook();
   learningTrackId: number = 0;
-  isAdd: boolean = true;
   lmsResponse: CustomResponse = new CustomResponse();
   slug = "";
   quizFormPagination: Pagination = new Pagination();
@@ -93,19 +90,19 @@ export class AddLmsNewComponent implements OnInit {
   assetSortOption: SortOption = new SortOption();
   assetError: boolean = false;
   assetLoader: HttpRequestLoader = new HttpRequestLoader();
-  selectedAssets: Array<LmsDto> = new Array<LmsDto>();
+  selectedAssets: Array<TracksPlayBookDto> = new Array<TracksPlayBookDto>();
 
   PartnerCompaniesPagination: Pagination = new Pagination();
   PartnerCompaniesSortOption: SortOption = new SortOption();
   PartnerCompaniesLoader: HttpRequestLoader = new HttpRequestLoader();
-  partnerCompanyList: Array<LmsDto> = new Array<LmsDto>();
-  selectedPartnerCompanies: Array<LmsDto> = new Array<LmsDto>();
+  partnerCompanyList: Array<TracksPlayBookDto> = new Array<TracksPlayBookDto>();
+  selectedPartnerCompanies: Array<TracksPlayBookDto> = new Array<TracksPlayBookDto>();
 
-  groupList: Array<LmsDto> = new Array<LmsDto>();
+  groupList: Array<TracksPlayBookDto> = new Array<TracksPlayBookDto>();
   groupsPagination: Pagination = new Pagination();
   groupsSortOption: SortOption = new SortOption();
   groupsLoader: HttpRequestLoader = new HttpRequestLoader();
-  selectedGroups: Array<LmsDto> = new Array<LmsDto>();
+  selectedGroups: Array<TracksPlayBookDto> = new Array<TracksPlayBookDto>();
   groupName: string = "";
   groupId: number = 0;
   isLoading = false;
@@ -122,7 +119,6 @@ export class AddLmsNewComponent implements OnInit {
   groupOrCompanyErrorMessage: string;
   descriptionErrorMessage: string;
   linkPrefix: string = "";
-  editRouterLink: string = "";
 
   isStepOneValid: boolean = false;
   isStepTwoValid: boolean = false;
@@ -142,6 +138,7 @@ export class AddLmsNewComponent implements OnInit {
   loadingcrop = false;
   featuredImagePath = "";
   existingSlug = "";
+  existingTitle = "";
   openAddTagPopup: boolean = false;
   pagination: Pagination = new Pagination();
   @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
@@ -178,7 +175,12 @@ export class AddLmsNewComponent implements OnInit {
   isCompanyHeaderCheckBoxChecked: boolean = false;
   paginatedSelectedCompanyIds = [];
 
-  constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public lmsService: LmsService, private router: Router, public pagerService: PagerService,
+  ckeditorEvent: any;
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();;
+  isAdd: boolean = true;
+  @Input() type: string;
+
+  constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
     this.siteKey = this.envService.captchaSiteKey;
@@ -202,11 +204,9 @@ export class AddLmsNewComponent implements OnInit {
         this.stepTwoTabClass = this.completedTabClass;
         this.stepThreeTabClass = this.completedTabClass;
         this.stepFourTabClass = this.completedTabClass;
-        this.editRouterLink = "/home/tracks/edit/" + this.learningTrackId;
         this.getById(this.learningTrackId);
-        this.SubmitButtonValue = "Update"
-        this.SubmitAndPublishButtonValue = "Update & Publish"
-        //this.heading = "Edit Learning Track"
+        this.SubmitButtonValue = "Update";
+        this.SubmitAndPublishButtonValue = "Update & Publish";
       } else {
         this.goToManageSectionWithError();
       }
@@ -229,7 +229,11 @@ export class AddLmsNewComponent implements OnInit {
 
   goToManageSectionWithError() {
     this.referenceService.showSweetAlertErrorMessage("Invalid Id");
-    this.referenceService.goToRouter("/home/tracks");
+    if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+      this.referenceService.goToRouter("/home/tracks");
+    } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+      this.referenceService.goToRouter("/home/playbook");
+    }
   }
 
   private onDropModel(args) {
@@ -241,15 +245,12 @@ export class AddLmsNewComponent implements OnInit {
       this.stepOneTabClass = this.activeTabClass;
     } else if (activeTab == "step-2") {
       this.stepTwoTabClass = this.activeTabClass;
-      //this.stepOneTabClass = this.completedTabClass;
     } else if (activeTab == "step-3") {
       this.stepThreeTabClass = this.activeTabClass;
-      //this.stepTwoTabClass = this.completedTabClass;
       this.assetPagination = new Pagination();
       this.listAssets(this.assetPagination);
     } else if (activeTab == "step-4") {
       this.stepFourTabClass = this.activeTabClass;
-      //this.stepThreeTabClass = this.completedTabClass;
       this.listGroups(this.groupsPagination);
       this.listPartnerCompanies(this.PartnerCompaniesPagination);
     }
@@ -259,40 +260,41 @@ export class AddLmsNewComponent implements OnInit {
   getById(id: number) {
     this.ngxloading = true;
     let self = this;
-    this.lmsService.getById(id).subscribe(
+    this.tracksPlayBookUtilService.getById(id).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
-          let learningTrack: LearningTrack = response.data;
-          if (learningTrack != undefined) {
-            this.learningTrack = learningTrack;
-            this.featuredImagePath = this.learningTrack.featuredImage;
-            this.existingSlug = this.learningTrack.slug;
-            this.completeLink = this.linkPrefix + this.learningTrack.slug;
-            if (this.learningTrack.quiz !== undefined) {
-              this.learningTrack.quizId = this.learningTrack.quiz.id;
+          let tracksPlayBook: TracksPlayBook = response.data;
+          if (tracksPlayBook != undefined) {
+            this.tracksPlayBook = tracksPlayBook;
+            this.featuredImagePath = this.tracksPlayBook.featuredImage;
+            this.existingSlug = this.tracksPlayBook.slug;
+            this.existingTitle = this.tracksPlayBook.title;
+            this.completeLink = this.linkPrefix + this.tracksPlayBook.slug;
+            if (this.tracksPlayBook.quiz !== undefined) {
+              this.tracksPlayBook.quizId = this.tracksPlayBook.quiz.id;
             }
-            if (this.learningTrack.contents !== undefined && this.learningTrack.contents.length > 0) {
-              this.selectedAssets = this.learningTrack.contents;
+            if (this.tracksPlayBook.contents !== undefined && this.tracksPlayBook.contents.length > 0) {
+              this.selectedAssets = this.tracksPlayBook.contents;
             }
-            if (this.learningTrack.companies !== undefined && this.learningTrack.companies.length > 0) {
-              this.selectedPartnerCompanies = this.learningTrack.companies;
+            if (this.tracksPlayBook.companies !== undefined && this.tracksPlayBook.companies.length > 0) {
+              this.selectedPartnerCompanies = this.tracksPlayBook.companies;
               this.isCheckAllCompanies();
             }
-            if (this.learningTrack.groups !== undefined && this.learningTrack.groups.length > 0) {
-              this.selectedGroups = this.learningTrack.groups;
+            if (this.tracksPlayBook.groups !== undefined && this.tracksPlayBook.groups.length > 0) {
+              this.selectedGroups = this.tracksPlayBook.groups;
               this.isCheckAllGroups();
             }
-            if (this.learningTrack.tags !== undefined && this.learningTrack.tags.length > 0) {
-              this.selectedTags = this.learningTrack.tags;
+            if (this.tracksPlayBook.tags !== undefined && this.tracksPlayBook.tags.length > 0) {
+              this.selectedTags = this.tracksPlayBook.tags;
               let tagIds: Array<number> = new Array<number>();
               $.each(this.selectedTags, function (index, tag) {
                 tagIds.push(tag.id);
               });
-              this.learningTrack.tagIds = tagIds;
+              this.tracksPlayBook.tagIds = tagIds;
             }
-            if (this.learningTrack.category !== undefined) {
-              this.learningTrack.categoryId = this.learningTrack.category.id;
-              this.folderName = this.learningTrack.category.name;
+            if (this.tracksPlayBook.category !== undefined) {
+              this.tracksPlayBook.categoryId = this.tracksPlayBook.category.id;
+              this.folderName = this.tracksPlayBook.category.name;
             }
             this.validateLearningTrack();
             this.ngxloading = false;
@@ -559,7 +561,7 @@ export class AddLmsNewComponent implements OnInit {
     pagination.userId = this.loggedInUserId;
     this.referenceService.loading(this.PartnerCompaniesLoader, true);
     let self = this;
-    this.lmsService.getPartnerCompanies(pagination).subscribe(
+    this.tracksPlayBookUtilService.getPartnerCompanies(pagination).subscribe(
       (data: any) => {
         let response = data.data;
         pagination.totalRecords = response.totalRecords;
@@ -675,14 +677,10 @@ export class AddLmsNewComponent implements OnInit {
             }
             $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
               if (value.labelType == 'quiz_radio') {
-                //value.labelType = 'quiz'
                 value.choices = value.radioButtonChoices;
-                //value.choiceType = "radio";
 
               } else if (value.labelType == 'quiz_checkbox') {
-                //value.labelType = 'quiz'
                 value.choices = value.checkBoxChoices;
-                //value.choiceType = "checkbox";
               }
             });
             console.log(data.data);
@@ -707,7 +705,11 @@ export class AddLmsNewComponent implements OnInit {
         (result: any) => {
           if (result !== "") {
             this.loggedInUserCompanyId = result;
-            this.linkPrefix = this.authenticationService.APP_URL + "home/tracks/tb/" + this.loggedInUserCompanyId + "/";
+            if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+              this.linkPrefix = this.authenticationService.APP_URL + "home/tracks/tb/" + this.loggedInUserCompanyId + "/";
+            } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+              this.linkPrefix = this.authenticationService.APP_URL + "home/playbook/pb/" + this.loggedInUserCompanyId + "/";
+            }
             this.completeLink = this.linkPrefix;
           } else {
             this.stopLoaders();
@@ -790,21 +792,17 @@ export class AddLmsNewComponent implements OnInit {
   }
 
   selectedQuiz(form: Form) {
-    if (this.learningTrack.quizId == undefined || this.learningTrack.quizId < 1 || this.learningTrack.quizId != form.id) {
-      this.learningTrack.quizId = form.id;
-    } else if (this.learningTrack.quizId == form.id) {
-      this.learningTrack.quizId = 0;
+    if (this.tracksPlayBook.quizId == undefined || this.tracksPlayBook.quizId < 1 || this.tracksPlayBook.quizId != form.id) {
+      this.tracksPlayBook.quizId = form.id;
+    } else if (this.tracksPlayBook.quizId == form.id) {
+      this.tracksPlayBook.quizId = 0;
     }
   }
 
-  updateDescription(form: Form, event) {
-    if (CKEDITOR != undefined) {
-      for (var instanceName in CKEDITOR.instances) {
-        CKEDITOR.instances[instanceName].updateElement();
-        this.learningTrack.description = CKEDITOR.instances[instanceName].getData();
-      }
+  updateDescription(form: Form) {
+    if (form != null && form != undefined) {
+      this.ckeditor.instance.insertHtml("<b><a href = \"" + form.ailasUrl + "\" target=\"_blank\">" + form.name + "</a></b>");
     }
-    this.learningTrack.description = this.learningTrack.description + "<b><a href = \"" + form.ailasUrl + "\" target=\"_blank\">" + form.name + "</a>";
     $('#formsList').modal('hide');
   }
 
@@ -827,7 +825,7 @@ export class AddLmsNewComponent implements OnInit {
     this.croppedImage = '';
     this.fileObj = null;
     if (!this.isAdd) {
-      this.learningTrack.removeFeaturedImage = true;
+      this.tracksPlayBook.removeFeaturedImage = true;
     }
     this.featuredImagePath = "";
   }
@@ -887,10 +885,9 @@ export class AddLmsNewComponent implements OnInit {
     this.loadingcrop = true;
     this.fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
     this.fileObj = this.utilService.blobToFile(this.fileObj);
-    //this.featuredImagePath = null;
     this.loadingcrop = false;
     if (!this.isAdd) {
-      this.learningTrack.removeFeaturedImage = true;
+      this.tracksPlayBook.removeFeaturedImage = true;
     }
     this.featuredImagePath = "";
     $('#cropImage').modal('hide');
@@ -995,17 +992,17 @@ export class AddLmsNewComponent implements OnInit {
 
   updateSlug(type: string) {
     if (type == "title") {
-      if (this.learningTrack.id == undefined || this.learningTrack.id < 1) {
-        this.learningTrack.slug = this.learningTrack.title.replace(/[^a-zA-Z0-9_-]/g, '_');
+      if (this.tracksPlayBook.id == undefined || this.tracksPlayBook.id < 1) {
+        this.tracksPlayBook.slug = this.tracksPlayBook.title.toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
       }
     } else if (type == "slug") {
-      this.learningTrack.slug = this.learningTrack.slug.replace(/[^a-zA-Z0-9_-]/g, '_');
+      this.tracksPlayBook.slug = this.tracksPlayBook.slug.replace(/[^a-zA-Z0-9_-]/g, '_');
     }
     this.validateSlug();
-    if ((this.isAdd || (!this.isAdd && this.existingSlug !== this.learningTrack.slug)) && this.isSlugValid) {
+    if ((this.isAdd || (!this.isAdd && this.existingSlug !== this.tracksPlayBook.slug)) && this.isSlugValid) {
       this.validateSlugForCompany();
     }
-    this.completeLink = this.linkPrefix + this.learningTrack.slug;
+    this.completeLink = this.linkPrefix + this.tracksPlayBook.slug;
   }
 
   editSlug() {
@@ -1061,41 +1058,42 @@ export class AddLmsNewComponent implements OnInit {
   }
 
   updateSelectedTags(tag: Tag, checked: boolean) {
-    let index = this.learningTrack.tagIds.indexOf(tag.id);
+    let index = this.tracksPlayBook.tagIds.indexOf(tag.id);
     if (checked == undefined) {
       if (index > -1) {
-        this.learningTrack.tagIds.splice(index, 1);
+        this.tracksPlayBook.tagIds.splice(index, 1);
       } else {
-        this.learningTrack.tagIds.push(tag.id);
+        this.tracksPlayBook.tagIds.push(tag.id);
       }
     } else if (checked) {
-      this.learningTrack.tagIds.push(tag.id);
+      this.tracksPlayBook.tagIds.push(tag.id);
     } else {
-      this.learningTrack.tagIds.splice(index, 1);
+      this.tracksPlayBook.tagIds.splice(index, 1);
     }
-    console.log(this.learningTrack.tagIds)
+    console.log(this.tracksPlayBook.tagIds)
   }
 
   addFolder(type) {
     this.selectedFolder = new Array<any>();
     this.selectedFolder.push(type);
-    this.learningTrack.categoryId = type.id;
-    console.log(this.learningTrack.categoryId)
+    this.tracksPlayBook.categoryId = type.id;
+    console.log(this.tracksPlayBook.categoryId)
     console.log(this.selectedFolder)
   }
 
   removeFolder(type) {
     this.selectedFolder = new Array<any>();
-    this.learningTrack.categoryId = 0;
-    console.log(this.learningTrack.categoryId)
+    this.tracksPlayBook.categoryId = 0;
+    console.log(this.tracksPlayBook.categoryId)
     console.log(this.selectedFolder)
   }
 
   validateSlugForCompany() {
-    let slugObject: LearningTrack = new LearningTrack();
+    let slugObject: TracksPlayBook = new TracksPlayBook();
     slugObject.userId = this.loggedInUserId;
-    slugObject.slug = this.learningTrack.slug;
-    this.lmsService.validateSlug(slugObject).subscribe(
+    slugObject.slug = this.tracksPlayBook.slug;
+    slugObject.type = this.type;
+    this.tracksPlayBookUtilService.validateSlug(slugObject).subscribe(
       (response: any) => {
         slugObject.isSlugValid = response.data;
         if (!slugObject.isSlugValid) {
@@ -1103,6 +1101,29 @@ export class AddLmsNewComponent implements OnInit {
         } else {
           this.removeErrorMessage("slug");
         }
+        this.validateAllSteps();
+      },
+      (error: string) => {
+        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+      }
+    );
+  }
+
+  validateTitleForCompany() {
+    let titleObject: TracksPlayBook = new TracksPlayBook();
+    let self = this;
+    titleObject.userId = this.loggedInUserId;
+    titleObject.title = this.tracksPlayBook.title;
+    titleObject.type = this.type;
+    this.tracksPlayBookUtilService.validateTitle(titleObject).subscribe(
+      (response: any) => {
+        let isTitleValid = response.data;
+        if (!isTitleValid) {
+          this.addErrorMessage("title", "Title already exists");
+        } else {
+          this.removeErrorMessage("title");
+        }
+        this.validateAllSteps();
       },
       (error: string) => {
         this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
@@ -1111,19 +1132,21 @@ export class AddLmsNewComponent implements OnInit {
   }
 
   validateTitle() {
-    if (this.learningTrack.title == undefined || this.learningTrack.title.length == 0) {
+    if (this.tracksPlayBook.title == undefined || this.tracksPlayBook.title.length == 0) {
       this.addErrorMessage("title", "Title can not be empty");
-    } else if (this.learningTrack.title != undefined && this.learningTrack.title.length < 3) {
+    } else if (this.tracksPlayBook.title != undefined && this.tracksPlayBook.title.length < 3) {
       this.addErrorMessage("title", "Title should have atleast 3 characters");
+    } else if ((this.isAdd || (!this.isAdd && this.existingTitle !== this.tracksPlayBook.title))) {
+      this.validateTitleForCompany();
     } else {
       this.removeErrorMessage("title");
     }
   }
 
   validateSlug() {
-    if (this.learningTrack.slug == undefined || this.learningTrack.slug.length < 1) {
+    if (this.tracksPlayBook.slug == undefined || this.tracksPlayBook.slug.length < 1) {
       this.addErrorMessage("slug", "Alias can not be empty");
-    } else if (this.learningTrack.slug != undefined && this.learningTrack.slug.length < 3) {
+    } else if (this.tracksPlayBook.slug != undefined && this.tracksPlayBook.slug.length < 3) {
       this.addErrorMessage("slug", "Slug should have atleast 3 characters");
     } else {
       this.removeErrorMessage("slug");
@@ -1131,7 +1154,7 @@ export class AddLmsNewComponent implements OnInit {
   }
 
   validateDescription() {
-    let description = this.learningTrack.description;
+    let description = this.tracksPlayBook.description;
     if (description.length < 1) {
       this.addErrorMessage("description", "description can not be empty");
     } else if (description.length > 5000) {
@@ -1160,23 +1183,22 @@ export class AddLmsNewComponent implements OnInit {
   addErrorMessage(type: string, message: string) {
     if (type == "title") {
       this.isTitleValid = false;
-      this.learningTrack.isValid = false;
+      this.tracksPlayBook.isValid = false;
       this.titleErrorMessage = message;
     } else if (type == "slug") {
       this.isSlugValid = false;
-      this.learningTrack.isValid = false;
+      this.tracksPlayBook.isValid = false;
       this.slugErrorMessage = message;
     } else if (type == "asset") {
       this.isAssetValid = false;
-      this.learningTrack.isValid = false;
+      this.tracksPlayBook.isValid = false;
       this.assetErrorMessage = message;
     } else if (type == "groupOrCompany") {
       this.isGroupOrCompanyValid = false;
-      this.learningTrack.isValid = false;
+      this.tracksPlayBook.isValid = false;
       this.groupOrCompanyErrorMessage = message;
     } else if (type == "description") {
       this.isDescriptionValid = false;
-      //this.learningTrack.isValid = false;
       this.descriptionErrorMessage = message;
     }
   }
@@ -1202,13 +1224,8 @@ export class AddLmsNewComponent implements OnInit {
 
 
   validateStepOne() {
-    if (this.isTitleValid && this.isSlugValid && this.learningTrack.categoryId != undefined && this.learningTrack.categoryId > 0) {
+    if (this.isTitleValid && this.isSlugValid && this.tracksPlayBook.categoryId != undefined && this.tracksPlayBook.categoryId > 0) {
       this.isStepOneValid = true;
-      // if (this.isStepTwoValid) {
-      //   this.stepTwoTabClass = this.completedTabClass;
-      // } else if (this.activeTabName != "step-2") {
-      //   this.stepTwoTabClass = this.defaultTabClass;
-      // }
       this.stepOneTabClass = this.completedTabClass;
       if (this.activeTabName != "step-2") {
         this.stepTwoTabClass = this.defaultTabClass;
@@ -1228,11 +1245,6 @@ export class AddLmsNewComponent implements OnInit {
   validateStepTwo() {
     if (this.isDescriptionValid && this.isStepOneValid) {
       this.isStepTwoValid = true;
-      // if (this.isStepThreeValid) {
-      //   this.stepThreeTabClass = this.completedTabClass;
-      // } else if (this.activeTabName != "step-3") {
-      //   this.stepThreeTabClass = this.defaultTabClass;
-      // }
       this.stepTwoTabClass = this.completedTabClass;
       if (this.activeTabName != "step-3") {
         this.stepThreeTabClass = this.defaultTabClass;
@@ -1251,11 +1263,6 @@ export class AddLmsNewComponent implements OnInit {
   validateStepThree() {
     if (this.isAssetValid && this.isStepTwoValid) {
       this.isStepThreeValid = true;
-      // if (this.isStepFourValid) {
-      //   this.stepFourTabClass = this.completedTabClass;
-      // } else if (this.activeTabName != "step-4") {
-      //   this.stepFourTabClass = this.defaultTabClass;
-      // }
       this.stepThreeTabClass = this.completedTabClass;
       if (this.activeTabName != "step-4") {
         this.stepFourTabClass = this.defaultTabClass;
@@ -1273,9 +1280,6 @@ export class AddLmsNewComponent implements OnInit {
   validateStepFour() {
     if (this.isGroupOrCompanyValid && this.isStepThreeValid) {
       this.isStepFourValid = true;
-      // if (this.activeTabName != "step-4") {
-      //   this.stepFourTabClass = this.completedTabClass;
-      // }
       this.stepFourTabClass = this.completedTabClass;
       if (this.activeTabName == "step-4") {
         this.stepFourTabClass = this.activeTabClass;
@@ -1306,29 +1310,30 @@ export class AddLmsNewComponent implements OnInit {
     $.each(this.selectedAssets, function (index: number, lmsDto: any) {
       contentIds.push(lmsDto.id);
     });
-    this.learningTrack.partnershipIds = partnershipIds;
-    this.learningTrack.groupIds = groupIds;
-    this.learningTrack.contentIds = contentIds;
+    this.tracksPlayBook.partnershipIds = partnershipIds;
+    this.tracksPlayBook.groupIds = groupIds;
+    this.tracksPlayBook.contentIds = contentIds;
+    this.tracksPlayBook.type = this.type;
   }
 
   saveAndPublish() {
-    this.learningTrack.published = true;
-    this.addOrUpdateLearningTrack();
+    this.tracksPlayBook.published = true;
+    this.addOrUpdate();
   }
 
-  addOrUpdateLearningTrack() {
-    this.learningTrack.userId = this.loggedInUserId;
+  addOrUpdate() {
+    this.tracksPlayBook.userId = this.loggedInUserId;
     let formData: FormData = new FormData();
-    if (this.learningTrack.isValid) {
+    if (this.tracksPlayBook.isValid) {
       this.constructLearningTrack();
       if (this.fileObj == null) {
         formData.append("featuredImage", null);
       } else {
         formData.append("featuredImage", this.fileObj, this.fileObj['name']);
       }
-      console.log(this.learningTrack)
+      console.log(this.tracksPlayBook)
       this.referenceService.startLoader(this.httpRequestLoader);
-      this.lmsService.saveOrUpdate(formData, this.learningTrack).subscribe(
+      this.tracksPlayBookUtilService.saveOrUpdate(formData, this.tracksPlayBook).subscribe(
         (data: any) => {
           if (data.statusCode === 200) {
             this.lmsResponse = new CustomResponse('SUCCESS', data.message, true);
@@ -1340,19 +1345,30 @@ export class AddLmsNewComponent implements OnInit {
               this.referenceService.isUpdated = true;
               this.referenceService.isCreated = false;
             }
-            this.router.navigate(["/home/tracks/manage"]);
+            if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+              this.router.navigate(["/home/tracks/manage"]);
+            } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+              this.router.navigate(["/home/playbook/manage"]);
+            }
+          } else {
+            this.referenceService.showSweetAlertErrorMessage(data.message);
+            this.referenceService.stopLoader(this.httpRequestLoader);
           }
         },
         (error: string) => {
           this.referenceService.stopLoader(this.httpRequestLoader);
-          if (this.isAdd || !this.learningTrack.published) {
-            this.learningTrack.published = false;
+          if (this.isAdd || !this.tracksPlayBook.published) {
+            this.tracksPlayBook.published = false;
           }
           this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
         }
       )
     } else {
-      this.lmsResponse = new CustomResponse('ERROR', "Invalid Track Builder", true);
+      if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+        this.lmsResponse = new CustomResponse('ERROR', "Invalid Track Builder", true);
+      } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+        this.lmsResponse = new CustomResponse('ERROR', "Invalid Play Book", true);
+      }
       this.referenceService.goToTop();
     }
   }
@@ -1360,7 +1376,7 @@ export class AddLmsNewComponent implements OnInit {
   validateLearningTrack() {
     this.validateTitle();
     this.validateSlug();
-    if (this.isAdd || (!this.isAdd && this.existingSlug !== this.learningTrack.slug)) {
+    if (this.isAdd || (!this.isAdd && this.existingSlug !== this.tracksPlayBook.slug)) {
       this.validateSlugForCompany();
     }
     this.validateDescription();
@@ -1371,9 +1387,9 @@ export class AddLmsNewComponent implements OnInit {
 
   checkAllRequiredFields() {
     if (this.isStepOneValid && this.isStepTwoValid && this.isStepThreeValid && this.isStepFourValid) {
-      this.learningTrack.isValid = true;
+      this.tracksPlayBook.isValid = true;
     } else {
-      this.learningTrack.isValid = false;
+      this.tracksPlayBook.isValid = false;
     }
   }
 
@@ -1458,9 +1474,9 @@ export class AddLmsNewComponent implements OnInit {
       let assetPath = this.selectedAssetForMedia.assetPath;
       if (assetPath != undefined) {
         if (this.mediaLinkDisplayText.length > 0) {
-          this.learningTrack.description = this.learningTrack.description + "<b><a href = \"" + assetPath + "\" target=\"_blank\">" + this.mediaLinkDisplayText + "</a>";
+          this.ckeditor.instance.insertHtml("<b><a href = \"" + assetPath + "\" target=\"_blank\">" + this.mediaLinkDisplayText + "</a></b>");
         } else {
-          this.learningTrack.description = this.learningTrack.description + "<b><a href = \"" + assetPath + "\" target=\"_blank\">" + assetPath + "</a>";
+          this.ckeditor.instance.insertHtml("<b><a href = \"" + assetPath + "\" target=\"_blank\">" + assetPath + "</a></b>");
         }
       }
     }
@@ -1484,18 +1500,22 @@ export class AddLmsNewComponent implements OnInit {
 
   updateFolderValue(folder: any) {
     this.folderName = folder.name;
-    this.learningTrack.categoryId = folder.id
+    this.tracksPlayBook.categoryId = folder.id
     this.filteredCategoryNames = this.categoryNames;
     this.showFolderDropDown = false;
   }
 
   filterFolders(inputElement: any) {
-    let value = inputElement.value;
-    if (value != undefined && value != null && value != "") {
-      this.filteredCategoryNames = this.categoryNames.filter(
-        item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
-    } else {
+    if (inputElement == null || inputElement == undefined) {
       this.filteredCategoryNames = this.categoryNames;
+    } else {
+      let value = inputElement.value;
+      if (value != undefined && value != null && value != "") {
+        this.filteredCategoryNames = this.categoryNames.filter(
+          item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
+      } else {
+        this.filteredCategoryNames = this.categoryNames;
+      }
     }
   }
 

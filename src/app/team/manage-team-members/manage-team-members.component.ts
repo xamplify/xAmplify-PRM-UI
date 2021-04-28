@@ -240,8 +240,15 @@ export class ManageTeamMembersComponent implements OnInit {
 		try {
 			let length = $('#' + tableId + ' .module-checkbox-' + index + ':checked').length;
 			if(this.moduleNames.length>3){
-				/**********Vendor/Org Admin Team Members******/
-				let allSelected = (this.contactsAccess && length == 7) || (!this.contactsAccess && length == 6) ||(!this.contactsAccess && length == 3) ;
+				/**********Vendor/Vendor & Partner/Vendor Tier/Vendor Tier & Partner/Org Admin Team Members******/
+				let allSelected = false;
+				if(this.superiorRole=="Vendor"){
+					allSelected = (length==6)
+				}else if(this.superiorRole=="Prm"){
+					allSelected = (length==3);
+				}else{
+					allSelected = this.contactsAccess && length == 7;
+				}
 				if(allSelected){
 					team.all = true;
 					this.setAllRoles(team);

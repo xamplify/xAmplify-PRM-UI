@@ -26,6 +26,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     leadsUrl = 'leads';
     dealsUrl = 'deal';
     lmsUrl = 'tracks';
+    playbookUrl = 'playbook';
+
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -54,11 +56,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             else if(!this.authenticationService.user.hasCompany) {
               if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile")){
                 return true;
-              } else { this.goToAccessDenied(url);  }
+              } else { 
+                this.goToAccessDenied(url);  
+             }
             }else if(url.includes("/home/design/add")){
                 return true;
-            }
-            else if(url.indexOf("/dashboard")< 0 ){
+            }else if(url.includes("/home/select-modules")){
+                return true;
+            }else if(url.indexOf("/dashboard")< 0 ){
                return this.secureUrlByRole(url);
             }else{
                 if(url.indexOf("/myprofile")>-1){
@@ -157,6 +162,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
          if(url.indexOf(this.lmsUrl)>-1){
             return this.authorizeUrl(roles, url, this.lmsUrl);
          }
+         if(url.indexOf(this.playbookUrl)>-1){
+            return this.authorizeUrl(roles, url, this.playbookUrl);
+         }
       }catch(error){ console.log('error'+error);}
     }
 
@@ -241,6 +249,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         } else if(urlType==this.dealsUrl){
             return true;
         } else if(urlType==this.lmsUrl){
+            return true;
+        } else if(urlType==this.playbookUrl){
             return true;
         }
         else if(urlType==this.landingPagesUrl){

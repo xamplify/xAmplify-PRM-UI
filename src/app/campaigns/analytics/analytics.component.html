@@ -2625,7 +2625,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of campaingContactLists">
-                  <td class="center" (click)="getListOfContacts(item.id)" [title]="item.name"
+                  <td class="center" (click)="getSelectedListOfContacts(item.id)" [title]="item.name"
                     [ngStyle]="{'background-color':contactListId === item.id ? 'lightblue' : '' }">{{item.name
 										| slice:0:26}} <span *ngIf="item.name?.length>26 ">...</span></td>
                 </tr>
