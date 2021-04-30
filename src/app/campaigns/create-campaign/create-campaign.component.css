@@ -1996,3 +1996,9 @@ legend {
     top: 0px;
 }
 
+.cc{
+    position: relative;
+    right: 10px;
+    margin-top: -6px;
+}
+

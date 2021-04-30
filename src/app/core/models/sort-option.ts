@@ -286,6 +286,15 @@ export class SortOption {
 		{ 'name': 'Company name (Z-A)', 'value': 'companyName-DESC' },
   ];
 
+  campaignRecipientsDropDownOptions = [
+    { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+    { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+    { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+    { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+    { 'name': 'Count(ASC)', 'value': 'count-ASC' },
+    { 'name': 'Count(DESC)', 'value': 'count-DESC' }
+  ];
+
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
@@ -319,5 +328,6 @@ export class SortOption {
     public selectedTagDropDownOption:any = this.tagSortDropDownOptions[3];
     public selectedGroupsDropDownOption:any = this.groupsSortDropDownOptions[3];
     public selectedPartnerCompanyDropDownOption = this.partnerCompanySortDropDownOptions[0];
+    public selectedCampaignRecipientsDropDownOption = this.campaignRecipientsDropDownOptions[3];
 
 }
