@@ -145,8 +145,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     numberOfContactsPerPage = [
                                {'name':'12','value':'12'},
                                {'name':'24','value':'24'},
-                               {'name':'48','value':'48'},
-                               {'name':'All','value':'0'},
+                               {'name':'48','value':'48'}
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;
@@ -296,7 +295,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     folderCustomResponse:CustomResponse = new CustomResponse();
     showMarketingAutomationOption = false;
     THROUGH_PARTNER_MESSAGE: string;
-    isGdprEnabled = false;                          
+    isGdprEnabled = false;             
+    emailReceiversCountLoader = false;  
+    emailReceiversCountError = false;           
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -744,6 +745,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.channelCampaignFieldName = "To Partner";
             this.showMarketingAutomationOption = false;
         }
+        this.contactsPagination.channelCampaign = this.campaign.channelCampaign;
         if(isOrgAdmin){
             if(this.campaign.channelCampaign){
                 this.setVendorPartnersData();
@@ -1470,22 +1472,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadCampaignContacts(contactsPagination:Pagination) {
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignContact.httpRequestLoader, true);
-        console.log(this.contactsPagination);
-        this.contactService.loadContactLists(contactsPagination)
+        this.contactService.findContactsAndPartnersForCampaign(contactsPagination)
             .subscribe(
-            (data:any) => {
-                this.campaignContactLists = data.listOfUserLists;
-                console.log(this.campaignContactLists);
+            (response:any) => {
+                let data = response.data;
+                this.campaignContactLists = data.list;
                 contactsPagination.totalRecords = data.totalRecords;
-                if(contactsPagination.filterBy!=null){
-                    if(contactsPagination.filterBy==0){
-                        contactsPagination.maxResults = data.totalRecords;
-                    }else{
-                        contactsPagination.maxResults = contactsPagination.filterBy;
-                    }
-                }
+                $.each(this.campaignContactLists, function (_index: number, list: any) {
+                    list.displayTime = new Date(list.createdTimeInString);
+                });
                 this.contactsPagination = this.pagerService.getPagedItems(contactsPagination, this.campaignContactLists);
-                this.refService.loading(this.campaignContact.httpRequestLoader, false);
                 var contactIds = this.contactsPagination.pagedItems.map(function(a) {return a.id;});
                 var items = $.grep(this.selectedContactListIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
@@ -1495,7 +1491,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }else{
                     this.isHeaderCheckBoxChecked = false;
                 }
-
+                this.refService.loading(this.campaignContact.httpRequestLoader, false);
             },
             (error:string) => {
                 this.logger.errorPage(error);
@@ -3281,21 +3277,26 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     getValidUsersCount() {
         try {
            if(this.selectedContactListIds.length > 0){
-            this.contactService.getValidUsersCount( this.selectedContactListIds )
+            this.emailReceiversCountError = false;   
+            this.emailReceiversCountLoader = true;  
+            this.loading = true;
+            this.contactService.findAllAndValidUserCounts( this.selectedContactListIds )
                 .subscribe(
                 data => {
-                    this.validUsersCount = data['validContactsCount'];
-                    this.allUsersCount = data['allContactsCount'];
-                    console.log( "valid contacts Data:" + data['validContactsCount'] );
+                    this.validUsersCount = data['validUsersCount'];
+                    this.allUsersCount = data['allUsersCount'];
+                    this.emailReceiversCountLoader = false;  
+                    this.loading = false;
+                    this.emailReceiversCountError = false;   
                 },
                 ( error: any ) => {
-                    console.log( error );
-                },
-                () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
-                )
+                    this.loading = false;
+                    this.emailReceiversCountLoader = false; 
+                    this.emailReceiversCountError = true;   
+                });
            }
         } catch ( error ) {
-            console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+            console.error( error, "create-campaign-component.ts", "getValidUsersCount()" );
         }
        
     }

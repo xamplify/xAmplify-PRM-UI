@@ -943,8 +943,6 @@
                                                 <tr>
                                                     <td colspan="5">
                                                         <div class="alert alert-info">
-                                                            <!-- <strong *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">No partners found</strong>
-															<strong *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">No contacts found</strong> -->
                                                             <strong>{{emptyContactListMessage}}</strong>
                                                         </div>
                                                     </td>
@@ -955,7 +953,6 @@
                                                     <thead>
                                                         <tr>
                                                             <td align="center">
-                                                                <!-- selectedContactListIds?.length==contactsPagination.pagedItems.length [checked]="isAllChecked()"-->
                                                                 <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                             </td>
                                                             <th style="text-align: center;">
@@ -966,17 +963,18 @@
                                                             <th style="text-align: center;" *ngIf="showContactType" translate>Type
                                                             </th>
                                                             <th style="text-align: center;" translate>Uploaded Date</th>
+                                                            <th style="text-align: center;" translate>Count</th>
                                                             <th style="text-align: center;" translate>Preview </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr role="row" *ngFor="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
-                                                            (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
+                                                        <tr role="row" *ngFor="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
+                                                            (mouseover)='showContactsAlert(contacts.count)' [attr.title]="emptyContactsMessage">
                                                             <td>
-                                                                <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
+                                                                <div class="form-group" *ngIf="contacts.count>0 && contacts.emailValidationInd">
                                                                     <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
                                                                 </div>
-                                                                <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
+                                                                <div class="form-group" *ngIf="contacts.count==0 || !contacts.emailValidationInd">
                                                                     <input type="checkbox" disabled="disabled" title="Contacts are in progress">
                                                                 </div>
                                                             </td>
@@ -985,20 +983,18 @@
                                                             </td>
 
                                                             <td *ngIf="showContactType">
-                                                                <ng-container *ngIf="contacts.partnerUserList" translate>
-                                                                    Partners
-                                                                </ng-container>
-                                                                <ng-container *ngIf="!contacts.partnerUserList" translate> 
-                                                                    Contacts
-                                                                </ng-container>
+                                                                {{contacts?.listType}}
                                                             </td>
                                                             <td class="text-center sorting_1">
-                                                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate">
+                                                                <app-timestamp  [dateAndTime]="contacts?.displayTime">
                                                                 </app-timestamp>
+                                                            </td>
+                                                            <td>
+                                                                {{contacts?.count}}
                                                             </td>
                                                             <td class="text-center">
                                                                 <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
-                                                                    <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                                                                    <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -1540,7 +1536,8 @@
                                             </div>
                                         </div>
                                         <div [attr.class]="lauchTabPreivewDivClass">
-                                            <div class="portlet light border-0">
+                                            <app-dashboard-loader *ngIf="emailReceiversCountLoader"></app-dashboard-loader>
+                                            <div class="portlet light border-0" *ngIf="!emailReceiversCountLoader">
                                                 <div class="table-responsive">
                                                     <table width="100%">
                                                         <tr>
@@ -1572,12 +1569,13 @@
                                                                     <span *ngIf="userListDTOObj?.length == 0" translate>0 contact lists
                                                                         </span></a>
                                                                 <br>
-
-                                                               
-
-                                                                <span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
-                                                                <span *ngIf="!campaign.emailNotification" id="red-font" translate>No email will be sent.</span>
-
+                                                                <ng-container *ngIf="emailReceiversCountError">
+                                                                    <span id="red-font" translate>Something went wrong.Please contact admin</span>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="!emailReceiversCountError">
+                                                                    <span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                                                                    <span *ngIf="!campaign.emailNotification" id="red-font" translate>No email will be sent.</span>
+                                                                </ng-container>
                                                             </td>
                                                             <td style="text-align: right" width="20%">
                                                                 <a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')" translate>Change</a>
