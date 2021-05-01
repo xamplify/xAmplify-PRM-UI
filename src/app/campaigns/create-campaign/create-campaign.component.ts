@@ -829,7 +829,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       if(this.isOnlyPartner){this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
       }else{ this.loadEmailTemplates(this.emailTemplatesPagination); }
     }
-    setPagePagination(event:any){ this.setPage(event.page, event.type);}
+    setPagePagination(event:any){ 
+        this.setPage(event.page, event.type);
+    }
+    paginateUserList(event:any){
+        this.contactsPagination.pageIndex = event.page;
+        this.loadCampaignContacts(this.contactsPagination);
+    }
     loadPaginationDropdownTemplates(event:Pagination){
         this.emailTemplatesPagination = event;
         this.emailTemplatesLoad();
@@ -1468,6 +1474,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 let data = response.data;
                 this.campaignContactLists = data.list;
                 contactsPagination.totalRecords = data.totalRecords;
+                this.recipientsSortOption.totalRecords = data.totalRecords;
                 $.each(this.campaignContactLists, function (_index: number, list: any) {
                     list.displayTime = new Date(list.createdTimeInString);
                 });
@@ -1495,11 +1502,24 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.getAllFilteredResults();
     }
 
+    getNumberOfContactItemsPerPage(items:any){
+        try{
+            this.contactItemsSize = items;
+            this.getAllFilteredResults();
+        }catch(error){
+            console.log(error, "getNumberOfContactItemsPerPage","PublishContentComponent");
+        }
+    }
 
     getAllFilteredResults(){
         try{
             this.contactsPagination.pageIndex = 1;
             this.contactsPagination.searchKey = this.recipientsSortOption.searchKey;
+            if(this.contactItemsSize.value==0){
+                this.contactsPagination.maxResults = this.contactsPagination.totalRecords;
+            }else{
+                this.contactsPagination.maxResults = this.contactItemsSize.value;
+            }
             this.contactsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.contactsPagination);
             this.loadCampaignContacts(this.contactsPagination);
         }catch(error){
@@ -3428,14 +3448,13 @@ showSuccessMessage(message:any){
   this.listCategories();
 }
 
-previewList(contactList:any){
+previewUsers(contactList:any){
     this.showUsersPreview = true;
     this.selectedListName = contactList.name;
     this.selectedListId = contactList.id;
 }
 
 resetValues(){
-    this.loading = false;
     this.showUsersPreview = false;
     this.selectedListName = "";
     this.selectedListId = 0;

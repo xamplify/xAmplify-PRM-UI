@@ -945,6 +945,16 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
+                                            <div class="alert alert-success" *ngIf="selectedContactListIds?.length>0">
+                                                <strong>
+                                                <ng-container *ngIf="selectedContactListIds?.length==1">
+                                                    {{selectedContactListIds?.length}} row is selected
+                                                </ng-container>
+                                                <ng-container *ngIf="selectedContactListIds?.length>1">
+                                                    {{selectedContactListIds?.length}} rows are selected
+                                                </ng-container>
+                                            </strong>
+                                            </div>
                                             <table class="table table-filter" *ngIf="contactsPagination.totalRecords==0" aria-describedby="contactandpartnerstable">
                                                 <tr>
                                                     <th colspan="5" scope="row">
@@ -999,7 +1009,7 @@
                                                                 {{contacts?.count}}
                                                             </td>
                                                             <td class="text-center">
-                                                                <a (click)="$event.stopPropagation();previewList(contacts)">
+                                                                <a (click)="$event.stopPropagation();previewUsers(contacts)">
                                                                     <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
                                                                 </a>
                                                             </td>
@@ -1008,10 +1018,14 @@
                                                 </table>
                                             </div>
                                             <div style="text-align:left" *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-                                                <app-pagination [pagination]="contactsPagination"
-												(notifyParent)="setPagePagination($event)"
-												(notifyParentDropDown)="loadCampaignContacts($event)">
-											</app-pagination>
+                                                <app-pagination [pagination]="contactsPagination" [type]="'contacts'" (notifyParent)="setPagePagination($event)" [isDropdown]="true">
+                                                </app-pagination>
+                                                <select class="btn btn-default" style="float: right;" [(ngModel)]="contactItemsSize" (ngModelChange)="getNumberOfContactItemsPerPage($event)">
+                                                    <option *ngFor="let itemPerPage of numberOfContactsPerPage"
+                                                        [ngValue]="itemPerPage">
+                                                        {{itemPerPage.name}}
+                                                    </option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
