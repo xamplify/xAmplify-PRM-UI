@@ -300,7 +300,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isGdprEnabled = false;             
     emailReceiversCountLoader = false;  
     emailReceiversCountError = false;       
-    recipientsSortOption : SortOption = new SortOption();    
+    recipientsSortOption : SortOption = new SortOption(); 
+    showUsersPreview = false;
+    selectedListName = "";   
+    selectedListId = 0;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -3425,7 +3428,18 @@ showSuccessMessage(message:any){
   this.listCategories();
 }
 
- 
+previewList(contactList:any){
+    this.showUsersPreview = true;
+    this.selectedListName = contactList.name;
+    this.selectedListId = contactList.id;
+}
+
+resetValues(){
+    this.loading = false;
+    this.showUsersPreview = false;
+    this.selectedListName = "";
+    this.selectedListId = 0;
+}
 
 
  

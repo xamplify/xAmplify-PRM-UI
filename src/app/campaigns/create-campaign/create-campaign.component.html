@@ -999,7 +999,7 @@
                                                                 {{contacts?.count}}
                                                             </td>
                                                             <td class="text-center">
-                                                                <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
+                                                                <a (click)="$event.stopPropagation();previewList(contacts)">
                                                                     <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
                                                                 </a>
                                                             </td>
@@ -2564,3 +2564,6 @@
     </div>
 </div>
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
+<ng-container *ngIf="showUsersPreview">
+    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+    </ng-container>

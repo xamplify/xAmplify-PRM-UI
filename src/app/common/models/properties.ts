@@ -1,190 +1,198 @@
 
 export class Properties {
 
-  /*App Info*/
-  COMPANY_LOGO = 'assets/images/xamplify-logo.png'
-  BOTTOM_MESSAGE = '&copy; 2018 xAmplify. All rights reserved.'
-  APP_WEBSITE = 'xAmplify';
-  APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
-  APP_Xamplify_URL="https://xamplify.io";
-  xamplify_router= 'https://www.xamplify.com/';
+	/*App Info*/
+	COMPANY_LOGO = 'assets/images/xamplify-logo.png'
+	BOTTOM_MESSAGE = '&copy; 2018 xAmplify. All rights reserved.'
+	APP_WEBSITE = 'xAmplify';
+	APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
+	APP_Xamplify_URL = "https://xamplify.io";
+	xamplify_router = 'https://www.xamplify.com/';
 
-  NO_RESULTS_FOUND = "No results found.";
-  EMAIL_SENT_SUCCESS = "Email sent successfully.";
-  NO_USERS_SELECT_ERROR = "You have not selected any user.";
-  //FOR CONTACTS
-  FILE_TYPE_ERROR = "File type not allowed please select the .csv file only.";
-  CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed.";
-  LEAD_LIST_CREATE_SUCCESS = "Your lead list has been created successfully and it is being processed.";
-  CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully";
-  CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
+	NO_RESULTS_FOUND = "No results found.";
+	EMAIL_SENT_SUCCESS = "Email sent successfully.";
+	NO_USERS_SELECT_ERROR = "You have not selected any user.";
+	//FOR CONTACTS
+	FILE_TYPE_ERROR = "File type not allowed please select the .csv file only.";
+	CONTACT_LIST_CREATE_SUCCESS = "Your contact list has been created successfully and it is being processed.";
+	LEAD_LIST_CREATE_SUCCESS = "Your lead list has been created successfully and it is being processed.";
+	CONTACT_LIST_SAVE_SUCCESS = "Your contact list has been saved successfully";
+	CONTACT_LIST_CREATE_ERROR = "An error occured while creating your contact list.";
 
-  CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
-  CONTACT_LIST_UPDATE_ERROR: "An error occured while updating your contact list.";
+	CONTACT_LIST_UPDATE_SUCCESS = "Your contact list has been updated successfully.";
+	CONTACT_LIST_UPDATE_ERROR: "An error occured while updating your contact list.";
 
-  CONTACT_LIST_DELETE_SUCCESS = "Your contact list has been deleted successfully.";
-  CONTACT_LIST_DELETE_ERROR = "An Error occured while deleting your Contact List.";
-  LEAD_LIST_DELETE_SUCCESS = "Your lead list has been deleted successfully.";
+	CONTACT_LIST_DELETE_SUCCESS = "Your contact list has been deleted successfully.";
+	CONTACT_LIST_DELETE_ERROR = "An Error occured while deleting your Contact List.";
+	LEAD_LIST_DELETE_SUCCESS = "Your lead list has been deleted successfully.";
 
-  CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Your contact list has been synchronized successfully.";
-  CONTACT_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Contact List.";
+	CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Your contact list has been synchronized successfully.";
+	CONTACT_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Contact List.";
 
-  CONTACTS_CREATE_SUCCESS = "Your contacts list have been created successfully.";
-  CONTACTS_CREATE_ERROR = "An error occured while creating your Contacts";
+	CONTACTS_CREATE_SUCCESS = "Your contacts list have been created successfully.";
+	CONTACTS_CREATE_ERROR = "An error occured while creating your Contacts";
 
-  LEADS_UPDATE_SUCCESS = "Your lead details has been updated successfully.";
-  CONTACTS_UPDATE_SUCCESS = "Your contact has been updated successfully.";
-  CONTACTS_UPDATE_ERROR = "An error occured while updating your contacts.";
+	LEADS_UPDATE_SUCCESS = "Your lead details has been updated successfully.";
+	CONTACTS_UPDATE_SUCCESS = "Your contact has been updated successfully.";
+	CONTACTS_UPDATE_ERROR = "An error occured while updating your contacts.";
 
-  CONTACTS_DELETE_SUCCESS = "Your Contacts have been deleted successfully.";
-  CONTACTS_DELETE_ERROR = "An error occured while deleting your contacts";
-  LEADS_DELETE_SUCCESS = "Your lead(s) have been deleted successfully.";
+	CONTACTS_DELETE_SUCCESS = "Your Contacts have been deleted successfully.";
+	CONTACTS_DELETE_ERROR = "An error occured while deleting your contacts";
+	LEADS_DELETE_SUCCESS = "Your lead(s) have been deleted successfully.";
 
-  LEAD_LIST_UPDATE_SUCCESS = "Your lead list has been updated successfully.";
-  CONTACT_SAVE_SUCCESS = "Your contact list has been updated successfully.";
-  CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your contact list has been updated successfully and any selected campaigns have been launched.";
-  CONTACTS_SAVE_ERROR = "An error occured while saving your contacts.";
+	LEAD_LIST_UPDATE_SUCCESS = "Your lead list has been updated successfully.";
+	CONTACT_SAVE_SUCCESS = "Your contact list has been updated successfully.";
+	CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your contact list has been updated successfully and any selected campaigns have been launched.";
+	CONTACTS_SAVE_ERROR = "An error occured while saving your contacts.";
 
-  CONTACT_LIST_NAME_UPDATE_SUCCESS = "Your contact list name has been updated successfully.";
-  CONTACT_LIST_NAME_UPDATE_ERROR = "An error occured while saving your contacts.";
+	CONTACT_LIST_NAME_UPDATE_SUCCESS = "Your contact list name has been updated successfully.";
+	CONTACT_LIST_NAME_UPDATE_ERROR = "An error occured while saving your contacts.";
 
-  SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
-  SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
-  CONTACT_LIST_VALIDATION ='Please select how you would like to add your contacts.';
-  CONTACT_EMAIL_VALIDATE_SUCCESS = "Selected Contacts have been validated successfully.";
+	SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
+	SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
+	CONTACT_LIST_VALIDATION = 'Please select how you would like to add your contacts.';
+	CONTACT_EMAIL_VALIDATE_SUCCESS = "Selected Contacts have been validated successfully.";
 
-  /* For Partners*/
-  PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
-  PARTNER_LIST_SAVE_SUCCESS = "Your partner list has been saved successfully";
-  PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
+	/* For Partners*/
+	PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
+	PARTNER_LIST_SAVE_SUCCESS = "Your partner list has been saved successfully";
+	PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
 
-  PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
-  PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list.";
+	PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
+	PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list.";
 
-  PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your partner list has been updated successfully and any selected campaigns have been launched.";
+	PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your partner list has been updated successfully and any selected campaigns have been launched.";
 
-  PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully.";
-  PARTNERS_CREATE_ERROR = "An error occured while creating your partner";
+	PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully.";
+	PARTNERS_CREATE_ERROR = "An error occured while creating your partner";
 
-  PARTNERS_UPDATE_SUCCESS = "Your Partner has been updated successfully.";
-  PARTNERS_UPDATE_ERROR = "An error occured while updating your partner.";
+	PARTNERS_UPDATE_SUCCESS = "Your Partner has been updated successfully.";
+	PARTNERS_UPDATE_ERROR = "An error occured while updating your partner.";
 
-  PARTNERS_DELETE_SUCCESS = "Your Partner(s) have been deleted successfully.";
-  PARTNERS_LIST_DELETE_SUCCESS = 'Your Partner list has been deleted successfully.'
-  PARTNERS_DELETE_ERROR = "An error occured while deleting your partner.";
+	PARTNERS_DELETE_SUCCESS = "Your Partner(s) have been deleted successfully.";
+	PARTNERS_LIST_DELETE_SUCCESS = 'Your Partner list has been deleted successfully.'
+	PARTNERS_DELETE_ERROR = "An error occured while deleting your partner.";
 
-  PARTNERS_SAVE_SUCCESS = "Your Partner(s) have been saved successfully.";
-  PARTNERS_SAVE_ERROR = "An error occured while saving your partners.";
-  PARTNERS_EMAIL_VALIDATE_SUCCESS = "Selected Partner(s) have been validated successfully.";
-  LEADS_EMAIL_VALIDATE_SUCCESS = "Selected Lead(s) have been validated successfully.";
+	PARTNERS_SAVE_SUCCESS = "Your Partner(s) have been saved successfully.";
+	PARTNERS_SAVE_ERROR = "An error occured while saving your partners.";
+	PARTNERS_EMAIL_VALIDATE_SUCCESS = "Selected Partner(s) have been validated successfully.";
+	LEADS_EMAIL_VALIDATE_SUCCESS = "Selected Lead(s) have been validated successfully.";
 
-  /* Authentication Module*/
+	/* Authentication Module*/
 
-  ACCOUNT_ACTIVATED_WITH_PASSWORD = 'Thanks for adding password. Please login to access the platform.'
-  FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
-  FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
+	ACCOUNT_ACTIVATED_WITH_PASSWORD = 'Thanks for adding password. Please login to access the platform.'
+	FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
+	FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
 
-  SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for our account activation email.";
-  ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
-  SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
-  ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
-  WRONG_EMAIL_ADDRESS = "We couldn't find your account. Please check that you've entered the correct email address and try again.";
-  ERROR_EMAIL_ADDRESS = "The email address that you've entered doesn't match any account. Sign up for an account.";
-  OTHER_EMAIL_ISSUE = "UserDetailsService returned null, which is an interface contract violation";
+	SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for our account activation email.";
+	ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
+	SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
+	ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
+	WRONG_EMAIL_ADDRESS = "We couldn't find your account. Please check that you've entered the correct email address and try again.";
+	ERROR_EMAIL_ADDRESS = "The email address that you've entered doesn't match any account. Sign up for an account.";
+	OTHER_EMAIL_ISSUE = "UserDetailsService returned null, which is an interface contract violation";
 
-  BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
-  USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
-  USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
-  USER_ACCOUNT_ACTIVATION_ERROR_NEW = "Your account has not been activated. Please contact admin.";
-  EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
-  RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
-  SOMTHING_WENT_WRONG = 'Something went wrong. Please try again.';
-  /* User */
-  PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";
-  PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";
-  DEFAULT_PLAYER_SETTINGS = 'Default player settings updated successfully.';
-  VIDEO_LOGO_UPDATED = 'Co-Branding video logo uploaded successfully.';
-  PROFILE_PIC_UPDATED='Profile picture updated successfully.';
-  PROFILE_UPDATED = 'Profile updated successfully.';
-  PASSWORD_UPDATED= 'Password updated successfully.';
-  PAWORD_ERROR = 'New password should not be same as current password.'
+	BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
+	USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
+	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
+	USER_ACCOUNT_ACTIVATION_ERROR_NEW = "Your account has not been activated. Please contact admin.";
+	EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
+	RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
+	SOMTHING_WENT_WRONG = 'Something went wrong. Please try again.';
+	/* User */
+	PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";
+	PROCESS_REQUEST_ERROR = "An error occurred while processing your request.";
+	DEFAULT_PLAYER_SETTINGS = 'Default player settings updated successfully.';
+	VIDEO_LOGO_UPDATED = 'Co-Branding video logo uploaded successfully.';
+	PROFILE_PIC_UPDATED = 'Profile picture updated successfully.';
+	PROFILE_UPDATED = 'Profile updated successfully.';
+	PASSWORD_UPDATED = 'Password updated successfully.';
+	PAWORD_ERROR = 'New password should not be same as current password.'
 
-  /*Videos*/
-  VIDEO_PROCESS_MESSAGE= 'Your video has been uploaded and is now being processed. If you\'d like to take a break, we\'ll continue processing it in the background. We will send you an email when your video is ready.';
-  VIDEO_PROCESSING_MESSAGE ='Don\'t mind us. We\'re just processing your video.'
-  CONTENT_UPLOAD_SIZE ='Unable to upload files because your files size is more than 12 MB';
-  CONTENT_UPLOAD_FILETYPE='Please upload supported file types like image files, gifs,doc,htm, pdf, xls.';
-  CONTENT_PROCESS_MESSAGE = 'Your file(s) has been uploaded. Please wait while we process it.';
-  SUPPORT_FILES ='These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.';
-  CONTENT_DRAG_MESSAGE = 'Drag and drop files here or click to select files.';
-  VIDEO_DRAG_MESSAGE ='Drag and drop a video file here or click to select a Video file.';
+	/*Videos*/
+	VIDEO_PROCESS_MESSAGE = 'Your video has been uploaded and is now being processed. If you\'d like to take a break, we\'ll continue processing it in the background. We will send you an email when your video is ready.';
+	VIDEO_PROCESSING_MESSAGE = 'Don\'t mind us. We\'re just processing your video.'
+	CONTENT_UPLOAD_SIZE = 'Unable to upload files because your files size is more than 12 MB';
+	CONTENT_UPLOAD_FILETYPE = 'Please upload supported file types like image files, gifs,doc,htm, pdf, xls.';
+	CONTENT_PROCESS_MESSAGE = 'Your file(s) has been uploaded. Please wait while we process it.';
+	SUPPORT_FILES = 'These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.';
+	CONTENT_DRAG_MESSAGE = 'Drag and drop files here or click to select files.';
+	VIDEO_DRAG_MESSAGE = 'Drag and drop a video file here or click to select a Video file.';
 
-  /* campaign */
-  ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to a website visit'
-  ADD_AUTO_RESPONSE_EMAIL = 'Auto-responses to your email'
-  EVENT_TO_PARTNER_MESSAGE = 'To Partners: Send a campaign intended just for selected recipients';
-  TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for your Partner(s)/ Contact(s)';
-  THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
-  ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable the Vendor access to your campaign analytics';
-  ACTIVE_PARTICIPANTS = 'Active participants - Share only the recipients that have interacted with your campaign';
-  ALL_PARTICIPANTS = 'All participants - Share all campaign recipient data';
+	/* campaign */
+	ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to a website visit'
+	ADD_AUTO_RESPONSE_EMAIL = 'Auto-responses to your email'
+	EVENT_TO_PARTNER_MESSAGE = 'To Partners: Send a campaign intended just for selected recipients';
+	TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for your Partner(s)/ Contact(s)';
+	THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
+	ENALEORDISABLE_VENDOR_MESSAGE = 'Enable/disable the Vendor access to your campaign analytics';
+	ACTIVE_PARTICIPANTS = 'Active participants - Share only the recipients that have interacted with your campaign';
+	ALL_PARTICIPANTS = 'All participants - Share all campaign recipient data';
 
-  /****BEE ClientId/Client Secret********/
-  clientId = '18ff022e-fa4e-47e7-b497-39a12ca4600a';
-  clientSecret = 'FPzc1oxLx3zFjvwrma82TWiP0o3tk1yRVDwyAQqrIZ6jbfdssVo';
+	/****BEE ClientId/Client Secret********/
+	clientId = '18ff022e-fa4e-47e7-b497-39a12ca4600a';
+	clientSecret = 'FPzc1oxLx3zFjvwrma82TWiP0o3tk1yRVDwyAQqrIZ6jbfdssVo';
 
-  xclientId: "6639d69f-523f-44ca-b809-a00daa26b367";
-  xclientSecret: "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
+	xclientId: "6639d69f-523f-44ca-b809-a00daa26b367";
+	xclientSecret: "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
 
-  serverErrorMessage = "Oops! Something went wrong.Please try after sometime";
+	serverErrorMessage = "Oops! Something went wrong.Please try after sometime";
 
-  /****************** SAML Security *********************/
-  EMAIL_TEXT1 = 'You are about to initiate the SSO configuration with Allbound.'
-  EMAIL_TEXT2 = 'Begin by verifying that the email address listed below is associated with your Allbound instance.'
-  ACS_URL_TEXT1 = 'Copy and paste the ACS URL into Login and Assertion URL text fields at the time of IDP configuration with Allbound and save the entire settings to download the Metadata.'
-  UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded from Allbound after the IDP configuration, we process the content and will save the same into the system.'
-  UPLOAD_METADATA_TEXT2='Success! Processed the metadata and saved into the system.';
+	/****************** SAML Security *********************/
+	EMAIL_TEXT1 = 'You are about to initiate the SSO configuration with Allbound.'
+	EMAIL_TEXT2 = 'Begin by verifying that the email address listed below is associated with your Allbound instance.'
+	ACS_URL_TEXT1 = 'Copy and paste the ACS URL into Login and Assertion URL text fields at the time of IDP configuration with Allbound and save the entire settings to download the Metadata.'
+	UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded from Allbound after the IDP configuration, we process the content and will save the same into the system.'
+	UPLOAD_METADATA_TEXT2 = 'Success! Processed the metadata and saved into the system.';
 
-  /*************My Profile Tab Names*******************************/
-  personalInfo = "Personal Info";
-  changePassword = "Change Password";
-  viewType = "View Type";
-  defaultPlayerSettings = "Default Player Settings";
-  dealRegistration = "Deal Registration";
-  integrations = "Integrations";
-  gdprSettings = "GDPR Settings";
-  folders = "Folders";
-  dashboardButtons = "Dashboard Buttons";
-  samlSettings = "Allbound SAML Settings";
-  leadPipelines = "Lead Pipelines";
-  dealPipelines = "Deal Pipelines";
-  tags = "Tags";
+	/*************My Profile Tab Names*******************************/
+	personalInfo = "Personal Info";
+	changePassword = "Change Password";
+	viewType = "View Type";
+	defaultPlayerSettings = "Default Player Settings";
+	dealRegistration = "Deal Registration";
+	integrations = "Integrations";
+	gdprSettings = "GDPR Settings";
+	folders = "Folders";
+	dashboardButtons = "Dashboard Buttons";
+	samlSettings = "Allbound SAML Settings";
+	leadPipelines = "Lead Pipelines";
+	dealPipelines = "Deal Pipelines";
+	tags = "Tags";
 
-  exclude = "Exclusion"
-  exclude_add =  "User added successfully";
-  exclude_delete =  "User deleted successfully";
-  exclude_domain_add =  "Domain added successfully";
-  exclude_domain_delete =  "Domain deleted successfully";
+	exclude = "Exclusion"
+	exclude_add = "User added successfully";
+	exclude_delete = "User deleted successfully";
+	exclude_domain_add = "Domain added successfully";
+	exclude_domain_delete = "Domain deleted successfully";
 
-  spf = "SPF Configuration";
-  spfHeaderText = "Publish an SPF record with your DNS registrar";
+	spf = "SPF Configuration";
+	spfHeaderText = "Publish an SPF record with your DNS registrar";
 
 
-  /********Error Messages************* */
-  roleUpdatedMessage = "Your role has been changed.Please login again.";
+	/********Error Messages************* */
+	roleUpdatedMessage = "Your role has been changed.Please login again.";
 
-  /****************** Vanity Relates *********************/
-  VANITY_URL_ERROR1 = "You are not associated to vendor company";
-  VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added succesfully";
-  VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated succesfully";
-  VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted succesfully";
-  VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT = "Button title already exists";
-  VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated succesfully";
-  VANITY_URL_ET_DELETE_TEXT = "Email Template deleted succesfully";
-  VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT="Error while Updating Email Template";
+	/****************** Vanity Relates *********************/
+	VANITY_URL_ERROR1 = "You are not associated to vendor company";
+	VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added succesfully";
+	VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated succesfully";
+	VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted succesfully";
+	VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT = "Button title already exists";
+	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated succesfully";
+	VANITY_URL_ET_DELETE_TEXT = "Email Template deleted succesfully";
+	VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT = "Error while Updating Email Template";
 
-  reAuthenticateMessage = 'Please unlink  and reconnect your account.';
+	reAuthenticateMessage = 'Please unlink  and reconnect your account.';
 
-  unableToShowWelcomePageItems = "Error! We are unable to show welcome items now. Please give us some time.";
+	unableToShowWelcomePageItems = "Error! We are unable to show welcome items now. Please give us some time.";
+
+
+	zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
+	googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
+	salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
+	manualImage: string = 'assets/admin/pages/media/works/contacts2.png';
+	marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
+	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 }
 
