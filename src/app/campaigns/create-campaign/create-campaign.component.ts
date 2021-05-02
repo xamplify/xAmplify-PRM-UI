@@ -49,6 +49,7 @@ import { UserService } from 'app/core/services/user.service';
 import { EnvService } from 'app/env.service';
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
+import { ActionsDescription } from '../../common/models/actions-description';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -57,7 +58,7 @@ var moment = require('moment-timezone');
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
   styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css', '../../../assets/css/content.css'],
-  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService,CheckBoxSelectionService,SortOption]
+  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService,CheckBoxSelectionService,SortOption,ActionsDescription]
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
@@ -312,7 +313,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
                 private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
-				private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService,public envService:EnvService,private utilService:UtilService
+                private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService,public envService:EnvService,
+                private utilService:UtilService,public actionsDescription: ActionsDescription
             ){
                 
                 this.vanityUrlService.isVanityURLEnabled();
@@ -1468,6 +1470,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadCampaignContacts(contactsPagination:Pagination) {
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignContact.httpRequestLoader, true);
+        if(!this.isAdd){
+            this.contactsPagination.campaignId = this.campaign.campaignId;
+        }
         this.contactService.findContactsAndPartnersForCampaign(contactsPagination)
             .subscribe(
             (response:any) => {
@@ -1502,24 +1507,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.getAllFilteredResults();
     }
 
-    getNumberOfContactItemsPerPage(items:any){
-        try{
-            this.contactItemsSize = items;
-            this.getAllFilteredResults();
-        }catch(error){
-            console.log(error, "getNumberOfContactItemsPerPage","PublishContentComponent");
-        }
-    }
-
     getAllFilteredResults(){
         try{
             this.contactsPagination.pageIndex = 1;
             this.contactsPagination.searchKey = this.recipientsSortOption.searchKey;
-            if(this.contactItemsSize.value==0){
-                this.contactsPagination.maxResults = this.contactsPagination.totalRecords;
-            }else{
-                this.contactsPagination.maxResults = this.contactItemsSize.value;
-            }
             this.contactsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.contactsPagination);
             this.loadCampaignContacts(this.contactsPagination);
         }catch(error){
