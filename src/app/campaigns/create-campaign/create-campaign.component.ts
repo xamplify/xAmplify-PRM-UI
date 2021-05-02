@@ -432,6 +432,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.contactListTabClass = this.successTabClass;
                 this.contactsPagination.editCampaign = true;
                 this.selectedContactListIds = this.campaign.userListIds.sort();
+                let selectedListSortOption = {
+                    'name': 'Selected List', 'value': 'selectedList'
+                }
+                this.recipientsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
+                this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length-1];
                 this.isCampaignDraftContactList = true;
             }
             /***********Select Email Template Tab*************************/
