@@ -115,3 +115,8 @@ h5 {
 .prspx{
     padding-right: 60px;
 }
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}

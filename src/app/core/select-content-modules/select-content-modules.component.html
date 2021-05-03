@@ -26,7 +26,7 @@
         <div class="portlet-body">
           <div class="row mtop" *ngIf="authenticationService?.user?.hasCompany">
             <!--------Videos------------->
-            <div *ngIf="authenticationService?.module.isVideo" [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-12': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
+            <div *ngIf="authenticationService?.module.isVideo" [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
               <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
@@ -64,7 +64,7 @@
               </div>
             </div>
             <!--------DAM------------->
-            <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
+            <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
               <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
@@ -107,7 +107,7 @@
               </div>
             </div>
             <!--------Learning Track------------->
-            <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"   [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-12': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
+            <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"   [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
               <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
@@ -150,7 +150,7 @@
               </div>
             </div>
             <!--------Play Books------------->
-            <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-12': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
+            <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
               <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
