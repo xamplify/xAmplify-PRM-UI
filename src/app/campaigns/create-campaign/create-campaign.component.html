@@ -917,108 +917,131 @@
                 <!-- End Of 197(Video Tab) -->
                 <!-- -------------------------------------Contact List Tab--------------------------------------------------------- -->
                 <div class="row setup-content step hiddenStepInfo" id="step-4">
-                    <!-- <br> -->
                     <div class="col-xs-12">
                         <div class="col-xs-12 text-center" style="margin-top: 10px;">
                             <div class="row pb10" id="user_list_table_view">
                                 <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss" *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
                                 <app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError">
                                 </app-error-pages>
-                                <ng-container *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
+                                <div [hidden]="campaignContact.httpRequestLoader.isLoading || campaignContact.httpRequestLoader.isServerError">
                                     <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
                                         <div class="note-vid pull-left">{{contactListSelectMessage}}</div>
-                                        <div class="inputs" align="right" style="float: right;">
+                                        <div class="inputs" style="float: right;">
+                                            <div style="float: left;">
+                                                 <select class="form-control cc" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
+                                                    (ngModelChange)="sortRecipientsList($event)">                                                    
+                                                    <option  *ngFor="let option of recipientsSortOption.campaignRecipientsDropDownOptions"
+                                                        [ngValue]="option">{{option.name}}</option>
+                                                </select> 
+                                            </div>
                                             <div class="portlet-input input-inline" style="position: relative;top: -6px;">
                                                 <div class="input-icon right">
-                                                    <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
-                                                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="contactSearchInput" (click)="contactSearchInput=''"></button>
-                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()"><i
-                                                            class="fa fa-search"
-                                                            style="font-size: 16px !important;padding:5px !important;"></i></button>
+                                                    <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
+                                                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="recipientsSortOption.searchKey" (click)="recipientsSortOption.searchKey='';searchContactList()"></button>
+                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()">
+                                                        <i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
-                                            <table class="table table-filter" *ngIf="contactsPagination.totalRecords==0">
+                                                <div class="alert alert-success" *ngIf="selectedContactListIds?.length>0">
+                                                    <ng-container *ngIf="selectedContactListIds?.length==1">
+                                                        {{selectedContactListIds?.length}} row is selected
+                                                    </ng-container>
+                                                    <ng-container *ngIf="selectedContactListIds?.length>1">
+                                                        {{selectedContactListIds?.length}} rows are selected
+                                                    </ng-container>
+                                                </div>
+                                            <table class="table table-filter" *ngIf="contactsPagination.totalRecords==0" aria-describedby="contactandpartnerstable">
                                                 <tr>
-                                                    <td colspan="5">
+                                                    <th colspan="5" scope="row">
                                                         <div class="alert alert-info">
-                                                            <!-- <strong *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">No partners found</strong>
-															<strong *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">No contacts found</strong> -->
                                                             <strong>{{emptyContactListMessage}}</strong>
                                                         </div>
-                                                    </td>
+                                                    </th>
                                                 </tr>
                                             </table>
                                             <div class="table-responsive">
-                                                <table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
+                                                <table class="table tgrid table-hover table-sm" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
                                                     <thead>
                                                         <tr>
-                                                            <td align="center">
-                                                                <!-- selectedContactListIds?.length==contactsPagination.pagedItems.length [checked]="isAllChecked()"-->
+                                                            <th scope="row" class="text-center">
                                                                 <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
-                                                            </td>
-                                                            <th style="text-align: center;">
-                                                                <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'user_list_tb',1)">
-                                                                </span>
+                                                            </th>
+                                                            <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
+                                                                <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'user_list_tb',2)"></span>
                                                                 <span class="gridHeader" translate>List Name</span>
                                                             </th>
-                                                            <th style="text-align: center;" *ngIf="showContactType" translate>Type
+                                                            <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
+                                                                List Info
                                                             </th>
-                                                            <th style="text-align: center;" translate>Uploaded Date</th>
-                                                            <th style="text-align: center;" translate>Preview </th>
+                                                            <th scope="row" style="text-align: center;" *ngIf="showContactType" translate>Type
+                                                            </th>
+                                                            <th scope="row" style="text-align: center;" translate>Uploaded Date</th>
+                                                            <th scope="row" style="text-align: center;" translate>Count</th>
+                                                            <th scope="row" style="text-align: center;" translate>Preview </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr role="row" *ngFor="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
-                                                            (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
+                                                        <tr role="row" *ngFor="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
+                                                            (mouseover)='showContactsAlert(contacts.count)' [attr.title]="emptyContactsMessage">
                                                             <td>
-                                                                <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
+                                                                <div class="form-group">
                                                                     <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
                                                                 </div>
-                                                                <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
-                                                                    <input type="checkbox" disabled="disabled" title="Contacts are in progress">
-                                                                </div>
                                                             </td>
-                                                            <td class="text-center moreipsis" title="{{contacts.name}}">
-                                                                <span>{{contacts.name}}</span>
-                                                            </td>
-
+                                                            <td style="width: 10%;text-align: left;" class="hidden-xs">
+                                                                <img  *ngIf="contacts?.socialNetwork=='ZOHO'" src="{{properties?.zohoImage}}" alt="Zoho" class="img-class-list">
+                                                                <img *ngIf="contacts?.socialNetwork=='GOOGLE'" src="{{properties?.googleImage}}" alt="Google" class="img-class-list">
+                                                                <img *ngIf="contacts?.socialNetwork=='SALESFORCE'" src="{{properties?.salesforceImage}}" alt="Salesforce" class="img-class-list"> 
+                                                                <img *ngIf="contacts?.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}" alt="Manual" class="img-class-list">
+                                                                <img *ngIf="contacts?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
+                                                                <img *ngIf="contacts?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
+                                                              </td>
+                                                              <td style="text-align: left;">
+                                                                <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contacts?.name}}">
+                                                                    <span><strong>{{contacts?.name}}</strong></span>
+                                                                </h4>
+                                                                <h6 class="moreipsis" title="{{contacts?.createdName}}">
+                                                                    <span translate> Created By <strong>{{contacts?.creatorName}}</strong></span>
+                                                                </h6>
+                                                                <ng-container *ngIf="!contacts?.partnerList">
+                                                                    <h6 class="view-banner" translate>
+                                                                        <span *ngIf="contacts?.publicList" data-toggle="tooltip" data-placement="top"
+                                                                            title="{{actionsDescription?.contact_list_public}}" translate>Public
+                                                                        </span>
+                                                                        <span *ngIf="!contacts?.publicList" data-toggle="tooltip" data-placement="top"
+                                                                            title="{{actionsDescription?.contact_list_private}}" translate>Private
+                                                                        </span>
+                                                                    </h6>
+                                                                </ng-container>
+                                                              </td>
                                                             <td *ngIf="showContactType">
-                                                                <ng-container *ngIf="contacts.partnerUserList" translate>
-                                                                    Partners
-                                                                </ng-container>
-                                                                <ng-container *ngIf="!contacts.partnerUserList" translate> 
-                                                                    Contacts
-                                                                </ng-container>
+                                                                {{contacts?.listType}}
                                                             </td>
                                                             <td class="text-center sorting_1">
-                                                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate">
+                                                                <app-timestamp  [dateAndTime]="contacts?.displayTime">
                                                                 </app-timestamp>
                                                             </td>
+                                                            <td>
+                                                                {{contacts?.count}}
+                                                            </td>
                                                             <td class="text-center">
-                                                                <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
-                                                                    <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                                                                <a (click)="$event.stopPropagation();previewUsers(contacts)">
+                                                                    <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
                                                                 </a>
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div style="text-align:left" *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-                                                <app-pagination [pagination]="contactsPagination" [type]="'contacts'" (notifyParent)="setPagePagination($event)" [isDropdown]="true">
-                                                </app-pagination>
-
-                                                <select class="btn btn-default" style="float: right;" [(ngModel)]="contactItemsSize" (ngModelChange)="getNumberOfContactItemsPerPage($event)">
-                                                    <option *ngFor="let itemPerPage of numberOfContactsPerPage"
-                                                        [ngValue]="itemPerPage">
-                                                        {{itemPerPage.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
-                                </ng-container>
+                                </div>
+                                <div style="text-align:left" [hidden]="contactsPagination.totalRecords ==0  || campaignContact.httpRequestLoader.isLoading || campaignContact.httpRequestLoader.isServerError">
+                                    <app-pagination [pagination]="contactsPagination" [type]="'contacts'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadCampaignContacts($event)">
+                                    </app-pagination>
+                                </div>
                             </div>
                             <button *ngIf="campaignType=='video'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
                             <button *ngIf="campaignType=='regular'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
@@ -1540,7 +1563,8 @@
                                             </div>
                                         </div>
                                         <div [attr.class]="lauchTabPreivewDivClass">
-                                            <div class="portlet light border-0">
+                                            <app-dashboard-loader *ngIf="emailReceiversCountLoader"></app-dashboard-loader>
+                                            <div class="portlet light border-0" *ngIf="!emailReceiversCountLoader">
                                                 <div class="table-responsive">
                                                     <table width="100%">
                                                         <tr>
@@ -1572,12 +1596,13 @@
                                                                     <span *ngIf="userListDTOObj?.length == 0" translate>0 contact lists
                                                                         </span></a>
                                                                 <br>
-
-                                                               
-
-                                                                <span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
-                                                                <span *ngIf="!campaign.emailNotification" id="red-font" translate>No email will be sent.</span>
-
+                                                                <ng-container *ngIf="emailReceiversCountError">
+                                                                    <span id="red-font" translate>Something went wrong.Please contact admin</span>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="!emailReceiversCountError">
+                                                                    <span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                                                                    <span *ngIf="!campaign.emailNotification" id="red-font" translate>No email will be sent.</span>
+                                                                </ng-container>
                                                             </td>
                                                             <td style="text-align: right" width="20%">
                                                                 <a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')" translate>Change</a>
@@ -2565,3 +2590,6 @@
     </div>
 </div>
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
+<ng-container *ngIf="showUsersPreview">
+    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+    </ng-container>

@@ -47,6 +47,9 @@ import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { Pipeline } from 'app/dashboard/models/pipeline';
 import { UserService } from 'app/core/services/user.service';
 import { EnvService } from 'app/env.service';
+import { SortOption } from '../../core/models/sort-option';
+import { UtilService } from '../../core/services/util.service';
+import { ActionsDescription } from '../../common/models/actions-description';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -55,7 +58,7 @@ var moment = require('moment-timezone');
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
   styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css', '../../../assets/css/content.css'],
-  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService,CheckBoxSelectionService]
+  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService,CheckBoxSelectionService,SortOption,ActionsDescription]
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
@@ -145,8 +148,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     numberOfContactsPerPage = [
                                {'name':'12','value':'12'},
                                {'name':'24','value':'24'},
-                               {'name':'48','value':'48'},
-                               {'name':'All','value':'0'},
+                               {'name':'48','value':'48'}
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     isCampaignDraftContactList:boolean = false;
@@ -296,7 +298,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     folderCustomResponse:CustomResponse = new CustomResponse();
     showMarketingAutomationOption = false;
     THROUGH_PARTNER_MESSAGE: string;
-    isGdprEnabled = false;                          
+    isGdprEnabled = false;             
+    emailReceiversCountLoader = false;  
+    emailReceiversCountError = false;       
+    recipientsSortOption : SortOption = new SortOption(); 
+    showUsersPreview = false;
+    selectedListName = "";   
+    selectedListId = 0;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -305,7 +313,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
                 private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
-				private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService,public envService:EnvService
+                private render:Renderer,private vanityUrlService:VanityURLService,private userService:UserService,public envService:EnvService,
+                private utilService:UtilService,public actionsDescription: ActionsDescription
             ){
                 
                 this.vanityUrlService.isVanityURLEnabled();
@@ -423,6 +432,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.contactListTabClass = this.successTabClass;
                 this.contactsPagination.editCampaign = true;
                 this.selectedContactListIds = this.campaign.userListIds.sort();
+                let selectedListSortOption = {
+                    'name': 'Selected List', 'value': 'selectedList'
+                }
+                this.recipientsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
+                this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length-1];
                 this.isCampaignDraftContactList = true;
             }
             /***********Select Email Template Tab*************************/
@@ -744,6 +758,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.channelCampaignFieldName = "To Partner";
             this.showMarketingAutomationOption = false;
         }
+        this.contactsPagination.channelCampaign = this.campaign.channelCampaign;
         if(isOrgAdmin){
             if(this.campaign.channelCampaign){
                 this.setVendorPartnersData();
@@ -821,7 +836,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       if(this.isOnlyPartner){this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
       }else{ this.loadEmailTemplates(this.emailTemplatesPagination); }
     }
-    setPagePagination(event:any){ this.setPage(event.page, event.type);}
+    setPagePagination(event:any){ 
+        this.setPage(event.page, event.type);
+    }
+    paginateUserList(event:any){
+        this.contactsPagination.pageIndex = event.page;
+        this.loadCampaignContacts(this.contactsPagination);
+    }
     loadPaginationDropdownTemplates(event:Pagination){
         this.emailTemplatesPagination = event;
         this.emailTemplatesLoad();
@@ -877,17 +898,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
             
         }
-        console.log("is Valid Form"+this.isCampaignDetailsFormValid);
       }
      validateEmail(emailId:string){
-         console.log(emailId);
          var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
          if(regex.test(emailId)){
              this.isValidEmail = true;
-             console.log("Valid Email Id");
          }else{
              this.isValidEmail = false;
-             console.log("Invalid Email Id");
          }
      }
      validateCampaignName(campaignName:string){
@@ -901,7 +918,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  this.isValidCampaignName = true;
              }
          }else{
-             console.log(this.editedCampaignName.toLowerCase()+":::::::::"+lowerCaseCampaignName);
              if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
                  this.isValidCampaignName = false;
              }else{
@@ -1135,7 +1151,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     /*************************************************************Select Video***************************************************************************************/
     setClickedRow = function(videoFile:any,videoType:string){
-        console.log(videoFile);
        let videoId = videoFile.id;
         if(videoFile.viewBy=="DRAFT"){
             this.draftMessage = "Video is in draft mode, please update the publish options to Library or Viewers.";
@@ -1222,7 +1237,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                pagination.totalRecords = result.totalRecords;
                this.partnerCategories = result.categories;
                this.channelVideosPagination = this.pagerService.getPagedItems(pagination, this.channelVideos);
-               console.log( this.channelVideosPagination);
                this.filterPartnerVideosForEditCampaign();
                this.refService.loading(this.campaignVideo.httpRequestLoader, false);
             },
@@ -1357,9 +1371,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        if(this.videojsPlayer){
           this.videojsPlayer.dispose();
        }
-       else{
-           console.log('closed 360 video');
-       }
     }
     playVideo(){
         $('#main_video_src').empty();
@@ -1374,7 +1385,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
     }
     appendVideoData(videoFile:SaveVideoFile,divId:string,titleId:string){
-       console.log(videoFile);
        let videoSelf = this;
         var fullImagePath = videoFile.imagePath;
         var title = videoFile.title;
@@ -1392,7 +1402,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#"+titleId).empty();
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="hls-video" rel="stylesheet">');
         if(is360){
-            console.log("Loaded 360 Video");
             $('.h-video').remove();
             this.videoUtilService.player360VideoJsFiles();
             this.videoUtilService.video360withm3u8();
@@ -1418,7 +1427,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $("#videoId").css("max-width", "100%");
 
         }else{
-            console.log("Loaded Normal Video");
             $('.p-video').remove();
             this.videoUtilService.normalVideoJsFiles();
             var str = '<video id=videoId  poster='+fullImagePath+' preload="none"  class="video-js vjs-default-skin" controls></video>';
@@ -1426,10 +1434,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             $('#'+titleId).prop(videoFile.title);
             $("#"+divId).append(str);
            // videoPath = videoPath.replace(".mp4","_mobinar.m3u8");//Replacing .mp4 to .m3u8
-            console.log("Video Path:::"+videoPath);
             videoPath = videoPath.substring(0,videoPath.lastIndexOf('.'));
             videoPath =  videoPath + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-            console.log("Normal Video Updated Path:::"+videoPath);
            $("#"+divId+" video").append('<source src='+videoPath+' type="application/x-mpegURL">');
            $("#videoId").css("width", "100%");
            $("#videoId").css("height", "155px");
@@ -1448,7 +1454,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             if(videoFile) {
                 this.videoControllColors(videoFile);
             }
-            console.log(player);
             if(this.videojsPlayer){
                 this.videojsPlayer.on('fullscreenchange', function () {
                     var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
@@ -1470,22 +1475,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadCampaignContacts(contactsPagination:Pagination) {
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignContact.httpRequestLoader, true);
-        console.log(this.contactsPagination);
-        this.contactService.loadContactLists(contactsPagination)
+        if(!this.isAdd){
+            this.contactsPagination.campaignId = this.campaign.campaignId;
+        }
+        this.contactService.findContactsAndPartnersForCampaign(contactsPagination)
             .subscribe(
-            (data:any) => {
-                this.campaignContactLists = data.listOfUserLists;
-                console.log(this.campaignContactLists);
+            (response:any) => {
+                let data = response.data;
+                this.campaignContactLists = data.list;
                 contactsPagination.totalRecords = data.totalRecords;
-                if(contactsPagination.filterBy!=null){
-                    if(contactsPagination.filterBy==0){
-                        contactsPagination.maxResults = data.totalRecords;
-                    }else{
-                        contactsPagination.maxResults = contactsPagination.filterBy;
-                    }
-                }
+                this.recipientsSortOption.totalRecords = data.totalRecords;
+                $.each(this.campaignContactLists, function (_index: number, list: any) {
+                    list.displayTime = new Date(list.createdTimeInString);
+                });
                 this.contactsPagination = this.pagerService.getPagedItems(contactsPagination, this.campaignContactLists);
-                this.refService.loading(this.campaignContact.httpRequestLoader, false);
                 var contactIds = this.contactsPagination.pagedItems.map(function(a) {return a.id;});
                 var items = $.grep(this.selectedContactListIds, function(element) {
                     return $.inArray(element, contactIds ) !== -1;
@@ -1495,7 +1498,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }else{
                     this.isHeaderCheckBoxChecked = false;
                 }
-
+                this.refService.loading(this.campaignContact.httpRequestLoader, false);
             },
             (error:string) => {
                 this.logger.errorPage(error);
@@ -1504,35 +1507,23 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             )
     }
 
-
-    getNumberOfContactItemsPerPage(items:any){
-        try{
-            $('#checkAllExistingContacts').prop("checked",false);
-            this.contactItemsSize = items;
-            this.getAllFilteredResults(this.contactsPagination);
-        }catch(error){
-            console.log(error, "getSelectedContacts","PublishContentComponent");
-        }
-
+    sortRecipientsList(text:any){
+        this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = text;
+        this.getAllFilteredResults();
     }
-    getAllFilteredResults(pagination:Pagination){
+
+    getAllFilteredResults(){
         try{
             this.contactsPagination.pageIndex = 1;
-            this.contactsPagination.filterBy = this.contactItemsSize.value;
-            if(this.contactItemsSize.value==0){
-                this.contactsPagination.maxResults = this.contactsPagination.totalRecords;
-            }else{
-                this.contactsPagination.maxResults = this.contactItemsSize.value;
-            }
+            this.contactsPagination.searchKey = this.recipientsSortOption.searchKey;
+            this.contactsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.contactsPagination);
             this.loadCampaignContacts(this.contactsPagination);
         }catch(error){
-            console.log(error, "Get Filtered Contacts","Publish Content Component")
+            console.log(error, "getAllFilteredResults()","Publish Content Component")
         }
     }
     searchContactList(){
-        this.contactsPagination.pageIndex = 1;
-        this.contactsPagination.searchKey = this.contactSearchInput;
-        this.loadCampaignContacts(this.contactsPagination);
+        this.getAllFilteredResults();
     }
     highlightRow(contactList:any,event:any){
         let contactId = contactList.id;
@@ -1559,20 +1550,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     //Removing Highlighted Row
                     $('#'+contactId).prop( "checked", false );
                     $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
-                    console.log("Revmoing"+contactId);
                     this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
                     this.userListDTOObj= this.refService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
                   }else{
                   //Highlighting Row
                   $('#'+contactId).prop( "checked", true );
                   $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
-                  console.log("Adding"+contactId);
                   this.selectedContactListIds.push(contactId);
                   this.userListDTOObj.push(contactList);
               }
                 this.contactsUtility();
                 event.stopPropagation();
-                console.log(this.selectedContactListIds);
             }else{
                 this.emptyContactsMessage = "Contacts are in progress";
             }
@@ -1597,7 +1585,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     checkAll(ev:any){
         if(ev.target.checked){
-            console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
             this.isContactList = true;
             let self = this;
@@ -1605,7 +1592,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 var id = $(this).val();
                 self.selectedContactListIds.push(parseInt(id));
                 self.userListDTOObj.push(self.contactsPagination.pagedItems[index]);
-                console.log(self.selectedContactListIds);
                 $('#campaignContactListTable_'+id).addClass('contact-list-selected');
              });
             this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
@@ -1646,9 +1632,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           this.listName = ListName;
           this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
                   (data:any) => {
-                      console.log(pagination);
                       this.contactListItems = data.listOfUsers;
-                      console.log(this.contactListItems);
                       pagination.totalRecords = data.totalRecords;
                       this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
                       $('#users-modal-body').html('');
@@ -1875,13 +1859,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.emailTemplateService.getById( emailTemplate.id )
         .subscribe(
         ( data: any ) => {
-            console.log( data );
             emailTemplate.body = data.body;
             this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
         },
         error => console.error( error ),
         () => {
-            console.log( 'TemplateBodyLoaded() finished' );
+           
         }
         );
     }
@@ -1890,13 +1873,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.emailTemplateService.getById( emailTemplate.id )
         .subscribe(
         ( data: any ) => {
-            console.log( data );
             emailTemplate.body = data.body;
             this.getEmailTemplatePreview(emailTemplate);
         },
         error => console.error( error ),
         () => {
-            console.log( 'loadContacts() finished' );
+            
         }
         );
     }
@@ -2331,7 +2313,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     validateReplySubject(reply:Reply){
         if( reply.subject==null||reply.subject==undefined || $.trim(reply.subject).length==0){
             this.addReplyDivError(reply.divId);
-            console.log("Added Reply Subject Eror");
             $('#reply-subject-'+reply.divId).css('color','red');
         }
     }
@@ -2378,7 +2359,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             if(errorLength==0){
                 this.addOnClickScheduledDaysSum(url, i);
             }
-            console.log(errorLength);
         }
     }
 
@@ -2395,7 +2375,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     validateOnClickSubject(url:Url){
         if( url.subject==null||url.subject==undefined || $.trim(url.subject).length==0){
             this.addReplyDivError(url.divId);
-            console.log("Added Subject Eror");
             $('#click-subject-'+url.divId).css('color','red');
         }
     }
@@ -2416,11 +2395,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     validateEmailTemplateForAddOnClick(url:Url){
         if(url.defaultTemplate && url.selectedEmailTemplateId==0){
-            console.log("Email Template Error Added For Choose Template On");
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-email-template-'+url.divId).css('color','red');
         }else if(!url.defaultTemplate &&(url.body==null || url.body==undefined || $.trim(url.body).length==0)){
-            console.log("Email Template Error Added For Choose Template Off");
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-message-'+url.divId).css('color','red');
         }
@@ -2538,7 +2515,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaignService.saveCampaign( data )
             .subscribe(
             data => {
-                console.log(data);
                 if(data.access){
                     if(data.message=="success"){
                         this.isLaunched = true;
@@ -2773,7 +2749,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     },
                     error => console.log(error),
                     () => {
-                        console.log('getFacebookAccounts() Finished.');
+                        
                     }
                 );
         }
@@ -2822,10 +2798,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      remove(divId:string,type:string){
          if(type=="replies"){
              this.replies = this.spliceArray(this.replies,divId);
-             console.log(this.replies);
          }else{
              this.urls = this.spliceArray(this.urls,divId);
-             console.log(this.urls);
          }
          $('#'+divId).remove();
          let index = divId.split('-')[1];
@@ -2909,7 +2883,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
          },
          error => console.log( error ),
-         () => console.log( "Campaign Names Loaded" )
          );
      }
 
@@ -3013,7 +2986,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           this.hubSpotService.configHubSpot().subscribe(data => {
               let response = data;
               if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                  console.log("isAuthorize true");
                   this.pushToCRM.push('hubspot');
                   this.validatePushToCRM();
               }
@@ -3281,21 +3253,26 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     getValidUsersCount() {
         try {
            if(this.selectedContactListIds.length > 0){
-            this.contactService.getValidUsersCount( this.selectedContactListIds )
+            this.emailReceiversCountError = false;   
+            this.emailReceiversCountLoader = true;  
+            this.loading = true;
+            this.contactService.findAllAndValidUserCounts( this.selectedContactListIds )
                 .subscribe(
                 data => {
-                    this.validUsersCount = data['validContactsCount'];
-                    this.allUsersCount = data['allContactsCount'];
-                    console.log( "valid contacts Data:" + data['validContactsCount'] );
+                    this.validUsersCount = data['validUsersCount'];
+                    this.allUsersCount = data['allUsersCount'];
+                    this.emailReceiversCountLoader = false;  
+                    this.loading = false;
+                    this.emailReceiversCountError = false;   
                 },
                 ( error: any ) => {
-                    console.log( error );
-                },
-                () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
-                )
+                    this.loading = false;
+                    this.emailReceiversCountLoader = false; 
+                    this.emailReceiversCountError = true;   
+                });
            }
         } catch ( error ) {
-            console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+            console.error( error, "create-campaign-component.ts", "getValidUsersCount()" );
         }
        
     }
@@ -3318,9 +3295,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     pushToCrmRequest(crmName: any, event: any){
-       console.log(event.target.checked);
        if(event.target.checked){
-           
            if(crmName == 'marketo'){
                this.checkMarketoCredentials();
            }else if(crmName == 'hubspot'){
@@ -3333,7 +3308,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            //this.pushToCRM.push(crmName);
        }else{
            this.pushToCRM = this.pushToCRM.filter(e => e !== crmName);
-           console.log(this.pushToCRM);
        }
        this.validatePushToCRM();
     }
@@ -3366,7 +3340,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        			},error =>{
            			this.logger.error(error, "Error in salesforce checkIntegrations()");
        			}, () => this.logger.log("Integration Salesforce Configuration Checking done"));
-              	console.log("isPushToSalesforce ::::" + this.pushToCRM);
            } else{
                   if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
                       window.location.href = response.data.redirectUrl;
@@ -3403,7 +3376,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     }, error => {
                         this.logger.error(error, "Error in salesforce checkIntegrations()");
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
-                    console.log("isPushToSalesforce ::::" + this.pushToCRM);
                 } else {
 					this.showConfigurePipelines = true;
                     this.listCampaignPipelines();
@@ -3472,7 +3444,17 @@ showSuccessMessage(message:any){
   this.listCategories();
 }
 
- 
+previewUsers(contactList:any){
+    this.showUsersPreview = true;
+    this.selectedListName = contactList.name;
+    this.selectedListId = contactList.id;
+}
+
+resetValues(){
+    this.showUsersPreview = false;
+    this.selectedListName = "";
+    this.selectedListId = 0;
+}
 
 
  

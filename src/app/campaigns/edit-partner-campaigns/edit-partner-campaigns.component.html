@@ -314,15 +314,12 @@
                                   <td class="text-center moreipsis">
                                     <span>{{contacts.type}}</span>
                                   </td>
-                                  <!--  <td class="text-center moreipsis" title="{{contacts.publicList}}">
-                                    <span> {{contacts.publicList}}</span>
-                                    </td> -->
                                   <td class="text-center sorting_1">
                                     <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                   </td>
                                   <td class="text-center">
-                                    <a (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
-                                    <i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                                    <a title="Preview" (click)="$event.stopPropagation();previewUsers(contacts)">
+                                    <i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;"></i>
                                     </a>
                                   </td>
                                   </tr>
@@ -769,29 +766,8 @@
     </div>
   </div>
   <!-- ----------------------------------Contact Lists--------------------------------- -->
-  <div class="modal right fade" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
-    <div class="modal-dialog modal-css" role="document" style="right:0">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" (click)="closeModelPopup()" class="close-circle" data-dismiss="modal" aria-label="Close">
-          <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-          <div>
-            <h4 class="modal-title" id="user-list-name" align="center" title="{{listName}}">
-              <strong>{{listName |slice:0:20}}
-              <span *ngIf="listName?.length>20">...</span>
-              </strong>
-            </h4>
-          </div>
-        </div>
-        <div class="modal-body" id="users-modal-body">
-        </div>
-        <div class="modal-footer">
-          <app-pagination class="pg8" style="float: left;" [pagination]="contactsUsersPagination" [type]="'editpartner'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
-          <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <ng-container *ngIf="showUsersPreview">
+    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+    </ng-container>
   <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
   <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
