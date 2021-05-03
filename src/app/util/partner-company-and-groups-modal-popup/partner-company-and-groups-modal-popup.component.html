@@ -2,7 +2,7 @@
   <div class="modal-dialog full-width" role="document">
      <div class="modal-content">
         <div class="modal-header">
-           <button type="button" class="close-circle" (click)="closePopup()">
+           <button *ngIf="!ngxLoading" type="button" class="close-circle" (click)="closePopup()">
            <i class="fa fa-times" aria-hidden="true"></i>
            </button>
            <h4 class="modal-title text-center">Publish To Partners/Partner Lists</h4>
@@ -28,13 +28,13 @@
                <div class="row" [hidden]="modalPopupLoader">
                   <div class="col-md-12 col-lg-12">
                      <div class="panel with-nav-tabs panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading" id="company-and-group-tabs">
                            <ul class="nav nav-tabs">
                               <li id="partners-li" >
-                                 <a href="#partners" data-toggle="tab" (click)="findPartnerCompanies(pagination)">Partners</a>
+                                 <a class="partnersC" title="Click to see partner companies" href="#partners" data-toggle="tab" (click)="findPartnerCompanies(pagination)">Partners</a>
                               </li>
                               <li id="partnerGroups-li">
-                                 <a href="#partnerGroups" data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">Partner Lists</a>
+                                 <a class="partnerGroupsC" title="Click to see partner lists"   href="#partnerGroups" data-toggle="tab"  (click)="findPartnerGroups(partnerGroupsPagination)">Partner Lists</a>
                               </li>
                            </ul>
                         </div>
@@ -47,6 +47,16 @@
                                                 <div>
                                                    <div class="col-xs-12">
                                                       <div class="page-toolbar">
+                                                         <div class="alert alert-success left-float" *ngIf="selectedPartnershipIds?.length>0">
+                                                            <strong>
+                                                               <ng-container *ngIf="selectedPartnershipIds?.length==1">
+                                                                  {{selectedPartnershipIds?.length}} partner company is selected
+                                                               </ng-container>
+                                                               <ng-container *ngIf="selectedPartnershipIds?.length>1">
+                                                                  {{selectedPartnershipIds?.length}} partner companies are selected
+                                                               </ng-container>
+                                                               </strong>
+                                                         </div>
                                                          <div class="btn-group pull-right">
                                                             <div class="inputs float-right" style="display: inline-flex;">
                                                                <div class="portlet-input input-inline" id="search-div">
@@ -120,8 +130,10 @@
                                                                </div>
                                                              </ng-container>
                                                           <div *ngIf="!adminsAndTeamMembersErrorMessage.isVisible">
-                                                          <table  class="table tgrid table-condensed table-bordered child-table-xamp" aria-describedby="team-members-info" id="admin-and-team-members-{{partner?.partnershipId}}">
-                                                             <thead>
+                                                         <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
+                                                         <ng-container *ngIf="!teamMembersLoader.isLoading">
+                                                         <table  class="table tgrid table-condensed table-bordered child-table-xamp" aria-describedby="team-members-info" id="admin-and-team-members-{{partner?.partnershipId}}">
+                                                            <thead>
                                                                 <tr>
                                                                   <th scope="row" class="text-center">
                                                                    <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
@@ -130,8 +142,6 @@
                                                                 </tr>
                                                               </thead>
                                                               <tbody>
-                                                                <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
-                                                                <ng-container *ngIf="!teamMembersLoader.isLoading">
                                                                 <tr *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}" [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)" >
                                                                     <td class="text-center">
                                                                       <input type="checkbox" id="{{adminAndTeamMember.userId}}"  [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
@@ -141,9 +151,9 @@
                                                                       </app-user-info>
                                                                     </td>
                                                                  </tr>
-                                                                 </ng-container>
                                                               </tbody>
                                                           </table>
+                                                          </ng-container>
                                                            <!---Pagination-->
                                                            <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info">
                                                              <strong>No Data Found.</strong>
@@ -173,6 +183,16 @@
                                        <div>
                                           <div class="col-xs-12">
                                              <div class="page-toolbar">
+                                                <div class="alert alert-success left-float" *ngIf="selectedPartnerGroupIds?.length>0">
+                                                   <strong>
+                                                      <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
+                                                         {{selectedPartnerGroupIds?.length}} partner list is selected
+                                                      </ng-container>
+                                                      <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
+                                                         {{selectedPartnerGroupIds?.length}} partner lists are selected
+                                                      </ng-container>
+                                                      </strong>
+                                                </div>
                                                 <div class="btn-group pull-right">
                                                    <div class="inputs float-right" style="display: inline-flex;">
                                                       <div class="portlet-input input-inline" id="search-div">
@@ -250,6 +270,7 @@
          </div>
      </div>
      <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
+         <button class="btn btn-danger" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0 || selectedPartnerGroupIds?.length>0) && !sendSuccess " (click)="clearAll()">Clear All</button>
         <button type="submit" class="btn green-haze" [disabled]="(selectedTeamMemberIds?.length==0 && selectedPartnerGroupIds?.length==0) && !isEdit" *ngIf="!sendSuccess" (click)="publish()">Submit</button>
         <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
      </div>
