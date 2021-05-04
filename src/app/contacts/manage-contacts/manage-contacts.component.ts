@@ -1417,11 +1417,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
 					data => {
-						this.contactsByType.allContactsCount = data.allContactsCount;
-						this.contactsByType.invalidContactsCount = data.invalidContactsCount;
-						this.contactsByType.unsubscribedContactsCount = data.unsubscribedContactsCount;
-						this.contactsByType.activeContactsCount = data.activeContactsCount;
-						this.contactsByType.inactiveContactsCount = data.inactiveContactsCount;
+						this.contactsByType.allContactsCount = data.allcontacts;
+						this.contactsByType.invalidContactsCount = data.invalidUsers;
+						this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
+						this.contactsByType.activeContactsCount = data.activecontacts;
+						this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
