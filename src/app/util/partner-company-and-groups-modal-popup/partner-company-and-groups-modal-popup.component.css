@@ -254,3 +254,11 @@
 	width: auto;
 	margin: 0 auto;
 }
+
+.unClick {
+    pointer-events: none;
+}
+
+.click {
+    pointer-events: auto;
+}

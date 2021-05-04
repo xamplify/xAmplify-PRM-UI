@@ -100,6 +100,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 				}else{
 					this.findPublishedPartnershipIdsByInputId();
 					this.findPublishedPartnerIds();
+
 				}
 			}
 		);
@@ -113,6 +114,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 				if (response.data != undefined && response.data.length > 0) {
 					this.isEdit = true;
 				}
+				this.disableOrEnablePartnerCompaniesTab();
 			}, error => {
 				this.xtremandLogger.error(error);
 				this.findPartnerGroups(this.partnerGroupsPagination);
@@ -130,6 +132,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 				if (response.data != undefined && response.data.length > 0) {
 					this.isEdit = true;
 				}
+				this.disableOrEnablePartnerListsTab();
 				this.referenceService.stopLoader(this.httpRequestLoader);
 			}, error => {
 				this.referenceService.stopLoader(this.httpRequestLoader);
@@ -296,6 +299,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
 		}
 		this.checkHeaderCheckBox(partnershipId);
+		this.disableOrEnablePartnerListsTab();
 		event.stopPropagation();
 	}
 
@@ -325,7 +329,20 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 			this.selectedTeamMemberIds.push(teamMemberId);
 		}
 		this.checkHeaderCheckBox(partnershipId);
+		this.disableOrEnablePartnerListsTab();
 		event.stopPropagation();
+	}
+
+	disableOrEnablePartnerListsTab(){
+		if(this.selectedTeamMemberIds.length>0){
+			$('#partnerGroups-li').css({'cursor':'not-allowed'});
+			$('.partnerGroupsC').css({'pointer-events':'none'});
+			$('#partnerGroups-li').attr('title','You can choose either partners/partner lists');
+		}else{
+			$('#partnerGroups-li').css({'cursor':'auto'});
+			$('.partnerGroupsC').css({'pointer-events':'auto'});
+			$('#partnerGroups-li').attr('title','Click to see partner lists');
+		}
 	}
 
 	selectAllTeamMembersOfTheCurrentPage(ev: any, partnershipId: number) {
@@ -348,7 +365,21 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 			this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
 			this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
 		}
+		this.disableOrEnablePartnerListsTab();
 		ev.stopPropagation();
+	}
+	clearAll(){
+		let selectedTabName = this.selectedTabName();
+		if("partners"==selectedTabName){
+			this.selectedTeamMemberIds = [];
+			this.selectedPartnershipIds = [];
+			this.isHeaderCheckBoxChecked = false;
+			this.disableOrEnablePartnerListsTab();
+		}else{
+			this.selectedPartnerGroupIds = [];
+			this.isParnterGroupHeaderCheckBoxChecked = false;
+			this.disableOrEnablePartnerCompaniesTab();
+		}
 	}
 	/************Partner Company Checkbox related code ends here****************/
 	selectedTabName(){
@@ -467,6 +498,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	/******************Partner Group related code starts here*********************/
 	findPartnerGroups(pagination: Pagination) {
+		if(this.selectedTeamMemberIds.length==0){
 		this.customResponse = new CustomResponse();
 		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.httpRequestLoader);
@@ -493,7 +525,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 		}, () => {
 
 		});
-
+	}
 	}
 
 	partnerGroupsSearchOnKeyEvent(keyCode: any) { if (keyCode === 13) { this.searchPartnerGroups(); } }
@@ -509,14 +541,29 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 
 	highlightSelectedPartnerGroupOnRowClick(partnerGroupId: any, event: any) {
 		this.referenceService.highlightRowOnRowCick('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
+		this.disableOrEnablePartnerCompaniesTab();
 	}
 
 	highlightPartnerGroupRowOnCheckBoxClick(partnerGroupId: any, event: any) {
 		this.referenceService.highlightRowByCheckBox('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
+		this.disableOrEnablePartnerCompaniesTab();
 	}
 
 	selectOrUnselectAllPartnerGroupsOfTheCurrentPage(event:any){
 		this.selectedPartnerGroupIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds,this.partnerGroupsPagination,event);
+		this.disableOrEnablePartnerCompaniesTab();
+	}
+
+	disableOrEnablePartnerCompaniesTab(){
+		if(this.selectedPartnerGroupIds.length>0){
+			$('#partners-li').css({'cursor':'not-allowed'});
+			$('.partnersC').css({'pointer-events':'none'});
+			$('#partners-li').attr('title','You can choose either partners/partner lists');
+		}else{
+			$('#partners-li').css({'cursor':'auto'});
+			$('.partnersC').css({'pointer-events':'auto'});
+			$('#partners-li').attr('title','Click to see partner companies');
+		}
 	}
 	
 	previewUserListUsers(partnerGroup:any){
