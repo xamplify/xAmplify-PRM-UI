@@ -2913,11 +2913,21 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          var data = this.getCampaignData("");
          var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
          if(errorLength==0){
+             let message = "";
+             if("SAVE"==this.campaignLaunchForm.value.scheduleCampaign){
+                message = " saving "
+             }else if("SCHEDULE"==this.campaignLaunchForm.value.scheduleCampaign){
+                message = " scheduling ";
+             }else if("NOW"==this.campaignLaunchForm.value.scheduleCampaign){
+                message = " launching ";
+             }
+             this.refService.showSweetAlertProcessingLoader('We are '+message+' the campaign');
              this.dataError = false;
              this.refService.goToTop();
              this.campaignService.saveCampaign( data )
              .subscribe(
              response => {
+                swal.close();
                  if(response.access){
                     if(response.statusCode==2000){
                         this.refService.campaignSuccessMessage = data['scheduleCampaign'];
@@ -2936,10 +2946,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  }else{
                     this.authenticationService.forceToLogout();
                  }
-                
                  this.refService.stopLoader(this.httpRequestLoader);
              },
              error => {
+                swal.close();
                  this.hasInternalError = true;
                  this.logger.errorPage(error);
              },

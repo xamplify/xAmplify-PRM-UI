@@ -31,7 +31,7 @@ import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
-declare var  $,flatpickr,CKEDITOR,require:any;
+declare var  $,swal,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
 @Component({
@@ -1271,12 +1271,22 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           var data = this.getCampaignData("");
           var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
           if(errorLength==0 && this.selectedUserlistIds.length>0){
+		 	let message = "";
+             if("SAVE"==this.campaignLaunchForm.value.scheduleCampaign){
+                message = " saving "
+             }else if("SCHEDULE"==this.campaignLaunchForm.value.scheduleCampaign){
+                message = " scheduling ";
+             }else if("NOW"==this.campaignLaunchForm.value.scheduleCampaign){
+                message = " launching ";
+             }
+             this.referenceService.showSweetAlertProcessingLoader('We are '+message+' the campaign');
               this.dataError = false;
               this.contactListBorderColor = "silver";
               this.referenceService.goToTop();
               this.campaignService.saveCampaign( data )
               .subscribe(
               response => {
+				swal.close();
                 if(response.access){
                     if (response.statusCode == 2000) {
                         this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
@@ -1297,6 +1307,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                   this.referenceService.stopLoader(this.httpRequestLoader);
               },
               error => {
+				  swal.close();
                   this.hasInternalError = true;
                   this.xtremandLogger.errorPage(error);
               },
