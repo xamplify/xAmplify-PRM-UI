@@ -1360,6 +1360,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 	showSuccessMessage(message: any) {
 		this.referenceService.showSweetAlertSuccessMessage(message);
+		this.listCategories();
 	}
 
 
