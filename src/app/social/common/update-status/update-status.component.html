@@ -10,6 +10,9 @@
         <i class="fa fa-angle-right" aria-hidden="true"></i>
         Update Status</li>
         </ul>
+        <div *ngIf="location.includes('/campaigns/social')" id="folder-margin-xamp">
+            <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+         </div>
     </div>
     <div class="row" [hidden]="isRedirectEnabled">
         <div class="col-md-3 col-sm-12">
@@ -773,3 +776,4 @@
     </div>
   </div>
 </div>
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
