@@ -1758,18 +1758,19 @@
                                                                         <div class="col-xs-2">
                                                                             <label class="default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}" translate>
                                                                                 Reply In X Days
-                                                                                <b style="color: red">*</b>
-                                                                                <font><b translate>(Minimum 1 Day)</b></font>
+                                                                                <strong style="color: red">*</strong>
+                                                                                <span><strong translate>(Minimum 1 Day)</strong></span>
                                                                             </label>
                                                                             <label class="default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}" translate>Reply In X Days
-                                                                                <b style="color: red">*</b>
+                                                                                <strong style="color: red">*</strong>
                                                                             </label>
                                                                             <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
                                                                         </div>
 
                                                                         <div class="col-xs-3 time-col" style="padding-left: 0;" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                                            <div class="col-xs-2 default"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css" translate>At<b
-                                                                                        style="color: red">*</b></span>
+                                                                            <div class="col-xs-2 default">
+                                                                                <span for="time" id="send-time-{{reply.divId}}" class="time-picker-css" translate>At
+                                                                                    <strong style="color: red">*</strong></span>
                                                                             </div>
                                                                             <div class="col-xs-10" style="height: 66px;">
                                                                                 <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
@@ -1778,8 +1779,8 @@
                                                                     </div>
 
                                                                     <div class="col-xs-6">
-                                                                        <label class="default" for="time" id="reply-subject-{{reply.divId}}" translate>Subject<b
-                                                                                style="color: red">*</b>
+                                                                        <label class="default" for="time" id="reply-subject-{{reply.divId}}" translate>Subject
+                                                                            <strong style="color: red">*</strong>
                                                                         </label>
                                                                         <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="200">
                                                                     </div>
@@ -1804,35 +1805,19 @@
                                                                         </label>
                                                                     </div>
                                                                     <div>
-                                                                        <!-- <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
-                                                                            <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                All</li>
-                                                                            <li class="filter" (click)="filterReplyTemplates('EMAIL',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                Email</li>
-                                                                            <li class="filter" (click)="filterReplyTemplates('REGULAR_CO_BRANDING',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                Email Co-Branding</li>
-                                                                            <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                Uploaded</li>
-                                                                            
-                                                                        </ul> -->
-
                                                                         <div class="input-icon right pull-right cebp">
                                                                             <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
                                                                              (keypress)="eventHandlerForReplyEmailTemplate($event, reply)">
-                                                                             <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="reply.emailTemplateSearchInput" (click)="reply.emailTemplateSearchInput='';searchReplyEmailTemplate(reply)"></button>
+                                                                             <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="reply.emailTemplateSearchInput" (click)="removeSearchInput(reply)"></button>
                                                                             <button type="submit" class="search-box-item-click email-search" (click)="searchReplyEmailTemplate(reply)">
                                                                                 <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                                                         </div>
-                                                                        <!-- <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
-                                                                            <i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"></i>
-                                                                            <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"></i>
-                                                                        </button> -->
                                                                         <div class="portlet-body">
                                                                             <div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
                                                                                 <strong translate>No templates found</strong>
                                                                             </div>
                                                                             <div class="row">
-                                                                                <form role="form" class="form-horizontal form-bordered form-label-stripped">
+                                                                                <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-labelledby="">
                                                                                     <div class="col-xs-12">
                                                                                         <app-loader *ngIf="reply.loader">
                                                                                         </app-loader>
@@ -2135,7 +2120,7 @@
                                                                             <div class="input-icon right pull-right cebp">
                                                                                 <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
                                                                                  (keypress)="eventHandlerForUrlEmailTemplate($event, url)">
-                                                                                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput='';searchClickEmailTemplate(url)"></button>
+                                                                                 <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput='';searchClickEmailTemplate(url)"></button>
                                                                                 <button type="submit" class="search-box-item-click email-search" (click)="searchClickEmailTemplate(url)">
                                                                                     <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                                                             </div>
