@@ -1219,6 +1219,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             }
 
         }
+		this.getValidUsersCount();
         ev.stopPropagation();
     }
     
@@ -1337,15 +1338,16 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       try {
          if(this.selectedUserlistIds.length > 0){
          this.ngxloading = true;
-          this.contactService.getValidUsersCount( this.selectedUserlistIds )
+          this.contactService.findAllAndValidUserCounts( this.selectedUserlistIds )
               .subscribe(
               data => {
-                  this.validUsersCount = data['validContactsCount'];
-                  this.allUsersCount = data['allContactsCount'];
+                  this.validUsersCount = data['validUsersCount'];
+                  this.allUsersCount = data['allUsersCount'];
                   this.ngxloading = false;
               },
               ( error: any ) => {
                 this.ngxloading = false;
+				this.referenceService.showSweetAlertFailureMessage("Unable to find valid contacts count. Please contact admin.");
                   console.log( error );
               },
               () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )

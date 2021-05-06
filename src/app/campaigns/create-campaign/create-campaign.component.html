@@ -1758,18 +1758,19 @@
                                                                         <div class="col-xs-2">
                                                                             <label class="default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}" translate>
                                                                                 Reply In X Days
-                                                                                <b style="color: red">*</b>
-                                                                                <font><b translate>(Minimum 1 Day)</b></font>
+                                                                                <strong style="color: red">*</strong>
+                                                                                <span><strong translate>(Minimum 1 Day)</strong></span>
                                                                             </label>
                                                                             <label class="default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}" translate>Reply In X Days
-                                                                                <b style="color: red">*</b>
+                                                                                <strong style="color: red">*</strong>
                                                                             </label>
                                                                             <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
                                                                         </div>
 
                                                                         <div class="col-xs-3 time-col" style="padding-left: 0;" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                                            <div class="col-xs-2 default"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css" translate>At<b
-                                                                                        style="color: red">*</b></span>
+                                                                            <div class="col-xs-2 default">
+                                                                                <span for="time" id="send-time-{{reply.divId}}" class="time-picker-css" translate>At
+                                                                                    <strong style="color: red">*</strong></span>
                                                                             </div>
                                                                             <div class="col-xs-10" style="height: 66px;">
                                                                                 <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
@@ -1778,8 +1779,8 @@
                                                                     </div>
 
                                                                     <div class="col-xs-6">
-                                                                        <label class="default" for="time" id="reply-subject-{{reply.divId}}" translate>Subject<b
-                                                                                style="color: red">*</b>
+                                                                        <label class="default" for="time" id="reply-subject-{{reply.divId}}" translate>Subject
+                                                                            <strong style="color: red">*</strong>
                                                                         </label>
                                                                         <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="200">
                                                                     </div>
@@ -1804,35 +1805,19 @@
                                                                         </label>
                                                                     </div>
                                                                     <div>
-                                                                        <!-- <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
-                                                                            <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                All</li>
-                                                                            <li class="filter" (click)="filterReplyTemplates('EMAIL',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                Email</li>
-                                                                            <li class="filter" (click)="filterReplyTemplates('REGULAR_CO_BRANDING',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                Email Co-Branding</li>
-                                                                            <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex" translate>
-                                                                                Uploaded</li>
-                                                                            
-                                                                        </ul> -->
-
                                                                         <div class="input-icon right pull-right cebp">
                                                                             <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
                                                                              (keypress)="eventHandlerForReplyEmailTemplate($event, reply)">
-                                                                             <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="reply.emailTemplateSearchInput" (click)="reply.emailTemplateSearchInput='';searchReplyEmailTemplate(reply)"></button>
+                                                                             <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="reply.emailTemplateSearchInput" (click)="removeSearchInput(reply)"></button>
                                                                             <button type="submit" class="search-box-item-click email-search" (click)="searchReplyEmailTemplate(reply)">
                                                                                 <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                                                         </div>
-                                                                        <!-- <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
-                                                                            <i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"></i>
-                                                                            <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"></i>
-                                                                        </button> -->
                                                                         <div class="portlet-body">
                                                                             <div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
                                                                                 <strong translate>No templates found</strong>
                                                                             </div>
                                                                             <div class="row">
-                                                                                <form role="form" class="form-horizontal form-bordered form-label-stripped">
+                                                                                <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-labelledby="">
                                                                                     <div class="col-xs-12">
                                                                                         <app-loader *ngIf="reply.loader">
                                                                                         </app-loader>
@@ -1865,7 +1850,7 @@
                                                                                                                                 </span>
                                                                                                                                 <span class="ng-scope">
                                                                                                                                      <a class="item__preview item__preview--image img-container custom"  target="_BLANK">
-                                                                                                                                        <img class="thumb ng-scope"  style="width:103px !important" src="{{reply.emailTemplate.subject}}">
+                                                                                                                                        <img alt="" class="thumb ng-scope"  style="width:103px !important" src="{{reply.emailTemplate.subject}}">
                                                                                                                                     </a> 
                                                                                                                                      <a href="javascript:;">
                                                                                                                                 </a>
@@ -1882,30 +1867,24 @@
                                                                                                                                         <span>
                                                                                                                                             <app-timestamp
                                                                                                                                                 [isOnlyDate]="true"
-                                                                                                                                                [dateAndTime]="reply?.emailTemplate?.createdDate">
+                                                                                                                                                [dateAndTime]="reply?.emailTemplate?.createdTime">
                                                                                                                                             </app-timestamp>
                                                                                                                                         </span>
                                                                                                                                     </span>
                                                                                                                                     <ng-container *ngIf="reply?.emailTemplate?.type!='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{reply?.emailTemplate?.createdBy}}">
-                                                                                                                                            <b translate>By:</b><span>{{reply?.emailTemplate?.createdBy|slice:0:12}}<span
+                                                                                                                                            <strong translate>By:</strong>
+                                                                                                                                            <span>{{reply?.emailTemplate?.createdBy|slice:0:12}}<span
                                                                                                                                                     *ngIf="reply?.emailTemplate?.createdBy?.length>12">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
-                                                                                                                                    <ng-container *ngIf="reply?.emailTemplate?.type=='PARTNER'">
-                                                                                                                                        <span style="float:left" title="{{reply?.emailTemplate?.vendorName}}">
-                                                                                                                                            <b translate>By:</b><span>{{reply?.emailTemplate?.vendorName|slice:0:12}}<span
-                                                                                                                                                    *ngIf="reply?.emailTemplate?.vendorName?.length>12">..</span></span>
-                                                                                                                                        </span>
-                                                                                                                                    </ng-container>
                                                                                                                                     <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{reply?.emailTemplate?.category}}">
-                                                                                                                                        <b translate>Folder:</b><font>{{reply?.emailTemplate?.category|slice:0:5}}</font>
-                                                                                                                                        <font *ngIf="reply?.emailTemplate?.category?.length>5">..</font>
+                                                                                                                                        <strong antranslate>Folder:</strong><span>{{reply?.emailTemplate?.category|slice:0:5}}</span>
+                                                                                                                                        <span *ngIf="reply?.emailTemplate?.category?.length>5">..</span>
                                                                                                                                     </span>
                                                                                                                                     <div class="item__actions">
                                                                                                                                         <span> 
-                                                                                                                                            <a
-                                                                                                                                                style="float:left; right: -6px;"
+                                                                                                                                            <a style="float:left; right: -6px;"
                                                                                                                                                 class="fm external-link"
                                                                                                                                                 target="_BLANK"
                                                                                                                                                 data-toggle="tooltip"
@@ -1923,7 +1902,6 @@
                                                                                                                             <div class="clearfix"></div>
                                                                                                                         </div>
                                                                                                                     </li>
-
                                                                                                                 </ul>
                                                                                                             </div>
                                                                                                             <ul class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let i =index">
@@ -1942,14 +1920,15 @@
                                                                                                                                     target="_BLANK"> <img
                                                                                                                                         class="thumb ng-scope"
                                                                                                                                         style="width: 103px !important"
-                                                                                                                                        src="{{emailTemplate.subject}}">
+                                                                                                                                        src="{{emailTemplate.subject}}" alt="">
                                                                                                                                 </a> <a href="javascript:;"> </a>
                                                                                                                             </span>
                                                                                                                         </div>
                                                                                                                         <div class="item__content">
                                                                                                                             <div class="flex-row">
-                                                                                                                                <span class="item__name" style="float:left" [title]="emailTemplate.name"><b>{{emailTemplate.name |slice:0:15}}</b>
-                                                                                                                                    <b *ngIf="emailTemplate?.name?.length>15">..</b>
+                                                                                                                                <span class="item__name" style="float:left" [title]="emailTemplate.name">
+                                                                                                                                    <strong>{{emailTemplate.name |slice:0:15}}</strong>
+                                                                                                                                    <strong *ngIf="emailTemplate?.name?.length>15">..</strong>
                                                                                                                                 </span>
                                                                                                                                 <br>
                                                                                                                                 <span class="item__name" title="created on" style="float:left">
@@ -1963,19 +1942,19 @@
                                                                                                                                 <br>
                                                                                                                                 <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                                                                     <span style="float:left" title="{{emailTemplate.createdBy}}">
-                                                                                                                                        <b translate>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span
+                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:12}}<span
                                                                                                                                                 *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
                                                                                                                                     </span>
                                                                                                                                 </ng-container>
                                                                                                                                 <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                                                                     <span style="float:left" title="{{emailTemplate.vendorName}}">
-                                                                                                                                        <b translate>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span
+                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.vendorName|slice:0:12}}<span
                                                                                                                                                 *ngIf="emailTemplate.vendorName?.length>12">..</span></span>
                                                                                                                                     </span>
                                                                                                                                 </ng-container>
                                                                                                                                 <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
-                                                                                                                                    <b translate>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
-                                                                                                                                    <font *ngIf="emailTemplate?.category?.length>5">..</font>
+                                                                                                                                    <strong translate>Folder:</strong><span>{{emailTemplate?.category|slice:0:5}}</span>
+                                                                                                                                    <span *ngIf="emailTemplate?.category?.length>5">..</span>
                                                                                                                                 </span>
                                                                                                                                 <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                                                                                                                 <div class="item__actions">
@@ -2084,14 +2063,16 @@
                                                                     <div *ngIf="url.actionId==21" class="col-xs-6 p0">
                                                                         <div class="col-xs-4" style="padding:0">
                                                                             <label for="days" id="click-days-{{url.divId}}" style="color:black !important;cursor: default;" translate>
-                                                                                Wait X Days After Click<b
-                                                                                    style="color: red">*</b>
+                                                                                Wait X Days After Click
+                                                                                <strong style="color: red">*</strong>
                                                                             </label>
                                                                             <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
                                                                         </div>
                                                                         <div class="col-xs-8 time-col">
-                                                                            <div class="col-xs-2 default"><label for="time" id="send-time-{{url.divId}}" class="time-picker-css" translate>At<b
-                                                                                        style="color: red">*</b></label>
+                                                                            <div class="col-xs-2 default">
+                                                                                <label for="time" id="send-time-{{url.divId}}" class="time-picker-css" translate>At
+                                                                                    <strong style="color: red">*</strong>
+                                                                                </label>
                                                                             </div>
                                                                             <div class="col-xs-10" style="height:66px">
                                                                                 <timepicker [(ngModel)]="url.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
@@ -2101,7 +2082,7 @@
 
                                                                     <div class="col-xs-6">
                                                                         <label class="default" for="time" id="click-subject-{{url.divId}}" translate>Subject
-                                                                            <b style="color: red">*</b>
+                                                                            <strong style="color: red">*</strong>
                                                                         </label>
                                                                         <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="Subject" maxlength="200">
                                                                     </div>
@@ -2136,39 +2117,22 @@
                                                                             </label>
                                                                         </div>
                                                                         <div>
-                                                                            <!-- <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
-                                                                                <li class="filter" (click)="filterClickTemplates('NONE',0,url)" [class.emailtemplate-selected]="0 == url.selectedEmailTemplateTypeIndex" translate>
-                                                                                    All</li>
-                                                                                <li class="filter" (click)="filterClickTemplates('EMAIL',1,url)" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex" translate>
-                                                                                    Email</li>
-                                                                                <li class="filter" (click)="filterClickTemplates('REGULAR_CO_BRANDING',2,url)" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex" translate>
-                                                                                    Email Co-Branding</li>
-                                                                                <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex" translate>
-                                                                                    Uploaded</li>
-                                                                                
-                                                                            </ul> -->
-    
                                                                             <div class="input-icon right pull-right cebp">
                                                                                 <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
                                                                                  (keypress)="eventHandlerForUrlEmailTemplate($event, url)">
-                                                                                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput='';searchClickEmailTemplate(url)"></button>
+                                                                                 <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput='';searchClickEmailTemplate(url)"></button>
                                                                                 <button type="submit" class="search-box-item-click email-search" (click)="searchClickEmailTemplate(url)">
                                                                                     <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                                                             </div>
-                                                                            <!-- <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
-                                                                                <i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"></i>
-                                                                                <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"></i>
-                                                                            </button> -->
                                                                             <div class="portlet-body">
                                                                                 <div *ngIf="url.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
                                                                                     <strong translate>No templates found</strong>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <form role="form" class="form-horizontal form-bordered form-label-stripped">
+                                                                                    <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-labelledby="urlEmailTemplatesForm">
                                                                                         <div class="col-xs-12">
                                                                                             <app-loader *ngIf="url.loader">
                                                                                             </app-loader>
-                                                                                            
                                                                                             <ng-container *ngIf=" url.emailTemplatesPagination.totalRecords>0 && !url.loader">
                                                                                                 <div class="row pb10" id="campaign-reply-workflow-template">
                                                                                                     <div class="portlet-body">
@@ -2198,7 +2162,7 @@
                                                                                                                                     </span>
                                                                                                                                     <span class="ng-scope">
                                                                                                                                          <a class="item__preview item__preview--image img-container custom"  target="_BLANK">
-                                                                                                                                            <img class="thumb ng-scope"  style="width:103px !important" src="{{url.emailTemplate.subject}}">
+                                                                                                                                            <img alt="" class="thumb ng-scope"  style="width:103px !important" src="{{url.emailTemplate.subject}}">
                                                                                                                                         </a> 
                                                                                                                                          <a href="javascript:;">
                                                                                                                                     </a>
@@ -2215,25 +2179,19 @@
                                                                                                                                             <span>
                                                                                                                                                 <app-timestamp
                                                                                                                                                     [isOnlyDate]="true"
-                                                                                                                                                    [dateAndTime]="url?.emailTemplate?.createdDate">
+                                                                                                                                                    [dateAndTime]="url?.emailTemplate?.createdTime">
                                                                                                                                                 </app-timestamp>
                                                                                                                                             </span>
                                                                                                                                         </span>
                                                                                                                                         <ng-container *ngIf="url?.emailTemplate?.type!='PARTNER'">
                                                                                                                                             <span style="float:left" title="{{url?.emailTemplate?.createdBy}}">
-                                                                                                                                                <b translate>By:</b><span>{{url?.emailTemplate?.createdBy|slice:0:12}}<span
+                                                                                                                                                <strong translate>By:</strong><span>{{url?.emailTemplate?.createdBy|slice:0:12}}<span
                                                                                                                                                         *ngIf="url?.emailTemplate?.createdBy?.length>12">..</span></span>
                                                                                                                                             </span>
                                                                                                                                         </ng-container>
-                                                                                                                                        <ng-container *ngIf="url?.emailTemplate?.type=='PARTNER'">
-                                                                                                                                            <span style="float:left" title="{{url?.emailTemplate?.vendorName}}">
-                                                                                                                                                <b translate>By:</b><span>{{url?.emailTemplate?.vendorName|slice:0:12}}<span
-                                                                                                                                                        *ngIf="url?.emailTemplate?.vendorName?.length>12">..</span></span>
-                                                                                                                                            </span>
-                                                                                                                                        </ng-container>
                                                                                                                                         <span *ngIf="url?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{url?.emailTemplate?.category}}">
-                                                                                                                                            <b translate>Folder:</b><font>{{url?.emailTemplate?.category|slice:0:5}}</font>
-                                                                                                                                            <font *ngIf="url?.emailTemplate?.category?.length>5">..</font>
+                                                                                                                                            <strong translate>Folder:</strong><span>{{url?.emailTemplate?.category|slice:0:5}}</span>
+                                                                                                                                            <span *ngIf="url?.emailTemplate?.category?.length>5">..</span>
                                                                                                                                         </span>
                                                                                                                                         <div class="item__actions">
                                                                                                                                             <span> 
@@ -2270,45 +2228,41 @@
                                                                                                                                             type="checkbox">
                                                                                                                                     </label>
                                                                                                                                 </span>
-                                                                                                                                <span class="ng-scope"> <a
-                                                                                                                                        class="item__preview item__preview--image img-container custom"
+                                                                                                                                <span class="ng-scope">
+                                                                                                                                     <a class="item__preview item__preview--image img-container custom"
                                                                                                                                         target="_BLANK"> <img
                                                                                                                                             class="thumb ng-scope"
                                                                                                                                             style="width: 103px !important"
-                                                                                                                                            src="{{emailTemplate.subject}}">
-                                                                                                                                    </a> <a href="javascript:;"> </a>
+                                                                                                                                            src="{{emailTemplate.subject}}" alt="">
+                                                                                                                                    </a> <a href="javascript:;"></a>
                                                                                                                                 </span>
                                                                                                                             </div>
                                                                                                                             <div class="item__content">
                                                                                                                                 <div class="flex-row">
-                                                                                                                                    <span class="item__name" style="float:left" [title]="emailTemplate.name"><b>{{emailTemplate.name |slice:0:15}}</b>
-                                                                                                                                        <b *ngIf="emailTemplate?.name?.length>15">..</b>
+                                                                                                                                    <span class="item__name" style="float:left" [title]="emailTemplate.name">
+                                                                                                                                        <strong>{{emailTemplate.name |slice:0:15}}</strong>
+                                                                                                                                        <strong *ngIf="emailTemplate?.name?.length>15">..</strong>
                                                                                                                                     </span>
                                                                                                                                     <br>
                                                                                                                                     <span class="item__name" title="created on" style="float:left">
                                                                                                                                         <span>
                                                                                                                                             <app-timestamp
                                                                                                                                                 [isOnlyDate]="true"
-                                                                                                                                                [dateAndTime]="emailTemplate.createdDate">
+                                                                                                                                                [dateAndTime]="emailTemplate?.createdDate">
                                                                                                                                             </app-timestamp>
                                                                                                                                         </span>
                                                                                                                                     </span>
                                                                                                                                     <br>
                                                                                                                                     <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{emailTemplate.createdBy}}">
-                                                                                                                                            <b translate>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span
+                                                                                                                                            <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:12}}<span
                                                                                                                                                     *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
-                                                                                                                                    <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                                                                                                                        <span style="float:left" title="{{emailTemplate.vendorName}}">
-                                                                                                                                            <b translate>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span
-                                                                                                                                                    *ngIf="emailTemplate.vendorName?.length>12">..</span></span>
-                                                                                                                                        </span>
-                                                                                                                                    </ng-container>
+                                                                                                                            
                                                                                                                                     <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
-                                                                                                                                        <b translate>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
-                                                                                                                                        <font *ngIf="emailTemplate?.category?.length>5">..</font>
+                                                                                                                                        <strong translate>Folder:</strong><span>{{emailTemplate?.category|slice:0:5}}</span>
+                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>5">..</span>
                                                                                                                                     </span>
                                                                                                                                     <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                                                                                                                     <div class="item__actions">

@@ -2043,9 +2043,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.searchReplyEmailTemplate(reply);
     }
 
-
-
-
     searchClickEmailTemplate(url:Url){
         url.emailTemplatesPagination.pageIndex = 1;
         url.emailTemplatesPagination.searchKey = url.emailTemplateSearchInput;
@@ -2062,24 +2059,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.urls = [];
          }
      }
-
-       /* if(this.emailTemplateHrefLinks.length==0){
-            let self = this;
-            swal( {
-                title: 'Are you sure?',
-                text: "This Template has no urls.This will destroy all added ONCLICK data",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, Select it!'
-            }).then( function() {
-               self.setEmailTemplateData(emailTemplate);
-               self.urls = [];
-            })
-        }else{
-            this.setEmailTemplateData(emailTemplate);
-        }*/
+       
     }
     setEmailTemplateData(emailTemplate:EmailTemplate){
         this.selectedEmailTemplateRow = emailTemplate.id;
@@ -2090,17 +2070,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     getAnchorLinksFromEmailTemplate(body:string){
-       /* $('#emailTemplateContent').html('');
-        $('#emailTemplateContent').append(body);
-        let self = this;
-        $('#emailTemplateContent').find('a').each(function(e) {
-           let href = $(this).attr('href');
-           if(href!=undefined && $.trim(href).length>0){
-               self.emailTemplateHrefLinks.push(href);
-           }
-        });
-        this.emailTemplateHrefLinks = this.refService.removeDuplicates(this.emailTemplateHrefLinks);*/
-
         this.emailTemplateHrefLinks = this.refService.getAnchorTagsFromEmailTemplate(body, this.emailTemplateHrefLinks);
     }
 

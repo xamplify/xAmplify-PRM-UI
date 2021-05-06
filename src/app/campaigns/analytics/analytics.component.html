@@ -82,20 +82,22 @@
             The event has been cancelled.
           </div>
 
-                        <div class="pl10 pr10 col-xs-12"
-    [ngClass]="{'col-sm-3': campaignType === 'VIDEO', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-6': campaignType === 'SOCIAL'}"
+          <div class="pl10 pr10 col-xs-12"
+                                [ngClass]="{'col-sm-3': campaignType === 'VIDEO', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-6': campaignType === 'SOCIAL'}"
             *ngIf="campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE' || campaignType === 'VIDEO' || campaignType === 'SOCIAL' ">
             <a class="dashboard-stat dashboard-stat-lighter yellow-gold forbidden" style="display: flex"
               [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
               <div class="visual">
-                <i class="fa fa-envelope-open"></i>
+                <i class="fa fa-envelope-open" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
-                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType != 'VIDEO'">{{campaignType}} CAMPAIGN (PARTNER)</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType != 'VIDEO' && campaignType != 'LANDINGPAGE'">{{campaignType}} CAMPAIGN (PARTNER)</div>
                 <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType === 'VIDEO'">{{campaignType}} (PARTNER)</div>
-                <div class="camp-title" *ngIf="!campaign.channelCampaign">{{campaignType}}  CAMPAIGN</div>
+                <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType != 'LANDINGPAGE'">{{campaignType}}  CAMPAIGN</div>
+                <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN (PARTNER)</div>
                 <div class="camp-number">
-                  <b class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 12}}</b>
+                  <strong class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 12}}</strong>
                   <span *ngIf="campaign.campaignName?.length>17">...</span>
                 </div>
                 <div class="camp-desc">
@@ -112,13 +114,13 @@
             <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="display: flex"
               (click)="previewVideo(campaign.campaignVideoFile)" [class.disabled]="!isPartnerEnabledAnalyticsAccess">
               <div class="visual">
-                <i class="fa fa-video-camera"></i>
+                <i class="fa fa-video-camera" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
                 <div class="camp-title ">Video Info</div>
                 <div class="camp-number">
-                  <b class="m0"
-                    title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 12}}</b>
+                  <strong class="m0"
+                    title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 12}}</strong>
                   <span *ngIf="campaign.campaignVideoFile.title?.length>17">...</span>
                 </div>
                 <div class="camp-desc" >
@@ -132,12 +134,12 @@
             *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId==0">
             <a class="dashboard-stat dashboard-stat-lighter purple-soft blur" style="display: flex">
               <div class="visual">
-                <i class="fa fa-video-camera"></i>
+                <i class="fa fa-video-camera" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
                 <div class="camp-title ">Video Info</div>
                 <div class="camp-number">
-                  <b class="m0">No video found</b>
+                  <strong class="m0">No video found</strong>
                 </div>
                 <div class="camp-desc">
                   <span>-</span>
@@ -149,12 +151,12 @@
           <div class="pl10 pr10 col-xs-12" *ngIf="campaignType === 'EVENT'" [ngClass]="{'col-sm-4': campaignType === 'EVENT'}">
             <a class="dashboard-stat dashboard-stat-lighter red-soft forbidden" style="display: flex;">
               <div class="visual">
-                <i class="fa fa-bullhorn"></i>
+                <i class="fa fa-bullhorn" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
                 <div class="camp-title">{{campaignType}}</div>
                 <div class="camp-number">
-                  <b class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 25}}</b>
+                  <strong class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 25}}</strong>
                   <span *ngIf="campaign.campaignName?.length>25">..</span>
                 </div>
                 <div class="camp-desc">
@@ -171,13 +173,13 @@
               (click)="showEmailTemplatePreview(campaign.emailTemplate)"
               [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
               <div class="visual">
-                <i class="fa fa-envelope-open"></i>
+                <i class="fa fa-envelope-open" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
                 <div class="camp-title">Email Info</div>
                 <div class="camp-number">
-                  <b class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 12}}</b>
-                  <span *ngIf="campaign.emailTemplate.name?.length>17">...</span>
+                  <strong class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 12}}</strong>
+                  <span *ngIf="campaign.emailTemplate.name?.length>12">...</span>
                 </div>
                 <div class="camp-desc" >
                   <span>Click for preview</span>
@@ -192,13 +194,13 @@
             <a class="dashboard-stat dashboard-stat-lighter blue-soft" style="display: flex"
               [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
               <div class="visual">
-                <i class="fa fa-envelope-open"></i>
+                <i class="fa fa-envelope-open" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
                 <div class="camp-title">Page Info</div>
                 <div class="camp-number">
-                  <b class="m0" title={{campaign.landingPage.name}}>{{campaign.landingPage.name
-									| slice: 0: 25}}</b> <span *ngIf="campaign.landingPage.name?.length>25">...</span>
+                  <strong class="m0" title={{campaign.landingPage.name}}>{{campaign.landingPage.name
+									| slice: 0: 12}}</strong> <span *ngIf="campaign.landingPage.name?.length>12">...</span>
                 </div>
                 <div class="camp-desc" *ngIf="isDataShare" (click)="showLandingPagePreview(campaign)">
                   <span>Click for preview</span>
@@ -207,22 +209,22 @@
               <div class="actions-block override-actions" id="landing-page-icons">
                 <a data-toggle="tooltip" data-placement="top" title="Preview"
                   (click)="showLandingPagePreview(campaign)">
-                  <i class="fa fa-eye"></i>
+                  <i class="fa fa-eye" aria-hidden="true"></i>
                 </a>
                 <a *ngIf="campaign.formsCount>0" routerLink="/home/forms/clpf/{{campaign.campaignId}}"
                   data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
-                  <i class="fa fa-wpforms"></i>
+                  <i class="fa fa-wpforms" aria-hidden="true"></i>
                   <span class="badge" id="notification">{{campaign.formsCount}}</span>
                 </a>
                 <a *ngIf="campaign.campaignLandingPageAnalyticsCount>0"
                   (click)="goToCampaignLandingPageAnalytics(campaign.campaignId)" data-rel="fancybox-button"
                   data-toggle="tooltip" data-placement="top" title="Page Analytics">
-                  <i class="fa fa-line-chart"></i>
+                  <i class="fa fa-line-chart" aria-hidden="true"></i>
                   <span class="badge" id="notification">{{campaign.campaignLandingPageAnalyticsCount}}</span>
                 </a>
                 <a class="disabled" *ngIf="campaign.campaignLandingPageAnalyticsCount==0" data-rel="fancybox-button"
                   data-toggle="tooltip" data-placement="top" title="Page Analytics">
-                  <i class="fa fa-line-chart"></i>
+                  <i class="fa fa-line-chart" aria-hidden="true"></i>
                   <span class="badge" id="notification">{{campaign.campaignLandingPageAnalyticsCount}}</span>
                 </a>
               </div>
@@ -238,12 +240,12 @@
             *ngIf="campaign.selectedEmailTemplateId == 0">
             <a class="dashboard-stat dashboard-stat-lighter blue-soft" style="cursor: default; display: flex">
               <div class="visual">
-                <i class="fa fa-envelope-open"></i>
+                <i class="fa fa-envelope-open" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
                 <div class="camp-title">Email Info</div>
                 <div class="camp-number">
-                  <b class="m0">No email template found</b>
+                  <strong class="m0">No email template found</strong>
                 </div>
                 <div class="camp-desc">
                   <span>-</span>
@@ -259,7 +261,7 @@
             <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()"
               [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
               <div class="visual">
-                <i class="fa fa-users"></i>
+                <i class="fa fa-users" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
                 <div class="camp-title"
@@ -269,12 +271,12 @@
                   <div class="camp-title">Partners List Info</div>
                 </ng-template>
                 <div class="camp-number">
-                  <b class="m0">{{campaingContactLists?.length}}
+                  <strong class="m0">{{campaingContactLists?.length}}
                     <span
                       *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else partnerlist">Contact
                       Lists</span>
                     <ng-template #partnerlist><span>Partner Lists</span></ng-template>
-                  </b>
+                  </strong>
                 </div>
                 <div class="camp-desc" >
                   <span>Click for details</span>
@@ -318,9 +320,9 @@
                 <button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails();searchKey=''"
                   [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
                   <div class="portlet-body text-center">
-                    <i class="fa fa-envelope"></i>
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
                     <h1>
-                      <b>{{campaignReport.totalInvitiesCount}}</b>
+                      <strong>{{campaignReport.totalInvitiesCount}}</strong>
                       <span>Invites</span>
                     </h1>
 
