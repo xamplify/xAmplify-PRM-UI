@@ -77,6 +77,6 @@ export class Pagination {
 	sharedLeads : boolean = false;
 	learningTrackId: number = 0;
 	lmsType:string = TracksPlayBookType[TracksPlayBookType.TRACK];
-
+	type:string = "";
 
 }
