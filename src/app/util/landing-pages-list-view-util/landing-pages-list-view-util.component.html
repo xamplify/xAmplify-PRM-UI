@@ -79,7 +79,7 @@
                 <section *ngIf="modulesDisplayType.isListView ">
                     <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
                         <div class="table-responsive">
-                            <table class='table tgrid table-hover table-sm' id="manage-page-list" *ngIf="pagination.pagedItems?.length>0">
+                            <table class='table tgrid table-hover table-sm' id="manage-page-list" *ngIf="pagination.pagedItems?.length>0" aria-describedby="landing-page-desc">
                                 <thead>
                                     <tr>
                                         <th class="text-center hidden-xs" colspan="2" style="width: 30%" id="border-bottom">
@@ -92,37 +92,37 @@
                                             </span>
                                             <span class="gridHeader">Page</span>
                                         </th>
-                                        <th class="hidden-xs text-center" *ngIf="!isPartnerLandingPage">Type</th>
-                                        <th class="hidden-xs text-center">Created On</th>
-                                        <th class="text-center" style="min-width: 200px;">Actions</th>
+                                        <th scope="row" class="hidden-xs text-center">Type</th>
+                                        <th scope="row" class="hidden-xs text-center">Created On</th>
+                                        <th scope="row" class="text-center" style="min-width: 200px;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs custom-icon-width">
-                                            <img id="landing-page-image-preview-custom-css"  src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
+                                            <img id="landing-page-image-preview-custom-css" onerror="this.src='assets/images/company-profile-logo.png';"  src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{landingPage.name}}">
-                                                <span><b>{{landingPage.name}}</b></span>
+                                                <span><strong>{{landingPage.name}}</strong></span>
                                             </h4>
                                            
                                             <ng-container>
                                                 <h6 class="moreipsis" title="{{landingPage.createdUser}}">
-                                                    <span *ngIf="!isPartnerLandingPage">Created By <b>{{landingPage.createdUser}}</b></span>
-                                                    <span *ngIf="isPartnerLandingPage">Shared By <b>{{landingPage.createdUser}}</b></span>
+                                                    <span *ngIf="!isPartnerLandingPage">Created By <strong>{{landingPage.createdUser}}</strong></span>
+                                                    <span *ngIf="isPartnerLandingPage">Shared By <strong>{{landingPage.createdUser}}</strong></span>
                                                 </h6>
                                             </ng-container>
                                             <h6 class="moreipsis" *ngIf="isPartnerLandingPage">
-                                                <span>From <b>{{landingPage.companyName}}</b></span>
+                                                <span>From <strong>{{landingPage.companyName}}</strong></span>
                                             </h6>
                                             <h6 class="moreipsis">
-                                                <span>Folder <b>{{landingPage.categoryName}}</b></span>
+                                                <span>Folder <strong>{{landingPage.categoryName}}</strong></span>
                                             </h6>
                                             <span class="view-banner">{{landingPage.type}}</span>
                                         </td>
 
-                                        <td class="hidden-xs text-center" *ngIf="!isPartnerLandingPage">
+                                        <td class="hidden-xs text-center">
                                             <span *ngIf="landingPage.coBranded" class="view-banner">Co-Branded</span>
                                             <span *ngIf="!landingPage.coBranded" class="view-banner">Regular</span>
                                         </td>
@@ -181,7 +181,7 @@
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded"><span>Regular</span></span>
                                 </ng-container>
-                                <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}" alt="Not Found">
+                                <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}" onerror="this.src='assets/images/company-profile-logo.png';" alt="Not Found">
                                 <div>
                                     <h4 id="landing-page-title" title="{{landingPage.name}}">
                                         {{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
