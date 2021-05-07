@@ -1582,19 +1582,21 @@
                                                                 </ng-container>
                                                             </td>
                                                             <td width="55%">
-                                                                <ng-container *ngFor="let contactList of userListDTOObj;let i=index;">
+                                                                <ng-container *ngFor="let contactListName of selectedContactListNames;let i=index;">
                                                                     <div>
-                                                                        <a *ngIf="i<2" (click)="loadUsers(contactList.id,contactsUsersPagination,contactList.name)" title="{{contactList.name}}">
-                                                                            <span *ngIf="contactList.name">
-                                                                                {{contactList.name | slice:0:40}}<span
-                                                                                    *ngIf="contactList.name?.length>40">..</span></span>
+                                                                        <a *ngIf="i<2" title="{{contactListName}}">
+                                                                            <span *ngIf="contactListName">
+                                                                                {{contactListName | slice:0:40}}<span
+                                                                                    *ngIf="contactListName?.length>40">..</span>
+                                                                            </span>
                                                                         </a>
                                                                     </div>
                                                                 </ng-container>
-                                                                <a> <span *ngIf="userListDTOObj?.length>2"
+                                                                <a>
+                                                                    <span *ngIf="selectedContactListIds?.length>2"
                                                                         (click)="resetActive($event, 40, 'step-4')">..</span>
-                                                                    <span *ngIf="userListDTOObj?.length == 0" translate>0 contact lists
-                                                                        </span></a>
+                                                                     <span *ngIf="selectedContactListIds?.length == 0" translate>0 contact lists </span>
+                                                                </a>
                                                                 <br>
                                                                 <ng-container *ngIf="emailReceiversCountError">
                                                                     <span id="red-font" translate>Something went wrong.Please contact admin</span>
