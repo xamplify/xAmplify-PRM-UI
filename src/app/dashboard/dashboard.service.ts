@@ -570,5 +570,13 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    findUsersByType(pagination: Pagination,type:string) {
+        let mappingUrl = "registered"==type ? 'findRecentRegisteredUsers':'findRecentLoggedInUsers';
+        const url = this.superAdminUrl + mappingUrl+ '?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
 }

@@ -15,10 +15,15 @@
     </ul>
   </div>
   <div>
-   <app-list-all-users></app-list-all-users> 
+   <app-list-all-users *ngIf="!detailsTielsView"></app-list-all-users> 
   <app-demo-request *ngIf="!detailsTielsView"></app-demo-request>
 	  <section *ngIf="!detailsTielsView">
-      <div class="col-sm-6 col-xs-12">
+	  <!-- -Top 10 Recent Registered Users -->
+	  <app-recent-logged-in-users [type]="'registered'" (notifyAdminReportComponent)="selectedVendorDetails($event)"></app-recent-logged-in-users>
+	  <!-- ---Top 10 Recent LoggedIn Users -->
+	  <app-recent-logged-in-users [type]="'logged in'" (notifyAdminReportComponent)="selectedVendorDetails($event)"></app-recent-logged-in-users>
+	  
+     <!--  <div class="col-sm-6 col-xs-12">
         <div class="portlet light">
           <div class="portlet-title">
             <div class="caption">Top 10 Recent registered users</div>
@@ -86,7 +91,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </section>
     <div class="col-xs-12" *ngIf="!detailsTielsView">
       <app-list-loader [rowsCount]="12" *ngIf="isListLoading"></app-list-loader>

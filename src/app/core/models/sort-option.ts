@@ -295,6 +295,33 @@ export class SortOption {
     { 'name': 'Count(DESC)', 'value': 'count-DESC' }
   ];
 
+  registeredUsersSortDropDownOptions = [
+    { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+    { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+    { 'name': 'Last Name (A-Z)', 'value': 'lastName-ASC' },
+    { 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
+    { 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+    { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+    { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+    { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+    { 'name': 'Registered On (ASC)', 'value': 'registeredOn-ASC' },
+    { 'name': 'Registered On (DESC)', 'value': 'registeredOn-DESC' }
+    ];
+
+    loggedInUsersSortDropDownOptions = [
+      { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+      { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+      { 'name': 'Last Name (A-Z)', 'value': 'lastName-ASC' },
+      { 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
+      { 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+      { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+      { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+      { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+      { 'name': 'Last Login (ASC)', 'value': 'lastLoginOn-ASC' },
+      { 'name': 'Last Login (DESC)', 'value': 'lastLoginOn-DESC' }
+      ];
+     
+
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
@@ -329,5 +356,7 @@ export class SortOption {
     public selectedGroupsDropDownOption:any = this.groupsSortDropDownOptions[3];
     public selectedPartnerCompanyDropDownOption = this.partnerCompanySortDropDownOptions[0];
     public selectedCampaignRecipientsDropDownOption = this.campaignRecipientsDropDownOptions[3];
+    public selectedRegisteredUsersSortDropDownOption = this.registeredUsersSortDropDownOptions[this.registeredUsersSortDropDownOptions.length-1];
+    public selectedLoggedInUsersSortDropDownOption = this.loggedInUsersSortDropDownOptions[this.loggedInUsersSortDropDownOptions.length-1];
 
 }
