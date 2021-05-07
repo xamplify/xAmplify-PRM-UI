@@ -383,7 +383,7 @@
         translate>Previous</button>
       <div class="pull-right">
         <button class="btn btn-primary green" type="submit" [disabled]="!tracksPlayBook.isValid"
-          (click)="addOrUpdate()">{{SubmitButtonValue}}</button>
+          (click)="save()">{{SubmitButtonValue}}</button>
         <button class="btn btn-primary green" type="submit" [disabled]="!tracksPlayBook.isValid"
           *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()">{{SubmitAndPublishButtonValue}}</button>
       </div>

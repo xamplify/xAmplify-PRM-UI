@@ -163,7 +163,6 @@ export class AddTracksPlayBookComponent implements OnInit {
   selectedPartnershipIds: any[] = [];
   selectedUserIds: any[] = [];
 
-
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -259,13 +258,19 @@ export class AddTracksPlayBookComponent implements OnInit {
               this.selectedAssets = this.tracksPlayBook.contents;
             }
             if (this.tracksPlayBook.userIds !== undefined && this.tracksPlayBook.userIds.length > 0) {
-              this.selectedUserIds = this.tracksPlayBook.userIds;
+              $.each(this.tracksPlayBook.userIds, function (index, userId) {
+                self.selectedUserIds.push(userId);
+              });
             }
             if (this.tracksPlayBook.groupIds !== undefined && this.tracksPlayBook.groupIds.length > 0) {
-              this.selectedGroupIds = this.tracksPlayBook.groupIds;
+              $.each(this.tracksPlayBook.groupIds, function (index, groupId) {
+                self.selectedGroupIds.push(groupId);
+              });
             }
             if (this.tracksPlayBook.partnershipIds !== undefined && this.tracksPlayBook.partnershipIds.length > 0) {
-              this.selectedPartnershipIds = this.tracksPlayBook.partnershipIds;
+              $.each(this.tracksPlayBook.partnershipIds, function (index, partnershipId) {
+                self.selectedPartnershipIds.push(partnershipId);
+              });
             }
             if (this.tracksPlayBook.tags !== undefined && this.tracksPlayBook.tags.length > 0) {
               this.selectedTags = this.tracksPlayBook.tags;
@@ -960,7 +965,7 @@ export class AddTracksPlayBookComponent implements OnInit {
   }
 
   validateGroupOrCompany() {
-    if (this.selectedGroupIds.length < 1 && this.selectedUserIds.length < 1) {
+    if (this.tracksPlayBook.groupIds.length < 1 && this.tracksPlayBook.userIds.length < 1) {
       this.addErrorMessage("groupOrCompany", "Select either a company or a group");
     } else {
       this.removeErrorMessage("groupOrCompany");
@@ -1089,17 +1094,55 @@ export class AddTracksPlayBookComponent implements OnInit {
     $.each(this.selectedAssets, function (index: number, lmsDto: any) {
       contentIds.push(lmsDto.id);
     });
-    this.tracksPlayBook.partnershipIds = this.selectedPartnershipIds;
-    this.tracksPlayBook.groupIds = this.selectedGroupIds;
-    this.tracksPlayBook.userIds = this.selectedUserIds;
     this.tracksPlayBook.contentIds = contentIds;
     this.tracksPlayBook.type = this.type;
   }
 
   saveAndPublish() {
     this.tracksPlayBook.published = true;
-    this.addOrUpdate();
+    if (this.checkForChanges()) {
+      this.showSweetAlertAndProceed();
+    } else {
+      this.addOrUpdate();
+    }
   }
+
+  save() {
+    if (this.checkForChanges()) {
+      this.showSweetAlertAndProceed();
+    } else {
+      this.addOrUpdate();
+    }
+  }
+
+  checkForChanges(){
+    let removedUserIds = [];
+    let removedGroupIds = [];
+    console.log(this.tracksPlayBook.userIds);
+    removedUserIds = this.selectedUserIds.filter( ( el ) => !this.tracksPlayBook.userIds.includes( el ) );
+    removedGroupIds = this.selectedGroupIds.filter( ( el ) => !this.tracksPlayBook.groupIds.includes( el ) );
+    if(removedUserIds.length > 0 || removedGroupIds.length > 0){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  showSweetAlertAndProceed(){
+		let self = this;
+				swal({
+					title: 'Are you sure?',
+					text: "Existing data will be deleted",
+					type: 'warning',
+					showCancelButton: true,
+					swalConfirmButtonColor: '#54a7e9',
+					swalCancelButtonColor: '#999',
+					confirmButtonText: 'Yes, delete it!'
+				}).then(function () {
+					self.addOrUpdate();
+				}, function (dismiss: any) {
+				});
+	}
 
   addOrUpdate() {
     this.tracksPlayBook.userId = this.loggedInUserId;
@@ -1300,9 +1343,6 @@ export class AddTracksPlayBookComponent implements OnInit {
   }
 
   changePartnerCompanyAndList(tracksPlayBook: TracksPlayBook) {
-    this.selectedGroupIds = tracksPlayBook.groupIds;
-    this.selectedPartnershipIds = tracksPlayBook.partnershipIds;
-    this.selectedUserIds = tracksPlayBook.userIds;
     this.validateGroupOrCompany();
     this.validateAllSteps();
     this.checkAllRequiredFields()
