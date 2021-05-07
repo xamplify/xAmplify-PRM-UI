@@ -3192,6 +3192,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						if (data == "User is successfully resubscribed") {
 							swal(this.checkingContactTypeName + ' re-subscribed successfully');
 							this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+							this.contactsCount(this.selectedContactListId);
 						}
 					},
 					(error: any) => {
