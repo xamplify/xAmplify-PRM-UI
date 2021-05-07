@@ -672,7 +672,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				(data: any) => {
 					if (data.access) {
 						this.loading = false;
-						this.allUsers = this.contactsByType.allContactsCount;
+						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
 						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
 						$("tr.new_row").each(function() {
@@ -694,6 +694,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						}
 						this.checkingLoadContactsCount = true;
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+						this.contactsCount(this.selectedContactListId);
 						this.cancelContacts();
 						if (data.statusCode == 200) {
                             if (this.assignLeads) {
@@ -930,6 +931,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 						this.checkingLoadContactsCount = true;
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+						this.contactsCount(this.selectedContactListId);
 
 
 						if (data.statusCode == 200) {
@@ -971,6 +973,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	removeContactListUsers(contactListId: number) {
 		try {
+			this.loading = true;
 			this.xtremandLogger.info(this.selectedContactListIds);
 			this.contactService.removeContactListUsers(contactListId, this.selectedContactListIds)
 				.subscribe(
@@ -983,7 +986,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								this.contactService.deleteUserSucessMessage = true;
 								this.goBackToManageList();
 							} else if (data.statusCode == 201) {
-								this.allUsers = this.contactsByType.allContactsCount;
+								//this.allUsers = this.contactsByType.allContactsCount;
 								console.log("update Contacts ListUsers:" + data);
 								if(this.assignLeads){
 									this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
@@ -998,7 +1001,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								});
 								this.checkingLoadContactsCount = true;
 								this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+								this.contactsCount(this.selectedContactListId);
 								this.selectedContactListIds.length = 0;
+								this.loading = false;
 							}
 						} else {
 							this.authenticationService.forceToLogout();
@@ -1013,11 +1018,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							this.xtremandLogger.errorPage(error);
 						}
 						console.log(error);
+						this.loading = false;
 					},
 					() => this.xtremandLogger.info("deleted completed")
 				);
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "deleting user()");
+			this.loading = false;
 		}
 	}
 
@@ -1591,6 +1598,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 						this.checkingLoadContactsCount = true;
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+						this.contactsCount(this.selectedContactListId);
 						if (data.statusCode == 200) {
 							//this.getContactsAssocialteCampaigns();
                             if (this.assignLeads) {
@@ -1811,14 +1819,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					//this.contactService.allPartners = data.listOfUsers;
 					this.totalRecords = data.totalRecords;
 					this.xtremandLogger.log(data);
-					if (this.checkingLoadContactsCount == true) {
+					/*if (this.checkingLoadContactsCount == true) {
 						this.contactsByType.allContactsCount = data.allcontacts;
 						this.contactsByType.invalidContactsCount = data.invalidUsers;
 						this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
 						this.contactsByType.activeContactsCount = data.activecontacts;
 						this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
 						this.allUsers = this.contactsByType.allContactsCount;
-					}
+					}*/
 					if (this.contacts.length !== 0) {
 						this.noContactsFound = false;
 						this.noOfContactsDropdown = true;
@@ -1976,7 +1984,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							this.xtremandLogger.log(data);
 							console.log("update Contacts ListUsers:" + data);
 							this.checkingLoadContactsCount = true;
-							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+							//this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+							this.contactsCount(this.selectedContactListId);
 							this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
 							this.selectedInvalidContactIds.length = 0;
 							
@@ -2025,7 +2034,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	                        }
 							
 							this.checkingLoadContactsCount = true;
-                            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+							this.contactsCount(this.selectedContactListId);
+                            //this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
                             this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
 							
 							this.selectedInvalidContactIds.length = 0;
@@ -2071,6 +2081,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	removeContactListUsers1(contactId: number) {
 		try {
+			this.loading = true;
 			this.contactUsersId = contactId;
 			this.contactIds[0] = this.contactUsersId;
 			this.contactService.removeContactListUsers(this.contactListId, this.contactIds)
@@ -2079,13 +2090,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						if (data.access) {
 							data = data;
 							if (data.statusCode == 201) {
-								this.contactsByType.allContactsCount = data.allcontacts;
+								/*this.contactsByType.allContactsCount = data.allcontacts;
 								this.contactsByType.invalidContactsCount = data.invalidUsers;
 								this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
 								this.contactsByType.activeContactsCount = data.activecontacts;
 								this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
 								this.allUsers = this.contactsByType.allContactsCount;
-								console.log("update Contacts ListUsers:" + data);
+								console.log("update Contacts ListUsers:" + data);*/
 								if(this.assignLeads){
 									this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
 								}else if (!this.isPartner) {
@@ -2099,7 +2110,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 								this.checkingLoadContactsCount = true
 								this.editContactListLoadAllUsers(this.contactListId, this.pagination);
+								this.contactsCount(this.selectedContactListId);
+								this.loading = false;
 							} else {
+								this.loading = false;
 								$('#contactListDiv_' + this.contactListId).remove();
 								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
 								this.contactService.deleteUserSucessMessage = true;
@@ -2111,6 +2125,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						}
 					},
 					(error: any) => {
+						this.loading = false;
 						// let body: string = error['_body'];
 						//body = body.substring(1, body.length-1);
 						if (error._body.includes('Please launch or delete those campaigns first')) {
@@ -3219,6 +3234,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.selectedContactListName = this.contactListName;
 			this.checkingLoadContactsCount = true;
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+			this.contactsCount(this.selectedContactListId);
 			let self = this;
 			this.uploader = new FileUploader({
 				allowedMimeType: ["application/vnd.ms-excel", "text/plain", "text/csv", "application/csv"],
@@ -3360,4 +3376,32 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         }
         e.stopPropagation();
     }
+    
+
+    contactsCount(id: number) {
+        try {
+            this.contactListObject = new ContactList;
+            this.contactListObject.id = id;
+
+            this.contactService.loadContactsCount(this.contactListObject)
+                .subscribe(
+                data => {
+                	this.contactsByType.allContactsCount = data.allcontacts;
+                    this.contactsByType.invalidContactsCount = data.invalidUsers;
+                    this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
+                    this.contactsByType.activeContactsCount = data.activecontacts;
+                    this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
+                    this.allUsers = this.contactsByType.allContactsCount;
+                },
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => console.log("LoadContactsCount Finished")
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "ContactReportCount()");
+        }
+    }
+    
 }

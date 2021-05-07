@@ -1,0 +1,84 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="col-sm-6 col-xs-12" id="registeredOrLoggedIn" >
+  <div class="portlet light">
+    <div class="portlet-title">
+      <div class="caption">Top 10 Recent {{type}} users</div>
+      <div class="inputs">
+        <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+          <i class="fa fa-refresh margin" aria-hidden="true"></i>
+        </a>
+        <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+          <select *ngIf="'registered'==type"  class="form-control prrtpx" [(ngModel)]="sortOption.selectedRegisteredUsersSortDropDownOption"
+                      (ngModelChange)="sortBy($event)" id="icon-right">
+              <option *ngFor="let option of sortOption.registeredUsersSortDropDownOptions" [ngValue]="option">
+                    {{option.name}}
+              </option>
+           </select>
+
+           <select *ngIf="'logged in'==type"  class="form-control prrtpx" [(ngModel)]="sortOption.selectedLoggedInUsersSortDropDownOption"
+                      (ngModelChange)="sortBy($event)">
+              <option *ngFor="let option of sortOption.loggedInUsersSortDropDownOptions" [ngValue]="option">
+                    {{option.name}}
+              </option>
+           </select>
+
+      </div>
+      <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+        <div class="input-icon right" id="icon-right">
+          <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+          [ngModelOptions]="{standalone: true}" placeholder="search..."
+          (keypress)="usersSearchOnKeyEvent($event.keyCode)">
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+          (click)="sortOption.searchKey='';seachUsers()"></button>
+        <button type="submit" class="search-box-item-click" (click)="seachUsers()">
+          <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      </div>
+    </div>
+    <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+    <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
+      <div class="table-responsive" >
+        <table class='table tgrid' aria-describedby="all-Approved-users">
+          <thead>
+            <tr>
+              <th style="width: 20%;" scope="col">NAME</th>
+              <th class='text-center' scope="col">{{tableHeaderText}}</th>
+              <th class='text-center' scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let user of pagination.pagedItems;let i = index">
+                <tr (click)="selectedVendorDetails(user)" class="highletedRow">
+                  <td>
+                    <app-user-info [userInfo]="user" [isCompanyInfo]="true"></app-user-info>
+                  </td>
+                  <td class="center-align">
+                    <app-timestamp *ngIf="'registered'==type"  [dateAndTime]="user?.registeredOn">
+                    </app-timestamp>
+                    <app-timestamp *ngIf="'logged in'==type"  [dateAndTime]="user?.lastLogin">
+                    </app-timestamp>
+                  </td>
+                  <td class="center-align">
+                    <a data-toggle="tooltip" data-placement="top" title="Company profile details" (click)="$event.stopPropagation();goToVendorCompanyProfile(user)">
+                      <i class="fa fa-building-o" style="font-size: 20px;" aria-hidden="true"></i>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="$event.stopPropagation();goToMyProfile(user)">
+                      <i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                    </a>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+      </div>
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <strong>No Data Found.</strong>
+     </div>
+      </div>
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="referenceService.goToDiv('registeredOrLoggedIn');listUsersByType($event)">
+        </app-pagination>
+     </div>
+    </div>
+  </div>

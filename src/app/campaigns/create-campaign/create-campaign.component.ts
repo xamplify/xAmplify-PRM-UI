@@ -305,6 +305,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     showUsersPreview = false;
     selectedListName = "";   
     selectedListId = 0;
+    selectedContactListNames = [];
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -817,9 +818,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else if(module=="contacts"){
             this.contactsPagination.pageIndex = pageIndex;
             this.loadCampaignContacts(this.contactsPagination);
-        }else if(module=="contactUsers"){
-           this.contactsUsersPagination.pageIndex = pageIndex;
-            this.loadUsers(this.id,this.contactsUsersPagination,this.listName);
         }else if(module=="emailTemplates"){
             this.emailTemplatesPagination.pageIndex = pageIndex;
             this.emailTemplatesLoad();
@@ -1618,63 +1616,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         ev.stopPropagation();
     }
 
-
-
     /*******************************Preview*************************************/
-    contactListItems:any[];
-      loadUsers(id:number,pagination:Pagination, ListName){
-         this.loading = true;
-         if(id==undefined){
-              id=this.previewContactListId;
-          }else{
-              this.previewContactListId = id;
-          }
-          this.listName = ListName;
-          this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
-                  (data:any) => {
-                      this.contactListItems = data.listOfUsers;
-                      pagination.totalRecords = data.totalRecords;
-                      this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
-                      $('#users-modal-body').html('');
-                      var html = "";
-                      html+= '<table  style="margin:0" class="table table-striped table-hover table-bordered" id="sample_editable_1">'+
-                              '<thead>'+
-                                  '<tr>'+
-                                      '<th>EMAIL ID</th>'+
-                                      '<th>FIRST NAME</th>'+
-                                      '<th>LAST NAME</th>'+
-                                  '</tr>'+
-                              '</thead>'+
-                               '<tbody>';
-                      $.each(this.contactsUsersPagination.pagedItems,function(index,value){
-                          var firstName = value.firstName;
-                          var lastName = value.lastName;
-                          if(firstName==null || firstName=="null"){
-                              firstName="";
-                          }
-                         if(lastName==null || lastName=="null"){
-                             lastName = "";
-                         }
-                          html+= '<tr>'+
-                                      '<td>'+value.emailId+'</td>'+
-                                      '<td>'+firstName+'</td>'+
-                                      '<td>'+lastName+'</td>'+
-                                  '</tr>';
-                      });
-                       html+='</tbody>';
-                       html+='</table>';
-                      $('#users-modal-body').append(html);
-                      $('#usersModal').modal({backdrop: 'static', keyboard: false});
-                      this.loading = false;
-                  },
-                  error => { this.loading = false; },
-                  () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
-              )
-      }
-
-      closeModelPopup(){
-          this.contactsUsersPagination = new Pagination();
-      }
       showContactsAlert(count:number){
           this.emptyContactsMessage = "";
           if(count==0){
@@ -3240,6 +3182,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 data => {
                     this.validUsersCount = data['validUsersCount'];
                     this.allUsersCount = data['allUsersCount'];
+                    this.selectedContactListNames = data['userListNames'];
                     this.emailReceiversCountLoader = false;  
                     this.loading = false;
                     this.emailReceiversCountError = false;   
