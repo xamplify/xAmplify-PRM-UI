@@ -146,17 +146,7 @@ public authenticationService: AuthenticationService, public router:Router) {
   getVendorCompanyProfile(report:any) {
       try {
           this.authenticationService.selectedVendorId = report.id; 
-          
           this.router.navigate(['/home/dashboard/edit-company-profile'])          
-          /*this.dashboardService.getVendorsCompanyProfile( report.id )
-              .subscribe(
-              ( data: any ) => {
-                  console.log( data );
-                  
-              },
-              error => console.error( error ),
-              () => console.info( "vendors reports companyProfile() finished" )
-              )*/
       } catch ( error ) {
           console.error( error, "adminReportComponent", "loadCompanyProfile()" );
       }
@@ -168,9 +158,7 @@ public authenticationService: AuthenticationService, public router:Router) {
               .subscribe(
               ( data: any ) => {
                   this.authenticationService.venorMyProfileReport = data;
-                  console.log( data );
                   this.router.navigate(['/home/dashboard/myprofile'])
-                  
               },
               error => console.error( error ),
               () => console.info( "vendors reports myProfile() finished" )
@@ -203,7 +191,7 @@ public authenticationService: AuthenticationService, public router:Router) {
           this.loading = true;
           if(!selectedVendor.companyId){
               this.loading = false;
-              swal("Vedor has signed up but not yet created company information.");
+              swal("Vendor has signed up but not yet created company information.");
           }else{
     	  this.selectedVendorRow = selectedVendor;
           this.authenticationService.selectedVendorId = selectedVendor.id;
@@ -215,7 +203,10 @@ public authenticationService: AuthenticationService, public router:Router) {
                  this.detailsTielsView = true;
                  this.loading = false;
               },
-              error => console.error( error ),
+              error => {
+                  this.loading = false;
+                  this.referenceService.showSweetAlertServerErrorMessage();
+              },
               () => {
                   this.loading = false;
                   console.info( "selectedVendors reports() finished" )
@@ -410,4 +401,6 @@ public authenticationService: AuthenticationService, public router:Router) {
             this.router.navigate(['/home/dashboard/module-access/' + report.companyId+"/"+report.alias+"/"+report.companyProfileName]);
         }        
     }  
+
+  /**************Recent Login Users***************/
 }

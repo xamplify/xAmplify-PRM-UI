@@ -96,6 +96,15 @@ export class ContactService {
             .catch( this.handleError );
     }
 
+    findContactsAndPartnersForCampaign(pagination:Pagination){
+        let userId = this.authenticationService.user.id;
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        pagination.userId = userId;
+        return this._http.post( this.contactsUrl + "findContactAndPartnerLists?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     loadAssignedLeadsLists( pagination: Pagination ): Observable<ContactList[]> {
 
         let userId = this.authenticationService.user.id;
@@ -324,6 +333,12 @@ export class ContactService {
     getValidUsersCount( selectedListIds: Array<number> ): Observable<Object> {
         this.logger.info( selectedListIds );
         var newUrl = this.contactsUrl + "valid-contacts-count?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
+        return this._http.post( newUrl, selectedListIds )
+            .map(( response: any ) => response.json() );
+    }
+
+    findAllAndValidUserCounts( selectedListIds: Array<number> ): Observable<Object> {
+        var newUrl = this.contactsUrl + "findAllAndValidUsersCount/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, selectedListIds )
             .map(( response: any ) => response.json() );
     }
@@ -736,6 +751,12 @@ export class ContactService {
 
     deleteContactById(contactId:number){
     	return this._http.get( this.contactsUrl + "deleteFromAllContactLists/"+contactId+"/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    findUsersByUserListId(pagination:Pagination){
+        return this._http.post( this.contactsUrl + "findUsersByUserListId?access_token=" + this.authenticationService.access_token, pagination)
         .map( this.extractData )
         .catch( this.handleError );
     }

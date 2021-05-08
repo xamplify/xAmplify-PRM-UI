@@ -674,6 +674,18 @@ display: block;
 #custom-width{
 	width:84.333333%
 }
+.exclusion-text-color{
+	color:#000000d1
+}
+
+.required-mark-padding{
+	color: #00bcd4;
+	text-align: left;
+}
+
+.domain-or-email-padding{
+	margin-left: -35px !important
+}
 
 
 

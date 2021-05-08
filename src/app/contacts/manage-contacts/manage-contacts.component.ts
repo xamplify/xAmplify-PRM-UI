@@ -117,12 +117,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	contactListIdForSyncLocal: any;
 	socialNetworkForSyncLocal: any;
 
-	public zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
-	public googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
-	public salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
-	public normalImage: string = 'assets/admin/pages/media/works/contacts2.png';
-	public marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
-	public hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
@@ -1423,11 +1417,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
 					data => {
-						this.contactsByType.allContactsCount = data.allContactsCount;
-						this.contactsByType.invalidContactsCount = data.invalidContactsCount;
-						this.contactsByType.unsubscribedContactsCount = data.unsubscribedContactsCount;
-						this.contactsByType.activeContactsCount = data.activeContactsCount;
-						this.contactsByType.inactiveContactsCount = data.inactiveContactsCount;
+						this.contactsByType.allContactsCount = data.allcontacts;
+						this.contactsByType.invalidContactsCount = data.invalidUsers;
+						this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
+						this.contactsByType.activeContactsCount = data.activecontacts;
+						this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);

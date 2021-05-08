@@ -87,6 +87,10 @@ span.ui-column-resizer {
 	color: red;
 }
 
+.success{
+	color: green;
+}
+
 .add-button-xamplify {
 	color: white;
 	background-color: #008fd5;

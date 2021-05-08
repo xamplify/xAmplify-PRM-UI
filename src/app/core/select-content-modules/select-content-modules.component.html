@@ -26,7 +26,7 @@
         <div class="portlet-body">
           <div class="row mtop" *ngIf="authenticationService?.user?.hasCompany">
             <!--------Videos------------->
-            <div *ngIf="authenticationService?.module.isVideo" [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-12': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
+            <div *ngIf="authenticationService?.module.isVideo" [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
               <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
@@ -36,7 +36,7 @@
                   <div class="text">
                     <h4 class="header-text-css" translate>Content / Videos</h4>
                     <p class="header-description-css" translate>
-                      Upload and manage content/videos 
+                      Upload and manage your pdfs, design files, images, and more. This is the place to store any internal or partner-only content you may have.
                     </p>
                   </div>
                   <div class="text">
@@ -64,7 +64,7 @@
               </div>
             </div>
             <!--------DAM------------->
-            <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
+            <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
               <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
@@ -75,9 +75,9 @@
                     <h4 class="header-text-css" translate>DAM</h4>
                     <p class="header-description-css" translate>
                       <ng-container *ngIf="authenticationService?.module?.damAccess">
-                        <span>Upload and manage assets</span><br>
+                        <span>Create, edit or upload any partner-only pdfs here along with digital assets. This is where all of your partner-only documents such as price lists live.</span><br>
                       </ng-container>
-                      <span *ngIf="authenticationService?.module?.damAccessAsPartner">Manage assets shared by vendor</span>
+                      <span *ngIf="authenticationService?.module?.damAccessAsPartner">View assets shared by vendors.</span>
                     </p>
                   </div>
                   <ng-container *ngIf="authenticationService?.module?.damAccess">
@@ -107,7 +107,7 @@
               </div>
             </div>
             <!--------Learning Track------------->
-            <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"   [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-12': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
+            <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"   [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
               <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
@@ -118,9 +118,9 @@
                     <h4 class="header-text-css" translate>Track Builder</h4>
                     <p class="header-description-css" translate>
                       <ng-container *ngIf="authenticationService?.module?.lmsAccess">
-                        <span>Add and manage tracks</span><br>
+                        <span>Familiarize your partners with your products, way of selling, and more with our track builder. View who amongst your partners is going through the track and how well they're doing.</span><br>
                       </ng-container>
-                      <span *ngIf="authenticationService?.module?.lmsAccessAsPartner">Manage tracks shared by vendor</span>
+                      <span *ngIf="authenticationService?.module?.lmsAccessAsPartner">View tracks shared by vendors.</span>
                     </p>
                   </div>
                   <ng-container *ngIf="authenticationService?.module?.lmsAccess">
@@ -150,7 +150,7 @@
               </div>
             </div>
             <!--------Play Books------------->
-            <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-12': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
+            <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
               <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
@@ -161,9 +161,9 @@
                     <h4 class="header-text-css" translate>Play Book</h4>
                     <p class="header-description-css" translate>
                       <ng-container *ngIf="authenticationService?.module?.playbookAccess">
-                        <span>Add and manage play books</span><br>
+                        <span>Create and edit any product guides, pricing guides, etc..that you have for your partners here.</span><br>
                       </ng-container>
-                      <span *ngIf="authenticationService?.module?.playbookAccessAsPartner">Manage play books shared by vendor</span>
+                      <span *ngIf="authenticationService?.module?.playbookAccessAsPartner">View play books shared by vendors.</span>
                     </p>
                   </div>
                   <ng-container *ngIf="authenticationService?.module?.playbookAccess">

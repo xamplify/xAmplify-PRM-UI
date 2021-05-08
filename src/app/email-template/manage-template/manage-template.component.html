@@ -42,7 +42,7 @@
                                     <li class="filter" (click)="filterTemplates('EMAIL',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex" translate>Email</li>
                                     <li class="filter" (click)="filterTemplates('VIDEO',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign" translate>Video</li>
                                     <li class="filter" (click)="filterTemplates('UPLOADED',false,5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex" translate>Uploaded</li>
-                                    <li class="filter" (click)="filterTemplates('PARTNER',false,6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex" translate>Partner</li>
+                                    <li class="filter" *ngIf="authenticationService?.module?.showPartnerEmailTemplatesFilter && !vanityLoginDto?.vanityUrlFilter" (click)="filterTemplates('PARTNER',false,6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex" translate>Partner</li>
                                     <li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign" translate>Email Co-Branding
                                     </li>
                                     <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',false,8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign" translate>Video Co-Branding

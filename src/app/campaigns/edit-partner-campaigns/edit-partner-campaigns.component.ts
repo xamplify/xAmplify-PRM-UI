@@ -31,7 +31,7 @@ import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
-declare var  $,flatpickr,CKEDITOR,require:any;
+declare var  $,swal,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
 @Component({
@@ -184,6 +184,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     folderCustomResponse:CustomResponse = new CustomResponse();
     nurtureCampaign = false;
+    showUsersPreview = false;
+    selectedListName = "";   
+    selectedListId = 0;
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
@@ -1216,66 +1219,10 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             }
 
         }
+		this.getValidUsersCount();
         ev.stopPropagation();
     }
-
-
-
-    /*******************************Preview*************************************/
-    contactListItems:any[];
-      loadUsers(id:number,pagination:Pagination, listName){
-        this.loading = true;
-        if(id==undefined || id==0){
-              id=this.previewContactListId;
-          }else{
-              this.previewContactListId = id;
-          }
-          this.listName = listName;
-          this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
-                  (data:any) => {
-                      this.loading = false;
-                      this.contactListItems = data.listOfUsers;
-                      pagination.totalRecords = data.totalRecords;
-                      this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
-                      $('#users-modal-body').html('');
-                      var html = "";
-                      html+= '<table  class="table table-striped table-hover table-bordered" id="sample_editable_1">'+
-                              '<thead>'+
-                                  '<tr>'+
-                                      '<th>EMAIL ID</th>'+
-                                      '<th>FIRST NAME</th>'+
-                                      '<th>LAST NAME</th>'+
-                                  '</tr>'+
-                              '</thead>'+
-                               '<tbody>';
-                      $.each(this.contactsUsersPagination.pagedItems,function(index,value){
-                          var firstName = value.firstName;
-                          var lastName = value.lastName;
-                          if(firstName==null || firstName=="null"){
-                              firstName="";
-                          }
-                         if(lastName==null || lastName=="null"){
-                             lastName = "";
-                         }
-                          html+= '<tr>'+
-                                      '<td>'+value.emailId+'</td>'+
-                                      '<td>'+firstName+'</td>'+
-                                      '<td>'+lastName+'</td>'+
-                                  '</tr>';
-                      });
-                       html+='</tbody>';
-                       html+='</table>';
-                      $('#users-modal-body').append(html);
-                      $('#usersModal').modal({backdrop: 'static', keyboard: false});
-                  },
-                  error => { this.loading= false;},
-                  () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
-              )
-      }
-
-      closeModelPopup(){
-          this.contactsUsersPagination = new Pagination();
-      }
+    
       showContactsAlert(count:number){
           this.emptyContactsMessage = "";
           if(count==0){
@@ -1316,11 +1263,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       
   }
 
-  setPage(event: any) {
-    this.xtremandLogger.log(event.page, event.type);
-    this.contactsUsersPagination.pageIndex = event.page;
-    this.loadUsers(0,this.contactsUsersPagination,this.listName);
-  }
 
   launchCampaign() {
       this.validateCampaignName(this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName));
@@ -1330,12 +1272,22 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           var data = this.getCampaignData("");
           var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
           if(errorLength==0 && this.selectedUserlistIds.length>0){
+		 	let message = "";
+             if("SAVE"==this.campaignLaunchForm.value.scheduleCampaign){
+                message = " saving "
+             }else if("SCHEDULE"==this.campaignLaunchForm.value.scheduleCampaign){
+                message = " scheduling ";
+             }else if("NOW"==this.campaignLaunchForm.value.scheduleCampaign){
+                message = " launching ";
+             }
+             this.referenceService.showSweetAlertProcessingLoader('We are '+message+' the campaign');
               this.dataError = false;
               this.contactListBorderColor = "silver";
               this.referenceService.goToTop();
               this.campaignService.saveCampaign( data )
               .subscribe(
               response => {
+				swal.close();
                 if(response.access){
                     if (response.statusCode == 2000) {
                         this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
@@ -1356,6 +1308,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                   this.referenceService.stopLoader(this.httpRequestLoader);
               },
               error => {
+				  swal.close();
                   this.hasInternalError = true;
                   this.xtremandLogger.errorPage(error);
               },
@@ -1385,16 +1338,16 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       try {
          if(this.selectedUserlistIds.length > 0){
          this.ngxloading = true;
-          this.contactService.getValidUsersCount( this.selectedUserlistIds )
+          this.contactService.findAllAndValidUserCounts( this.selectedUserlistIds )
               .subscribe(
               data => {
-                  this.validUsersCount = data['validContactsCount'];
-                  this.allUsersCount = data['allContactsCount'];
+                  this.validUsersCount = data['validUsersCount'];
+                  this.allUsersCount = data['allUsersCount'];
                   this.ngxloading = false;
-                  console.log( "valid contacts Data:" + data['validContactsCount'] );
               },
               ( error: any ) => {
                 this.ngxloading = false;
+				this.referenceService.showSweetAlertFailureMessage("Unable to find valid contacts count. Please contact admin.");
                   console.log( error );
               },
               () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
@@ -1442,5 +1395,18 @@ goToRedistributeCampaigns(){
     this.ngxloading = true;
     this.referenceService.goToRouter("/home/campaigns/partner/all");
 }
+
+previewUsers(contactList:any){
+    this.showUsersPreview = true;
+    this.selectedListName = contactList.name;
+    this.selectedListId = contactList.id;
+}
+
+resetValues(){
+    this.showUsersPreview = false;
+    this.selectedListName = "";
+    this.selectedListId = 0;
+}
+
 
 }

@@ -16,6 +16,7 @@ import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { SortOption } from '../../core/models/sort-option';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
 declare var $, swal: any;
 
@@ -79,6 +80,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     categoryId:number = 0;
     exportObject:any = {};
     modulesDisplayType = new ModulesDisplayType();
+    vanityLoginDto : VanityLoginDto = new VanityLoginDto();
     constructor( private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, 
@@ -97,6 +99,11 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roles.emailTemplateRole);
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+			this.vanityLoginDto.userId = this.loggedInUserId; 
+			this.vanityLoginDto.vanityUrlFilter = true;
+		 }
     }
     showMessageOnTop(message:string){
         $(window).scrollTop(0);
@@ -108,7 +115,11 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.refService.loading(this.httpRequestLoader, true);
         pagination.searchKey = this.searchKey;
         pagination.showDraftContent=true;
-            this.emailTemplateService.listTemplates( pagination, this.loggedInUserId)
+        if(this.vanityLoginDto.vanityUrlFilter){
+            this.pagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+            this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+        }
+        this.emailTemplateService.listTemplates( pagination, this.loggedInUserId)
                 .subscribe(
                 ( data: any ) => {
                     pagination.totalRecords = data.totalRecords;

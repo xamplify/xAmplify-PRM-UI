@@ -39,6 +39,7 @@ export class DamAnalyticsComponent implements OnInit {
   selectedAssetName = "";
   initLoader = false;
   partnerId:number = 0;
+  viewOrDownloadText = "View / Download";
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -185,6 +186,13 @@ export class DamAnalyticsComponent implements OnInit {
   
   filterAnalytics(type: string, index: number) {
     this.selectedAnalyticsTypeIndex = index;//This is to highlight the tab
+    if(this.selectedAnalyticsTypeIndex==0){
+      this.viewOrDownloadText = "View / Download";
+    }else if(this.selectedAnalyticsTypeIndex==1){
+      this.viewOrDownloadText = "View";
+    }else if(this.selectedAnalyticsTypeIndex==2){
+      this.viewOrDownloadText = "Download";
+    }
     this.pagination.pageIndex = 1;
     this.pagination.filterKey = type;
     this.listAnalytics(this.pagination);

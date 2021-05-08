@@ -292,9 +292,9 @@
                                       <span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
                                       <span class="gridHeader">List Name</span>
                                     </th>
-                                    <th class="text-center"> Type </th>
-                                    <th class="text-center"> Date Uploaded </th>
-                                    <th class="text-center"> Preview </th>
+                                    <th scope="row" class="text-center"> Type </th>
+                                    <th scope="row" class="text-center"> Date Uploaded </th>
+                                    <th scope="row" class="text-center"> Preview </th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -314,15 +314,12 @@
                                   <td class="text-center moreipsis">
                                     <span>{{contacts.type}}</span>
                                   </td>
-                                  <!--  <td class="text-center moreipsis" title="{{contacts.publicList}}">
-                                    <span> {{contacts.publicList}}</span>
-                                    </td> -->
                                   <td class="text-center sorting_1">
                                     <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                   </td>
                                   <td class="text-center">
-                                    <a (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
-                                    <i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                                    <a title="Preview" (click)="$event.stopPropagation();previewUsers(contacts)">
+                                    <i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" aria-hidden="true"></i>
                                     </a>
                                   </td>
                                   </tr>
@@ -354,15 +351,15 @@
                   <div [hidden]="!enableWorkFlow">
                     <div class="col-xs-6">
                       <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;" title="No Urls found">
-                      <i class="fa fa-ban p0" style="margin: 0 5px;"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+                      <i class="fa fa-ban p0" style="margin: 0 5px;" aria-hidden="true"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
                       </a>
                       <a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;" (click)="addClickRows()">
-                      <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+                      <i class="fa fa-plus-square p0" style="margin: 0 5px;" aria-hidden="true"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
                       </a>
                     </div>
                     <div class="col-xs-6">
                       <a class="dashboard-stat yellow-gold" style="background-color: #f4555c;" (click)="addReplyRows()">
-                      <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>{{properties.ADD_AUTO_RESPONSE_EMAIL}}
+                      <i class="fa fa-plus-square p0" style="margin: 0 5px;" aria-hidden="true"></i>{{properties.ADD_AUTO_RESPONSE_EMAIL}}
                       </a>
                     </div>
                     <!-- -------------------------------------Add Reply----------------------------- -->
@@ -382,11 +379,6 @@
                                 </h4>
                               </div>
                               <div class="col-xs-5" style="text-align:right">
-                                <!--  <label class="switch-choose" style="color:#fff">Choose Template</label> -->
-                                <!--  <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                                  [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
-                                  [size]="callActionSwitch.size" (statusChange)="selectReplyEmailBody($event,i,reply)">
-                                  </switch> -->
                                 <button type="button" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')">
                                 <span class="glyphicon glyphicon-trash"></span>
                                 </button>
@@ -418,20 +410,20 @@
                                       <div class="col-xs-2">
                                         <label style="cursor:default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply
                                         In X Days
-                                        <b style="color: red">*</b>
-                                        <font>
-                                        <b>(Minimum 1 Day)</b>
-                                        </font>
+                                        <strong style="color: red">*</strong>
+                                        <span>
+                                        <strong>(Minimum 1 Day)</strong>
+                                        </span>
                                         </label>
                                         <label style="cursor:default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply
                                         In X Days
-                                        <b style="color: red">*</b>
+                                        <strong style="color: red">*</strong>
                                         </label>
                                         <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
                                       </div>
                                       <div class="col-xs-3 time-col p0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
                                         <div class="col-xs-2" style="position: relative;top: 28px; cursor: default;">
-                                          <label for="time" id="send-time-{{reply.divId}}">At<b style="color: red">*</b>
+                                          <label for="time" id="send-time-{{reply.divId}}">At<strong style="color: red">*</strong>
                                           </label>
                                         </div>
                                         <div>
@@ -441,7 +433,7 @@
                                     </div>
                                     <div class="col-xs-3" style="margin-left: -16px;">
                                       <label for="time" style="cursor:default" id="reply-subject-{{reply.divId}}">Subject
-                                      <b style="color: red">*</b>
+                                      <strong style="color: red">*</strong>
                                       </label>
                                       <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="200">
                                     </div>
@@ -478,12 +470,30 @@
                                             </div>
                                             <div class="item__content" style="text-align: left;">
                                               <div class="flex-row">
-                                                <span class="item__name" [title]="reply.emailTemplate.name"><strong>{{reply.emailTemplate.name |slice:0:20}}</strong>
-                                                <strong *ngIf="reply.emailTemplate?.name?.length>20">...</strong>
+                                                <span class="item__name" [title]="reply.emailTemplate.name"><strong>{{reply?.emailTemplate?.name |slice:0:20}}</strong>
+                                                <strong *ngIf="reply?.emailTemplate?.name?.length>20">...</strong>
                                                 </span>
+                                                 <br>
+                                                 <br>
+                                                  <span class="item__name" title="created on" style="float:left">
+                                                      <span>
+                                                          <app-timestamp
+                                                              [isOnlyDate]="true"
+                                                              [dateAndTime]="reply?.emailTemplate?.createdTime">
+                                                          </app-timestamp>
+                                                      </span>
+                                                  </span>
+                                                  <br>
                                                 <span style="float:left" title="{{reply.emailTemplate.createdBy}}">
-                                                <span>{{reply.emailTemplate.createdBy|slice:0:20}}<span *ngIf="reply.emailTemplate.createdBy?.length>20">...</span></span>
+                                                <span>{{reply?.emailTemplate?.createdBy|slice:0:15}}<span *ngIf="reply?.emailTemplate?.createdBy?.length>15">...</span>
                                                 </span>
+                                                </span>
+                                                <br>
+                                                <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{reply?.emailTemplate?.category}}">
+                                                     <strong translate>Folder:</strong><span>{{reply?.emailTemplate?.category|slice:0:10}}</span>
+                                                     <span *ngIf="reply?.emailTemplate?.category?.length>10">..</span>
+                                                 </span>
+                                                 <br>
                                                 <div class="item__actions">
                                                   <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                                     data-toggle="tooltip" data-placement="top"
@@ -557,7 +567,7 @@
                                     </div>
                                     <div class="col-xs-4">
                                       <label style="cursor:default" for="time" id="click-subject-{{url.divId}}">Subject
-                                      <b style="color: red">*</b>
+                                      <strong style="color: red" aria-hidden="true">*</strong>
                                       </label>
                                       <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="Subject" maxlength="200">
                                     </div>
@@ -573,7 +583,7 @@
                                   <div class="col-xs-12">
                                     <div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
                                       <label for="days" id="click-message-{{url.divId}}">Message
-                                      <b style="color: red">*</b>
+                                      <strong style="color: red">*</strong>
                                       </label>
                                       <div>
                                         <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
@@ -602,9 +612,26 @@
                                                 <strong>{{url.emailTemplate.name |slice:0:20}}</strong>
                                                 <strong *ngIf="url.emailTemplate?.name?.length>20">...</strong>
                                                 </span>
+                                                <br>
+                                                <br>
+                                                <span class="item__name" title="created on" style="float:left">
+                                                  <span>
+                                                      <app-timestamp
+                                                          [isOnlyDate]="true"
+                                                          [dateAndTime]="url?.emailTemplate?.createdTime">
+                                                      </app-timestamp>
+                                                  </span>
+                                              </span>
+                                              <br>
                                                 <span style="float:left" title="{{url.emailTemplate.createdBy}}">
-                                                <span>{{url.emailTemplate.createdBy|slice:0:20}}<span *ngIf="url.emailTemplate.createdBy?.length>20">...</span></span>
+                                                <span>{{url.emailTemplate.createdBy|slice:0:15}}<span *ngIf="url.emailTemplate.createdBy?.length>15">...</span></span>
                                                 </span>
+                                                <br>
+                                                <span *ngIf="url?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{url?.emailTemplate?.category}}">
+                                                  <strong translate>Folder:</strong><span>{{url?.emailTemplate?.category|slice:0:10}}</span>
+                                                  <span *ngIf="url?.emailTemplate?.category?.length>10">..</span>
+                                              </span>
+                                              <br>
                                                 <div class="item__actions">
                                                   <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                                     data-toggle="tooltip" data-placement="top"
@@ -769,29 +796,8 @@
     </div>
   </div>
   <!-- ----------------------------------Contact Lists--------------------------------- -->
-  <div class="modal right fade" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
-    <div class="modal-dialog modal-css" role="document" style="right:0">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" (click)="closeModelPopup()" class="close-circle" data-dismiss="modal" aria-label="Close">
-          <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-          <div>
-            <h4 class="modal-title" id="user-list-name" align="center" title="{{listName}}">
-              <strong>{{listName |slice:0:20}}
-              <span *ngIf="listName?.length>20">...</span>
-              </strong>
-            </h4>
-          </div>
-        </div>
-        <div class="modal-body" id="users-modal-body">
-        </div>
-        <div class="modal-footer">
-          <app-pagination class="pg8" style="float: left;" [pagination]="contactsUsersPagination" [type]="'editpartner'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
-          <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <ng-container *ngIf="showUsersPreview">
+    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+    </ng-container>
   <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
   <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>

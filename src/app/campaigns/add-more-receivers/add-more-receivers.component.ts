@@ -45,9 +45,8 @@ export class AddMoreReceiversComponent implements OnInit {
     numberOfContactsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
-        { 'name': '48', 'value': '48' },
-        { 'name': 'All', 'value': '0' },
-                               ]
+        { 'name': '48', 'value': '48' }
+    ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
     selectedRowClass:string = "";
     selectedContactListIds = [];
@@ -352,9 +351,12 @@ export class AddMoreReceiversComponent implements OnInit {
                      html+='</tbody>';
                      html+='</table>';
                      $('#users-modal-body').append(html);
-                    this.referenceService.loading(this.contactListDetailLoader, false);
+                   this.referenceService.loading(this.contactListDetailLoader, false);
                 },
-                error => {this.referenceService.showServerErrorMessage(this.contactListDetailLoader)},
+                error => {
+                    this.referenceService.loading(this.contactListDetailLoader, false);
+                    this.referenceService.showServerErrorMessage(this.contactListDetailLoader);
+                },
                 () => console.log( "loadUsersOfContactList() finished" )
             )
     }

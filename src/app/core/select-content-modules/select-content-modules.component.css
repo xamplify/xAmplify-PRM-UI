@@ -68,7 +68,7 @@ h5 {
 
 .cpad {
     padding: 0px !important;
-    min-height: 400px !important;
+    min-height: 473px !important;
 
 }
 
@@ -114,4 +114,9 @@ h5 {
 
 .prspx{
     padding-right: 60px;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
 }
