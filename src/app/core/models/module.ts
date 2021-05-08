@@ -54,4 +54,6 @@ export class Module {
     contentDivsCount = 0;
     contentLoader = false;
     isPartnerSuperVisor : boolean = false;
+
+	showPartnerEmailTemplatesFilter = false;
 }
