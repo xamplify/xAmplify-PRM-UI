@@ -23,6 +23,8 @@ export class KpiComponent implements OnInit {
   opportunityAmount: any;
   mdfTotalBalance: any;
   mdfUsedBalance: any;
+  mdfTotalBalanceInString:any;
+  mdfUsedBalanceInString:any;
   hasLeadsAndDealsAccess = false;
   mdfAccess = false;
   headerText = "";
@@ -133,6 +135,8 @@ export class KpiComponent implements OnInit {
     this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId).subscribe((result: any) => {
       this.mdfTotalBalance = result.data.totalBalance;
       this.mdfUsedBalance = result.data.usedBalance;
+      this.mdfTotalBalanceInString = result.data.totalBalanceInString;
+      this.mdfUsedBalanceInString = result.data.usedBalanceInString;
       this.mdfDto.loader = false;
     }, error => {
       this.xtremandLogger.log(error);
