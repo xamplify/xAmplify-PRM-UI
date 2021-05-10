@@ -267,3 +267,7 @@ span.ui-column-resizer {
 	margin-top: 1px;
 }
 
+.default-cursor{
+	cursor:default !important;
+}
+

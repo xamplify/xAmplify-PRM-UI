@@ -38,13 +38,13 @@
                <app-box-loader [countLoader]=3 [mdfModule]="true" *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                   <div class="row">
-                     <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h">
+                     <div title="$ {{mdfAmountTiles?.totalBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">${{mdfAmountTiles?.totalBalance | number:'1.0':'en-US'}}</div>
+                              <div class="number">{{mdfAmountTiles?.totalBalanceInString}}</div>
                               <div class="desc">Total MDF Balance</div>
                            </div>
                            <span class="morePadding">
@@ -53,13 +53,13 @@
                         </span>
                         </a>
                      </div>
-                     <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h">
+                     <div title="$ {{mdfAmountTiles?.usedBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">${{mdfAmountTiles?.usedBalance | number:'1.0':'en-US'}}</div>
+                              <div class="number">{{mdfAmountTiles?.usedBalanceInString}}</div>
                               <div class="desc">Total Used Balance</div>
                            </div>
                            <span class="morePadding">
@@ -68,13 +68,13 @@
                         </span>
                         </a>
                      </div>
-                     <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                      <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h">
+                     <div title="$ {{mdfAmountTiles?.availableBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                      <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
                          <div class="visual">
                             <i aria-hidden="true" class=""></i>
                          </div>
                          <div class="details">
-                            <div class="number">${{mdfAmountTiles?.availableBalance | number:'1.0':'en-US'}}</div>
+                            <div class="number">{{mdfAmountTiles?.availableBalanceInString}}</div>
                             <div class="desc">Total Available Balance</div>
                          </div>
                          <span class="morePadding">
