@@ -123,13 +123,13 @@
                               <div class="row" style="margin-top: 20px;">
                                  <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                                     <div class="row">
-                                       <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                                          <a class="dashboard-stat dashboard-stat-lighter green-soft min-h">
+                                       <div title="$ {{mdfAmountTiles?.totalBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                                          <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                                              <div class="visual">
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
                                              <div class="details">
-                                                <div class="number" style="font-size: 20px;">${{mdfAmountTiles?.totalBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="number" style="font-size: 20px;">{{mdfAmountTiles?.totalBalanceInString}}</div>
                                                 <div class="desc" style="font-size: 13px;">Total MDF Balance</div>
                                              </div>
                                              <span class="morePadding">
@@ -138,13 +138,13 @@
                                           </span>
                                           </a>
                                        </div>
-                                       <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                                          <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h">
+                                       <div title="$ {{mdfAmountTiles?.usedBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                                          <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                                              <div class="visual">
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
                                              <div class="details">
-                                                <div class="number" style="font-size: 20px;">${{mdfAmountTiles?.usedBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="number" style="font-size: 20px;">{{mdfAmountTiles?.usedBalanceInString}}</div>
                                                 <div class="desc" style="font-size: 13px;">Total Used Balance</div>
                                              </div>
                                              <span class="morePadding">
@@ -153,13 +153,13 @@
                                           </span>
                                           </a>
                                        </div>
-                                       <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                                          <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h">
+                                       <div title="$ {{mdfAmountTiles?.availableBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                                          <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
                                              <div class="visual">
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
                                              <div class="details">
-                                                <div class="number" style="font-size: 20px;">${{mdfAmountTiles?.availableBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="number" style="font-size: 20px;">{{mdfAmountTiles?.availableBalanceInString}}</div>
                                                 <div class="desc" style="font-size: 13px;">Total Available Balance</div>
                                              </div>
                                              <span class="morePadding">
