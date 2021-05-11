@@ -2274,7 +2274,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				contactType = 'all';
 				this.contactsByType.pagination.pageIndex = 1;
 			}
-			this.currentContactType = '';
+			
+            if (contactType === 'all') {
+                this.currentContactType = "all_contacts";
+            } else {
+                this.currentContactType = '';
+			}
+			
 			this.showAllContactData = true;
 			this.showEditContactData = false;
 			this.contactsByType.isLoading = true;
