@@ -301,13 +301,12 @@
           <div class="portlet-body">
             <app-grid-loader *ngIf="assetLoader.isLoading"></app-grid-loader>
             <div class="row" *ngIf="!assetError">
-              <ul class="content__list" *ngFor="let file of assetPagination.pagedItems; let i =index;">
+              <ul class="content__list" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
                 <li class="list__item" [ngClass]="{'list__item--selected': isAssetSelected(file)}">
                   <div class="flex-row pointer">
-                    <div class="item__select-box-wrapper"
-                      (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
+                    <div class="item__select-box-wrapper">
                       <span class="select-box-asset"> <label>
-                          <input type="checkbox" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
+                          <input type="checkbox" (click)="$event.stopPropagation();">
                         </label>
                       </span> <span class="ng-scope"> <a style="cursor: default;"
                           class="item__preview item__preview--image img-container custom" target="_BLANK">
@@ -339,7 +338,7 @@
                         </div>
                         <div class="item__actions">
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="preview"
-                              (click)="assetPreview(file)" style="left: 10px;">
+                              (click)="$event.stopPropagation();assetPreview(file)" style="left: 10px;">
                               <i class="fa fa-external-link" aria-hidden="true"
                                 style="font-size: 20px; color: #5a5a5a"></i>
                             </a>
@@ -504,9 +503,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let form of formPagination.pagedItems ;let i =index">
+                    <tr *ngFor="let form of formPagination.pagedItems ;let i =index" (click)="updateDescription(form)">
                       <td>
-                        <input type="radio" (click)="updateDescription(form)">
+                        <input type="radio">
                       </td>
                       <td>
                         <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
@@ -524,7 +523,7 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">
+                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();previewForm(form.id)">
                           <i class="fa fa-eye" aria-hidden="true"></i>
                         </a>
                       </td>
@@ -898,54 +897,6 @@
   </div>
 </div>
 
-<!-- Preview Assets -->
-<ng-container *ngIf="showFilePreview">
-  <div class="overlay page-content">
-    <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
-      <i class="fa fa-times" aria-hidden="true"></i>
-    </button>
-    <div class="overlay-content">
-      <img *ngIf="isImage" [src]="filePath" alt="No Image Found"><br>
-      <video *ngIf="isVideo" width="320" height="240" controls>
-        <source [src]="filePath" [type]="fileType">
-        Your browser does not support the video tag.
-      </video>
-      <audio *ngIf="isAudio" controls>
-        <source [src]="filePath" [type]="fileType">
-        Your browser does not support the audio tag.
-      </audio>
-      <!-- <div *ngIf="isFile && filePath && viewer">
-        <ngx-doc-viewer [url]="filePath" [viewer]="viewer" disableContent="popout" style="width:100%;height:75vh;">
-        </ngx-doc-viewer>
-      </div> -->
-    </div>
-  </div>
-</ng-container>
-
-
-<!-- Preview Bee Template Modal Popup-->
-<div class="modal fade right" id="asset-preview-modal" tabindex="-1" role="dialog" data-backdrop="static"
-  data-keyboard="false">
-  <div class="modal-dialog modal-lg modal-template fullwidth" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
-        <h4 class="modal-title" id="assetTitle"></h4>
-      </div>
-      <div class="modal-body">
-        <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-        <div id="asset-preview-content">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- --------------List Of Assets Popup--------------- -->
 <div class="modal right" id="media-asset-list" data-backdrop="static">
   <div class="modal-dialog modal-lg" style="width: 75%;right:0">
@@ -997,9 +948,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let asset of assetPagination.pagedItems ;let i =index">
+                    <tr *ngFor="let asset of assetPagination.pagedItems ;let i =index"
+                      (click)="addMediaToDescription(asset)">
                       <td>
-                        <input type="radio" (click)="addMediaToDescription(asset)"
+                        <input type="radio"
                           [checked]="selectedAssetForMedia != undefined && selectedAssetForMedia != null">
                       </td>
                       <td class="hidden-xs text-cente" style="width: 10%;">
@@ -1024,7 +976,8 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview">
+                        <a data-toggle="tooltip" data-placement="top" title="Preview"
+                          (click)="$event.stopPropagation();assetPreview(asset)">
                           <i class="fa fa-eye" aria-hidden="true"></i>
                         </a>
                       </td>
@@ -1057,6 +1010,51 @@
     </div>
   </div>
 </div>
+
+<!-- Preview Bee Template Modal Popup-->
+<div class="modal fade right" id="asset-preview-modal" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title" id="assetTitle"></h4>
+      </div>
+      <div class="modal-body" id="preview-bee-template">
+        <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+        <div id="asset-preview-content">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Preview Assets -->
+<ng-container *ngIf="showFilePreview">
+  <div class="overlay page-content">
+      <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+      <div class="overlay-content">
+          <img *ngIf="isImage" [src]="filePath" alt="No Image Found"><br>
+          <video *ngIf="isVideo" width="320" height="240" controls>
+              <source [src]="filePath" [type]="fileType">
+              Your browser does not support the video tag.
+          </video>
+          <audio *ngIf="isAudio" controls>
+              <source [src]="filePath" [type]="fileType">
+              Your browser does not support the audio tag.
+          </audio>
+          <div *ngIf="isFile && filePath?.length > 0">
+              <iframe [src]="url" style="width:100%; height:75vh;" frameborder="0"></iframe>
+          </div>
+      </div>
+  </div>
+</ng-container>
 
 <!-- --------------Media link title popup--------------- -->
 <div class="modal" id="media-link-title" data-backdrop="static" style="top: 25%;">

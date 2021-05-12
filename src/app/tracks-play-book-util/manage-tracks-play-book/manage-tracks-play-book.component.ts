@@ -322,9 +322,11 @@ export class ManageTracksPlayBookComponent implements OnInit {
   ChangePublish(learningTrackId: number, isPublish: boolean) {
     this.referenceService.startLoader(this.httpRequestLoader);
     this.tracksPlayBookUtilService.changePublish(learningTrackId, isPublish).subscribe(
-      (respone: any) => {
-        if (respone.statusCode == 200) {
+      (response: any) => {
+        if (response.statusCode == 200) {
           this.listLearningTracks(this.pagination);
+        } else if(response.statusCode == 401) {
+          this.referenceService.showSweetAlertErrorMessage(response.message);
         }
         this.referenceService.stopLoader(this.httpRequestLoader);
       },

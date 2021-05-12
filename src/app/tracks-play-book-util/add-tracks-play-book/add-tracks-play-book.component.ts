@@ -12,7 +12,7 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { SortOption } from '../../core/models/sort-option';
 import { ColumnInfo } from '../../forms/models/column-info';
-import { DomSanitizer } from "@angular/platform-browser";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { EnvService } from 'app/env.service'
 import { UtilService } from '../../core/services/util.service';
 import { Tag } from 'app/dashboard/models/tag'
@@ -137,7 +137,8 @@ export class AddTracksPlayBookComponent implements OnInit {
   fileType: string = "";
   modalPopupLoader = false;
   imageTypes: Array<string> = ['jpg', 'jpeg', 'png'];
-  fileTypes: Array<string> = ['txt', 'pdf', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx'];
+  fileTypes: Array<string> = ['doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx'];
+  url: SafeResourceUrl;
   isEditSlug: boolean = false;
   completeLink: string = "";
   private dom: Document;
@@ -1235,16 +1236,25 @@ export class AddTracksPlayBookComponent implements OnInit {
         this.showFilePreview = true;
         this.isImage = true;
       } else if (this.fileTypes.includes(assetType)) {
-        // this.showFilePreview = true;
-        // this.isFile = true;
-        // if (assetType == 'xlsx' || assetType == 'xls') {
-        //   this.viewer = "office";
-        // }
-        this.referenceService.showSweetAlertInfoMessage();
+        this.showFilePreview = true;
+        this.isFile = true;
+        this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
+        this.transformUrl();
       } else {
-        this.referenceService.showSweetAlertErrorMessage('Unsupported file type, Please download the file to view.');
+        window.open(assetDetails.assetPath, '_blank');
       }
     }
+    if(this.activeTabName == "step-2"){
+      if(this.showFilePreview){
+      $('#media-asset-list').modal('hide')
+      } else {
+        $('#media-asset-list').modal('show')
+      }
+    }
+  }
+
+  transformUrl() {
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.filePath);
   }
 
   closeAssetPreview() {
@@ -1255,13 +1265,19 @@ export class AddTracksPlayBookComponent implements OnInit {
     this.isFile = false;
     this.filePath = "";
     this.viewer = "google";
-  }
+    if(this.activeTabName == "step-2"){
+      if(this.showFilePreview){
+      $('#media-asset-list').modal('hide')
+      } else {
+        $('#media-asset-list').modal('show')
+      }
+    }  }
 
   previewBeeTemplate(asset: any) {
     let htmlContent = "#asset-preview-content";
     $(htmlContent).empty();
     $('#assetTitle').val('');
-    this.referenceService.setModalPopupProperties();
+    this.setModalPopupProperties();
     $("#asset-preview-modal").modal('show');
     this.modalPopupLoader = true;
     this.damService.previewAssetById(asset.id).subscribe(
@@ -1277,6 +1293,11 @@ export class AddTracksPlayBookComponent implements OnInit {
       }
     );
   }
+
+  setModalPopupProperties(){
+		$('#preview-bee-template').css('overflow-y', 'auto');
+		$('#preview-bee-template').css('max-height', $(window).height() * 0.75);
+	}
 
   getAssetsList() {
     this.assetError = false;
