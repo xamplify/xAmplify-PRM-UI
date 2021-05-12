@@ -2534,7 +2534,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             this.selectedContactForSave[i].legalBasis = selectedLegalBasisOptions;
                         }
 
-					console.log(this.selectedContactForSave);
+					const map = {};
+	                   const newArray = [];
+	                   this.selectedContactForSave.forEach(el => {
+	                      if(!map[JSON.stringify(el)]){
+	                         map[JSON.stringify(el)] = true;
+	                         newArray.push(el);
+	                   }
+	                });
+	                this.selectedContactForSave = newArray;
 					this.contactService.saveContactList(this.selectedContactForSave, name, this.isPartner, isPublic)
 						.subscribe(
 							data => {
