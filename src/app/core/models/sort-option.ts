@@ -320,6 +320,15 @@ export class SortOption {
       { 'name': 'Last Login (ASC)', 'value': 'lastLoginOn-ASC' },
       { 'name': 'Last Login (DESC)', 'value': 'lastLoginOn-DESC' }
       ];
+
+      channelCampaignSortDropDownOptions = [
+        { 'name': 'Campaign Name (A-Z)', 'value': 'campaignName-ASC' },
+        { 'name': 'Campaign Name (Z-A)', 'value': 'campaignName-DESC' },
+        { 'name': 'Launched By (Email Id) (A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Launched By (Email Id) (Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'Redistributed (ASC)', 'value': 'redistributedCount-ASC' },
+        { 'name': 'Redistributed (DESC)', 'value': 'redistributedCount-DESC' }
+        ];
      
 
     numberOfItemsPerPage = [
@@ -358,5 +367,6 @@ export class SortOption {
     public selectedCampaignRecipientsDropDownOption = this.campaignRecipientsDropDownOptions[3];
     public selectedRegisteredUsersSortDropDownOption = this.registeredUsersSortDropDownOptions[this.registeredUsersSortDropDownOptions.length-1];
     public selectedLoggedInUsersSortDropDownOption = this.loggedInUsersSortDropDownOptions[this.loggedInUsersSortDropDownOptions.length-1];
+    public selectedChannelCampaignSortDropDownOption = this.channelCampaignSortDropDownOptions[this.channelCampaignSortDropDownOptions.length-1];
 
 }

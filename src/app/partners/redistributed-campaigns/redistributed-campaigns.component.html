@@ -1,0 +1,214 @@
+<div class="row">
+  <div class="col-xs-12 p5">
+    <div class="portlet light">
+      <div class="portlet-title" style="font-size: 16px; padding-bottom: 8px;">
+        <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
+          <div class="caption">
+            <span class="caption-subject font-red-sunglo uppercase">Redistributed Campaigns</span>
+          </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
+            <div class="inputs" style="float: right">
+              <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6">
+              <div style="float: left;">
+                <select class="form-control" [(ngModel)]="channelCampaignsSortOption.selectedChannelCampaignSortDropDownOption" (ngModelChange)="sortChannelCampaigns($event)"
+                  style="position: relative;right: -3px;">
+                  <option *ngFor="let option of channelCampaignsSortOption.channelCampaignSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6 p0">
+              <div class="portlet-input input-inline" style="margin-right: 12px; width:170px">
+                <div class="input-icon right" style="position: relative;right: -11px;">
+                  <input type="text" style="height:34px;" class="form-control" [(ngModel)]="channelCampaignsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                    placeholder="Search" (keypress)="searchInCampaignsOnKeyPress($event.keyCode,'channel-campaigns')">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="channelCampaignsSortOption.searchKey" (click)="channelCampaignsSortOption.searchKey='';searchCampaigns('channel-campaigns')"></button>
+                  <button type="submit" class="search-box-item-click" (click)="searchCampaigns('channel-campaigns')">
+                    <i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+              </div>
+              <a *ngIf="channelCampaignsSortOption.totalRecords>0 && !channelCampaignsLoader.isLoading" class="close-circle" (click)="downloadCsv()">
+                  <i  class="fa fa-download" aria-hidden="true"></i>
+              </a>
+              </div>
+            </div>
+            </div>
+      </div>
+      <app-list-loader *ngIf="channelCampaignsLoader.isLoading"></app-list-loader>
+      <div class="portlet-body table-responsive" style="overflow: hidden;" [hidden]="channelCampaignsLoader.isLoading">
+        <div class="table-responsive">
+          <table class="table tgrid" aria-describedby="channel-campaigns-partner-anlaytics">
+              <thead>
+                <tr>
+                  <th scope="row" class="center-aligned">Campaign Name</th>
+                  <th scope="row" class="center-aligned">Launched By (Vendor)</th>
+                   <th scope="row" class="center">Total Recipients <i class="fa fa-envelope sky-blue" aria-hidden="true"></i></th>
+                   <th scope="row" class="center">Active Recipients <i class="fa fa-envelope-open sky-blue"  aria-hidden="true"></i></th>
+                   <th scope="row" class="center">Clicked URL <i class="fa fa-globe sky-blue"  aria-hidden="true"></i></th>
+                   <th scope="row" class="center">Views <i class="fa fa-eye sky-blue"  aria-hidden="true"></i></th>
+                   <th scope="row" class="center">#Redistributed</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of channelCampaignsPagination.pagedItems;let i=index">
+                  <tr>
+                    <td class="re-distributed-count" title="{{item.campaignName}}">{{item.campaignName | slice:0:20}}
+                      <span *ngIf="item.campaignName?.length>20">...</span>
+                   </td>
+                   <td>
+                    <h5 class='ellipsis' title="{{item.fullName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                      {{item?.fullName | slice:0:20}}
+                      <span *ngIf="item?.fullName?.length>20">...</span>
+                    </h5>
+                    <h6 class='m0' style="font-weight: 400; display: table;">
+                      <span title="">{{item.emailId | slice:0:38}}</span>
+                      <span *ngIf="item.emailId?.length>38">...</span>
+                    </h6>
+                      <h5 style="font-weight: 600; color: #676767;">
+                      <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.launchedOn"> </app-timestamp></h5>
+                  </td>
+                  <td class="center">
+                    <div>
+                    <button class="btn btn-default btn-xs re-distributed-high-level">
+                      <div class="portlet-body text-center">
+                        <h4>
+                          <strong class="sky-blue">{{item?.totalRecipients}}</strong>
+                        </h4>
+                      </div>
+                    </button>
+                  </div>
+                   </td>
+                    <td class="center">
+                     <div>
+                      <button class="btn btn-default btn-xs re-distributed-high-level">
+                        <div class="portlet-body text-center">
+                          <h4>
+                            <strong class="sky-blue">{{item?.activeRecipients}}</strong>
+                          </h4>
+                        </div>
+                      </button>
+                    </div>
+                   </td>
+                   <td class="center">
+                    <div>
+                    <button class="btn btn-default btn-xs re-distributed-high-level">
+                      <div class="portlet-body text-center">
+                        <h4>
+                          <strong class="sky-blue">{{item?.clickedUrls}}</strong>
+                        </h4>
+                      </div>
+                    </button>
+                  </div>
+                  </td>
+                   <td class="center">
+                      <div>
+                      <button class="btn btn-default btn-xs re-distributed-high-level">
+                        <div class="portlet-body text-center">
+                          <h4>
+                            <strong class="sky-blue">{{item?.views}}</strong>
+                          </h4>
+                        </div>
+                      </button>
+                  </div>
+                   </td>
+                   <td style="text-align: right;">
+                    <div class="actions-block">
+                      <span class="circled-number">{{item?.redistributedCount}}</span>
+                      <a  (click)="showRedistributedCampaings(item)" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item?.redistributedCount> 0">
+                        <i class="fa" aria-hidden="true" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}" ></i>
+                      </a>
+                    </div>
+                  </td>
+                  </tr>
+                  <tr *ngIf="item?.expand">
+                    <td colspan="8">
+                      <app-auto-response-loader *ngIf="redistributedCampaignsLoader.isLoading"></app-auto-response-loader>
+                      <table class="table tgrid table-condensed redisbgcolor" aria-describedby="redistributed-campaigns">
+                        <thead>
+                          <tr>
+                            <th scope="row"  class="center-aligned" style="width: 24%">Partners</th>
+                            <th scope="row" class="center-aligned">Campaign Name</th>
+                            <th scope="row" class="center">Total Recipients</th>
+                            <th scope="row" class="center">Active Recipients</th>
+                            <th scope="row" class="center">Clicked URL</th>
+                            <th scope="row" class="center">Views</th>
+                            <th scope="row" class="center">Analytics</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let redistributedCampaign of redistributedCampaignsPagination.pagedItems" style="cursor: pointer;" (click)="referenceService.goToCampaignAnalytics(redistributedCampaign)">
+                            <td>
+                              <app-user-info [userInfo]="redistributedCampaign" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
+                            </td>
+                            <td>
+                              <div class="flex">
+                                <span>
+                                  <h5 class='ellipsis' title="{{redistributedCampaign?.campaignName}}" style="font-weight: 400;">
+                                    {{redistributedCampaign?.campaignName | slice:0:20}}
+                                    <span *ngIf="redistributedCampaign?.campaignName?.length>20">...</span>
+                                  </h5>
+                                  <h5 style="font-weight: 600; color: #676767;">
+                                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="redistributedCampaign?.launchedOn"> </app-timestamp></h5>
+                                </span>
+                              </div>
+                              </td>
+                              <td class="center">
+                                <div class="actions-block float-none ">
+                                  <a data-toggle="tooltip" data-placement="top">
+                                        <span class="circled-number"><strong>{{redistributedCampaign?.totalRecipients}}</strong></span>
+                                      </a>
+                                  </div>
+                               </td>
+                               <td class="center">
+                                <div class="actions-block float-none">
+                                 <a data-toggle="tooltip" data-placement="top">
+                                     <span class="circled-number"><strong>{{redistributedCampaign?.activeRecipients}}</strong></span>
+                                     </a>
+                                   </div>
+                              </td>
+                              <td class="center">
+                               <div class="actions-block float-none">
+                                 <a data-toggle="tooltip" data-placement="top">
+                                       <span class="circled-number"><strong>{{redistributedCampaign?.clickedUrls}}</strong></span>
+                                     </a>
+                                 </div>
+                             </td>
+                              <td class="center">
+                                 <div class="actions-block float-none">
+                                 <a data-toggle="tooltip" data-placement="top">
+                                       <span class="circled-number"><strong>{{redistributedCampaign?.views}}</strong></span>
+                                     </a>
+                                 </div>
+                              </td>
+                                 <td class="text-center">
+                                   <a *ngIf="!redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
+                                     data-placement="top" title="Campaign Based Reports" class='circled-number'>
+                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                   </a>
+                                   <a *ngIf="redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
+                                     data-placement="top" title="Campaign Based Reports" class='circled-number' style="margin-left: -47px;">
+                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                   </a>
+                                 </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+        </div>
+         <!---Message-->
+         <div *ngIf="channelCampaignsPagination.totalRecords==0 && !channelCampaignsLoader.isLoading" class="alert alert-info">
+          <strong>No Data Found.</strong>
+       </div>
+      </div>
+      <!--Pagination-->
+      <div *ngIf="channelCampaignsPagination.pagedItems.length !== 0" class="pg8" [hidden]="channelCampaignsLoader.isLoading">
+        <app-pagination [pagination]="channelCampaignsPagination" (notifyParent)="navigateBetweenPageNumbers($event,'channel-campaigns')" (notifyParentDropDown)="findChannelCampaigns($event)">
+        </app-pagination>
+     </div>
+    </div>
+  </div>
+</div>
