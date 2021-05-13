@@ -1,0 +1,381 @@
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DamService } from 'app/dam/services/dam.service';
+import { Pagination } from '../../core/models/pagination';
+import { PagerService } from '../../core/services/pager.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { CustomResponse } from '../../common/models/custom-response';
+import { ReferenceService } from '../../core/services/reference.service';
+import { Properties } from '../../common/models/properties';
+import { SortOption } from '../../core/models/sort-option';
+import { UtilService } from 'app/core/services/util.service';
+import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+import { ParterService } from "app/partners/services/parter.service";
+import { UserService } from "app/core/services/user.service";
+import { TracksPlayBook } from '../models/tracks-play-book'
+
+declare var $: any, swal: any;
+
+@Component({
+	selector: 'app-tracks-play-book-partner-company-and-lists',
+	templateUrl: './tracks-play-book-partner-company-and-lists.component.html',
+	styleUrls: ['./tracks-play-book-partner-company-and-lists.component.css'],
+	providers: [HttpRequestLoader, SortOption, Properties, DamService]
+})
+export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
+
+	ngxLoading = false;
+	loggedInUserId: number = 0;
+	pagination: Pagination = new Pagination();
+	customResponse: CustomResponse = new CustomResponse();
+	@Input() companyId: any;
+	@Input() inputId: number;
+	@Input() moduleName: any;
+	@Input() selectedPartnerGroupIds: any[] = [];
+	@Input() selectedTeamMemberIds: any[] = [];
+	@Input() selectedPartnershipIds: any[] = [];
+	@Output() notifyParentComponent = new EventEmitter();
+	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+	responseMessage = "";
+	responseImage = "";
+	responseClass = "event-success";
+	statusCode: number = 0;
+	isAdd = true;
+	/******Partner Companies Varaibles******/
+	isHeaderCheckBoxChecked = false;
+	teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
+	sortOption: SortOption = new SortOption();
+	teamMembersPagination: Pagination = new Pagination();
+	adminsAndTeamMembersErrorMessage: CustomResponse = new CustomResponse();
+	/************Partner Group related variables**********/
+	partnerGroupsPagination: Pagination = new Pagination();
+	partnerGroupsSortOption: SortOption = new SortOption();
+	isParnterGroupHeaderCheckBoxChecked = false;
+	isPublishedToPartnerGroup = false;
+	modalPopupLoader: boolean;
+	showUsersPreview = false;
+	selectedPartnerGroupName = "";
+	selectedPartnerGroupId: number = 0;
+	tracksPlayBook: TracksPlayBook = new TracksPlayBook();
+
+	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
+		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
+		this.loggedInUserId = this.authenticationService.getUserId();
+		this.notifyParentComponent = new EventEmitter<any>();
+	}
+
+	ngOnInit() {
+		if (this.companyId != undefined && this.companyId > 0 &&
+			this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
+			this.pagination.type = this.moduleName;
+			this.partnerGroupsPagination.type = this.moduleName;
+			this.teamMembersPagination.type = this.moduleName;
+			if(this.inputId != undefined && this.inputId > 0){
+				this.isAdd = false;
+				this.pagination.learningTrackId = this.inputId;
+				this.partnerGroupsPagination.learningTrackId = this.inputId;
+				this.teamMembersPagination.learningTrackId = this.inputId;
+			} else {
+				this.isAdd = true;
+			}
+			this.findPartnerCompanies(this.pagination);
+		} else {
+			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
+		}
+	}
+
+	findPartnerCompanies(pagination: Pagination) {
+		this.referenceService.scrollToModalBodyTopByClass();
+		pagination.vendorCompanyId = this.companyId;
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
+			let data = result.data;
+			pagination.totalRecords = data.totalRecords;
+			this.sortOption.totalRecords = data.totalRecords;
+			$.each(data.list, function (_index: number, list: any) {
+				list.displayTime = new Date(list.createdTimeInString);
+			});
+			pagination = this.pagerService.getPagedItems(pagination, data.list);
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}, _error => {
+			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+		}, () => {
+
+		});
+	}
+
+	navigateToNextPage(event: any) {
+		this.pagination.pageIndex = event.page;
+		this.findPartnerCompanies(this.pagination);
+	}
+
+	partnersSearchOnKeyEvent(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+
+	/*************************Sort********************** */
+	sortBy(text: any) {
+		this.sortOption.selectedDamPartnerDropDownOption = text;
+		this.getAllFilteredResults("partnerCompanies", this.pagination, this.sortOption);
+	}
+	/*************************Search********************** */
+	searchPartners() {
+		this.getAllFilteredResults("partnerCompanies", this.pagination, this.sortOption);
+	}
+
+	getAllFilteredResults(type: string, pagination: Pagination, sortOption: SortOption) {
+		this.customResponse = new CustomResponse();
+		pagination.pageIndex = 1;
+		pagination.searchKey = sortOption.searchKey;
+		if (type == "partnerCompanies") {
+			pagination = this.utilService.sortOptionValues(sortOption.selectedDamPartnerDropDownOption, pagination);
+			this.findPartnerCompanies(pagination);
+		} else if (type == "partnerGroups") {
+			pagination = this.utilService.sortOptionValues(sortOption.selectedDamPartnerDropDownOption, pagination);
+			this.findPartnerGroups(pagination);
+		}
+	}
+
+	resetFields() {
+		this.pagination = new Pagination();
+		this.teamMembersPagination = new Pagination();
+		this.sortOption = new SortOption();
+		this.isHeaderCheckBoxChecked = false;
+		this.ngxLoading = false;
+	}
+
+	viewTeamMembers(item: any) {
+		this.teamMembersPagination = new Pagination();
+		this.isHeaderCheckBoxChecked = false;
+		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
+		this.pagination.pagedItems.forEach((element) => {
+			let partnerCompanyId = element.partnerCompanyId;
+			let clickedCompanyId = item.partnerCompanyId;
+			if (clickedCompanyId != partnerCompanyId) {
+				element.expand = false;
+			}
+		});
+		item.expand = !item.expand;
+		if (item.expand) {
+			this.referenceService.loading(this.teamMembersLoader, true);
+			this.teamMembersPagination.companyId = item.partnerCompanyId;
+			this.teamMembersPagination.partnershipId = item.partnershipId;
+			this.teamMembersPagination.type = this.moduleName;
+			if(!this.isAdd){
+				this.teamMembersPagination.learningTrackId = this.inputId;
+			} 
+			this.getTeamMembersAndAdmins(this.teamMembersPagination);
+
+		}
+	}
+
+
+
+	getTeamMembersAndAdmins(teamMembersPagination: Pagination) {
+		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
+		this.referenceService.loading(this.teamMembersLoader, true);
+		this.userService.findAdminsAndTeamMembers(teamMembersPagination).subscribe(
+			response => {
+				let data = response.data;
+				teamMembersPagination.totalRecords = data.totalRecords;
+				teamMembersPagination.maxResults = teamMembersPagination.totalRecords;
+				teamMembersPagination = this.pagerService.getPagedItems(teamMembersPagination, data.list);
+				/*******Header checkbox will be chcked when navigating through page numbers*****/
+				let teamMemberIds = teamMembersPagination.pagedItems.map(function (a) { return a.userId; });
+				let items = $.grep(this.selectedTeamMemberIds, function (element: any) {
+					return $.inArray(element, teamMemberIds) !== -1;
+				});
+				if (items.length == teamMemberIds.length && teamMemberIds.length > 0) {
+					this.isHeaderCheckBoxChecked = true;
+				} else {
+					this.isHeaderCheckBoxChecked = false;
+				}
+				this.referenceService.loading(this.teamMembersLoader, false);
+			}, error => {
+				this.xtremandLogger.error(error);
+				this.referenceService.loading(this.teamMembersLoader, false);
+				this.adminsAndTeamMembersErrorMessage = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			}
+		);
+	}
+
+	/************Page************** */
+	naviagtePages(event: any) {
+		this.teamMembersPagination.pageIndex = event.page;
+		this.getTeamMembersAndAdmins(this.teamMembersPagination);
+	}
+
+	adminAndTeamMembersKeySearch(keyCode: any) { if (keyCode === 13) { this.searchAdminsAndTeamMembers(); } }
+
+	searchAdminsAndTeamMembers() {
+		this.teamMembersPagination.pageIndex = 1;
+		this.getTeamMembersAndAdmins(this.teamMembersPagination);
+	}
+	/************Partner Company Checkbox related code starts here****************/
+	highlightAdminOrTeamMemberRowOnCheckBoxClick(teamMemberId: number, partnershipId: number, event: any) {
+		let isChecked = $('#' + teamMemberId).is(':checked');
+		if (isChecked) {
+			$('#publishToPartners' + teamMemberId).addClass('row-selected');
+			this.selectedTeamMemberIds.push(teamMemberId);
+		} else {
+			$('#publishToPartners' + teamMemberId).removeClass('row-selected');
+			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
+		}
+		this.checkHeaderCheckBox(partnershipId);
+		event.stopPropagation();
+		this.notifyParent();
+	}
+
+	checkHeaderCheckBox(partnershipId: number) {
+		let trLength = $('#admin-and-team-members-' + partnershipId + ' tbody tr').length;
+		let selectedRowsLength = $('[name="adminOrTeamMemberCheckBox[]"]:checked').length;
+		if (selectedRowsLength == 0) {
+			this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
+		} else {
+			this.selectedPartnershipIds.push(partnershipId);
+		}
+		this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
+		this.isHeaderCheckBoxChecked = (trLength == selectedRowsLength);
+		this.notifyParent();
+	}
+
+	highlightSelectedAdminOrTeamMemberRowOnRowClick(teamMemberId: number, partnershipId: number, event: any) {
+		let isChecked = $('#' + teamMemberId).is(':checked');
+		if (isChecked) {
+			//Removing Highlighted Row
+			$('#' + teamMemberId).prop("checked", false);
+			$('#publishToPartners' + teamMemberId).removeClass('row-selected');
+			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
+		} else {
+			//Highlighting Row
+			$('#' + teamMemberId).prop("checked", true);
+			$('#publishToPartners' + teamMemberId).addClass('row-selected');
+			this.selectedTeamMemberIds.push(teamMemberId);
+		}
+		this.checkHeaderCheckBox(partnershipId);
+		event.stopPropagation();
+		this.notifyParent();
+	}
+
+	selectAllTeamMembersOfTheCurrentPage(ev: any, partnershipId: number) {
+		if (ev.target.checked) {
+			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', true);
+			let self = this;
+			$('[name="adminOrTeamMemberCheckBox[]"]:checked').each(function (_index: number) {
+				var id = $(this).val();
+				self.selectedTeamMemberIds.push(parseInt(id));
+				$('#publishToPartners' + id).addClass('row-selected');
+			});
+			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
+			this.selectedPartnershipIds.push(partnershipId);
+			this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
+		} else {
+			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
+			$('#parnter-companies tr').removeClass("row-selected");
+			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
+			let currentPageSelectedIds = this.teamMembersPagination.pagedItems.map(function (a) { return a.userId; });
+			this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
+			this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
+			this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
+		}
+		ev.stopPropagation();
+		this.notifyParent();
+	}
+
+	clearAll(selectedTabName: string) {
+		if ("partners" == selectedTabName) {
+			this.selectedTeamMemberIds = [];
+			this.selectedPartnershipIds = [];
+			this.isHeaderCheckBoxChecked = false;
+		} else {
+			this.selectedPartnerGroupIds = [];
+			this.isParnterGroupHeaderCheckBoxChecked = false;
+		}
+		this.notifyParent();
+	}
+
+	startLoaders() {
+		this.ngxLoading = true;
+		this.referenceService.startLoader(this.httpRequestLoader);
+	}
+
+	stopLoaders() {
+		this.ngxLoading = false;
+		this.referenceService.stopLoader(this.httpRequestLoader);
+	}
+
+	/******************Partner Group related code starts here*********************/
+	findPartnerGroups(pagination: Pagination) {
+		this.customResponse = new CustomResponse();
+		this.referenceService.scrollToModalBodyTopByClass();
+		this.referenceService.startLoader(this.httpRequestLoader);
+		pagination.companyId = this.companyId;
+		this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
+			let data = result.data;
+			pagination.totalRecords = data.totalRecords;
+			this.partnerGroupsSortOption.totalRecords = data.totalRecords;
+			$.each(data.list, function (_index: number, list: any) {
+				list.displayTime = new Date(list.createdTimeInString);
+			});
+			pagination = this.pagerService.getPagedItems(pagination, data.list);
+			/*******Header checkbox will be chcked when navigating through page numbers*****/
+			let partnerGroupIds = pagination.pagedItems.map(function (a) { return a.id; });
+
+			let items = $.grep(this.selectedPartnerGroupIds, function (element: any) {
+				return $.inArray(element, partnerGroupIds) !== -1;
+			});
+			this.isParnterGroupHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}, _error => {
+			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+		}, () => {
+
+		});
+	}
+
+	partnerGroupsSearchOnKeyEvent(keyCode: any) { if (keyCode === 13) { this.searchPartnerGroups(); } }
+
+	searchPartnerGroups() {
+		this.getAllFilteredResults("partnerGroups", this.partnerGroupsPagination, this.partnerGroupsSortOption);
+	}
+
+	navigatePartnerGroups(event: any) {
+		this.partnerGroupsPagination.pageIndex = event.page;
+		this.findPartnerGroups(this.partnerGroupsPagination);
+	}
+
+	highlightSelectedPartnerGroupOnRowClick(partnerGroupId: any, event: any) {
+		this.referenceService.highlightRowOnRowCick('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
+		this.notifyParent();
+	}
+
+	highlightPartnerGroupRowOnCheckBoxClick(partnerGroupId: any, event: any) {
+		this.referenceService.highlightRowByCheckBox('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, 'parnterGroupsHeaderCheckBox', partnerGroupId, event);
+		this.notifyParent();
+	}
+
+	selectOrUnselectAllPartnerGroupsOfTheCurrentPage(event: any) {
+		this.selectedPartnerGroupIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, this.partnerGroupsPagination, event);
+		this.notifyParent();
+	}
+
+	previewUserListUsers(partnerGroup: any) {
+		this.showUsersPreview = true;
+		this.selectedPartnerGroupName = partnerGroup.groupName;
+		this.selectedPartnerGroupId = partnerGroup.id;
+	}
+
+	resetValues() {
+		this.showUsersPreview = false;
+		this.selectedPartnerGroupName = "";
+		this.selectedPartnerGroupId = 0;
+	}
+
+	notifyParent(){
+		this.tracksPlayBook.groupIds = this.selectedPartnerGroupIds;
+		this.tracksPlayBook.partnershipIds = this.selectedPartnershipIds;
+		this.tracksPlayBook.userIds = this.selectedTeamMemberIds;
+		this.notifyParentComponent.emit(this.tracksPlayBook);
+	}
+
+
+}
+

@@ -91,6 +91,7 @@ import { ManageTracksPlayBookComponent } from 'app/tracks-play-book-util/manage-
 import { PreviewTracksPlayBookComponent } from 'app/tracks-play-book-util/preview-tracks-play-book/preview-tracks-play-book.component'
 import { TracksPlayBookAnalyticsComponent } from 'app/tracks-play-book-util/tracks-play-book-analytics/tracks-play-book-analytics.component';
 import { TracksPlayBookPartnerAnalyticsComponent } from 'app/tracks-play-book-util/tracks-play-book-partner-analytics/tracks-play-book-partner-analytics.component';
+import { TracksPlayBookPartnerCompanyAndListsComponent } from 'app/tracks-play-book-util/tracks-play-book-partner-company-and-lists/tracks-play-book-partner-company-and-lists.component';
 
 @NgModule({
     imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule,TagInputModule, TranslateModule,DragulaModule,ColorPickerModule,CKEditorModule],
@@ -105,7 +106,7 @@ import { TracksPlayBookPartnerAnalyticsComponent } from 'app/tracks-play-book-ut
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
 		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent, ManageTracksPlayBookComponent,PreviewTracksPlayBookComponent,
-	    TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent],
+	    TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent,TracksPlayBookPartnerCompanyAndListsComponent],
 
 
 
@@ -120,7 +121,7 @@ import { TracksPlayBookPartnerAnalyticsComponent } from 'app/tracks-play-book-ut
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
 		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent,EmailTemplatePreviewUtilComponent,AddFormUtilComponent, AddTagsUtilComponent, AddTracksPlayBookComponent, DatePickerComponent,AddLeadComponent,BeeTemplateUtilComponent,CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent, ManageTracksPlayBookComponent,PreviewTracksPlayBookComponent, TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent]
+		ShareLeadsComponent,ImageLoaderComponent,CampaignsLaunchedByPartnersComponent,SpfDescriptionComponent, ManageTracksPlayBookComponent,PreviewTracksPlayBookComponent, TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent,PartnerCompanyAndGroupsModalPopupComponent,PreviewUserListComponent,TracksPlayBookPartnerCompanyAndListsComponent]
 
 
 

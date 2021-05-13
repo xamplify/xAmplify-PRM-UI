@@ -301,13 +301,12 @@
           <div class="portlet-body">
             <app-grid-loader *ngIf="assetLoader.isLoading"></app-grid-loader>
             <div class="row" *ngIf="!assetError">
-              <ul class="content__list" *ngFor="let file of assetPagination.pagedItems; let i =index;">
+              <ul class="content__list" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
                 <li class="list__item" [ngClass]="{'list__item--selected': isAssetSelected(file)}">
                   <div class="flex-row pointer">
-                    <div class="item__select-box-wrapper"
-                      (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
+                    <div class="item__select-box-wrapper">
                       <span class="select-box-asset"> <label>
-                          <input type="checkbox" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
+                          <input type="checkbox" (click)="$event.stopPropagation();">
                         </label>
                       </span> <span class="ng-scope"> <a style="cursor: default;"
                           class="item__preview item__preview--image img-container custom" target="_BLANK">
@@ -339,7 +338,7 @@
                         </div>
                         <div class="item__actions">
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="preview"
-                              (click)="assetPreview(file)" style="left: 10px;">
+                              (click)="$event.stopPropagation();assetPreview(file)" style="left: 10px;">
                               <i class="fa fa-external-link" aria-hidden="true"
                                 style="font-size: 20px; color: #5a5a5a"></i>
                             </a>
@@ -352,7 +351,7 @@
                 </li>
               </ul>
             </div>
-            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8">
+            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8" style="margin-top: 10px;">
               <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
                 (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
               </app-pagination>
@@ -374,226 +373,21 @@
 
     <!-- step 4 -->
     <div *ngIf="activeTabName == 'step-4'" class="setup-content step hiddenStepInfo" style="margin-top: 10px;">
-      <div class="panel with-nav-tabs panel-default">
-        <div class="panel-heading">
-          <ul class="nav nav-tabs">
-            <li class="active"><a href="#groupsTab" data-toggle="tab">Partner Lists</a></li>
-            <li><a href="#companiesTab" data-toggle="tab">Partner Companies</a></li>
-          </ul>
-        </div>
-        <div class="panel-body">
-          <div class="tab-content">
-            <div class="tab-pane fade in active row" id="groupsTab">
-              <div class="col-lg-12">
-                <div class="page-toolbar">
-                  <div class="btn-group pull-right">
-                    <div class="inputs float-right" style="display: inline-flex;">
-                      <div id="left">
-                        <select class="form-control" [(ngModel)]="groupsSortOption.selectedGroupsDropDownOption"
-                          (ngModelChange)="groupsSortBy($event)">
-                          <option *ngFor="let option of groupsSortOption.groupsSortDropDownOptions" [ngValue]="option">
-                            {{option.name}}</option>
-                        </select>
-                      </div>
-                      <div class="portlet-input input-inline" id="search-div">
-                        <div class="input-icon right" id="icon" style="padding-left: 5px;">
-                          <input type="text" id="sort-text-group" class="form-control"
-                            [(ngModel)]="groupsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                            placeholder="search..." (keypress)="groupsEventHandler($event.keyCode)">
-                          <button class="glyphicon glyphicon-remove search-box-item-clear"
-                            *ngIf="groupsSortOption.searchKey"
-                            (click)="groupsSortOption.searchKey='';searchGroups();"></button>
-                          <button type="submit" class="search-box-item-click" (click)="searchGroups()">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" style="padding-top: 10px;">
-                <app-list-loader *ngIf="groupsLoader.isLoading"></app-list-loader>
-                <div class="table-responsive" *ngIf="!groupsLoader.isLoading">
-                  <table class="table tgrid" *ngIf="groupsPagination.totalRecords > 0" id="group_list">
-                    <thead>
-                      <tr>
-                        <td align="center">
-                          <input type="checkbox" name="all" [(ngModel)]="isGroupHeaderCheckBoxChecked"
-                            (change)="checkAllGroups($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()" />
-                        </td>
-                        <th class="hidden-xs" colspan="2" style="width: 35%">
-                          <span class="ui-column-resizer"
-                            (mousedown)="referenceService.onMouseDown($event,'group_list',2)"> </span>
-                          <span class="gridHeader" translate>Partner List</span>
-                        </th>
-                        <th class="visible-xs" colspan="1" style="width: 45%" id="border-bottom">
-                          <span class="ui-column-resizer gray"
-                            (mousedown)="referenceService.onMouseDown($event,'group_list',1)">
-                          </span>
-                          <span class="gridHeader" translate>Partner List</span>
-                        </th>
-                        <th class="text-center" translate>Created On</th>
-                        <th class="text-center" translate>Total Partners</th>
-                        <th class="text-center" translate>Preview </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr role="row" *ngFor="let group of groupsPagination.pagedItems;let i = index"
-                        style="vertical-align: middle;padding: 0px;">
-                        <td class="text-center">
-                          <input type="checkbox" name="trackGroup" [checked]="isGroupSelected(group)"
-                            (change)="changeSelectedGroups(group,$event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()">
-                        </td>
-                        <td class="hidden-xs text-cente" style="width: 10%;">
-                          <img alt="Image not found" src="assets/admin/pages/media/works/contacts2.png"
-                            style="height: 70px;">
-                        </td>
-                        <td>
-                          <h4 class="moreipsis mt5 mb5 f-w-600" title="{{group.name}}" translate>
-                            <span><strong>{{group.name}}</strong></span>
-                          </h4>
-                          <h5 class='m0 ellipsis' title="{{group.uploadedBy}}" translate>
-                            By <span class='f-w-400'>{{group.uploadedBy
-                              | slice:0:50}} <span *ngIf="group.uploadedBy?.length>50">...</span>
-                            </span>
-                          </h5>
-                          <h5 class="mb0 ellipsis" title="{{group.companyName}}">
-                            <b>{{group.companyName | slice:0:50}}</b> <span
-                              *ngIf="group.companyName?.length>50">...</span>
-                          </h5>
-                        </td>
-                        <td class="text-center">
-                          <app-timestamp [isOnlyDate]="true" [dateAndTime]="group.createdDate">
-                          </app-timestamp>
-                        </td>
-                        <td class="text-center" title="{{group.noOfContacts}}">
-                          <span>{{group.noOfContacts}}</span>
-                        </td>
-                        <td class="text-center">
-                          <a (click)="getGroupList(group)">
-                            <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title=""
-                              data-original-title="Preview"></i>
-                          </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div *ngIf="groupsPagination.pagedItems.length !== 0" class="pg8">
-                  <app-pagination [pagination]="groupsPagination" (notifyParent)="setGroupsPage($event)"
-                    (notifyParentDropDown)="listGroups($event)" [hidden]="groupsLoader.isLoading">
-                  </app-pagination>
-                </div>
-                <!-- End of 24 -->
-                <div *ngIf="groupsPagination.totalRecords==0 && !groupsLoader.isLoading" class="alert alert-info">
-                  <strong>No Groups Found.</strong>
-                </div>
-              </div>
-            </div>
-            <div class="tab-pane fade row" id="companiesTab">
-              <div class="col-lg-12">
-                <div class="page-toolbar">
-                  <div class="btn-group pull-right">
-                    <div class="inputs float-right" style="display: inline-flex;">
-                      <div id="left">
-                        <select class="form-control"
-                          [(ngModel)]="PartnerCompaniesSortOption.selectedPartnerCompanyDropDownOption"
-                          (ngModelChange)="partnerCompaniesSortBy($event)">
-                          <option *ngFor="let option of PartnerCompaniesSortOption.partnerCompanySortDropDownOptions"
-                            [ngValue]="option">
-                            {{option.name}}</option>
-                        </select>
-                      </div>
-                      <div class="portlet-input input-inline" id="search-div">
-                        <div class="input-icon right" id="icon" style="padding-left: 5px;">
-                          <input type="text" id="sort-text-partner-company" class="form-control"
-                            [(ngModel)]="PartnerCompaniesSortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                            placeholder="search..." (keypress)="partnerCompaniesEventHandler($event.keyCode)">
-                          <button class="glyphicon glyphicon-remove search-box-item-clear"
-                            *ngIf="PartnerCompaniesSortOption.searchKey"
-                            (click)="PartnerCompaniesSortOption.searchKey='';searchPartnerCompaniess();"></button>
-                          <button type="submit" class="search-box-item-click" (click)="searchPartnerCompaniess()">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" style="padding-top: 10px;">
-                <app-list-loader *ngIf="PartnerCompaniesLoader.isLoading"></app-list-loader>
-                <div class="table-responsive" *ngIf="!PartnerCompaniesLoader.isLoading">
-                  <table class='table tgrid table-hover table-sm' *ngIf="PartnerCompaniesPagination.totalRecords > 0">
-                    <thead>
-                      <tr>
-                        <td align="center" style="width: 10%">
-                          <input type="checkbox" name="all" [(ngModel)]="isCompanyHeaderCheckBoxChecked"
-                            (change)="checkAllCompanies($event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()"
-                            id="checkAllExistingContacts" />
-                        </td>
-                        <th class="hidden-xs" colspan="2" style="width: 10%" id="border-bottom">
-                          <span class="gridHeader" translate>Company</span>
-                        </th>
-                        <th class="hidden-xs text-center">Partner Details</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr role="row" *ngFor="let company of PartnerCompaniesPagination.pagedItems;let i = index"
-                        style="vertical-align: middle;padding: 0px;">
-                        <td class="text-center">
-                          <input type="checkbox" [checked]="isPartnerCompanySelected(company)"
-                            (change)="changeSelectedpartnerCompanies(company,$event);validateGroupOrCompany();validateAllSteps();checkAllRequiredFields()">
-                        </td>
-                        <td class="hidden-xs text-cente" style="width: 10%;">
-                          <div class="thumbnail-wrapper">
-                            <img class="img-company-list"
-                              [src]="authenticationService.MEDIA_URL + company.partnerCompanyLogo"
-                              onerror="this.src='assets/images/company-profile-logo.png';">
-                          </div>
-                        </td>
-                        <td>
-                          <h4 class="moreipsis mt5 mb5 f-w-600" title="{{company.partnerCompanyName}}" translate>
-                            <span><strong>{{company.partnerCompanyName}}</strong></span>
-                          </h4>
-                        </td>
-                        <td class="text-center">
-                          <h4 class="moreipsis mt5 mb5 f-w-600" title="{{company.partnerFullName}}" translate>
-                            <span>{{company.partnerFullName}}</span>
-                          </h4>
-                          <h5 class="mb0 ellipsis" title="{{company.partnerEmailId}}">
-                            {{company.partnerEmailId}}
-                          </h5>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div *ngIf="PartnerCompaniesPagination.pagedItems.length !== 0" class="pg8">
-                  <app-pagination [pagination]="PartnerCompaniesPagination"
-                    (notifyParent)="setPartnerCompaniesPage($event)"
-                    (notifyParentDropDown)="listPartnerCompanies($event)" [hidden]="PartnerCompaniesLoader.isLoading">
-                  </app-pagination>
-                </div>
-                <div *ngIf="PartnerCompaniesPagination.totalRecords==0 && !PartnerCompaniesLoader.isLoading"
-                  class="alert alert-info">
-                  <strong>No Companies Found.</strong>
-                </div>
-              </div>
-            </div>
-            <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-3')"
-              translate>Previous</button>
-            <div class="pull-right">
-              <button class="btn btn-primary green" type="submit" [disabled]="!tracksPlayBook.isValid"
-                (click)="addOrUpdate()">{{SubmitButtonValue}}</button>
-              <button class="btn btn-primary green" type="submit" [disabled]="!tracksPlayBook.isValid"
-                *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()">{{SubmitAndPublishButtonValue}}</button>
-            </div>
-          </div>
-        </div>
+      <app-tracks-play-book-partner-company-and-lists [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId"
+        [moduleName]="'lms'" [selectedPartnerGroupIds]="tracksPlayBook.groupIds"
+        [selectedTeamMemberIds]="tracksPlayBook.userIds" [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
+        (notifyParentComponent)="changePartnerCompanyAndList($event)">
+      </app-tracks-play-book-partner-company-and-lists>
+      <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-3')"
+        translate>Previous</button>
+      <div class="pull-right">
+        <button class="btn btn-primary green" type="submit" [disabled]="!tracksPlayBook.isValid"
+          (click)="save()">{{SubmitButtonValue}}</button>
+        <button class="btn btn-primary green" type="submit" [disabled]="!tracksPlayBook.isValid"
+          *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()">{{SubmitAndPublishButtonValue}}</button>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -709,9 +503,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let form of formPagination.pagedItems ;let i =index">
+                    <tr *ngFor="let form of formPagination.pagedItems ;let i =index" (click)="updateDescription(form)">
                       <td>
-                        <input type="radio" (click)="updateDescription(form)">
+                        <input type="radio">
                       </td>
                       <td>
                         <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
@@ -729,7 +523,7 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">
+                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();previewForm(form.id)">
                           <i class="fa fa-eye" aria-hidden="true"></i>
                         </a>
                       </td>
@@ -995,59 +789,6 @@
   </div>
 </div>
 
-<!-- --------------List Of Partners In Group Popup--------------- -->
-<div class="modal right" id="group-info-list" data-backdrop="static">
-  <div class="modal-dialog modal-lg " style="width: 75%;right:0">
-    <div class="modal-content">
-      <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div class="modal-header">
-        <button type="button" class="close-circle" data-dismiss="modal">
-          <i class="fa fa-times" aria-hidden="true "></i>
-        </button>
-        <h4 class="modal-title pull-left" id="user-list-name" title="{{groupName}}">
-          <b>{{groupName|slice:0:20}}<span *ngIf="groupName?.length>20">..</span></b>
-        </h4>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-xs-12 p5">
-            <div class="table-responsive">
-              <table style="margin-bottom: 10px;" class="table table-striped table-hover table-bordered">
-                <thead>
-                  <tr>
-                    <th>EMAIL ID</th>
-                    <th>FIRST NAME</th>
-                    <th>LAST NAME</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let info of groupInfoPagination.pagedItems ;let i =index">
-                    <td><span *ngIf="info.emailId">{{info.emailId}}</span></td>
-                    <td><span *ngIf="info.emailId">{{info.firstName}}</span></td>
-                    <td><span *ngIf="info.emailId">{{info.lastName}}</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div *ngIf="groupInfoPagination.pagedItems.length !== 0" class="pg8">
-              <app-pagination [pagination]="groupInfoPagination" (notifyParent)="setGroupInfoPage($event)"
-                (notifyParentDropDown)="listGroupInfo($event)" [hidden]="isLoading">
-              </app-pagination>
-            </div>
-            <!-- End of 24 -->
-            <div *ngIf="groupInfoPagination.totalRecords==0 && !isLoading" class="alert alert-info">
-              <strong>No Data Found.</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- --------------List Of Quiz Forms Popup--------------- -->
 <div class="modal right" id="quiz-list" data-backdrop="static">
   <div class="modal-dialog modal-lg" style="width: 75%;right:0">
@@ -1156,54 +897,6 @@
   </div>
 </div>
 
-<!-- Preview Assets -->
-<ng-container *ngIf="showFilePreview">
-  <div class="overlay page-content">
-    <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
-      <i class="fa fa-times" aria-hidden="true"></i>
-    </button>
-    <div class="overlay-content">
-      <img *ngIf="isImage" [src]="filePath" alt="No Image Found"><br>
-      <video *ngIf="isVideo" width="320" height="240" controls>
-        <source [src]="filePath" [type]="fileType">
-        Your browser does not support the video tag.
-      </video>
-      <audio *ngIf="isAudio" controls>
-        <source [src]="filePath" [type]="fileType">
-        Your browser does not support the audio tag.
-      </audio>
-      <!-- <div *ngIf="isFile && filePath && viewer">
-        <ngx-doc-viewer [url]="filePath" [viewer]="viewer" disableContent="popout" style="width:100%;height:75vh;">
-        </ngx-doc-viewer>
-      </div> -->
-    </div>
-  </div>
-</ng-container>
-
-
-<!-- Preview Bee Template Modal Popup-->
-<div class="modal fade right" id="asset-preview-modal" tabindex="-1" role="dialog" data-backdrop="static"
-  data-keyboard="false">
-  <div class="modal-dialog modal-lg modal-template fullwidth" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
-        <h4 class="modal-title" id="assetTitle"></h4>
-      </div>
-      <div class="modal-body">
-        <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-        <div id="asset-preview-content">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- --------------List Of Assets Popup--------------- -->
 <div class="modal right" id="media-asset-list" data-backdrop="static">
   <div class="modal-dialog modal-lg" style="width: 75%;right:0">
@@ -1255,9 +948,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let asset of assetPagination.pagedItems ;let i =index">
+                    <tr *ngFor="let asset of assetPagination.pagedItems ;let i =index"
+                      (click)="addMediaToDescription(asset)">
                       <td>
-                        <input type="radio" (click)="addMediaToDescription(asset)"
+                        <input type="radio"
                           [checked]="selectedAssetForMedia != undefined && selectedAssetForMedia != null">
                       </td>
                       <td class="hidden-xs text-cente" style="width: 10%;">
@@ -1282,7 +976,8 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview">
+                        <a data-toggle="tooltip" data-placement="top" title="Preview"
+                          (click)="$event.stopPropagation();assetPreview(asset)">
                           <i class="fa fa-eye" aria-hidden="true"></i>
                         </a>
                       </td>
@@ -1315,6 +1010,51 @@
     </div>
   </div>
 </div>
+
+<!-- Preview Bee Template Modal Popup-->
+<div class="modal fade right" id="asset-preview-modal" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title" id="assetTitle"></h4>
+      </div>
+      <div class="modal-body" id="preview-bee-template">
+        <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+        <div id="asset-preview-content">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Preview Assets -->
+<ng-container *ngIf="showFilePreview">
+  <div class="overlay page-content">
+      <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+      <div class="overlay-content">
+          <img *ngIf="isImage" [src]="filePath" alt="No Image Found"><br>
+          <video *ngIf="isVideo" width="320" height="240" controls>
+              <source [src]="filePath" [type]="fileType">
+              Your browser does not support the video tag.
+          </video>
+          <audio *ngIf="isAudio" controls>
+              <source [src]="filePath" [type]="fileType">
+              Your browser does not support the audio tag.
+          </audio>
+          <div *ngIf="isFile && filePath?.length > 0">
+              <iframe [src]="url" style="width:100%; height:75vh;" frameborder="0"></iframe>
+          </div>
+      </div>
+  </div>
+</ng-container>
 
 <!-- --------------Media link title popup--------------- -->
 <div class="modal" id="media-link-title" data-backdrop="static" style="top: 25%;">
