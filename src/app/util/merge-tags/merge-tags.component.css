@@ -4,6 +4,7 @@
 #right{
 	float: right;
 	margin-bottom: 10px;
+	margin-right: 10px;
 }
 #left{
 	float: left;;
@@ -26,4 +27,13 @@
 }
 #merge-tag-text{
 	width: 50%;
+}
+
+.merge-tags-btn{
+	color: white;
+    background-color: #008fd5;
+    float: right;
+    margin-right: 10px;
+    margin-bottom: 10px;
+	margin-right: 10px;
 }

@@ -31,6 +31,7 @@
             </ul>
             <div id="folder-margin-xamp">
                 <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                <app-merge-tags [isEvent]="false" [isCampaign]="true"></app-merge-tags>
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -54,7 +55,7 @@
                     <div *ngIf="!isCampaignDetailsFormValid && campaignType=='video'" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block">
                             <span>
-                                <i class="fa fa-video-camera"></i>
+                                <i class="fa fa-video-camera" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs" translate>Select a Video</h5>
                         </div>
@@ -62,7 +63,7 @@
                     <div *ngIf="isCampaignDetailsFormValid && campaignType=='video'" id="step3" [attr.class]="videoTabClass" (click)="resetActive($event, 40, 'step-3');" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block">
                             <span>
-                                <i class="fa fa-video-camera"></i>
+                                <i class="fa fa-video-camera" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs" translate>Select a Video</h5>
                         </div>
@@ -70,7 +71,7 @@
                     <div *ngIf="!isCampaignDetailsFormValid ||!isVideo" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block">
                             <span>
-                                <i class="fa fa-users"></i>
+                                <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs">{{contactListTabName | translate}}</h5>
                         </div>
@@ -79,7 +80,7 @@
                     <div id="step4" *ngIf="isCampaignDetailsFormValid  && isVideo" [attr.class]="contactListTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 60, 'step-4');">
                         <div class="cenetered-block">
                             <span>
-                                <i class="fa fa-users"></i>
+                                <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs">{{contactListTabName}}</h5>
                         </div>
@@ -88,14 +89,14 @@
                         <div class="cenetered-block">
                             <ng-container *ngIf="campaignType=='landingPage'">
                                 <span>
-                                    <i class="fa fa-wpforms"></i>
+                                    <i class="fa fa-wpforms" aria-hidden="true"></i>
                                 </span>
                                 <h5 class="hidden-xs" translate>Page</h5>
                             </ng-container>
 
                             <ng-container *ngIf="campaignType!='landingPage'">
                                 <span>
-                                    <i class="fa fa-envelope"></i>
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
                                 </span>
                                 <h5 class="hidden-xs" translate>Email Template</h5>
                             </ng-container>
@@ -106,14 +107,14 @@
                         <div class="cenetered-block">
                             <ng-container *ngIf="campaignType=='landingPage'">
                                 <span>
-                                    <i class="fa fa-wpforms"></i>
+                                    <i class="fa fa-wpforms" aria-hidden="true"></i>
                                 </span>
                                 <h5 class="hidden-xs" translate>Page</h5>
                             </ng-container>
 
                             <ng-container *ngIf="campaignType!='landingPage'">
                                 <span>
-                                    <i class="fa fa-envelope"></i>
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
                                 </span>
                                 <h5 class="hidden-xs" translate>Email Template</h5>
                             </ng-container>
@@ -123,7 +124,7 @@
                     <div *ngIf="!isCampaignDetailsFormValid  || !isVideo || !isContactList  || !isEmailTemplate || !isLandingPage" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block">
                             <span>
-                                <i class="fa fa-flag"></i>
+                                <i class="fa fa-flag" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs" translate>Launch</h5>
                         </div>
@@ -132,7 +133,7 @@
                     <div id="step6" *ngIf="isCampaignDetailsFormValid  && isVideo && isContactList  &&isEmailTemplate && isLandingPage" [attr.class]="launchCampaignTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 100, 'step-6');addUserEmailIds();">
                         <div class="cenetered-block">
                             <span>
-                                <i class="fa fa-flag"></i>
+                                <i class="fa fa-flag" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs" translate>Launch</h5>
                         </div>
@@ -142,7 +143,7 @@
                 <div class="row setup-content step activeStepInfo" id="step-2">
                     <!-- <br> -->
                     <div class="col-xs-12">
-                        <form role="form" class="form-horizontal form-bordered form-label-stripped" id="campaignDetailsForm">
+                        <form role="form" class="form-horizontal form-bordered form-label-stripped" id="campaignDetailsForm" aria-labelledby="form-label">
                             <div style="margin-top: 10px;">
                                 <div class="portlet box">
                                     <div class="portlet-body form">
@@ -151,19 +152,18 @@
                                             <div class="form-group" [attr.class]="campaignNameDivClass">
                                                 <label class="control-label col-sm-4" translate>Campaign name
                                                     <br><small translate>(Save as)</small>
-                                                    <font style="color: red">*</font>
+                                                    <span style="color: red">*</span>
                                                 </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"
-                                                    />
+                                                    <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"/>
                                                     <span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red" translate>Already Exists</span>
                                                 </div>
                                             </div>
 
                                             <div class="form-group" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>Folder
-                                                    <font style="color: red"><b>*</b>
-                                                    </font>
+                                                    <span style="color: red"><strong>*</strong>
+                                                    </span>
                                                 </label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
@@ -174,7 +174,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-
 
                                             <div class="form-group" *ngIf="!isOnlyPartner">
                                                 <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}"><strong translate>Through Partner
@@ -263,9 +262,9 @@
 
                                             <div class="form-group" [attr.class]="fromNameDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>From Name
-                                                    <font style="color: red">
-                                                        <b>*</b>
-                                                    </font>
+                                                    <span style="color: red">
+                                                        <strong>*</strong>
+                                                    </span>
                                                 </label>
                                                 <div class="col-sm-8">
                                                     <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" />
@@ -273,12 +272,12 @@
                                             </div>
                                             <div class="form-group" [attr.class]="subjectLineDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>Subject Line
-                                                    <font style="color: red">
-                                                        <b>*</b>
-                                                    </font>
+                                                    <span style="color: red">
+                                                        <strong>*</strong>
+                                                    </span>
                                                 </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" id="subjectLineId" placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="200" />
+                                                    <input type="text" id="subjectLineId" placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="200" (input)="validateForm();validateField('subjectLine');" />
                                                 </div>
                                             </div>
                                             <div class="form-group" [attr.class]="fromEmaiDivClass" *ngIf="campaignType!='sms'">
@@ -294,12 +293,8 @@
                                                             {{teamMember.emailId}}
                                                         </option>
                                                     </select>
-
                                                 </div>
                                             </div>
-
-                                          
-
                                             <div class="form-group" [attr.class]="preHeaderDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>Pre Header<span
                                                         style="color: red"><strong>*</strong></span></label>
@@ -345,11 +340,8 @@
                                                             </div>
                                                         </div>
 
-
-
                                                         <div class="email-options-checkbox clearfix" *ngIf="campaignType=='sms'">
                                                             <div class="col-sm-1 ui-switch-custom-div">
-                                                                <!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.emailOpened" name="emailOpened"  (change)=setEmailOpened($event)></ui-switch> -->
                                                                 <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="setEmailOpened($event)">
                                                                 </switch>
@@ -359,13 +351,11 @@
                                                             </div>
                                                         </div>
 
-
                                                         <div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
                                                             <div class="col-sm-1 ui-switch-custom-div">
                                                                 <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="setVideoPlayed($event)">
                                                                 </switch>
-                                                                <!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.videoPlayed" name="videoPlayed"  (change)=setVideoPlayed($event)></ui-switch> -->
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
                                                                 <label translate>Video is played</label>
@@ -374,8 +364,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
 
                                             <div class="form-group" *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
                                                 <label class="control-label col-sm-4" translate>Push To Marketing Automation
