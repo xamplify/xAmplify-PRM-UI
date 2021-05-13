@@ -142,7 +142,15 @@ export class SaveAsComponent implements OnInit {
             	  for (let i = 0; i < this.editContactsComponent.selectedContactForSave.length; i++) {
                       this.editContactsComponent.selectedContactForSave[i].legalBasis = selectedLegalBasisOptions;
                   }
-                  console.log(this.editContactsComponent.selectedContactForSave);
+                  const map = {};
+                  const newArray = [];
+                  this.editContactsComponent.selectedContactForSave.forEach(el => {
+                     if(!map[JSON.stringify(el)]){
+                        map[JSON.stringify(el)] = true;
+                        newArray.push(el);
+                  }
+               });
+               this.editContactsComponent.selectedContactForSave = newArray;
                   this.userUserListWrapper.users = this.editContactsComponent.selectedContactForSave;
                   this.userUserListWrapper.userList = this.contactListObject;
                   this.saveAssignedLeadsList(this.userUserListWrapper);
