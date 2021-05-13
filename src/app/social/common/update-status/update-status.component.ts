@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
@@ -13,6 +13,7 @@ import { SocialStatusProvider } from '../../models/social-status-provider';
 
 import { ContactList } from '../../../contacts/models/contact-list';
 import { CustomResponse } from '../../../core/models/custom-response';
+
 import { ResponseType } from '../../../core/models/response-type';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
@@ -30,6 +31,8 @@ import { Timezone } from '../../../core/models/timezone';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { Validators } from '@angular/forms';
 import { PieChartGeoDistributionComponent } from 'app/social/twitter/pie-chart-geo-distribution/pie-chart-geo-distribution.component';
+import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+
 declare var $, flatpickr, videojs, swal: any;
 
 @Component({
@@ -86,6 +89,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	nurtureCampaign = false;
 	isSavedUrlIsInStatusMessage: boolean;
 	removeOgTags: boolean = false;
+	@ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+	folderCustomResponse: CustomResponse = new CustomResponse();
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
 		public authenticationService: AuthenticationService, private contactService: ContactService,
@@ -271,9 +276,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						data => {
 							for (const i of Object.keys(data)) {
 								const socialStatusContent = data[i];
-								if(socialStatus.validLink){
+								if (socialStatus.validLink) {
 									socialStatus.ogImage = socialStatusContent.completeFilePath;
-								}else{
+								} else {
 									socialStatus.socialStatusContents.push(socialStatusContent);
 								}
 							}
@@ -470,7 +475,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						this.customResponse.statusText = null;
 						this.socialStatusList.forEach(data => {
 							data.removeOgTags = false;
-							});
+						});
 					},
 					error => {
 						this.loading = false;
@@ -551,9 +556,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	initializeSocialStatus() {
 		this.socialStatusList = [];
 		this.isAllSelected = false;
-        this.selectedAccounts = 0;
-        //added by Ajay
-        this.socialStatus = new SocialStatus();
+		this.selectedAccounts = 0;
+		//added by Ajay
+		this.socialStatus = new SocialStatus();
 
 		let socialStatus = new SocialStatus();
 		socialStatus.userId = this.userId;
@@ -1269,16 +1274,16 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 	}
 
-		getOgTagsData(socialStatus: any) { 
+	getOgTagsData(socialStatus: any) {
 		let url = socialStatus.statusMessage;
 		let req = { "userId": this.userId, "q": url };
 		this.socialService.getOgMetaTags(req).subscribe(data => {
 			if (data.statusCode === 8105) {
 				let response = data.data;
 				if (response !== undefined && response !== '') {
-					if(response.defaultOgImage){
+					if (response.defaultOgImage) {
 						socialStatus.ogImage = response.imageUrl;
-					}else{
+					} else {
 						socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
 					}
 					socialStatus.originalOgImage = socialStatus.ogImage;
@@ -1291,28 +1296,28 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				}
 			} else {
 				this.clearRssOgTagsFeed(socialStatus);
-				
-			}            
+
+			}
 		}, error => {
 			this.clearRssOgTagsFeed(socialStatus);
-            console.log(error);
+			console.log(error);
 		}, () => console.log("Campaign Names Loaded"));
 	}
 
-		clearRssOgTagsFeed(socialStatus: any) {
-			this.isSavedUrlIsInStatusMessage = socialStatus.statusMessage.includes(this.validURL);
-			if(this.isSavedUrlIsInStatusMessage){
-				this.savedURL = socialStatus.statusMessage;
-			}
-			else{
-				socialStatus.ogImage = ""
-				socialStatus.ogTitle = "";
-				socialStatus.ogDescription = "";
-				socialStatus.validLink = false;
-				socialStatus.ogt = false;
-				this.savedURL = '';
-			}
-        
+	clearRssOgTagsFeed(socialStatus: any) {
+		this.isSavedUrlIsInStatusMessage = socialStatus.statusMessage.includes(this.validURL);
+		if (this.isSavedUrlIsInStatusMessage) {
+			this.savedURL = socialStatus.statusMessage;
+		}
+		else {
+			socialStatus.ogImage = ""
+			socialStatus.ogTitle = "";
+			socialStatus.ogDescription = "";
+			socialStatus.validLink = false;
+			socialStatus.ogt = false;
+			this.savedURL = '';
+		}
+
 	}
 
 	listCategories() {
@@ -1336,17 +1341,29 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	closeOgTags(targetSocialStatus: SocialStatus){
+	closeOgTags(targetSocialStatus: SocialStatus) {
 		this.socialStatusList.forEach(data => {
-			if(data.socialStatusProvider.socialConnection.id === targetSocialStatus.socialStatusProvider.socialConnection.id){
+			if (data.socialStatusProvider.socialConnection.id === targetSocialStatus.socialStatusProvider.socialConnection.id) {
 				data.ogDescription = null;
 				data.ogImage = null;
 				data.ogTitle = null;
 				data.ogImagePath = null;
 				data.originalOgImage = null;
 				data.removeOgTags = true;
-			}	
+			}
 		});
 	}
 
+	openCreateFolderPopup(){
+		this.addFolderModalPopupComponent.openPopup();
+	}
+
+	showSuccessMessage(message: any) {
+		this.referenceService.showSweetAlertSuccessMessage(message);
+		this.listCategories();
+	}
+
+
 }
+
+

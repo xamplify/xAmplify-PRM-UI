@@ -29,13 +29,9 @@ a.disabled{
 pointer-events: none;
 }
 .logo-default{
-    /* height: 40px; */
-    /* height: 60px;
-    width: 115px;
-    margin: 3px auto !important; */
-    height: 45px;
     width: 115px;
     margin: 10px auto !important;
+    padding-top:10px;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img{
     margin-top: -10px !important;
@@ -114,3 +110,6 @@ label{font-weight: bold !important;}
 	padding: 17px 5px 0px 0px;
 }
 
+.overflow-hidden{
+	overflow: hidden !important;
+}

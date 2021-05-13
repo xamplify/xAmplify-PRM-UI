@@ -222,6 +222,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	excludeUserPagination: Pagination = new Pagination();
 	excludeDomainPagination: Pagination = new Pagination();
 	excludeUsersOrDomains = false;
+	modalpopuploader = false;
 	isUpdateUser = false;
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
@@ -2749,10 +2750,41 @@ configSalesforce() {
         } else{
             this.validEmailPatternSuccess = false;
         }    
-    }
+	}
+
+	getCompanyName(){
+		let companyName = " your company";
+		if(this.currentUser!=undefined){
+			if(this.currentUser['logedInCustomerCompanyNeme']!=undefined){
+				companyName =  this.currentUser['logedInCustomerCompanyNeme'];
+			}
+		}
+		return companyName;
+	}
+	
+	confirmAndsaveExcludedUser(excludedUser:User){
+		let emailId = '<strong>'+excludedUser.emailId+'</strong>';
+		let companyName = '<strong>'+this.getCompanyName()+"</strong>.";
+		let text = "Adding this email to your exclusion list ensures that "+emailId+" no longer receives any campaigns from "+companyName;
+		let self = this;
+			swal({
+				title: 'Are you sure want to continue?',
+				text: text,
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				allowOutsideClick: false,
+				confirmButtonText: 'Yes'
+			}).then(function () {
+				self.saveExcludedUser(excludedUser);
+			}, function (dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+	}
       
     saveExcludedUser(excludedUser: User) {
-    	this.ngxloading = true;
+    	this.modalpopuploader = true;
     	this.validEmailFormat  = true;   
         this.isEmailExist  = false;
         this.userService.saveExcludedUser(excludedUser, this.loggedInUserId)
@@ -2762,17 +2794,17 @@ configSalesforce() {
                     this.addContactModalClose();
                     this.excludeUserCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
                     this.listExcludedUsers(this.excludeUserPagination);
-                    this.ngxloading = false;
+                    this.modalpopuploader = false;
                 } else if (data.statusCode == 401) { 
-                	   this.ngxloading = false;
+                	   this.modalpopuploader = false;
                 	this.validEmailFormat = false;
                 } else if (data.statusCode == 402) {
-                	this.ngxloading = false;
+                	this.modalpopuploader = false;
                 	this.isEmailExist = true;
                 }                
             },
             error => {
-                this.ngxloading = false;
+                this.modalpopuploader = false;
             },
             () => { }
             );
@@ -2806,7 +2838,8 @@ configSalesforce() {
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#54a7e9',
-            cancelButtonColor: '#999',
+			cancelButtonColor: '#999',
+			allowOutsideClick: false,
             confirmButtonText: 'Yes, delete it!'
 
         }).then(function() {
@@ -2866,10 +2899,31 @@ configSalesforce() {
     validateDomainName( domain: string ) {
         var DOMAIN_NAME_PATTERN = this.regularExpressions.DOMAIN_PATTERN;
         return DOMAIN_NAME_PATTERN.test( domain );
-    }
+	}
+	
+	confirmAndsaveExcludedDomain(domain:string){
+		let updatedDomain = '<strong>'+domain+'</strong>';
+		let companyName = '<strong>'+this.getCompanyName()+"</strong>.";
+		let text = "Adding this domain to your exclusion list ensures that "+updatedDomain+" users no longer receive any campaigns from "+companyName;
+		let self = this;
+			swal({
+				title: 'Are you sure want to continue?',
+				text: text,
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				allowOutsideClick: false,
+				confirmButtonText: 'Yes'
+			}).then(function () {
+				self.saveExcludedDomain(domain);
+			}, function (dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+	}
     
     saveExcludedDomain(domain:string){
-    	this.ngxloading = true;
+    	this.modalpopuploader = true;
     	this.isDomainExist = false;
     	this.validDomainFormat = true;
         this.userService.saveExcludedDomain(domain, this.loggedInUserId)
@@ -2879,17 +2933,17 @@ configSalesforce() {
                 this.addDomainModalClose();
                 this.excludeDomainCustomResponse  = new CustomResponse('SUCCESS', data.message, true);
                 this.listExcludedDomains(this.excludeDomainPagination);
-                this.ngxloading = false;
+                this.modalpopuploader = false;
             } else if (data.statusCode == 401) { 
-                   this.ngxloading = false;
+                   this.modalpopuploader = false;
                    this.isDomainExist = true;
             } else if (data.statusCode == 402) {
             	this.validDomainFormat = false;
-                this.ngxloading = false;
+                this.modalpopuploader = false;
             }                
         },
         error => {
-            this.ngxloading = false;
+            this.modalpopuploader = false;
         },
         () => { }
         );

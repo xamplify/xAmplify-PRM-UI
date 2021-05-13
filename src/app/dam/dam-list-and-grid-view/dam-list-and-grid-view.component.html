@@ -170,11 +170,12 @@
 										</a> <a *ngIf="isPartnerView" title="View Details"
 											(click)="viewDetails(asset)"> <i class="fa fa-eye"
 											aria-hidden="true"></i>
-										</a> </ng-container>
+										</a>
 										<a *ngIf="!isPartnerView" title="Delete"
 											(click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
 											aria-hidden="true"></i>
 										</a>
+									 </ng-container>
 									</div>
 								</td>
 							</tr>
@@ -279,7 +280,7 @@
 					<div class="col-md-3 col-sm-4 col-xs-12"
 						*ngFor="let asset of pagination.pagedItems ;let i =index"
 						id="assetList_{{asset.id}}">
-						<div class="grid-box min-h">
+						<div class="grid-box min-h default-cursor">
 							<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
 								alt="{{asset?.assetName}}">
 							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">

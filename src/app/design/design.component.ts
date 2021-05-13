@@ -3,6 +3,8 @@ import { AuthenticationService } from '../core/services/authentication.service';
 import { XtremandLogger } from '../error-pages/xtremand-logger.service';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { ReferenceService } from 'app/core/services/reference.service';
+
 @Component({
   selector: 'app-design',
   templateUrl: './design.component.html',
@@ -16,7 +18,7 @@ export class DesignComponent implements OnInit {
     landingPageDescription:string = "";
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     customResponse:CustomResponse = new CustomResponse();
-  constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService) {
+  constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService,public referenceService:ReferenceService) {
    }
 
   ngOnInit() {

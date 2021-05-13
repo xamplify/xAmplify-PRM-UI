@@ -1,10 +1,11 @@
 <div class="page-content">
     <div class="page-bar">
         <ul class="page-breadcrumb">
-            <li><i class="fa fa-home"></i> <a translate>Home</a> <i class="fa fa-angle-right"></i></li>
-            <!-- <li><a [routerLink]="['../../campaigns/manage']">Manage Publish</a> <i class="fa fa-angle-right"></i></li> -->
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                 <a translate [routerLink]="referenceService?.homeRouter">Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
             <li><a translate>Create Design</a></li>
-
         </ul>
     </div>
     <!-- End of page-bar -->
@@ -16,10 +17,8 @@
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
             <div class="portlet light">
                 <div class="portlet-title">
-
                     <div class="caption" translate>
-                        <i class="fa fa-cogs"></i>Create a Design
-
+                        <i class="fa fa-cogs" aria-hidden="true"></i>Create a Design
                     </div>
                     <div>
                         <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>

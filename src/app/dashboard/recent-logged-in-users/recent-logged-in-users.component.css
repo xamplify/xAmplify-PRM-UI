@@ -1,0 +1,36 @@
+#search-margin{
+	margin-right: 15px;
+}
+#icon-right{
+	position: relative;right: -11px;
+}
+
+.prrtpx{
+	position: relative;
+	right: -3px;
+}
+
+#search-text{
+	height:34px;
+}
+.fa.fa-refresh.margin{
+	line-height: 15px;
+}
+#left{
+	float:left;
+}
+#center{
+	text-align: center;
+}
+
+.highletedRow{
+	cursor:pointer
+}
+
+.highletedRow:hover {
+	background-color:#a6d9f5;
+}
+
+.selectedRow {
+	background-color:#a6d9f5;
+}

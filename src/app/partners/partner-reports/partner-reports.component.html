@@ -12,7 +12,8 @@
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li *ngIf="authenticationService.isSuperAdmin()">
-        <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="['/home/dashboard/admin-report']">Admin
           Report</a><i class="fa fa-angle-right" aria-hidden="true"></i></li>
       <li>
         <a>Partner Analytics</a>
@@ -53,7 +54,7 @@
                   <div class="desc">Redistributed Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                  <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
             </div>
@@ -270,243 +271,9 @@
   
   <!-- ------****************Through Partner Div************************** -->
   <div id="redistribute-partners-div" style="display: none;">
-    <div class="row">
-
-      <div class="col-xs-12 p5">
-        <div class="portlet light">
-          <div class="portlet-title" style="font-size: 16px; padding-bottom: 8px;">
-            <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
-            <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase">Redistributed Campaigns</span>
-            </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
-            <div class="inputs" align="right" style="float: right">
-              <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6">
-              <div style="float: left;">
-                <select class="form-control" [(ngModel)]="sortOption.defaultSortOption" (ngModelChange)="getSortedResultForPartnerCampaigns($event,'partner-campaign-details')"
-                  style="position: relative;right: -3px;">
-                  <option *ngFor="let option of sortOption.partnerCampaignDetailsSortDropDown" [ngValue]="option">{{option.name}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6 p0">
-              <div class="portlet-input input-inline" style="margin-right: 12px; width:170px">
-                <div class="input-icon right" style="position: relative;right: -11px;">
-                  <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="Search" (keypress)="searchPartnerCampaignKeyPress($event.keyCode,'partner-campaign-details')">
-                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
-                  <button type="submit" class="search-box-item-click" (click)="searchPartnerCampaigns('partner-campaign-details')">
-                    <i class="fa fa-search" aria-hidden="true"></i></button>
-                </div>
-              </div>
-              <a *ngIf="sortOption.totalRecords>0 && !campaignUserInteractionHttpRequestLoader.isLoading" class="close-circle" (click)="downloadCsv()">
-                  <i  class="fa fa-download" aria-hidden="true"></i>
-              </a>
-              </div>
-            </div>
-            </div>
-          </div>
-          <app-list-loader *ngIf="campaignUserInteractionHttpRequestLoader.isLoading"></app-list-loader>
-          <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!campaignUserInteractionHttpRequestLoader.isLoading">
-           <div class="table-responsive">
-            <table class="table tgrid">
-              <thead>
-                <tr>
-                  <!-- <th>partner Company Name</th> -->
-                  <th class="center-aligned">Campaign Name</th>
-                  <th class="center-aligned">Launched By (Vendor)</th>
-                   <th class="center">Total Recipients <i class="fa fa-envelope sky-blue"></i></th>
-                   <th class="center">Active Recipients <i class="fa fa-envelope-open sky-blue"></i></th>
-                   <th class="center">Clicked URL <i class="fa fa-globe sky-blue"></i></th>
-                   <th class="center">Views <i class="fa fa-eye sky-blue"></i></th>
-                  <th class="center">#Redistributed</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
-                  <tr>
-                    <td class="re-distributed-count" title="{{item.campaignName}}">{{item.campaignName | slice:0:20}}
-                     	<span *ngIf="item.campaignName?.length>20">...</span>
-                    </td>
-                    <td>
-                      <h5 class='ellipsis' title="{{item.firstName}} {{item.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{item.firstName
-                        | slice:0:20}}
-                        <span *ngIf="item.firstName?.length>20">...</span>
-                        &nbsp;{{item.lastName | slice:0:15}}
-                        <span *ngIf="item.lastName?.length>15">...</span>
-                      </h5>
-                      <h6 class='m0' style="font-weight: 400; display: table;">
-                        <span title="">{{item.emailId | slice:0:38}}</span>
-                        <span *ngIf="item.emailId?.length>38">...</span>
-                      </h6>
-                      	<h5 style="font-weight: 600; color: #676767;">
-                      	<app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp></h5>
-                    </td>
-                    <td class="center">
-                    	<div>
-                      <button class="btn btn-default btn-xs re-distributed-high-level">
-                        <div class="portlet-body text-center">
-                          <h4>
-                            <b class="sky-blue">{{item.totalRecipients}}</b>
-                          </h4>
-                        </div>
-                      </button>
-                    </div>
-                     </td>
-                      <td class="center">
-                     	<div>
-                        <button class="btn btn-default btn-xs re-distributed-high-level">
-                          <div class="portlet-body text-center">
-                            <h4>
-                              <b class="sky-blue">{{item.activeRecipients}}</b>
-                            </h4>
-                          </div>
-                        </button>
-                      </div>
-                     </td>
-                     <td class="center">
-                    	<div>
-                      <button class="btn btn-default btn-xs re-distributed-high-level">
-                        <div class="portlet-body text-center">
-                          <h4>
-                            <b class="sky-blue">{{item.clickedUrls}}</b>
-                          </h4>
-                        </div>
-                      </button>
-                    </div>
-                    </td>
-                     <td class="center">
-                      	<div>
-                        <button class="btn btn-default btn-xs re-distributed-high-level">
-                          <div class="portlet-body text-center">
-                            <h4>
-                              <b class="sky-blue">{{item.views}}</b>
-                            </h4>
-                          </div>
-                        </button>
-					        	</div>
-                   	</td>
-                    <td style="text-align: right;">
-                      <div class="actions-block">
-                        <font class="circled-number">{{item.redistributedCampaignsCount}}</font>
-                        <a  (click)="showRedistributedCampaings(item)" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item.redistributedCampaignsCount> 0">
-                          <i class="fa" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}"></i>
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr [ngClass]="{'hidden': !item.expand}">
-                    <td colspan="8">
-                      <table class="table tgrid table-condensed" style="background-color: #463c2c24">
-                        <thead>
-                          <tr>
-                              <!-- style="float: left;margin-left: 70px;" -->
-                            <th  class="center-aligned" style="width: 24%">Partners</th>
-                            <th class="center-aligned">Campaign Name</th>
-                            <th class="center">Total Recipients</th>
-                            <th class="center">Active Recipients</th>
-                            <th class="center">Clicked URL</th>
-                            <th class="center">Views</th>
-                            <th class="center">Analytics</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let redistributedCampaign of item.redistributedCampaigns" style="cursor: pointer;" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)">
-                            <td>
-                              <app-user-info [userInfo]="redistributedCampaign" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
-                            </td>
-                            <td>
-                            <div class="flex">
-                              <span>
-                                <h5 class='ellipsis' title="{{redistributedCampaign.campaignName}}" style="font-weight: 400;">{{redistributedCampaign.campaignName | slice:0:20}}
-                                  <span *ngIf="redistributedCampaign.campaignName?.length>20">...</span>
-                                </h5>
-                                <h5 style="font-weight: 600; color: #676767;">
-                                <app-timestamp [isOnlyDate]="false" [dateAndTime]="redistributedCampaign.displayTime"> </app-timestamp></h5>
-                              </span>
-                            </div>
-                            </td>
-                            <td class="center">
-		                    	<div class="actions-block float-none ">
-		                    		<a data-toggle="tooltip" data-placement="top">
-                            <span class="circled-number"><b>{{redistributedCampaign.totalRecipients}}</b></span>
-                          </a>
-                        </div>
-                     		</td>
-		                      <td class="center">
-		                     	<div class="actions-block float-none">
-		                    		<a data-toggle="tooltip" data-placement="top">
-                            <span class="circled-number"><b>{{redistributedCampaign.activeRecipients}}</b></span>
-                          </a>
-                        </div>
-		                     </td>
-		                     <td class="center">
-		                    	<div class="actions-block float-none">
-		                    		<a data-toggle="tooltip" data-placement="top">
-                            <span class="circled-number"><b>{{redistributedCampaign.clickedUrls}}</b></span>
-                          </a>
-                        </div>
-		                    </td>
-		                     <td class="center">
-		                      	<div class="actions-block float-none">
-		                    		<a data-toggle="tooltip" data-placement="top">
-                            <span class="circled-number"><b>{{redistributedCampaign.views}}</b></span>
-                          </a>
-                        </div>
-		                   	</td>
-                            <td class="text-center">
-                              <a *ngIf="!redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
-                                data-placement="top" title="Campaign Based Reports" class='circled-number'>
-                                <i class="fa fa-line-chart"></i>
-                              </a>
-                              <a *ngIf="redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
-                                data-placement="top" title="Campaign Based Reports" class='circled-number' style="margin-left: -47px;">
-                                <i class="fa fa-line-chart"></i>
-                              </a>
-                              <!-- <ng-container *ngIf="redistributedCampaign.formsCount>0">
-                              	 <a data-rel="fancybox-button" routerLink="/home/forms/cf/{{redistributedCampaign.campaignId}}" data-toggle="tooltip" 
-                                data-placement="top" title="Form Analytics" class='circled-number'>
-                                <i class="fa fa-wpforms"></i>
-                             	 </a>
-                               <span class="badge" id="notification">{{redistributedCampaign.formsCount}}</span>
-                              </ng-container> -->
-                             <!--  <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!redistributedCampaign.dataShare">
-                                <img src="../assets/images/disabled-icon.png">
-                              </a> -->
-                              
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </td>
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
-           </div>
-            <div *ngIf="sortOption.totalRecords==0" class="alert alert-info">
-              <strong>No campaigns found</strong>
-            </div>
-          </div>
-          <div *ngIf="sortOption.totalRecords > 0 && !campaignUserInteractionHttpRequestLoader.isLoading && !campaignUserInteractionHttpRequestLoader.isServerError"
-            style="background:white">
-            <div *ngIf="pagination.pagedItems.length !== 0">
-              <app-pagination [pagination]="pagination" [type]="'userInteraction'" [isDropdown]="true" (notifyParent)="setPartnerCampaignsPageByType($event,'partner-campaign-details')"
-                (notifyParentDropDown)="listRedistributedThroughPartnerCampaigns($event)">
-              </app-pagination>
-              <select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize" (ngModelChange)="getNumberOfItemsPerPageByType($event,'partner-campaign-details')">
-                <option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
-              </select>
-            </div>
-          </div>
-
-          <!--  <app-pagination [pagination]="pagination" [type]="'userInteraction'" (notifyParentDropDown)="paginationDropdown($event)"
-                (notifyParent)="setPage($event)"></app-pagination> -->
-        </div>
-      </div>
-    </div>
+  <app-redistributed-campaigns *ngIf="selectedTabIndex==2" [selectedIndex]="2"></app-redistributed-campaigns>
   </div>
+  
   <div id="through-partner-div" style="display: none;">
     <div class="row">
       <div class="col-md-12">

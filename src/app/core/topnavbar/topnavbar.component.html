@@ -8,7 +8,7 @@
     <!-- BEGIN HEADER INNER -->
     <div class="page-header-inner">
         <!-- BEGIN LOGO -->
-        <div class="page-logo">
+        <div class="page-logo overflow-hidden">
             <!--  -->
             <a [routerLink]="refService.homeRouter">
                 <img *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" (error)="errorImage($event)" alt="logo" class="logo-default" />

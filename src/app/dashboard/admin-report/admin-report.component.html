@@ -15,78 +15,13 @@
     </ul>
   </div>
   <div>
-   <app-list-all-users></app-list-all-users> 
+   <app-list-all-users *ngIf="!detailsTielsView"></app-list-all-users> 
   <app-demo-request *ngIf="!detailsTielsView"></app-demo-request>
 	  <section *ngIf="!detailsTielsView">
-      <div class="col-sm-6 col-xs-12">
-        <div class="portlet light">
-          <div class="portlet-title">
-            <div class="caption">Top 10 Recent registered users</div>
-          </div>
-          <div class="portlet-body clearfix">
-            <div class="table-responsive">
-              <table class='table tgrid'>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Registered On</th>
-					<th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let data of top10RecentUsers?.datereg;let i = index">
-                    <tr (click)="selectedVendorDetails(data)" class="highletedRow">
-                      <td>
-                        <app-user-info [userInfo]="data" [isCompanyInfo]="true"></app-user-info>
-                      </td>
-                      <td *ngIf="data.dateReg=='null'">-</td>
-                      <td *ngIf="data.dateReg!='null'">{{data.dateReg | date:'mediumDate'}} {{data.dateReg | date:'shortTime'}}</td>
-					  <td align="center">
-                        <a data-toggle="tooltip" data-placement="top" title="Company profile details" (click)="getVendorCompanyProfile(data)"><i class="fa fa-building-o" style="font-size: 20px;"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(data)"><i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px"></i></a>
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-xs-12">
-        <div class="portlet light">
-          <div class="portlet-title">
-            <div class="caption">Top 10 Recent logged in users</div>
-          </div>
-          <div class="portlet-body clearfix">
-            <div class="table-responsive">
-              <table class='table tgrid'>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Last login</th>
-					<th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let data of top10RecentUsers?.datelastnav;let i = index">
-                    <tr (click)="selectedVendorDetails(data)" class="highletedRow">
-                      <td>
-                        <app-user-info [userInfo]="data" [isCompanyInfo]="true"></app-user-info>
-                      </td>
-                      <td>{{data.dateLastNav | date:'mediumDate'}} {{data.dateLastNav | date:'shortTime'}} </td>
-					  <td align="center">
-                        <a data-toggle="tooltip" data-placement="top" title="Company profile details" (click)="getVendorCompanyProfile(data)"><i class="fa fa-building-o" style="font-size: 20px;"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(data)"><i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px"></i></a>
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+	  <!-- -Top 10 Recent Registered Users -->
+	  <app-recent-logged-in-users [type]="'registered'" (notifyAdminReportComponent)="selectedVendorDetails($event)"></app-recent-logged-in-users>
+	  <!-- ---Top 10 Recent LoggedIn Users -->
+	  <app-recent-logged-in-users [type]="'logged in'" (notifyAdminReportComponent)="selectedVendorDetails($event)"></app-recent-logged-in-users>
     </section>
     <div class="col-xs-12" *ngIf="!detailsTielsView">
       <app-list-loader [rowsCount]="12" *ngIf="isListLoading"></app-list-loader>

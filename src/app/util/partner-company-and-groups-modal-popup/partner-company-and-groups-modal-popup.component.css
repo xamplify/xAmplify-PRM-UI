@@ -239,12 +239,12 @@
 }
 
 .thumbnail-wrapper {
-	float: left;
-	width: 144px;
-	height: 81px;
-	background-color: #f1f1f1;
-	text-align: center;
-	position: relative;
+    float: left;
+    width: 144px;
+    height: 81px;
+    background-color: #f1f1f1;
+    text-align: center;
+    position: relative;
 }
 
 .thumbnail-wrapper>img {
@@ -253,6 +253,7 @@
 	height: 100%;
 	width: auto;
 	margin: 0 auto;
+
 }
 
 .unClick {
@@ -261,4 +262,6 @@
 
 .click {
     pointer-events: auto;
+
 }
+

@@ -286,6 +286,51 @@ export class SortOption {
 		{ 'name': 'Company name (Z-A)', 'value': 'companyName-DESC' },
   ];
 
+  campaignRecipientsDropDownOptions = [
+    { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+    { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+    { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+    { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' },
+    { 'name': 'Count(ASC)', 'value': 'count-ASC' },
+    { 'name': 'Count(DESC)', 'value': 'count-DESC' }
+  ];
+
+  registeredUsersSortDropDownOptions = [
+    { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+    { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+    { 'name': 'Last Name (A-Z)', 'value': 'lastName-ASC' },
+    { 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
+    { 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+    { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+    { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+    { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+    { 'name': 'Registered On (ASC)', 'value': 'registeredOn-ASC' },
+    { 'name': 'Registered On (DESC)', 'value': 'registeredOn-DESC' }
+    ];
+
+    loggedInUsersSortDropDownOptions = [
+      { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+      { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+      { 'name': 'Last Name (A-Z)', 'value': 'lastName-ASC' },
+      { 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
+      { 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+      { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+      { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+      { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+      { 'name': 'Last Login (ASC)', 'value': 'lastLoginOn-ASC' },
+      { 'name': 'Last Login (DESC)', 'value': 'lastLoginOn-DESC' }
+      ];
+
+      channelCampaignSortDropDownOptions = [
+        { 'name': 'Campaign Name (A-Z)', 'value': 'campaignName-ASC' },
+        { 'name': 'Campaign Name (Z-A)', 'value': 'campaignName-DESC' },
+        { 'name': 'Launched By (Email Id) (A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Launched By (Email Id) (Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'Redistributed (ASC)', 'value': 'redistributedCount-ASC' },
+        { 'name': 'Redistributed (DESC)', 'value': 'redistributedCount-DESC' }
+        ];
+     
+
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
@@ -319,5 +364,9 @@ export class SortOption {
     public selectedTagDropDownOption:any = this.tagSortDropDownOptions[3];
     public selectedGroupsDropDownOption:any = this.groupsSortDropDownOptions[3];
     public selectedPartnerCompanyDropDownOption = this.partnerCompanySortDropDownOptions[0];
+    public selectedCampaignRecipientsDropDownOption = this.campaignRecipientsDropDownOptions[3];
+    public selectedRegisteredUsersSortDropDownOption = this.registeredUsersSortDropDownOptions[this.registeredUsersSortDropDownOptions.length-1];
+    public selectedLoggedInUsersSortDropDownOption = this.loggedInUsersSortDropDownOptions[this.loggedInUsersSortDropDownOptions.length-1];
+    public selectedChannelCampaignSortDropDownOption = this.channelCampaignSortDropDownOptions[this.channelCampaignSortDropDownOptions.length-1];
 
 }

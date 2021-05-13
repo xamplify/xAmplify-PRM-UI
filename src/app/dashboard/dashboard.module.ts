@@ -61,6 +61,7 @@ import { LeadsAndDealsBubbleChartComponent } from './dashboard-analytics-compone
 import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashboard.component';
 import { SpfComponent } from './spf/spf.component';
 import { AdminPartnerCompaniesComponent } from './admin-partner-companies/admin-partner-companies.component';
+import { RecentLoggedInUsersComponent } from './recent-logged-in-users/recent-logged-in-users.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -97,7 +98,8 @@ import { AdminPartnerCompaniesComponent } from './admin-partner-companies/admin-
         LeadsAndDealsBubbleChartComponent,
         DetailedDashboardComponent,
         SpfComponent,
-        AdminPartnerCompaniesComponent
+        AdminPartnerCompaniesComponent,
+        RecentLoggedInUsersComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

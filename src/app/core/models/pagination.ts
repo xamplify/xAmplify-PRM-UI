@@ -78,5 +78,7 @@ export class Pagination {
 	learningTrackId: number = 0;
 	lmsType:string = TracksPlayBookType[TracksPlayBookType.TRACK];
 	type:string = "";
+	channelCampaign = false;
+
 
 }

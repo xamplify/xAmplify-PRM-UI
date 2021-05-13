@@ -299,20 +299,20 @@
                         [class.isProcessing]="!contactList.emailValidationInd">
                         <td style="width: 10%;" class="hidden-xs"><img
                           *ngIf="contactList.socialNetwork=='ZOHO'"
-                          src="{{zohoImage}}" alt="zoho" style="height: 70px;">
+                          src="{{properties?.zohoImage}}" alt="zoho" style="height: 70px;">
                           <img *ngIf="contactList.socialNetwork=='GOOGLE'"
-                            src="{{googleImage}}" alt="google" style="height: 70px;">
+                            src="{{properties?.googleImage}}" alt="google" style="height: 70px;">
                           <img *ngIf="contactList.socialNetwork=='SALESFORCE'"
-                            src="{{salesforceImage}}" alt="salesforce"
+                            src="{{properties?.salesforceImage}}" alt="salesforce"
                             style="height: 70px;"> <img
                             *ngIf="contactList.socialNetwork=='MANUAL'"
-                            src="{{normalImage}}" alt="manual" style="height: 70px;">
+                            src="{{properties?.manualImage}}" alt="manual" style="height: 70px;">
                           <img
                             *ngIf="contactList.socialNetwork=='HUBSPOT'"
-                            src="{{hubspotImage}}" alt="manual" style="height: 70px;">
+                            src="{{properties?.hubspotImage}}" alt="manual" style="height: 70px;">
                           <img
                             *ngIf="contactList.socialNetwork=='MARKETO'"
-                            src="{{marketoImage}}" alt="manual" style="height: 70px;">
+                            src="{{properties?.marketoImage}}" alt="manual" style="height: 70px;">
                           <img *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))"
                             src="assets/images/Spinner.gif"
                             style="width: 55px; margin-top: -88px; margin-left: 17px;">
@@ -470,18 +470,18 @@
                   <div class="grid-box" id="contactListDiv_{{contactList.id}}">
                     <img class="imageClassCss"
                       *ngIf="contactList.socialNetwork=='MANUAL'"
-                      src="{{normalImage}}"> <img class="imageClassCss"
+                      src="{{properties?.manualImage}}"> <img class="imageClassCss"
                       *ngIf="contactList.socialNetwork=='ZOHO'"
-                      src="{{zohoImage}}"> <img class="imageClassCss"
+                      src="{{properties?.zohoImage}}"> <img class="imageClassCss"
                       *ngIf="contactList.socialNetwork=='GOOGLE'"
-                      src="{{googleImage}}"> <img class="imageClassCss"
+                      src="{{properties?.googleImage}}"> <img class="imageClassCss"
                       *ngIf="contactList.socialNetwork=='SALESFORCE'"
-                      src="{{salesforceImage}}">
+                      src="{{properties?.salesforceImage}}">
                     <img class="imageClassCss"
                       *ngIf="contactList.socialNetwork=='HUBSPOT'"
-                      src="{{hubspotImage}}">
+                      src="{{properties?.hubspotImage}}">
                     <img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO'"
-                      src="{{marketoImage}}" alt="manual" style="height: 60px;">
+                      src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
                     <!-- <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"> -->
                     <div id="container" *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
                       <h3 translate style="font-size: 14px;">

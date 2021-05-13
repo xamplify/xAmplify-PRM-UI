@@ -11,4 +11,5 @@ export class MdfRequestTimeLine {
 	createdTimeInString:string = "";
 	displayTime:any;
 	createdTimeInUTCString:string ="";
+	statusInInteger:any;
 }

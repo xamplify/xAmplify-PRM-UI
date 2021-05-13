@@ -46,11 +46,11 @@
      <!------------Dashbaord Button Carusel---------------------->    
     <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
     <app-vendor-activity-analytics></app-vendor-activity-analytics>
-    <app-modal-popup-loader *ngIf="welcomePageItemsLoader"></app-modal-popup-loader>
+    <app-modal-popup-loader *ngIf="welcomePageItemsLoader || authenticationService?.module?.contentLoader"></app-modal-popup-loader>
     <div style="position: relative; top:-10px;">
      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !welcomePageItemsLoader "></app-response-message>
    </div>
-    <div class="page-bar page-bar-shadow" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !welcomePageItemsLoader && !customResponse.isVisible">
+    <div class="page-bar page-bar-shadow" *ngIf="!authenticationService?.module?.contentLoader &&!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !welcomePageItemsLoader && !customResponse.isVisible">
      <div class="col-xs-12">
        <!--Partners-->
        <ng-container *ngIf="sourceType!='ALLBOUND' && welcomePageItems?.showPartners">

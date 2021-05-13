@@ -105,11 +105,11 @@
 													<td class="text-center hidden-xs"><span>{{file.type}}</span></td>
 													<td>
 														<div class="actions-block override-actions">
-                              <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.preview_item" href="{{file.filePath}}" target="_blank">
+                              <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.preview_item" href="{{file.downloadLink}}" target="_blank">
                                 <i class="fa fa-external-link" aria-hidden="true"></i>
                               </a>
                               <a data-toggle="tooltip" data-placement="top"	[title]="actionsDescription.delete_item"
-																(click)="delete(file, file.id)"> <i class="fa fa-trash-o"></i>
+																(click)="delete(file, file.id)"> <i class="fa fa-trash-o" aria-hidden="true"></i>
 															</a>
 														</div>
 													</td>
