@@ -704,5 +704,27 @@ addCommentModalClose(event: any) {
  // console.log(this.selectedLead.unReadChatCount)
   this.isCommentSection = !this.isCommentSection;
 }
+
+downloadLeads() {
+  let type = this.leadsPagination.filterKey;
+  let fileName = "";
+  if (type == null || type == undefined || type == "") {
+    type = "all";
+    fileName = "leads"
+  } else {
+    fileName = type +"-leads"
+  }
+
+  let userType = "";
+  if (this.isVendorVersion) {
+    userType = "v";
+  } else if (this.isPartnerVersion) {
+    userType = "p";
+  }
+  const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
+    + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
+	window.location.assign(url);
+
+}
  
 }

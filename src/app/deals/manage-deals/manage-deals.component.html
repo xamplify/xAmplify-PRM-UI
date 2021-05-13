@@ -121,6 +121,10 @@
                         title="Campaign View" [class.disabled]="!listView" (click)="listView = false">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                       </span>
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                      title="Download" [class.disabled]="dealsSortOption.totalRecords == 0" (click)="downloadDeals()">
+                      <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+                    </span>
                     </ng-container>
                     <a *ngIf="isPartnerVersion || isOrgAdmin" (click)="addDeal()" style="padding-left: 11px;">
                       <button class="btn btn-primary" translate>

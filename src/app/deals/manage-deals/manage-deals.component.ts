@@ -627,4 +627,26 @@ export class ManageDealsComponent implements OnInit {
     this.isCommentSection = !this.isCommentSection;
   }
 
+  downloadDeals() {
+    let type = this.dealsPagination.filterKey;
+    let fileName = "";
+    if (type == null || type == undefined || type == "") {
+      type = "all";
+      fileName = "deals"
+    } else {
+      fileName = type +"-deals"
+    }
+  
+    let userType = "";
+    if (this.isVendorVersion) {
+      userType = "v";
+    } else if (this.isPartnerVersion) {
+      userType = "p";
+    }
+    const url = this.authenticationService.REST_URL + "deal/"+userType+"/download/" + type 
+      + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
+    window.location.assign(url);
+  
+  }
+
 }
