@@ -1,3 +1,5 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
+</ngx-loading>
 <div class="row">
   <div class="col-xs-12 p5">
     <div class="portlet light">
@@ -27,7 +29,7 @@
                     <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
               </div>
-              <a *ngIf="channelCampaignsSortOption.totalRecords>0 && !channelCampaignsLoader.isLoading" class="close-circle" (click)="downloadCsv()">
+              <a  class="close-circle" (click)="downloadCsv()">
                   <i  class="fa fa-download" aria-hidden="true"></i>
               </a>
               </div>
@@ -122,8 +124,8 @@
                   </tr>
                   <tr *ngIf="item?.expand">
                     <td colspan="8">
-                      <app-auto-response-loader *ngIf="redistributedCampaignsLoader.isLoading"></app-auto-response-loader>
-                      <table class="table tgrid table-condensed redisbgcolor" aria-describedby="redistributed-campaigns">
+                      <app-auto-response-loader [hidden]="!redistributedCampaignsLoader.isLoading"></app-auto-response-loader>
+                      <table [hidden]="redistributedCampaignsLoader.isLoading" class="table tgrid table-condensed redisbgcolor" aria-describedby="redistributed-campaigns">
                         <thead>
                           <tr>
                             <th scope="row"  class="center-aligned" style="width: 24%">Partners</th>
@@ -136,7 +138,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let redistributedCampaign of redistributedCampaignsPagination.pagedItems" style="cursor: pointer;" (click)="referenceService.goToCampaignAnalytics(redistributedCampaign)">
+                          <tr *ngFor="let redistributedCampaign of redistributedCampaignsPagination.pagedItems" style="cursor: pointer;" (click)="goToCampaignAnalytics(redistributedCampaign)">
                             <td>
                               <app-user-info [userInfo]="redistributedCampaign" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
                             </td>
@@ -193,6 +195,13 @@
                           </tr>
                         </tbody>
                       </table>
+                      <div *ngIf="redistributedCampaignsPagination.totalRecords==0 && !redistributedCampaignsLoader.isLoading" class="alert alert-info">
+                        <strong>No Data Found.</strong>
+                      </div>
+                      <div *ngIf="redistributedCampaignsPagination?.pagedItems?.length !== 0" class="pg8" [hidden]="redistributedCampaignsLoader?.isLoading">
+                        <app-pagination [pagination]="redistributedCampaignsPagination" (notifyParent)="navigateBetweenPageNumbers($event,'redistributed-campaigns')" (notifyParentDropDown)="findRedistributedCampaigns($event)">
+                        </app-pagination>
+                     </div>
                     </td>
                   </tr>
                 </ng-container>

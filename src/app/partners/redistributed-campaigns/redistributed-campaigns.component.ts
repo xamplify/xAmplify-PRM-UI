@@ -25,6 +25,7 @@ export class RedistributedCampaignsComponent implements OnInit {
   redistributedCampaignsPagination:Pagination = new Pagination();
   channelCampaignsLoader:HttpRequestLoader = new HttpRequestLoader();
   redistributedCampaignsLoader:HttpRequestLoader = new HttpRequestLoader();
+  loading = false;
   constructor(public router: Router, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,
@@ -91,6 +92,9 @@ export class RedistributedCampaignsComponent implements OnInit {
     if(type=="channel-campaigns"){
       this.channelCampaignsPagination.pageIndex = event.page;
       this.findChannelCampaigns(this.channelCampaignsPagination);
+    }else{
+      this.redistributedCampaignsPagination.pageIndex = event.page;
+      this.findRedistributedCampaigns(this.redistributedCampaignsPagination);
     }
     
   }
@@ -115,11 +119,13 @@ export class RedistributedCampaignsComponent implements OnInit {
   }
 
   findRedistributedCampaigns(pagination:Pagination){
+    this.referenceService.loading(this.redistributedCampaignsLoader, true);
     this.parterService.findRedistributedCampaigns(pagination).subscribe(
       ( response: any ) => {
           let data  = response.data;
           $.each(data.list,function(_index:number,campaign:any){
               campaign.launchedOn = new Date(campaign.launchTimeInUTCString);
+              campaign.contactCompany = campaign.companyName;
           });
           this.redistributedSortOption.totalRecords = data.totalRecords;
           pagination.totalRecords = data.totalRecords;
@@ -130,5 +136,13 @@ export class RedistributedCampaignsComponent implements OnInit {
         this.xtremandLogger.error(error);
        });
   }
-
+  goToCampaignAnalytics(campaign:any){
+    this.loading = true;
+    this.referenceService.campaignType = campaign.campaignType;
+    this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
+  }
+  
+  downloadCsv(){
+    window.open(this.authenticationService.REST_URL+'partner/drpc/'+this.authenticationService.getUserId()+"/Redistributed-Campaigns.csv?access_token="+this.authenticationService.access_token,"taget_blank");
+  } 
 }
