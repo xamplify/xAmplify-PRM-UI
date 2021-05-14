@@ -24,6 +24,7 @@
         </ul>
         <div id="folder-margin-xamp">
           <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+          <app-merge-tags [isEvent]="false" [isCampaign]="true"></app-merge-tags>
         </div>
       </div>
       <div class="folder-custom-response">
@@ -77,7 +78,7 @@
                     <font style="color: red">
                     <b> * </b>
                     </font>
-                    <input type="text" id="subjectLine" placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="200" />
+                    <input type="text" id="subjectLine" placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="250" />
                   </div>
                   <div class="form-group col-xs-6 p0" [attr.class]="fromNameDivClass">
                     <label for="exampleInputPassword1">From name</label>
