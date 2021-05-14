@@ -634,18 +634,64 @@ export class ManageDealsComponent implements OnInit {
       type = "all";
       fileName = "deals"
     } else {
-      fileName = type +"-deals"
+      fileName = type + "-deals"
     }
-  
+    let vendorCompanyProfileName = null;
+    if (this.dealsPagination.vendorCompanyProfileName != undefined && this.dealsPagination.vendorCompanyProfileName != null) {
+      vendorCompanyProfileName = this.dealsPagination.vendorCompanyProfileName;
+    }
+
     let userType = "";
     if (this.isVendorVersion) {
       userType = "v";
     } else if (this.isPartnerVersion) {
       userType = "p";
     }
-    const url = this.authenticationService.REST_URL + "deal/"+userType+"/download/" + type 
-      + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
-    window.location.assign(url);
+    const url = this.authenticationService.REST_URL + "deal/download/"
+      + fileName + ".csv?access_token=" + this.authenticationService.access_token;
+
+    var mapForm = document.createElement("form");
+    //mapForm.target = "_blank";
+    mapForm.method = "POST";
+    mapForm.action = url;
+
+    // userType
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "userType";
+    mapInput.setAttribute("value", userType);
+    mapForm.appendChild(mapInput);
+
+    // type
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "type";
+    mapInput.setAttribute("value", type);
+    mapForm.appendChild(mapInput);
+
+    // loggedInUserId
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "userId";
+    mapInput.setAttribute("value", this.loggedInUserId + "");
+    mapForm.appendChild(mapInput);
+
+    // vanityUrlFilter
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "vanityUrlFilter";
+    mapInput.setAttribute("value", this.dealsPagination.vanityUrlFilter + "");
+    mapForm.appendChild(mapInput);
+
+    // vendorCompanyProfileName
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "vendorCompanyProfileName";
+    mapInput.setAttribute("value", vendorCompanyProfileName);
+    mapForm.appendChild(mapInput);
+
+    document.body.appendChild(mapForm);
+    mapForm.submit();
   
   }
 

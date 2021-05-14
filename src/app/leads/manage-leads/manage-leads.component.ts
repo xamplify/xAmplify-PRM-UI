@@ -712,7 +712,7 @@ downloadLeads() {
     type = "all";
     fileName = "leads"
   } else {
-    fileName = type +"-leads"
+    fileName = type + "-leads"
   }
 
   let userType = "";
@@ -721,9 +721,59 @@ downloadLeads() {
   } else if (this.isPartnerVersion) {
     userType = "p";
   }
-  const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
-    + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
-	window.location.assign(url);
+  let vendorCompanyProfileName = null;
+  if (this.leadsPagination.vendorCompanyProfileName != undefined && this.leadsPagination.vendorCompanyProfileName != null) {
+    vendorCompanyProfileName = this.leadsPagination.vendorCompanyProfileName;
+  }
+  // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
+  //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
+
+  const url = this.authenticationService.REST_URL + "lead/download/"
+    + fileName + ".csv?access_token=" + this.authenticationService.access_token;
+
+  var mapForm = document.createElement("form");
+  //mapForm.target = "_blank";
+  mapForm.method = "POST";
+  mapForm.action = url;
+
+  // userType
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "userType";
+  mapInput.setAttribute("value", userType);
+  mapForm.appendChild(mapInput);
+
+  // type
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "type";
+  mapInput.setAttribute("value", type);
+  mapForm.appendChild(mapInput);
+
+  // loggedInUserId
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "userId";
+  mapInput.setAttribute("value", this.loggedInUserId + "");
+  mapForm.appendChild(mapInput);
+
+  // vanityUrlFilter
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "vanityUrlFilter";
+  mapInput.setAttribute("value", this.leadsPagination.vanityUrlFilter + "");
+  mapForm.appendChild(mapInput);
+
+  // vendorCompanyProfileName
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "vendorCompanyProfileName";
+  mapInput.setAttribute("value", vendorCompanyProfileName);
+  mapForm.appendChild(mapInput);
+
+  document.body.appendChild(mapForm);
+  mapForm.submit();
+	//window.location.assign(url);
 
 }
  

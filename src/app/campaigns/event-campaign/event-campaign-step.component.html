@@ -35,7 +35,8 @@ a.disabled {
 		</ul>
 		 <div id="folder-margin-xamp">
                 <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-            </div>
+				<app-merge-tags [isEvent]="false" [isCampaign]="true"></app-merge-tags>
+			</div>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
 	<div class="folder-custom-response">
@@ -177,7 +178,7 @@ a.disabled {
 									name="subjectLine"
 									(input)="eventSubjectLineError()"
 									[ngClass]="{'has-error': eventError.eventSubjectLineError}"
-									maxlength="200" />
+									maxlength="1000" />
 									<div class="text-danger" *ngIf="eventError.eventSubjectLineError" translate>
 									Subject line is required</div>
 							</div>
