@@ -1,0 +1,142 @@
+<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }">
+</ngx-loading>
+<div class="page-content" [class.ml0]="authenticationService?.isSuperAdmin()">
+	<div class="page-bar" style="margin-bottom:0px!important">
+		<ul class="page-breadcrumb">
+			<li>
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li>
+				<i class="fa fa-pencil-square-o" aria-hidden="true"></i>Workflow Analytics
+			</li>
+		</ul>
+  </div>
+  <br>
+  <div class="portlet light">
+    <div class="portlet-title">
+      <div class="col-sm-4">
+        <select class="form-control" id="workFlowId" [hidden]="httpRequestLoader.isLoading">
+          <option  value="0">Email is not opened</option>
+          <option value="13">Email is Opened</option>
+          <option value="16">Send Immediately After Email Is Opened</option>
+          <option value="22">Email is not redistributed by the partner</option>
+          <option value="1">Video is played</option>
+          <option value="17">Send immediately after video is played</option>
+          <option value="18">Video is not played</option>
+          <option value="23">Video is not redistributed</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-control" id="month"  [(ngModel)]="selectedMonth" (ngModelChange)="filterByMonth($event)" [hidden]="httpRequestLoader.isLoading">
+          <option  value="1">January</option>
+          <option value="2">Febraury</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-control" id="year" [(ngModel)]="selectedYear" (ngModelChange)="filterByYear($event)" [hidden]="httpRequestLoader.isLoading">
+          <option *ngFor="let year of years" [value]="year" >
+            {{year}}
+          </option>
+        </select>
+      </div>
+      </div>
+  </div>
+  <div class="portlet light">
+    <div class="portlet-title">
+      <div class="caption">Work flow anlaytics</div>
+      <div class="inputs">
+        <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+          <i class="fa fa-refresh margin" aria-hidden="true"></i>
+        </a>
+          <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+              <select class="form-control" [(ngModel)]="sortOption.selectedWorkflowSortDropDownOption"
+                          (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                          <option *ngFor="let option of sortOption.workflowsSortDropDownOptions" [ngValue]="option">
+                            {{option.name}}</option>
+              </select>
+          </div>
+         <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+        <div class="input-icon right" id="icon-right">
+          <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="search..."
+            (keypress)="eventHandler($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+            (click)="sortOption.searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </div> 
+      </div>
+      </div>
+    <br>
+    <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+		<div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading">
+      <div class="table-responsive">
+          <table class='table tgrid' aria-describedby="campaign-workflow-table">
+            <thead>
+              <tr>
+                <th style="width: 20%;" scope="row">Entity Info</th>
+                <th scope="row">Campaign Name</th>
+                <th scope="row">Reply In Days</th>
+                <th scope="row">Subject</th>
+                <th scope="row">Reply Time</th>
+                <th scope="row">Emails Sent</th>
+                <th scope="row">Actions</th>
+              </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let workflow of pagination.pagedItems;let i = index">
+              <tr>
+                <td>
+                  <app-user-info [userInfo]="workflow" [isCompanyInfo]="true">
+                  </app-user-info>
+                </td>
+                <td title="{{workflow?.campaignName}}">{{workflow?.campaignName|slice:0:25}}<span *ngIf="workflow?.campaignName?.length>25">...</span>
+                  <br>
+                  <strong>
+                    <app-timestamp  [dateAndTime]="workflow?.launchTimeInUTC"></app-timestamp>
+                  </strong>
+                </td>
+                <td id="center">{{workflow?.replyInDays}}</td>
+                <td title="{{workflow?.subject}}">{{workflow?.subject|slice:0:25}}<span *ngIf="workflow?.subject?.length>25">...</span></td>
+                <td>
+                  <app-timestamp  [dateAndTime]="workflow?.replyTimeInUTC"></app-timestamp>
+                </td>
+                <td id="center">
+                  {{workflow?.sentEmailsCount}}
+                </td>
+                <td id="center" class="xAmpColor">
+                  <a (click)="findAnalyticsByWorkflowId(workflow)">
+                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                  </a>
+               </td>
+              </tr>
+              </ng-container>
+          </tbody>
+          </table>
+      </div>
+      </div>
+      <div *ngIf="pagination?.pagedItems.length !== 0" class="pg8">
+        <app-pagination [pagination]="pagination"
+          (notifyParent)="navigateBetweenPageNumbers($event)"
+          (notifyParentDropDown)="findWorkflowDetails($event)"
+          [hidden]="httpRequestLoader.isLoading">
+        </app-pagination>
+      </div>
+        <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+          <strong>No Data Found.</strong>
+        </div>
+      </div>
+  </div>

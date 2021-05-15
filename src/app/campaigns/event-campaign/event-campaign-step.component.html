@@ -1450,7 +1450,7 @@ a.disabled {
                 </div>
                 <div class="col-xs-6">
                   <label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<b style="color: red">*</b></label>
-                  <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="50">
+                  <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="1000">
                 </div>
               </div>
                   <div class="col-xs-12">

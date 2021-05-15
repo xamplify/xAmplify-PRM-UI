@@ -62,6 +62,7 @@ import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashbo
 import { SpfComponent } from './spf/spf.component';
 import { AdminPartnerCompaniesComponent } from './admin-partner-companies/admin-partner-companies.component';
 import { RecentLoggedInUsersComponent } from './recent-logged-in-users/recent-logged-in-users.component';
+import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -99,7 +100,8 @@ import { RecentLoggedInUsersComponent } from './recent-logged-in-users/recent-lo
         DetailedDashboardComponent,
         SpfComponent,
         AdminPartnerCompaniesComponent,
-        RecentLoggedInUsersComponent
+        RecentLoggedInUsersComponent,
+        AdminReportCampaignWorkflowAnalyticsComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
