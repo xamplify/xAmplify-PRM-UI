@@ -25,6 +25,7 @@ import { VanityEmailTemplatesComponent } from "app/email-template/vanity-email-t
 import { ModuleAccessComponent } from "./module-access/module-access.component";
 import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashboard.component';
 import { SpfComponent } from './spf/spf.component';
+import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 
 const routes: Routes = [
  { path: "", component: DashboardAnalyticsComponent },
@@ -55,7 +56,8 @@ const routes: Routes = [
   {path:'buttons', component:DashboardButtonsComponent},
   {path:'v-templates', component:VanityEmailTemplatesComponent},
   {path:'module-access/:alias/:userAlias/:companyProfileName', component:ModuleAccessComponent},
-   {path:'spf', component:SpfComponent},
+  {path:'spf', component:SpfComponent},
+  {path:'workflow-analytics',component:AdminReportCampaignWorkflowAnalyticsComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

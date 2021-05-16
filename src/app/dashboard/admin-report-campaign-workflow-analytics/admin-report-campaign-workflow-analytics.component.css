@@ -1,0 +1,22 @@
+#search-margin{
+	margin-right: 15px;
+}
+#icon-right{
+	position: relative;right: -11px;
+}
+
+#search-text{
+	height:34px;
+}
+.fa.fa-refresh.margin{
+	line-height: 15px;
+}
+#left{
+	float:left;
+}
+#center{
+	text-align: center;
+}
+.xAmpColor{
+	color:#5aadf0;
+}

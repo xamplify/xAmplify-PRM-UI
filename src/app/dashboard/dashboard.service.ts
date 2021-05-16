@@ -578,5 +578,12 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    findWorkflowDetails(pagination: Pagination) {
+        const url = this.superAdminUrl + "findWorkflowDetails"+ '?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
 }
