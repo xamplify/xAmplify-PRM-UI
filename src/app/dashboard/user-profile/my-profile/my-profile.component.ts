@@ -3024,6 +3024,18 @@ configSalesforce() {
     	   this.addDomainModalClose();
         this.search(type);
     }
-	
+    
+    downloadEmptyUserCsv(){
+    	window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_USER_LIST_EMPTY.csv";
+    }
+    
+    fileChange( input: any ) {
+        this.readFiles( input.files );
+    }
+    
+    isCSVFile(file) {
+        return file.name.endsWith(".csv");
+    }
+    
 
 }

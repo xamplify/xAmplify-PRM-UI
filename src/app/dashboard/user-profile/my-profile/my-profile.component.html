@@ -1188,10 +1188,30 @@
                                                                     authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
 																<button id="add_contact" class="btn green"
 																	(click)="addContactModalOpen()" translate>
-																	Add <i class="fa fa-plus"
+																	one at a Time <i class="fa fa-plus"
 																		style="font-size: 12px; margin-left: 5px;"></i>
 																</button>
+																
+																<button id="uploadCSV" class="btn green" translate>
+																	<span style="display: block; font-size: 12px; text-align: center" translate>Upload a CSV</span> <input type="file" title=" "
+													 (click)="input.value = null" (change)="fileChange(input)" accept=".csv" #input />
+																	<i style="font-size: 12px; margin-left: 5px;" class="fa fa-file-excel-o"></i>
+																</button>
+																
+																	<button (click)="downloadEmptyUserCsv()" type="button" class="btn green" download style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+					Download User CSV Template
+					<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+				</button>
 															</div>
+															
+	<!-- 														<div align="right"  class="hidden-xs" >
+			<a (click)="downloadEmptyCsv()">
+				<button type="button" class="btn green" download style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+					Download Contact CSV Template
+					<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+				</button>
+			</a>
+		</div> -->
 
 															<div class="portlet-input input-inline search-class" style="float:right;"
 																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
