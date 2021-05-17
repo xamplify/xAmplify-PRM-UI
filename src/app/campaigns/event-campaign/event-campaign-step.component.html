@@ -172,7 +172,7 @@ a.disabled {
 								 <font style="color: red"> <strong>*</strong></font>
 							</label>
 							<div class="col-sm-9">
-								<input type="text" id="subjectLine" placeholder="Subject Line"
+								<input type="text" id="subjectLine" placeholder="{{merge tag}} + Subject line"
 									class="form-control" [(ngModel)]="eventCampaign.subjectLine"
 									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 									name="subjectLine"
@@ -1450,7 +1450,7 @@ a.disabled {
                 </div>
                 <div class="col-xs-6">
                   <label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<b style="color: red">*</b></label>
-                  <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="1000">
+                  <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{{merge tag}} + Subject line" maxlength="1000">
                 </div>
               </div>
                   <div class="col-xs-12">
