@@ -78,7 +78,7 @@
                     <font style="color: red">
                     <b> * </b>
                     </font>
-                    <input type="text" id="subjectLine" placeholder="Subject Line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
+                    <input type="text" id="subjectLine" placeholder="{{merge tag}} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
                   </div>
                   <div class="form-group col-xs-6 p0" [attr.class]="fromNameDivClass">
                     <label for="exampleInputPassword1">From name</label>
@@ -436,7 +436,7 @@
                                       <label for="time" style="cursor:default" id="reply-subject-{{reply.divId}}">Subject
                                       <strong style="color: red">*</strong>
                                       </label>
-                                      <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="1000">
+                                      <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{{merge tag}} + Subject line" maxlength="1000">
                                     </div>
                                   </div>
                                   <div class="col-xs-12">
@@ -570,7 +570,7 @@
                                       <label style="cursor:default" for="time" id="click-subject-{{url.divId}}">Subject
                                       <strong style="color: red" aria-hidden="true">*</strong>
                                       </label>
-                                      <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="Subject" maxlength="1000">
+                                      <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="{{merge tag}} + Subject line" maxlength="1000">
                                     </div>
                                     <div class="col-xs-4">
                                       <label style="cursor:default" for="reason">Available URLs</label>
