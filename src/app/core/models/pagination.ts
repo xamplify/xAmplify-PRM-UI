@@ -79,6 +79,7 @@ export class Pagination {
 	lmsType:string = TracksPlayBookType[TracksPlayBookType.TRACK];
 	type:string = "";
 	channelCampaign = false;
+	excludeBeePdf : boolean = false;
 
 
 }

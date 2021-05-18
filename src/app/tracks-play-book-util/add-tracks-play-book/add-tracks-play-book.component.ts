@@ -164,6 +164,8 @@ export class AddTracksPlayBookComponent implements OnInit {
   selectedPartnershipIds: any[] = [];
   selectedUserIds: any[] = [];
 
+  isAssestPopUpOpen : boolean = false;
+
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -418,6 +420,7 @@ export class AddTracksPlayBookComponent implements OnInit {
   listAssets(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
     pagination.companyId = this.loggedInUserCompanyId;
+    pagination.excludeBeePdf = this.isAssestPopUpOpen;
     this.referenceService.goToTop();
     this.startLoaders();
     this.damService.list(pagination).subscribe((result: any) => {
@@ -1303,8 +1306,14 @@ export class AddTracksPlayBookComponent implements OnInit {
     this.assetError = false;
     this.customResponse = new CustomResponse();
     this.assetPagination = new Pagination();
+    this.isAssestPopUpOpen = true;
     this.listAssets(this.assetPagination);
     $('#media-asset-list').modal('show');
+  }
+
+  closeAssetModal(){
+    this.isAssestPopUpOpen = false;
+    $('#media-asset-list').modal('hide');
   }
 
   addMediaToDescription(asset: any) {
@@ -1326,6 +1335,7 @@ export class AddTracksPlayBookComponent implements OnInit {
     }
     this.closeLinkTitlePopup();
     $('#media-asset-list').modal('hide');
+    this.isAssestPopUpOpen = false;
   }
 
   closeLinkTitlePopup() {
