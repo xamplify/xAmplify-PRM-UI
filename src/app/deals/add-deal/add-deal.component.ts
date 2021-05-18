@@ -353,7 +353,8 @@ export class AddDealComponent implements OnInit {
         () => {          
           this.setFieldErrorStates();
           if (!this.showSfForm) {
-            this.showDefaultForm = true;                        
+            this.showDefaultForm = true; 
+            this.hasSfPipeline = false;                       
             if (this.edit || this.preview) {
               this.setProperties();
               if (this.deal.campaignId > 0) {
@@ -394,6 +395,7 @@ export class AddDealComponent implements OnInit {
     this.deal.pipelineId = 0;
     this.deal.pipelineStageId = 0;
     this.getPipelines();
+    this.hasSfPipeline = false;
   }
 
   onChangeCreatedFor() {
