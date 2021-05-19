@@ -1247,11 +1247,22 @@ export class AddTracksPlayBookComponent implements OnInit {
         window.open(assetDetails.assetPath, '_blank');
       }
     }
-    if(this.activeTabName == "step-2"){
-      if(this.showFilePreview){
-      $('#media-asset-list').modal('hide')
+    this.handleMediaAndOrdersPopup();
+  }
+
+  handleMediaAndOrdersPopup() {
+    if (this.activeTabName == "step-2") {
+      if (this.showFilePreview) {
+        $('#media-asset-list').modal('hide')
       } else {
-        $('#media-asset-list').modal('show')
+        $('#media-asset-list').modal('show');
+      }
+    }
+    if (this.activeTabName == "step-3") {
+      if (this.showFilePreview) {
+        $('#order-assets').modal('hide');
+      } else {
+        $('#order-assets').modal('show');
       }
     }
   }
