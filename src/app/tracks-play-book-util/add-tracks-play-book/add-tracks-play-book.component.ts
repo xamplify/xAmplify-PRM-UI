@@ -1279,13 +1279,8 @@ export class AddTracksPlayBookComponent implements OnInit {
     this.isFile = false;
     this.filePath = "";
     this.viewer = "google";
-    if(this.activeTabName == "step-2"){
-      if(this.showFilePreview){
-      $('#media-asset-list').modal('hide')
-      } else {
-        $('#media-asset-list').modal('show')
-      }
-    }  }
+    this.handleMediaAndOrdersPopup();
+  }
 
   previewBeeTemplate(asset: any) {
     let htmlContent = "#asset-preview-content";
