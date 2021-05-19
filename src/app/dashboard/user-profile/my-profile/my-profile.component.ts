@@ -47,8 +47,9 @@ import { Pipeline } from '../../models/pipeline';
 import { PipelineStage } from '../../models/pipeline-stage';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { ExcludeUser } from "../../models/exclude-user";
+import { FileUtil } from '../../../core/models//file-util';
 
-declare var swal, $, videojs: any;
+declare var swal, $, videojs: any, Papa: any;;
 
 @Component({
 	selector: 'app-my-profile',
@@ -56,9 +57,11 @@ declare var swal, $, videojs: any;
 	styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
 		'../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
 		'../../../../assets/css/phone-number-plugin.css'],
-	providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
+	providers: [FileUtil, User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+	filePreview : boolean = false;
+	isListLoader = false;
 	isPartnerSuperVisor :boolean = false;
 	public searchExcludedUserKey: string=null;
     public searchExcludedDomainKey: string=null;
@@ -221,19 +224,23 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	pipelinePreview = false;
 	excludeUserPagination: Pagination = new Pagination();
 	excludeDomainPagination: Pagination = new Pagination();
+	csvUserPagination: Pagination = new Pagination();
 	excludeUsersOrDomains = false;
 	modalpopuploader = false;
 	isUpdateUser = false;
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
 	public hubSpotCurrentUser: any;
+	
+	excludedUsers : User[] = [];
+	csvUsersPager: any = {};
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-		PagerService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService) {
+		PagerService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
@@ -1829,7 +1836,7 @@ configSalesforce() {
 		this.getAllFilteredResults(this.categoryPagination);
 	}
 
-	/************Page************** */
+	/************Page***************/
 	setPage(event: any) {
 		this.categoryResponse = new CustomResponse();
 		this.customResponse = new CustomResponse();
@@ -1839,11 +1846,27 @@ configSalesforce() {
 	          this.excludeUserPagination.pageIndex = event.page;
 	          this.excludeUserPagination.maxResults = 12;
 	           this.listExcludedUsers(this.excludeUserPagination);
-	      }else if (event.type === 'excludedDomains') {
+	      }else if (event.type === 'excludedDomains') {  
               this.excludeDomainPagination.pageIndex = event.page;
               this.excludeDomainPagination.maxResults = 12;
               this.listExcludedDomains(this.excludeDomainPagination);
-         } 
+         } else if (event.type === 'csvUsers') {
+        	 this.csvUserPagination.pageIndex = event.page;   
+        	 if(event.maxResults === undefined){
+        		 this.csvUserPagination.maxResults = 12;
+        	 }else{
+             this.csvUserPagination.maxResults = event.maxResults;
+        	 }
+             this.csvUserPagination.totalRecords = this.excludedUsers.length;
+        	 this.csvUsersPager = this.socialPagerService.getPager(this.excludedUsers.length, event.page, this.csvUserPagination.maxResults );
+             this.csvUserPagination.pagedItems = this.excludedUsers.slice(this.csvUsersPager.startIndex, this.csvUsersPager.endIndex + 1);
+             this.csvUserPagination = this.pagerService.getPagedItems(this.csvUserPagination, this.csvUserPagination.pagedItems);
+             
+             /*this.csvUserPagination.pageIndex = event.page;             
+             this.csvUserPagination.maxResults = 12;
+             this.csvUserPagination.totalRecords = this.excludedUsers.length;
+             this.csvUserPagination = this.pagerService.getPagedItems(this.csvUserPagination, this.excludedUsers);*/
+        } 
 		
 	}
 
@@ -3030,11 +3053,97 @@ configSalesforce() {
     }
     
     fileChange( input: any ) {
-        this.readFiles( input.files );
+       this.readFiles( input.files );
     }
     
     isCSVFile(file) {
         return file.name.endsWith(".csv");
+    }
+    
+    validateHeaders( headers ) {
+        return (this.removeDoubleQuotes(headers[0]) == "EMAILID" 
+ );
+    }
+    
+    removeDoubleQuotes(input:string){
+        if(input!=undefined){
+            return input.trim().replace('"','').replace('"','');
+        }else{
+            return "";
+        }
+    }
+    
+    readFiles( files: any, index = 0 ) {        
+        if ( this.fileUtil.isCSVFile( files[0] ) ) {
+        	this.excludedUsers = [];
+            this.isListLoader = true;
+            var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
+            this.filePreview = true;
+           
+           // this.paginationType = "csvContacts";           
+           // this.uploadedCsvFileName = files[0].name;                   
+            $( "#file_preview" ).show();
+            //$( "button#cancel_button" ).prop( 'disabled', false );
+           
+            let reader = new FileReader();
+            reader.readAsText( files[0] );
+            //this.xtremandLogger.info( files[0] );
+            var lines = new Array();
+            var self = this;
+            reader.onload = function( e: any ) {
+                var contents = e.target.result;
+
+                let csvData = reader.result;
+                let csvRecordsArray = csvData.split( /\r|\n/ );
+                let headersRow = self.fileUtil.getHeaderArray( csvRecordsArray );
+                let headers = headersRow[0].split( ',' );
+                if ( ( headers.length == 1 ) ) {
+                    if ( self.validateHeaders( headers ) ) {
+                        var csvResult = Papa.parse( contents );
+
+                        var allTextLines = csvResult.data;
+                        for ( var i = 1; i < allTextLines.length; i++ ) {                          
+                            if ( allTextLines[i][0] && allTextLines[i][0].trim().length > 0 ) {
+                                let user = new User();
+                                user.emailId = allTextLines[i][0].trim();                                
+                                self.excludedUsers.push( user );
+                            }
+                        }
+                        /*self.csvUsersPager = self.socialPagerService.getPager(self.excludedUsers.length, 1, 12);                       
+                        self.csvUserPagination.type = "csvUsers";
+                        self.csvUserPagination.pagedItems = self.excludedUsers.slice(self.csvUsersPager.startIndex, self.csvUsersPager.endIndex + 1);
+                        self.csvUserPagination.pageIndex = 1;             
+                        self.csvUserPagination.maxResults = 12;
+                        self.csvUserPagination.totalRecords = self.excludedUsers.length;*/
+                     
+                        //self.setPage( self.csvUserPagination );
+                        self.csvUserPagination.page = 1;  
+                        self.csvUserPagination.maxResults = 12;
+                        self.csvUserPagination.type = "csvUsers";
+                        self.setPage( self.csvUserPagination );
+                        
+                        self.isListLoader = false;
+                        //$( "#file_preview" ).show();
+
+                        if(self.excludedUsers.length === 0){                       
+                        self.customResponse = new CustomResponse( 'ERROR', "No users found.", true );
+                        }
+                    } else {
+                        self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                        self.isListLoader = false;
+                        //self.cancelContacts();
+                    }
+                } else {
+                    self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
+                    self.isListLoader = false;
+                    //self.cancelContacts();
+                }                
+            }
+        } else {
+            this.customResponse = new CustomResponse( 'ERROR', this.properties.FILE_TYPE_ERROR, true );
+            $( "#file_preview" ).hide();
+            
+        }
     }
     
 
