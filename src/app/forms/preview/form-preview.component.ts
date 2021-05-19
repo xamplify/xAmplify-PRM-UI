@@ -388,4 +388,10 @@ export class FormPreviewComponent implements OnInit {
     this.getFormFieldsByAlias(this.alias);
   }
 
+  omitNegativeCharacters(event: any) {
+    var k;
+    k = event.charCode;
+    return (k > 47 && k < 58 || k == 46);
+  }
+
 }

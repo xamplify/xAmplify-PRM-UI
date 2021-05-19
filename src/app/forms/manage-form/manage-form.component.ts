@@ -257,8 +257,15 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
                 },
                 (error: string) => {
-                    this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-                    this.customResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+                    let message = JSON.parse(error['_body']).message;
+                    let statusCode = JSON.parse(error['_body']).statusCode;
+                    if(statusCode == 400){
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+                        this.referenceService.loading(this.httpRequestLoader, false);
+                    } else {
+                        this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+                        this.customResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+                    }
                 }
             );
     }
