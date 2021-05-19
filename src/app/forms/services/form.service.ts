@@ -18,6 +18,7 @@ export class FormService {
 
     URL = this.authenticationService.REST_URL + "form/";
     form: Form;
+    formId: number;
 
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger ) { }
 
@@ -136,6 +137,12 @@ export class FormService {
     
     quizList( pagination: Pagination ): Observable<any> {
         return this.http.post( this.URL + "quiz-list?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+    listDefaultForms( pagination: Pagination ){
+        return this.http.post( this.URL + "default/list?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }

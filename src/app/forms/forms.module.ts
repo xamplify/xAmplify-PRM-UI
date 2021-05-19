@@ -14,6 +14,7 @@ import { LandingPageFormAnalyticsComponent } from './landing-page-form-analytics
 import { LandingPageFormsComponent } from './landing-page-forms/landing-page-forms.component';
 import { CampaignLandingPageFormsComponent } from './campaign-landing-page-forms/campaign-landing-page-forms.component';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { SelectFormComponent } from './select-form/select-form.component';
 
 
 
@@ -21,7 +22,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
     imports: [
         CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule,CKEditorModule
     ],
-    declarations: [AddFormComponent, ManageFormComponent, CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent],
+    declarations: [AddFormComponent, ManageFormComponent, CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent, SelectFormComponent],
     providers: [FormService]
 } )
 export class FormsModule { }
