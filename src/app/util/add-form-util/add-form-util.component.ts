@@ -162,6 +162,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   formBackgroundImage = "";
   @Input() isMdfForm:boolean;
   @Input() selectedForm:any;
+  @Input() selectedDefaultFormId:number;
   formHeader = "CREATE FORM";
   siteKey = "";
   formSubmissionUrlErrorMessage = "";
@@ -188,18 +189,75 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   private onDropModel(args) {
   }
 
-  ngOnInit() {
-    if (this.selectedForm === undefined) {
-        if (this.router.url.indexOf("/home/forms/edit") > -1) {
-            this.navigateToManageSection();
+    ngOnInit() {
+        if (this.selectedForm === undefined) {
+            if (this.router.url.indexOf("/home/forms/edit") > -1) {
+                this.navigateToManageSection();
+            }
         }
+        if (this.selectedForm !== undefined) {
+            this.isAdd = false;
+            this.formTitle = "Edit Form Details";
+            this.buttonName = "Update";
+            this.existingFormName = this.selectedForm.name.toLowerCase();
+            this.form = this.selectedForm;
+            this.setExistingFormData();
+        } else if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0){
+            this.isAdd = true;
+            this.getById(this.selectedDefaultFormId);
+        } else {
+            this.listDefaultColumns();
+            this.highlightByLength(1);
+        }
+        this.cropperSettings();
+        this.pageNumber = this.numberPerPage[0];
+
+        this.listPriceTypes();
+        if (this.isMdfForm) {
+            this.formHeader = "EDIT MDF FORM";
+            this.removeBlurClass();
+        } else {
+            if (this.router.url.indexOf('edit') > -1) {
+                this.formHeader = "EDIT FORM";
+            } else {
+                this.formHeader = "CREATE FORM";
+            }
+            this.listCategories();
+            if(this.selectedDefaultFormId === undefined || this.selectedDefaultFormId < 1){
+                this.listFormNames();
+            }
+            if (this.isAdd && (this.selectedDefaultFormId === undefined || this.selectedDefaultFormId < 1)) {
+                this.getCompanyLogo();
+            } else {
+                this.removeBlurClass();
+            }
+        }
+
+
     }
-    if (this.selectedForm !== undefined) {
-        this.isAdd = false;
-        this.formTitle = "Edit Form Details";
-        this.buttonName = "Update";
-        this.existingFormName = this.selectedForm.name.toLowerCase();
-        this.form = this.selectedForm;
+
+    getCompanyLogo(){
+        this.ngxloading = true;
+        this.formService.getCompanyLogo(this.loggedInUserId).subscribe(
+            data => {
+                this.form.companyLogo = data;
+                this.companyLogoImageUrlPath = data;
+                if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
+                    this.validateFormNames(this.form.name);
+                }
+                this.ngxloading = false;
+                $('#add-form-name-modal').modal('show');
+            },
+            error => {
+                if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
+                    this.validateFormNames(this.existingFormName);
+                }
+                this.ngxloading = false;
+                $('#add-form-name-modal').modal('show');
+            });
+    }
+
+    setExistingFormData() {
         if (this.form.showCompanyLogo === undefined || this.form.showCompanyLogo === null) {
             this.form.showCompanyLogo = false;
         }
@@ -246,47 +304,34 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.form.isValidColorCode = true;
         this.listExistingColumns(this.form.formLabelDTOs);
         this.characterSize();
-    } else {
-        this.listDefaultColumns();
+        this.highlightByLength(1);
     }
-    this.highlightByLength(1);
 
-    this.cropperSettings();
-    this.pageNumber = this.numberPerPage[0];
-
-   
-    this.listPriceTypes();
-      if(this.isMdfForm){
-        this.formHeader = "EDIT MDF FORM"; 
-        this.removeBlurClass();
-      }else{
-         if(this.router.url.indexOf('edit')>-1){
-            this.formHeader = "EDIT FORM"; 
-         }else{
-            this.formHeader = "CREATE FORM"; 
-         }
+    getById(id: number) {
         this.listFormNames();
-        this.listCategories();
-        if (this.isAdd) {
-          this.ngxloading = true;
-          this.formService.getCompanyLogo(this.loggedInUserId).subscribe(
-              data => {
-                  this.ngxloading = false;
-                  this.form.companyLogo = data;
-                  this.companyLogoImageUrlPath = data;
-                  $('#add-form-name-modal').modal('show');
-              },
-              error => {
-                  this.ngxloading = false;
-                  $('#add-form-name-modal').modal('show');
-              });
-      } else {
-          this.removeBlurClass();
-      }
-      }
-      
-      
-  }
+        this.ngxloading = true;
+        this.formService.getById(id)
+            .subscribe(
+                (data: any) => {
+                    if (data.statusCode === 200) {
+                        this.form = data.data;
+                        if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
+                            this.setExistingFormData();
+                            this.getCompanyLogo();
+                            this.form.id = null;
+                        }
+                    } else {
+                        this.ngxloading = false;
+                        swal("Please Contact Admin!", data.message, "error");
+                    }
+                },
+                (error: string) => {
+                    this.ngxloading = false;
+                    this.logger.errorPage(error);
+                    this.referenceService.showServerError(this.httpRequestLoader);
+                }
+            );
+    }
 
   listPriceTypes() {
       this.formService.getPriceTypes().subscribe(
@@ -985,7 +1030,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.referenceService.goToRouter("/home/mdf/details");
       }else{
         if (this.isAdd) {
-            this.router.navigate(["/home/design/add"]);
+            this.router.navigate(["/home/forms/select"]);
         } else {
             this.navigateToManageSection();
         }

@@ -14,6 +14,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     routerLink: string = "/home/forms/manage";
     isAdd = true;
     selectedForm:any;
+    selectedDefaultFormId: number = 0;
     constructor(private route:ActivatedRoute,public referenceService: ReferenceService, public authenticationService: AuthenticationService, public formService: FormService, private router: Router) {
         if (this.formService.form === undefined) {
             if (this.router.url.indexOf("/home/forms/edit") > -1) {
@@ -23,6 +24,9 @@ export class AddFormComponent implements OnInit, OnDestroy {
         if (this.formService.form !== undefined) {
             this.isAdd = false;
             this.selectedForm = this.formService.form;
+        } else if(this.formService.formId !== undefined && this.formService.formId > 0){
+            this.isAdd = true;
+            this.selectedDefaultFormId = this.formService.formId;
         }
     }
 

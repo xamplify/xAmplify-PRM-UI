@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -7,6 +7,8 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { FormService } from '../services/form.service';
+import { PreviewPopupComponent } from '../preview-popup/preview-popup.component'
+
 
 declare var swal, $: any;
 
@@ -14,7 +16,7 @@ declare var swal, $: any;
   selector: 'app-select-form',
   templateUrl: './select-form.component.html',
   styleUrls: ['./select-form.component.css'],
-  providers: [Pagination, HttpRequestLoader, FormService]
+  providers: [Pagination, HttpRequestLoader]
 })
 export class SelectFormComponent implements OnInit {
 
@@ -22,6 +24,7 @@ export class SelectFormComponent implements OnInit {
   pagination: Pagination = new Pagination();
   searchKey = "";
   selectedFormTypeIndex = 0;
+  @ViewChild('previewPopupComponent') previewPopupComponent: PreviewPopupComponent;
 
   constructor(public referenceService: ReferenceService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public authenticationService: AuthenticationService,
@@ -39,8 +42,6 @@ export class SelectFormComponent implements OnInit {
     this.listDefaultForms(this.pagination);
   }
 
-
-
   listDefaultForms(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.formService.listDefaultForms(pagination).subscribe(
@@ -54,6 +55,7 @@ export class SelectFormComponent implements OnInit {
       },
       (error: any) => { this.logger.errorPage(error); });
   }
+
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchForms(); } }
 
   searchForms() {
@@ -62,12 +64,21 @@ export class SelectFormComponent implements OnInit {
     this.listDefaultForms(this.pagination);
   }
 
+  setFormsPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.listDefaultForms(this.pagination);
+  }
+
   createForm(id: number) {
-    this.formService.formId = id;
+    let formId = id;
+    this.formService.formId = formId;
     this.router.navigate(["/home/forms/add"]);
   }
 
   ngOnDestroy() {
   }
 
+  previewForm(id: number){
+    this.previewPopupComponent.previewForm(id)
+  }
 }
