@@ -2428,5 +2428,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 		);
 	}
+
+	viewMatchedContacts(userList: any) {
+		userList.expand = !userList.expand;
+	}
     
 }
