@@ -1184,7 +1184,14 @@
 													<tbody>
 														<fieldset>
 															<legend>Exclude A User</legend>
-															<div class="btn-group" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+															<div align="right" style="margin-top: 10px;" class="hidden-xs">
+															<button (click)="downloadEmptyUserCsv()" type="button" class="btn green" download style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+					Download User CSV Template
+					<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+				</button>
+				</div>														
+															
+															<div class="btn-group" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                     authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
 																<button id="add_contact" class="btn green"
 																	(click)="addContactModalOpen()" translate>
@@ -1196,15 +1203,11 @@
 																	<span style="display: block; font-size: 12px; text-align: center" translate>Upload a CSV</span> <input type="file" title=" "
 													 (click)="input.value = null" (change)="fileChange(input)" accept=".csv" #input />
 																	<i style="font-size: 12px; margin-left: 5px;" class="fa fa-file-excel-o"></i>
-																</button>
-																
-																	<button (click)="downloadEmptyUserCsv()" type="button" class="btn green" download style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-					Download User CSV Template
-					<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
-				</button>
+																</button>											
+																	
 															</div>
 
-															<div class="portlet-input input-inline search-class" style="float:right;"
+															<div class="portlet-input input-inline search-class" style="float:right;margin-top:10px;" *ngIf="!filePreview"
 																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
 																<div class="input-icon right">
 																	<input type="text" [(ngModel)]="searchExcludedUserKey" (keydown.enter)="searchData('excludeUsers')"
@@ -1243,16 +1246,13 @@
 										<div class="caption" translate>
 											<i class="fa fa-edit"></i>File Preview
 										</div>
+										<button type="submit" class="btn green" style="float:right;" (click)="confirmAndsaveExcludedUsers(excludedUsers)"
+																					translate>Save</button>
+																				<button class="btn btn-default"  style="float:right;" (click)="cancelCSVFilePreview()" translate>Cancel</button>
 									</div>
 									<div class="portlet-body">
 										<app-list-loader *ngIf="isListLoader"></app-list-loader>
-
-																			<div class="clearfix" *ngIf="filePreview">
-																				<button type="submit" class="btn green" style="float:right;"
-																					translate>Save</button>
-																				<button class="btn btn-default"  style="float:right;" translate>Cancel</button>
-																			</div>
-
+										<app-response-message [customResponse]="filePreviewexcludeUserCustomResponse"></app-response-message>
 																			<div class="table-responsive">
 										<table class="table tgrid" id="sample_editable_2">
 											<thead>
@@ -1671,7 +1671,7 @@
     </div>
 </div>
 
-<!------------------------------Add exclude cotact popup---------->
+<!------------------------------Add exclude user popup---------->
 <div id="addContactModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
 <div class="modal-dialog  accounts-modal" style="position: relative !important;">

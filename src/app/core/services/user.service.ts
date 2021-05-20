@@ -447,6 +447,12 @@ export class UserService {
             .catch(this.handleError);
     }
     
+    saveExcludedUsers(excludedUsers: User[], loggedInUserId : number) {
+        return this.http.post(this.URL + "save-excluded-users/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludedUsers)
+           .map(this.extractData)
+           .catch(this.handleError);
+   }
+    
     listExcludedUsers(loggedInUserId : number, excludeUserPagination:Pagination) {
         return this.http.post(this.URL + "list-excluded-users/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludeUserPagination)
            .map(this.extractData)

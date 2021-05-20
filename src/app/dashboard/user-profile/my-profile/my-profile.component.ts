@@ -150,6 +150,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/*****************GDPR************************** */
 	gdprSetting: GdprSetting = new GdprSetting();
 	excludeUserCustomResponse  : CustomResponse = new CustomResponse(); 
+	filePreviewexcludeUserCustomResponse  : CustomResponse = new CustomResponse();
 	excludeDomainCustomResponse  : CustomResponse = new CustomResponse(); 
 	gdprCustomResponse : CustomResponse = new CustomResponse();
 	gdprSettingLoaded = false;
@@ -3079,15 +3080,9 @@ configSalesforce() {
             this.isListLoader = true;
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.filePreview = true;
-           
-           // this.paginationType = "csvContacts";           
-           // this.uploadedCsvFileName = files[0].name;                   
-            $( "#file_preview" ).show();
-            //$( "button#cancel_button" ).prop( 'disabled', false );
-           
+            $( "#file_preview" ).show();       
             let reader = new FileReader();
-            reader.readAsText( files[0] );
-            //this.xtremandLogger.info( files[0] );
+            reader.readAsText( files[0] );            
             var lines = new Array();
             var self = this;
             reader.onload = function( e: any ) {
@@ -3109,41 +3104,82 @@ configSalesforce() {
                                 self.excludedUsers.push( user );
                             }
                         }
-                        /*self.csvUsersPager = self.socialPagerService.getPager(self.excludedUsers.length, 1, 12);                       
-                        self.csvUserPagination.type = "csvUsers";
-                        self.csvUserPagination.pagedItems = self.excludedUsers.slice(self.csvUsersPager.startIndex, self.csvUsersPager.endIndex + 1);
-                        self.csvUserPagination.pageIndex = 1;             
-                        self.csvUserPagination.maxResults = 12;
-                        self.csvUserPagination.totalRecords = self.excludedUsers.length;*/
-                     
-                        //self.setPage( self.csvUserPagination );
                         self.csvUserPagination.page = 1;  
                         self.csvUserPagination.maxResults = 12;
                         self.csvUserPagination.type = "csvUsers";
                         self.setPage( self.csvUserPagination );
                         
                         self.isListLoader = false;
-                        //$( "#file_preview" ).show();
-
                         if(self.excludedUsers.length === 0){                       
                         self.customResponse = new CustomResponse( 'ERROR', "No users found.", true );
                         }
                     } else {
                         self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                         self.isListLoader = false;
-                        //self.cancelContacts();
                     }
                 } else {
                     self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
                     self.isListLoader = false;
-                    //self.cancelContacts();
                 }                
             }
         } else {
             this.customResponse = new CustomResponse( 'ERROR', this.properties.FILE_TYPE_ERROR, true );
-            $( "#file_preview" ).hide();
             
         }
+    }
+    
+    
+    confirmAndsaveExcludedUsers(excludedUsers:User[]){
+        let companyName = '<strong>'+this.getCompanyName()+"</strong>.";
+        let text = "Adding emails to your exclusion list ensures that these emails are no longer receives any campaigns from "+companyName;
+        let self = this;
+            swal({
+                title: 'Are you sure want to continue?',
+                text: text,
+                type: 'warning',
+                showCancelButton: true,
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
+                allowOutsideClick: false,
+                confirmButtonText: 'Yes'
+            }).then(function () {
+                self.saveExcludedUsers(excludedUsers);
+            }, function (dismiss: any) {
+                console.log('you clicked on option' + dismiss);
+            });
+    }
+    
+    saveExcludedUsers(excludedUsers: User[]) {
+        this.modalpopuploader = true;
+        this.validEmailFormat  = true;   
+        this.isEmailExist  = false;
+        this.userService.saveExcludedUsers(excludedUsers, this.loggedInUserId)
+            .subscribe(
+            data => {
+                if (data.statusCode == 200) {
+                	 this.filePreview = false;
+                    this.addContactModalClose();
+                    this.excludeUserCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
+                    this.listExcludedUsers(this.excludeUserPagination);
+                    this.modalpopuploader = false;
+                } else if (data.statusCode == 401) { 
+                       this.modalpopuploader = false;
+                       this.filePreviewexcludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                } else if (data.statusCode == 402) {
+                    this.modalpopuploader = false;
+                    this.filePreviewexcludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                }                
+            },
+            error => {
+                this.modalpopuploader = false;
+            },
+            () => { }
+            );
+    }
+    
+    cancelCSVFilePreview(){
+    	this.filePreview = false;
+    	 this.listExcludedUsers(this.excludeUserPagination);
     }
     
 

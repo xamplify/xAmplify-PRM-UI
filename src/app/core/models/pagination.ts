@@ -79,6 +79,6 @@ export class Pagination {
 	lmsType:string = TracksPlayBookType[TracksPlayBookType.TRACK];
 	type:string = "";
 	channelCampaign = false;
-
+	page : number = 0;
 
 }
