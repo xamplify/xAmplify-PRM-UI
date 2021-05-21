@@ -3164,10 +3164,10 @@ configSalesforce() {
                     this.modalpopuploader = false;
                 } else if (data.statusCode == 401) { 
                        this.modalpopuploader = false;
-                       this.filePreviewexcludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                       this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
                 } else if (data.statusCode == 402) {
                     this.modalpopuploader = false;
-                    this.filePreviewexcludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                    this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
                 }                
             },
             error => {
