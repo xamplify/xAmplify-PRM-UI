@@ -440,47 +440,40 @@ export class UserService {
         }
 
     }
-    
-    saveExcludedUser(user: User, loggedInUserId : number) {
-    	 return this.http.post(this.URL + "save-excluded-user/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, user)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    
     saveExcludedUsers(excludedUsers: User[], loggedInUserId : number) {
-        return this.http.post(this.URL + "save-excluded-users/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludedUsers)
+        return this.http.post(this.URL + "exclude/save-users/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludedUsers)
            .map(this.extractData)
            .catch(this.handleError);
    }
     
     listExcludedUsers(loggedInUserId : number, excludeUserPagination:Pagination) {
-        return this.http.post(this.URL + "list-excluded-users/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludeUserPagination)
+        return this.http.post(this.URL + "exclude/list-users/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludeUserPagination)
            .map(this.extractData)
            .catch(this.handleError);
    }
     
     deleteExcludedUser(loggedInUserId : number, excludedUserId : number){
-    	return this.http.get(this.URL + "delete-excluded-user/"+ excludedUserId+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
+    	return this.http.get(this.URL + "exclude/delete-user/"+ excludedUserId+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
     	
     }
     
     saveExcludedDomain(domain: string, loggedInUserId : number){
-    	 return this.http.get(this.URL + "save-excluded-domain/"+ domain+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
+    	 return this.http.get(this.URL + "exclude/save-domain/"+ domain+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
          .map(this.extractData)
          .catch(this.handleError);
     	
     }
     
     listExcludedDomains(loggedInUserId : number, excludeDomainPagination:Pagination) {
-        return this.http.post(this.URL + "list-excluded-domains/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludeDomainPagination)
+        return this.http.post(this.URL + "exclude/list-domains/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludeDomainPagination)
            .map(this.extractData)
            .catch(this.handleError);
    }
     
     deleteExcludedDomain(loggedInUserId : number, domain : string){
-        return this.http.get(this.URL + "delete-excluded-domain/"+ domain+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
+        return this.http.get(this.URL + "exclude/delete-domain/"+ domain+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
         

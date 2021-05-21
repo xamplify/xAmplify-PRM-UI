@@ -2811,7 +2811,9 @@ configSalesforce() {
     	this.modalpopuploader = true;
     	this.validEmailFormat  = true;   
         this.isEmailExist  = false;
-        this.userService.saveExcludedUser(excludedUser, this.loggedInUserId)
+        this.excludedUsers = [];
+        this.excludedUsers.push(excludedUser );
+        this.userService.saveExcludedUsers(this.excludedUsers, this.loggedInUserId)
             .subscribe(
             data => {
                 if (data.statusCode == 200) {
@@ -3078,16 +3080,13 @@ configSalesforce() {
         if ( this.fileUtil.isCSVFile( files[0] ) ) {
         	this.excludedUsers = [];
             this.isListLoader = true;
-            var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.filePreview = true;
-            $( "#file_preview" ).show();       
             let reader = new FileReader();
             reader.readAsText( files[0] );            
             var lines = new Array();
             var self = this;
             reader.onload = function( e: any ) {
                 var contents = e.target.result;
-
                 let csvData = reader.result;
                 let csvRecordsArray = csvData.split( /\r|\n/ );
                 let headersRow = self.fileUtil.getHeaderArray( csvRecordsArray );
@@ -3095,13 +3094,12 @@ configSalesforce() {
                 if ( ( headers.length == 1 ) ) {
                     if ( self.validateHeaders( headers ) ) {
                         var csvResult = Papa.parse( contents );
-
                         var allTextLines = csvResult.data;
                         for ( var i = 1; i < allTextLines.length; i++ ) {                          
                             if ( allTextLines[i][0] && allTextLines[i][0].trim().length > 0 ) {
                                 let user = new User();
                                 user.emailId = allTextLines[i][0].trim();                                
-                                self.excludedUsers.push( user );
+                                self.excludedUsers.push(user );
                             }
                         }
                         self.csvUserPagination.page = 1;  
