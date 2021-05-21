@@ -3168,7 +3168,10 @@ configSalesforce() {
                 } else if (data.statusCode == 402) {
                     this.modalpopuploader = false;
                     this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
-                }                
+                }else if (data.statusCode == 403) {
+                    this.modalpopuploader = false;
+                    this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                }                   
             },
             error => {
                 this.modalpopuploader = false;
