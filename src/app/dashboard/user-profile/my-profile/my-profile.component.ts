@@ -3064,8 +3064,7 @@ configSalesforce() {
     }
     
     validateHeaders( headers ) {
-        return (this.removeDoubleQuotes(headers[0]) == "EMAILID" 
- );
+        return (this.removeDoubleQuotes(headers[0]) == "EMAILID" || headers[0]== "EMAIL ID" );
     }
     
     removeDoubleQuotes(input:string){
@@ -3078,6 +3077,7 @@ configSalesforce() {
     
     readFiles( files: any, index = 0 ) {        
         if ( this.fileUtil.isCSVFile( files[0] ) ) {
+        	this.csvUserPagination = new Pagination();        	
         	this.excludedUsers = [];
             this.isListLoader = true;
             this.filePreview = true;
