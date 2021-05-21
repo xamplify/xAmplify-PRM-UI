@@ -24,6 +24,7 @@ import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { SortOption } from 'app/core/models/sort-option';
 
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
@@ -116,7 +117,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	searchContactType = "";
 	contactListIdForSyncLocal: any;
 	socialNetworkForSyncLocal: any;
-
+	usersPagination: Pagination = new Pagination();
+	usersSortOption: SortOption = new SortOption();
+	usersLoader: HttpRequestLoader = new HttpRequestLoader();
+	usersCustomResponse: CustomResponse = new CustomResponse();
+	expandedUserList: any;
+	showExpandButton = false;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
@@ -1562,8 +1568,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.searchContactType = searchType;
 		try {
 			this.resetResponse();
-			if (searchType == 'contactList') {
-				this.pagination.searchKey = this.searchKey;
+			if (searchType == 'contactList') {		
+				if (this.searchKey != "") {
+					this.showExpandButton = true;
+				} else {
+					this.showExpandButton = false;
+				}		
+				this.pagination.searchKey = this.searchKey;				
 				this.pagination.pageIndex = 1;
 				this.loadContactLists(this.pagination);
 			} else {
@@ -1607,6 +1618,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsCount();
 		}
 		this.contactCountLoad = false;
+		this.showExpandButton = false;
 	}
 
 	resetResponse() {
@@ -2429,8 +2441,52 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		);
 	}
 
-	viewMatchedContacts(userList: any) {
-		userList.expand = !userList.expand;
+	viewMatchedContacts(userList: any) {		
+		userList.expand = !userList.expand;		
+		if (userList.expand) {
+			if ((this.expandedUserList != undefined || this.expandedUserList != null)
+			 && userList != this.expandedUserList) {				
+				this.expandedUserList.expand = false;				
+			}			
+			this.expandedUserList = userList;
+			this.referenceService.loading(this.usersLoader, false);
+			this.usersPagination = new Pagination();
+			this.usersPagination.searchKey = this.pagination.searchKey;
+			this.usersPagination.userListId = userList.id;
+			this.getMatchedContacts(this.usersPagination);
+		}
+	}
+
+	getMatchedContacts(pagination: Pagination) {
+		this.usersCustomResponse = new CustomResponse();
+		this.contactService.findUsersByUserListId(pagination).subscribe(
+			response=>{
+				this.loading = false;
+				if(response.statusCode==200){
+					pagination.totalRecords = response.data.totalRecords;
+					pagination = this.pagerService.getPagedItems(pagination, response.data.list);
+					this.usersSortOption.totalRecords = response.data.totalRecords;
+					this.referenceService.loading(this.usersLoader, false);
+				}
+			},
+			error=>{
+				this.loading = false;
+				this.xtremandLogger.error(error);
+				this.referenceService.loading(this.usersLoader, false);
+				this.usersCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			}
+		);
+	}
+
+	setUsersPage(event: any) {
+		this.usersPagination.pageIndex = event.page;
+		this.getMatchedContacts(this.usersPagination);
+	}
+
+	getAllFilteredResultsUsers(pagination: Pagination) {
+		pagination.pageIndex = 1;
+		pagination.searchKey = this.usersSortOption.searchKey;
+		this.getMatchedContacts(pagination);
 	}
     
 }
