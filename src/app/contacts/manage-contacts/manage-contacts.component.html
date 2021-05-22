@@ -461,52 +461,7 @@
                             </tr>
                             <tr *ngIf="contactList?.expand">
                               <td colspan="12">
-                                <div class="table-responsive">
-                                  <ng-container *ngIf="!usersLoader.isLoading && usersCustomResponse.isVisible">
-                                    <div class="custom-response-padding">
-                                      <app-response-message [customResponse]="usersCustomResponse">
-                                      </app-response-message>
-                                    </div>
-                                  </ng-container>
-                                  <div *ngIf="!usersCustomResponse.isVisible">
-                                    <app-auto-response-loader *ngIf="usersLoader.isLoading">
-                                    </app-auto-response-loader>
-                                    <ng-container *ngIf="!usersLoader.isLoading">
-                                      <table class="table tgrid table-hover table-sm" aria-describedby="user-info"
-                                        id="users-{{contactList?.id}}">
-                                        <thead>
-                                          <tr>
-                                            <th>Entity Info</th>
-                                            <th>Job Title</th>
-                                            <th>Address</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <ng-container *ngFor="let user of usersPagination.pagedItems ;let i =index">
-                                            <tr>
-                                              <td style="width: 40%;">
-                                                <app-user-info [isCompanyInfo]="true" [userInfo]="user"></app-user-info>
-                                              </td>
-                                              <td style="width: 30%;">{{user.jobTitle}}</td>
-                                              <td style="width: 30%;">{{user.address}}</td>
-                                            </tr>
-                                          </ng-container>
-                                        </tbody>
-                                      </table>
-                                    </ng-container>
-                                    <!---Pagination-->
-                                    <div *ngIf="usersPagination.totalRecords==0 && !usersLoader.isLoading"
-                                      class="alert alert-info">
-                                      <strong>No Data Found.</strong>
-                                    </div>
-                                    <div *ngIf="!usersLoader.isLoading && usersPagination.pagedItems.length !== 0"
-                                      class="pg8">
-                                      <app-pagination [pagination]="usersPagination"
-                                        (notifyParent)="setUsersPage($event)"
-                                        (notifyParentDropDown)="getMatchedContacts($event)"></app-pagination>
-                                    </div>
-                                  </div>
-                                </div>
+                                <app-userlist-users [searchKey]="pagination.searchKey" [userListId]="contactList.id"></app-userlist-users>
                               </td>
                             </tr>
                           </ng-container>

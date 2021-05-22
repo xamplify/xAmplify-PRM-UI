@@ -4,7 +4,6 @@ import { DashboardModule } from '../dashboard/dashboard.module';
 import { SharedModule } from '../shared/shared.module';
 import { ContactRoutingModule } from './contact-routing.module';
 import { SharedContactsModule } from '../shared/shared-contacts.module';
-import { UserlistUsersComponent } from './userlist-users/userlist-users.component';
 
 @NgModule({
   imports: [
@@ -12,6 +11,6 @@ import { UserlistUsersComponent } from './userlist-users/userlist-users.componen
   ],
   providers: []
   ,
-  declarations: [UserlistUsersComponent]
+  declarations: []
 })
 export class ContactsModule { }
