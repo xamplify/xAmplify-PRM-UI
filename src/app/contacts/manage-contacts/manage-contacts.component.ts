@@ -116,13 +116,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	searchContactType = "";
 	contactListIdForSyncLocal: any;
-	socialNetworkForSyncLocal: any;
-	usersPagination: Pagination = new Pagination();
-	usersSortOption: SortOption = new SortOption();
-	usersLoader: HttpRequestLoader = new HttpRequestLoader();
-	usersCustomResponse: CustomResponse = new CustomResponse();
-	expandedUserList: any;
-	showExpandButton = false;
+	socialNetworkForSyncLocal: any;	
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
@@ -216,6 +210,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 	public salesForceCurrentUser: any;
 	loggedInThroughVanityUrl = false;
+	expandedUserList: any;
+	showExpandButton = false;
 	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
@@ -2448,45 +2444,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			 && userList != this.expandedUserList) {				
 				this.expandedUserList.expand = false;				
 			}			
-			this.expandedUserList = userList;
-			this.referenceService.loading(this.usersLoader, false);
-			this.usersPagination = new Pagination();
-			this.usersPagination.searchKey = this.pagination.searchKey;
-			this.usersPagination.userListId = userList.id;
-			this.getMatchedContacts(this.usersPagination);
+			this.expandedUserList = userList;			
 		}
-	}
-
-	getMatchedContacts(pagination: Pagination) {
-		this.usersCustomResponse = new CustomResponse();
-		this.contactService.findUsersByUserListId(pagination).subscribe(
-			response=>{
-				this.loading = false;
-				if(response.statusCode==200){
-					pagination.totalRecords = response.data.totalRecords;
-					pagination = this.pagerService.getPagedItems(pagination, response.data.list);
-					this.usersSortOption.totalRecords = response.data.totalRecords;
-					this.referenceService.loading(this.usersLoader, false);
-				}
-			},
-			error=>{
-				this.loading = false;
-				this.xtremandLogger.error(error);
-				this.referenceService.loading(this.usersLoader, false);
-				this.usersCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-			}
-		);
-	}
-
-	setUsersPage(event: any) {
-		this.usersPagination.pageIndex = event.page;
-		this.getMatchedContacts(this.usersPagination);
-	}
-
-	getAllFilteredResultsUsers(pagination: Pagination) {
-		pagination.pageIndex = 1;
-		pagination.searchKey = this.usersSortOption.searchKey;
-		this.getMatchedContacts(pagination);
-	}
-    
+	}    
 }
