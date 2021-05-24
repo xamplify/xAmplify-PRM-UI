@@ -160,8 +160,8 @@
                     <div *ngIf="type == undefined || type == 'TRACK'" class="col-md-3 col-sm-4 col-xs-12">
                         <div [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
                             <div class="grid-box" *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
-                                <img class="image-fixed" [src]="tracksPlayBook.featuredImage"
-                                    alt="{{tracksPlayBook.quiz.name}}">
+                                <img class="image-fixed" [src]="tracksPlayBook.featuredImage" onerror="this.src='assets/images/form.png';"
+                                    alt="Image Not Found">
                                 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{tracksPlayBook.quiz.name}}"
                                     style="text-align: left !important;padding: 5px 0px 5px 10px !important;">
                                     {{tracksPlayBook.quiz.name | slice:0:25}} <span

@@ -970,7 +970,7 @@ export class AddTracksPlayBookComponent implements OnInit {
 
   validateGroupOrCompany() {
     if (this.tracksPlayBook.groupIds.length < 1 && this.tracksPlayBook.userIds.length < 1) {
-      this.addErrorMessage("groupOrCompany", "Select either a company or a group");
+      this.addErrorMessage("groupOrCompany", "Select either a partner or a partner list");
     } else {
       this.removeErrorMessage("groupOrCompany");
     }
@@ -1380,6 +1380,9 @@ export class AddTracksPlayBookComponent implements OnInit {
   }
 
   changePartnerCompanyAndList(tracksPlayBook: TracksPlayBook) {
+    this.tracksPlayBook.userIds = tracksPlayBook.userIds;
+    this.tracksPlayBook.partnershipIds = tracksPlayBook.partnershipIds;
+    this.tracksPlayBook.groupIds = tracksPlayBook.groupIds;
     this.validateGroupOrCompany();
     this.validateAllSteps();
     this.checkAllRequiredFields()
