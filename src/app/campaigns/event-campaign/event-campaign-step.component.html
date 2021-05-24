@@ -35,7 +35,7 @@ a.disabled {
 		</ul>
 		 <div id="folder-margin-xamp">
                 <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-				<app-merge-tags [isEvent]="false" [isCampaign]="true"></app-merge-tags>
+				<!-- <app-merge-tags [isEvent]="false" [isCampaign]="true"></app-merge-tags> -->
 			</div>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
@@ -169,9 +169,10 @@ a.disabled {
 
 						<div class="form-group">
 							<label class="col-sm-3 labal-css color-css" translate>Subject Line
-								 <font style="color: red"> <strong>*</strong></font>
+								 <span style="color: red"><strong>*</strong></span>
 							</label>
 							<div class="col-sm-9">
+								<div class="input-group">
 								<input type="text" id="subjectLine" placeholder="{merge tag} + Subject line"
 									class="form-control" [(ngModel)]="eventCampaign.subjectLine"
 									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
@@ -179,6 +180,12 @@ a.disabled {
 									(input)="eventSubjectLineError()"
 									[ngClass]="{'has-error': eventError.eventSubjectLineError}"
 									maxlength="1000" />
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
+											<i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
+										</button>
+									</span>
+								</div>
 									<div class="text-danger" *ngIf="eventError.eventSubjectLineError" translate>
 									Subject line is required</div>
 							</div>
@@ -1950,3 +1957,4 @@ a.disabled {
 	</div>
 </div> -->
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
+<app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>  

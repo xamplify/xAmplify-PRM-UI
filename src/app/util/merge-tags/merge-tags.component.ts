@@ -10,9 +10,10 @@ declare var $: any;
 })
 export class MergeTagsComponent implements OnInit {
 
-	@Input() isEvent: boolean;
-	@Input() isCampaign: boolean;
-	@Input() hiddenClick:boolean;
+	isEvent: boolean;
+	isCampaign: boolean;
+	hideButton:boolean;
+	@Input() input:any;
 	@Output() notifyComponent = new EventEmitter();
 	@Output() passValueAndNotifyComponent = new EventEmitter();
 	successMessagePrefix = "Copied";
@@ -22,11 +23,14 @@ export class MergeTagsComponent implements OnInit {
 	constructor(public referenceService: ReferenceService) { }
 
 	ngOnInit() {
+		this.isEvent = this.input['isEvent'];
+		this.isCampaign = this.input['isCampaign'];
+		this.hideButton = this.input['hideButton'];
 		this.addMergeTags();
-		if(this.hiddenClick==undefined){
-			this.hiddenClick = false;
+		if(this.hideButton==undefined){
+			this.hideButton = false;
 		}
-		if(this.hiddenClick){
+		if(this.hideButton){
 			this.showMergeTagsPopUp();
 		}
 		if(this.isCampaign){
@@ -78,6 +82,10 @@ export class MergeTagsComponent implements OnInit {
 
 	passToOtherComponent(i:number){
 		let copiedValue = $('#merge-tag-'+i).val();
-		this.passValueAndNotifyComponent.emit(copiedValue);
+		let object = {};
+		object['type'] = this.input['type'];
+		object['copiedValue'] = copiedValue;
+		object['index'] = this.input['index'];
+		this.passValueAndNotifyComponent.emit(object);
 	}
 }

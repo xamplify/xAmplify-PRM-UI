@@ -306,7 +306,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedListName = "";   
     selectedListId = 0;
     selectedContactListNames = [];
-    hiddenClick = false;
+    mergeTagsInput:any = {};
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -3379,18 +3379,34 @@ resetValues(){
     this.selectedListId = 0;
 }
 
-openMergeTagsPopup(){
-    this.hiddenClick = true;
+openMergeTagsPopup(type:string,index:number){
+    this.mergeTagsInput['isEvent'] = false;
+    this.mergeTagsInput['isCampaign'] = true;
+    this.mergeTagsInput['hideButton'] = true;
+    this.mergeTagsInput['type'] = type;
+    this.mergeTagsInput['index'] = index;
 }
 
 clearHiddenClick(){
-    this.hiddenClick = false;
+    this.mergeTagsInput['hideButton'] = false;
 }
 
 appendValueToSubjectLine(event:any){
     if(event!=undefined){
-        this.campaign.subjectLine = this.campaign.subjectLine+" "+event;
+        let type = event['type'];
+        let copiedValue = event['copiedValue'];
+        if(type=="campaignSubjectLine"){
+            let subjectLine = $('#subjectLineId').val();
+            let updatedValue = subjectLine+" "+copiedValue;
+            $('#subjectLineId').val(updatedValue);
+            this.campaign.subjectLine = updatedValue;
+            this.validateField('subjectLine');
+        }else{
+            let index = event['index'];
+            let autoResponseSubject =  $('#'+type+"-"+index).val();
+            $('#'+type+"-"+index).val(autoResponseSubject+" "+copiedValue);
         }
+     }
     }
     
  
