@@ -306,6 +306,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedListName = "";   
     selectedListId = 0;
     selectedContactListNames = [];
+    hiddenClick = false;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -3378,7 +3379,20 @@ resetValues(){
     this.selectedListId = 0;
 }
 
+openMergeTagsPopup(){
+    this.hiddenClick = true;
+}
 
+clearHiddenClick(){
+    this.hiddenClick = false;
+}
+
+appendValueToSubjectLine(event:any){
+    if(event!=undefined){
+        this.campaign.subjectLine = this.campaign.subjectLine+" "+event;
+        }
+    }
+    
  
 }
 

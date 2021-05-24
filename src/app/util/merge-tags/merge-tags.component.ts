@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 
@@ -12,6 +12,10 @@ export class MergeTagsComponent implements OnInit {
 
 	@Input() isEvent: boolean;
 	@Input() isCampaign: boolean;
+	@Input() hiddenClick:boolean;
+	@Output() notifyComponent = new EventEmitter();
+	@Output() passValueAndNotifyComponent = new EventEmitter();
+	successMessagePrefix = "Copied";
 	modalPopupId = "merge-tags-popup";
 	senderMergeTag: SenderMergeTag = new SenderMergeTag();
 	mergeTags = [];
@@ -19,6 +23,15 @@ export class MergeTagsComponent implements OnInit {
 
 	ngOnInit() {
 		this.addMergeTags();
+		if(this.hiddenClick==undefined){
+			this.hiddenClick = false;
+		}
+		if(this.hiddenClick){
+			this.showMergeTagsPopUp();
+		}
+		if(this.isCampaign){
+			this.successMessagePrefix = "Inserted";
+		}
 
 	}
 	showMergeTagsPopUp() {
@@ -58,4 +71,13 @@ export class MergeTagsComponent implements OnInit {
 		}
 	}
 
+	hideModal(){
+		this.notifyComponent.emit();
+		$('#' + this.modalPopupId).modal('hide');
+	}
+
+	passToOtherComponent(i:number){
+		let copiedValue = $('#merge-tag-'+i).val();
+		this.passValueAndNotifyComponent.emit(copiedValue);
+	}
 }
