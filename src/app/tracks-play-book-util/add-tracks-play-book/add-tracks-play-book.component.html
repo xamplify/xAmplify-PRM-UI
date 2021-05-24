@@ -178,6 +178,9 @@
                             </tr>
                           </tbody>
                         </table>
+                        <div *ngIf="(tagsListFirstColumn == undefined || 1 > tagsListFirstColumn.length) && (tagsListSecondColumn == undefined || 1 > tagsListSecondColumn.length)" class="alert alert-info">
+                          <strong>No Tags Found.</strong>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -373,6 +376,9 @@
 
     <!-- step 4 -->
     <div *ngIf="activeTabName == 'step-4'" class="setup-content step hiddenStepInfo" style="margin-top: 10px;">
+      <div *ngIf="!isGroupOrCompanyValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin: 5px; position: absolute;">
+        <span class="required">{{groupOrCompanyErrorMessage}}</span>
+      </div>
       <app-tracks-play-book-partner-company-and-lists [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId"
         [moduleName]="'lms'" [selectedPartnerGroupIds]="tracksPlayBook.groupIds"
         [selectedTeamMemberIds]="tracksPlayBook.userIds" [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
