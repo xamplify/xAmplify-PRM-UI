@@ -226,6 +226,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	excludeUserPagination: Pagination = new Pagination();
 	excludeDomainPagination: Pagination = new Pagination();
 	csvUserPagination: Pagination = new Pagination();
+	csvDomainPagination: Pagination = new Pagination();
 	excludeUsersOrDomains = false;
 	modalpopuploader = false;
 	isUpdateUser = false;
@@ -234,7 +235,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	public hubSpotCurrentUser: any;
 	
 	excludedUsers : User[] = [];
+	excludedDomains : string[] = [];
 	csvUsersPager: any = {};
+	csvDomainsPager: any = {};
+	
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1862,12 +1866,20 @@ configSalesforce() {
         	 this.csvUsersPager = this.socialPagerService.getPager(this.excludedUsers.length, event.page, this.csvUserPagination.maxResults );
              this.csvUserPagination.pagedItems = this.excludedUsers.slice(this.csvUsersPager.startIndex, this.csvUsersPager.endIndex + 1);
              this.csvUserPagination = this.pagerService.getPagedItems(this.csvUserPagination, this.csvUserPagination.pagedItems);
-             
-             /*this.csvUserPagination.pageIndex = event.page;             
-             this.csvUserPagination.maxResults = 12;
-             this.csvUserPagination.totalRecords = this.excludedUsers.length;
-             this.csvUserPagination = this.pagerService.getPagedItems(this.csvUserPagination, this.excludedUsers);*/
-        } 
+         
+        } else if(event.type === 'csvDomains' ){
+        	this.csvDomainPagination.pageIndex = event.page;   
+            if(event.maxResults === undefined){
+                this.csvDomainPagination.maxResults = 12;
+            }else{
+            this.csvDomainPagination.maxResults = event.maxResults;
+            }
+            this.csvDomainPagination.totalRecords = this.excludedDomains.length;
+            this.csvDomainsPager = this.socialPagerService.getPager(this.excludedDomains.length, event.page, this.csvDomainPagination.maxResults );
+            this.csvDomainPagination.pagedItems = this.excludedDomains.slice(this.csvDomainsPager.startIndex, this.csvDomainsPager.endIndex + 1);
+            this.csvDomainPagination = this.pagerService.getPagedItems(this.csvDomainPagination, this.csvDomainPagination.pagedItems);
+        	
+        }
 		
 	}
 
@@ -3051,20 +3063,28 @@ configSalesforce() {
         this.search(type);
     }
     
-    downloadEmptyUserCsv(){
-    	window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_USER_LIST_EMPTY.csv";
+    downloadEmptyCSV(excludetype: string) {
+        if (excludetype === 'exclude-users'){
+            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_USER_LIST_EMPTY.csv";
+        } else if (excludetype === 'exclude-domains'){
+            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_DOMAIN_EMPTY.csv";
+        }
     }
     
-    fileChange( input: any ) {
-       this.readFiles( input.files );
+    fileChange( input: any, excludetype: string ) {
+       this.readFiles( input.files, excludetype );
     }
     
     isCSVFile(file) {
         return file.name.endsWith(".csv");
     }
     
-    validateHeaders( headers ) {
-        return (this.removeDoubleQuotes(headers[0]) == "EMAILID" || headers[0]== "EMAIL ID" );
+    validateHeaders(headers, excludetype: string) {
+        if (excludetype === 'exclude-users') {
+            return (this.removeDoubleQuotes(headers[0]) == "EMAILID" || headers[0] == "EMAIL ID");
+        } else if (excludetype === 'exclude-domains') {
+            return (this.removeDoubleQuotes(headers[0]) == "DOMAIN NAME" || headers[0] == "DOMAINNAME"|| headers[0] == "DOMAIN");
+        }
     }
     
     removeDoubleQuotes(input:string){
@@ -3075,57 +3095,87 @@ configSalesforce() {
         }
     }
     
-    readFiles( files: any, index = 0 ) {        
-        if ( this.fileUtil.isCSVFile( files[0] ) ) {
-        	this.csvUserPagination = new Pagination();        	
-        	this.excludedUsers = [];
+    readFiles(files: any, excludetype: string) {
+        if (this.fileUtil.isCSVFile(files[0])) {
             this.isListLoader = true;
             this.filePreview = true;
             let reader = new FileReader();
-            reader.readAsText( files[0] );            
+            reader.readAsText(files[0]);
             var lines = new Array();
             var self = this;
-            reader.onload = function( e: any ) {
+            reader.onload = function(e: any) {
                 var contents = e.target.result;
                 let csvData = reader.result;
-                let csvRecordsArray = csvData.split( /\r|\n/ );
-                let headersRow = self.fileUtil.getHeaderArray( csvRecordsArray );
-                let headers = headersRow[0].split( ',' );
-                if ( ( headers.length == 1 ) ) {
-                    if ( self.validateHeaders( headers ) ) {
-                        var csvResult = Papa.parse( contents );
+                let csvRecordsArray = csvData.split(/\r|\n/);
+                let headersRow = self.fileUtil.getHeaderArray(csvRecordsArray);
+                let headers = headersRow[0].split(',');
+                if ((headers.length == 1)) {
+                    if (self.validateHeaders(headers, excludetype)) {
+                        var csvResult = Papa.parse(contents);
                         var allTextLines = csvResult.data;
-                        for ( var i = 1; i < allTextLines.length; i++ ) {                          
-                            if ( allTextLines[i][0] && allTextLines[i][0].trim().length > 0 ) {
-                                let user = new User();
-                                user.emailId = allTextLines[i][0].trim();                                
-                                self.excludedUsers.push(user );
-                            }
+                        if (excludetype === 'exclude-users') {
+                        	self.csvUserPagination = new Pagination();
+                        	self.excludedUsers = [];
+                            self.readExcludedUsersCSVFileContent(allTextLines, self.csvUserPagination);
+                        } else {
+                        	self.csvDomainPagination = new Pagination();
+                            self.excludedDomains = [];
+                            self.readExcludedDomainsCSVFileContent(allTextLines, self.csvDomainPagination);
                         }
-                        self.csvUserPagination.page = 1;  
-                        self.csvUserPagination.maxResults = 12;
-                        self.csvUserPagination.type = "csvUsers";
-                        self.setPage( self.csvUserPagination );
-                        
-                        self.isListLoader = false;
-                        if(self.excludedUsers.length === 0){                       
-                        self.customResponse = new CustomResponse( 'ERROR', "No users found.", true );
-                        }
+
                     } else {
-                        self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
-                        self.isListLoader = false;
+                    	self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+                    	self.isListLoader = false;
                     }
                 } else {
-                    self.customResponse = new CustomResponse( 'ERROR', "Invalid Csv", true );
-                    self.isListLoader = false;
-                }                
+                	self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+                	self.isListLoader = false;
+                }
             }
         } else {
-            this.customResponse = new CustomResponse( 'ERROR', this.properties.FILE_TYPE_ERROR, true );
-            
+        	self.customResponse = new CustomResponse('ERROR', self.properties.FILE_TYPE_ERROR, true);
+
         }
     }
-    
+
+    readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
+        for (var i = 1; i < allTextLines.length; i++) {
+            if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+                let user = new User();
+                user.emailId = allTextLines[i][0].trim();
+                this.excludedUsers.push(user);
+            }
+        }
+        this.csvUserPagination.page = 1;
+        this.csvUserPagination.maxResults = 12;
+        this.csvUserPagination.type = "csvUsers";
+        this.setPage(this.csvUserPagination);
+
+        this.isListLoader = false;
+        if (this.excludedUsers.length === 0) {
+            this.customResponse = new CustomResponse('ERROR', "No users found.", true);
+        }
+
+    }
+
+    readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
+        for (var i = 1; i < allTextLines.length; i++) {
+            if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+                let domain = allTextLines[i][0].trim();
+                this.excludedDomains.push(domain);
+            }
+        }
+        this.csvDomainPagination.page = 1;
+        this.csvDomainPagination.maxResults = 12;
+        this.csvDomainPagination.type = "csvDomains";
+        this.setPage(this.csvDomainPagination);
+
+        this.isListLoader = false;
+        if (this.excludedDomains.length === 0) {
+            this.excludeDomainCustomResponse = new CustomResponse('ERROR', "No domains found.", true);
+        }
+
+    }
     
     confirmAndsaveExcludedUsers(excludedUsers:User[]){
         let companyName = '<strong>'+this.getCompanyName()+"</strong>.";
