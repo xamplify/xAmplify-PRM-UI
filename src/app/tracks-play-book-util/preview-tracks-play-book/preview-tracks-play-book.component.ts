@@ -113,6 +113,9 @@ export class PreviewTracksPlayBookComponent implements OnInit {
           }
           //this.referenceService.stopLoader(this.httpRequestLoader);
           this.trackViewLoader = false;
+        } else {
+          this.router.navigate(['/home/error/', 403]);
+          this.trackViewLoader = false;
         }
       },
       (error: string) => {

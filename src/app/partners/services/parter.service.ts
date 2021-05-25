@@ -79,6 +79,19 @@ export class ParterService {
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
+
+	findChannelCampaigns(pagination: Pagination ): Observable<any> {
+		pagination.userId = this.authenticationService.getUserId();
+        const url = this.URL + 'partner/findChannelCampaigns?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    findRedistributedCampaigns(pagination: Pagination ): Observable<any> {
+        const url = this.URL + 'partner/findRedistributedCampaigns?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
     
     listRedistributedCampaigns( campaignId: number, pagination: Pagination ): Observable<any> {
         const url = this.URL + 'partner/list-re-distributed-campaigns/'+campaignId+'?access_token=' + this.authenticationService.access_token;

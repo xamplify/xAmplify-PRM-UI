@@ -121,6 +121,10 @@
                         title="Campaign View" [class.disabled]="!listView" (click)="listView = false">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                       </span>
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                      title="Download" [class.disabled]="dealsSortOption.totalRecords == 0" (click)="downloadDeals()">
+                      <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+                    </span>
                     </ng-container>
                     <a *ngIf="isPartnerVersion || isOrgAdmin" (click)="addDeal()" style="padding-left: 11px;">
                       <button class="btn btn-primary" translate>
@@ -150,9 +154,9 @@
               <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
               </app-list-loader>
               <section class='m10'
-                *ngIf="listView && dealsSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                [hidden]="!listView || dealsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
               
-                <div class="table-responsive">
+                <div class="table-responsive" [hidden]="httpRequestLoader.isLoading">
                   <table class='table tgrid table-hover table-sm' aria-describedby="dealTable">
                     <thead>
                       <tr>
@@ -278,7 +282,7 @@
                 </div>
               
                 <!-- --------------------Pagination0-------------------- -->
-                <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.pagedItems.length !== 0" class="pg8">
+                <div [hidden]="httpRequestLoader.isLoading" class="pg8">
                   <app-pagination [pagination]="dealsPagination" (notifyParent)="setDealsPage($event)"
                     (notifyParentDropDown)="listDeals($event)"></app-pagination>
                 </div>
@@ -295,9 +299,9 @@
               
               <!-- -------------------- Campaign Level View -------------------- -->
               <section class='m10'
-                *ngIf="!listView && campaignSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
       
-                <div class="table-responsive">
+                <div class="table-responsive" [hidden]="campaignRequestLoader.isLoading">
                   <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                     <thead>
                       <tr>
@@ -305,10 +309,8 @@
                         <th class="center" translate>Campaign Name</th>
                         <th class="center" translate>Launched On</th>
                         <th class="center">Count</th>
-                      </tr>
-      
-                    </thead>
-      
+                      </tr>      
+                    </thead>      
                     <tbody>
                       <ng-container *ngFor='let campaign of campaignPagination.pagedItems; let i=index'>
                         <tr>
@@ -370,23 +372,13 @@
                         <tr [ngClass]="{'hidden': !campaign.expand}">
                           <td colspan="8" style="padding-right: 0px !important;">
                             <div class="row" *ngIf="showPartnerList" style="width: 100%;">
-                              <div class="col-xs-12 p5" *ngIf="showPartnerList" style="padding-right: 0px !important">
+                              <div class="col-xs-12 p5" style="padding-right: 0px !important">
                                 <div class="portlet light">
                                   <div class="portlet-title">
                                     <div class="caption">
                                       <span class="caption-subject font-red-sunglo uppercase">Partners</span>
                                     </div>
-                                    <div class="inputs" align="right" style="float: right; display: flex;">
-                                      <!-- <div style="float: left;">
-                                              <select class="form-control" [(ngModel)]="sortOption.leadPartnerSortOption" (ngModelChange)="sortPartners($event)" style="position: relative;right: -3px;"
-                                              *ngIf="isCampaignByLeads">
-                                                <option *ngFor="let option of sortOption.leadPartnersSortDropDown" [ngValue]="option">{{option.name}}</option>
-                                              </select>
-                                              <select class="form-control" [(ngModel)]="sortOption.dealsPartnerSortOption" (ngModelChange)="sortPartners($event)" style="position: relative;right: -3px;"
-                                              *ngIf="!isCampaignByLeads">
-                                                <option *ngFor="let option of sortOption.dealPartnersSortDropDown" [ngValue]="option">{{option.name}}</option>
-                                              </select>
-                                            </div> -->
+                                    <div class="inputs" align="right" style="float: right; display: flex;">                                      
                                       <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
                                         <div class="input-icon right" style="position: relative;right: -11px;">
                                           <input type="text" style="height:34px;" class="form-control"
@@ -402,14 +394,14 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="row" id="box" *ngIf="httpRequestLoader.isServerError">
+                                  <div class="row" id="box" *ngIf="partnerRequestLoader.isServerError">
                                     Please contact admin for "Campaings"
                                   </div>
-                                  <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                                  <app-list-loader *ngIf="partnerRequestLoader.isLoading && !partnerRequestLoader.isServerError">
                                   </app-list-loader>
                                   <div class="portlet-body table-responsive" style="overflow: hidden;"
-                                    *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError && partnerSortOption.totalRecords > 0">
-                                    <div class="table-responsive">
+                                  [hidden]="partnerRequestLoader.isLoading || partnerRequestLoader.isServerError||partnerSortOption.totalRecords == 0">
+                                    <div class="table-responsive"[hidden]="partnerRequestLoader.isLoading" >
                                       <table class="table tgrid">
                                         <thead>
                                           <tr>
@@ -435,19 +427,18 @@
                                         </tbody>
                                       </table>
                                     </div>
-                                    <div *ngIf="!httpRequestLoader.isLoading && partnerPagination.pagedItems.length !== 0"
-                                      class="pg8">
+                                    <div [hidden]="partnerRequestLoader.isLoading" class="pg8">
                                       <app-pagination [pagination]="partnerPagination"
                                         (notifyParent)="setPartnersPage($event)"
                                         (notifyParentDropDown)="listPartners($event)"></app-pagination>
                                     </div>
                                     <!-- End of 24 -->
-                                    <div *ngIf="!httpRequestLoader.isLoading && campaignPagination.totalRecords==0"
+                                    <div *ngIf="!partnerRequestLoader.isLoading && campaignPagination.totalRecords==0"
                                       class="alert alert-info">
                                       <strong translate>No Partners Found.</strong>
                                     </div>
                                   </div>
-                                  <div *ngIf="!httpRequestLoader.isLoading && partnerSortOption.totalRecords==0" class="alert alert-info">
+                                  <div *ngIf="!partnerRequestLoader.isLoading && partnerSortOption.totalRecords==0" class="alert alert-info">
                                     <strong translate>No Partners Found.</strong>
                                   </div>
                                 </div>
@@ -462,16 +453,16 @@
                   </table>
                 </div>
       
-                <div *ngIf="!httpRequestLoader.isLoading && campaignPagination.pagedItems.length !== 0" class="pg8">
+                <div [hidden]="campaignRequestLoader.isLoading" class="pg8">
                   <app-pagination [pagination]="campaignPagination" (notifyParent)="setCampaignsPage($event)"
                     (notifyParentDropDown)="listCampaigns($event)"></app-pagination>
                 </div>
                 <!-- End of 24 -->
-                <div *ngIf="!httpRequestLoader.isLoading && campaignPagination.totalRecords==0" class="alert alert-info">
+                <div *ngIf="!campaignRequestLoader.isLoading && campaignPagination.totalRecords==0" class="alert alert-info">
                   <strong translate>No Campaigns Found.</strong>
                 </div>
               </section>
-              <div *ngIf="!listView && !httpRequestLoader.isLoading && campaignSortOption.totalRecords==0" class="alert alert-info">
+              <div *ngIf="!listView && !campaignRequestLoader.isLoading && campaignSortOption.totalRecords==0" class="alert alert-info">
                 <strong translate>No Campaigns Found.</strong>
               </div>
 

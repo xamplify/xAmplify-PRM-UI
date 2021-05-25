@@ -6,4 +6,6 @@ export class TracksPlayBookDto {
     assetName:string = "";
     assetType:string = "";
     thumbnailPath:string = "";
+    displayName:string = "";
+    displayTime:any;
 }

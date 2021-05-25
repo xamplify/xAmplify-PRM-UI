@@ -16,6 +16,7 @@ export class TracksPlayBook {
     groupIds:Array<number> = new Array<number>();
     companyIds:Array<number> = new Array<number>();
     partnershipIds:Array<number> = new Array<number>();
+    userIds:Array<number> = new Array<number>();
     tagIds:Array<number> = new Array<number>();
     categoryId:number;
     isValid:boolean = false;
@@ -29,8 +30,6 @@ export class TracksPlayBook {
 
     quiz:Form;
     contents:Array<any> = new Array<any>();
-    companies:Array<any> = new Array<any>();
-    groups:Array<any> = new Array<any>();
     tags:Array<Tag> = new Array<Tag>();
     category:any;
     canUpdate:boolean = false;
