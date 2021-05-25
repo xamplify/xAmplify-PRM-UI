@@ -2878,6 +2878,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 autoResponse.subject = autoResponse.subject+" "+copiedValue;
             }
          }
+         this.mergeTagsInput['hideButton'] = false;
         }
 
 

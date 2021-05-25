@@ -87,5 +87,6 @@ export class MergeTagsComponent implements OnInit {
 		object['copiedValue'] = copiedValue;
 		object['autoResponseSubject'] = this.input['autoResponseSubject'];
 		this.passValueAndNotifyComponent.emit(object);
+		$('#' + this.modalPopupId).modal('hide');
 	}
 }

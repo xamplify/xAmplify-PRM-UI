@@ -3407,6 +3407,7 @@ appendValueToSubjectLine(event:any){
             autoResponse.subject = autoResponse.subject+" "+copiedValue;
         }
      }
+     this.mergeTagsInput['hideButton'] = false;
     }
     
  
