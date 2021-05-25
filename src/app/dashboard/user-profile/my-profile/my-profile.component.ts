@@ -60,7 +60,9 @@ declare var swal, $, videojs: any, Papa: any;;
 	providers: [FileUtil, User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
-	filePreview : boolean = false;
+	
+	csvExcludeUsersFilePreview : boolean = false;
+    csvExcludeDomainsFilePreview : boolean = false;
 	isListLoader = false;
 	isPartnerSuperVisor :boolean = false;
 	public searchExcludedUserKey: string=null;
@@ -3060,6 +3062,7 @@ configSalesforce() {
     searchData(type: string) {
     	   this.addContactModalClose();
     	   this.addDomainModalClose();
+    	   this.modalpopuploader = false;
         this.search(type);
     }
     
@@ -3098,7 +3101,6 @@ configSalesforce() {
     readFiles(files: any, excludetype: string) {
         if (this.fileUtil.isCSVFile(files[0])) {
             this.isListLoader = true;
-            this.filePreview = true;
             let reader = new FileReader();
             reader.readAsText(files[0]);
             var lines = new Array();
@@ -3139,6 +3141,7 @@ configSalesforce() {
     }
 
     readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
+    	this.csvExcludeUsersFilePreview = true;
         for (var i = 1; i < allTextLines.length; i++) {
             if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
                 let user = new User();
@@ -3159,6 +3162,7 @@ configSalesforce() {
     }
 
     readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
+    	this.csvExcludeDomainsFilePreview = true;
         for (var i = 1; i < allTextLines.length; i++) {
             if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
                 let domain = allTextLines[i][0].trim();
@@ -3205,7 +3209,7 @@ configSalesforce() {
             .subscribe(
             data => {
                 if (data.statusCode == 200) {
-                	 this.filePreview = false;
+                	 this.csvExcludeUsersFilePreview = false;
                     this.addContactModalClose();
                     this.excludeUserCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
                     this.listExcludedUsers(this.excludeUserPagination);
@@ -3228,9 +3232,35 @@ configSalesforce() {
             );
     }
     
-    cancelCSVFilePreview(){
-    	this.filePreview = false;
-    	 this.listExcludedUsers(this.excludeUserPagination);
+    cancelCSVFilePreview(excludetype: string) {
+        if (excludetype === 'exclude-users') {
+            this.csvExcludeUsersFilePreview = false;
+            this.listExcludedUsers(this.excludeUserPagination);
+        } else if (excludetype === 'exclude-domains') {
+        	this.csvExcludeDomainsFilePreview = false;
+            this.listExcludedDomains(this.excludeDomainPagination);
+        }
+    }
+    
+    confirmAndsaveExcludedDomains(excludedDomains: string[]) {
+        let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
+        let text = "Adding domains to your exclusion list ensures that these domains are no longer receives any campaigns from " + companyName;
+        let self = this;
+        swal({
+            title: 'Are you sure want to continue?',
+            text: text,
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            allowOutsideClick: false,
+            confirmButtonText: 'Yes'
+        }).then(function() {
+            console.log("save");
+            //self.saveExcludedUsers(excludedUsers);
+        }, function(dismiss: any) {
+            console.log('you clicked on option' + dismiss);
+        });
     }
     
 
