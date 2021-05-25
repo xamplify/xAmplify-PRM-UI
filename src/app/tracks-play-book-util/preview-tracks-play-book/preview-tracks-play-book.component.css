@@ -173,3 +173,10 @@ body {
     padding: 0;
     margin: 0;
 }
+
+.title-page-bar {
+    padding: 10px 0px;
+    background-color: #ffffff;
+    margin-bottom: 20px;
+    border-radius: 5px!important;
+}
