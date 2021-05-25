@@ -38,9 +38,11 @@ export class ManageDealsComponent implements OnInit {
   isVendorVersion = true;
   isPartnerVersion = false;
   selectedTabIndex = 1;  
-  dealsPagination: Pagination;
+  dealsPagination: Pagination = new Pagination();
   dealsSortOption: SortOption = new SortOption();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  campaignRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  partnerRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   showDealForm = false;
   dealsResponse: CustomResponse = new CustomResponse();
   actionType = "add";
@@ -50,9 +52,9 @@ export class ManageDealsComponent implements OnInit {
   countsLoader = false;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   listView = true;
-  campaignPagination: Pagination;
+  campaignPagination: Pagination = new Pagination();
   campaignSortOption: SortOption = new SortOption();
-  partnerPagination: Pagination;
+  partnerPagination: Pagination = new Pagination();
   partnerSortOption: SortOption = new SortOption();
   selectedCampaignId = 0;
   selectedCampaignName = "";
@@ -62,6 +64,7 @@ export class ManageDealsComponent implements OnInit {
   showCampaignDeals = false;
   selectedDeal: Deal;
   isCommentSection = false;
+  selectedCampaign: any;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -335,34 +338,34 @@ export class ManageDealsComponent implements OnInit {
   }
 
   listCampaignsForVendor(pagination: Pagination) {
-    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.loading(this.campaignRequestLoader, true);
     this.dealsService.listCampaignsForVendor(pagination)
     .subscribe(
         response => {            
-            this.referenceService.loading(this.httpRequestLoader, false);
+            this.referenceService.loading(this.campaignRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
             this.campaignSortOption.totalRecords = response.data.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
+            this.campaignRequestLoader.isServerError = true;
             },
         () => { }
     );
   }
 
   listCampaignsForPartner(pagination: Pagination) {
-    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.loading(this.campaignRequestLoader, true);
     this.dealsService.listCampaignsForPartner(pagination)
     .subscribe(
         response => {            
-            this.referenceService.loading(this.httpRequestLoader, false);
+            this.referenceService.loading(this.campaignRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
             this.campaignSortOption.totalRecords = response.data.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
+            this.campaignRequestLoader.isServerError = true;
             },
         () => { }
     );
@@ -549,6 +552,10 @@ export class ManageDealsComponent implements OnInit {
         this.showPartnerList = true;
         campaign.expand = !campaign.expand;
         if (campaign.expand) {
+          if (this.selectedCampaign != null && this.selectedCampaign != undefined && this.selectedCampaign.id != campaign.id) {
+            this.selectedCampaign.expand = false;
+          }
+          this.selectedCampaign = campaign;
           this.partnerPagination = new Pagination;
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
           this.listPartnersForCampaign(this.partnerPagination);
@@ -560,18 +567,19 @@ export class ManageDealsComponent implements OnInit {
   }
   
   listPartnersForCampaign (pagination: Pagination) {
+    this.referenceService.loading(this.partnerRequestLoader, true);
       pagination.userId = this.loggedInUserId;
       pagination.campaignId = this.selectedCampaignId;
       this.dealsService.listPartnersForCampaign(pagination)
       .subscribe(
           response => {            
-              this.referenceService.loading(this.httpRequestLoader, false);
+              this.referenceService.loading(this.partnerRequestLoader, false);
               pagination.totalRecords = response.data.totalRecords;
               this.partnerSortOption.totalRecords = response.data.totalRecords;
               pagination = this.pagerService.getPagedItems(pagination, response.data.partners);
           },
           error => {
-              this.httpRequestLoader.isServerError = true;
+              this.partnerRequestLoader.isServerError = true;
               },
           () => { }
       );

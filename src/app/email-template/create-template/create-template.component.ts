@@ -10,13 +10,10 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { environment } from 'environments/environment';
 import { Pagination } from '../../core/models/pagination';
-import { PagerService } from '../../core/services/pager.service';
 import {FormService} from '../../forms/services/form.service';
 import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
-import { UtilService } from '../../core/services/util.service';
 declare var BeePlugin,swal,$:any;
 
 @Component({
@@ -49,9 +46,11 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     categoryId:number = 0;
     manageRouterLink = "/home/emailtemplates/manage";
+    mergeTagsInput:any = {};
     constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location,private route:ActivatedRoute) {
     this.categoryId = this.route.snapshot.params['categoryId'];
+    this.mergeTagsInput['isEvent'] = emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
     if(this.categoryId>0){
         this.manageRouterLink+= "/"+this.categoryId;
     }
