@@ -2853,12 +2853,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.listCategories();
     }
 
-    openMergeTagsPopup(type:string,index:number){
+    openMergeTagsPopup(type:string,autoResponseSubject:any){
         this.mergeTagsInput['isEvent'] = false;
         this.mergeTagsInput['isCampaign'] = true;
         this.mergeTagsInput['hideButton'] = true;
         this.mergeTagsInput['type'] = type;
-        this.mergeTagsInput['index'] = index;
+        this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
     }
     
     clearHiddenClick(){
@@ -2870,15 +2870,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             let type = event['type'];
             let copiedValue = event['copiedValue'];
             if(type=="campaignSubjectLine"){
-                let subjectLine = $('#subjectLine').val();
-                let updatedValue = subjectLine+" "+copiedValue;
-                $('#subjectLine').val(updatedValue);
+                let updatedValue = this.eventCampaign.subjectLine+" "+copiedValue;
                 this.eventCampaign.subjectLine = updatedValue;
                 this.eventSubjectLineError();
             }else{
-                let index = event['index'];
-                let autoResponseSubject =  $('#'+type+"-"+index).val();
-                $('#'+type+"-"+index).val(autoResponseSubject+" "+copiedValue);
+                let autoResponse = event['autoResponseSubject'];
+                autoResponse.subject = autoResponse.subject+" "+copiedValue;
             }
          }
         }

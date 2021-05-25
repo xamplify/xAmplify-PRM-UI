@@ -85,7 +85,7 @@ export class MergeTagsComponent implements OnInit {
 		let object = {};
 		object['type'] = this.input['type'];
 		object['copiedValue'] = copiedValue;
-		object['index'] = this.input['index'];
+		object['autoResponseSubject'] = this.input['autoResponseSubject'];
 		this.passValueAndNotifyComponent.emit(object);
 	}
 }

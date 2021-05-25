@@ -3379,12 +3379,12 @@ resetValues(){
     this.selectedListId = 0;
 }
 
-openMergeTagsPopup(type:string,index:number){
+openMergeTagsPopup(type:string,autoResponseSubject:any){
     this.mergeTagsInput['isEvent'] = false;
     this.mergeTagsInput['isCampaign'] = true;
     this.mergeTagsInput['hideButton'] = true;
     this.mergeTagsInput['type'] = type;
-    this.mergeTagsInput['index'] = index;
+    this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
 }
 
 clearHiddenClick(){
@@ -3401,10 +3401,10 @@ appendValueToSubjectLine(event:any){
             $('#subjectLineId').val(updatedValue);
             this.campaign.subjectLine = updatedValue;
             this.validateField('subjectLine');
+            this.validateForm();
         }else{
-            let index = event['index'];
-            let autoResponseSubject =  $('#'+type+"-"+index).val();
-            $('#'+type+"-"+index).val(autoResponseSubject+" "+copiedValue);
+            let autoResponse = event['autoResponseSubject'];
+            autoResponse.subject = autoResponse.subject+" "+copiedValue;
         }
      }
     }

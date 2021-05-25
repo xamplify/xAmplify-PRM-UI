@@ -1780,9 +1780,9 @@
                                                                             <strong style="color: red">*</strong>
                                                                         </label>
                                                                         <div class="input-group">
-                                                                            <input type="text" class="form-control" id="campaign-reply-{{i}}" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
+                                                                            <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                             <span class="input-group-btn">
-                                                                                <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-reply',i)">
+                                                                                <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-reply',reply)">
                                                                                     <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                                                                 </button>
                                                                             </span>
@@ -2089,9 +2089,9 @@
                                                                             <strong style="color: red">*</strong>
                                                                         </label>
                                                                         <div class="input-group">
-                                                                            <input type="text" class="form-control" name="subject" id="campaign-website-{{i}}" [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
+                                                                            <input type="text" class="form-control" name="subject"  [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                             <span class="input-group-btn">
-                                                                                <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-website',i)">
+                                                                                <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-website',url)">
                                                                                     <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                                                                 </button>
                                                                             </span>
