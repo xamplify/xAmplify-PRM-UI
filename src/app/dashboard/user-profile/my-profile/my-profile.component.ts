@@ -2966,7 +2966,9 @@ configSalesforce() {
     	this.modalpopuploader = true;
     	this.isDomainExist = false;
     	this.validDomainFormat = true;
-        this.userService.saveExcludedDomain(domain, this.loggedInUserId)
+    	this.excludedDomains = [];
+    	this.excludedDomains.push(domain);
+        this.userService.saveExcludedDomains(this.excludedDomains, this.loggedInUserId)
         .subscribe(
         data => {
             if (data.statusCode == 200) {
@@ -3126,17 +3128,25 @@ configSalesforce() {
                         }
 
                     } else {
-                    	self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+                    	self.showErrorMessage(excludetype);
                     	self.isListLoader = false;
                     }
                 } else {
-                	self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+                	self.showErrorMessage(excludetype);
                 	self.isListLoader = false;
                 }
             }
         } else {
         	self.customResponse = new CustomResponse('ERROR', self.properties.FILE_TYPE_ERROR, true);
 
+        }
+    }
+    
+    showErrorMessage(excludetype: string) {
+        if (excludetype === 'exclude-users') {
+            this.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+        } else if (excludetype === 'exclude-domains') {
+            this.excludeDomainCustomResponse = new CustomResponse('ERROR', "Invalid Csv", true);
         }
     }
 
@@ -3244,7 +3254,7 @@ configSalesforce() {
     
     confirmAndsaveExcludedDomains(excludedDomains: string[]) {
         let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
-        let text = "Adding domains to your exclusion list ensures that these domains are no longer receives any campaigns from " + companyName;
+        let text = "Adding domains to your exclusion list ensures that these domains related users are no longer receives any campaigns from " + companyName;
         let self = this;
         swal({
             title: 'Are you sure want to continue?',
@@ -3257,10 +3267,41 @@ configSalesforce() {
             confirmButtonText: 'Yes'
         }).then(function() {
             console.log("save");
-            //self.saveExcludedUsers(excludedUsers);
+            self.saveExcludedDomains(excludedDomains);
         }, function(dismiss: any) {
             console.log('you clicked on option' + dismiss);
         });
+    }
+    
+    saveExcludedDomains(excludedDomains: string[]) {
+        this.modalpopuploader = true;
+        this.isDomainExist = false;
+        this.validDomainFormat = true;
+        this.userService.saveExcludedDomains(excludedDomains, this.loggedInUserId)
+            .subscribe(
+            data => {
+                if (data.statusCode == 200) {
+                	this.csvExcludeDomainsFilePreview = false;
+                    this.addDomainModalClose();
+                    this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', data.message, true);
+                    this.listExcludedDomains(this.excludeDomainPagination);
+                    this.modalpopuploader = false;
+                } else if (data.statusCode == 401) {
+                    this.modalpopuploader = false;
+                    this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                } else if (data.statusCode == 402) {
+                	 this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                    this.modalpopuploader = false;
+                }else if (data.statusCode == 403) {
+                     this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                    this.modalpopuploader = false;
+                }
+            },
+            error => {
+                this.modalpopuploader = false;
+            },
+            () => { }
+            );
     }
     
 

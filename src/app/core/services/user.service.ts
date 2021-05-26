@@ -459,8 +459,8 @@ export class UserService {
     	
     }
     
-    saveExcludedDomain(domain: string, loggedInUserId : number){
-    	 return this.http.get(this.URL + "exclude/save-domain/"+ domain+"/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token)
+    saveExcludedDomains(domainNames: string[], loggedInUserId : number){
+    	 return this.http.post(this.URL + "exclude/save-domains/"+loggedInUserId +"?access_token=" + this.authenticationService.access_token, domainNames)
          .map(this.extractData)
          .catch(this.handleError);
     	
