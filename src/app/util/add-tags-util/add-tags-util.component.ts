@@ -87,14 +87,15 @@ export class AddTagsUtilComponent implements OnInit {
     this.tagErrorMessage = "";
   }
 
-  validateTagName(keyCode: any) {
+  validateTagName(event: any) {
     this.removeTagErrorClass();
+    let keyCode = event.keyCode;
     if (keyCode === 13) {
       if (this.isAddTag) {
         let names = [];
         $.each(this.tagNames, function (index: number, tagName: any) {
           let name: string;
-          name = tagName['value'].toLowerCase();
+          name = tagName['value'].toLowerCase().substring(0,225);
           names.push(name);
         });
         let lastEntry = names[names.length - 1];
@@ -114,6 +115,11 @@ export class AddTagsUtilComponent implements OnInit {
           this.tag.isTagNameValid = false;
         } else {
           this.tag.isTagNameValid = true;
+        }
+        if(event.target.value.length > 225){
+          let value = event.target.value.substring(0,225);
+          console.log(value)
+          event.target.value = value;
         }
       } else {
         if (this.tag.tagName == undefined || this.tag.tagName.length < 1) {

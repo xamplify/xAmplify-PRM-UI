@@ -76,6 +76,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   requiredMessage = "Required";
   duplicateLabelMessage = "Already exists";
   minimumOneColumn = "Your form should contain at least one required field";
+  quizFieldRequiredErrorMessage = "Your form should contain atleast one quiz field as required"
   formErrorClass = "form-group form-error";
   defaultFormClass = "form-group";
   formNameErrorMessage = "";
@@ -674,7 +675,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       this.removeErrorMessage();
       if (this.columnInfos.length > 0) {
           const requiredFieldsLength = this.columnInfos.filter((item) => item.required === true).length;
-          if (requiredFieldsLength >= 1) {
+          const quizFieldsCount = this.columnInfos.filter((item) => item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox' === true).length;
+          const requiredQuizFieldsLength = this.columnInfos.filter((item) => (item.required) && (item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox') === true).length;
+          if (requiredFieldsLength >= 1 && (quizFieldsCount <= 0 || (quizFieldsCount > 0 && requiredQuizFieldsLength > 0))) {
               const duplicateFieldLabels = this.referenceService.returnDuplicates(this.columnInfos.map(function (a) { return a.hiddenLabelId; }));
               const self = this;
               $.each(this.columnInfos, function (index, columnInfo) {
@@ -718,7 +721,18 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                   this.addErrorMessage(message);
               }
           } else {
-              this.addErrorMessage(this.minimumOneColumn);
+            let message = "";
+            if (requiredFieldsLength < 1) {
+                message = message + this.minimumOneColumn;
+            }
+            if(quizFieldsCount > 0 && requiredQuizFieldsLength <= 0){
+                if(message){
+                    message = message + '<br>' + this.quizFieldRequiredErrorMessage;
+                  } else{
+                    message = message + this.quizFieldRequiredErrorMessage;
+                  }
+            }
+              this.addErrorMessage(message);
           }
 
       } else {

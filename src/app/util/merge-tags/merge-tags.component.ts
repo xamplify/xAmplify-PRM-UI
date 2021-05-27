@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 
@@ -10,15 +10,32 @@ declare var $: any;
 })
 export class MergeTagsComponent implements OnInit {
 
-	@Input() isEvent: boolean;
-	@Input() isCampaign: boolean;
+	isEvent: boolean;
+	isCampaign: boolean;
+	hideButton:boolean;
+	@Input() input:any;
+	@Output() notifyComponent = new EventEmitter();
+	@Output() passValueAndNotifyComponent = new EventEmitter();
+	successMessagePrefix = "Copied";
 	modalPopupId = "merge-tags-popup";
 	senderMergeTag: SenderMergeTag = new SenderMergeTag();
 	mergeTags = [];
 	constructor(public referenceService: ReferenceService) { }
 
 	ngOnInit() {
+		this.isEvent = this.input['isEvent'];
+		this.isCampaign = this.input['isCampaign'];
+		this.hideButton = this.input['hideButton'];
 		this.addMergeTags();
+		if(this.hideButton==undefined){
+			this.hideButton = false;
+		}
+		if(this.hideButton){
+			this.showMergeTagsPopUp();
+		}
+		if(this.isCampaign){
+			this.successMessagePrefix = "Inserted";
+		}
 
 	}
 	showMergeTagsPopUp() {
@@ -58,4 +75,18 @@ export class MergeTagsComponent implements OnInit {
 		}
 	}
 
+	hideModal(){
+		this.notifyComponent.emit();
+		$('#' + this.modalPopupId).modal('hide');
+	}
+
+	passToOtherComponent(i:number){
+		let copiedValue = $('#merge-tag-'+i).val();
+		let object = {};
+		object['type'] = this.input['type'];
+		object['copiedValue'] = copiedValue;
+		object['autoResponseSubject'] = this.input['autoResponseSubject'];
+		this.passValueAndNotifyComponent.emit(object);
+		$('#' + this.modalPopupId).modal('hide');
+	}
 }

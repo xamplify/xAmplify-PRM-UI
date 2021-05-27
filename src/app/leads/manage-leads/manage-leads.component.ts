@@ -38,9 +38,11 @@ export class ManageLeadsComponent implements OnInit {
   isVendorVersion = true;
   isPartnerVersion = false;
   selectedTabIndex = 1;
-  leadsPagination: Pagination;
+  leadsPagination: Pagination = new Pagination();
   leadsSortOption: SortOption = new SortOption();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  campaignRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  partnerRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadFormTitle = "Lead";
   actionType = "add";
   leadId = 0;  
@@ -50,9 +52,9 @@ export class ManageLeadsComponent implements OnInit {
   syncSalesForce = false;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   listView = true;
-  campaignPagination: Pagination;
+  campaignPagination: Pagination = new Pagination();
   campaignSortOption: SortOption = new SortOption();
-  partnerPagination: Pagination;
+  partnerPagination: Pagination = new Pagination();
   partnerSortOption: SortOption = new SortOption();
   selectedCampaignId = 0;
   selectedCampaignName = "";
@@ -64,6 +66,7 @@ export class ManageLeadsComponent implements OnInit {
   showDealForm = false;
   selectedLead: Lead;
   isCommentSection = false;
+  selectedCampaign: any;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -100,14 +103,14 @@ export class ManageLeadsComponent implements OnInit {
         //                 }
         //             }
         //         })
+        //this.referenceService.loading(this.httpRequestLoader, true);
         this.init();
         
   }
 
   ngOnInit() {   
-    this.countsLoader = true;
-    this.referenceService.loading(this.httpRequestLoader, true);
-    
+    this.countsLoader = true; 
+    this.referenceService.loading(this.httpRequestLoader, true);  
   }
 
   init() {
@@ -269,6 +272,7 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   showWonLeads() {
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.selectedTabIndex = 2;
     this.leadsPagination = new Pagination;
     this.leadsPagination.filterKey = "won";
@@ -317,34 +321,34 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   listCampaignsForVendor(pagination: Pagination) {
-    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.loading(this.campaignRequestLoader, true);
     this.leadsService.listCampaignsForVendor(pagination)
     .subscribe(
-        response => {            
-            this.referenceService.loading(this.httpRequestLoader, false);
+        response => {  
+            this.referenceService.loading(this.campaignRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
             this.campaignSortOption.totalRecords = response.data.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
+            this.campaignRequestLoader.isServerError = true;
             },
         () => { }
     );
   }
 
   listCampaignsForPartner(pagination: Pagination) {
-    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.loading(this.campaignRequestLoader, true);
     this.leadsService.listCampaignsForPartner(pagination)
     .subscribe(
         response => {            
-            this.referenceService.loading(this.httpRequestLoader, false);
+            this.referenceService.loading(this.campaignRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
             this.campaignSortOption.totalRecords = response.data.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
+            this.campaignRequestLoader.isServerError = true;
             },
         () => { }
     );
@@ -371,11 +375,11 @@ export class ManageLeadsComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.listLeadsForPartner(pagination)
     .subscribe(
-        response => {
-            this.referenceService.loading(this.httpRequestLoader, false);
+        response => {            
             pagination.totalRecords = response.totalRecords;
             this.leadsSortOption.totalRecords = response.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data);
+            this.referenceService.loading(this.httpRequestLoader, false);
         },
         error => {
             this.httpRequestLoader.isServerError = true;
@@ -402,7 +406,7 @@ export class ManageLeadsComponent implements OnInit {
   getAllFilteredResultsLeads(pagination: Pagination) {
     this.leadsPagination.pageIndex = 1;
     this.leadsPagination.searchKey = this.leadsSortOption.searchKey;
-    this.listLeads(this.leadsPagination);
+    this.listLeads(pagination);
     this.campaignPagination.pageIndex = 1;
     this.campaignPagination.searchKey = this.leadsSortOption.searchKey;
     this.listCampaigns(this.campaignPagination);
@@ -615,11 +619,15 @@ export class ManageLeadsComponent implements OnInit {
 showPartners(campaign: any) {
   if (campaign.id > 0) {
     this.selectedCampaignId = campaign.id ;
-    this.selectedCampaignName = campaign.campaign;
+    this.selectedCampaignName = campaign.campaign;    
     if (campaign.channelCampaign) {
       this.showPartnerList = true;
-      campaign.expand = !campaign.expand;
+      campaign.expand = !campaign.expand;      
       if (campaign.expand) {
+        if (this.selectedCampaign != null && this.selectedCampaign != undefined && this.selectedCampaign.id != campaign.id) {
+          this.selectedCampaign.expand = false;
+        }
+        this.selectedCampaign = campaign;
         this.partnerPagination = new Pagination;
         this.partnerPagination.filterKey = this.campaignPagination.filterKey;
         this.listPartnersForCampaign(this.partnerPagination);
@@ -631,12 +639,13 @@ showPartners(campaign: any) {
 }
 
 listPartnersForCampaign (pagination: Pagination) {
+  this.referenceService.loading(this.partnerRequestLoader, true);
     pagination.userId = this.loggedInUserId;
     pagination.campaignId = this.selectedCampaignId;
     this.leadsService.listPartnersForCampaign(pagination)
     .subscribe(
         response => {            
-            this.referenceService.loading(this.httpRequestLoader, false);
+            this.referenceService.loading(this.partnerRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
             this.partnerSortOption.totalRecords = response.data.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data.partners);
@@ -705,76 +714,76 @@ addCommentModalClose(event: any) {
   this.isCommentSection = !this.isCommentSection;
 }
 
-downloadLeads() {
-  let type = this.leadsPagination.filterKey;
-  let fileName = "";
-  if (type == null || type == undefined || type == "") {
-    type = "all";
-    fileName = "leads"
-  } else {
-    fileName = type + "-leads"
+  downloadLeads() {
+    let type = this.leadsPagination.filterKey;
+    let fileName = "";
+    if (type == null || type == undefined || type == "") {
+      type = "all";
+      fileName = "leads"
+    } else {
+      fileName = type + "-leads"
+    }
+
+    let userType = "";
+    if (this.isVendorVersion) {
+      userType = "v";
+    } else if (this.isPartnerVersion) {
+      userType = "p";
+    }
+    let vendorCompanyProfileName = null;
+    if (this.leadsPagination.vendorCompanyProfileName != undefined && this.leadsPagination.vendorCompanyProfileName != null) {
+      vendorCompanyProfileName = this.leadsPagination.vendorCompanyProfileName;
+    }
+    // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
+    //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
+
+    const url = this.authenticationService.REST_URL + "lead/download/"
+      + fileName + ".csv?access_token=" + this.authenticationService.access_token;
+
+    var mapForm = document.createElement("form");
+    //mapForm.target = "_blank";
+    mapForm.method = "POST";
+    mapForm.action = url;
+
+    // userType
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "userType";
+    mapInput.setAttribute("value", userType);
+    mapForm.appendChild(mapInput);
+
+    // type
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "type";
+    mapInput.setAttribute("value", type);
+    mapForm.appendChild(mapInput);
+
+    // loggedInUserId
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "userId";
+    mapInput.setAttribute("value", this.loggedInUserId + "");
+    mapForm.appendChild(mapInput);
+
+    // vanityUrlFilter
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "vanityUrlFilter";
+    mapInput.setAttribute("value", this.leadsPagination.vanityUrlFilter + "");
+    mapForm.appendChild(mapInput);
+
+    // vendorCompanyProfileName
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "vendorCompanyProfileName";
+    mapInput.setAttribute("value", vendorCompanyProfileName);
+    mapForm.appendChild(mapInput);
+
+    document.body.appendChild(mapForm);
+    mapForm.submit();
+    //window.location.assign(url);
+
   }
-
-  let userType = "";
-  if (this.isVendorVersion) {
-    userType = "v";
-  } else if (this.isPartnerVersion) {
-    userType = "p";
-  }
-  let vendorCompanyProfileName = null;
-  if (this.leadsPagination.vendorCompanyProfileName != undefined && this.leadsPagination.vendorCompanyProfileName != null) {
-    vendorCompanyProfileName = this.leadsPagination.vendorCompanyProfileName;
-  }
-  // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
-  //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
-
-  const url = this.authenticationService.REST_URL + "lead/download/"
-    + fileName + ".csv?access_token=" + this.authenticationService.access_token;
-
-  var mapForm = document.createElement("form");
-  //mapForm.target = "_blank";
-  mapForm.method = "POST";
-  mapForm.action = url;
-
-  // userType
-  var mapInput = document.createElement("input");
-  mapInput.type = "hidden";
-  mapInput.name = "userType";
-  mapInput.setAttribute("value", userType);
-  mapForm.appendChild(mapInput);
-
-  // type
-  var mapInput = document.createElement("input");
-  mapInput.type = "hidden";
-  mapInput.name = "type";
-  mapInput.setAttribute("value", type);
-  mapForm.appendChild(mapInput);
-
-  // loggedInUserId
-  var mapInput = document.createElement("input");
-  mapInput.type = "hidden";
-  mapInput.name = "userId";
-  mapInput.setAttribute("value", this.loggedInUserId + "");
-  mapForm.appendChild(mapInput);
-
-  // vanityUrlFilter
-  var mapInput = document.createElement("input");
-  mapInput.type = "hidden";
-  mapInput.name = "vanityUrlFilter";
-  mapInput.setAttribute("value", this.leadsPagination.vanityUrlFilter + "");
-  mapForm.appendChild(mapInput);
-
-  // vendorCompanyProfileName
-  var mapInput = document.createElement("input");
-  mapInput.type = "hidden";
-  mapInput.name = "vendorCompanyProfileName";
-  mapInput.setAttribute("value", vendorCompanyProfileName);
-  mapForm.appendChild(mapInput);
-
-  document.body.appendChild(mapForm);
-  mapForm.submit();
-	//window.location.assign(url);
-
-}
  
 }

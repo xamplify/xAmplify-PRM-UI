@@ -80,5 +80,6 @@ export class Pagination {
 	type:string = "";
 	channelCampaign = false;
 	page : number = 0;
+	excludeBeePdf : boolean = false;
 
 }

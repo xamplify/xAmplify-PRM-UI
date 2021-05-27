@@ -64,7 +64,8 @@
                                         <ng-container *ngIf="columnInfo.labelType=='price'">
                                             <div class="input-group prefix">
                                                 <span class="input-group-addon">{{columnInfo.priceSymbol}}</span>
-                                                <input type="number" min="0" [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}">
+                                                <input type="number" min="0" [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control"
+                                                    placeholder="{{columnInfo.placeHolder}}" (keypress)="omitNegativeCharacters($event)">
                                             </div>
                                         </ng-container>
                                         <!-- ---------------------------Upload----------------------------- -->

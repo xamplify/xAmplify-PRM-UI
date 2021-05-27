@@ -164,6 +164,8 @@ export class AddTracksPlayBookComponent implements OnInit {
   selectedPartnershipIds: any[] = [];
   selectedUserIds: any[] = [];
 
+  isAssestPopUpOpen : boolean = false;
+
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -418,6 +420,7 @@ export class AddTracksPlayBookComponent implements OnInit {
   listAssets(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
     pagination.companyId = this.loggedInUserCompanyId;
+    pagination.excludeBeePdf = this.isAssestPopUpOpen;
     this.referenceService.goToTop();
     this.startLoaders();
     this.damService.list(pagination).subscribe((result: any) => {
@@ -967,7 +970,7 @@ export class AddTracksPlayBookComponent implements OnInit {
 
   validateGroupOrCompany() {
     if (this.tracksPlayBook.groupIds.length < 1 && this.tracksPlayBook.userIds.length < 1) {
-      this.addErrorMessage("groupOrCompany", "Select either a company or a group");
+      this.addErrorMessage("groupOrCompany", "Select either a partner or a partner list");
     } else {
       this.removeErrorMessage("groupOrCompany");
     }
@@ -1244,11 +1247,22 @@ export class AddTracksPlayBookComponent implements OnInit {
         window.open(assetDetails.assetPath, '_blank');
       }
     }
-    if(this.activeTabName == "step-2"){
-      if(this.showFilePreview){
-      $('#media-asset-list').modal('hide')
+    this.handleMediaAndOrdersPopup();
+  }
+
+  handleMediaAndOrdersPopup() {
+    if (this.activeTabName == "step-2") {
+      if (this.showFilePreview) {
+        $('#media-asset-list').modal('hide')
       } else {
-        $('#media-asset-list').modal('show')
+        $('#media-asset-list').modal('show');
+      }
+    }
+    if (this.activeTabName == "step-3") {
+      if (this.showFilePreview) {
+        $('#order-assets').modal('hide');
+      } else {
+        $('#order-assets').modal('show');
       }
     }
   }
@@ -1265,13 +1279,8 @@ export class AddTracksPlayBookComponent implements OnInit {
     this.isFile = false;
     this.filePath = "";
     this.viewer = "google";
-    if(this.activeTabName == "step-2"){
-      if(this.showFilePreview){
-      $('#media-asset-list').modal('hide')
-      } else {
-        $('#media-asset-list').modal('show')
-      }
-    }  }
+    this.handleMediaAndOrdersPopup();
+  }
 
   previewBeeTemplate(asset: any) {
     let htmlContent = "#asset-preview-content";
@@ -1303,8 +1312,14 @@ export class AddTracksPlayBookComponent implements OnInit {
     this.assetError = false;
     this.customResponse = new CustomResponse();
     this.assetPagination = new Pagination();
+    this.isAssestPopUpOpen = true;
     this.listAssets(this.assetPagination);
     $('#media-asset-list').modal('show');
+  }
+
+  closeAssetModal(){
+    this.isAssestPopUpOpen = false;
+    $('#media-asset-list').modal('hide');
   }
 
   addMediaToDescription(asset: any) {
@@ -1326,6 +1341,7 @@ export class AddTracksPlayBookComponent implements OnInit {
     }
     this.closeLinkTitlePopup();
     $('#media-asset-list').modal('hide');
+    this.isAssestPopUpOpen = false;
   }
 
   closeLinkTitlePopup() {
@@ -1364,6 +1380,9 @@ export class AddTracksPlayBookComponent implements OnInit {
   }
 
   changePartnerCompanyAndList(tracksPlayBook: TracksPlayBook) {
+    this.tracksPlayBook.userIds = tracksPlayBook.userIds;
+    this.tracksPlayBook.partnershipIds = tracksPlayBook.partnershipIds;
+    this.tracksPlayBook.groupIds = tracksPlayBook.groupIds;
     this.validateGroupOrCompany();
     this.validateAllSteps();
     this.checkAllRequiredFields()
