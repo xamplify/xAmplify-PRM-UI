@@ -47,8 +47,9 @@ import { Pipeline } from '../../models/pipeline';
 import { PipelineStage } from '../../models/pipeline-stage';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { ExcludeUser } from "../../models/exclude-user";
+import { FileUtil } from '../../../core/models//file-util';
 
-declare var swal, $, videojs: any;
+declare var swal, $, videojs: any, Papa: any;;
 
 @Component({
 	selector: 'app-my-profile',
@@ -56,9 +57,13 @@ declare var swal, $, videojs: any;
 	styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
 		'../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
 		'../../../../assets/css/phone-number-plugin.css'],
-	providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
+	providers: [FileUtil, User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+	
+	csvExcludeUsersFilePreview : boolean = false;
+    csvExcludeDomainsFilePreview : boolean = false;
+	isListLoader = false;
 	isPartnerSuperVisor :boolean = false;
 	public searchExcludedUserKey: string=null;
     public searchExcludedDomainKey: string=null;
@@ -147,6 +152,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/*****************GDPR************************** */
 	gdprSetting: GdprSetting = new GdprSetting();
 	excludeUserCustomResponse  : CustomResponse = new CustomResponse(); 
+	filePreviewexcludeUserCustomResponse  : CustomResponse = new CustomResponse();
 	excludeDomainCustomResponse  : CustomResponse = new CustomResponse(); 
 	gdprCustomResponse : CustomResponse = new CustomResponse();
 	gdprSettingLoaded = false;
@@ -221,19 +227,27 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	pipelinePreview = false;
 	excludeUserPagination: Pagination = new Pagination();
 	excludeDomainPagination: Pagination = new Pagination();
+	csvUserPagination: Pagination = new Pagination();
+	csvDomainPagination: Pagination = new Pagination();
 	excludeUsersOrDomains = false;
 	modalpopuploader = false;
 	isUpdateUser = false;
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
 	public hubSpotCurrentUser: any;
+	
+	excludedUsers : User[] = [];
+	excludedDomains : string[] = [];
+	csvUsersPager: any = {};
+	csvDomainsPager: any = {};
+	
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-		PagerService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService) {
+		PagerService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
@@ -1829,7 +1843,7 @@ configSalesforce() {
 		this.getAllFilteredResults(this.categoryPagination);
 	}
 
-	/************Page************** */
+	/************Page***************/
 	setPage(event: any) {
 		this.categoryResponse = new CustomResponse();
 		this.customResponse = new CustomResponse();
@@ -1839,11 +1853,35 @@ configSalesforce() {
 	          this.excludeUserPagination.pageIndex = event.page;
 	          this.excludeUserPagination.maxResults = 12;
 	           this.listExcludedUsers(this.excludeUserPagination);
-	      }else if (event.type === 'excludedDomains') {
+	      }else if (event.type === 'excludedDomains') {  
               this.excludeDomainPagination.pageIndex = event.page;
               this.excludeDomainPagination.maxResults = 12;
               this.listExcludedDomains(this.excludeDomainPagination);
-         } 
+         } else if (event.type === 'csvUsers') {
+        	 this.csvUserPagination.pageIndex = event.page;   
+        	 if(event.maxResults === undefined){
+        		 this.csvUserPagination.maxResults = 12;
+        	 }else{
+             this.csvUserPagination.maxResults = event.maxResults;
+        	 }
+             this.csvUserPagination.totalRecords = this.excludedUsers.length;
+        	 this.csvUsersPager = this.socialPagerService.getPager(this.excludedUsers.length, event.page, this.csvUserPagination.maxResults );
+             this.csvUserPagination.pagedItems = this.excludedUsers.slice(this.csvUsersPager.startIndex, this.csvUsersPager.endIndex + 1);
+             this.csvUserPagination = this.pagerService.getPagedItems(this.csvUserPagination, this.csvUserPagination.pagedItems);
+         
+        } else if(event.type === 'csvDomains' ){
+        	this.csvDomainPagination.pageIndex = event.page;   
+            if(event.maxResults === undefined){
+                this.csvDomainPagination.maxResults = 12;
+            }else{
+            this.csvDomainPagination.maxResults = event.maxResults;
+            }
+            this.csvDomainPagination.totalRecords = this.excludedDomains.length;
+            this.csvDomainsPager = this.socialPagerService.getPager(this.excludedDomains.length, event.page, this.csvDomainPagination.maxResults );
+            this.csvDomainPagination.pagedItems = this.excludedDomains.slice(this.csvDomainsPager.startIndex, this.csvDomainsPager.endIndex + 1);
+            this.csvDomainPagination = this.pagerService.getPagedItems(this.csvDomainPagination, this.csvDomainPagination.pagedItems);
+        	
+        }
 		
 	}
 
@@ -2787,7 +2825,9 @@ configSalesforce() {
     	this.modalpopuploader = true;
     	this.validEmailFormat  = true;   
         this.isEmailExist  = false;
-        this.userService.saveExcludedUser(excludedUser, this.loggedInUserId)
+        this.excludedUsers = [];
+        this.excludedUsers.push(excludedUser );
+        this.userService.saveExcludedUsers(this.excludedUsers, this.loggedInUserId)
             .subscribe(
             data => {
                 if (data.statusCode == 200) {
@@ -2926,7 +2966,9 @@ configSalesforce() {
     	this.modalpopuploader = true;
     	this.isDomainExist = false;
     	this.validDomainFormat = true;
-        this.userService.saveExcludedDomain(domain, this.loggedInUserId)
+    	this.excludedDomains = [];
+    	this.excludedDomains.push(domain);
+        this.userService.saveExcludedDomains(this.excludedDomains, this.loggedInUserId)
         .subscribe(
         data => {
             if (data.statusCode == 200) {
@@ -3022,8 +3064,245 @@ configSalesforce() {
     searchData(type: string) {
     	   this.addContactModalClose();
     	   this.addDomainModalClose();
+    	   this.modalpopuploader = false;
         this.search(type);
     }
-	
+    
+    downloadEmptyCSV(excludetype: string) {
+        if (excludetype === 'exclude-users'){
+            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_USER_LIST_EMPTY.csv";
+        } else if (excludetype === 'exclude-domains'){
+            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_DOMAIN_EMPTY.csv";
+        }
+    }
+    
+    fileChange( input: any, excludetype: string ) {
+       this.readFiles( input.files, excludetype );
+    }
+    
+    isCSVFile(file) {
+        return file.name.endsWith(".csv");
+    }
+    
+    validateHeaders(headers, excludetype: string) {
+        if (excludetype === 'exclude-users') {
+            return (this.removeDoubleQuotes(headers[0]) == "EMAILID" || headers[0] == "EMAIL ID");
+        } else if (excludetype === 'exclude-domains') {
+            return (this.removeDoubleQuotes(headers[0]) == "DOMAIN NAME" || headers[0] == "DOMAINNAME"|| headers[0] == "DOMAIN");
+        }
+    }
+    
+    removeDoubleQuotes(input:string){
+        if(input!=undefined){
+            return input.trim().replace('"','').replace('"','');
+        }else{
+            return "";
+        }
+    }
+    
+    readFiles(files: any, excludetype: string) {
+        if (this.fileUtil.isCSVFile(files[0])) {
+            this.isListLoader = true;
+            let reader = new FileReader();
+            reader.readAsText(files[0]);
+            var lines = new Array();
+            var self = this;
+            reader.onload = function(e: any) {
+                var contents = e.target.result;
+                let csvData = reader.result;
+                let csvRecordsArray = csvData.split(/\r|\n/);
+                let headersRow = self.fileUtil.getHeaderArray(csvRecordsArray);
+                let headers = headersRow[0].split(',');
+                if ((headers.length == 1)) {
+                    if (self.validateHeaders(headers, excludetype)) {
+                        var csvResult = Papa.parse(contents);
+                        var allTextLines = csvResult.data;
+                        if (excludetype === 'exclude-users') {
+                        	self.csvUserPagination = new Pagination();
+                        	self.excludedUsers = [];
+                            self.readExcludedUsersCSVFileContent(allTextLines, self.csvUserPagination);
+                        } else {
+                        	self.csvDomainPagination = new Pagination();
+                            self.excludedDomains = [];
+                            self.readExcludedDomainsCSVFileContent(allTextLines, self.csvDomainPagination);
+                        }
+
+                    } else {
+                    	self.showErrorMessage(excludetype);
+                    	self.isListLoader = false;
+                    }
+                } else {
+                	self.showErrorMessage(excludetype);
+                	self.isListLoader = false;
+                }
+            }
+        } else {
+        	self.customResponse = new CustomResponse('ERROR', self.properties.FILE_TYPE_ERROR, true);
+
+        }
+    }
+    
+    showErrorMessage(excludetype: string) {
+        if (excludetype === 'exclude-users') {
+            this.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+        } else if (excludetype === 'exclude-domains') {
+            this.excludeDomainCustomResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+        }
+    }
+
+    readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
+    	this.csvExcludeUsersFilePreview = true;
+        for (var i = 1; i < allTextLines.length; i++) {
+            if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+                let user = new User();
+                user.emailId = allTextLines[i][0].trim();
+                this.excludedUsers.push(user);
+            }
+        }
+        this.csvUserPagination.page = 1;
+        this.csvUserPagination.maxResults = 12;
+        this.csvUserPagination.type = "csvUsers";
+        this.setPage(this.csvUserPagination);
+
+        this.isListLoader = false;
+        if (this.excludedUsers.length === 0) {
+            this.customResponse = new CustomResponse('ERROR', "No users found.", true);
+        }
+
+    }
+
+    readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
+    	this.csvExcludeDomainsFilePreview = true;
+        for (var i = 1; i < allTextLines.length; i++) {
+            if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+                let domain = allTextLines[i][0].trim();
+                this.excludedDomains.push(domain);
+            }
+        }
+        this.csvDomainPagination.page = 1;
+        this.csvDomainPagination.maxResults = 12;
+        this.csvDomainPagination.type = "csvDomains";
+        this.setPage(this.csvDomainPagination);
+
+        this.isListLoader = false;
+        if (this.excludedDomains.length === 0) {
+            this.excludeDomainCustomResponse = new CustomResponse('ERROR', "No domains found.", true);
+        }
+
+    }
+    
+    confirmAndsaveExcludedUsers(excludedUsers:User[]){
+        let companyName = '<strong>'+this.getCompanyName()+"</strong>.";
+        let text = "Adding emails to your exclusion list ensures that these emails are no longer receives any campaigns from "+companyName;
+        let self = this;
+            swal({
+                title: 'Are you sure want to continue?',
+                text: text,
+                type: 'warning',
+                showCancelButton: true,
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
+                allowOutsideClick: false,
+                confirmButtonText: 'Yes'
+            }).then(function () {
+                self.saveExcludedUsers(excludedUsers);
+            }, function (dismiss: any) {
+                console.log('you clicked on option' + dismiss);
+            });
+    }
+    
+    saveExcludedUsers(excludedUsers: User[]) {
+        this.modalpopuploader = true;
+        this.validEmailFormat  = true;   
+        this.isEmailExist  = false;
+        this.userService.saveExcludedUsers(excludedUsers, this.loggedInUserId)
+            .subscribe(
+            data => {
+                if (data.statusCode == 200) {
+                	 this.csvExcludeUsersFilePreview = false;
+                    this.addContactModalClose();
+                    this.excludeUserCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
+                    this.listExcludedUsers(this.excludeUserPagination);
+                    this.modalpopuploader = false;
+                } else if (data.statusCode == 401) { 
+                       this.modalpopuploader = false;
+                       this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                } else if (data.statusCode == 402) {
+                    this.modalpopuploader = false;
+                    this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                }else if (data.statusCode == 403) {
+                    this.modalpopuploader = false;
+                    this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                }                   
+            },
+            error => {
+                this.modalpopuploader = false;
+            },
+            () => { }
+            );
+    }
+    
+    cancelCSVFilePreview(excludetype: string) {
+        if (excludetype === 'exclude-users') {
+            this.csvExcludeUsersFilePreview = false;
+            this.listExcludedUsers(this.excludeUserPagination);
+        } else if (excludetype === 'exclude-domains') {
+        	this.csvExcludeDomainsFilePreview = false;
+            this.listExcludedDomains(this.excludeDomainPagination);
+        }
+    }
+    
+    confirmAndsaveExcludedDomains(excludedDomains: string[]) {
+        let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
+        let text = "Adding domains to your exclusion list ensures that these domains related users are no longer receives any campaigns from " + companyName;
+        let self = this;
+        swal({
+            title: 'Are you sure want to continue?',
+            text: text,
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            allowOutsideClick: false,
+            confirmButtonText: 'Yes'
+        }).then(function() {
+            console.log("save");
+            self.saveExcludedDomains(excludedDomains);
+        }, function(dismiss: any) {
+            console.log('you clicked on option' + dismiss);
+        });
+    }
+    
+    saveExcludedDomains(excludedDomains: string[]) {
+        this.modalpopuploader = true;
+        this.isDomainExist = false;
+        this.validDomainFormat = true;
+        this.userService.saveExcludedDomains(excludedDomains, this.loggedInUserId)
+            .subscribe(
+            data => {
+                if (data.statusCode == 200) {
+                	this.csvExcludeDomainsFilePreview = false;
+                    this.addDomainModalClose();
+                    this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', data.message, true);
+                    this.listExcludedDomains(this.excludeDomainPagination);
+                    this.modalpopuploader = false;
+                } else if (data.statusCode == 401) {
+                    this.modalpopuploader = false;
+                    this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                } else if (data.statusCode == 402) {
+                	 this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                    this.modalpopuploader = false;
+                }else if (data.statusCode == 403) {
+                     this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                    this.modalpopuploader = false;
+                }
+            },
+            error => {
+                this.modalpopuploader = false;
+            },
+            () => { }
+            );
+    }
+    
 
 }
