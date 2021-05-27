@@ -75,7 +75,7 @@
                   <div class="form-group" [attr.class]="subjectLineDivClass">
                     <label for="exampleInputPassword1">Subject line</label>
                     <span style="color: red"><strong> * </strong></span>
-                    <div class="input-group">
+                    <div class="input-group merge-tag-input-border">
                       <input type="text" id="subjectLine" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
                       <span class="input-group-btn">
                           <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
@@ -442,7 +442,7 @@
                                       <label for="time" style="cursor:default" id="reply-subject-{{reply.divId}}">Subject
                                       <strong style="color: red">*</strong>
                                       </label>
-                                      <div class="input-group">
+                                      <div class="input-group merge-tag-input-border">
                                         <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-campaign-reply',reply)">
@@ -582,7 +582,7 @@
                                       <label style="cursor:default" for="time" id="click-subject-{{url.divId}}">Subject
                                       <strong style="color: red" aria-hidden="true">*</strong>
                                       </label>
-                                      <div class="input-group">
+                                      <div class="input-group merge-tag-input-border">
                                         <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-web-site',url)">

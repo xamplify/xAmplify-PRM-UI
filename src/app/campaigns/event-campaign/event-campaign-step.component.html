@@ -172,7 +172,7 @@ a.disabled {
 								 <span style="color: red"><strong>*</strong></span>
 							</label>
 							<div class="col-sm-9">
-								<div [className]="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate? 'input-group':''">
+								<div [className]="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate? 'input-group merge-tag-input-border':''">
 								<input type="text" id="subjectLine" placeholder="{merge tag} + Subject line"
 									class="form-control" [(ngModel)]="eventCampaign.subjectLine"
 									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
@@ -1457,7 +1457,7 @@ a.disabled {
                 </div>
                 <div class="col-xs-6">
 					<label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<strong style="color: red">*</strong></label>
-					<div  [className]="!isPreviewEvent ? 'input-group':''">
+					<div  [className]="!isPreviewEvent ? 'input-group merge-tag-input-border':''">
 					  <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
 					  <span *ngIf="!isPreviewEvent" class="input-group-btn">
 						  <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('event-auto-response',reply)">

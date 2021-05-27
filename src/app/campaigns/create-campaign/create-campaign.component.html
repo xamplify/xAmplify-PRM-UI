@@ -277,7 +277,7 @@
                                                     </span>
                                                 </label>
                                                 <div class="col-sm-8">
-                                                    <div class="input-group">
+                                                    <div class="input-group merge-tag-input-border">
                                                         <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" />
                                                         <span class="input-group-btn">
                                                             <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
@@ -1779,7 +1779,7 @@
                                                                         <label class="default" for="time" id="reply-subject-{{reply.divId}}" translate>Subject
                                                                             <strong style="color: red">*</strong>
                                                                         </label>
-                                                                        <div class="input-group">
+                                                                        <div class="input-group merge-tag-input-border">
                                                                             <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                             <span class="input-group-btn">
                                                                                 <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-reply',reply)">
@@ -2088,7 +2088,7 @@
                                                                         <label class="default" for="time" id="click-subject-{{url.divId}}" translate>Subject
                                                                             <strong style="color: red">*</strong>
                                                                         </label>
-                                                                        <div class="input-group">
+                                                                        <div class="input-group merge-tag-input-border">
                                                                             <input type="text" class="form-control" name="subject"  [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                             <span class="input-group-btn">
                                                                                 <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-website',url)">
