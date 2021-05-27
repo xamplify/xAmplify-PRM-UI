@@ -109,7 +109,8 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   ngOnInit() {   
-    this.countsLoader = true;   
+    this.countsLoader = true; 
+    this.referenceService.loading(this.httpRequestLoader, true);  
   }
 
   init() {
