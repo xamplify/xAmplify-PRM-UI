@@ -480,8 +480,8 @@ table tr:nth-child(even) td {
 }
 
 .campaign-refresh-style {
-	margin-top: 10px;
-	margin-left: -54px;
+	margin-top: -25px;
+    margin-left: 20px;
 }
 
 .campaign-downloading-mt {
