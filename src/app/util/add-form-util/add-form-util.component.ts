@@ -77,6 +77,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   duplicateLabelMessage = "Already exists";
   minimumOneColumn = "Your form should contain at least one required field";
   quizFieldRequiredErrorMessage = "Your form should contain atleast one quiz field as required"
+  emailFieldRequiredErrorMessage = "Your quiz form should contain atleast one email field as required"
   formErrorClass = "form-group form-error";
   defaultFormClass = "form-group";
   formNameErrorMessage = "";
@@ -677,7 +678,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           const requiredFieldsLength = this.columnInfos.filter((item) => item.required === true).length;
           const quizFieldsCount = this.columnInfos.filter((item) => item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox' === true).length;
           const requiredQuizFieldsLength = this.columnInfos.filter((item) => (item.required) && (item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox') === true).length;
-          if (requiredFieldsLength >= 1 && (quizFieldsCount <= 0 || (quizFieldsCount > 0 && requiredQuizFieldsLength > 0))) {
+          const requiredEmailFieldCount = this.columnInfos.filter((item) => item.labelType === 'email' && item.required === true).length;
+          if (requiredFieldsLength >= 1 && (quizFieldsCount <= 0 || (quizFieldsCount > 0 && requiredQuizFieldsLength > 0 && requiredEmailFieldCount > 0))) {
               const duplicateFieldLabels = this.referenceService.returnDuplicates(this.columnInfos.map(function (a) { return a.hiddenLabelId; }));
               const self = this;
               $.each(this.columnInfos, function (index, columnInfo) {
@@ -722,15 +724,24 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               }
           } else {
             let message = "";
-            if (requiredFieldsLength < 1) {
+            if (requiredFieldsLength < 1 && quizFieldsCount <= 0) {
                 message = message + this.minimumOneColumn;
             }
-            if(quizFieldsCount > 0 && requiredQuizFieldsLength <= 0){
-                if(message){
-                    message = message + '<br>' + this.quizFieldRequiredErrorMessage;
-                  } else{
-                    message = message + this.quizFieldRequiredErrorMessage;
-                  }
+            if(quizFieldsCount > 0 && (requiredQuizFieldsLength <= 0 || requiredEmailFieldCount <= 0)){
+                if(requiredQuizFieldsLength <= 0){
+                    if(message){
+                        message = message + '<br>' + this.quizFieldRequiredErrorMessage;
+                      } else{
+                        message = message + this.quizFieldRequiredErrorMessage;
+                      }
+                }
+                if(requiredEmailFieldCount <= 0){
+                    if(message){
+                        message = message + '<br>' + this.emailFieldRequiredErrorMessage;
+                      } else{
+                        message = message + this.emailFieldRequiredErrorMessage;
+                      }
+                }
             }
               this.addErrorMessage(message);
           }
@@ -909,13 +920,16 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                   if (result.access) {
                       if (result.statusCode === 100) {
                           this.showSweetAlert(this.duplicateLabelMessage);
-                      } else {
+                      } else if (result.statusCode === 400) {
+                        this.customResponse = new CustomResponse('ERROR', result.message, true);
+                    } else {
                           this.referenceService.isCreated = true;
                           this.router.navigate(["/home/forms/manage"]);
                       }
                   } else {
                       this.authenticationService.forceToLogout();
                   }
+                  this.ngxloading = false;
               },
               (error: string) => {
                   this.ngxloading = false;
@@ -937,6 +951,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                   if (result.access) {
                       if (result.statusCode === 100) {
                           this.showSweetAlert(this.duplicateLabelMessage);
+                      } else if (result.statusCode === 400) {
+                        this.customResponse = new CustomResponse('ERROR', result.message, true);
                       } else {
                           this.referenceService.isUpdated = true;
                           this.navigateToManageSection();
@@ -944,6 +960,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                   } else {
                       this.authenticationService.forceToLogout();
                   }
+                  this.ngxloading = false;
               },
               (error: string) => {
                   this.ngxloading = false;
