@@ -223,6 +223,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
     isValidPipeline = true;
     mergeTagsInput:any = {};
+    
+    showUsersPreview = false;
+    selectedListName = "";   
+    selectedListId = 0;
     constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
@@ -870,6 +874,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     (response: any) => {
                     	let data = response.data;
                         this.contactListsPagination.totalRecords = data.totalRecords;
+                        $.each(data.list, function (_index: number, list: any) {
+                            list.displayTime = new Date(list.createdTimeInString);
+                        });
+                        
                         this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.list);
                         if (this.isPreviewEvent && this.authenticationService.isOnlyPartner()) {
                             const contactsAll: any = [];
@@ -2881,6 +2889,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
          }
          this.mergeTagsInput['hideButton'] = false;
         }
+    
+    previewUsers(contactList:any){
+        this.showUsersPreview = true;
+        this.selectedListName = contactList.name;
+        this.selectedListId = contactList.id;
+    }
 
+    resetValues(){
+        this.showUsersPreview = false;
+        this.selectedListName = "";
+        this.selectedListId = 0;
+    }
 
 }

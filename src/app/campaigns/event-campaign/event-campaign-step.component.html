@@ -1077,27 +1077,28 @@ a.disabled {
                             </h5>
                           </td>
                           <td class='text-center m0' *ngIf="showContactType && !reDistributeEvent&&!reDistributeEventManage">
-							  <ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container>
-							   <ng-container  *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
+							  <ng-container *ngIf="contactList.partnerList"> Partners </ng-container>
+							   <ng-container  *ngIf="!contactList.partnerList"> Contacts </ng-container>
                           </td>
                            <td style="text-align:center" class="moreipsis" *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
                               <span *ngIf="contactList.publicList">Public</span>
 						        <span *ngIf="!contactList.publicList">Private</span>
                           </td>
                           <td style="text-align:center" *ngIf="this.reDistributeEvent || this.reDistributeEventManage">
-                            {{contactList.type}}
+                            {{contactList.listType}}
                         </td>
 			      							<td class="text-center">
-                            	<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
-                              <span *ngIf="referenceService.isSafariBrowser()"> {{contactList.createdDate}} </span>
+                            	<!-- <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp> -->
+                            	<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList?.displayTime"></app-timestamp>
+                              <span *ngIf="referenceService.isSafariBrowser()"> {{contactList.displayTime}} </span>
                             </td>
                           <td class='text-center m0'>
-                            <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true"  (click)="$event.stopPropagation();loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true"  (click)="$event.stopPropagation();previewUsers(contactList);"></i></a>
                             <ng-container *ngIf="isPreviewEvent">
                             <a *ngIf="authenticationService.isOnlyPartner()">
                                 <i class="fa fa-eye disabled" aria-hidden="true"></i>
                             </a>
-                            <a *ngIf="!authenticationService.isOnlyPartner()">	<i class="fa fa-eye" aria-hidden="true" (click)="$event.stopPropagation();loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                            <a *ngIf="!authenticationService.isOnlyPartner()">	<i class="fa fa-eye" aria-hidden="true" (click)="$event.stopPropagation();previewUsers(contactList);"></i></a>
                             </ng-container>
                           </td>
                         </tr>
@@ -1965,3 +1966,8 @@ a.disabled {
 </div> -->
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
 <app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>  
+
+
+<ng-container *ngIf="showUsersPreview">
+    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+    </ng-container>
