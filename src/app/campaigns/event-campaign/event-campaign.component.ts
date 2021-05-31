@@ -865,11 +865,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if (this.reDistributeEvent || this.reDistributeEventManage) {
             this.loadRedistributionContactList(contactListsPagination)
         } else {
-            this.contactService.loadContactLists(contactListsPagination)
+            this.contactService.findContactsAndPartnersForCampaign(contactListsPagination)
                 .subscribe(
-                    (data: any) => {
+                    (response: any) => {
+                    	let data = response.data;
                         this.contactListsPagination.totalRecords = data.totalRecords;
-                        this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
+                        this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.list);
                         if (this.isPreviewEvent && this.authenticationService.isOnlyPartner()) {
                             const contactsAll: any = [];
                             this.contactListsPagination.pagedItems.forEach((element, index) => {
