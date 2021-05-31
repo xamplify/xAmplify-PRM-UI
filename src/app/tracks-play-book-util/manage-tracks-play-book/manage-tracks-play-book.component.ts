@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, OnDestroy, EventEmitter, Renderer } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
@@ -40,7 +40,8 @@ export class ManageTracksPlayBookComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
-    public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService) {
+    public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
+    this.referenceService.renderer = this.renderer;
     this.pagination.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
   }
 
