@@ -223,6 +223,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
 
  isValidPipeline = true;
 
+ showUsersPreview = false;
+ selectedListName = "";  
+ selectedListId = 0;
+
   constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService, public socialService: SocialService,
     public campaignService: CampaignService,
@@ -857,35 +861,70 @@ listCampaignPipelines() {
           this.eventCampaign.linkOpened = false;
       }
   }
-  contactListMethod(contactListsPagination:Pagination){
+//   contactListMethod(contactListsPagination:Pagination){
 
-  if(this.reDistributeEvent || this.reDistributeEventManage){
-    this.loadRedistributionContactList(contactListsPagination)
-  }else{
-    this.contactService.loadContactLists(contactListsPagination)
-    .subscribe(
-    (data: any) => {
-      this.contactListsPagination.totalRecords = data.totalRecords;
-      this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
-      if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
-        const contactsAll:any = [];
-          this.contactListsPagination.pagedItems.forEach((element, index) => {
-            if( element.id ===this.parternUserListIds[index]) { contactsAll.push(this.contactListsPagination.pagedItems[index]);}
-          });
-          this.contactListsPagination.pagedItems = contactsAll;
-         }
-        const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
-        const items = $.grep( this.parternUserListIds, function( element ) { return $.inArray( element, contactIds ) !== -1;});
-        if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
-            this.isHeaderCheckBoxChecked = true;
-        } else {
-            this.isHeaderCheckBoxChecked = false;
-        }
-    },
-    (error: any) => { this.logger.error(error); },
-    () => { this.logger.info('event campaign page contactListMethod() finished'); } );
+//   if(this.reDistributeEvent || this.reDistributeEventManage){
+//     this.loadRedistributionContactList(contactListsPagination)
+//   }else{
+//     this.contactService.loadContactLists(contactListsPagination)
+//     .subscribe(
+//     (data: any) => {
+//       this.contactListsPagination.totalRecords = data.totalRecords;
+//       this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
+//       if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
+//         const contactsAll:any = [];
+//           this.contactListsPagination.pagedItems.forEach((element, index) => {
+//             if( element.id ===this.parternUserListIds[index]) { contactsAll.push(this.contactListsPagination.pagedItems[index]);}
+//           });
+//           this.contactListsPagination.pagedItems = contactsAll;
+//          }
+//         const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+//         const items = $.grep( this.parternUserListIds, function( element ) { return $.inArray( element, contactIds ) !== -1;});
+//         if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
+//             this.isHeaderCheckBoxChecked = true;
+//         } else {
+//             this.isHeaderCheckBoxChecked = false;
+//         }
+//     },
+//     (error: any) => { this.logger.error(error); },
+//     () => { this.logger.info('event campaign page contactListMethod() finished'); } );
+//     }
+//   }
+
+contactListMethod(contactListsPagination: Pagination) {
+
+    if (this.reDistributeEvent || this.reDistributeEventManage) {
+        this.loadRedistributionContactList(contactListsPagination)
+    } else {
+        this.contactService.findContactsAndPartnersForCampaign(contactListsPagination)
+            .subscribe(
+                (response: any) => {
+                 let data = response.data;
+                    this.contactListsPagination.totalRecords = data.totalRecords;
+                    $.each(data.list, function (_index: number, list: any) {
+                        list.displayTime = new Date(list.createdTimeInString);
+                    });
+                    
+                    this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.list);
+                    if (this.isPreviewEvent && this.authenticationService.isOnlyPartner()) {
+                        const contactsAll: any = [];
+                        this.contactListsPagination.pagedItems.forEach((element, index) => {
+                            if (element.id === this.parternUserListIds[index]) { contactsAll.push(this.contactListsPagination.pagedItems[index]); }
+                        });
+                        this.contactListsPagination.pagedItems = contactsAll;
+                    }
+                    const contactIds = this.contactListsPagination.pagedItems.map(function (a) { return a.id; });
+                    const items = $.grep(this.parternUserListIds, function (element) { return $.inArray(element, contactIds) !== -1; });
+                    if (items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length) {
+                        this.isHeaderCheckBoxChecked = true;
+                    } else {
+                        this.isHeaderCheckBoxChecked = false;
+                    }
+                },
+                (error: any) => { this.logger.error(error); },
+                () => { this.logger.info('event campaign page contactListMethod() finished'); });
     }
-  }
+}
 
   loadRedistributionContactList(contactsPagination: Pagination) {
         if(this.eventCampaign.nurtureCampaign){
@@ -2863,6 +2902,18 @@ editPartnerTemplate(){
 showSuccessMessage(message:any){
   this.folderCustomResponse = new CustomResponse('SUCCESS',message, true);
   this.listCategories();
+}
+
+previewUsers(contactList:any){
+    this.showUsersPreview = true;
+    this.selectedListName = contactList.name;
+    this.selectedListId = contactList.id;
+}
+
+resetValues(){
+    this.showUsersPreview = false;
+    this.selectedListName = "";
+    this.selectedListId = 0;
 }
 
 

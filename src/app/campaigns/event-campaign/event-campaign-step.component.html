@@ -1058,44 +1058,59 @@ a.disabled {
                           <th class="custom-center">Preview</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <ng-container *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
-                        <tr id="campaignContactListTable_{{contactList.id}}" (click)="highlightPartnerContactRow(contactList,$event,contactList.noOfContacts,contactList.emailValidationInd)" [ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
-                          <td class='text-center m0'>
-                            <input value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList)" (input)="resetTabClass()">
-                          </td>
-                          <td style="text-align:left" class="moreipsis">
-                            <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
-                              <span>{{contactList.name}}</span>
-                            </h5>
-                          </td>
-                          <td class='text-center m0' *ngIf="showContactType && !reDistributeEvent&&!reDistributeEventManage">
-							  <ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container>
-							   <ng-container  *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
-                          </td>
-                           <td style="text-align:center" class="moreipsis" *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
-                              <span *ngIf="contactList.publicList">Public</span>
-						        <span *ngIf="!contactList.publicList">Private</span>
-                          </td>
-                          <td style="text-align:center" *ngIf="this.reDistributeEvent || this.reDistributeEventManage">
-                            {{contactList.type}}
-                        </td>
-			      							<td class="text-center">
-                            	<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
-                              <span *ngIf="referenceService.isSafariBrowser()"> {{contactList.createdDate}} </span>
-                            </td>
-                          <td class='text-center m0'>
-                            <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true"  (click)="$event.stopPropagation();loadContactsOnPreview(contactList, contactsPagination);"></i></a>
-                            <ng-container *ngIf="isPreviewEvent">
-                            <a *ngIf="authenticationService.isOnlyPartner()">
-                                <i class="fa fa-eye disabled" aria-hidden="true"></i>
-                            </a>
-                            <a *ngIf="!authenticationService.isOnlyPartner()">	<i class="fa fa-eye" aria-hidden="true" (click)="$event.stopPropagation();loadContactsOnPreview(contactList, contactsPagination);"></i></a>
-                            </ng-container>
-                          </td>
-                        </tr>
-                        </ng-container>
-                      </tbody>
+					<tbody>
+						<ng-container *ngFor="let contactList of contactListsPagination.pagedItems; let i=index;">
+							<tr id="campaignContactListTable_{{contactList.id}}"
+								(click)="highlightPartnerContactRow(contactList,$event,contactList.noOfContacts,contactList.emailValidationInd)"
+								[ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}">
+								<td class='text-center m0'>
+									<input value="{{contactList.id}}" name="campaignContact[]" [attr.disabled]="isPreviewEvent? '' : null"
+										type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1"
+										(click)="$event.stopPropagation();partnerHighlightRow(contactList)" (input)="resetTabClass()">
+								</td>
+								<td style="text-align:left" class="moreipsis">
+									<h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
+										<span>{{contactList.name}}</span>
+									</h5>
+								</td>
+								<td class='text-center m0' *ngIf="showContactType && !reDistributeEvent&&!reDistributeEventManage">
+									<ng-container *ngIf="contactList.partnerList"> Partners </ng-container>
+									<ng-container *ngIf="!contactList.partnerList"> Contacts </ng-container>
+								</td>
+								<td style="text-align:center" class="moreipsis"
+									*ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
+									<span *ngIf="contactList.publicList">Public</span>
+									<span *ngIf="!contactList.publicList">Private</span>
+								</td>
+								<td style="text-align:center" *ngIf="this.reDistributeEvent || this.reDistributeEventManage">
+									{{contactList.type}}
+								</td>
+								<td class="text-center" *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
+									<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true"
+										[dateAndTime]="contactList?.displayTime"></app-timestamp>
+									<span *ngIf="referenceService.isSafariBrowser()"> {{contactList.displayTime}} </span>
+								</td>
+					
+								<td class="text-center" *ngIf="this.reDistributeEvent || this.reDistributeEventManage">
+									<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true"
+										[dateAndTime]="contactList.createdDate"> </app-timestamp>
+									<span *ngIf="referenceService.isSafariBrowser()"> {{contactList.createdDate}} </span>
+								</td>
+					
+								<td class='text-center m0'>
+									<a *ngIf="!isPreviewEvent"> <i class="fa fa-eye" aria-hidden="true"
+											(click)="$event.stopPropagation();previewUsers(contactList);"></i></a>
+									<ng-container *ngIf="isPreviewEvent">
+										<a *ngIf="authenticationService.isOnlyPartner()">
+											<i class="fa fa-eye disabled" aria-hidden="true"></i>
+										</a>
+										<a *ngIf="!authenticationService.isOnlyPartner()"> <i class="fa fa-eye" aria-hidden="true"
+												(click)="$event.stopPropagation();previewUsers(contactList);"></i></a>
+									</ng-container>
+								</td>
+							</tr>
+						</ng-container>
+					</tbody>
                     </table>
                   </div>
                   <app-pagination class="pg8" [class.disabled]="isPreviewEvent" [pagination]="contactListsPagination" [type]="'contactlists'" (notifyParent)="setPage($event)"
@@ -1950,3 +1965,7 @@ a.disabled {
 	</div>
 </div> -->
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
+<ng-container *ngIf="showUsersPreview">
+	<app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId"
+		(notifyParentComponent)="resetValues()"></app-preview-user-list>
+</ng-container>
