@@ -823,11 +823,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     switchStatusChange() {
-        //this.isValidPipeline = !this.isValidPipeline;
         this.clearSelectedContactList();
         this.clearSelectedTemplate();
         this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
-        // this.setPartnerEmailNotification(true);
+        this.contactListsPagination.channelCampaign = this.eventCampaign.channelCampaign;
         this.contactListsPagination.pageIndex = 1;
         if (!this.eventCampaign.channelCampaign) {
             this.eventCampaign.enableCoBrandingLogo = false;
@@ -854,7 +853,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             }
             this.resetTabClass();
         }
-
     }
 
     setPartnerEmailNotification(event) {
