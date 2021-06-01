@@ -306,6 +306,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedListName = "";   
     selectedListId = 0;
     selectedContactListNames = [];
+    expandedUserList: any;
+    showExpandButton = false;  
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -1514,6 +1517,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         try{
             this.contactsPagination.pageIndex = 1;
             this.contactsPagination.searchKey = this.recipientsSortOption.searchKey;
+            if (this.contactsPagination.searchKey != "") {
+                this.showExpandButton = true;
+            } else {
+                this.showExpandButton = false;
+            }
             this.contactsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.contactsPagination);
             this.loadCampaignContacts(this.contactsPagination);
         }catch(error){
@@ -3378,6 +3386,16 @@ resetValues(){
     this.selectedListId = 0;
 }
 
+viewMatchedContacts(userList: any) {		
+    userList.expand = !userList.expand;		
+    if (userList.expand) {
+        if ((this.expandedUserList != undefined || this.expandedUserList != null)
+         && userList != this.expandedUserList) {				
+            this.expandedUserList.expand = false;				
+        }			
+        this.expandedUserList = userList;			
+    }
+}
 
  
 }

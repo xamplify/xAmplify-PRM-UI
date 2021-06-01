@@ -956,6 +956,7 @@
                                                             <th scope="row" class="text-center">
                                                                 <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                             </th>
+                                                            <th class="hidden-xs" *ngIf="showExpandButton"></th>
                                                             <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
                                                                 <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'user_list_tb',2)"></span>
                                                                 <span class="gridHeader" translate>List Name</span>
@@ -970,56 +971,72 @@
                                                             <th scope="row" style="text-align: center;" translate>Preview </th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        <tr role="row" *ngFor="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
-                                                            (mouseover)='showContactsAlert(contacts.count)' [attr.title]="emptyContactsMessage">
-                                                            <td>
-                                                                <div class="form-group">
-                                                                    <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
-                                                                </div>
-                                                            </td>
-                                                            <td style="width: 10%;text-align: left;" class="hidden-xs">
-                                                                <img  *ngIf="contacts?.socialNetwork=='ZOHO'" src="{{properties?.zohoImage}}" alt="Zoho" class="img-class-list">
-                                                                <img *ngIf="contacts?.socialNetwork=='GOOGLE'" src="{{properties?.googleImage}}" alt="Google" class="img-class-list">
-                                                                <img *ngIf="contacts?.socialNetwork=='SALESFORCE'" src="{{properties?.salesforceImage}}" alt="Salesforce" class="img-class-list"> 
-                                                                <img *ngIf="contacts?.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}" alt="Manual" class="img-class-list">
-                                                                <img *ngIf="contacts?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
-                                                                <img *ngIf="contacts?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
-                                                              </td>
-                                                              <td style="text-align: left;">
-                                                                <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contacts?.name}}">
-                                                                    <span><strong>{{contacts?.name}}</strong></span>
-                                                                </h4>
-                                                                <h6 class="moreipsis" title="{{contacts?.createdName}}">
-                                                                    <span translate> Created By <strong>{{contacts?.creatorName}}</strong></span>
-                                                                </h6>
-                                                                <ng-container *ngIf="!contacts?.partnerList">
-                                                                    <h6 class="view-banner" translate>
-                                                                        <span *ngIf="contacts?.publicList" data-toggle="tooltip" data-placement="top"
-                                                                            title="{{actionsDescription?.contact_list_public}}" translate>Public
-                                                                        </span>
-                                                                        <span *ngIf="!contacts?.publicList" data-toggle="tooltip" data-placement="top"
-                                                                            title="{{actionsDescription?.contact_list_private}}" translate>Private
-                                                                        </span>
+                                                    <tbody>   
+                                                        <ng-container *ngFor="let contacts of contactsPagination.pagedItems;let i = index">
+                                                            <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
+                                                                (mouseover)='showContactsAlert(contacts.count)' [attr.title]="emptyContactsMessage">
+                                                                <td>
+                                                                    <div class="form-group">
+                                                                        <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
+                                                                    </div>
+                                                                </td>
+                                                                <td class="cw" *ngIf="showExpandButton">
+                                                                    <div class="actions-block left-float">
+                                                                      <a (click)="viewMatchedContacts(contacts)" title="View/Hide">
+                                                                        <i class="fa" [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
+                                                                          aria-hidden="true" style=" padding-top: 0px;"></i>
+                                                                      </a>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width: 10%;text-align: left;" class="hidden-xs">
+                                                                    <img  *ngIf="contacts?.socialNetwork=='ZOHO'" src="{{properties?.zohoImage}}" alt="Zoho" class="img-class-list">
+                                                                    <img *ngIf="contacts?.socialNetwork=='GOOGLE'" src="{{properties?.googleImage}}" alt="Google" class="img-class-list">
+                                                                    <img *ngIf="contacts?.socialNetwork=='SALESFORCE'" src="{{properties?.salesforceImage}}" alt="Salesforce" class="img-class-list"> 
+                                                                    <img *ngIf="contacts?.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}" alt="Manual" class="img-class-list">
+                                                                    <img *ngIf="contacts?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
+                                                                    <img *ngIf="contacts?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
+                                                                  </td>
+                                                                  <td style="text-align: left;">
+                                                                    <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contacts?.name}}">
+                                                                        <span><strong>{{contacts?.name}}</strong></span>
+                                                                    </h4>
+                                                                    <h6 class="moreipsis" title="{{contacts?.createdName}}">
+                                                                        <span translate> Created By <strong>{{contacts?.creatorName}}</strong></span>
                                                                     </h6>
-                                                                </ng-container>
-                                                              </td>
-                                                            <td *ngIf="showContactType">
-                                                                {{contacts?.listType}}
-                                                            </td>
-                                                            <td class="text-center sorting_1">
-                                                                <app-timestamp  [dateAndTime]="contacts?.displayTime">
-                                                                </app-timestamp>
-                                                            </td>
-                                                            <td>
-                                                                {{contacts?.count}}
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <a (click)="$event.stopPropagation();previewUsers(contacts)">
-                                                                    <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
+                                                                    <ng-container *ngIf="!contacts?.partnerList">
+                                                                        <h6 class="view-banner" translate>
+                                                                            <span *ngIf="contacts?.publicList" data-toggle="tooltip" data-placement="top"
+                                                                                title="{{actionsDescription?.contact_list_public}}" translate>Public
+                                                                            </span>
+                                                                            <span *ngIf="!contacts?.publicList" data-toggle="tooltip" data-placement="top"
+                                                                                title="{{actionsDescription?.contact_list_private}}" translate>Private
+                                                                            </span>
+                                                                        </h6>
+                                                                    </ng-container>
+                                                                  </td>
+                                                                <td *ngIf="showContactType">
+                                                                    {{contacts?.listType}}
+                                                                </td>
+                                                                <td class="text-center sorting_1">
+                                                                    <app-timestamp  [dateAndTime]="contacts?.displayTime">
+                                                                    </app-timestamp>
+                                                                </td>
+                                                                <td>
+                                                                    {{contacts?.count}}
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <a (click)="$event.stopPropagation();previewUsers(contacts)">
+                                                                        <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row" *ngIf="contacts?.expand">
+                                                                <td colspan="12">
+                                                                  <app-userlist-users [searchKey]="contactsPagination.searchKey" [userListId]="contacts.id"></app-userlist-users>
+                                                                </td>
+                                                            </tr>
+                                                        </ng-container>                                                     
+                                                       
                                                     </tbody>
                                                 </table>
                                             </div>

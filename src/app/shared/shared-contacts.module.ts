@@ -12,13 +12,12 @@ import { CommonComponentModule } from '../common/common.module';
 import { SocialContactsCallbackComponent } from '../contacts/social-contacts-callback/social-contacts-callback.component';
 import { SharedLibraryModule } from '../shared/shared-library.module';
 import { AddContactModalComponent } from '../contacts/add-contact-modal/add-contact-modal.component';
-import { UserlistUsersComponent } from 'app/contacts/userlist-users/userlist-users.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],
-        declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent, AddContactModalComponent, UserlistUsersComponent],
+        declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent, AddContactModalComponent],
         exports: [FormsModule, CommonModule, RouterModule, AddContactsComponent,ManageContactsComponent,EditContactsComponent,
-                  SocialContactsCallbackComponent, AddContactModalComponent, UserlistUsersComponent],
+                  SocialContactsCallbackComponent, AddContactModalComponent],
         providers: [SocialPagerService],
 })
 
