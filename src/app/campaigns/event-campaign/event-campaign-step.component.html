@@ -1085,13 +1085,18 @@ a.disabled {
 						        <span *ngIf="!contactList.publicList">Private</span>
                           </td>
                           <td style="text-align:center" *ngIf="this.reDistributeEvent || this.reDistributeEventManage">
-                            {{contactList.listType}}
+                            {{contactList.type}}
                         </td>
-			      							<td class="text-center">
-                            	<!-- <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp> -->
+			      			<td class="text-center" *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
                             	<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList?.displayTime"></app-timestamp>
                               <span *ngIf="referenceService.isSafariBrowser()"> {{contactList.displayTime}} </span>
                             </td>
+                            
+                            <td class="text-center" *ngIf="this.reDistributeEvent || this.reDistributeEventManage">
+                            	<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
+                              <span *ngIf="referenceService.isSafariBrowser()"> {{contactList.createdDate}} </span>
+                            </td>
+                            
                           <td class='text-center m0'>
                             <a *ngIf="!isPreviewEvent">	<i class="fa fa-eye" aria-hidden="true"  (click)="$event.stopPropagation();previewUsers(contactList);"></i></a>
                             <ng-container *ngIf="isPreviewEvent">
