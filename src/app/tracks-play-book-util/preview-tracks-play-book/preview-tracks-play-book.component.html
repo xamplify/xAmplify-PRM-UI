@@ -93,10 +93,10 @@
                                                 <div class="grid-box" style="min-height: 200px;margin-top: 0px;">
                                                     <img class="img-class" src="{{assetDetails?.thumbnailPath}}"
                                                         alt="No Image Found"><br>
-                                                    <a class="btn btn-info"
+                                                    <a class="btn btn-primary"
                                                         [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}"
                                                         (click)="downloadAsset(assetDetails)">Download</a>
-                                                    <a class="btn btn-info"
+                                                    <a class="btn btn-primary"
                                                         (click)="assetPreview(assetDetails)">View</a>
                                                     <div class="center"
                                                         style="padding: 10px;margin: 0 !important;font-size: 14px;"
@@ -170,6 +170,10 @@
                                 <h6 title="Form" translate>
                                     Type: <strong>Form</strong>
                                 </h6>
+                                <div *ngIf="!isCreatedUser && !tracksPlayBook.enableQuiz && tracksPlayBook.progress != undefined && tracksPlayBook.progress === 100"
+                                    class="ribbon">
+                                    <span style="background-color: #5cb85c;" translate>Finished</span>
+                                </div>
                                 <div class="bar">
                                     <a *ngIf="!isCreatedUser" [ngClass]="{'isDisabled' : !tracksPlayBook.enableQuiz}"
                                         data-toggle="tooltip" data-placement="top" title="View" (click)="viewQuiz()">
