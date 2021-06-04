@@ -227,6 +227,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     showUsersPreview = false;
     selectedListName = "";   
     selectedListId = 0;
+    emptyContactsMessage:string = "";
+    contactListSelectMessage = "Select the following list(s) to be used in this campaign";
     constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
@@ -2898,6 +2900,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.showUsersPreview = false;
         this.selectedListName = "";
         this.selectedListId = 0;
+    }
+    
+    showContactsAlert(count:number){
+        this.emptyContactsMessage = "";
+        if(count==0){
+            this.emptyContactsMessage = "No Contacts Found For This Contact List";
+        }
     }
 
 }
