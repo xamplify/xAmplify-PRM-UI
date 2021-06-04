@@ -45,5 +45,5 @@ export class Form {
     isValidColorCode = true;
     quizForm = false;
     saveAs = false;
-	
+	thumbnailImage="";
 }

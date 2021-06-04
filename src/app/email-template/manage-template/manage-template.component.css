@@ -333,3 +333,7 @@ body {
 .display-ib {
     display: inline-block;
 }
+
+.mwttpxmet{
+    min-width: 210px !important;
+}
