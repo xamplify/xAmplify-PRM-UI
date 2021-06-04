@@ -7,6 +7,7 @@ import { CampaignFormAnalyticsComponent } from './campaign-form-analytics/campai
 import { LandingPageFormAnalyticsComponent } from './landing-page-form-analytics/landing-page-form-analytics.component';
 import { LandingPageFormsComponent } from './landing-page-forms/landing-page-forms.component';
 import { CampaignLandingPageFormsComponent } from './campaign-landing-page-forms/campaign-landing-page-forms.component';
+import { SelectFormComponent } from './select-form/select-form.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
@@ -28,7 +29,7 @@ export const routes: Routes = [
     {path: "clpf/:landingPageCampaignId/:partnerId",component:CampaignLandingPageFormsComponent},
     {path: "category/:categoryId/lf/:landingPageId",component:LandingPageFormsComponent},
     { path: "category/:categoryId/lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
-
+    { path: "select", component: SelectFormComponent},
 
 ];
 

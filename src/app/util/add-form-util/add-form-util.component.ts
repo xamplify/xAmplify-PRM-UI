@@ -27,6 +27,8 @@ import { ContentManagement } from 'app/videos/models/content-management';
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { EnvService } from 'app/env.service'
 import { RegularExpressions } from 'app/common/models/regular-expressions';
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 
 declare var $: any, swal: any, CKEDITOR: any;
 
@@ -164,12 +166,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   formBackgroundImage = "";
   @Input() isMdfForm:boolean;
   @Input() selectedForm:any;
+  @Input() selectedDefaultFormId:number;
   formHeader = "CREATE FORM";
   siteKey = "";
   formSubmissionUrlErrorMessage = "";
   colorCodeErrorMessage = 'Enter a valid color code';
   defaultAnswerErrorMessage = "Quiz question without default answer is not allowed";
   isSaveAs = false;
+  thumbnailFileObj: any;
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
@@ -190,18 +194,75 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   private onDropModel(args) {
   }
 
-  ngOnInit() {
-    if (this.selectedForm === undefined) {
-        if (this.router.url.indexOf("/home/forms/edit") > -1) {
-            this.navigateToManageSection();
+    ngOnInit() {
+        if (this.selectedForm === undefined) {
+            if (this.router.url.indexOf("/home/forms/edit") > -1) {
+                this.navigateToManageSection();
+            }
         }
+        if (this.selectedForm !== undefined) {
+            this.isAdd = false;
+            this.formTitle = "Edit Form Details";
+            this.buttonName = "Update";
+            this.existingFormName = this.selectedForm.name.toLowerCase();
+            this.form = this.selectedForm;
+            this.setExistingFormData();
+        } else if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0){
+            this.isAdd = true;
+            this.getById(this.selectedDefaultFormId);
+        } else {
+            this.listDefaultColumns();
+            this.highlightByLength(1);
+        }
+        this.cropperSettings();
+        this.pageNumber = this.numberPerPage[0];
+
+        this.listPriceTypes();
+        if (this.isMdfForm) {
+            this.formHeader = "EDIT MDF FORM";
+            this.removeBlurClass();
+        } else {
+            if (this.router.url.indexOf('edit') > -1) {
+                this.formHeader = "EDIT FORM";
+            } else {
+                this.formHeader = "CREATE FORM";
+            }
+            this.listCategories();
+            if(this.selectedDefaultFormId === undefined || this.selectedDefaultFormId < 1){
+                this.listFormNames();
+            }
+            if (this.isAdd && (this.selectedDefaultFormId === undefined || this.selectedDefaultFormId < 1)) {
+                this.getCompanyLogo();
+            } else {
+                this.removeBlurClass();
+            }
+        }
+
+
     }
-    if (this.selectedForm !== undefined) {
-        this.isAdd = false;
-        this.formTitle = "Edit Form Details";
-        this.buttonName = "Update";
-        this.existingFormName = this.selectedForm.name.toLowerCase();
-        this.form = this.selectedForm;
+
+    getCompanyLogo(){
+        this.ngxloading = true;
+        this.formService.getCompanyLogo(this.loggedInUserId).subscribe(
+            data => {
+                this.form.companyLogo = data;
+                this.companyLogoImageUrlPath = data;
+                if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
+                    this.validateFormNames(this.form.name);
+                }
+                this.ngxloading = false;
+                $('#add-form-name-modal').modal('show');
+            },
+            error => {
+                if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
+                    this.validateFormNames(this.existingFormName);
+                }
+                this.ngxloading = false;
+                $('#add-form-name-modal').modal('show');
+            });
+    }
+
+    setExistingFormData() {
         if (this.form.showCompanyLogo === undefined || this.form.showCompanyLogo === null) {
             this.form.showCompanyLogo = false;
         }
@@ -248,47 +309,34 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.form.isValidColorCode = true;
         this.listExistingColumns(this.form.formLabelDTOs);
         this.characterSize();
-    } else {
-        this.listDefaultColumns();
+        this.highlightByLength(1);
     }
-    this.highlightByLength(1);
 
-    this.cropperSettings();
-    this.pageNumber = this.numberPerPage[0];
-
-   
-    this.listPriceTypes();
-      if(this.isMdfForm){
-        this.formHeader = "EDIT MDF FORM"; 
-        this.removeBlurClass();
-      }else{
-         if(this.router.url.indexOf('edit')>-1){
-            this.formHeader = "EDIT FORM"; 
-         }else{
-            this.formHeader = "CREATE FORM"; 
-         }
+    getById(id: number) {
         this.listFormNames();
-        this.listCategories();
-        if (this.isAdd) {
-          this.ngxloading = true;
-          this.formService.getCompanyLogo(this.loggedInUserId).subscribe(
-              data => {
-                  this.ngxloading = false;
-                  this.form.companyLogo = data;
-                  this.companyLogoImageUrlPath = data;
-                  $('#add-form-name-modal').modal('show');
-              },
-              error => {
-                  this.ngxloading = false;
-                  $('#add-form-name-modal').modal('show');
-              });
-      } else {
-          this.removeBlurClass();
-      }
-      }
-      
-      
-  }
+        this.ngxloading = true;
+        this.formService.getById(id)
+            .subscribe(
+                (data: any) => {
+                    if (data.statusCode === 200) {
+                        this.form = data.data;
+                        if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
+                            this.setExistingFormData();
+                            this.getCompanyLogo();
+                            this.form.id = null;
+                        }
+                    } else {
+                        this.ngxloading = false;
+                        swal("Please Contact Admin!", data.message, "error");
+                    }
+                },
+                (error: string) => {
+                    this.ngxloading = false;
+                    this.logger.errorPage(error);
+                    this.referenceService.showServerError(this.httpRequestLoader);
+                }
+            );
+    }
 
   listPriceTypes() {
       this.formService.getPriceTypes().subscribe(
@@ -892,6 +940,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   saveOrUpdateForm() {
+     // this.generateImg();
       this.form.formLabelDTOs = this.columnInfos;
       this.form.createdBy = this.authenticationService.getUserId();
       if(CKEDITOR!=undefined){
@@ -904,17 +953,28 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if (!this.form.companyLogo) {
           this.form.companyLogo = this.companyLogoImageUrlPath;
       }
-      if (this.isAdd || this.isSaveAs) {
-          this.form.saveAs = this.isSaveAs;
-          this.save(this.form);
-      } else {
-          this.update(this.form);
-      }
+      let self = this;
+      htmlToImage.toBlob(document.getElementById('create-from-div'))
+          .then(function (blob) {
+              self.thumbnailFileObj = self.utilService.blobToFile(blob);
+              if (self.isAdd || self.isSaveAs) {
+                 self.form.saveAs = self.isSaveAs;
+                  self.save(self.form);
+              } else {
+                 self.update(self.form);
+              }
+          });
   }
 
   save(form: Form) {
       form.formType = this.formType;
-      this.formService.saveForm(form)
+      let formData: FormData = new FormData();
+      if (this.thumbnailFileObj == null) {
+        formData.append("thumbnailImage", null);
+      } else {
+        formData.append("thumbnailImage", this.thumbnailFileObj, 'thumbnail.jpeg');
+      }
+      this.formService.saveForm(form, formData)
           .subscribe(
               (result: any) => {
                   if (result.access) {
@@ -944,8 +1004,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
 
   update(form: Form) {
-      console.log('entered' + this.form.backgroundImage)
-      this.formService.updateForm(form)
+      let formData: FormData = new FormData();
+      if (this.thumbnailFileObj == null) {
+        formData.append("thumbnailImage", null);
+      } else {
+        formData.append("thumbnailImage", this.thumbnailFileObj, 'thumbnail.jpeg');
+      }
+      this.formService.updateForm(form, formData)
           .subscribe(
               (result: any) => {
                   if (result.access) {
@@ -1016,7 +1081,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.referenceService.goToRouter("/home/mdf/details");
       }else{
         if (this.isAdd) {
-            this.router.navigate(["/home/design/add"]);
+            this.router.navigate(["/home/forms/select"]);
         } else {
             this.navigateToManageSection();
         }
@@ -1591,6 +1656,13 @@ checkValideColorCodes(){
 saveAs(){
 	this.isSaveAs = true;
 	this.validateForm();
+}
+
+generateImg(){
+    htmlToImage.toBlob(document.getElementById('my-node'))
+  .then(function (blob) {
+    this.thumbnailFileObj = this.utilService.blobToFile(blob);
+});
 }
 
 }
