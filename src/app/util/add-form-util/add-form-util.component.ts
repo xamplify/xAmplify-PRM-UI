@@ -27,6 +27,8 @@ import { ContentManagement } from 'app/videos/models/content-management';
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { EnvService } from 'app/env.service'
 import { RegularExpressions } from 'app/common/models/regular-expressions';
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 
 declare var $: any, swal: any, CKEDITOR: any;
 
@@ -169,6 +171,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   colorCodeErrorMessage = 'Enter a valid color code';
   defaultAnswerErrorMessage = "Quiz question without default answer is not allowed";
   isSaveAs = false;
+  thumbnailFileObj: any;
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
@@ -912,6 +915,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   saveOrUpdateForm() {
+     // this.generateImg();
       this.form.formLabelDTOs = this.columnInfos;
       this.form.createdBy = this.authenticationService.getUserId();
       if(CKEDITOR!=undefined){
@@ -924,17 +928,28 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if (!this.form.companyLogo) {
           this.form.companyLogo = this.companyLogoImageUrlPath;
       }
-      if (this.isAdd || this.isSaveAs) {
-          this.form.saveAs = this.isSaveAs;
-          this.save(this.form);
-      } else {
-          this.update(this.form);
-      }
+      let self = this;
+      htmlToImage.toBlob(document.getElementById('create-from-div'))
+          .then(function (blob) {
+              self.thumbnailFileObj = self.utilService.blobToFile(blob);
+              if (self.isAdd || self.isSaveAs) {
+                 self.form.saveAs = self.isSaveAs;
+                  self.save(self.form);
+              } else {
+                 self.update(self.form);
+              }
+          });
   }
 
   save(form: Form) {
       form.formType = this.formType;
-      this.formService.saveForm(form)
+      let formData: FormData = new FormData();
+      if (this.thumbnailFileObj == null) {
+        formData.append("thumbnailImage", null);
+      } else {
+        formData.append("thumbnailImage", this.thumbnailFileObj, 'thumbnail.jpeg');
+      }
+      this.formService.saveForm(form, formData)
           .subscribe(
               (result: any) => {
                   if (result.access) {
@@ -961,8 +976,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
 
   update(form: Form) {
-      console.log('entered' + this.form.backgroundImage)
-      this.formService.updateForm(form)
+      let formData: FormData = new FormData();
+      if (this.thumbnailFileObj == null) {
+        formData.append("thumbnailImage", null);
+      } else {
+        formData.append("thumbnailImage", this.thumbnailFileObj, 'thumbnail.jpeg');
+      }
+      this.formService.updateForm(form, formData)
           .subscribe(
               (result: any) => {
                   if (result.access) {
@@ -1605,6 +1625,13 @@ checkValideColorCodes(){
 saveAs(){
 	this.isSaveAs = true;
 	this.validateForm();
+}
+
+generateImg(){
+    htmlToImage.toBlob(document.getElementById('my-node'))
+  .then(function (blob) {
+    this.thumbnailFileObj = this.utilService.blobToFile(blob);
+});
 }
 
 }

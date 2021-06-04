@@ -22,15 +22,22 @@ export class FormService {
 
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger ) { }
 
-
-    saveForm(form: Form) {
-        return this.http.post(this.URL + "save?access_token=" + this.authenticationService.access_token, form)
+    saveForm(form: Form, formData: FormData) {
+        formData.append('formDto', new Blob([JSON.stringify(form)],
+          {
+            type: "application/json"
+          }));
+        return this.http.post(this.URL + "save?access_token=" + this.authenticationService.access_token, formData)
             .map( this.extractData )
             .catch( this.handleError );
     }
 
-    updateForm(form: Form) {
-        return this.http.post(this.URL + "update?access_token=" + this.authenticationService.access_token, form)
+    updateForm(form: Form, formData: FormData) {
+        formData.append('formDto', new Blob([JSON.stringify(form)],
+          {
+            type: "application/json"
+          }));
+        return this.http.post(this.URL + "update?access_token=" + this.authenticationService.access_token, formData)
             .map( this.extractData )
             .catch( this.handleError );
     }
