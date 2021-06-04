@@ -30,11 +30,16 @@ export class AddDefaultTemplateDetailsComponent implements OnInit {
 
   saveAsDefault(){
     this.customResponse = new CustomResponse();
+    this.details['errorMessage'] = "";
     this.buttonText = "Please wait...";
     this.loader = true;
     this.authenticationService.saveAsDefaultTemplate(this.details).subscribe(
       response=>{
-        this.customResponse = new CustomResponse('ERROR','SUCC',true);
+        if(response.statusCode==200){
+          this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+        }else{
+          this.details['errorMessage'] = response.message;
+        }
         this.loader = false;
       },error=>{
         this.loader = false;

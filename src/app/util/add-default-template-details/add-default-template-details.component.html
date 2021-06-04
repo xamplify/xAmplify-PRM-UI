@@ -10,7 +10,7 @@
           <div class="modal-body">
               <app-modal-popup-loader *ngIf="loader"></app-modal-popup-loader>
               <ng-container *ngIf="!loader">
-                  <div *ngIf="customResponse?.isVisible" class="alert alert-danger">
+                  <div *ngIf="customResponse?.isVisible" [ngClass]="customResponse?.responseType=='ERROR' ? 'alert alert-danger':'alert alert-success'">
                     <strong>{{customResponse?.responseMessage}}</strong>
                   </div>
                   <div class="form-group" id="nameDiv">
