@@ -722,6 +722,12 @@ export class AuthenticationService {
         .catch(this.handleError);
 }
 
+saveAsDefaultTemplate(input:any){
+  return this.http.post(this.REST_URL + "superadmin/saveAsDefaultTemplate?access_token=" + this.access_token, input)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
   
   
 }
