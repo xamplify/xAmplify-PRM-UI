@@ -18,27 +18,38 @@ export class AddDefaultTemplateDetailsComponent implements OnInit {
   loader = false;
   buttonText = "Save As Default";
   customResponse:CustomResponse = new CustomResponse();
+  validForm = false;
   constructor(public authenticationService:AuthenticationService,public properties:Properties) { }
 
   ngOnInit() {
     this.customResponse = new CustomResponse();
     this.details['id'] = this.defaultTemplateInput.id;
     this.details['name'] = this.defaultTemplateInput.name;
+    this.validateName();
     $('#saveAsDefaultTemplatePopup').modal('show');
+  }
+
+  validateName(){
+    let name = $.trim(this.details['name']);
+    if(name.length>0){
+      this.validForm = true;
+    }else{
+      this.validForm = false;
+    }
   }
 
 
   saveAsDefault(){
     this.customResponse = new CustomResponse();
-    this.details['errorMessage'] = "";
     this.buttonText = "Please wait...";
     this.loader = true;
     this.authenticationService.saveAsDefaultTemplate(this.details).subscribe(
       response=>{
+        this.buttonText = "Save As Default";
         if(response.statusCode==200){
           this.customResponse = new CustomResponse('SUCCESS',response.message,true);
         }else{
-          this.details['errorMessage'] = response.message;
+          this.customResponse = new CustomResponse('ERROR',response.message,true);
         }
         this.loader = false;
       },error=>{
