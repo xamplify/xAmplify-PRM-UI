@@ -81,4 +81,9 @@ export class SelectFormComponent implements OnInit {
   previewForm(id: number){
     this.previewPopupComponent.previewForm(id)
   }
+
+  addDefaultForm(){
+    this.router.navigate(["/home/forms/add"]);
+}
+
 }

@@ -172,9 +172,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   defaultAnswerErrorMessage = "Quiz question without default answer is not allowed";
   isSaveAs = false;
   thumbnailFileObj: any;
+  loggedInAsSuperAdmin = false;
+
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
+      this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
       this.loggedInUserId = this.authenticationService.getUserId();
       let categoryId = this.route.snapshot.params['categoryId'];
       if (categoryId > 0) {
@@ -959,7 +962,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   save(form: Form) {
-      form.formType = this.formType;
+      if(this.loggedInAsSuperAdmin){
+        form.formType = FormType.XAMPLIFY_DEFAULT_FORM;
+        form.saveAsDefaultForm = true;
+        form.createdBy = 1;
+      }else{
+        form.formType = this.formType;
+        form.saveAsDefaultForm = false;
+      }
       let formData: FormData = new FormData();
       if (this.thumbnailFileObj == undefined || this.thumbnailFileObj == null) {
         formData.append("thumbnailImage", null);
@@ -971,7 +981,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               (result: any) => {
                   if (result.access) {
                       if (result.statusCode === 100) {
-                          this.showSweetAlert(this.duplicateLabelMessage);
+                          this.showSweetAlert("Form name already exists");
                       } else if (result.statusCode === 400) {
                         this.customResponse = new CustomResponse('ERROR', result.message, true);
                     } else {
@@ -1649,5 +1659,7 @@ saveAs(){
 	this.isSaveAs = true;
 	this.validateForm();
 }
+
+
 
 }

@@ -62,7 +62,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
                 (data: any) => {
                     names = data;
-                    alert(names)
                 },
                 error => { this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error); },
                 () => this.logger.info("Finished getAvailableNames()"));
