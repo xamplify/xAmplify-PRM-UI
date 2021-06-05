@@ -823,4 +823,29 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             }
         );
     }
+
+    saveAsDefaultTemplate(template:any){
+        let id = template['id'];
+        if(id!=undefined && id>0){
+            if (template.id != undefined) {
+                this.emailTemplateService.getById(template.id)
+                    .subscribe(
+                        (data: any) => {
+                            this.emailTemplateService.emailTemplate = data;
+                            this.emailTemplateService.isNewTemplate = true;
+                            this.router.navigate(["/home/emailtemplates/saveAs"]);
+                        },
+                        (error: string) => {
+                            this.logger.error(this.refService.errorPrepender + " showTemplateById():" + error);
+                            this.refService.showServerError(this.httpRequestLoader);
+                        },
+                        () => this.logger.info("Got Email Template")
+                    );
+            }
+        }else{
+            this.refService.showSweetAlertErrorMessage("This is not a template.So you cannot save it.");
+        }
+    }
+
+    
 }

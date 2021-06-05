@@ -104,7 +104,7 @@
                                     <a (click)="createTemplate(beeRegularTemplate.id)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                     </a>
-                                    <a id="template-delete" (click)="confirmDeleteEmailTemplate(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Delete Default Template" *ngIf="loggedInAsSuperAdmin && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                    <a  (click)="confirmDeleteEmailTemplate(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Delete Default Template" *ngIf="loggedInAsSuperAdmin && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </a>
                                 </div>
