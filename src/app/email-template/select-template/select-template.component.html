@@ -104,6 +104,9 @@
                                     <a (click)="createTemplate(beeRegularTemplate.id)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                     </a>
+                                    <a id="template-delete" (click)="confirmDeleteEmailTemplate(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Delete Default Template" *ngIf="loggedInAsSuperAdmin && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +123,7 @@
     <div class="modal-dialog modal-lg modal-template">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="email-template-title" style="text-align: center;"></h4>
             </div>
             <div class="modal-body">
@@ -143,12 +146,13 @@
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="modal-content rounded-0">
             <div class="modal-header">
-                <a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"></i></a>
+                <a class="close-circle" data-dismiss="modal" (click)="closeModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i></a>
                 <h4 class="modal-title" id="templateRetrieve" translate>Marketo integration with xAmplify</h4>
             </div>
 
             <div>
-                <img src="assets/images/crm/Mark-amplify.png" style="margin: 30px 30% 0;width: 50%;text-align: center;">
+                <img src="assets/images/crm/Mark-amplify.png" style="margin: 30px 30% 0;width: 50%;text-align: center;" alt="">
             </div>
 
             <div class="modal-body" style="padding: 39px;">
