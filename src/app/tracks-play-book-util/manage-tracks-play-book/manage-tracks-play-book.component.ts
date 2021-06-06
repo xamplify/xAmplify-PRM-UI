@@ -357,4 +357,8 @@ export class ManageTracksPlayBookComponent implements OnInit {
     }
     this.referenceService.goToRouter(route);
   }
+
+  refreshPage() {
+    this.listLearningTracks(this.pagination);
+  }
 }

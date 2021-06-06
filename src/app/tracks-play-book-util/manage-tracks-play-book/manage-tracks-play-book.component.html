@@ -22,7 +22,7 @@
                                 <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                     <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                             </ng-container>
-                            <div class="inputs" style="float: right">
+                            <div class="inputs" style="float: right"> 
                                 <!-- <div style="float: left;">
                                   <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
                                   <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
@@ -37,6 +37,9 @@
                                             <i class="fa fa-search" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
+                                <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                  </a>
                             </div>
                         </div>
                     </div>

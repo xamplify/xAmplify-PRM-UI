@@ -92,7 +92,7 @@
                                             <div class="input-icon right" style="position: relative;right: -5px;">
                                                 <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
                                                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchTemplates()"></button>
-                                                <button type="submit" class="search-box-item-click" (click)="searchTemplates()"><i class="fa fa-search"></i></button>
+                                                <button type="submit" class="search-box-item-click" (click)="searchTemplates()"><i class="fa fa-search" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
                                     </ng-container>
@@ -172,7 +172,7 @@
                                         </td>
                                         <td style="width: 14%">
                                             <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet':'actions-block override-actions'">
-                                                <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" title="Save As Default Template">
+                                                <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
                                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                                 </a>
                                                 <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
@@ -181,7 +181,7 @@
                                                 <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER'">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
-                                                <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye"></i>
+                                                <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a>
                                                 <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER' ">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -204,37 +204,35 @@
                             <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'" >{{emailTemplate.emailTemplateType | translate}}</span>
                             </span>
                             <img class="email-template-preview" *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
-                            <img class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
+                            <img alt="" class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                             </h4>
                             <div>
-                                <h6><span translate>Folder <b>{{emailTemplate.category}}</b></span></h6>
+                                <h6><span translate>Folder <strong>{{emailTemplate.category}}</strong></span></h6>
                                 <h6 *ngIf="emailTemplate.type=='PARTNER'" translate>
-                                    Shared On <b>
+                                    Shared On <strong>
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
                                         </app-timestamp>
-                                    </b>
+                                    </strong>
                                     <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                         data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}</span>
-
                                 </h6>
                                 <h6 *ngIf="emailTemplate.type!='PARTNER'" translate>
-                                    Created On <b>
+                                    Created On <strong>
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
                                         </app-timestamp>
-                                    </b>
+                                    </strong>
                                     <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                         data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</span>
-
                                 </h6>
                                 <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                     <h6 title="{{emailTemplate.createdBy}}" translate>
-                                        By <b>{{emailTemplate.createdBy | slice:0:17}}</b>
+                                        By <strong>{{emailTemplate.createdBy | slice:0:17}}</strong>
                                         <span *ngIf="emailTemplate.createdBy?.length>17">..</span>
                                     </h6>
                                     <h6 title="{{emailTemplate.companyName}}" translate>
-                                        From <b>{{emailTemplate.companyName | slice:0:17}}</b>
+                                        From <strong>{{emailTemplate.companyName | slice:0:17}}</strong>
                                         <span *ngIf="emailTemplate.companyName?.length>17">..</span>
                                     </h6>
                                 </ng-container>
@@ -246,27 +244,30 @@
                                 </div>
                                 <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                     <h6 title="{{emailTemplate.vendorName}}" translate>
-                                        By <b *ngIf="emailTemplate.vendorName?.length>17">{{emailTemplate.vendorName|slice:0:17}}..</b>
-                                        <b *ngIf="emailTemplate.vendorName?.length<17">{{emailTemplate.vendorName}}</b>
+                                        By <strong *ngIf="emailTemplate.vendorName?.length>17">{{emailTemplate.vendorName|slice:0:17}}..</strong>
+                                        <strong *ngIf="emailTemplate.vendorName?.length<17">{{emailTemplate.vendorName}}</strong>
                                     </h6>
                                     <h6 title="{{emailTemplate.vendorOrganizationName}}" translate>
-                                        From <b>{{emailTemplate.vendorOrganizationName | slice:0:20}}</b>
+                                        From <strong>{{emailTemplate.vendorOrganizationName | slice:0:20}}</strong>
                                         <span *ngIf="emailTemplate.vendorOrganizationName?.length>20">..</span>
                                     </h6>
                                 </ng-container>
 
                             </div>
                             <div class="bar">
+                                <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </a>
                                 <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
                                     <i class="fa fa-inbox" aria-hidden="true"></i>
                                 </a>
                                 <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER'">
-                                    <i class="fa fa-pencil-square-o"></i>
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
-                                <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye"></i>
+                                <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER' ">
-                                    <i class="fa fa-trash-o"></i>
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </div>

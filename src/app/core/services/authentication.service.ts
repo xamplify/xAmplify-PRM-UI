@@ -728,6 +728,12 @@ saveAsDefaultTemplate(input:any){
       .catch(this.handleError);
 }
 
+deleteDefaultTemplate(id:number){
+  return this.http.get(this.REST_URL+"superadmin/deleteDefaultTemplate/"+id+"/"+"?access_token="+this.access_token)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
   
   
 }

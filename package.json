@@ -45,6 +45,7 @@
     "dateformat": "^3.0.3",
     "enhanced-resolve": "3.3.0",
     "flatpickr": "^4.5.7",
+    "html-to-image": "^0.1.1",
     "intl": "^1.2.5",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23",

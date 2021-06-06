@@ -10,7 +10,9 @@ import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { CustomResponse } from '../../common/models/custom-response';
 import { MarketoEmailTemplate } from '../models/marketo-email-template';
 import { HubSpotService } from 'app/core/services/hubspot.service';
-declare var $: any;
+import { UtilService } from '../../core/services/util.service';
+
+declare var $,swal: any;
 @Component({
     selector: 'app-select-template',
     templateUrl: './select-template.component.html',
@@ -58,9 +60,11 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     marketoUploadUrl = this.uploadBaseUrl+"marketo";
     hubspotUploadUrl = this.uploadBaseUrl+"hubspot";
     campaignAccess: CampaignAccess = new CampaignAccess();
+    loggedInAsSuperAdmin = false;
     constructor(private emailTemplateService: EmailTemplateService,
-        private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
-        private logger: XtremandLogger, public refService: ReferenceService, private hubSpotService: HubSpotService) {
+        private router: Router, private authenticationService: AuthenticationService,
+        private logger: XtremandLogger, public refService: ReferenceService, private hubSpotService: HubSpotService,private utilService:UtilService) {
+            this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
 
     }
     ngOnInit() {
@@ -778,4 +782,70 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 this.refService.showServerError(this.httpRequestLoader);
             });
     }
+
+    confirmDeleteEmailTemplate(template:any){
+        let id = template['id'];
+        if(id!=undefined && id>0){
+            let name = template['name'];
+            let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to undo this action!",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, delete it!'
+
+			}).then(function() {
+				self.deleteDefaultTemplate(id, name);
+			}, function(dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+        }else{
+            this.refService.showSweetAlertErrorMessage("This is not a template.So you cannot delete it.");
+        }
+    }
+
+    deleteDefaultTemplate(id:number,name:string){
+        this.importLoading = true;
+        this.authenticationService.deleteDefaultTemplate(id).subscribe(
+            response=>{
+                this.refService.goToTop();
+                this.importLoading = false;
+                this.refService.showSweetAlertSuccessMessage(name+" deleted successfully");
+                this.listDefaultTemplates();
+                this.templateFilter.name = '';
+            },error=>{
+                this.refService.goToTop();
+                this.importLoading = false;
+                this.refService.showSweetAlertServerErrorMessage();
+            }
+        );
+    }
+
+    saveAsDefaultTemplate(template:any){
+        let id = template['id'];
+        if(id!=undefined && id>0){
+            if (template.id != undefined) {
+                this.emailTemplateService.getById(template.id)
+                    .subscribe(
+                        (data: any) => {
+                            this.emailTemplateService.emailTemplate = data;
+                            this.emailTemplateService.isNewTemplate = true;
+                            this.router.navigate(["/home/emailtemplates/saveAs"]);
+                        },
+                        (error: string) => {
+                            this.logger.error(this.refService.errorPrepender + " showTemplateById():" + error);
+                            this.refService.showServerError(this.httpRequestLoader);
+                        },
+                        () => this.logger.info("Got Email Template")
+                    );
+            }
+        }else{
+            this.refService.showSweetAlertErrorMessage("This is not a template.So you cannot save it.");
+        }
+    }
+
+    
 }
