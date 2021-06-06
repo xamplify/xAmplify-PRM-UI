@@ -27,6 +27,8 @@ import { ContentManagement } from 'app/videos/models/content-management';
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { EnvService } from 'app/env.service'
 import { RegularExpressions } from 'app/common/models/regular-expressions';
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData } from 'html-to-image';
 
 declare var $: any, swal: any, CKEDITOR: any;
 
@@ -953,12 +955,17 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if (!this.form.companyLogo) {
           this.form.companyLogo = this.companyLogoImageUrlPath;
       }
-      if (this.isAdd || this.isSaveAs) {
-        this.form.saveAs = this.isSaveAs;
-         this.save(this.form);
-     } else {
-        this.update(this.form);
-     }
+      let self = this;
+      htmlToImage.toBlob(document.getElementById('create-from-div'))
+          .then(function (blob) {
+              self.thumbnailFileObj = self.utilService.blobToFile(blob);
+              if (self.isAdd || self.isSaveAs) {
+                 self.form.saveAs = self.isSaveAs;
+                  self.save(self.form);
+              } else {
+                 self.update(self.form);
+              }
+          });
   }
 
   save(form: Form) {

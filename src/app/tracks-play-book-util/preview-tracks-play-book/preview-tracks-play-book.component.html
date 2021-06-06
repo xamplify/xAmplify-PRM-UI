@@ -150,7 +150,7 @@
                                 <div class="bar">
                                     <a [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
                                         data-toggle="tooltip" data-placement="top" title="View"
-                                        (click)="viewContent(content)">
+                                        (click)="$event.stopPropagation();viewContent(content)">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
                                 </div>
