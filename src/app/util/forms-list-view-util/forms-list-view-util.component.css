@@ -116,3 +116,7 @@ cursor: default;
 .minxAmplify{
   min-height: 644px;
 }
+
+.fit-image {
+  width: 100%; 
+}

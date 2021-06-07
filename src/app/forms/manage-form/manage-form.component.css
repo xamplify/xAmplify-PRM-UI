@@ -8,9 +8,11 @@
     max-width: 155px;
 }
 .img-class{
-	height: 80px;
-  max-width: 150px;
-  width: 150px;
+	  height: 80px;
+    max-width: 150px;
+    width: 150px;
+    margin: 10px 0px 0px 80px;
+    overflow: hidden;
 }
 #actions-row{
 	width: 30%
@@ -114,4 +116,8 @@ cursor: default;
 }
 .custom-width-icon{
 	min-width: 130px;
+}
+
+.fit-image {
+    width: 100%; 
 }

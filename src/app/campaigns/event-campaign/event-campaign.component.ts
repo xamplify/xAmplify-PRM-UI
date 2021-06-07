@@ -42,6 +42,8 @@ import { Form } from 'app/forms/models/form';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { Pipeline } from 'app/dashboard/models/pipeline';
+import { SortOption } from '../../core/models/sort-option';
+import { UtilService } from '../../core/services/util.service';
 
 declare var $, swal, flatpickr, CKEDITOR, require;
 var moment = require('moment-timezone');
@@ -50,7 +52,7 @@ var moment = require('moment-timezone');
     selector: 'app-event-campaign',
     templateUrl: './event-campaign-step.component.html',
     styleUrls: ['./event-campaign.component.css', '../create-campaign/create-campaign.component.css', '../../../assets/css/content.css'],
-    providers: [PagerService, Pagination, CallActionSwitch, Properties, EventError, HttpRequestLoader, CountryNames, FormService]
+    providers: [PagerService, Pagination, CallActionSwitch, Properties, EventError, HttpRequestLoader, CountryNames, FormService, SortOption]
 })
 export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
     emailTemplates: Array<EmailTemplate> = [];
@@ -229,13 +231,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     selectedListId = 0;
     emptyContactsMessage:string = "";
     contactListSelectMessage = "Select the following list(s) to be used in this campaign";
+    emptyContactListMessage = "";
+    recipientsSortOption : SortOption = new SortOption(); 
+    
     constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
         public authenticationService: AuthenticationService,
         public emailTemplateService: EmailTemplateService,
         private pagerService: PagerService,
-        private logger: XtremandLogger,
+        private logger: XtremandLogger, private utilService:UtilService,
         public hubSpotService: HubSpotService,
         private router: Router, public activatedRoute: ActivatedRoute,
         public properties: Properties, public eventError: EventError, public countryNames: CountryNames,
@@ -276,6 +281,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         let isVendor = roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 || roles.indexOf(this.roleName.prmRole) > -1;
         this.isOrgAdminOrOrgAdminTeamMember = (this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.reDistributeEvent;
         this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
+        if (this.isEditCampaign) {
+            let selectedListSortOption = {
+                'name': 'Selected List', 'value': 'selectedList'
+            }
+            this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.push(selectedListSortOption);
+            this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption = this.recipientsSortOption.eventCampaignRecipientsDropDownOptions[this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+    }
     }
     isEven(n) { if (n % 2 === 0) { return true; } return false; }
     loadCampaignNames(userId: number) {
@@ -874,6 +886,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     (response: any) => {
                     	let data = response.data;
                         this.contactListsPagination.totalRecords = data.totalRecords;
+                        if( this.contactListsPagination.totalRecords==0){
+                        	this.emptyContactListMessage = "No records found";
+                        }
                         $.each(data.list, function (_index: number, list: any) {
                             list.displayTime = new Date(list.createdTimeInString);
                         });
@@ -927,6 +942,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 (data: any) => {
 
                     this.contactListsPagination.totalRecords = data.data.totalRecords;
+                    if( this.contactListsPagination.totalRecords==0){
+                        this.emptyContactListMessage = "No records found";
+                    }
                     this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.data.list);
                     if (this.isPreviewEvent && this.authenticationService.isOnlyPartner()) {
                         const contactsAll: any = [];
@@ -2906,6 +2924,22 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.emptyContactsMessage = "";
         if(count==0){
             this.emptyContactsMessage = "No Contacts Found For This Contact List";
+        }
+    }
+    
+    sortRecipientsList(text:any){
+        this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption = text;
+        this.getAllFilteredResults();
+    }
+    
+    getAllFilteredResults(){
+        try{
+            this.contactListsPagination.pageIndex = 1;
+            this.contactListsPagination.searchKey = this.contactSearchInput;
+            this.contactListsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption, this.contactListsPagination);
+            this.loadContactLists(this.contactListsPagination);
+        }catch(error){
+            console.log(error, "getAllFilteredResults()","Publish Content Component")
         }
     }
 
