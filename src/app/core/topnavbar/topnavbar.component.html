@@ -9,15 +9,19 @@
     <div class="page-header-inner">
         <!-- BEGIN LOGO -->
         <div class="page-logo overflow-hidden">
+             <div [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
+                <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage">
+            </div>
             <!--  -->
-            <a [routerLink]="refService.homeRouter">
+            <!-- <a [routerLink]="refService.homeRouter">
                 <img *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" (error)="errorImage($event)" alt="logo" class="logo-default" />
                 <img *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" (error)="errorImage($event)" alt="logo" class="logo-default" />
-            </a>
+            </a> -->
             <div (click)="refService.changeSideBar()" class="side-bar" [class.side-bar-css]="refService.isSidebarClosed" *ngIf="authenticationService.user.hasCompany">
                 <i class="fa fa-bars" style="font-size: 21px;" aria-hidden="true"></i>
             </div>
         </div>
+
         <!-- END LOGO -->
         <!-- BEGIN RESPONSIVE MENU TOGGLER -->
         <a class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
