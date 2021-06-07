@@ -8,6 +8,7 @@ import { PagerService } from '../../core/services/pager.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { FormService } from '../services/form.service';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component'
+import { UtilService } from '../../core/services/util.service';
 
 
 declare var swal, $: any;
@@ -25,10 +26,14 @@ export class SelectFormComponent implements OnInit {
   searchKey = "";
   selectedFormTypeIndex = 0;
   @ViewChild('previewPopupComponent') previewPopupComponent: PreviewPopupComponent;
+	loggedInAsSuperAdmin = false;
 
   constructor(public referenceService: ReferenceService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public authenticationService: AuthenticationService,
-    public router: Router, public logger: XtremandLogger, public formService: FormService) { }
+    public router: Router, public logger: XtremandLogger, public formService: FormService,public utilService:UtilService) {
+      this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
+
+     }
 
   ngOnInit() {
     this.selectedFormTypeIndex = 0;

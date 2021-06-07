@@ -22,7 +22,7 @@
                                     <li class="filter" (click)="showAllForms('All',0)" [class.form-selected]="0 == selectedFormTypeIndex" translate>All</li>
                                     <li class="filter" (click)="showAllForms('Regular',1)" [class.form-selected]="1 == selectedFormTypeIndex" translate>Regular</li>
                                     <li class="filter" (click)="showAllForms('Quiz',2)" [class.form-selected]="2 == selectedFormTypeIndex" translate>Quiz</li>
-                                    <li class="filter" (click)="addDefaultForm()" class="btn btn-primary">Add Default Form</li>
+                                    <li *ngIf="loggedInAsSuperAdmin" class="filter" (click)="addDefaultForm()" class="btn btn-primary">Add Default Form</li>
                                 </ul>
                             </div>
                             <div class="col-xs-4 col-sm-4 col-lg-4 p0">
