@@ -10,7 +10,8 @@
         <!-- BEGIN LOGO -->
         <div class="page-logo overflow-hidden">
              <div [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
-                <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage">
+                <img  *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt="" onerror="this.src='assets/images/company-profile-logo.png';"  />
+                <img  *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" alt=""  onerror="this.src='assets/images/company-profile-logo.png';" />
             </div>
             <!--  -->
             <!-- <a [routerLink]="refService.homeRouter">
