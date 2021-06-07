@@ -65,7 +65,10 @@
                                 <tbody>
                                     <tr *ngFor="let form of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs" style="width: 10%;">
-                                            <img class="img-class-list" [src]="form.thumbnailImage" onerror="this.src='assets/images/form.png';" alt="Image Not Found">
+                                            <div class="img-class-list" style="overflow: hidden;">
+                                                <img class="fit-image" [src]="form.thumbnailImage" onerror="this.src='assets/images/form.png';"
+                                                    alt="Image Not Found">
+                                            </div>
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{form.name}}">

@@ -219,3 +219,8 @@ h1 {
 .grid-box{
 	padding-bottom: 0px !important;
 }
+.fit-in-image {
+	width: 100%;
+    height: 175px;
+    overflow: hidden;
+}
