@@ -231,6 +231,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     selectedListId = 0;
     emptyContactsMessage:string = "";
     contactListSelectMessage = "Select the following list(s) to be used in this campaign";
+    emptyContactListMessage = "";
     recipientsSortOption : SortOption = new SortOption(); 
     
     constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
@@ -280,11 +281,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         let isVendor = roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 || roles.indexOf(this.roleName.prmRole) > -1;
         this.isOrgAdminOrOrgAdminTeamMember = (this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.reDistributeEvent;
         this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
-        let selectedListSortOption = {
+        if (this.isEditCampaign) {
+            let selectedListSortOption = {
                 'name': 'Selected List', 'value': 'selectedList'
             }
-         this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.push(selectedListSortOption);
-        this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.eventCampaignRecipientsDropDownOptions[this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.length-1];
+            this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.push(selectedListSortOption);
+            this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption = this.recipientsSortOption.eventCampaignRecipientsDropDownOptions[this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+    }
     }
     isEven(n) { if (n % 2 === 0) { return true; } return false; }
     loadCampaignNames(userId: number) {
@@ -883,6 +886,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     (response: any) => {
                     	let data = response.data;
                         this.contactListsPagination.totalRecords = data.totalRecords;
+                        if( this.contactListsPagination.totalRecords==0){
+                        	this.emptyContactListMessage = "No records found";
+                        }
                         $.each(data.list, function (_index: number, list: any) {
                             list.displayTime = new Date(list.createdTimeInString);
                         });
@@ -936,6 +942,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 (data: any) => {
 
                     this.contactListsPagination.totalRecords = data.data.totalRecords;
+                    if( this.contactListsPagination.totalRecords==0){
+                        this.emptyContactListMessage = "No records found";
+                    }
                     this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.data.list);
                     if (this.isPreviewEvent && this.authenticationService.isOnlyPartner()) {
                         const contactsAll: any = [];
@@ -2919,7 +2928,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
     
     sortRecipientsList(text:any){
-        this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = text;
+        this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption = text;
         this.getAllFilteredResults();
     }
     
@@ -2927,7 +2936,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         try{
             this.contactListsPagination.pageIndex = 1;
             this.contactListsPagination.searchKey = this.contactSearchInput;
-            this.contactListsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.contactListsPagination);
+            this.contactListsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption, this.contactListsPagination);
             this.loadContactLists(this.contactListsPagination);
         }catch(error){
             console.log(error, "getAllFilteredResults()","Publish Content Component")
