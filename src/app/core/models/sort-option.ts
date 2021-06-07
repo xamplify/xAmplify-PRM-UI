@@ -294,6 +294,13 @@ export class SortOption {
 		{ 'name': 'Count(ASC)', 'value': 'count-ASC' },
 		{ 'name': 'Count(DESC)', 'value': 'count-DESC' }
 	];
+	
+	   eventCampaignRecipientsDropDownOptions = [
+        { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+        { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+        { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+    ];
 
 	registeredUsersSortDropDownOptions = [
 		{ 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
