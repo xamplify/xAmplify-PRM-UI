@@ -187,6 +187,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     showUsersPreview = false;
     selectedListName = "";   
     selectedListId = 0;
+    showExpandButton = false; 
+    expandedUserList: any;
+
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
@@ -1146,6 +1149,11 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     searchContactList(){
         this.contactListPagination.pageIndex = 1;
         this.contactListPagination.searchKey = this.contactSearchInput;
+        if (this.contactListPagination.searchKey != "") {
+            this.showExpandButton = true;
+        } else {
+            this.showExpandButton = false;
+        }
         this.loadContactList(this.contactListPagination);
     }
     highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
@@ -1406,6 +1414,17 @@ resetValues(){
     this.showUsersPreview = false;
     this.selectedListName = "";
     this.selectedListId = 0;
+}
+
+viewMatchedContacts(userList: any) {		
+    userList.expand = !userList.expand;		
+    if (userList.expand) {
+        if ((this.expandedUserList != undefined || this.expandedUserList != null)
+         && userList != this.expandedUserList) {				
+            this.expandedUserList.expand = false;				
+        }			
+        this.expandedUserList = userList;			
+    }
 }
 
 

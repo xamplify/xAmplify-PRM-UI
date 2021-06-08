@@ -297,7 +297,7 @@
                             <tr [class.isProcessing]="!contactList.emailValidationInd">
                               <td class="cw" *ngIf="showExpandButton">
                                 <div class="actions-block left-float">
-                                  <a (click)="viewMatchedContacts(contactList)" title="View/Hide">
+                                  <a (click)="viewMatchedContacts(contactList)" title="Matched Results">
                                     <i class="fa"
                                       [ngClass]="{'fa-angle-right': !contactList.expand, 'fa-angle-down': contactList.expand}"
                                       aria-hidden="true"></i>

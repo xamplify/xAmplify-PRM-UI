@@ -982,7 +982,7 @@
                                                                 </td>
                                                                 <td class="cw" *ngIf="showExpandButton">
                                                                     <div class="actions-block left-float">
-                                                                      <a (click)="viewMatchedContacts(contacts)" title="View/Hide">
+                                                                      <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" title="Matched Results">
                                                                         <i class="fa" [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
                                                                           aria-hidden="true" style=" padding-top: 0px;"></i>
                                                                       </a>
@@ -1013,7 +1013,7 @@
                                                                             </span>
                                                                         </h6>
                                                                     </ng-container>
-                                                                  </td>
+                                                                </td>
                                                                 <td *ngIf="showContactType">
                                                                     {{contacts?.listType}}
                                                                 </td>
