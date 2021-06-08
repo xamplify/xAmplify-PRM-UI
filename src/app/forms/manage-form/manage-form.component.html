@@ -118,7 +118,8 @@
                                             <h6 class="moreipsis" title="{{form.createdName}}">
                                                 <span translate> Created By <b>{{form.createdName}}</b></span>
                                             </h6>
-                                            <h6 class="view-banner" translate>Form</h6>
+                                            <h6 class="view-banner" *ngIf="!form.quizForm" translate>Regular</h6>
+                                            <h6 class="view-banner" *ngIf="form.quizForm" translate>Quiz</h6>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
@@ -195,7 +196,8 @@
                                 </h6>
                             </div>
                             <div class="ribbon">
-                                <span translate>Form</span>
+                                <span *ngIf="!form.quizForm" translate>Regular</span>
+                                <span *ngIf="form.quizForm" translate>Quiz</span>
                             </div>
                             <div class="bar">
                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"

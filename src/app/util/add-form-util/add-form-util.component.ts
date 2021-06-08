@@ -175,6 +175,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   isSaveAs = false;
   thumbnailFileObj: any;
   loggedInAsSuperAdmin = false;
+  isCreateDefaultForm = false;
 
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -198,6 +199,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
     ngOnInit() {
+        this.isCreateDefaultForm = this.loggedInAsSuperAdmin && (this.selectedDefaultFormId == undefined || this.selectedDefaultFormId < 1)
         if (this.selectedForm === undefined) {
             if (this.router.url.indexOf("/home/forms/edit") > -1) {
                 this.navigateToManageSection();
@@ -969,7 +971,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   save(form: Form) {
-      if(this.loggedInAsSuperAdmin){
+      if(this.isCreateDefaultForm){
         form.formType = FormType.XAMPLIFY_DEFAULT_FORM;
         form.saveAsDefaultForm = true;
         form.createdBy = 1;
@@ -1079,6 +1081,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+      this.selectedDefaultFormId = 0;
       this.selectedForm = undefined;
       this.dragulaService.destroy('form-options');
       this.minimizeForm();
