@@ -36,6 +36,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.formService.form = undefined;
         this.selectedForm = undefined;
+        this.selectedDefaultFormId = 0;
+        this.formService.formId = 0;
     }
 
     navigateToManageSection() {
