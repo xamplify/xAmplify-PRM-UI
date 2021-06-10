@@ -131,6 +131,8 @@ export class BeeTemplateUtilComponent implements OnInit {
 				mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
 				mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
 				mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
+				mergeTags.push({ name: 'Privacy Policy', value: this.senderMergeTag.privacyPolicy });
+		        mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
 		
 			  var beeUserId = "bee-"+self.loggedInUserCompanyId;
 			  let roleHash = self.authenticationService.vendorRoleHash;

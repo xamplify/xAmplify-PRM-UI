@@ -241,6 +241,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             mergeTags.push({ name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl });
             mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
             mergeTags.push({ name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs });
+            mergeTags.push({ name: 'Privacy Policy', value: this.senderMergeTag.privacyPolicy });
+		    mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
             /*if(this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate || this.emailTemplateService.emailTemplate.regularCoBrandingTemplate
                 ||this.emailTemplateService.emailTemplate.videoCoBrandingTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate){
                 mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );

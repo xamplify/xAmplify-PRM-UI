@@ -63,6 +63,8 @@ export class MergeTagsComponent implements OnInit {
 			this.mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
 			this.mergeTags.push({ name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs });
 		}
+		this.mergeTags.push({ name: 'Privacy Policy', value: this.senderMergeTag.privacyPolicy });
+		this.mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
 		if (this.isEvent) {
 			this.mergeTags.push({ name: 'Event Title', value: '{{event_title}}' });
 			this.mergeTags.push({ name: 'Event Start Time', value: '{{event_start_time}}' });
