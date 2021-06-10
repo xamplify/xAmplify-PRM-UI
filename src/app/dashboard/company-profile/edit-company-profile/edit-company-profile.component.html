@@ -533,6 +533,15 @@
 									<span *ngIf="aboutUsError" style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
 								</div>
 								</div>
+								<div class="col-md-12 col-lg-12">
+									<div class="form-group">
+										<label class="control-label" translate>Privacy Policy</label>
+										<textarea class="form-control" rows="3" cols="5"
+											maxlength="1000" placeholder="Privacy Policy" name="privacyPolicy"
+											id="privacyPolicy" style="resize: none"
+											[(ngModel)]="companyProfile.privacyPolicy"></textarea>
+									</div>
+									</div>
 								<div class="col-md-6 col-lg-6" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<div class="form-group">
 										<label class="control-label" translate>Select Login Screen Direction <font
