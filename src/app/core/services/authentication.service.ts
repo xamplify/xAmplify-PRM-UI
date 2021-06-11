@@ -722,6 +722,18 @@ export class AuthenticationService {
         .catch(this.handleError);
 }
 
+saveAsDefaultTemplate(input:any){
+  return this.http.post(this.REST_URL + "superadmin/saveAsDefaultTemplate?access_token=" + this.access_token, input)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
+deleteDefaultTemplate(id:number){
+  return this.http.get(this.REST_URL+"superadmin/deleteDefaultTemplate/"+id+"/"+"?access_token="+this.access_token)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
   
   
 }

@@ -161,7 +161,7 @@ export class Properties {
 	tags = "Tags";
 
 	exclude = "Exclusion"
-	exclude_add = "User added successfully";
+	exclude_add = "User(s) added successfully";
 	exclude_delete = "User deleted successfully";
 	exclude_domain_add = "Domain added successfully";
 	exclude_domain_delete = "Domain deleted successfully";

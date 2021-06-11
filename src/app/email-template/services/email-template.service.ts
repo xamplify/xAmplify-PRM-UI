@@ -86,7 +86,7 @@ export class EmailTemplateService {
         .catch(this.handleError);
     }
 
-    getByIdImageUri(id:number,imageUri:String){
+    getByIdImageUri(id:number,imageUri:string){
         return this.http.post(this.URL+"admin/getEmailTemplateByIdAndImageUri/"+id+"?access_token="+this.authenticationService.access_token+"&imageUri="+imageUri,"")
         .map(this.extractData)
         .catch(this.handleError);
@@ -103,6 +103,8 @@ export class EmailTemplateService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    
 
     deleteFile(file:ContentManagement){
         return this.http.post(this.URL+"email-template/aws/delete?access_token="+this.authenticationService.access_token,file)

@@ -467,13 +467,34 @@ td h5 {
 	font-size: 16px !important;
 }
 
-.re-distributed-high-level:hover{
-  background-color: #ffffff !important;
+.re-distributed-high-level:hover {
+	background-color: #ffffff !important;
 }
 
-table tr:nth-child(odd) td{
-  background: rgb(240 240 240)
+table tr:nth-child(odd) td {
+	background: rgb(240 240 240)
 }
-table tr:nth-child(even) td{
-   background: rgb(250 250 250)
+
+table tr:nth-child(even) td {
+	background: rgb(250 250 250)
+}
+
+.campaign-refresh-style {
+	margin-top: -25px;
+    margin-left: 20px;
+}
+
+.campaign-downloading-mt {
+	margin-top: 10px;
+	margin-right: -28px !important;
+}
+
+.campaign-search-rr {
+	position: relative;
+	right: -11px;
+}
+
+.manage-campaigns-prml {
+	padding-right: 0px;
+	margin-left: -25px;
 }

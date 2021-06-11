@@ -1,5 +1,5 @@
 <div class="page-content" [ngClass]="{'form-background' : !showTracksPlayBook && !showAsset}">
-    <div class="page-bar">
+    <div *ngIf="showAsset || showTracksPlayBook" class="page-bar">
         <ul class="page-breadcrumb">
             <li>
                 <i class="fa fa-home" aria-hidden="true"></i>

@@ -47,9 +47,6 @@
                   <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign" translate>Page</li>
                   <li class="filter" style="display: none;" translate>Own Template</li>
                 </ul>
-
-
-
                 <div class="page-toolbar col-xs-12 col-sm-12 col-md-7" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                   <div class="row btn-group pull-right">
                     <div class="col-xs-2 col-sm-4 col-md-5 p0">
@@ -93,17 +90,22 @@
                       </div>
                     </div>
 
-                    <div class="col-xs-5 col-sm-4 col-md-4" style="padding-right: 0px;">
+                    <div class="col-xs-5 col-sm-4 col-md-4 manage-campaigns-prml">
                       <div class="portlet-input input-inline input-small">
-                        <div class="input-icon" style="position:relative;right: -11px;">
+                        <div class="input-icon campaign-search-rr">
                           <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchCampaigns();"></button>
-                          <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                          <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                          </button>
                         </div>
                       </div>
-                      <a style = "margin-top:5px;"  *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
-									<i class="fa fa-download margin" aria-hidden="true"></i>
-								</a>
+                      <a  *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()" class="close-circle campaign-downloading-mt"  data-toggle="tooltip" data-placement="top" title="Download">
+									      <i class="fa fa-download margin" aria-hidden="true"></i>
+                      </a>
+                      <a  (click)="listCampaign(pagination)" class="close-circle campaign-refresh-style"  data-toggle="tooltip" data-placement="top" title="Refresh">
+									      <i class="fa fa-refresh" aria-hidden="true"></i>
+							    	  </a>
                     </div>
                   </div>
                 </div>

@@ -1,0 +1,82 @@
+<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li><i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="['/home/design/add']" translate>Create Design</a> 
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a translate>Select Form</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light clearfix">
+                <div class="portlet-title" style="border-bottom: none;">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-lg-12">
+                            <div class="col-xs-8 col-sm-8 col-lg-8 p0">
+                                <ul class="mix-filter">
+                                    <li class="filter" (click)="showAllForms('All',0)" [class.form-selected]="0 == selectedFormTypeIndex" translate>All</li>
+                                    <li class="filter" (click)="showAllForms('Regular',1)" [class.form-selected]="1 == selectedFormTypeIndex" translate>Regular</li>
+                                    <li class="filter" (click)="showAllForms('Quiz',2)" [class.form-selected]="2 == selectedFormTypeIndex" translate>Quiz</li>
+                                    <li *ngIf="loggedInAsSuperAdmin" class="filter" (click)="addDefaultForm()" class="btn btn-primary">Add Default Form</li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-lg-4 p0">
+                                <div class="btn-group pull-right">
+                                    <div class="portlet-input input-inline">
+                                        <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                        <button class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';searchForms();" *ngIf="searchKey?.length>0"></button>
+                                        <button type="submit" class="search-box-item-click" (click)="searchForms()"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body" style="padding: 10px 0px 0px 0px;">
+                    <div class="row">
+                        <app-landing-page-loader [maxBoxLength]=4  *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
+                        <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+                        <ng-container *ngIf="!httpRequestLoader.isLoading">
+                            <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let form of pagination.pagedItems ;let i =index">
+                                <div class="grid-box" (click)="previewForm(form.id)">
+                                    <span class="ribbon" *ngIf="form.quizForm"><span translate>Quiz</span></span>
+                                    <span class="ribbon" *ngIf="!form.quizForm"><span translate>Regular</span></span>
+                                    <div class="img-responsive center-block fit-in-image">
+                                        <img [src]="form.thumbnailImage"
+                                            onerror="this.src='assets/images/form.png';"
+                                            alt="Not Found">
+                                    </div>
+                                    <h4 title="{{form.name}}">{{form.name|slice:0:23}} <span *ngIf="form.name?.length>23">....</span></h4>
+                                    <div class="bar">
+                                        <a data-toggle="tooltip" data-placement="top" title="Create Form" (click)="$event.stopPropagation();createForm(form.id)">
+                                            <i class="fa fa-plus-circle"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" style="margin-top: 10px;">
+                    <app-pagination [pagination]="pagination" (notifyParent)="setFormsPage($event)"
+                      (notifyParentDropDown)="listDefaultForms($event)" [hidden]="httpRequestLoader.isLoading">
+                    </app-pagination>
+                  </div>
+                  <!-- End of 24 -->
+                  <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                    <strong>No Forms Found.</strong>
+                  </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+        </div>
+    </div>
+    <app-scroll-top></app-scroll-top>
+</div>
+
+<!-- Form Preview Modal Popup -->
+<app-preview-popup #previewPopupComponent></app-preview-popup>

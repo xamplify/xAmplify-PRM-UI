@@ -308,6 +308,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     selectedContactListNames = [];
     expandedUserList: any;
     showExpandButton = false;  
+    mergeTagsInput:any = {};
 
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
@@ -3386,6 +3387,7 @@ resetValues(){
     this.selectedListId = 0;
 }
 
+
 viewMatchedContacts(userList: any) {		
     userList.expand = !userList.expand;		
     if (userList.expand) {
@@ -3395,8 +3397,38 @@ viewMatchedContacts(userList: any) {
         }			
         this.expandedUserList = userList;			
     }
+
+openMergeTagsPopup(type:string,autoResponseSubject:any){
+    this.mergeTagsInput['isEvent'] = false;
+    this.mergeTagsInput['isCampaign'] = true;
+    this.mergeTagsInput['hideButton'] = true;
+    this.mergeTagsInput['type'] = type;
+    this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
 }
 
+clearHiddenClick(){
+    this.mergeTagsInput['hideButton'] = false;
+}
+
+appendValueToSubjectLine(event:any){
+    if(event!=undefined){
+        let type = event['type'];
+        let copiedValue = event['copiedValue'];
+        if(type=="campaignSubjectLine"){
+            let subjectLine = $('#subjectLineId').val();
+            let updatedValue = subjectLine+" "+copiedValue;
+            $('#subjectLineId').val(updatedValue);
+            this.campaign.subjectLine = updatedValue;
+            this.validateField('subjectLine');
+            this.validateForm();
+        }else{
+            let autoResponse = event['autoResponseSubject'];
+            autoResponse.subject = autoResponse.subject+" "+copiedValue;
+        }
+     }
+     this.mergeTagsInput['hideButton'] = false;
+    }
+    
  
 }
 

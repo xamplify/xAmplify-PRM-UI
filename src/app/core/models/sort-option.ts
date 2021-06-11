@@ -294,6 +294,13 @@ export class SortOption {
 		{ 'name': 'Count(ASC)', 'value': 'count-ASC' },
 		{ 'name': 'Count(DESC)', 'value': 'count-DESC' }
 	];
+	
+	   eventCampaignRecipientsDropDownOptions = [
+        { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+        { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+        { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+    ];
 
 	registeredUsersSortDropDownOptions = [
 		{ 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
@@ -384,6 +391,7 @@ export class SortOption {
 	public selectedGroupsDropDownOption: any = this.groupsSortDropDownOptions[3];
 	public selectedPartnerCompanyDropDownOption = this.partnerCompanySortDropDownOptions[0];
 	public selectedCampaignRecipientsDropDownOption = this.campaignRecipientsDropDownOptions[3];
+	public eventSelectedCampaignRecipientsDropDownOption = this.eventCampaignRecipientsDropDownOptions[3];
 	public selectedRegisteredUsersSortDropDownOption = this.registeredUsersSortDropDownOptions[this.registeredUsersSortDropDownOptions.length  - 1];
 	public selectedLoggedInUsersSortDropDownOption = this.loggedInUsersSortDropDownOptions[this.loggedInUsersSortDropDownOptions.length - 1];
 	public selectedChannelCampaignSortDropDownOption = this.channelCampaignSortDropDownOptions[this.channelCampaignSortDropDownOptions.length -1];

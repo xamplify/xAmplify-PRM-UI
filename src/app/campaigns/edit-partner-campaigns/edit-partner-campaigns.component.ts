@@ -189,6 +189,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     selectedListId = 0;
     showExpandButton = false; 
     expandedUserList: any;
+    mergeTagsInput:any = {};
+
 
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
@@ -1416,6 +1418,7 @@ resetValues(){
     this.selectedListId = 0;
 }
 
+
 viewMatchedContacts(userList: any) {		
     userList.expand = !userList.expand;		
     if (userList.expand) {
@@ -1426,6 +1429,39 @@ viewMatchedContacts(userList: any) {
         this.expandedUserList = userList;			
     }
 }
+
+
+openMergeTagsPopup(type:string,autoResponseSubject:any){
+    this.mergeTagsInput['isEvent'] = false;
+    this.mergeTagsInput['isCampaign'] = true;
+    this.mergeTagsInput['hideButton'] = true;
+    this.mergeTagsInput['type'] = type;
+    this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
+}
+
+clearHiddenClick(){
+    this.mergeTagsInput['hideButton'] = false;
+}
+
+appendValueToSubjectLine(event:any){
+    if(event!=undefined){
+        let type = event['type'];
+        let copiedValue = event['copiedValue'];
+        if(type=="campaignSubjectLine"){
+            let subjectLine = this.campaign.subjectLine;
+            let updatedValue = subjectLine+" "+copiedValue;
+            this.campaign.subjectLine = updatedValue;
+            $('#subjectLine').val(updatedValue);
+            this.validateForm();
+            this.validateField('subjectLine');
+        }else{
+             let autoResponse = event['autoResponseSubject'];
+            autoResponse.subject = autoResponse.subject+" "+copiedValue;
+        }
+     }
+     this.mergeTagsInput['hideButton'] = false;
+    }
+
 
 
 }

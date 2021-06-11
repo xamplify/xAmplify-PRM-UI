@@ -24,7 +24,7 @@
                           <ng-template #Other translate>Update</ng-template> Template</a>
                             </li>
                         </ul>
-                        <app-merge-tags *ngIf="loadTemplate" [isEvent]="emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate"></app-merge-tags>
+                        <app-merge-tags *ngIf="loadTemplate" [input]="mergeTagsInput"></app-merge-tags>
                         <div id="bee-plugin-container"></div>
                     </div>
                 </div>

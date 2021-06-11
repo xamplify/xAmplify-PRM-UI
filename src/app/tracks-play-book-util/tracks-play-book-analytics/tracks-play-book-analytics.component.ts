@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Renderer } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
@@ -36,7 +36,8 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private utilService: UtilService,
     private pagerService: PagerService, public authenticationService: AuthenticationService,
     public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
-    private router: Router, public properties: Properties, public tracksPlayBookUtilService: TracksPlayBookUtilService) {
+    private router: Router, public properties: Properties, public tracksPlayBookUtilService: TracksPlayBookUtilService, public renderer: Renderer) {
+    this.referenceService.renderer = this.renderer;
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 

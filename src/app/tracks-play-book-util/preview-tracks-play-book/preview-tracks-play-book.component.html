@@ -53,12 +53,12 @@
                     <div style="padding: 10px 0px 0px 0px;
                                                   margin-bottom: 10px;">
                         <a (click)="closeView()" class="pull-right close-circle"
-                            style="padding-top: 3px;padding-left: 5px;">
+                            style="padding: 3px 5px; margin: 8px 10px 0px 0px;">
                             <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
                                 aria-hidden="true"></span></a>
                         <div style="padding: 3px;">
-                            <div class="title padding_bottom caption" style="font-size: 15px; padding-top: 10px;">
-                                <strong>{{tracksPlayBook.title}}</strong>
+                            <div class="title-page-bar"  style="font-size: 15px;" >
+                                <strong style="margin: 0px 0px 0px 10px;">{{tracksPlayBook.title}}</strong>
                             </div>
                         </div>
                     </div>
@@ -93,10 +93,10 @@
                                                 <div class="grid-box" style="min-height: 200px;margin-top: 0px;">
                                                     <img class="img-class" src="{{assetDetails?.thumbnailPath}}"
                                                         alt="No Image Found"><br>
-                                                    <a class="btn btn-info"
+                                                    <a class="btn btn-primary"
                                                         [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}"
                                                         (click)="downloadAsset(assetDetails)">Download</a>
-                                                    <a class="btn btn-info"
+                                                    <a class="btn btn-primary"
                                                         (click)="assetPreview(assetDetails)">View</a>
                                                     <div class="center"
                                                         style="padding: 10px;margin: 0 !important;font-size: 14px;"
@@ -150,7 +150,7 @@
                                 <div class="bar">
                                     <a [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
                                         data-toggle="tooltip" data-placement="top" title="View"
-                                        (click)="viewContent(content)">
+                                        (click)="$event.stopPropagation();viewContent(content)">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
                                 </div>
@@ -160,8 +160,8 @@
                     <div *ngIf="type == undefined || type == 'TRACK'" class="col-md-3 col-sm-4 col-xs-12">
                         <div [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
                             <div class="grid-box" *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
-                                <img class="image-fixed" [src]="tracksPlayBook.featuredImage"
-                                    alt="{{tracksPlayBook.quiz.name}}">
+                                <img class="image-fixed" [src]="tracksPlayBook.featuredImage" onerror="this.src='assets/images/form.png';"
+                                    alt="Image Not Found">
                                 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{tracksPlayBook.quiz.name}}"
                                     style="text-align: left !important;padding: 5px 0px 5px 10px !important;">
                                     {{tracksPlayBook.quiz.name | slice:0:25}} <span
@@ -170,6 +170,10 @@
                                 <h6 title="Form" translate>
                                     Type: <strong>Form</strong>
                                 </h6>
+                                <div *ngIf="!isCreatedUser && !tracksPlayBook.enableQuiz && tracksPlayBook.progress != undefined && tracksPlayBook.progress === 100"
+                                    class="ribbon">
+                                    <span style="background-color: #5cb85c;" translate>Finished</span>
+                                </div>
                                 <div class="bar">
                                     <a *ngIf="!isCreatedUser" [ngClass]="{'isDisabled' : !tracksPlayBook.enableQuiz}"
                                         data-toggle="tooltip" data-placement="top" title="View" (click)="viewQuiz()">
