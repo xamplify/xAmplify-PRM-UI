@@ -1777,7 +1777,7 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal, myMergeTags.senderCompany);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrlGlobal, myMergeTags.myCompanyUrl);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumberGlobal, myMergeTags.myCompanyContactNumber);
-			// updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,myMergeTags.aboutUs);
+		    updatedBody = updatedBody.replace(this.senderMergeTag.privacyPolicyGlobal,myMergeTags.privacyPolicy);
 		}
 		return updatedBody;
 	}
@@ -1794,7 +1794,7 @@ export class ReferenceService {
 	hasMyMergeTagsExits(body: string) {
 		return body.indexOf(this.senderMergeTag.senderFirstName) > -1 || body.indexOf(this.senderMergeTag.senderLastName) > -1 || body.indexOf(this.senderMergeTag.senderFullName) > -1 ||
 			body.indexOf(this.senderMergeTag.senderTitle) > -1 || body.indexOf(this.senderMergeTag.senderEmailId) > -1 || body.indexOf(this.senderMergeTag.senderContactNumber) > -1 || body.indexOf(this.senderMergeTag.senderCompany) > -1
-			|| body.indexOf(this.senderMergeTag.senderCompanyUrl) > -1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber) > -1 || body.indexOf(this.senderMergeTag.aboutUs) > -1;
+			|| body.indexOf(this.senderMergeTag.senderCompanyUrl) > -1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber) > -1 || body.indexOf(this.senderMergeTag.aboutUs) > -1 || body.indexOf(this.senderMergeTag.privacyPolicy)>-1;
 	}
 
 	formatAMPM(date) {
