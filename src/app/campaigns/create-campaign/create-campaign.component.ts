@@ -3397,6 +3397,7 @@ viewMatchedContacts(userList: any) {
         }			
         this.expandedUserList = userList;			
     }
+}
 
 openMergeTagsPopup(type:string,autoResponseSubject:any){
     this.mergeTagsInput['isEvent'] = false;

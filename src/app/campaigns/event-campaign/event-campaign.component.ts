@@ -225,6 +225,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     showConfigurePipelines = false;
 
     isValidPipeline = true;
+    mergeTagsInput:any = {};
 
     showUsersPreview = false;
     selectedListName = "";

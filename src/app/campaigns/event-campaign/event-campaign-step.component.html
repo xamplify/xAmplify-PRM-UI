@@ -35,7 +35,6 @@ a.disabled {
 		</ul>
 		 <div id="folder-margin-xamp">
                 <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-				<app-merge-tags [isEvent]="false" [isCampaign]="true"></app-merge-tags>
 			</div>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
@@ -172,13 +171,20 @@ a.disabled {
 								 <font style="color: red"> <strong>*</strong></font>
 							</label>
 							<div class="col-sm-9">
-								<input type="text" id="subjectLine" placeholder="Subject Line"
+								<div [className]="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate? 'input-group merge-tag-input-border':''">
+								<input type="text" id="subjectLine" placeholder="{merge tag} + Subject line"
 									class="form-control" [(ngModel)]="eventCampaign.subjectLine"
 									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 									name="subjectLine"
 									(input)="eventSubjectLineError()"
 									[ngClass]="{'has-error': eventError.eventSubjectLineError}"
 									maxlength="1000" />
+									<span *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" class="input-group-btn">
+										<button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
+											<i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
+										</button>
+									</span>
+								</div>
 									<div class="text-danger" *ngIf="eventError.eventSubjectLineError" translate>
 									Subject line is required</div>
 							</div>
@@ -1574,9 +1580,16 @@ a.disabled {
                   </div>
                 </div>
                 <div class="col-xs-6">
-                  <label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<b style="color: red">*</b></label>
-                  <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="1000">
-                </div>
+					<label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<strong style="color: red">*</strong></label>
+					<div  [className]="!isPreviewEvent ? 'input-group merge-tag-input-border':''">
+					  <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
+					  <span *ngIf="!isPreviewEvent" class="input-group-btn">
+						  <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('event-auto-response',reply)">
+							  <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
+						  </button>
+					  </span>
+				  </div>
+				  </div>
               </div>
                   <div class="col-xs-12">
                     <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
@@ -2079,3 +2092,4 @@ a.disabled {
 	<app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId"
 		(notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
+<app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>  
