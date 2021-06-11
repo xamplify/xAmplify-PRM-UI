@@ -24,6 +24,7 @@ import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { SortOption } from 'app/core/models/sort-option';
 
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
@@ -115,8 +116,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	searchContactType = "";
 	contactListIdForSyncLocal: any;
-	socialNetworkForSyncLocal: any;
-
+	socialNetworkForSyncLocal: any;	
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
@@ -210,6 +210,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 	public salesForceCurrentUser: any;
 	loggedInThroughVanityUrl = false;
+	expandedUserList: any;
+	showExpandButton = false;
 	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
@@ -1562,8 +1564,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.searchContactType = searchType;
 		try {
 			this.resetResponse();
-			if (searchType == 'contactList') {
-				this.pagination.searchKey = this.searchKey;
+			if (searchType == 'contactList') {		
+				if (this.searchKey != "") {
+					this.showExpandButton = true;
+					this.isListView = true;
+				} else {
+					this.showExpandButton = false;
+				}		
+				this.pagination.searchKey = this.searchKey;				
 				this.pagination.pageIndex = 1;
 				this.loadContactLists(this.pagination);
 			} else {
@@ -1607,6 +1615,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsCount();
 		}
 		this.contactCountLoad = false;
+		this.showExpandButton = false;
 	}
 
 	resetResponse() {
@@ -2428,5 +2437,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 		);
 	}
-    
+
+	viewMatchedContacts(userList: any) {		
+		userList.expand = !userList.expand;		
+		if (userList.expand) {
+			if ((this.expandedUserList != undefined || this.expandedUserList != null)
+			 && userList != this.expandedUserList) {				
+				this.expandedUserList.expand = false;				
+			}			
+			this.expandedUserList = userList;			
+		}
+	}    
 }
