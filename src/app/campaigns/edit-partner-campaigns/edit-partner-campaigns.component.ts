@@ -187,7 +187,10 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     showUsersPreview = false;
     selectedListName = "";   
     selectedListId = 0;
+    showExpandButton = false; 
+    expandedUserList: any;
     mergeTagsInput:any = {};
+
 
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
@@ -1148,6 +1151,11 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     searchContactList(){
         this.contactListPagination.pageIndex = 1;
         this.contactListPagination.searchKey = this.contactSearchInput;
+        if (this.contactListPagination.searchKey != "") {
+            this.showExpandButton = true;
+        } else {
+            this.showExpandButton = false;
+        }
         this.loadContactList(this.contactListPagination);
     }
     highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
@@ -1410,6 +1418,19 @@ resetValues(){
     this.selectedListId = 0;
 }
 
+
+viewMatchedContacts(userList: any) {		
+    userList.expand = !userList.expand;		
+    if (userList.expand) {
+        if ((this.expandedUserList != undefined || this.expandedUserList != null)
+         && userList != this.expandedUserList) {				
+            this.expandedUserList.expand = false;				
+        }			
+        this.expandedUserList = userList;			
+    }
+}
+
+
 openMergeTagsPopup(type:string,autoResponseSubject:any){
     this.mergeTagsInput['isEvent'] = false;
     this.mergeTagsInput['isCampaign'] = true;
@@ -1440,6 +1461,7 @@ appendValueToSubjectLine(event:any){
      }
      this.mergeTagsInput['hideButton'] = false;
     }
+
 
 
 }

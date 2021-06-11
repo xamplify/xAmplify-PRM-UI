@@ -10,8 +10,8 @@
         <!-- BEGIN LOGO -->
         <div class="page-logo pttpx">
              <div [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
-                <img  *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt="" onerror="this.src='assets/images/company-profile-logo.png';"  />
-                <img  *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" alt=""  onerror="this.src='assets/images/company-profile-logo.png';" />
+                <img  *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt="" onerror="this.src='assets/images/xamplify-logo.png';"  />
+                <img  *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" alt=""  onerror="this.src='assets/images/xamplify-logo.png';" />
             </div>
             <!--  -->
             <!-- <a [routerLink]="refService.homeRouter">

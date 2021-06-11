@@ -353,7 +353,9 @@ export class SortOption {
 		{ 'name': '12', 'value': '12' },
 		{ 'name': '24', 'value': '24' },
 		{ 'name': '48', 'value': '48' }
-	]
+	];
+
+
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
 	public dealsPartnerSortOption: any = this.dealPartnersSortDropDown[0];
