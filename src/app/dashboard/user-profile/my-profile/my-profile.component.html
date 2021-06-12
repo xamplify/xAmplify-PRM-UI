@@ -138,14 +138,10 @@
                                  <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}" (click)="activateTab('exclude');clearCustomResponse()"> {{properties.exclude | translate}}</a>
                                 </li>
                             </ng-container>
-                               
-
                             <li  [ngClass]="{'active-tab': activeTabName == 'spf'}" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}" (click)="activateTab('spf');clearCustomResponse()">{{properties.spf | translate}}</a>
-
                             </li>
                         </ng-container>
-                          
                         </ul>
                     </div>
                     <!-- END MENU -->
@@ -1036,6 +1032,7 @@
                                     <!-- END Categories TAB -->
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
+                                    <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
                                     <!--video default player settings-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                         <div>

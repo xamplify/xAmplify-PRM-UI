@@ -168,6 +168,7 @@ export class Properties {
 
 	spf = "SPF Configuration";
 	spfHeaderText = "Publish an SPF record with your DNS registrar";
+	unsubscribeReasonsText = "Unsubscribe Reasons";
 
 
 	/********Error Messages************* */
