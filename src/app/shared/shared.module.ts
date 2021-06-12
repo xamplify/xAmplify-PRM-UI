@@ -39,7 +39,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
 import { ChatComponent } from 'app/util/chat/chat.component';
 import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popup.component';
-import { UserlistUsersComponent } from 'app/contacts/userlist-users/userlist-users.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
@@ -48,7 +47,7 @@ import { UserlistUsersComponent } from 'app/contacts/userlist-users/userlist-use
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
         declarations: [CountLoaderComponent,AddDealComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,
-                LefsideNavigationLoaderComponent,  ChatComponent, DealChatPopupComponent, UserlistUsersComponent],
+                LefsideNavigationLoaderComponent,  ChatComponent, DealChatPopupComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -56,7 +55,7 @@ import { UserlistUsersComponent } from 'app/contacts/userlist-users/userlist-use
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
                   NgxCurrencyModule,CountLoaderComponent,DragulaModule,AddDealComponent,SfDealComponent,BoxLoaderComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
-                   ChatComponent, DealChatPopupComponent, UserlistUsersComponent],
+                   ChatComponent, DealChatPopupComponent],
         providers: [],
 })
 

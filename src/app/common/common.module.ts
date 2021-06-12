@@ -93,6 +93,7 @@ import { TracksPlayBookAnalyticsComponent } from 'app/tracks-play-book-util/trac
 import { TracksPlayBookPartnerAnalyticsComponent } from 'app/tracks-play-book-util/tracks-play-book-partner-analytics/tracks-play-book-partner-analytics.component';
 import { TracksPlayBookPartnerCompanyAndListsComponent } from 'app/tracks-play-book-util/tracks-play-book-partner-company-and-lists/tracks-play-book-partner-company-and-lists.component';
 import { AddDefaultTemplateDetailsComponent } from 'app/util/add-default-template-details/add-default-template-details.component';
+import { UserlistUsersComponent } from 'app/contacts/userlist-users/userlist-users.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -105,9 +106,11 @@ import { AddDefaultTemplateDetailsComponent } from 'app/util/add-default-templat
 		LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent,
 		CampaignsListViewUtilComponent, EmailTemplatesListViewUtilComponent, LandingPagesListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent,
-		AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent, RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
+		AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent, RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, 
+		EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
-		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent],
+		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
+		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent],
 
 
 
@@ -121,8 +124,11 @@ import { AddDefaultTemplateDetailsComponent } from 'app/util/add-default-templat
 		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent,
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent, CampaignsListViewUtilComponent, EmailTemplatesListViewUtilComponent,
 		LandingPagesListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent, AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent,
-		RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTagsUtilComponent, AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
-		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent]
+		RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTagsUtilComponent, 
+		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
+		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
+		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
+		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent]
 
 
 
