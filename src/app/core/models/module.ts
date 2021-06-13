@@ -55,5 +55,7 @@ export class Module {
     contentLoader = false;
     isPartnerSuperVisor : boolean = false;
 
-	showPartnerEmailTemplatesFilter = false;
+    showPartnerEmailTemplatesFilter = false;
+    
+    isAnyAdminOrSupervisor = false;
 }

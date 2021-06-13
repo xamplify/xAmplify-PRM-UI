@@ -24,7 +24,8 @@ export class LogUnsubscribeComponent implements OnInit {
   isOtherReason = false;
   isShowSuccessMessage = false;
   characterleft = 250;
-
+  unsubscribeReasons:Array<any>;
+  invalidReason = true;
   constructor(
     private activatedRoute: ActivatedRoute,
     private logService: LogService,
@@ -37,29 +38,49 @@ export class LogUnsubscribeComponent implements OnInit {
       .subscribe(
         (result: any) => {
           $("html").css("background-color", "white");
-          this.processor.remove(this.processor);
-          console.log(result["_body"]);
           var body = result["_body"];
           var resp = JSON.parse(body);
           this.message = resp.message;
-          console.log(resp);
           this.isUnsubscribed = resp.isUnsubscribed;
           this.companyName = resp.companyName;
           this.userId = resp.userId;
-          
         },
         (error: any) => {
           this.processor.remove(this.processor);
           $("html").css("background-color", "white");
+        },()=>{
+          if(!this.isUnsubscribed){
+            this.findUnsubscribeReasons();
+          }else{
+            this.processor.remove(this.processor);
+          }
         }
       );
   }
+
+  findUnsubscribeReasons(){
+    this.unsubscribeReasons = [];
+    this.processor.set(this.processor);
+    this.logService.findUnsubscribedReasons(this.companyId).subscribe(
+      response=>{
+        var body = response["_body"];
+        var resp = JSON.parse(body);
+        this.unsubscribeReasons = resp.data;
+      },error=>{
+        this.processor.remove(this.processor);
+        $("html").css("background-color", "white");
+      },()=>{
+        this.isOtherReason = this.unsubscribeReasons.length==0;
+        this.processor.remove(this.processor);
+      }
+    );
+  }
+
   setOtherOption(){
       this.isOtherReason = false;
   }
   
   unSubscribeUser(){
-      
     if(this.isUnsubscribed){
       var object = {
              "userId": this.userId,
@@ -81,7 +102,6 @@ export class LogUnsubscribeComponent implements OnInit {
       this.logService.unSubscribeUser(object)
       .subscribe(
         (result: any) => {
-          console.log(result);
           var body = result["_body"];
           var resp = JSON.parse(body);
           this.message = resp.message;
@@ -94,7 +114,13 @@ export class LogUnsubscribeComponent implements OnInit {
   }
   
   characterSize(){
-      this.characterleft = 250 - this.reason.length;
+      let reasonLength = $.trim(this.reason).length;
+      if(reasonLength>0){
+        this.invalidReason = false;
+        this.characterleft = 250 - reasonLength;
+      }else{
+        this.invalidReason = true;
+      }
     }
 
   ngOnInit() {
@@ -105,4 +131,16 @@ export class LogUnsubscribeComponent implements OnInit {
     });
     this.logunsubscribedUser();
   }
+
+  addReason(unsubscribeReason:any){
+    this.isOtherReason = unsubscribeReason.customReason;
+    if(this.isOtherReason){
+      this.reason = "";
+      this.invalidReason = true;
+    }else{
+      this.invalidReason = false;
+      this.reason = unsubscribeReason.reason;
+    }
+  }      
+
 }

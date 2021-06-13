@@ -11,7 +11,7 @@
 		<img src="https://xamplify.io/assets/images/xamplify-logo.png" class="img-rounded" alt="Cinque Terre" width="200" height="100" style="left: 8%;height: 52px;width: 130px;top: 0; margin-top: 10px;;filter: grayscale(0);"> 
 		<div *ngIf="!isShowSuccessMessage">
 			<div class="container" *ngIf="isUnsubscribed" style="margin-top: 50px;">
-				<h1>You have already unSubscribed for receiving emails from <b>{{companyName}}</b></h1>
+				<h1>You have already unSubscribed for receiving emails from <strong>{{companyName}}</strong></h1>
 				<h2>Would you like to ReSubscribe?</h2>
 				<h3>Tell us the Reason</h3>
 				<form style="line-height: 25px; font-size: 15px; width:50%;">
@@ -28,31 +28,20 @@
            </div>
 			</div>
 
-
-
-
 			<div class="container" *ngIf="!isUnsubscribed" style="margin-top: 50px;">
 				<h1>“Sorry to see you go!  To improve our services, please let us know why you are leaving:</h1>
-				<!-- <h2>Would you like to Unsubscribe?</h2>
-				<h3>Select the Reason</h3> -->
 				<form style="line-height: 25px; font-size: 15px;">
-					<input type="radio" (click)="reason = 'Platform is not producing expected results';setOtherOption()" name="reason"
-						value="reason"> Platform is not producing expected results<br> <input type="radio"
-						(click)="reason = 'Too expensive (vendor)';setOtherOption()" name="reason" value="reason">
-					Too expensive (vendor)<br> <input type="radio" (click)="reason = 'Too many received emails';setOtherOption()"
-						name="reason" value="reason"> Too many received emails<br>
-						<input type="radio" (click)="reason = 'No longer participating in the channel';setOtherOption()"
-						name="reason" value="reason"> No longer participating in the channel<br>
-						<input type="radio" (click)="isOtherReason = true"
-						name="reason" value="reason"> Other<br>
-						<div *ngIf="isOtherReason" style="width: 50%;">
+					<ng-container *ngFor="let reason of unsubscribeReasons;let i = index">
+						<input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
+					</ng-container>
+					<div *ngIf="isOtherReason" style="width: 50%;">
 						<label for="comment">Reason:</label>
                     <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
                     <label class="text-area-css">{{characterleft}} characters left</label>
-				</div>
+					</div>
 				</form>
 				<div style="margin-top: 20px;">
-					<button type="button" [disabled]="reason == ''"
+					<button type="button" [disabled]="invalidReason"
 						class="btn btn-primary" (click)="unSubscribeUser()">Submit</button>
 				</div>
 			<div style="margin-top:20px">
