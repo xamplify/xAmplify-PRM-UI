@@ -341,6 +341,9 @@ export class FormsListViewUtilComponent implements OnInit {
             this.isGridView = true;
         }
     }
-   
+
+    refreshPage() {
+        this.listForms(this.pagination);
+    }
 
 }
