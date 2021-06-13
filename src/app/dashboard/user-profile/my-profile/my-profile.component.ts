@@ -1645,7 +1645,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}else if(this.activeTabName== "unsubscribeReasons"){
 			this.ngxloading = true;
 			this.showUnsubscribeReasonsDiv = false;
-			this.activeTabHeader = this.properties.unsubscribeReasonsText;
+			this.activeTabHeader = this.properties.unsubscribeReasonsHeaderText;
 			let self = this;
 			setTimeout(()=>{                         
 				  self.showUnsubscribeReasonsDiv = true;

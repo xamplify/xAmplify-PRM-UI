@@ -20,6 +20,7 @@ import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-
 import { Pagination } from '../../core/models/pagination';
 import { TranslateService } from '@ngx-translate/core';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
 
 @Injectable()
 export class AuthenticationService {
@@ -732,6 +733,22 @@ deleteDefaultTemplate(id:number){
   return this.http.get(this.REST_URL+"superadmin/deleteDefaultTemplate/"+id+"/"+"?access_token="+this.access_token)
   .map(this.extractData)
   .catch(this.handleError);
+}
+
+/*************Unsubscribe Reasons************* */
+findAll(pagination:Pagination){
+  pagination.userId = this.getUserId();
+  return this.http.post(this.REST_URL + "unsubscribe/findAll?access_token=" + this.access_token, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
+saveOrUpdateUnsubscribeReason(unsubscribeReason:UnsubscribeReason,isAdd:boolean){
+  unsubscribeReason.createdUserId = this.getUserId();
+  let url = isAdd ? 'save':'update';
+  return this.http.post(this.REST_URL + "unsubscribe/"+url+"?access_token=" + this.access_token, unsubscribeReason)
+      .map(this.extractData)
+      .catch(this.handleError);
 }
 
   
