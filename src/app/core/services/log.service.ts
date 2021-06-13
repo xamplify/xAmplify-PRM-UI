@@ -46,6 +46,12 @@ export class LogService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    findUnsubscribedReasons(companyId: number) {
+        return this.http.get(this.URL + "/findAllUnsubscribeReasons/"+companyId)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     private extractData(res: Response) {
         console.log(res);
         let body = res;

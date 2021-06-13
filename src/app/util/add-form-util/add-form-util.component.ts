@@ -199,7 +199,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
     ngOnInit() {
-        this.isCreateDefaultForm = this.loggedInAsSuperAdmin && (this.selectedDefaultFormId == undefined || this.selectedDefaultFormId < 1)
+        this.isCreateDefaultForm = this.loggedInAsSuperAdmin && (this.selectedDefaultFormId == undefined || this.selectedDefaultFormId < 1) && this.selectedForm === undefined;
         if (this.selectedForm === undefined) {
             if (this.router.url.indexOf("/home/forms/edit") > -1) {
                 this.navigateToManageSection();
@@ -396,7 +396,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
 
   listFormNames() {
-      this.formService.listFormNames(this.loggedInUserId)
+      let userId: number;
+      if(this.isCreateDefaultForm){
+          userId = 1;
+      } else {
+          userId = this.loggedInUserId;
+      }
+      this.formService.listFormNames(userId)
           .subscribe(
               data => {
                   this.names = data;
@@ -510,12 +516,15 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           columnInfo.id = column.id;
           columnInfo.placeHolder = column.placeHolder;
       }
+      if(this.isAdd && (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0)){
+        columnInfo.placeHolder = column.placeHolder;
+      }
       columnInfo.labelId = this.referenceService.replaceAllSpacesWithUnderScore(columnInfo.labelName);
       columnInfo.hiddenLabelId = this.referenceService.replaceAllSpacesWithEmpty(columnInfo.labelName);
       columnInfo.labelType = column.labelType;
       columnInfo.isDefaultColumn = isDefaultColumn;
       if (columnInfo.labelType === 'radio') {
-          if (this.isAdd || column.radioButtonChoices == undefined) {
+          if ((this.isAdd && (this.selectedDefaultFormId === undefined || this.selectedDefaultFormId < 1))  || column.radioButtonChoices == undefined) {
               columnInfo.radioButtonChoices = this.addDefaultOptions(columnInfo);
               columnInfo.allRadioButtonChoicesCount = columnInfo.radioButtonChoices.length + 1;
           } else {
@@ -523,7 +532,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               columnInfo.allRadioButtonChoicesCount = column.radioButtonChoices.length + 1;
           }
       } else if (columnInfo.labelType === 'checkbox') {
-          if (this.isAdd || column.checkBoxChoices == undefined) {
+          if ((this.isAdd && (this.selectedDefaultFormId === undefined || this.selectedDefaultFormId < 1)) || column.checkBoxChoices == undefined) {
               columnInfo.checkBoxChoices = this.addDefaultOptions(columnInfo);
               columnInfo.allCheckBoxChoicesCount = columnInfo.checkBoxChoices.length + 1;
           } else {
@@ -531,7 +540,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               columnInfo.allCheckBoxChoicesCount = column.checkBoxChoices.length + 1;
           }
       } else if (columnInfo.labelType === 'select') {
-          if (this.isAdd || column.dropDownChoices == undefined) {
+          if ((this.isAdd && (this.selectedDefaultFormId === undefined || this.selectedDefaultFormId < 1)) || column.dropDownChoices == undefined) {
               columnInfo.dropDownChoices = this.addDefaultOptions(columnInfo);
               columnInfo.allDropDownChoicesCount = columnInfo.dropDownChoices.length + 1;
           } else {
@@ -540,7 +549,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           }
 
       } else if (columnInfo.labelType === 'quiz_radio' || columnInfo.labelType === 'quiz_checkbox') {
-        if (this.isAdd || column.choices == undefined) {
+        if ((this.isAdd && (this.selectedDefaultFormId === undefined || this.selectedDefaultFormId < 1)) || column.choices == undefined) {
             columnInfo.choices = this.addDefaultOptions(columnInfo);
             columnInfo.allChoicesCount = columnInfo.choices.length + 1;
         } else {

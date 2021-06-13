@@ -348,6 +348,13 @@ export class SortOption {
 		{ 'name': 'Reply Time (DESC)', 'value': 'replyTime-DESC' }
 	];
 
+	unsubscribeReasonsDropDownOptions = [
+		{ 'name': 'Reason(A-Z)', 'value': 'reason-ASC' },
+		{ 'name': 'Reason(Z-A)', 'value': 'reason-DESC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+	];
+
 
 	numberOfItemsPerPage = [
 		{ 'name': '12', 'value': '12' },
@@ -390,4 +397,6 @@ export class SortOption {
 	public selectedLoggedInUsersSortDropDownOption = this.loggedInUsersSortDropDownOptions[this.loggedInUsersSortDropDownOptions.length - 1];
 	public selectedChannelCampaignSortDropDownOption = this.channelCampaignSortDropDownOptions[this.channelCampaignSortDropDownOptions.length -1];
 	public selectedWorkflowSortDropDownOption = this.workflowsSortDropDownOptions[this.workflowsSortDropDownOptions.length-1];
+	public selectedUnsubscribeReasonSortDropDownOption: any = this.unsubscribeReasonsDropDownOptions[this.unsubscribeReasonsDropDownOptions.length-1];
+
 }

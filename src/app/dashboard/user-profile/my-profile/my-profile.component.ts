@@ -240,7 +240,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	excludedDomains : string[] = [];
 	csvUsersPager: any = {};
 	csvDomainsPager: any = {};
-	
+	showUnsubscribeReasonsDiv = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1640,11 +1640,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.excludeDomainPagination.pageIndex = 1;
             this.excludeDomainPagination.maxResults = 12;
             this.listExcludedDomains(this.excludeDomainPagination);
-
 		} else if(this.activeTabName =="spf"){
 			this.activeTabHeader = this.properties.spfHeaderText;
+		}else if(this.activeTabName== "unsubscribeReasons"){
+			this.ngxloading = true;
+			this.showUnsubscribeReasonsDiv = false;
+			this.activeTabHeader = this.properties.unsubscribeReasonsHeaderText;
+			let self = this;
+			setTimeout(()=>{                         
+				  self.showUnsubscribeReasonsDiv = true;
+				  self.ngxloading = false;
+ 			}, 500);
 		}
-
 		this.referenceService.goToTop();
 	}
 

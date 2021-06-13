@@ -30,8 +30,6 @@
     <!-- BEGIN PAGE CONTENT-->
     <div class="row" *ngIf="!editXamplifyDefaultTemplate">
         <div class="col-md-12">
-            <!-- <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-            </app-response-message> -->
             <!-- BEGIN PROFILE SIDEBAR -->
             <div class="profile-sidebar" style="width:250px;" *ngIf="userData">
                 <!-- PORTLET MAIN -->
@@ -138,14 +136,13 @@
                                  <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}" (click)="activateTab('exclude');clearCustomResponse()"> {{properties.exclude | translate}}</a>
                                 </li>
                             </ng-container>
-                               
-
                             <li  [ngClass]="{'active-tab': activeTabName == 'spf'}" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}" (click)="activateTab('spf');clearCustomResponse()">{{properties.spf | translate}}</a>
-
+                            </li>
+                            <li  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}" class="hidden-xs">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}" (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons | translate}}</a>
                             </li>
                         </ng-container>
-                          
                         </ul>
                     </div>
                     <!-- END MENU -->
@@ -339,17 +336,15 @@
                                             <button [disabled]="!formSubmiteState" class="btn green-haze" (click)="saveForm()">{{submitButtonText}}</button>
 
                                         </form>
-                                        <form role="form">
+                                        <form role="form" aria-label="">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
                                                     <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px" (click)="addDealtype()" *ngIf="dealtypes.length== 0">
-                                                        <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Deal Types
+                                                        <i class="fa fa-plus-square p0" style="margin: 0 5px;" aria-hidden="true"></i> Add Deal Types
                                                     </a>
                                                 </div>
                                             </div>
                                             <div class="col-xs-12">
-
-
                                                 <div *ngFor="let dealType of dealtypes;let i=index">
                                                     <div class="portlet light dashboard-stat2">
                                                         <div class="portlet-title custom-change-css" style="border-bottom: 0px">
@@ -1036,6 +1031,7 @@
                                     <!-- END Categories TAB -->
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
+                                    <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
                                     <!--video default player settings-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                         <div>

@@ -6,7 +6,7 @@
   </ng-container>
   <div *ngIf="usersPagination.pagedItems?.length != 0 && !usersLoader.isLoading && !usersCustomResponse.isVisible">
     <app-auto-response-loader *ngIf="usersLoader.isLoading"></app-auto-response-loader>
-    <table class="table tgrid" aria-describedby="user-info" id="userlist-users-{{userListId}}">
+    <table class="table tgrid child-table-xamp" aria-describedby="user-info" id="userlist-users-{{userListId}}">
       <thead>
         <tr>
           <th class="hidden-xs">Entity Info</th>

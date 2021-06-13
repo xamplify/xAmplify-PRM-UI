@@ -20,6 +20,7 @@ import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-
 import { Pagination } from '../../core/models/pagination';
 import { TranslateService } from '@ngx-translate/core';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
 
 @Injectable()
 export class AuthenticationService {
@@ -493,11 +494,11 @@ export class AuthenticationService {
     module.isPartnershipEstablishedOnlyWithVendorTier = false;
     module.damAccessAsPartner = false;
     module.damAccess = false;
-	module.lmsAccess = false;
-	module.lmsAccessAsPartner = false;
-	module.playbookAccess = false;
-	module.playbookAccessAsPartner = false;
-	module.hasPartnerLandingPageAccess = false;
+    module.lmsAccess = false;
+    module.lmsAccessAsPartner = false;
+    module.playbookAccess = false;
+    module.playbookAccessAsPartner = false;
+    module.hasPartnerLandingPageAccess = false;
     module.isMarketing = false;
     module.isPrm = false;
     module.isPrmTeamMember = false;
@@ -511,16 +512,17 @@ export class AuthenticationService {
     module.showContent = false;
     module.contentDivsCount = 0;
     module.contentLoader = false;
-	module.showPartnerEmailTemplatesFilter = false;
+    module.showPartnerEmailTemplatesFilter = false;
+    module.isAnyAdminOrSupervisor = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
-	this.contactsCount = false;
+	  this.contactsCount = false;
     this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     this.partnershipEstablishedOnlyWithPrm = false;
     this.folders = false;
     this.lmsAccess = false;
-	this.isVendorAndPartnerTeamMember = false;
-	this.isOrgAdminAndPartnerTeamMember = false;
+	  this.isVendorAndPartnerTeamMember = false;
+	  this.isOrgAdminAndPartnerTeamMember = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
@@ -730,6 +732,34 @@ saveAsDefaultTemplate(input:any){
 
 deleteDefaultTemplate(id:number){
   return this.http.get(this.REST_URL+"superadmin/deleteDefaultTemplate/"+id+"/"+"?access_token="+this.access_token)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+/*************Unsubscribe Reasons************* */
+findAll(pagination:Pagination){
+  pagination.userId = this.getUserId();
+  return this.http.post(this.REST_URL + "unsubscribe/findAll?access_token=" + this.access_token, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
+saveOrUpdateUnsubscribeReason(unsubscribeReason:UnsubscribeReason,isAdd:boolean){
+  unsubscribeReason.createdUserId = this.getUserId();
+  let url = isAdd ? 'save':'update';
+  return this.http.post(this.REST_URL + "unsubscribe/"+url+"?access_token=" + this.access_token, unsubscribeReason)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
+findUnsubscribeReasonById(id:number){
+  return this.http.get(this.REST_URL+"unsubscribe/findById/"+id+"?access_token="+this.access_token)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+deleteUnsubscribeReasonById(id:number){
+  return this.http.get(this.REST_URL+"unsubscribe/delete/"+id+"?access_token="+this.access_token)
   .map(this.extractData)
   .catch(this.handleError);
 }
