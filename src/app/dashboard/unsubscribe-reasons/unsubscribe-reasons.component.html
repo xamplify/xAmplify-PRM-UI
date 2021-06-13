@@ -49,6 +49,7 @@
               <span class="gridHeader" translate>Reason</span>
             </th>
             <th class="text-center" id="border-bottom" translate>Created On</th>
+            <th class="text-center" id="border-bottom" translate>Custom Reason</th>
             <th class="text-center float-right" id="border-bottom">Actions</th>
           </tr>
         </thead>
@@ -66,6 +67,11 @@
               <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="unsubscribeReason?.displayTime">
               </app-timestamp>
               <span *ngIf="referenceService.isSafariBrowser()">{{unsubscribeReason?.displayTime}}</span>
+            </td>
+            <td class="text-center">
+              <switch  [status]="unsubscribeReason.customReason" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" [disabled]="callActionSwitch.disabled">
+              </switch>
             </td>
             <td>
               <div class="actions-block override-actions">
