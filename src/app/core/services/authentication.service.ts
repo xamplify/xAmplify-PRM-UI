@@ -751,6 +751,18 @@ saveOrUpdateUnsubscribeReason(unsubscribeReason:UnsubscribeReason,isAdd:boolean)
       .catch(this.handleError);
 }
 
+findUnsubscribeReasonById(id:number){
+  return this.http.get(this.REST_URL+"unsubscribe/findById/"+id+"?access_token="+this.access_token)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+deleteUnsubscribeReasonById(id:number){
+  return this.http.get(this.REST_URL+"unsubscribe/delete/"+id+"?access_token="+this.access_token)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
   
   
 }

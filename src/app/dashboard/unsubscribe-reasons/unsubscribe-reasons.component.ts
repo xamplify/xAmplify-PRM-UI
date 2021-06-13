@@ -57,10 +57,7 @@ export class UnsubscribeReasonsComponent implements OnInit {
         pagination = this.pagerService.getPagedItems(pagination, data.list);
         this.referenceService.loading(this.httpRequestLoader, false);
       }, error => {
-        this.xtremandLogger.error(error);
-        this.loading = false;
-        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-        this.referenceService.loading(this.httpRequestLoader, false);
+        this.showInternalServerErrorMessage(error);
       }
     )
   }
@@ -151,5 +148,65 @@ export class UnsubscribeReasonsComponent implements OnInit {
       }
     );
   }
+  findById(id: number) {
+    this.unsubscribeReason = new UnsubscribeReason();
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.authenticationService.findUnsubscribeReasonById(id).subscribe(
+      response => {
+        this.unsubscribeReason = response.data;
+        this.unsubscribeReason.isValidForm = true;
+        this.isAdd = false;
+        this.submitButtonText = "Update";
+        $('#manage-unsubscribe-reasons').hide(500);
+        $('#add-unsubscribe-reason').show(500);
+      }, error => {
+        this.showInternalServerErrorMessage(error);
+      }
+    );
+  }
+
+  confirmDeleteAlert(unsubscribeReason:UnsubscribeReason){
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to undo this action!",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, delete it!'
+
+    }).then(function() {
+      self.delete(unsubscribeReason);
+    }, function(dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+  }
+
+  delete(unsubscribeReason:UnsubscribeReason){
+    this.customResponse = new CustomResponse();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.authenticationService.deleteUnsubscribeReasonById(unsubscribeReason.id).subscribe(
+      _response => {
+        this.customResponse = new CustomResponse('SUCCESS',unsubscribeReason.reason+" is deleted successfully",true);
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.pagination.pageIndex = 1;
+        this.findAll(this.pagination);
+      }, error => {
+        this.showInternalServerErrorMessage(error);
+      }
+    )
+  }
+
+  showInternalServerErrorMessage(error:any){
+    this.xtremandLogger.error(error);
+    this.loading = false;
+    this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
+
+ 
 
 }
