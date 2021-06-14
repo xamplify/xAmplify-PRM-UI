@@ -111,7 +111,7 @@
       <div class="form-group">
         <label class="control-label" translate>Reason</label>
         <span class="required">*</span>
-        <input type="text" placeholder="Reason" [(ngModel)]="unsubscribeReason.reason"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()"/>
+        <input type="text" maxlength="255" placeholder="Reason" [(ngModel)]="unsubscribeReason.reason"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()"/>
         <span class="required" *ngIf="unsubscribeReason?.dupliateNameErrorMessage?.length>0">{{unsubscribeReason?.dupliateNameErrorMessage}}</span>
       </div>
       <div  class="table-responsive">

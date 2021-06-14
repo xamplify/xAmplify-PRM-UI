@@ -139,7 +139,7 @@
                             <li  [ngClass]="{'active-tab': activeTabName == 'spf'}" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}" (click)="activateTab('spf');clearCustomResponse()">{{properties.spf | translate}}</a>
                             </li>
-                            <li  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}" class="hidden-xs">
+                            <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}" (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons | translate}}</a>
                             </li>
                         </ng-container>
