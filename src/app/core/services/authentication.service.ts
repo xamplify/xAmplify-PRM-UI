@@ -21,6 +21,7 @@ import { Pagination } from '../../core/models/pagination';
 import { TranslateService } from '@ngx-translate/core';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
+import {UnsubscribePageDetails} from 'app/dashboard/models/unsubscribe-page-details';
 
 @Injectable()
 export class AuthenticationService {
@@ -762,6 +763,19 @@ deleteUnsubscribeReasonById(id:number){
   return this.http.get(this.REST_URL+"unsubscribe/delete/"+id+"?access_token="+this.access_token)
   .map(this.extractData)
   .catch(this.handleError);
+}
+
+findHeaderAndFooterText(){
+  return this.http.get(this.REST_URL+"unsubscribe/findHeaderAndFooterText/"+this.getUserId()+"?access_token="+this.access_token)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+updateHeaderAndFooterText(unsubscribePageDetails:UnsubscribePageDetails){
+  unsubscribePageDetails.userId = this.getUserId();
+  return this.http.post(this.REST_URL + "unsubscribe/updateHeaderAndFooterText?access_token=" + this.access_token, unsubscribePageDetails)
+      .map(this.extractData)
+      .catch(this.handleError);
 }
 
   
