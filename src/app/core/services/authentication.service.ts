@@ -778,6 +778,12 @@ updateHeaderAndFooterText(unsubscribePageDetails:UnsubscribePageDetails){
       .catch(this.handleError);
 }
 
+
+findUnsusbcribePageContent(){
+  return this.http.get(this.REST_URL+"unsubscribe/findUnsubscribePageContent/"+this.getUserId()+"?access_token="+this.access_token)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
   
   
 }

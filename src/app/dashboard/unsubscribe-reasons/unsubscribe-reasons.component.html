@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12">
         <button class="btn-info-xamplify"  (click)="openHeaderAndFooterText()" translate>Edit Header/Footer Text</button>
-        <button class="btn-info-xamplify"  (click)="openPopup('footer')" translate>Preview Unsubscribe Page</button>
+        <button class="btn-info-xamplify"  (click)="openUnsubscribePagePopup()" translate>Preview Unsubscribe Page</button>
       </div>
     </div>
     <br>
@@ -198,5 +198,50 @@
         <button type="button"  class="btn btn-default" (click)="goToManage()" translate>Cancel</button>
       </div>
   </form>
+  </div>
+</div>
+
+
+<div class="modal fade right" id="unsubscribePagePopup" tabindex="-1" role="dialog" aria-labelledby="unsubscribePagePopup" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog full-width" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button *ngIf="!modalPopupLoader" type="button" class="close-circle" data-dismiss="modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Unsubscribe Page</h4>
+     </div>
+     <div class="modal-body">
+       <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+        <div class="portlet light" style="border: navajowhite;" *ngIf="!modalPopupLoader">
+        <img src="{{unsubscribePageContent?.companyLogoPath}}"  class="img-rounded" alt="" width="200" height="100" style="left: 8%;height: 52px;width: 130px;top: 0; margin-top: 10px;;filter: grayscale(0);"> 
+        <div>
+          <div class="container"  style="margin-top: 50px;">
+            <h1 [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideHeaderText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.headerText}}"></h1>
+            <form style="line-height: 25px; font-size: 15px;">
+              <ng-container *ngFor="let reason of unsubscribePageContent?.unsubscribeReasons;let i = index">
+                <input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
+              </ng-container>
+              <div *ngIf="isOtherReason" style="width: 50%;">
+                <label for="comment">Reason:</label>
+                    <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+                    <label class="text-area-css">{{characterleft}} characters left</label>
+                  </div>
+            </form>
+            <div style="margin-top: 20px;">
+              <button type="button" [disabled]="invalidReason"
+                class="btn btn-primary">Submit</button>
+            </div>
+          <div style="margin-top:20px">
+                  <h4 [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideFooterText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.footerText}}"></h4>
+                </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="!modalPopupLoader">
+       <button type="submit" data-dismiss="modal" class="btn btn-default">Close</button>
+    </div>
+    </div>
   </div>
 </div>

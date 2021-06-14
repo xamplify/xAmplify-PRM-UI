@@ -113,15 +113,7 @@ export class LogUnsubscribeComponent implements OnInit {
       );
   }
   
-  characterSize(){
-      let reasonLength = $.trim(this.reason).length;
-      if(reasonLength>0){
-        this.invalidReason = false;
-        this.characterleft = 250 - reasonLength;
-      }else{
-        this.invalidReason = true;
-      }
-    }
+ 
 
   ngOnInit() {
     this.processor.set(this.processor);
@@ -141,6 +133,16 @@ export class LogUnsubscribeComponent implements OnInit {
       this.invalidReason = false;
       this.reason = unsubscribeReason.reason;
     }
-  }      
+  }    
+
+ characterSize(){
+      let reasonLength = $.trim(this.reason).length;
+      if(reasonLength>0){
+        this.invalidReason = false;
+        this.characterleft = 250 - reasonLength;
+      }else{
+        this.invalidReason = true;
+      }
+    }  
 
 }

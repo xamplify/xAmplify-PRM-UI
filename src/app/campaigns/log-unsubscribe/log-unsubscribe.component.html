@@ -29,7 +29,7 @@
 			</div>
 
 			<div class="container" *ngIf="!isUnsubscribed" style="margin-top: 50px;">
-				<h1>“Sorry to see you go!  To improve our services, please let us know why you are leaving:</h1>
+				<h1>Sorry to see you go!  To improve our services, please let us know why you are leaving:</h1>
 				<form style="line-height: 25px; font-size: 15px;">
 					<ng-container *ngFor="let reason of unsubscribeReasons;let i = index">
 						<input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>

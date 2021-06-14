@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter,ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -12,7 +12,7 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { UnsubscribeReason } from '../models/unsubscribe-reason';
 import { UnsubscribePageDetails } from '../models/unsubscribe-page-details';
-declare var $, swal,CKEDITOR: any;
+declare var $, swal: any;
 
 @Component({
   selector: 'app-unsubscribe-reasons',
@@ -34,9 +34,13 @@ export class UnsubscribeReasonsComponent implements OnInit {
   isAdd = true;
   loading: boolean;
   isDelete: boolean;
-  @ViewChild( "headerTextCkEditor" ) headerTextCkEditor: any;
-  name = 'ng2-ckeditor';
   ckeConfig: any;
+  modalPopupLoader = false;
+  unsubscribePageContent:any = {};
+  isOtherReason = false;
+  invalidReason: boolean;
+  reason: string;
+  characterleft: number = 250;
   constructor(public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public properties: Properties,
     public utilService: UtilService, public callActionSwitch: CallActionSwitch) {
@@ -279,5 +283,46 @@ changeHeaderTextStatus(event:any,unsubscribePageDetails:UnsubscribePageDetails){
 changeFooterTextStatus(event:any,unsubscribePageDetails:UnsubscribePageDetails){
   unsubscribePageDetails.hideFooterText = !event;
 }
+
+
+openUnsubscribePagePopup(){
+  this.unsubscribePageContent = {};
+  $('#unsubscribePagePopup').modal('show');
+  this.referenceService.scrollToModalBodyTopByClass();
+  this.modalPopupLoader = true;
+  this.authenticationService.findUnsusbcribePageContent().subscribe(
+    response=>{
+      this.unsubscribePageContent = response.data;
+      this.modalPopupLoader = false;
+    },_error=>{
+      $('#unsubscribePagePopup').modal('hide');
+      this.modalPopupLoader = false;
+      this.referenceService.showSweetAlertServerErrorMessage();
+    }
+  )
+}
+
+addReason(unsubscribeReason:any){
+  this.isOtherReason = unsubscribeReason.customReason;
+  if(this.isOtherReason){
+    this.reason = "";
+    this.invalidReason = true;
+  }else{
+    this.invalidReason = false;
+    this.reason = unsubscribeReason.reason;
+  }
+}    
+
+characterSize(){
+    let reasonLength = $.trim(this.reason).length;
+    if(reasonLength>0){
+      this.invalidReason = false;
+      this.characterleft = 250 - reasonLength;
+    }else{
+      this.invalidReason = true;
+    }
+  } 
+
+  
 
 }
