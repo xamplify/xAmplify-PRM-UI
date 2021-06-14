@@ -71,6 +71,29 @@
 	color: red !important;
 }
 
+.full-width {
+    width: 100% !important;
+}
+
+.text-area-css{
+	float: right;
+	font-size: 11px;
+	position: relative;
+	left: -4px;
+	color: #7b8894;
+	bottom: 23px;
+  }
+  
+  .footer {
+	 position: fixed;
+	 left: 0;
+	 bottom: 0;
+	 width: 100%;
+	 background-color: red;
+	 color: white;
+	 text-align: center;
+  }
+
 
 
 

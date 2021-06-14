@@ -9,43 +9,43 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { ContactService } from '../services/contact.service';
 
 @Component({
-  selector: 'app-userlist-users',
-  templateUrl: './userlist-users.component.html',
-  styleUrls: ['./userlist-users.component.css']
+	selector: 'app-userlist-users',
+	templateUrl: './userlist-users.component.html',
+	styleUrls: ['./userlist-users.component.css']
 })
 export class UserlistUsersComponent implements OnInit {
 
-  @Input() public userListId: any;
-  @Input() public searchKey: any;
+	@Input() public userListId: any;
+	@Input() public searchKey: any;
 
-  usersPagination: Pagination = new Pagination();  
+	usersPagination: Pagination = new Pagination();
 	usersSortOption: SortOption = new SortOption();
-  usersLoader: HttpRequestLoader = new HttpRequestLoader();
+	usersLoader: HttpRequestLoader = new HttpRequestLoader();
 	usersCustomResponse: CustomResponse = new CustomResponse();
 
-  constructor(public referenceService: ReferenceService, private pagerService: PagerService, 
-    public properties: Properties, public contactService: ContactService) { }
+	constructor(public referenceService: ReferenceService, private pagerService: PagerService,
+		public properties: Properties, public contactService: ContactService) { }
 
-  ngOnInit() {
-    this.referenceService.loading(this.usersLoader, false);
-    this.usersPagination = new Pagination();
-    this.usersPagination.searchKey = this.searchKey;
-    this.usersPagination.userListId = this.userListId;
-    this.getMatchedContacts(this.usersPagination);
-  }
+	ngOnInit() {
+		this.usersPagination = new Pagination();
+		this.usersPagination.searchKey = this.searchKey;
+		this.usersPagination.userListId = this.userListId;
+		this.getMatchedContacts(this.usersPagination);
+	}
 
-  getMatchedContacts(pagination: Pagination) {
+	getMatchedContacts(pagination: Pagination) {
+		this.referenceService.loading(this.usersLoader, true);
 		this.usersCustomResponse = new CustomResponse();
 		this.contactService.findUsersByUserListId(pagination).subscribe(
-			response=>{
-				if(response.statusCode==200){
-          this.referenceService.loading(this.usersLoader, false);
+			response => {
+				if (response.statusCode == 200) {
+					this.referenceService.loading(this.usersLoader, false);
 					pagination.totalRecords = response.data.totalRecords;
 					pagination = this.pagerService.getPagedItems(pagination, response.data.list);
-					this.usersSortOption.totalRecords = response.data.totalRecords;					
+					this.usersSortOption.totalRecords = response.data.totalRecords;
 				}
 			},
-			error=>{
+			error => {
 				this.referenceService.loading(this.usersLoader, false);
 				this.usersCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 			}

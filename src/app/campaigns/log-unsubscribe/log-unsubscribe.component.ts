@@ -26,6 +26,9 @@ export class LogUnsubscribeComponent implements OnInit {
   characterleft = 250;
   unsubscribeReasons:Array<any>;
   invalidReason = true;
+  unsubscribePageContent:any = {};
+  loading = false;
+  companyLogoPath = "";
   constructor(
     private activatedRoute: ActivatedRoute,
     private logService: LogService,
@@ -44,6 +47,7 @@ export class LogUnsubscribeComponent implements OnInit {
           this.isUnsubscribed = resp.isUnsubscribed;
           this.companyName = resp.companyName;
           this.userId = resp.userId;
+          this.companyLogoPath = resp.companyLogoPath;
         },
         (error: any) => {
           this.processor.remove(this.processor);
@@ -60,12 +64,15 @@ export class LogUnsubscribeComponent implements OnInit {
 
   findUnsubscribeReasons(){
     this.unsubscribeReasons = [];
+    this.unsubscribePageContent = {};
     this.processor.set(this.processor);
-    this.logService.findUnsubscribedReasons(this.companyId).subscribe(
+    this.logService.findUnsubscribePageContent(this.companyId).subscribe(
       response=>{
         var body = response["_body"];
         var resp = JSON.parse(body);
-        this.unsubscribeReasons = resp.data;
+        let map = resp.data;
+        this.unsubscribeReasons = map['unsubscribeReasons'];
+        this.unsubscribePageContent = map;
       },error=>{
         this.processor.remove(this.processor);
         $("html").css("background-color", "white");
@@ -81,6 +88,7 @@ export class LogUnsubscribeComponent implements OnInit {
   }
   
   unSubscribeUser(){
+    this.loading = true;
     if(this.isUnsubscribed){
       var object = {
              "userId": this.userId,
@@ -105,23 +113,17 @@ export class LogUnsubscribeComponent implements OnInit {
           var body = result["_body"];
           var resp = JSON.parse(body);
           this.message = resp.message;
-          this.isShowSuccessMessage = true
+          this.isShowSuccessMessage = true;
+          this.loading = false;
         },
         (error: any) => {
         console.log(error);
+        this.loading = false;
         }
       );
   }
   
-  characterSize(){
-      let reasonLength = $.trim(this.reason).length;
-      if(reasonLength>0){
-        this.invalidReason = false;
-        this.characterleft = 250 - reasonLength;
-      }else{
-        this.invalidReason = true;
-      }
-    }
+ 
 
   ngOnInit() {
     this.processor.set(this.processor);
@@ -141,6 +143,16 @@ export class LogUnsubscribeComponent implements OnInit {
       this.invalidReason = false;
       this.reason = unsubscribeReason.reason;
     }
-  }      
+  }    
+
+ characterSize(){
+      let reasonLength = $.trim(this.reason).length;
+      if(reasonLength>0){
+        this.invalidReason = false;
+        this.characterleft = 250 - reasonLength;
+      }else{
+        this.invalidReason = true;
+      }
+    }  
 
 }

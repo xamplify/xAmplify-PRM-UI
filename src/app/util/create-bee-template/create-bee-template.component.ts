@@ -91,15 +91,13 @@ editPartnerTemplate() {
         mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
         mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
         mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
-		mergeTags.push({ name: 'Privacy Policy', value: this.senderMergeTag.privacyPolicy });
-		mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
+	    	mergeTags.push({ name: 'Privacy Policy', value: this.senderMergeTag.privacyPolicy });
+		    mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
         if (emailTemplate.beeEventTemplate || emailTemplate.beeEventCoBrandingTemplate ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
             mergeTags.push( { name: 'Event Start Time', value: '{{event_start_time}}' } );
             mergeTags.push( { name: 'Event End Time', value: '{{event_end_time}}' } );
-            /* mergeTags.push( { name: 'Event Description', value: '{{event_description}}' });*/
             mergeTags.push( { name: 'Address', value: '{{address}}' } );
-            /* mergeTags.push( { name: 'Address Lane2', value: '{{addreess_lane2}} ' });*/
             mergeTags.push( { name: 'Event From Name', value: '{{event_fromName}}' } );
             mergeTags.push( { name: 'Event EmailId', value: '{{event_emailId}}' } );
             mergeTags.push( { name: 'Vendor Name   ', value: '{{vendor_name}}' } );

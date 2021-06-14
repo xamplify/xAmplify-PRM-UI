@@ -4,8 +4,8 @@
       <app-response-message [customResponse]="usersCustomResponse"></app-response-message>
     </div>
   </ng-container>
-  <div *ngIf="usersPagination.pagedItems?.length != 0 && !usersLoader.isLoading && !usersCustomResponse.isVisible">
-    <app-auto-response-loader *ngIf="usersLoader.isLoading"></app-auto-response-loader>
+  <app-auto-response-loader *ngIf="usersLoader.isLoading"></app-auto-response-loader>
+  <div *ngIf="usersPagination.pagedItems?.length != 0 && !usersLoader.isLoading && !usersCustomResponse.isVisible">    
     <table class="table tgrid child-table-xamp" aria-describedby="user-info" id="userlist-users-{{userListId}}">
       <thead>
         <tr>

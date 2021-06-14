@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -11,6 +11,7 @@ import { UtilService } from 'app/core/services/util.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { UnsubscribeReason } from '../models/unsubscribe-reason';
+import { UnsubscribePageDetails } from '../models/unsubscribe-page-details';
 declare var $, swal: any;
 
 @Component({
@@ -22,6 +23,7 @@ declare var $, swal: any;
 })
 export class UnsubscribeReasonsComponent implements OnInit {
   unsubscribeReason: UnsubscribeReason = new UnsubscribeReason();
+  unsubscribePageDetails:UnsubscribePageDetails = new UnsubscribePageDetails();
   customResponse: CustomResponse = new CustomResponse();
   pagination: Pagination = new Pagination();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -32,7 +34,13 @@ export class UnsubscribeReasonsComponent implements OnInit {
   isAdd = true;
   loading: boolean;
   isDelete: boolean;
-
+  ckeConfig: any;
+  modalPopupLoader = false;
+  unsubscribePageContent:any = {};
+  isOtherReason = false;
+  invalidReason: boolean;
+  reason: string;
+  characterleft: number = 250;
   constructor(public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public properties: Properties,
     public utilService: UtilService, public callActionSwitch: CallActionSwitch) {
@@ -40,6 +48,10 @@ export class UnsubscribeReasonsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.ckeConfig = {
+      allowedContent: true,
+      extraPlugins:false
+  };
     this.findAll(this.pagination);
   }
 
@@ -90,16 +102,19 @@ export class UnsubscribeReasonsComponent implements OnInit {
     this.unsubscribeReason = new UnsubscribeReason();
     this.customResponse = new CustomResponse();
     $('#manage-unsubscribe-reasons').hide(500);
+    $('#edit-header-and-footer-text').hide(500);
     $('#add-unsubscribe-reason').show(500);
     this.submitButtonText = "Save";
   }
 
   goToManage() {
-    this.unsubscribeReason = new UnsubscribeReason()
+    this.unsubscribeReason = new UnsubscribeReason();
+    this.unsubscribePageDetails = new UnsubscribePageDetails();
     this.referenceService.stopLoader(this.addLoader);
     this.referenceService.stopLoader(this.httpRequestLoader);
     this.customResponse = new CustomResponse();
-    $('#add-unsubscribe-reason').hide(500);
+    $('#add-unsubscribe-reason').hide(500); 
+    $('#edit-header-and-footer-text').hide(500);
     $('#manage-unsubscribe-reasons').show(500);
     this.referenceService.goToTop();
   }
@@ -201,12 +216,113 @@ export class UnsubscribeReasonsComponent implements OnInit {
   }
 
   showInternalServerErrorMessage(error:any){
+    this.customResponse = new CustomResponse();
     this.xtremandLogger.error(error);
     this.loading = false;
     this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
     this.referenceService.loading(this.httpRequestLoader, false);
+    this.referenceService.goToTop();
+    this.loading = false;
+  }
+
+  /********Edit Header/Footer Text ***********/
+  openHeaderAndFooterText(){
+    console.log(this.unsubscribePageDetails);
+    this.findHeaderTextAndFooterText();
+  }
+
+  findHeaderTextAndFooterText(){
+    this.loading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.authenticationService.findHeaderAndFooterText().subscribe(
+      response=>{
+        let self  = this;
+        setTimeout(()=>{                         
+				self.unsubscribePageDetails = response.data;
+        $('#manage-unsubscribe-reasons').hide(500);
+        $('#edit-header-and-footer-text').show(500);
+        self.referenceService.loading(this.httpRequestLoader, false);
+        self.loading = false;
+ 			}, 500);
+      },error=>{
+        this.showInternalServerErrorMessage(error);
+      }
+    )
   }
 
  
+updateHeaderAndFooterText(){
+  let headerText = $.trim(this.unsubscribePageDetails.headerText);
+  let footerText = $.trim(this.unsubscribePageDetails.footerText);
+  if(headerText.length>0 && footerText.length>0){
+    this.unsubscribePageDetails.invalidHeaderText = false;
+    this.unsubscribePageDetails.invalidFooterText = false;
+    this.customResponse = new CustomResponse();
+    this.loading = true;
+    this.authenticationService.updateHeaderAndFooterText(this.unsubscribePageDetails).subscribe(
+      response=>{
+        this.referenceService.goToTop();
+        this.customResponse = new CustomResponse('SUCCESS','Data is updated successfully',true);
+        this.loading = false;
+      },error=>{
+        this.showInternalServerErrorMessage(error);
+      }
+    )
+  }else{
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse('ERROR','Please fill required fields',true);
+    this.unsubscribePageDetails.invalidHeaderText = headerText.length==0;
+    this.unsubscribePageDetails.invalidFooterText = footerText.length==0;
+  }
+
+}
+
+changeHeaderTextStatus(event:any,unsubscribePageDetails:UnsubscribePageDetails){
+  unsubscribePageDetails.hideHeaderText = !event;
+}
+changeFooterTextStatus(event:any,unsubscribePageDetails:UnsubscribePageDetails){
+  unsubscribePageDetails.hideFooterText = !event;
+}
+
+
+openUnsubscribePagePopup(){
+  this.unsubscribePageContent = {};
+  $('#unsubscribePagePopup').modal('show');
+  this.referenceService.scrollToModalBodyTopByClass();
+  this.modalPopupLoader = true;
+  this.authenticationService.findUnsusbcribePageContent().subscribe(
+    response=>{
+      this.unsubscribePageContent = response.data;
+      this.modalPopupLoader = false;
+    },_error=>{
+      $('#unsubscribePagePopup').modal('hide');
+      this.modalPopupLoader = false;
+      this.referenceService.showSweetAlertServerErrorMessage();
+    }
+  )
+}
+
+addReason(unsubscribeReason:any){
+  this.isOtherReason = unsubscribeReason.customReason;
+  if(this.isOtherReason){
+    this.reason = "";
+    this.invalidReason = true;
+  }else{
+    this.invalidReason = false;
+    this.reason = unsubscribeReason.reason;
+  }
+}    
+
+characterSize(){
+    let reasonLength = $.trim(this.reason).length;
+    if(reasonLength>0){
+      this.invalidReason = false;
+      this.characterleft = 250 - reasonLength;
+    }else{
+      this.invalidReason = true;
+    }
+  } 
+
+  
 
 }

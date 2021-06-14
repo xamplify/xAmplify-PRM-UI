@@ -95,6 +95,11 @@ span.ui-column-resizer {
 	color: white;
 	background-color: #008fd5;
 }
+.btn-info-xamplify {
+	color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
 
 .add-button-xamplify:hover {
 	background-color: #3f51b5;
