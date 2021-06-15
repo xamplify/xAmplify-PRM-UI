@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -12,7 +12,7 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { UnsubscribeReason } from '../models/unsubscribe-reason';
 import { UnsubscribePageDetails } from '../models/unsubscribe-page-details';
-declare var $, swal: any;
+declare var $, swal,CKEDITOR: any;
 
 @Component({
   selector: 'app-unsubscribe-reasons',
@@ -41,6 +41,8 @@ export class UnsubscribeReasonsComponent implements OnInit {
   invalidReason: boolean;
   reason: string;
   characterleft: number = 250;
+  @ViewChild( "footerTextCkEditor" ) footerTextCkEditor: any;
+  @ViewChild( "headerTextCkEditor" ) headerTextCkEditor: any;
   constructor(public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public properties: Properties,
     public utilService: UtilService, public callActionSwitch: CallActionSwitch) {
@@ -252,6 +254,7 @@ export class UnsubscribeReasonsComponent implements OnInit {
 
  
 updateHeaderAndFooterText(){
+  this.getCkEditorData();
   let headerText = $.trim(this.unsubscribePageDetails.headerText);
   let footerText = $.trim(this.unsubscribePageDetails.footerText);
   if(headerText.length>0 && footerText.length>0){
@@ -324,5 +327,15 @@ characterSize(){
   } 
 
   
-
+  getCkEditorData() {
+    for ( var instanceName in CKEDITOR.instances ) {
+      CKEDITOR.instances[instanceName].updateElement();
+      let data = CKEDITOR.instances[instanceName].getData();
+      if("editor1"==instanceName){
+        this.unsubscribePageDetails.headerText = data;
+      }else if("editor2"==instanceName){
+        this.unsubscribePageDetails.footerText = data;
+      }
+    }
+}
 }

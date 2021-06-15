@@ -170,7 +170,7 @@
       <div [ngClass]="unsubscribePageDetails.invalidHeaderText ? 'form-group has-error has-feedback':'form-group'">
         <label class="control-label" translate>Header Text</label>
         <span class="required">*</span>
-        <ckeditor [(ngModel)]="unsubscribePageDetails.headerText" [ngModelOptions]="{standalone: true}" [config]="ckeConfig" debounce="500">
+        <ckeditor [(ngModel)]="unsubscribePageDetails.headerText" #footerTextCkEditor [ngModelOptions]="{standalone: true}" [config]="ckeConfig" debounce="500">
         </ckeditor>
       </div>
       <div  class="table-responsive">
@@ -190,7 +190,7 @@
       <div [ngClass]="unsubscribePageDetails.invalidFooterText ? 'form-group has-error has-feedback':'form-group'">
         <label class="control-label" translate>Footer Text</label>
         <span class="required">*</span>
-        <ckeditor [(ngModel)]="unsubscribePageDetails.footerText" [ngModelOptions]="{standalone: true}"  [config]="ckeConfig" debounce="500">
+        <ckeditor [(ngModel)]="unsubscribePageDetails.footerText" [ngModelOptions]="{standalone: true}" #footerTextCkEditor [config]="ckeConfig" debounce="500">
         </ckeditor>
       </div>
       <div id="right">
@@ -222,7 +222,7 @@
               <ng-container *ngFor="let reason of unsubscribePageContent?.unsubscribeReasons;let i = index">
                 <input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
               </ng-container>
-              <div *ngIf="isOtherReason" style="width: 50%;">
+              <div *ngIf="isOtherReason || unsubscribePageContent?.unsubscribeReasons?.length==0" style="width: 50%;">
                 <label for="comment">Reason:</label>
                     <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
                     <label class="text-area-css">{{characterleft}} characters left</label>
