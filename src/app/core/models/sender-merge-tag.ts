@@ -10,7 +10,7 @@ export class SenderMergeTag {
     senderCompanyUrl = "{{senderCompanyUrl}}";
     senderCompanyContactNumber = "{{senderCompanyContactNumber}}";
     aboutUs = "{{partnerAboutUs}}";
-    privacyPolicy = "{{privacyPolicy}}";
+    privacyPolicy = "{{senderPrivacyPolicy}}";
     unsubscribeLink = "{{unsubscribeLink}}";
     
     senderFirstNameGlobal = /{{senderFirstName}}/g;
@@ -23,7 +23,7 @@ export class SenderMergeTag {
     senderCompanyUrlGlobal = /{{senderCompanyUrl}}/g;
     senderCompanyContactNumberGlobal = /{{senderCompanyContactNumber}}/g;
     aboutUsGlobal = /{{partnerAboutUs}}/g;
-    privacyPolicyGlobal = /{{privacyPolicy}}/g;
+    privacyPolicyGlobal = /{{senderPrivacyPolicy}}/g;
     unsubscribeLinkGlobal = /{{unsubscribeLink}}/g;
 
     
