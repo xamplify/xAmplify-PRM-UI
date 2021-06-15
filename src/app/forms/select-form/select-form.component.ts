@@ -91,4 +91,42 @@ export class SelectFormComponent implements OnInit {
     this.router.navigate(["/home/forms/add"]);
 }
 
+confirmDeleteForm(id:number){
+  let self = this;
+  swal({
+    title: 'Are you sure?',
+    text: "You won't be able to undo this action!",
+    type: 'warning',
+    showCancelButton: true,
+    swalConfirmButtonColor: '#54a7e9',
+    swalCancelButtonColor: '#999',
+    confirmButtonText: 'Yes, delete it!'
+
+  }).then(function() {
+    self.deleteForm(id);
+  }, function(dismiss: any) {
+    console.log('you clicked on option' + dismiss);
+  });
+}
+
+deleteForm(id:number){
+  this.ngxloading = true;
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.formService.deleteDefaultForm(id).subscribe(
+    (response: any) => {
+      this.referenceService.goToTop();
+      this.referenceService.showSweetAlertSuccessMessage(response.message);
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.pagination.pageIndex = 1;
+      this.listDefaultForms(this.pagination);
+      this.ngxloading = false;
+    },
+    (error: any) => { 
+      this.referenceService.goToTop();
+      this.ngxloading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.referenceService.showSweetAlertServerErrorMessage();
+     });
+}
+
 }

@@ -30,7 +30,8 @@
                                     <div class="portlet-input input-inline">
                                         <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
                                         <button class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';searchForms();" *ngIf="searchKey?.length>0"></button>
-                                        <button type="submit" class="search-box-item-click" (click)="searchForms()"><i class="fa fa-search"></i></button>
+                                        <button type="submit" class="search-box-item-click" (click)="searchForms()">
+                                            <i class="fa fa-search" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +55,10 @@
                                     <h4 title="{{form.name}}">{{form.name|slice:0:23}} <span *ngIf="form.name?.length>23">....</span></h4>
                                     <div class="bar">
                                         <a data-toggle="tooltip" data-placement="top" title="Create Form" (click)="$event.stopPropagation();createForm(form.id)">
-                                            <i class="fa fa-plus-circle"></i>
+                                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                        </a>
+                                        <a *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Delete Form" (click)="$event.stopPropagation();confirmDeleteForm(form.id)">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
                                         </a>
                                     </div>
                                 </div>
