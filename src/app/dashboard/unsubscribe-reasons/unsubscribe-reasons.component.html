@@ -149,21 +149,18 @@
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
   </app-response-message>
   <div class="tab-content">
-    <a class="close-circle" (click)="goToManage()">
-      <i class="fa fa-close" aria-hidden="true"></i>
-    </a>
     <form role="form" aria-labelledby="edit-header-text-form">
+      <fieldset class="custom-fieldset-unsubscribe-reason">
+        <legend>Header</legend>
       <div  class="table-responsive">
-        <table style="width:50%" class='table tgrid table-hover' aria-describedby="">
+        <table  class='table tgrid table-hover' aria-describedby="">
           <tr>
-            <th scope="row">
+            <th scope="row" class="shfw">
               Show Header Text
-            </th>
-            <td>
               <switch  [status]="!unsubscribePageDetails.hideHeaderText" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeHeaderTextStatus($event,unsubscribePageDetails)">
-              </switch>
-            </td>
+              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeHeaderTextStatus($event,unsubscribePageDetails)">
+            </switch>
+            </th>
           </tr>
         </table>
       </div>
@@ -173,17 +170,18 @@
         <ckeditor [(ngModel)]="unsubscribePageDetails.headerText" #footerTextCkEditor [ngModelOptions]="{standalone: true}" [config]="ckeConfig" debounce="500">
         </ckeditor>
       </div>
+    </fieldset>
+    <fieldset class="custom-fieldset-unsubscribe-reason">
+      <legend>Footer</legend>
       <div  class="table-responsive">
-        <table style="width:40%" class='table tgrid table-hover' aria-describedby="">
+        <table  class='table tgrid table-hover' aria-describedby="">
           <tr>
-            <th scope="row">
+            <th scope="row" class="shfw">
               Show Footer Text
-            </th>
-            <td>
               <switch  [status]="!unsubscribePageDetails.hideFooterText" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeFooterTextStatus($event,unsubscribePageDetails)">
-              </switch>
-            </td>
+              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeFooterTextStatus($event,unsubscribePageDetails)">
+            </switch>
+            </th>
           </tr>
         </table>
       </div>
@@ -193,6 +191,7 @@
         <ckeditor [(ngModel)]="unsubscribePageDetails.footerText" [ngModelOptions]="{standalone: true}" #footerTextCkEditor [config]="ckeConfig" debounce="500">
         </ckeditor>
       </div>
+      </fieldset>
       <div id="right">
         <button type="button"  class="btn btn-primary" translate (click)="updateHeaderAndFooterText()">Update</button>
         <button type="button"  class="btn btn-default" (click)="goToManage()" translate>Cancel</button>

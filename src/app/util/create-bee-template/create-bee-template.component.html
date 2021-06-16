@@ -1,5 +1,6 @@
 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<app-merge-tags *ngIf="!loading" [input]="mergeTagsInput"></app-merge-tags>
 <div id="partner-template-bee-container"></div>
         
 

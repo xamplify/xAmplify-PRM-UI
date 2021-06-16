@@ -94,6 +94,30 @@
 	 text-align: center;
   }
 
+  .custom-fieldset-unsubscribe-reason{
+	border: 1px solid #CCC;
+	padding: 15px;
+	margin-bottom: 10px;
+  }
+
+  
+legend {
+    display: block;
+    width: auto;
+    padding: 0 10px;
+    margin-bottom: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #00a6e8;
+    border: 0;
+    text-align: left;
+    border-bottom: none;
+}
+
+.shfw{
+	font-weight: 600 !important;
+}
+
 
 
 
