@@ -357,7 +357,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                }
         },error=>{
             this.isloading = false;
-            this.logger.errorPage(error)
+            this.logger.errorPage(error);
         });
     }
 
