@@ -225,7 +225,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     showConfigurePipelines = false;
 
     isValidPipeline = true;
-    mergeTagsInput:any = {};
+    mergeTagsInput: any = {};
 
     showUsersPreview = false;
     selectedListName = "";
@@ -234,7 +234,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     emptyContactListMessage = "";
     emptyContactsMessage: string = "";
     expandedUserList: any;
-    showExpandButton = false; 
+    showExpandButton = false;
 
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
@@ -2955,15 +2955,42 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
     }
 
-    viewMatchedContacts(userList: any) {		
-        userList.expand = !userList.expand;		
+    viewMatchedContacts(userList: any) {
+        userList.expand = !userList.expand;
         if (userList.expand) {
             if ((this.expandedUserList != undefined || this.expandedUserList != null)
-             && userList != this.expandedUserList) {				
-                this.expandedUserList.expand = false;				
-            }			
-            this.expandedUserList = userList;			
+                && userList != this.expandedUserList) {
+                this.expandedUserList.expand = false;
+            }
+            this.expandedUserList = userList;
         }
     }
 
+    openMergeTagsPopup(type:string,autoResponseSubject:any){
+        this.mergeTagsInput['isEvent'] = false;
+        this.mergeTagsInput['isCampaign'] = true;
+        this.mergeTagsInput['hideButton'] = true;
+        this.mergeTagsInput['type'] = type;
+        this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
+    }
+    
+    clearHiddenClick(){
+        this.mergeTagsInput['hideButton'] = false;
+    }
+    
+    appendValueToSubjectLine(event:any){
+        if(event!=undefined){
+            let type = event['type'];
+            let copiedValue = event['copiedValue'];
+            if(type=="campaignSubjectLine"){
+                let updatedValue = this.eventCampaign.subjectLine+" "+copiedValue;
+                this.eventCampaign.subjectLine = updatedValue;
+                this.eventSubjectLineError();
+            }else{
+                let autoResponse = event['autoResponseSubject'];
+                autoResponse.subject = autoResponse.subject+" "+copiedValue;
+            }
+         }
+         this.mergeTagsInput['hideButton'] = false;
+        }
 }
