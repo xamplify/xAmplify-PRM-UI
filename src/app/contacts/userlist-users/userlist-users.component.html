@@ -4,14 +4,14 @@
       <app-response-message [customResponse]="usersCustomResponse"></app-response-message>
     </div>
   </ng-container>
-  <app-auto-response-loader *ngIf="usersLoader.isLoading"></app-auto-response-loader>
-  <div *ngIf="usersPagination.pagedItems?.length != 0 && !usersLoader.isLoading && !usersCustomResponse.isVisible">    
+  <app-auto-response-loader [hidden]="!usersLoader.isLoading"></app-auto-response-loader>
+  <div [hidden]="usersPagination.pagedItems.length == 0 || usersLoader.isLoading || usersCustomResponse.isVisible">    
     <table class="table tgrid child-table-xamp" aria-describedby="user-info" id="userlist-users-{{userListId}}">
       <thead>
         <tr>
-          <th class="hidden-xs">Entity Info</th>
-          <th class="hidden-xs">Job Title</th>
-          <th class="hidden-xs">Address</th>
+          <th class="hidden-xs" scope="row">Entity Info</th>
+          <th class="hidden-xs" scope="row">Job Title</th>
+          <th class="hidden-xs" scope="row">Address</th>
         </tr>
       </thead>
       <tbody>
@@ -30,11 +30,12 @@
     <div *ngIf="usersPagination.totalRecords==0 && !usersLoader.isLoading" class="alert alert-info">
       <strong>No Data Found.</strong>
     </div>
-    <div *ngIf="!usersLoader.isLoading && usersPagination.pagedItems.length !== 0" class="pg8">
+    <div [hidden]="usersLoader.isLoading ||usersPagination.pagedItems.length==0 " class="pg8">
       <app-pagination [pagination]="usersPagination" (notifyParent)="setUsersPage($event)"
         (notifyParentDropDown)="getMatchedContacts($event)"></app-pagination>
     </div>
   </div>
+
   <div *ngIf="!usersLoader.isLoading && usersSortOption.totalRecords==0" class="alert alert-info">
     <strong translate>No Data Found.</strong>
   </div>

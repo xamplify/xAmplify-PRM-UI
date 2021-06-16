@@ -92,9 +92,7 @@ export class CreateBeeTemplateComponent implements OnInit {
         mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
         mergeTags.push({ name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs });
         mergeTags.push({ name: 'Sender Privacy Policy', value: this.senderMergeTag.privacyPolicy });
-        if (!emailTemplate.beeEventTemplate && !emailTemplate.beeEventCoBrandingTemplate) {
-          mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
-        }
+ 		mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
         if (emailTemplate.beeEventTemplate || emailTemplate.beeEventCoBrandingTemplate) {
           mergeTags.push({ name: 'Event Title', value: '{{event_title}}' });
           mergeTags.push({ name: 'Event Start Time', value: '{{event_start_time}}' });
