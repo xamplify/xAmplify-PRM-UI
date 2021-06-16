@@ -24,7 +24,11 @@ export class LogUnsubscribeComponent implements OnInit {
   isOtherReason = false;
   isShowSuccessMessage = false;
   characterleft = 250;
-
+  unsubscribeReasons:Array<any>;
+  invalidReason = true;
+  unsubscribePageContent:any = {};
+  loading = false;
+  companyLogoPath = "";
   constructor(
     private activatedRoute: ActivatedRoute,
     private logService: LogService,
@@ -37,29 +41,54 @@ export class LogUnsubscribeComponent implements OnInit {
       .subscribe(
         (result: any) => {
           $("html").css("background-color", "white");
-          this.processor.remove(this.processor);
-          console.log(result["_body"]);
           var body = result["_body"];
           var resp = JSON.parse(body);
           this.message = resp.message;
-          console.log(resp);
           this.isUnsubscribed = resp.isUnsubscribed;
           this.companyName = resp.companyName;
           this.userId = resp.userId;
-          
+          this.companyLogoPath = resp.companyLogoPath;
         },
         (error: any) => {
           this.processor.remove(this.processor);
           $("html").css("background-color", "white");
+        },()=>{
+          if(!this.isUnsubscribed){
+            this.findUnsubscribeReasons();
+          }else{
+            this.processor.remove(this.processor);
+          }
         }
       );
   }
+
+  findUnsubscribeReasons(){
+    this.unsubscribeReasons = [];
+    this.unsubscribePageContent = {};
+    this.processor.set(this.processor);
+    this.logService.findUnsubscribePageContent(this.companyId).subscribe(
+      response=>{
+        var body = response["_body"];
+        var resp = JSON.parse(body);
+        let map = resp.data;
+        this.unsubscribeReasons = map['unsubscribeReasons'];
+        this.unsubscribePageContent = map;
+      },error=>{
+        this.processor.remove(this.processor);
+        $("html").css("background-color", "white");
+      },()=>{
+        this.isOtherReason = this.unsubscribeReasons.length==0;
+        this.processor.remove(this.processor);
+      }
+    );
+  }
+
   setOtherOption(){
       this.isOtherReason = false;
   }
   
   unSubscribeUser(){
-      
+    this.loading = true;
     if(this.isUnsubscribed){
       var object = {
              "userId": this.userId,
@@ -81,21 +110,20 @@ export class LogUnsubscribeComponent implements OnInit {
       this.logService.unSubscribeUser(object)
       .subscribe(
         (result: any) => {
-          console.log(result);
           var body = result["_body"];
           var resp = JSON.parse(body);
           this.message = resp.message;
-          this.isShowSuccessMessage = true
+          this.isShowSuccessMessage = true;
+          this.loading = false;
         },
         (error: any) => {
         console.log(error);
+        this.loading = false;
         }
       );
   }
   
-  characterSize(){
-      this.characterleft = 250 - this.reason.length;
-    }
+ 
 
   ngOnInit() {
     this.processor.set(this.processor);
@@ -105,4 +133,26 @@ export class LogUnsubscribeComponent implements OnInit {
     });
     this.logunsubscribedUser();
   }
+
+  addReason(unsubscribeReason:any){
+    this.isOtherReason = unsubscribeReason.customReason;
+    if(this.isOtherReason){
+      this.reason = "";
+      this.invalidReason = true;
+    }else{
+      this.invalidReason = false;
+      this.reason = unsubscribeReason.reason;
+    }
+  }    
+
+ characterSize(){
+      let reasonLength = $.trim(this.reason).length;
+      if(reasonLength>0){
+        this.invalidReason = false;
+        this.characterleft = 250 - reasonLength;
+      }else{
+        this.invalidReason = true;
+      }
+    }  
+
 }

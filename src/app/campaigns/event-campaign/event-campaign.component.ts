@@ -43,6 +43,9 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { Pipeline } from 'app/dashboard/models/pipeline';
 
+import { SortOption } from '../../core/models/sort-option';
+import { UtilService } from '../../core/services/util.service';
+
 declare var $, swal, flatpickr, CKEDITOR, require;
 var moment = require('moment-timezone');
 
@@ -50,7 +53,7 @@ var moment = require('moment-timezone');
     selector: 'app-event-campaign',
     templateUrl: './event-campaign-step.component.html',
     styleUrls: ['./event-campaign.component.css', '../create-campaign/create-campaign.component.css', '../../../assets/css/content.css'],
-    providers: [PagerService, Pagination, CallActionSwitch, Properties, EventError, HttpRequestLoader, CountryNames, FormService]
+    providers: [PagerService, Pagination, CallActionSwitch, Properties, EventError, HttpRequestLoader, CountryNames, FormService, SortOption]
 })
 export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
     emailTemplates: Array<EmailTemplate> = [];
@@ -222,8 +225,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     showConfigurePipelines = false;
 
     isValidPipeline = true;
-    mergeTagsInput:any = {};
-    constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
+    mergeTagsInput: any = {};
+
+    showUsersPreview = false;
+    selectedListName = "";
+    selectedListId = 0;
+    recipientsSortOption: SortOption = new SortOption();
+    emptyContactListMessage = "";
+    emptyContactsMessage: string = "";
+    expandedUserList: any;
+    showExpandButton = false;
+
+    constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
         public authenticationService: AuthenticationService,
@@ -234,6 +247,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         private router: Router, public activatedRoute: ActivatedRoute,
         public properties: Properties, public eventError: EventError, public countryNames: CountryNames,
         public formService: FormService, private changeDetectorRef: ChangeDetectorRef, private render: Renderer, private vanityUrlService: VanityURLService) {
+
         this.referenceService.renderer = this.render;
         this.vanityUrlService.isVanityURLEnabled();
         this.countries = this.referenceService.getCountries();
@@ -270,7 +284,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         let isVendor = roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 || roles.indexOf(this.roleName.prmRole) > -1;
         this.isOrgAdminOrOrgAdminTeamMember = (this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.reDistributeEvent;
         this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
+
+        if (this.isEditCampaign) {
+            let selectedListSortOption = {
+                'name': 'Selected List', 'value': 'selectedList'
+            }
+            this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.push(selectedListSortOption);
+            this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption = this.recipientsSortOption.eventCampaignRecipientsDropDownOptions[this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+        }
     }
+
     isEven(n) { if (n % 2 === 0) { return true; } return false; }
     loadCampaignNames(userId: number) {
         this.campaignService.getCampaignNames(userId).subscribe(data => { this.names.push(data); },
@@ -463,7 +486,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     console.log(this.selectedFormName);
                     console.log(this.selectedFormId);
                     if (this.previewPopUpComponent && this.selectedFormId && this.selectedFormData) {
-                    this.previewPopUpComponent['selectedFormId'] = this.selectedFormId;
+                        this.previewPopUpComponent['selectedFormId'] = this.selectedFormId;
                         this.previewPopUpComponent.selectedFormData = this.selectedFormData;
                     }
                     this.eventCampaign.eventUrl = 'https://www.event-campaign/54ec45';
@@ -709,6 +732,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     searchContactList() {
         this.contactListsPagination.pageIndex = 1;
         this.contactListsPagination.searchKey = this.contactSearchInput;
+        if (this.contactListsPagination.searchKey != "") {
+            this.showExpandButton = true;
+        } else {
+            this.showExpandButton = false;
+        }
         this.loadContactLists(this.contactListsPagination);
     }
 
@@ -819,11 +847,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     switchStatusChange() {
-        //this.isValidPipeline = !this.isValidPipeline;
         this.clearSelectedContactList();
         this.clearSelectedTemplate();
         this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
-        // this.setPartnerEmailNotification(true);
+        this.contactListsPagination.channelCampaign = this.eventCampaign.channelCampaign;
         this.contactListsPagination.pageIndex = 1;
         if (!this.eventCampaign.channelCampaign) {
             this.eventCampaign.enableCoBrandingLogo = false;
@@ -850,7 +877,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             }
             this.resetTabClass();
         }
-
     }
 
     setPartnerEmailNotification(event) {
@@ -860,16 +886,54 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.eventCampaign.linkOpened = false;
         }
     }
+    //   contactListMethod(contactListsPagination:Pagination){
+
+    //   if(this.reDistributeEvent || this.reDistributeEventManage){
+    //     this.loadRedistributionContactList(contactListsPagination)
+    //   }else{
+    //     this.contactService.loadContactLists(contactListsPagination)
+    //     .subscribe(
+    //     (data: any) => {
+    //       this.contactListsPagination.totalRecords = data.totalRecords;
+    //       this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
+    //       if(this.isPreviewEvent && this.authenticationService.isOnlyPartner()){
+    //         const contactsAll:any = [];
+    //           this.contactListsPagination.pagedItems.forEach((element, index) => {
+    //             if( element.id ===this.parternUserListIds[index]) { contactsAll.push(this.contactListsPagination.pagedItems[index]);}
+    //           });
+    //           this.contactListsPagination.pagedItems = contactsAll;
+    //          }
+    //         const contactIds = this.contactListsPagination.pagedItems.map( function( a ) { return a.id; });
+    //         const items = $.grep( this.parternUserListIds, function( element ) { return $.inArray( element, contactIds ) !== -1;});
+    //         if ( items.length == contactListsPagination.totalRecords || items.length == this.contactListsPagination.pagedItems.length ) {
+    //             this.isHeaderCheckBoxChecked = true;
+    //         } else {
+    //             this.isHeaderCheckBoxChecked = false;
+    //         }
+    //     },
+    //     (error: any) => { this.logger.error(error); },
+    //     () => { this.logger.info('event campaign page contactListMethod() finished'); } );
+    //     }
+    //   }
+
     contactListMethod(contactListsPagination: Pagination) {
 
         if (this.reDistributeEvent || this.reDistributeEventManage) {
             this.loadRedistributionContactList(contactListsPagination)
         } else {
-            this.contactService.loadContactLists(contactListsPagination)
+            this.contactService.findContactsAndPartnersForCampaign(contactListsPagination)
                 .subscribe(
-                    (data: any) => {
+                    (response: any) => {
+                        let data = response.data;
                         this.contactListsPagination.totalRecords = data.totalRecords;
-                        this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.listOfUserLists);
+                        if (this.contactListsPagination.totalRecords == 0) {
+                            this.emptyContactListMessage = "No records found";
+                        }
+                        $.each(data.list, function (_index: number, list: any) {
+                            list.displayTime = new Date(list.createdTimeInString);
+                        });
+
+                        this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.list);
                         if (this.isPreviewEvent && this.authenticationService.isOnlyPartner()) {
                             const contactsAll: any = [];
                             this.contactListsPagination.pagedItems.forEach((element, index) => {
@@ -918,6 +982,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 (data: any) => {
 
                     this.contactListsPagination.totalRecords = data.data.totalRecords;
+                    if (this.contactListsPagination.totalRecords == 0) {
+                        this.emptyContactListMessage = "No records found";
+                    }
                     this.contactListsPagination = this.pagerService.getPagedItems(this.contactListsPagination, data.data.list);
                     if (this.isPreviewEvent && this.authenticationService.isOnlyPartner()) {
                         const contactsAll: any = [];
@@ -1109,13 +1176,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.isPartnerUserList = !this.isPartnerUserList;
         if (this.isPartnerUserList) {
             if (this.parternUserListIds.length > 0) {
-            this.userListIds = [];
+                this.userListIds = [];
                 this.eventError.eventContactError = false;
             }
         }
         else {
             if (this.userListIds.length > 0) {
-            this.parternUserListIds = [];
+                this.parternUserListIds = [];
                 this.eventError.eventContactError = false;
             }
         }
@@ -1263,7 +1330,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.checkLaunchOption = 'SCHEDULE';
         this.scheduleTimeError();
         if (this.isSelectedSchedule) {
-        this.selectedLaunchOption = 'SCHEDULE';
+            this.selectedLaunchOption = 'SCHEDULE';
             this.timezones = this.referenceService.getTimeZonesByCountryId(this.eventCampaign.countryId);
         }
     }
@@ -2853,6 +2920,52 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.listCategories();
     }
 
+    previewUsers(contactList: any) {
+        this.showUsersPreview = true;
+        this.selectedListName = contactList.name;
+        this.selectedListId = contactList.id;
+    }
+
+    resetValues() {
+        this.showUsersPreview = false;
+        this.selectedListName = "";
+        this.selectedListId = 0;
+    }
+
+    showContactsAlert(count: number) {
+        this.emptyContactsMessage = "";
+        if (count == 0) {
+            this.emptyContactsMessage = "No Contacts Found For This Contact List";
+        }
+    }
+
+    sortRecipientsList(text: any) {
+        this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption = text;
+        this.getAllFilteredResults();
+    }
+
+    getAllFilteredResults() {
+        try {
+            this.contactListsPagination.pageIndex = 1;
+            this.contactListsPagination.searchKey = this.contactSearchInput;
+            this.contactListsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption, this.contactListsPagination);
+            this.loadContactLists(this.contactListsPagination);
+        } catch (error) {
+            console.log(error, "getAllFilteredResults()", "Publish Content Component")
+        }
+    }
+
+    viewMatchedContacts(userList: any) {
+        userList.expand = !userList.expand;
+        if (userList.expand) {
+            if ((this.expandedUserList != undefined || this.expandedUserList != null)
+                && userList != this.expandedUserList) {
+                this.expandedUserList.expand = false;
+            }
+            this.expandedUserList = userList;
+        }
+    }
+
     openMergeTagsPopup(type:string,autoResponseSubject:any){
         this.mergeTagsInput['isEvent'] = false;
         this.mergeTagsInput['isCampaign'] = true;
@@ -2880,6 +2993,4 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
          }
          this.mergeTagsInput['hideButton'] = false;
         }
-
-
 }

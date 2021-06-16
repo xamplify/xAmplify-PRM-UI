@@ -1,0 +1,127 @@
+
+#right-corner {
+	float: right;
+}
+
+.float-right {
+	float: right;
+}
+
+#border-bottom {
+	border-bottom: 0;
+}
+
+#right-margin {
+	margin-right: 90px;
+}
+
+#search-div {
+	margin-right: 10px;
+}
+
+#icon {
+	position: relative;
+	right: -11px;
+}
+
+#sort-text {
+	height: 34px;
+}
+
+#left {
+	float: left;
+}
+
+#select-dropdown {
+	position: relative;
+	right: -3px;
+}
+
+.form-error .control-label {
+	color: red;
+}
+
+.form-error .form-control {
+	border-color: red;
+	box-shadow: none;
+}
+
+.top-padding-5px{
+	padding-top: 5px;
+}
+
+.disabled {
+   pointer-events: none;
+   cursor: default;
+}
+
+.mrfpx{
+	margin-right:5px;
+}
+
+.dodgerblue{
+	font-weight: 500 !important;
+}
+
+.black{
+	color:#777 !important;
+}
+
+.red{
+	color: red !important;
+}
+
+.full-width {
+    width: 100% !important;
+}
+
+.text-area-css{
+	float: right;
+	font-size: 11px;
+	position: relative;
+	left: -4px;
+	color: #7b8894;
+	bottom: 23px;
+  }
+  
+  .footer {
+	 position: fixed;
+	 left: 0;
+	 bottom: 0;
+	 width: 100%;
+	 background-color: red;
+	 color: white;
+	 text-align: center;
+  }
+
+  .custom-fieldset-unsubscribe-reason{
+	border: 1px solid #CCC;
+	padding: 15px;
+	margin-bottom: 10px;
+  }
+
+  
+legend {
+    display: block;
+    width: auto;
+    padding: 0 10px;
+    margin-bottom: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #00a6e8;
+    border: 0;
+    text-align: left;
+    border-bottom: none;
+}
+
+.shfw{
+	font-weight: 600 !important;
+}
+
+
+
+
+
+
+
+

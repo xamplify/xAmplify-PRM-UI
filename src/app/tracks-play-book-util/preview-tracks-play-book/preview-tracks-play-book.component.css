@@ -180,3 +180,7 @@ body {
     margin-bottom: 20px;
     border-radius: 5px!important;
 }
+
+.img-max-width {
+    max-width: 350px;
+}

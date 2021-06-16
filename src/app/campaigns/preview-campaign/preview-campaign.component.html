@@ -24,9 +24,10 @@
                          <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
                       </span>
                    </h6>
-                   <div class="media col-xs-12 col-sm-6">
+                   <div class="media col-xs-12">
+                      <div class="col-xs-6">
                       <div class="media-left p10">
-                         <i class="fa fa-bullhorn"></i>
+                         <i class="fa fa-bullhorn" aria-hidden="true"></i>
                       </div>
                       <div class="media-body">
                          <h5 *ngIf="previewCampaignType !=='EVENT'" title="{{campaign?.campaignName}}">{{campaign?.campaignName | slice:0:20}} <span *ngIf="campaign?.campaignName?.length>20">...</span></h5>
@@ -51,23 +52,43 @@
                          </h6>
                       </div>
                    </div>
-                   <div class="media col-xs-12 col-sm-6">
+                   <div class="col-sm-6">
                       <div class="media-left p10">
                          <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                       </div>
                       <div class="media-body">
-                         <h5>{{campaign.fromName}}</h5>
-                         <h6>{{campaign.email}}</h6>
+                         <h5 title="{{campaign?.fromName}}">{{campaign.fromName | slice:0:25}}
+                           <span *ngIf="campaign?.fromName?.length>25">...</span>
+                         </h5>
+                         <h6 title="{{campaign?.email}}">{{campaign.email | slice:0:25}}
+                           <span *ngIf="campaign?.email?.length>25">...</span>
+                         </h6>
                       </div>
                    </div>
-                   <div class="media col-xs-12 col-sm-6">
+                   </div>
+
+                   <div class="media col-xs-12">
+                     <div class="col-xs-6">
                       <div class="media-left p10">
                          <i class="fa fa-folder-open-o" aria-hidden="true"></i>
                       </div>
                       <div class="media-body">
-                         <h5>{{campaign.categoryName}}</h5>
+                         <h5 title="{{campaign?.categoryName}}">{{campaign.categoryName |slice:0:25}}
+                           <span *ngIf="campaign?.categoryName?.length>25">...</span>
+                         </h5>
                       </div>
                    </div>
+                   <div class="col-xs-6">
+                     <div class="media-left p10">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                     </div>
+                     <div class="media-body">
+                       <h5 title="{{campaign.subjectLine}}">{{campaign.subjectLine |slice:0:25}}
+                          <span *ngIf="campaign?.subjectLine?.length>25">...</span>
+                        </h5>
+                    </div>
+                  </div>
+                  </div>
                 </fieldset>
                 <fieldset class="scheduler-border" *ngIf="previewCampaignType === 'SOCIAL'">
                    <legend class="scheduler-border">Social Accounts</legend>

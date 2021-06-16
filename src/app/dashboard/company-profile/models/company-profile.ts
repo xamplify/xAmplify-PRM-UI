@@ -23,6 +23,7 @@ export class CompanyProfile {
     isAdd = true;
     videoId = 0;
     street = "";
+    privacyPolicy = "";
     /******Admin Related*********/
     userEmailId:string = "";
     firstName:string = "";

@@ -792,7 +792,7 @@ export class AddTracksPlayBookComponent implements OnInit {
         this.tracksPlayBook.slug = this.tracksPlayBook.title.toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
       }
     } else if (type == "slug") {
-      this.tracksPlayBook.slug = this.tracksPlayBook.slug.replace(/[^a-zA-Z0-9_-]/g, '_');
+      this.tracksPlayBook.slug = this.tracksPlayBook.slug.toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
     }
     this.validateSlug();
     if ((this.isAdd || (!this.isAdd && this.existingSlug !== this.tracksPlayBook.slug)) && this.isSlugValid) {

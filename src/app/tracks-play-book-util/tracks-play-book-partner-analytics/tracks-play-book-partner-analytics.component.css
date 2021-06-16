@@ -205,3 +205,12 @@
         right: auto;
     }
 }
+
+.quiz-score-margin {
+    margin: 0px 32%;
+}
+
+.quiz-width {
+    width: 30%;
+    text-align: center;
+}

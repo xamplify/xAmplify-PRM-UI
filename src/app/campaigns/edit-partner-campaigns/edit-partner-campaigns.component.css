@@ -178,3 +178,10 @@ legend.scheduler-border {
     border-bottom: none;
 }
 
+.cw {
+    width: 1%
+}
+
+.height160 {
+    height: 160px;
+}

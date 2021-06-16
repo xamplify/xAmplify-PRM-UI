@@ -1,0 +1,246 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<!-----Manage Unsubscribe Reason-->
+<div id="manage-unsubscribe-reasons">
+  <div class="portlet-title">
+    <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+    </app-response-message>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
+        <button class="btn-info-xamplify"  (click)="openHeaderAndFooterText()" translate>Edit Header/Footer Text</button>
+        <button class="btn-info-xamplify"  (click)="openUnsubscribePagePopup()" translate>Preview Unsubscribe Page</button>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
+        <div class="col-xs-12 col-sm-5 col-lg-5 p0">
+          <button class="add-button-xamplify"  (click)="openCreateDiv()" translate>Add</button>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-lg-7 p0">
+          <div class="page-toolbar">
+            <div class="btn-unsubscribeReason pull-right">
+              <div class="inputs float-right" style="display: inline-flex;">
+                <div id="left">
+                  <select class="form-control" [(ngModel)]="sortOption.selectedUnsubscribeReasonSortDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                  <option
+                  *ngFor="let option of sortOption.unsubscribeReasonsDropDownOptions"
+                  [ngValue]="option">
+                  {{option.name}}</option>
+                  </select>
+                </div>
+                <div class="portlet-input input-inline" id="search-div">
+                  <div class="input-icon right" id="icon">
+                    <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search Reason ..." (keypress)="searchOnKeyPress($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search();"></button>
+                    <button type="submit" class="search-box-item-click" (click)="search()">
+                      <i class="fa fa-search"  aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+  <ng-container *ngIf="!httpRequestLoader.isLoading">
+    <div class="table-responsive">
+      <table class='table tgrid table-hover table-sm' id="unsubscribe-reasons" *ngIf="pagination?.pagedItems?.length>0" aria-describedby="">
+        <thead>
+          <tr>
+            <th colspan="1" style="width: 30%" id="border-bottom">
+              <span class="ui-column-resizer gray" (mousedown)="referenceService?.onMouseDown($event,'unsubscribe-reasons',1)"> </span>
+              <span class="gridHeader" translate>Reason</span>
+            </th>
+            <th class="text-center" id="border-bottom" translate>Created On</th>
+            <th class="text-center" id="border-bottom" translate>Custom Reason</th>
+            <th class="text-center float-right" id="border-bottom">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let unsubscribeReason of pagination.pagedItems ;let i =index" id="reasons-{{unsubscribeReason.id}}">
+            <td>
+              <h4 class="moreipsis" title="{{unsubscribeReason?.reason}}">
+                <span>{{unsubscribeReason?.reason}}</span>
+              </h4>
+              <h6 class="moreipsis">
+                <span translate> Created By <strong>{{unsubscribeReason?.createdBy}}</strong></span>
+              </h6>
+            </td>
+            <td class="text-center">
+              <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="unsubscribeReason?.displayTime">
+              </app-timestamp>
+              <span *ngIf="referenceService.isSafariBrowser()">{{unsubscribeReason?.displayTime}}</span>
+            </td>
+            <td class="text-center">
+              <switch  [status]="unsubscribeReason.customReason" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" [disabled]="callActionSwitch.disabled">
+              </switch>
+            </td>
+            <td>
+              <div class="actions-block override-actions">
+                <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="findById(unsubscribeReason.id)">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+                <a id="template-delete" (click)="confirmDeleteAlert(unsubscribeReason)" data-toggle="tooltip" data-placement="top" title="Delete">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+  <div *ngIf="pagination?.pagedItems.length !== 0" class="pg8">
+    <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)" (notifyParentDropDown)="findAll($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+  </div>
+  <!-- End of 24 -->
+  <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+    <strong translate>No Data Found.</strong>
+  </div>
+</div>
+
+
+<!----------Add Reason----------->
+<div class="portlet-body clearfix" id="add-unsubscribe-reason" style="display: none;">
+  <app-modal-popup-loader *ngIf="addLoader?.isLoading"></app-modal-popup-loader>
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+  </app-response-message>
+  <div class="tab-content" *ngIf="!addLoader?.isLoading">
+    <a class="close-circle" (click)="goToManage()">
+      <i class="fa fa-close" aria-hidden="true"></i>
+    </a>
+    <form role="form" aria-labelledby="add-unsubscribe-reason-form">
+      <div class="form-group">
+        <label class="control-label" translate>Reason</label>
+        <span class="required">*</span>
+        <input type="text" maxlength="255" placeholder="Reason" [(ngModel)]="unsubscribeReason.reason"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()"/>
+        <span class="required" *ngIf="unsubscribeReason?.dupliateNameErrorMessage?.length>0">{{unsubscribeReason?.dupliateNameErrorMessage}}</span>
+      </div>
+      <div  class="table-responsive">
+        <table style="width:40%" class='table tgrid table-hover' aria-describedby="">
+          <tr>
+            <th scope="row" [ngClass]="unsubscribeReason?.customReasonClass">
+              Custom Reason
+            </th>
+            <td>
+              <switch  [status]="unsubscribeReason.customReason" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeStatus($event,unsubscribeReason)">
+              </switch>
+            </td>
+          </tr>
+        </table>
+      </div>
+  <div id="right">
+    <button type="button" [disabled]="!unsubscribeReason.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{submitButtonText}}</button>
+    <button type="button"  class="btn btn-default" (click)="goToManage()" translate>Cancel</button>
+  </div>
+  </form>
+  </div>
+</div>
+
+
+<!---Edit Header/Footer Text-->
+<div class="portlet-body clearfix" id="edit-header-and-footer-text" style="display: none;">
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+  </app-response-message>
+  <div class="tab-content">
+    <form role="form" aria-labelledby="edit-header-text-form">
+      <fieldset class="custom-fieldset-unsubscribe-reason">
+        <legend>Header</legend>
+      <div  class="table-responsive">
+        <table  class='table tgrid table-hover' aria-describedby="">
+          <tr>
+            <th scope="row" class="shfw">
+              Show Header Text
+              <switch  [status]="!unsubscribePageDetails.hideHeaderText" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeHeaderTextStatus($event,unsubscribePageDetails)">
+            </switch>
+            </th>
+          </tr>
+        </table>
+      </div>
+      <div [ngClass]="unsubscribePageDetails.invalidHeaderText ? 'form-group has-error has-feedback':'form-group'">
+        <label class="control-label" translate>Header Text</label>
+        <span class="required">*</span>
+        <ckeditor [(ngModel)]="unsubscribePageDetails.headerText" #footerTextCkEditor [ngModelOptions]="{standalone: true}" [config]="ckeConfig" debounce="500">
+        </ckeditor>
+      </div>
+    </fieldset>
+    <fieldset class="custom-fieldset-unsubscribe-reason">
+      <legend>Footer</legend>
+      <div  class="table-responsive">
+        <table  class='table tgrid table-hover' aria-describedby="">
+          <tr>
+            <th scope="row" class="shfw">
+              Show Footer Text
+              <switch  [status]="!unsubscribePageDetails.hideFooterText" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeFooterTextStatus($event,unsubscribePageDetails)">
+            </switch>
+            </th>
+          </tr>
+        </table>
+      </div>
+      <div [ngClass]="unsubscribePageDetails.invalidFooterText ? 'form-group has-error has-feedback':'form-group'">
+        <label class="control-label" translate>Footer Text</label>
+        <span class="required">*</span>
+        <ckeditor [(ngModel)]="unsubscribePageDetails.footerText" [ngModelOptions]="{standalone: true}" #footerTextCkEditor [config]="ckeConfig" debounce="500">
+        </ckeditor>
+      </div>
+      </fieldset>
+      <div id="right">
+        <button type="button"  class="btn btn-primary" translate (click)="updateHeaderAndFooterText()">Update</button>
+        <button type="button"  class="btn btn-default" (click)="goToManage()" translate>Cancel</button>
+      </div>
+  </form>
+  </div>
+</div>
+
+
+<div class="modal fade right" id="unsubscribePagePopup" tabindex="-1" role="dialog" aria-labelledby="unsubscribePagePopup" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog full-width" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button *ngIf="!modalPopupLoader" type="button" class="close-circle" data-dismiss="modal">
+        <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Unsubscribe Page</h4>
+     </div>
+     <div class="modal-body">
+       <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+        <div class="portlet light" style="border: navajowhite;" *ngIf="!modalPopupLoader">
+        <img src="{{unsubscribePageContent?.companyLogoPath}}"  class="img-rounded" alt="" width="200" height="100" style="left: 8%;height: 52px;width: 130px;top: 0; margin-top: 10px;;filter: grayscale(0);"> 
+        <div>
+          <div class="container"  style="margin-top: 50px;">
+            <h1 [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideHeaderText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.headerText}}"></h1>
+            <form style="line-height: 25px; font-size: 15px;">
+              <ng-container *ngFor="let reason of unsubscribePageContent?.unsubscribeReasons;let i = index">
+                <input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
+              </ng-container>
+              <div *ngIf="isOtherReason || unsubscribePageContent?.unsubscribeReasons?.length==0" style="width: 50%;">
+                <label for="comment">Reason:</label>
+                    <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+                    <label class="text-area-css">{{characterleft}} characters left</label>
+                  </div>
+            </form>
+            <div style="margin-top: 20px;">
+              <button type="button" [disabled]="invalidReason"
+                class="btn btn-primary">Submit</button>
+            </div>
+          <div style="margin-top:20px">
+                  <h4 [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideFooterText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.footerText}}"></h4>
+                </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" *ngIf="!modalPopupLoader">
+       <button type="submit" data-dismiss="modal" class="btn btn-default">Close</button>
+    </div>
+    </div>
+  </div>
+</div>

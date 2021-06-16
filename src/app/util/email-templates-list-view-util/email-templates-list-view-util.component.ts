@@ -16,6 +16,8 @@ import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { SortOption } from '../../core/models/sort-option';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { UtilService } from '../../core/services/util.service';
+
 declare var $, swal: any;
 
 @Component({
@@ -80,11 +82,15 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewInput:any;
   @Output() updatedItemsCount = new EventEmitter();
+  loggedInAsSuperAdmin = false;
+  saveAsDefaultTemplate = false;
+  defaultTemplateInput = {};
   constructor( private emailTemplateService: EmailTemplateService, private router: Router,
       private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
       public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, 
-      public campaignAccess:CampaignAccess,public renderer:Renderer,public userService:UserService,private route: ActivatedRoute) {
+      public campaignAccess:CampaignAccess,public renderer:Renderer,public userService:UserService,private route: ActivatedRoute,public utilService:UtilService) {
       this.refService.renderer = this.renderer;
+      this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
       this.hasAllAccess = this.refService.hasAllAccess();
@@ -469,4 +475,16 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
           this.modulesDisplayType.isFolderListView  = false;
       }
   }
+
+  openDefaultTemplatePopup(emailTemplate: any) {
+    this.saveAsDefaultTemplate = true;
+    this.defaultTemplateInput['id'] = emailTemplate.id;
+    this.defaultTemplateInput['name'] = emailTemplate.name;
+}
+
+showSuccessMessage() {
+    this.saveAsDefaultTemplate = false;
+    this.defaultTemplateInput = {};
+}
+
 }

@@ -56,6 +56,9 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	showUsersPreview = false;
 	selectedPartnerGroupName = "";
 	selectedPartnerGroupId:number=0;
+	showExpandButton = false; 
+    expandedUserList: any;
+
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -198,6 +201,11 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 			pagination = this.utilService.sortOptionValues(sortOption.selectedDamPartnerDropDownOption, pagination);
 			this.findPartnerCompanies(pagination);
 		} else if (type == "partnerGroups") {
+			if (pagination.searchKey != "") {
+				this.showExpandButton = true;
+			} else {
+				this.showExpandButton = false;
+			}
 			pagination = this.utilService.sortOptionValues(sortOption.selectedDamPartnerDropDownOption, pagination);
 			this.findPartnerGroups(pagination);
 		}
@@ -578,5 +586,15 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 		this.selectedPartnerGroupId = 0;
 	}
 
+	viewMatchedContacts(userList: any) {		
+		userList.expand = !userList.expand;		
+		if (userList.expand) {
+			if ((this.expandedUserList != undefined || this.expandedUserList != null)
+			 && userList != this.expandedUserList) {				
+				this.expandedUserList.expand = false;				
+			}			
+			this.expandedUserList = userList;			
+		}
+	}
 
 }

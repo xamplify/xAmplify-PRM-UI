@@ -120,10 +120,9 @@
       </div>
 
       <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
-      <!-- -----------------------------Leads List-------------------------------------- -->      
-      <app-list-loader [hidden]="!httpRequestLoader.isLoading">
-      </app-list-loader>
-      <div class="row" [hidden]="httpRequestLoader.isLoading">
+      <!-- -----------------------------Leads List-------------------------------------- -->    
+      
+      <div class="row">
         <div class="col-md-12">          
           <div class="tabbable tabbable-custom tabbable-noborder" id="header">
             <div class="tab-content" *ngIf="!showCampaignLeads">              
@@ -185,7 +184,8 @@
               <div class="row" id="box" *ngIf="httpRequestLoader.isServerError" translate>
                 Please contact admin for 'Leads'
               </div>             
-      
+              <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+              </app-list-loader>
               <!-- -------------------- List View for Leads-------------------- -->
               <section class='m10' 
                 [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">

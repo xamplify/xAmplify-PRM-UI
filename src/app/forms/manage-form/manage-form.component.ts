@@ -446,5 +446,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     }
 
+    refreshPage() {
+        this.listForms(this.pagination);
+      }
 
 }

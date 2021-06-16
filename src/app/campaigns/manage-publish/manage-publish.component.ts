@@ -293,14 +293,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             if (campaign.launched) {
                 this.isScheduledCampaignLaunched = true;
-                //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
+                this.isloading = false;
             } else {
                 if (campaign.nurtureCampaign) {
                     this.campaignService.reDistributeEvent = false;
                     this.isPartnerGroupSelected(campaign.campaignId,true);
                 } else {
                      this.router.navigate(['/home/campaigns/event-edit/' + campaign.campaignId]); 
-                    }
+                 }
             }
         }
         else {
@@ -316,13 +316,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                         if (isLaunched) {
                             this.isScheduledCampaignLaunched = true;
-                            //  setTimeout(function() { $("#scheduleCompleted").slideUp(1000); }, 5000);
+                            this.isloading = false;
                         } else {
                             if (isNurtureCampaign) {
                                 this.campaignService.reDistributeCampaign = data;
                                 this.campaignService.isExistingRedistributedCampaignName = true;
                                 this.isPartnerGroupSelected(campaign.campaignId,false);
-                              //  this.router.navigate(['/home/campaigns/re-distribute-campaign']);
                             }
                             else {
                                 this.refService.isEditNurtureCampaign = false;
@@ -356,9 +355,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
                    }
                }
-
         },error=>{
-            this.logger.errorPage(error)
+            this.isloading = false;
+            this.logger.errorPage(error);
         });
     }
 

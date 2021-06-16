@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 
@@ -12,8 +12,8 @@ export class MergeTagsComponent implements OnInit {
 
 	isEvent: boolean;
 	isCampaign: boolean;
-	hideButton:boolean;
-	@Input() input:any;
+	hideButton: boolean;
+	@Input() input: any;
 	@Output() notifyComponent = new EventEmitter();
 	@Output() passValueAndNotifyComponent = new EventEmitter();
 	successMessagePrefix = "Copied";
@@ -27,13 +27,13 @@ export class MergeTagsComponent implements OnInit {
 		this.isCampaign = this.input['isCampaign'];
 		this.hideButton = this.input['hideButton'];
 		this.addMergeTags();
-		if(this.hideButton==undefined){
+		if (this.hideButton == undefined) {
 			this.hideButton = false;
 		}
-		if(this.hideButton){
+		if (this.hideButton) {
 			this.showMergeTagsPopUp();
 		}
-		if(this.isCampaign){
+		if (this.isCampaign) {
 			this.successMessagePrefix = "Inserted";
 		}
 
@@ -62,7 +62,10 @@ export class MergeTagsComponent implements OnInit {
 		if (this.isCampaign == undefined || !this.isCampaign) {
 			this.mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
 			this.mergeTags.push({ name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs });
+			this.mergeTags.push({ name: 'Sender Privacy Policy', value: this.senderMergeTag.privacyPolicy });
+			this.mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
 		}
+		
 		if (this.isEvent) {
 			this.mergeTags.push({ name: 'Event Title', value: '{{event_title}}' });
 			this.mergeTags.push({ name: 'Event Start Time', value: '{{event_start_time}}' });
@@ -75,18 +78,21 @@ export class MergeTagsComponent implements OnInit {
 		}
 	}
 
-	hideModal(){
+	hideModal() {
 		this.notifyComponent.emit();
 		$('#' + this.modalPopupId).modal('hide');
 	}
 
-	passToOtherComponent(i:number){
-		let copiedValue = $('#merge-tag-'+i).val();
-		let object = {};
-		object['type'] = this.input['type'];
-		object['copiedValue'] = copiedValue;
-		object['autoResponseSubject'] = this.input['autoResponseSubject'];
-		this.passValueAndNotifyComponent.emit(object);
-		$('#' + this.modalPopupId).modal('hide');
+	passToOtherComponent(i: number) {
+		if (this.hideButton) {
+			let copiedValue = $('#merge-tag-' + i).val();
+			let object = {};
+			object['type'] = this.input['type'];
+			object['copiedValue'] = copiedValue;
+			object['autoResponseSubject'] = this.input['autoResponseSubject'];
+			this.passValueAndNotifyComponent.emit(object);
+			$('#' + this.modalPopupId).modal('hide');
+		}
+
 	}
 }

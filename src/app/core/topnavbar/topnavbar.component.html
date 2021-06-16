@@ -8,30 +8,29 @@
     <!-- BEGIN HEADER INNER -->
     <div class="page-header-inner">
         <!-- BEGIN LOGO -->
-        <div class="page-logo overflow-hidden">
+        <div class="page-logo pttpx">
+             <div [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
+                <img  *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt="" onerror="this.src='assets/images/xamplify-logo.png';"  />
+                <img  *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" alt=""  onerror="this.src='assets/images/xamplify-logo.png';" />
+            </div>
             <!--  -->
-            <a [routerLink]="refService.homeRouter">
+            <!-- <a [routerLink]="refService.homeRouter">
                 <img *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" (error)="errorImage($event)" alt="logo" class="logo-default" />
                 <img *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" (error)="errorImage($event)" alt="logo" class="logo-default" />
-            </a>
-            <!-- <div class="menu-toggler sidebar-toggler" *ngIf="authenticationService.user.hasCompany"> -->
-            <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
-            <!-- </div> -->
+            </a> -->
             <div (click)="refService.changeSideBar()" class="side-bar" [class.side-bar-css]="refService.isSidebarClosed" *ngIf="authenticationService.user.hasCompany">
-                <i class="fa fa-bars" style="font-size: 21px;"></i>
+                <i class="fa fa-bars" style="font-size: 21px;" aria-hidden="true"></i>
             </div>
         </div>
+
         <!-- END LOGO -->
         <!-- BEGIN RESPONSIVE MENU TOGGLER -->
         <a class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-            <!-- <img src="assets/images/menu.png"> -->
         </a>
         <!-- END PAGE ACTIONS -->
         <!-- BEGIN PAGE TOP -->
         <div class="page-top">
             <!-- BEGIN HEADER SEARCH BOX -->
-            <!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
-
             <!-- SEARCH IS HIDDEN -->
             <form class="search-form search-form-expanded hidden" action="extra_search.html" method="GET">
                 <div class="input-group">
@@ -48,7 +47,6 @@
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;">
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
-
                     <li *ngIf="isLoggedInFromAdminSection" style="margin-top: 17px;margin-right: 5px;">
 						<button class="btn btn-primary" (click)="goBackToAdminPanel()">
 							<span class="hidden-xs">Go back to admin panel</span>

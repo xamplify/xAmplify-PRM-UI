@@ -1585,7 +1585,6 @@ legend {
     font-size: 15px;
     font-weight: 600;
     color: #00a6e8;
-    ;
     border: 0;
     text-align: left;
     border-bottom: none;
@@ -1633,15 +1632,14 @@ legend {
 }
 
 .custom-change-css {
-    /* width: 100%; */
     background: #eaeaea;
     border-radius: 0;
-    /* padding: 10px 20px; */
     width: 102%;
     position: relative;
     top: -24px;
     margin-bottom: -16px;
     right: 10px;
+    margin-top:13px;
 }
 
 .time-picker-css {
@@ -2035,7 +2033,16 @@ legend {
     margin-right: 10px !important;
 }
 
+
+.cw {
+    width: 1%
+}
+
+.child-table-xamp {
+    background-color: #f1f1f1;
+}
 .npcfs{
     padding-top: 0px !important;
     font-size: 15px !important;
+
 }
