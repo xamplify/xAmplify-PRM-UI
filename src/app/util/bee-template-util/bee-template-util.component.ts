@@ -114,26 +114,8 @@ export class BeeTemplateUtilComponent implements OnInit {
 				self.loading = false;
 			  };
 		
-			  var mergeTags = [
-				{ name: 'First Name', value: '{{firstName}}' },
-				{ name: 'Last Name', value: '{{lastName}}' },
-				{ name: 'Full Name', value: '{{fullName}}' },
-				{ name: 'Email Id', value: '{{emailId}}' },
-				{name: 'Company Name', value: '{{companyName}}' }
-				];
-				mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
-				mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
-				mergeTags.push( { name: 'Sender Full Name', value: this.senderMergeTag.senderFullName } );
-				mergeTags.push( { name: 'Sender Title', value: this.senderMergeTag.senderTitle } );
-				mergeTags.push( { name: 'Sender Email Id',  value: this.senderMergeTag.senderEmailId } );
-				mergeTags.push( { name: 'Sender Contact Number',value: this.senderMergeTag.senderContactNumber } );
-				mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
-				mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
-				mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
-				mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
-				mergeTags.push({ name: 'Sender Privacy Policy', value: this.senderMergeTag.privacyPolicy });
-		        mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
-		
+			  let mergeTags = [];
+			  mergeTags = this.referenceService.addMergeTags(mergeTags,false,false);
 			  var beeUserId = "bee-"+self.loggedInUserCompanyId;
 			  let roleHash = self.authenticationService.vendorRoleHash;
 			  if(self.isPartnerView){

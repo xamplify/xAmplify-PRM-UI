@@ -44,38 +44,7 @@ export class MergeTagsComponent implements OnInit {
 	}
 
 	addMergeTags() {
-		this.mergeTags.push({ name: 'First Name', value: '{{firstName}}' });
-		this.mergeTags.push({ name: 'Last Name', value: '{{lastName}}' });
-		this.mergeTags.push({ name: 'Full Name', value: '{{fullName}}' });
-		this.mergeTags.push({ name: 'Email Id', value: '{{emailId}}' });
-		this.mergeTags.push({ name: 'Company Name', value: '{{companyName}}' });
-		this.mergeTags.push({ name: 'Sender First Name', value: this.senderMergeTag.senderFirstName });
-		this.mergeTags.push({ name: 'Sender Last Name', value: this.senderMergeTag.senderLastName });
-		this.mergeTags.push({ name: 'Sender Full Name', value: this.senderMergeTag.senderFullName });
-		this.mergeTags.push({ name: 'Sender Title', value: this.senderMergeTag.senderTitle });
-		this.mergeTags.push({ name: 'Sender Email Id', value: this.senderMergeTag.senderEmailId });
-		if (this.isCampaign == undefined || !this.isCampaign) {
-			this.mergeTags.push({ name: 'Sender Contact Number', value: this.senderMergeTag.senderContactNumber });
-		}
-		this.mergeTags.push({ name: 'Sender Company', value: this.senderMergeTag.senderCompany });
-		this.mergeTags.push({ name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl });
-		if (this.isCampaign == undefined || !this.isCampaign) {
-			this.mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
-			this.mergeTags.push({ name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs });
-			this.mergeTags.push({ name: 'Sender Privacy Policy', value: this.senderMergeTag.privacyPolicy });
-			this.mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
-		}
-		
-		if (this.isEvent) {
-			this.mergeTags.push({ name: 'Event Title', value: '{{event_title}}' });
-			this.mergeTags.push({ name: 'Event Start Time', value: '{{event_start_time}}' });
-			this.mergeTags.push({ name: 'Event End Time', value: '{{event_end_time}}' });
-			this.mergeTags.push({ name: 'Address', value: '{{address}}' });
-			this.mergeTags.push({ name: 'Event From Name', value: '{{event_fromName}}' });
-			this.mergeTags.push({ name: 'Event EmailId', value: '{{event_emailId}}' });
-			this.mergeTags.push({ name: 'Vendor Name   ', value: '{{vendor_name}}' });
-			this.mergeTags.push({ name: 'Vendor Email Id', value: '{{vendor_emailId}}' });
-		}
+		this.mergeTags = this.referenceService.addMergeTags(this.mergeTags,this.isCampaign,this.isEvent);
 	}
 
 	hideModal() {
