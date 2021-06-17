@@ -131,6 +131,7 @@ export class ReferenceService {
 	startWidth: any;
 	regularExpressions = new RegularExpressions();
 	loaderFromAdmin = false;
+	
 	constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
 		private router: Router, public deviceService: Ng2DeviceService, private route: ActivatedRoute) {
 		console.log('reference service constructor');
@@ -2210,6 +2211,42 @@ export class ReferenceService {
 		}
 		event.stopPropagation();
 		return selectedCheckBoxIds;
+	}
+
+	addMergeTags(mergeTags:any,isCampaign:boolean,isEvent:boolean){
+		mergeTags.push({ name: 'First Name', value: '{{firstName}}' });
+		mergeTags.push({ name: 'Last Name', value: '{{lastName}}' });
+		mergeTags.push({ name: 'Full Name', value: '{{fullName}}' });
+		mergeTags.push({ name: 'Email Id', value: '{{emailId}}' });
+		mergeTags.push({ name: 'Company Name', value: '{{companyName}}' });
+		mergeTags.push({ name: 'Mobile Number', value: '{{mobileNumber}}' });
+		mergeTags.push({ name: 'Address', value: '{{address}}' });
+		mergeTags.push({ name: 'Zip Code', value: '{{zipcode}}' });
+		mergeTags.push({ name: 'City', value: '{{city}}' });
+		mergeTags.push({ name: 'State', value: '{{state}}' });
+		mergeTags.push({ name: 'Country', value: '{{country}}' });
+		mergeTags.push({ name: 'Sender First Name', value: this.senderMergeTag.senderFirstName });
+		mergeTags.push({ name: 'Sender Last Name', value: this.senderMergeTag.senderLastName });
+		mergeTags.push({ name: 'Sender Full Name', value: this.senderMergeTag.senderFullName });
+		mergeTags.push({ name: 'Sender Title', value: this.senderMergeTag.senderTitle });
+		mergeTags.push({ name: 'Sender Email Id', value: this.senderMergeTag.senderEmailId });
+		if (isCampaign == undefined || !isCampaign) {
+			mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
+			mergeTags.push({ name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs });
+			mergeTags.push({ name: 'Sender Privacy Policy', value: this.senderMergeTag.privacyPolicy });
+			mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
+		}
+		if (isEvent) {
+			mergeTags.push({ name: 'Event Title', value: '{{event_title}}' });
+			mergeTags.push({ name: 'Event Start Time', value: '{{event_start_time}}' });
+			mergeTags.push({ name: 'Event End Time', value: '{{event_end_time}}' });
+			mergeTags.push({ name: 'Address', value: '{{address}}' });
+			mergeTags.push({ name: 'Event From Name', value: '{{event_fromName}}' });
+			mergeTags.push({ name: 'Event EmailId', value: '{{event_emailId}}' });
+			mergeTags.push({ name: 'Vendor Name', value: '{{vendor_name}}' });
+			mergeTags.push({ name: 'Vendor Email Id', value: '{{vendor_emailId}}' });
+		}
+		return mergeTags;
 	}
 
 
