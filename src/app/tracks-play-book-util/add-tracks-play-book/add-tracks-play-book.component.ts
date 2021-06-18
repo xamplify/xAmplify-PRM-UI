@@ -65,7 +65,7 @@ export class AddTracksPlayBookComponent implements OnInit {
   formsLoader: HttpRequestLoader = new HttpRequestLoader();
   name = 'ng2-ckeditor';
   ckeConfig: any;
-  @ViewChild("myckeditor") ckeditor: any;
+  @ViewChild("ckeditor") ckeditor: any;
   formBackgroundImage = "";
   pageBackgroundColor = "";
   siteKey = "";
@@ -165,6 +165,7 @@ export class AddTracksPlayBookComponent implements OnInit {
   selectedUserIds: any[] = [];
 
   isAssestPopUpOpen : boolean = false;
+  isPreviewFromAssetPopup: boolean = false;
 
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
@@ -226,6 +227,9 @@ export class AddTracksPlayBookComponent implements OnInit {
   }
 
   changeActiveTab(activeTab: string) {
+    if(this.activeTabName == "step-2") {
+      this.setDescription();
+    }
     this.activeTabName = activeTab;
     if (activeTab == "step-1") {
       this.stepOneTabClass = this.activeTabClass;
@@ -247,6 +251,7 @@ export class AddTracksPlayBookComponent implements OnInit {
     this.tracksPlayBookUtilService.getById(id).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
+          console.log(response.data)
           let tracksPlayBook: TracksPlayBook = response.data;
           if (tracksPlayBook != undefined) {
             this.tracksPlayBook = tracksPlayBook;
@@ -282,6 +287,8 @@ export class AddTracksPlayBookComponent implements OnInit {
                 tagIds.push(tag.id);
               });
               this.tracksPlayBook.tagIds = tagIds;
+            } else {
+              this.tracksPlayBook.tagIds = new Array<number>();
             }
             if (this.tracksPlayBook.category !== undefined) {
               this.tracksPlayBook.categoryId = this.tracksPlayBook.category.id;
@@ -655,13 +662,11 @@ export class AddTracksPlayBookComponent implements OnInit {
 
   setSelectedAsset(asset: any) {
     let index = this.selectedAssets.findIndex(x => x.id == asset.id);
-    console.log(index)
     if (index < 0) {
       this.selectedAssets.push(asset);
     } else if (index > -1) {
       this.selectedAssets.splice(index, 1);
     }
-    console.log(this.selectedAssets)
   }
 
   isAssetSelected(asset: any) {
@@ -1221,7 +1226,8 @@ export class AddTracksPlayBookComponent implements OnInit {
   }
 
 
-  assetPreview(assetDetails: any) {
+  assetPreview(assetDetails: any, isFromPopup: boolean) {
+    this.isPreviewFromAssetPopup = isFromPopup;
     if (assetDetails.beeTemplate) {
       this.previewBeeTemplate(assetDetails);
     } else {
@@ -1259,10 +1265,12 @@ export class AddTracksPlayBookComponent implements OnInit {
       }
     }
     if (this.activeTabName == "step-3") {
-      if (this.showFilePreview) {
-        $('#order-assets').modal('hide');
-      } else {
-        $('#order-assets').modal('show');
+      if(this.isPreviewFromAssetPopup !== undefined && this.isPreviewFromAssetPopup){
+        if (this.showFilePreview) {
+          $('#order-assets').modal('hide');
+        } else {
+          $('#order-assets').modal('show');
+        }
       }
     }
   }
@@ -1388,4 +1396,14 @@ export class AddTracksPlayBookComponent implements OnInit {
     this.checkAllRequiredFields()
   }
 
+  setDescription(){
+    if(CKEDITOR!=undefined){
+      for (var instanceName in CKEDITOR.instances) {
+          CKEDITOR.instances[instanceName].updateElement();
+          this.tracksPlayBook.description = CKEDITOR.instances[instanceName].getData();
+      }
+    }
+    this.validateDescription();
+    this.validateAllSteps();
+  }
 }

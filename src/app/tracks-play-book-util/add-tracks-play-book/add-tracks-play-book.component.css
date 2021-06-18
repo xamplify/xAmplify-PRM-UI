@@ -1019,3 +1019,12 @@ input.cmn-toggle-round-flat:checked+label:after {
     position: relative;
     border: solid 1px #008fd5;
 }
+
+.remove-button {
+    color: #cb5a5e;
+    border: 1px solid #cb5a5e;
+}
+
+.remove-button:hover {
+    background: #cb5a5e;
+}
