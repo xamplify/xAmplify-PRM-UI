@@ -2072,9 +2072,7 @@ export class ReferenceService {
 
 	}
 
-	showSweetAlertProceesor(title: string) {
-		swal({ title: title, text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-	}
+	
 
 	getSenderMergeTagsData() {
 		return this.http.get(this.authenticationService.REST_URL + "admin/getSenderMergeTagsData/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, "")
@@ -2128,6 +2126,9 @@ export class ReferenceService {
 				allowOutsideClick:false
 			}
 		);
+	}
+	showSweetAlertProceesor(title: string) {
+		this.showSweetAlertProcessingLoader(title);
 	}
 
 	post(obj:any,url:string) {

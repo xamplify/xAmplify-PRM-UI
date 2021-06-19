@@ -10,6 +10,7 @@ export const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
     { path: "select", component: SelectLandingPageComponent },
     { path: "add", component: AddLandingPageComponent },
+    { path: "saveAsDefault", component: AddLandingPageComponent },
     { path: "add/:categoryId", component: AddLandingPageComponent },
     { path: "manage", component: ManageLandingPageComponent },
     { path: "manage/:categoryId", component: ManageLandingPageComponent },
