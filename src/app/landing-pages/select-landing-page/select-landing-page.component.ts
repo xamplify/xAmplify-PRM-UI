@@ -41,6 +41,7 @@ export class SelectLandingPageComponent implements OnInit, OnDestroy {
 
     showAllLandingPages(type: string, index: number) {
         this.selectedLandingPageTypeIndex = index;
+        this.pagination.pageIndex = 1;
         this.pagination.filterKey = type;
         this.listLandingPages(this.pagination);
     }
