@@ -54,6 +54,9 @@
                                         <a *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Save As Default Page" (click)="goToCreatePage(landingPage.id)">
                                             <i class="fa fa-save" aria-hidden="true"></i>
                                         </a>
+                                        <a *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Delete Default Page" (click)="confirmDeleteLandingPage(landingPage)">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -63,6 +66,9 @@
                 <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
                     <strong translate>No Pages Found.</strong>
                 </div>
+                <div *ngIf="pagination?.pagedItems.length !== 0" class="pg8">
+                    <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)" (notifyParentDropDown)="listLandingPages($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                  </div>
 
             </div>
             <!-- END PAGE CONTENT-->

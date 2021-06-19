@@ -45,10 +45,14 @@ export class SelectLandingPageComponent implements OnInit, OnDestroy {
         this.listLandingPages(this.pagination);
     }
 
-
+    navigateBetweenPageNumbers(event: any) {
+        this.pagination.pageIndex = event.page;
+        this.listLandingPages(this.pagination);
+      }
 
     listLandingPages(pagination: Pagination) {
         this.referenceService.loading(this.httpRequestLoader, true);
+        this.referenceService.goToTop();
         this.landingPageService.listDefault(pagination).subscribe(
             (response: any) => {
                 if (response.access) {
@@ -82,6 +86,47 @@ export class SelectLandingPageComponent implements OnInit, OnDestroy {
     goToCreatePage(id:number){
         this.landingPageService.id = id;
         this.router.navigate(["/home/pages/saveAsDefault"]);
+    }
+
+    confirmDeleteLandingPage(template:any){
+        let id = template['id'];
+        if(id!=undefined && id>0){
+            let name = template['name'];
+            let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to undo this action!",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, delete it!'
+
+			}).then(function() {
+				self.deleteDefaultPage(id, name);
+			}, function(dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+        }
+    }
+
+    deleteDefaultPage(id:number,name:string){
+        this.referenceService.goToTop();
+        this.ngxloading = true;
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.landingPageService.deleteDefaultPage(id).subscribe(
+            response=>{
+                this.ngxloading = false;
+                this.referenceService.loading(this.httpRequestLoader, false);
+                this.referenceService.showSweetAlertSuccessMessage(name+" deleted successfully");
+                this.pagination.pageIndex = 1;
+                this.listLandingPages(this.pagination);
+            },error=>{
+                this.ngxloading = false;
+                this.referenceService.loading(this.httpRequestLoader, false);
+                this.referenceService.showSweetAlertServerErrorMessage();
+            }
+        );
     }
 
 
