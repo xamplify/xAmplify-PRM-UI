@@ -20,6 +20,7 @@ export class LandingPageService {
     jsonBody: any = "";
     id: number = 0;
     URL = this.authenticationService.REST_URL + "landing-page/";
+    superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger, private router: Router) { }
 
     listDefault( pagination: Pagination ): Observable<any> {
@@ -127,14 +128,24 @@ export class LandingPageService {
 
 
 
-    save( landingPage: LandingPage ): Observable<any> {
-        return this.http.post( this.URL + "save?access_token=" + this.authenticationService.access_token, landingPage )
+    save( landingPage: LandingPage,isLoggedInAsAdmin:boolean,id:number ): Observable<any> {
+        let suffixUrl = isLoggedInAsAdmin ? this.superAdminUrl+'saveAsDefaultPage':this.URL+'save';
+        if(isLoggedInAsAdmin){
+            landingPage.id = id;
+        }
+        return this.http.post(suffixUrl+ "?access_token=" + this.authenticationService.access_token, landingPage )
             .map( this.extractData )
             .catch( this.handleError );
     }
 
     update( landingPage: LandingPage ): Observable<any> {
         return this.http.post( this.URL + "update?access_token=" + this.authenticationService.access_token, landingPage )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+    deleteDefaultPage( id: number ): Observable<any> {
+        return this.http.get( this.superAdminUrl + "deleteDefaultPage/" + id+"?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
