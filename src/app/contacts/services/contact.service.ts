@@ -27,6 +27,7 @@ export class ContactService {
     saveAsErrorMessage: any;
     successMessage: boolean;
     deleteUserSucessMessage: boolean;
+    addUserSuccessMessage : boolean;
     socialContact: SocialContact[];
     zohoContact: ZohoContact;
     salesforceContact: SalesforceContact;
