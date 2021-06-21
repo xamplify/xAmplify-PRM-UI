@@ -50,11 +50,11 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, private route: ActivatedRoute) {
         this.categoryId = this.route.snapshot.params['categoryId'];
-        this.mergeTagsInput['isEvent'] = emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
         if (this.categoryId > 0) {
             this.manageRouterLink += "/" + this.categoryId;
         }
         if (emailTemplateService.emailTemplate != undefined) {
+            this.mergeTagsInput['isEvent'] = emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
             var names: any = [];
             let self = this;
             self.loggedInUserId = this.authenticationService.getUserId();
@@ -222,39 +222,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             };//End Of Save Method
 
 
-
-
-            var mergeTags = [{ name: 'First Name', value: '{{firstName}}' },
-            { name: 'Last Name', value: '{{lastName}}' },
-            { name: 'Full Name', value: '{{fullName}}' },
-            { name: 'Email Id', value: '{{emailId}}' },
-            { name: 'Company Name', value: '{{companyName}}' }
-            ];
-
-            mergeTags.push({ name: 'Sender First Name', value: this.senderMergeTag.senderFirstName });
-            mergeTags.push({ name: 'Sender Last Name', value: this.senderMergeTag.senderLastName });
-            mergeTags.push({ name: 'Sender Full Name', value: this.senderMergeTag.senderFullName });
-            mergeTags.push({ name: 'Sender Title', value: this.senderMergeTag.senderTitle });
-            mergeTags.push({ name: 'Sender Email Id', value: this.senderMergeTag.senderEmailId });
-            mergeTags.push({ name: 'Sender Contact Number', value: this.senderMergeTag.senderContactNumber });
-            mergeTags.push({ name: 'Sender Company', value: this.senderMergeTag.senderCompany });
-            mergeTags.push({ name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl });
-            mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
-            mergeTags.push({ name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs });
-            mergeTags.push({ name: 'Sender Privacy Policy', value: this.senderMergeTag.privacyPolicy });
-            mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
-            if (this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate) {
-                mergeTags.push({ name: 'Event Title', value: '{{event_title}}' });
-                mergeTags.push({ name: 'Event Start Time', value: '{{event_start_time}}' });
-                mergeTags.push({ name: 'Event End Time', value: '{{event_end_time}}' });
-                mergeTags.push({ name: 'Address', value: '{{address}}' });
-                mergeTags.push({ name: 'Event From Name', value: '{{event_fromName}}' });
-                mergeTags.push({ name: 'Event EmailId', value: '{{event_emailId}}' });
-                mergeTags.push({ name: 'Vendor Name   ', value: '{{vendor_name}}' });
-                mergeTags.push({ name: 'Vendor EmailId', value: '{{vendor_emailId}}' });
-            }
-
-
+            let mergeTags = [];
+            let event = this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
+            mergeTags = this.refService.addMergeTags(mergeTags,false,event);
             if (self.refService.companyId != undefined && self.refService.companyId > 0) {
                 var beeUserId = "bee-" + self.refService.companyId;
                 var roleHash = self.authenticationService.vendorRoleHash;

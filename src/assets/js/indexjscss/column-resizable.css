@@ -280,3 +280,13 @@ span.ui-column-resizer {
   box-sizing: border-box !important;
   border: 1px solid #c8e0e0 !important;
 }
+.button-loader{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	background: rgba(0,0,0,0.25) url(../../../assets/images/loader.gif) no-repeat center center;
+	z-index: 10000;
+  }

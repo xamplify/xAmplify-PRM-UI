@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -44,32 +44,39 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     categoryNames: any;
     routerLink = "/home/pages/manage";
+    loggedInAsSuperAdmin = false;
     constructor(private landingPageService: LandingPageService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public referenceService: ReferenceService, private location: Location,
-        public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService,private route:ActivatedRoute) {
+        public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService, private route: ActivatedRoute) {
         this.id = this.landingPageService.id;
+        this.loggedInAsSuperAdmin = this.referenceService.getCurrentRouteUrl().indexOf("saveAsDefault")>-1;
         let categoryId = this.route.snapshot.params['categoryId'];
-        if(categoryId>0){
-            this.routerLink+= "/"+categoryId;
+        if (categoryId > 0) {
+            this.routerLink += "/" + categoryId;
         }
-        if (this.id > 0) {
+        if (this.id!=undefined && this.id > 0) {
             var names: any = [];
             let self = this;
             var pageType = "";
-            self.loggedInUserId = this.authenticationService.getUserId();
+            if (this.loggedInAsSuperAdmin) {
+                self.loggedInUserId = 1;
+            } else {
+                self.loggedInUserId = this.authenticationService.getUserId();
+            }
             this.referenceService.loading(this.httpRequestLoader, true);
-            landingPageService.getAvailableNames(self.loggedInUserId).subscribe(
-                (data: any) => { names = data; },
-                error => { this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error); },
-                () => this.logger.info("Finished getAvailableNames()"));
-
-
-            authenticationService.getCategoryNamesByUserId(self.loggedInUserId).subscribe(
-                (data: any) => {
-                    self.categoryNames = data.data;
-                },
-                error => { this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error); },
-                () => this.logger.info("Finished getCategoryNamesByUserId()"));
+            if (!this.loggedInAsSuperAdmin) {
+                landingPageService.getAvailableNames(self.loggedInUserId).subscribe(
+                    (data: any) => { names = data; },
+                    error => {
+                        this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error);
+                    });
+                authenticationService.getCategoryNamesByUserId(self.loggedInUserId).subscribe(
+                    (data: any) => {
+                        self.categoryNames = data.data;
+                    },
+                    error => { this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error); },
+                    () => this.logger.info("Finished getCategoryNamesByUserId()"));
+            }
 
             this.landingPageService.getById(this.id).subscribe(
                 (response: any) => {
@@ -120,86 +127,93 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
                             if (!defaultLandingPage) {
                                 self.name = landingPageName;
-                                var buttons = $('<div>')
-                                .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
-                                let dropDown = '<div class="form-group">';
-                                dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
-                                dropDown+= '<select class="form-control" id="pageType">';
-                                if (pageType == "PRIVATE") {
-                                    dropDown+= '<option value="PRIVATE" selected>PRIVATE</option>';
-                                    dropDown+= '<option value="PUBLIC">PUBLIC</option>';
-                                } else {
-                                    dropDown+= '<option value="PUBLIC" selected>PUBLIC</option>';
-                                    dropDown+= '<option value="PRIVATE">PRIVATE</option>';
-                                }
-                                dropDown+= '</select>';
-                                dropDown+= '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
-                                dropDown+= '</div><br>';
-                                /**********Folder List************** */
-                                dropDown+= '<div class="form-group">';
-                                dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-                                dropDown+='<select class="form-control" id="page-folder-dropdown">';
-                                $.each(self.categoryNames,function(_index:number,category:any){
-                                    let categoryId = category.id;
-                                    if(self.landingPage.categoryId==categoryId){
-                                        dropDown+='<option value='+category.id+' selected>'+category.name+'</option>';
-                                    }else{
-                                        dropDown+='<option value='+category.id+'>'+category.name+'</option>';
-                                    }
-                                });
-                                dropDown+='</select>';
-                                dropDown+='</div><br>';
-                                buttons.append(dropDown);
-                                buttons.append(self.createButton('Save As', function () {
-                                        self.clickedButtonName = "SAVE_AS";
-                                        self.saveLandingPage(false);
-                                    })).append(self.createButton('Update', function () {
-                                        let selectedPageType = $('#pageType option:selected').val();
-                                        if (self.landingPage.type == selectedPageType) {
-                                            $('#pageTypeSpanError').empty();
-                                            self.ngxloading = true;
-                                            self.clickedButtonName = "UPDATE";
-                                            // self.referenceService.startLoader( self.httpRequestLoader );
-                                            swal.close();
-                                            self.updateLandingPage(false);
-                                        } else {
-                                            $('#pageTypeSpanError').text('Page Type cannot be changed');
-                                        }
 
-                                    })).append(self.createButton('Cancel', function () {
-                                        self.clickedButtonName = "CANCEL";
-                                        swal.close();
-                                        console.log('Cancel');
-                                    }));
-                                swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false });
-                            } else {
                                 var buttons = $('<div>')
                                     .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                                 let dropDown = '<div class="form-group">';
-                                dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
-                                dropDown+= '<select class="form-control" id="pageType">';
-                                dropDown+= '<option value="PRIVATE">PRIVATE</option>';
-                                dropDown+= '<option value="PUBLIC">PUBLIC</option>';
-                                dropDown+= '</select>';
-                                dropDown+= '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
-                                dropDown+= '</div><br>';
+                                dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
+                                dropDown += '<select class="form-control" id="pageType">';
+                                if (pageType == "PRIVATE") {
+                                    dropDown += '<option value="PRIVATE" selected>PRIVATE</option>';
+                                    dropDown += '<option value="PUBLIC">PUBLIC</option>';
+                                } else {
+                                    dropDown += '<option value="PUBLIC" selected>PUBLIC</option>';
+                                    dropDown += '<option value="PRIVATE">PRIVATE</option>';
+                                }
+                                dropDown += '</select>';
+                                dropDown += '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
+                                dropDown += '</div><br>';
                                 /**********Folder List************** */
-                                dropDown+= '<div class="form-group">';
-                                dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-                                dropDown+='<select class="form-control" id="page-folder-dropdown">';
-                                $.each(self.categoryNames,function(_index:number,category:any){
-                                    dropDown+='<option value='+category.id+'>'+category.name+'</option>';
+                                dropDown += '<div class="form-group">';
+                                dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+                                dropDown += '<select class="form-control" id="page-folder-dropdown">';
+                                $.each(self.categoryNames, function (_index: number, category: any) {
+                                    let categoryId = category.id;
+                                    if (self.landingPage.categoryId == categoryId) {
+                                        dropDown += '<option value=' + category.id + ' selected>' + category.name + '</option>';
+                                    } else {
+                                        dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+                                    }
                                 });
-                                dropDown+='</select>';
-                                dropDown+='</div><br>';
+                                dropDown += '</select>';
+                                dropDown += '</div><br>';
                                 buttons.append(dropDown);
-                                buttons.append(self.createButton('Save', function () {
-                                        self.clickedButtonName = "SAVE";
-                                        self.saveLandingPage(false);
-                                    })).append(self.createButton('Cancel', function () {
-                                        self.clickedButtonName = "CANCEL";
+
+                                buttons.append(self.createButton('Save As', function () {
+                                    self.clickedButtonName = "SAVE_AS";
+                                    self.saveLandingPage(false);
+                                })).append(self.createButton('Update', function () {
+                                    let selectedPageType = $('#pageType option:selected').val();
+                                    if (self.landingPage.type == selectedPageType) {
+                                        $('#pageTypeSpanError').empty();
+                                        self.ngxloading = true;
+                                        self.clickedButtonName = "UPDATE";
+                                        // self.referenceService.startLoader( self.httpRequestLoader );
                                         swal.close();
-                                    }));
+                                        self.updateLandingPage(false);
+                                    } else {
+                                        $('#pageTypeSpanError').text('Page Type cannot be changed');
+                                    }
+
+                                })).append(self.createButton('Cancel', function () {
+                                    self.clickedButtonName = "CANCEL";
+                                    swal.close();
+                                    console.log('Cancel');
+                                }));
+                                swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false });
+                            } else {
+                                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
+                                    .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200">' +
+                                        '<span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+
+                                if (!self.loggedInAsSuperAdmin) {
+                                    let dropDown = '<div class="form-group">';
+                                    dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
+                                    dropDown += '<select class="form-control" id="pageType">';
+                                    dropDown += '<option value="PRIVATE">PRIVATE</option>';
+                                    dropDown += '<option value="PUBLIC">PUBLIC</option>';
+                                    dropDown += '</select>';
+                                    dropDown += '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
+                                    dropDown += '</div><br>';
+                                    /**********Folder List************** */
+                                    dropDown += '<div class="form-group">';
+                                    dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+                                    dropDown += '<select class="form-control" id="page-folder-dropdown">';
+                                    $.each(self.categoryNames, function (_index: number, category: any) {
+                                        dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+                                    });
+                                    dropDown += '</select>';
+                                    dropDown += '</div><br>';
+                                    buttons.append(dropDown);
+                                }
+
+                                buttons.append(self.createButton('Save', function () {
+                                    self.clickedButtonName = "SAVE";
+                                    self.saveLandingPage(false);
+                                })).append(self.createButton('Cancel', function () {
+                                    self.clickedButtonName = "CANCEL";
+                                    swal.close();
+                                }));
                                 swal({
                                     title: title,
                                     html: buttons,
@@ -247,33 +261,31 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
                         }
 
-                        
-                        if (this.referenceService.companyId!=undefined && this.referenceService.companyId>0) {
-                            var beeUserId = "bee-" + this.referenceService.companyId;
+
+                        if (this.referenceService.companyId != undefined && this.referenceService.companyId > 0) {
+                            var beeUserId = self.loggedInAsSuperAdmin ? "bee-1" : "bee-" + this.referenceService.companyId;
                             var beeConfig = {
                                 uid: beeUserId,
                                 container: 'bee-plugin-container',
                                 autosave: 15,
                                 //language: 'en-US',
-                                language:this.authenticationService.beeLanguageCode,
+                                language: this.authenticationService.beeLanguageCode,
                                 onSave: function (jsonFile, htmlFile) {
                                     save(jsonFile, htmlFile);
                                 },
                                 onSaveAsTemplate: function (jsonFile) { // + thumbnail?
-                                    //save('newsletter-template.json', jsonFile);
                                 },
                                 onAutoSave: function (jsonFile) { // + thumbnail?
                                     console.log(new Date().toISOString() + ' autosaving...');
-                                    //window.localStorage.setItem( 'newsletter.autosave', jsonFile );
                                     self.landingPage.jsonBody = jsonFile;
                                     self.isMinTimeOver = true;
                                 },
                                 onSend: function (htmlFile) {
-                                    //write your send test function here
-                                    console.log(htmlFile);
+
                                 },
                                 onError: function (errorMessage) {
                                     swal("", "Unable to load bee template:" + errorMessage, "error");
+                                    self.location.back();//Navigating to previous router url
                                 }
                             };
 
@@ -293,7 +305,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                             null,
                                             function (template: any) {
                                                 var body = landingPage.jsonBody;
-                                                if (self.referenceService.companyProfileImage != undefined) {
+                                                if (self.referenceService.companyProfileImage != undefined && !self.loggedInAsSuperAdmin) {
                                                     body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
                                                 }
                                                 var jsonBody = JSON.parse(body);
@@ -318,58 +330,79 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
 
     saveLandingPage(isOnDestroy: boolean) {
-        swal.close();
-        this.referenceService.startLoader(this.httpRequestLoader);
+        $("#bee-save-buton-loader").addClass("button-loader"); 
+        $('#templateNameSpanError').text('');
         this.landingPage.name = this.name;
         this.landingPage.userId = this.loggedInUserId;
         this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
-        this.landingPage.type = $('#pageType option:selected').val();
-        this.landingPage.categoryId =  $.trim($('#page-folder-dropdown option:selected').val());
-        this.updateCompanyLogo(this.landingPage);
-        this.landingPageService.save(this.landingPage).subscribe(
+        if (!this.loggedInAsSuperAdmin) {
+            this.landingPage.type = $('#pageType option:selected').val();
+            this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
+            this.updateCompanyLogo(this.landingPage);
+        }
+        this.landingPageService.save(this.landingPage, this.loggedInAsSuperAdmin,this.id).subscribe(
             data => {
-                if(data.access){
-                    this.referenceService.stopLoader(this.httpRequestLoader);
-                    if (!isOnDestroy) {
-                        this.referenceService.isCreated = true;
-                        this.navigateToManageSection();
-                    } else {
-                        this.landingPageService.goToManage();
-                    }
-                }else{
-                    this.authenticationService.forceToLogout();
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
+                if (this.loggedInAsSuperAdmin) {
+                    this.referenceService.showSweetAlertProceesor(this.landingPage.name + " Created Successfully");
+                   let self = this;
+                    setTimeout(function(){
+                        self.referenceService.goToRouter("/home/pages/select");
+                    }, 1500);
+                } else {
+                    this.goToManageAfterSave(data, isOnDestroy);
                 }
             },
             error => {
-                this.referenceService.stopLoader(this.httpRequestLoader);
-                this.logger.errorPage(error);
-            },
-            () => console.log("Email Template Saved")
-        );
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
+                let statusCode = JSON.parse(error['status']);
+                if (statusCode == 409) {
+                    let errorResponse = JSON.parse(error['_body']);
+                    let message = errorResponse['message'];
+                    $('#templateNameSpanError').text(message);
+                } else {
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                    this.logger.errorPage(error);
+                }
+            });
     }
 
-    navigateToManageSection(){
-        let categoryId = this.route.snapshot.params['categoryId'];
-        if(categoryId>0){
-          this.router.navigate(["/home/pages/manage/"+categoryId]);
-        }else{
-          this.router.navigate(["/home/pages/manage"]);
+    goToManageAfterSave(data, isOnDestroy) {
+        if (data.access) {
+            this.referenceService.stopLoader(this.httpRequestLoader);
+            if (!isOnDestroy) {
+                this.referenceService.isCreated = true;
+                this.navigateToManageSection();
+            } else {
+                this.landingPageService.goToManage();
+            }
+        } else {
+            this.authenticationService.forceToLogout();
         }
-      }
-    
+    }
+
+    navigateToManageSection() {
+        let categoryId = this.route.snapshot.params['categoryId'];
+        if (categoryId > 0) {
+            this.router.navigate(["/home/pages/manage/" + categoryId]);
+        } else {
+            this.router.navigate(["/home/pages/manage"]);
+        }
+    }
+
 
     updateLandingPage(isDestroy: boolean) {
         swal.close();
-        //this.referenceService.startLoader(this.httpRequestLoader);
+        this.referenceService.startLoader(this.httpRequestLoader);
         this.landingPage.name = this.name;
         this.landingPage.id = this.id;
         this.landingPage.userId = this.loggedInUserId;
-        this.landingPage.categoryId =  $.trim($('#page-folder-dropdown option:selected').val());
+        this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
         this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
         this.updateCompanyLogo(this.landingPage);
         this.landingPageService.update(this.landingPage).subscribe(
             data => {
-                if(data.access){
+                if (data.access) {
                     this.ngxloading = false;
                     this.referenceService.stopLoader(this.httpRequestLoader);
                     if (!isDestroy) {
@@ -378,7 +411,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                     } else {
                         this.landingPageService.goToManage();
                     }
-                }else{
+                } else {
                     this.authenticationService.forceToLogout();
                 }
             },

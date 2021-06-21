@@ -251,7 +251,7 @@
         </div>
         <div class="portlet-body">
           <div *ngIf="isAdd || tracksPlayBook.description != undefined">
-            <ckeditor [(ngModel)]="tracksPlayBook.description" #myckeditor [config]="ckeConfig"
+            <ckeditor [(ngModel)]="tracksPlayBook.description" #ckeditor [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
               (ready)="onReady($event)" debounce="500" maxlength="5000"
               (change)="validateDescription();validateAllSteps()">
             </ckeditor>
@@ -341,7 +341,7 @@
                         </div>
                         <div class="item__actions">
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="preview"
-                              (click)="$event.stopPropagation();assetPreview(file)" style="left: 10px;">
+                              (click)="$event.stopPropagation();assetPreview(file, false)" style="left: 10px;">
                               <i class="fa fa-external-link" aria-hidden="true"
                                 style="font-size: 20px; color: #5a5a5a"></i>
                             </a>
@@ -528,10 +528,13 @@
                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
                         </app-timestamp>
                       </td>
-                      <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();previewForm(form.id)">
-                          <i class="fa fa-eye" aria-hidden="true"></i>
-                        </a>
+                      <td id="actions-row" style="text-align: center;">
+                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                          <a data-toggle="tooltip" data-placement="top" title="Preview"
+                            (click)="$event.stopPropagation();previewForm(form.id)">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                          </a>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -626,10 +629,15 @@
                       <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.displayTime">
                       </app-timestamp>
                     </td>
-                    <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                      <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset)">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                      </a>
+                    <td id="actions-row" style="text-align: center;">
+                      <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset, true)">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="setSelectedAsset(asset)">
+                          <i class="fa fa-times remove-button" aria-hidden="true "></i>
+                        </a>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -718,10 +726,13 @@
                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
                         </app-timestamp>
                       </td>
-                      <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();previewForm(form.id)">
-                          <i class="fa fa-eye" aria-hidden="true"></i>
-                        </a>
+                      <td id="actions-row" style="text-align: center;">
+                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                          <a data-toggle="tooltip" data-placement="top" title="Preview"
+                            (click)="$event.stopPropagation();previewForm(form.id)">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                          </a>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -980,11 +991,13 @@
                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.displayTime">
                         </app-timestamp>
                       </td>
-                      <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview"
-                          (click)="$event.stopPropagation();assetPreview(asset)">
-                          <i class="fa fa-eye" aria-hidden="true"></i>
-                        </a>
+                      <td id="actions-row" style="text-align: center;">
+                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                          <a data-toggle="tooltip" data-placement="top" title="Preview"
+                            (click)="$event.stopPropagation();assetPreview(asset, true)">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                          </a>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -1010,7 +1023,7 @@
 
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span>Close</span></a>
+        <a data-dismiss="modal" class="btn btn-default" style="float: right" (click)="closeAssetModal()"><span>Close</span></a>
       </div>
     </div>
   </div>

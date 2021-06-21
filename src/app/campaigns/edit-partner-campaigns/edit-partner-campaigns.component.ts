@@ -1187,7 +1187,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     contactsUtility(){
         var trLength = $('#user_list_tb tbody tr').length;
         var selectedRowsLength = $('[name="campaignContact[]"]:checked').length;
-        if(selectedRowsLength>0){
+        if(selectedRowsLength>0 || this.selectedUserlistIds.length>0){
             this.isContactList = true;
         }else{
             this.isContactList = false;
