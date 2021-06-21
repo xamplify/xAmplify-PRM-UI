@@ -20,9 +20,9 @@
                     <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
                     <label class="text-area-css">{{characterleft}} characters left</label>
 				</form>
-				<div style="margin-top: 20px;">
+				<div style="margin-top: 20px;" >
 					<button type="button"
-						class="btn btn-primary" (click)="unSubscribeUser()">Submit</button>
+						class="btn btn-primary" (click)="unSubscribeUser()" [disabled]="invalidReason">Submit</button>
 				</div>
 			<div style="margin-top:20px">
               <h4>By resubscribing, you confirm that you have read and agree to the <a href="https://www.xamplify.com/terms-conditions/">xAmplify Terms of Use</a>, and that you agree to the processing of your personal data by xAmplify as described in the <a href="https://www.xamplify.com/privacy-policy/">Privacy Policy</a>.</h4>
