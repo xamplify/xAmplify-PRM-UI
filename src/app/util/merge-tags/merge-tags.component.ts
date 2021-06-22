@@ -26,7 +26,13 @@ export class MergeTagsComponent implements OnInit {
 		this.isEvent = this.input['isEvent'];
 		this.isCampaign = this.input['isCampaign'];
 		this.hideButton = this.input['hideButton'];
-		this.addMergeTags();
+		let page = this.input['page'];
+		if(page!=undefined && page){
+			this.mergeTags = this.referenceService.addPageMergeTags();
+		}else{
+			this.addMergeTags();
+		}
+		
 		if (this.hideButton == undefined) {
 			this.hideButton = false;
 		}

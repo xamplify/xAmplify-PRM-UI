@@ -1,9 +1,9 @@
-<button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="btn btn-danger" id="right" (click)="showForms()">
+<button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="show-forms-btn" id="right" (click)="showForms()">
   Show Forms
 </button>
 <!-- ----------------------List Available Forms------------------- -->
-<div class="modal right" id="forms-list" data-backdrop="static">
-    <div class="modal-lg full">
+<div class="modal fade right" id="forms-list" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-lg full" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" data-dismiss="modal">
