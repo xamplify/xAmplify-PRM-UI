@@ -63,6 +63,8 @@ export class AddMoreReceiversComponent implements OnInit {
     id:number;
     previewContactListId : number;
     campaign:Campaign = new Campaign();
+    expandedUserList: any;
+	showExpandButton = false;
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
           public pagination: Pagination, private pagerService: PagerService,public authenticationService: AuthenticationService,public referenceService:ReferenceService,private contactService:ContactService,public properties:Properties,private renderer:Renderer) {
               this.referenceService.renderer = this.renderer;
@@ -124,6 +126,11 @@ export class AddMoreReceiversComponent implements OnInit {
   searchContactList(){
       this.contactsPagination.pageIndex = 1;
       this.contactsPagination.searchKey = this.contactSearchInput;
+      if (this.contactsPagination.searchKey != "") {
+        this.showExpandButton = true;
+    } else {
+        this.showExpandButton = false;
+    }
       this.loadCampaignContacts(this.contactsPagination);
   }
   
@@ -412,6 +419,17 @@ export class AddMoreReceiversComponent implements OnInit {
 closeMoreInvitesPopup(){
     $('#new-list-modal').modal('hide');
     this.resetAllFields();
+}
+
+viewMatchedContacts(userList: any) {		
+    userList.expand = !userList.expand;		
+    if (userList.expand) {
+        if ((this.expandedUserList != undefined || this.expandedUserList != null)
+         && userList != this.expandedUserList) {				
+            this.expandedUserList.expand = false;				
+        }			
+        this.expandedUserList = userList;			
+    }
 }
 
 

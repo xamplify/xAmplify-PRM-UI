@@ -56,6 +56,7 @@ export class LogUnsubscribeComponent implements OnInit {
           if(!this.isUnsubscribed){
             this.findUnsubscribeReasons();
           }else{
+            this.invalidReason = true;
             this.processor.remove(this.processor);
           }
         }

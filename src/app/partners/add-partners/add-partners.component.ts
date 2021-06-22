@@ -689,7 +689,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							this.customResponse = new CustomResponse('SUCCESS', message, true);
 							//this.getContactsAssocialteCampaigns();//Old method
 							this.disableOtherFuctionality = false;
-							this.openCampaignsPopupForNewlyAddedPartners();
+							//this.openCampaignsPopupForNewlyAddedPartners();
 						} else if (data.statusCode == 409) {
 							let emailIds = data.emailAddresses;
 							let allEmailIds = "";
@@ -3287,9 +3287,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 
-	openCampaignsPopupForNewlyAddedPartners() {
+	/*openCampaignsPopupForNewlyAddedPartners() {
 		this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(this.partnerListId, this.newUserDetails, "Partner");
-	}
+	}*/
 
 	/**********************Sravan************************ */
     /*checkingZohoContactsAuthentication() {

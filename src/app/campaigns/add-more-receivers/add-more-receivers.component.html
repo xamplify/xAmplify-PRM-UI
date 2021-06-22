@@ -1,5 +1,5 @@
 <div class="modal fade right" id="new-list-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-lg modal-template" style="right:0;width: 75%">
+    <div class="modal-dialog modal-lg modal-template" style="right:0;width: 65%">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closeMoreInvitesPopup()" aria-hidden="true">
@@ -19,7 +19,7 @@
                             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
                         </div>
                         <app-modal-popup-loader *ngIf="sendingRequest"></app-modal-popup-loader>
-                        <div class="col-xs-12 text-center" style="margin-top: 10px;" *ngIf="!sendingRequest">
+                        <div class="col-xs-12" style="margin-top: 10px;" *ngIf="!sendingRequest">
                             <div class="row pb10" id="user_list_table_view">
                                 <app-loader [model]="contactListLoader.isHorizontalCss" *ngIf="contactListLoader.isLoading"></app-loader>
                                 <ng-container *ngIf="!contactListLoader.isLoading && !contactListLoader.isServerError">
@@ -51,6 +51,7 @@
                                                             <td align="center" id="border-bottom-padding">
                                                                 <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                             </td>
+                                                            <th class="hidden-xs" *ngIf="showExpandButton"></th>
                                                             <th style="text-align: center;">
                                                                 <span class="ui-column-resizer" (mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
                                                                 <span class="gridHeader">List Name</span>
@@ -62,45 +63,61 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr role="row" *ngFor="let contacts of contactsPagination.pagedItems;let i = index" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
-                                                            (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
-                                                            <td>
-                                                                <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
-                                                                    <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
-                                                                </div>
-                                                                <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
-                                                                    <input type="checkbox" disabled="disabled" title="Contacts are in progress">
-                                                                </div>
-                                                            </td>
-                                                            <td class="text-center moreipsis" title="{{contacts.name}}">
-                                                                <span>{{contacts.name}}</span>
-                                                            </td>
-
-                                                            <td *ngIf="showContactType">
-                                                                <ng-container *ngIf="contacts.partnerUserList">
-                                                                    Partners
-                                                                </ng-container>
-                                                                <ng-container *ngIf="!contacts.partnerUserList">
-                                                                    Contacts
-                                                                </ng-container>
-                                                            </td>
-                                                             <td class="text-center">
-                                                                <ng-container *ngIf="contacts.publicList">
-                                                                    Public
-                                                                </ng-container>
-                                                                <ng-container *ngIf="!contacts.publicList">
-                                                                    Private
-                                                                </ng-container>
-                                                            </td>
-                                                            <td class="text-center sorting_1">
-                                                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
-                                                                    <i class="fa fa-eye" aria-hidden="true" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
+                                                        <ng-container *ngFor="let contacts of contactsPagination.pagedItems;let i = index">
+                                                            <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
+                                                                (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
+                                                                <td class="text-center">
+                                                                    <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
+                                                                        <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
+                                                                    </div>
+                                                                    <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
+                                                                        <input type="checkbox" disabled="disabled" title="Contacts are in progress">
+                                                                    </div>
+                                                                </td>
+                                                                <td class="cw" *ngIf="showExpandButton">
+                                                                    <div class="actions-block left-float">
+                                                                      <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" title="Matched Results">
+                                                                        <i class="fa"
+                                                                          [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
+                                                                          aria-hidden="true"></i>
+                                                                      </a>
+                                                                    </div>
+                                                                  </td>
+                                                                <td class="text-center moreipsis" title="{{contacts.name}}">
+                                                                    <span>{{contacts.name}}</span>
+                                                                </td>
+    
+                                                                <td *ngIf="showContactType">
+                                                                    <ng-container *ngIf="contacts.partnerUserList">
+                                                                        Partners
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="!contacts.partnerUserList">
+                                                                        Contacts
+                                                                    </ng-container>
+                                                                </td>
+                                                                 <td class="text-center">
+                                                                    <ng-container *ngIf="contacts.publicList">
+                                                                        Public
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="!contacts.publicList">
+                                                                        Private
+                                                                    </ng-container>
+                                                                </td>
+                                                                <td class="text-center sorting_1">
+                                                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
+                                                                        <i class="fa fa-eye" aria-hidden="true" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="contacts?.expand">
+                                                                <td colspan="12">
+                                                                  <app-userlist-users [searchKey]="contactsPagination.searchKey" [userListId]="contacts.id"></app-userlist-users>
+                                                                </td>
+                                                            </tr>
+                                                        </ng-container>                                                        
                                                     </tbody>
                                                 </table>
                                             </div>

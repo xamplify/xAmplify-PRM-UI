@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, AfterViewChecked, Renderer } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, Renderer, ViewChild } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
@@ -25,6 +25,7 @@ import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SortOption } from 'app/core/models/sort-option';
+import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
@@ -37,6 +38,8 @@ declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 })
 
 export class ManageContactsComponent implements OnInit, AfterViewInit, AfterViewChecked {
+	
+	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
 	userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
     userListPaginationWrapper : UserListPaginationWrapper = new UserListPaginationWrapper();
 
@@ -294,6 +297,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 			this.xtremandLogger.info(" delete Success Message in manage contact pape");
 		}
+		
+		if (this.contactService.addUserSuccessMessage === true) {
+		     if (this.isPartner) {
+	                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
+	            } else {
+	                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+	            }
+	            this.xtremandLogger.info(" delete Success Message in manage contact pape");
+		}
+		
 		this.noSaveButtonDisable = true;
 
 		this.hasContactRole = this.referenceService.hasRole(this.referenceService.roles.contactsRole);
@@ -2326,6 +2339,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.xtremandLogger.info('Deinit - Destroyed Component')
 			this.contactService.successMessage = false;
 			this.contactService.deleteUserSucessMessage = false;
+			this.contactService.addUserSuccessMessage = false;
 
 			swal.close();
 			$('#filterModal').modal('hide');
@@ -2438,7 +2452,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		);
 	}
 
-	viewMatchedContacts(userList: any) {		
+	viewMatchedContacts(userList: any) {
 		userList.expand = !userList.expand;		
 		if (userList.expand) {
 			if ((this.expandedUserList != undefined || this.expandedUserList != null)
@@ -2447,5 +2461,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}			
 			this.expandedUserList = userList;			
 		}
-	}    
+	} 
+	
+	openPopUpForNewlyAddedPartnersOrContacts(contactList: ContactList) {
+        this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(contactList.id, this.checkingContactTypeName);
+    }
+	
+	
 }
