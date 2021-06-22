@@ -45,11 +45,13 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     categoryNames: any;
     routerLink = "/home/pages/manage";
     loggedInAsSuperAdmin = false;
+    mergeTagsInput: any = {};
     constructor(private landingPageService: LandingPageService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public referenceService: ReferenceService, private location: Location,
         public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService, private route: ActivatedRoute) {
         this.id = this.landingPageService.id;
         this.loggedInAsSuperAdmin = this.referenceService.getCurrentRouteUrl().indexOf("saveAsDefault")>-1;
+        this.mergeTagsInput['page'] = true;
         let categoryId = this.route.snapshot.params['categoryId'];
         if (categoryId > 0) {
             this.routerLink += "/" + categoryId;
