@@ -260,14 +260,15 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
 
                         }
-
-
+                        let mergeTags = this.referenceService.addPageMergeTags();
                         if (this.referenceService.companyId != undefined && this.referenceService.companyId > 0) {
                             var beeUserId = self.loggedInAsSuperAdmin ? "bee-1" : "bee-" + this.referenceService.companyId;
                             var beeConfig = {
                                 uid: beeUserId,
                                 container: 'bee-plugin-container',
                                 autosave: 15,
+                                mergeTags: mergeTags,
+                                preventClose: true,
                                 //language: 'en-US',
                                 language: this.authenticationService.beeLanguageCode,
                                 onSave: function (jsonFile, htmlFile) {
