@@ -123,9 +123,16 @@ deleteForm(id:number){
     },
     (error: any) => { 
       this.referenceService.goToTop();
-      this.ngxloading = false;
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.referenceService.showSweetAlertServerErrorMessage();
+      let statusCode = JSON.parse(error['status']);
+      if(statusCode == 409){
+       let errorResponse = JSON.parse(error['_body']);
+       let message = errorResponse['message'];
+       this.referenceService.showSweetAlertErrorMessage(message);
+     }else {
+       this.referenceService.showSweetAlertServerErrorMessage();
+     }
+     this.ngxloading = false;
+     this.referenceService.loading(this.httpRequestLoader, false);
      });
 }
 
