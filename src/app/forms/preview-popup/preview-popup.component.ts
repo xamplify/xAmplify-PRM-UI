@@ -40,7 +40,7 @@ export class PreviewPopupComponent implements OnInit {
     formBackgroundImage = "";
     pageBackgroundColor = "";
     siteKey = "";
-
+    showDefaultForms = false;
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
         public router: Router, private vanityUrlService: VanityURLService, public sanitizer: DomSanitizer) {
@@ -49,7 +49,8 @@ export class PreviewPopupComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.router.url.indexOf("/home/emailtemplates/create") > -1 || this.router.url.indexOf("/home/pages/add") > -1) {
+        this.showDefaultForms = this.router.url.indexOf("/home/pages/saveAsDefault")>-1;
+        if (this.router.url.indexOf("/home/emailtemplates/create") > -1 || this.router.url.indexOf("/home/pages/add") > -1 || this.showDefaultForms) {
             this.showButton = true;
         }
 
@@ -62,27 +63,30 @@ export class PreviewPopupComponent implements OnInit {
     showForms() {
         this.formsError = false;
         this.customResponse = new CustomResponse();
-        this.pagination.userId = this.authenticationService.getUserId();;
+        if(this.showDefaultForms){
+            this.pagination = new Pagination();
+            this.pagination.pageIndex = 1;
+        }else{
+            this.pagination.userId = this.authenticationService.getUserId();
+        }
         this.listForms(this.pagination);
     }
 
     listForms(pagination: Pagination) {
+        $('#forms-list').modal('show');
         this.referenceService.loading(this.formsLoader, true);
-        this.formService.list(pagination).subscribe(
+        this.formService.findDefaultFormsOrUserDefinedForms(pagination,this.showDefaultForms).subscribe(
             (response: any) => {
                 const data = response.data;
                 pagination.totalRecords = data.totalRecords;
                 this.sortOption.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.forms);
                 this.referenceService.loading(this.formsLoader, false);
-                $('#forms-list').modal('show');
             },
             (error: any) => {
                 this.formsError = true;
                 this.customResponse = new CustomResponse('ERROR', 'Unable to get forms.Please Contact Admin.', true);
             });
-        $('#forms-list').modal('show');
-
     }
 
     /********************Pagaination&Search Code*****************/
