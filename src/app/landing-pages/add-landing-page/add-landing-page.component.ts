@@ -396,7 +396,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
     updateLandingPage(isDestroy: boolean) {
         swal.close();
-        this.referenceService.startLoader(this.httpRequestLoader);
         this.landingPage.name = this.name;
         this.landingPage.id = this.id;
         this.landingPage.userId = this.loggedInUserId;
@@ -427,9 +426,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                 } else {
                     this.logger.errorPage(error);
                 }
-            },
-            () => console.log("Page Saved")
-        );
+            });
 
 
     }

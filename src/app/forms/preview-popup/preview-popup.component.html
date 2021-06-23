@@ -19,16 +19,17 @@
                                 <div class="inputs" id="right">
                                     <div id="left">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                      <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
-                        {{option.name}}</option>
-                    </select>
+                                            <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
+                                            {{option.name}}
+                                        </option>
+                                        </select>
                                     </div>
                                     <div class="portlet-input input-inline input-small" id="search">
                                         <div class="input-icon right" id="search-icon">
                                             <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
                                             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchForms();"></button>
-                                            <button type="submit" class="search-box-item-click" (click)="searchForms()"><i
-                          class="fa fa-search"></i> </button>
+                                            <button type="submit" class="search-box-item-click" (click)="searchForms()">
+                                                <i class="fa fa-search" aria-hidden="true"></i> </button>
                                         </div>
                                     </div>
                                 </div>
@@ -38,13 +39,11 @@
                                 <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" aria-describedby="describe">
                                     <thead>
                                         <tr>
-                                            <th *ngIf="authenticationService.isShowForms">Select</th>
-                                            <th>Form Details</th>
-                                            <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Link
-                                            </th>
-                                            <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Embed Link
-                                            </th>
-                                            <th class="text-center">Preview</th>
+                                            <th scope="row" *ngIf="authenticationService.isShowForms">Select</th>
+                                            <th scope="row">Form Details</th>
+                                            <th scope="row" class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Link</th>
+                                            <th scope="row" class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Embed Link</th>
+                                            <th scope="row"class="text-center">Preview</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -52,14 +51,14 @@
                                             <td *ngIf="authenticationService.isShowForms">
                                                 <input type="checkbox" [checked]="selectedFormId === form.id" (click)="selectedForm(form, $event)"></td>
                                             <td>
-                                                <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
-                                                    {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
+                                                <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form?.name}}">
+                                                    {{form?.name | slice:0:25}} <span *ngIf="form?.name?.length>25">...</span>
                                                 </h4>
-                                                <h6>
-                                                    Created By <strong>{{form.createdName}}</strong>
+                                                <h6 *ngIf="!showDefaultForms">
+                                                    Created By <strong>{{form?.createdName}}</strong>
                                                 </h6>
-                                                <h6>
-                                                    From <strong>{{form.companyName}}</strong>
+                                                <h6 *ngIf="!showDefaultForms">
+                                                    From <strong>{{form?.companyName}}</strong>
                                                 </h6>
                                             </td>
                                             <td [hidden]="authenticationService.isShowForms">
