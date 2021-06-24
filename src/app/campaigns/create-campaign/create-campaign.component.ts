@@ -803,7 +803,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.contactsPagination.filterValue = false;
         this.contactsPagination.filterKey = null;
         if('landingPage'== this.campaignType){
-            this.TO_PARTNER_MESSAGE = "To Partner: Share a private page";
+            this.TO_PARTNER_MESSAGE = "To Recipient: Share a private page";
             this.THROUGH_PARTNER_MESSAGE = "Through Partner: Share a public page";
         }else{
             this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
