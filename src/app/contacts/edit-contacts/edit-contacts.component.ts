@@ -705,7 +705,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 this.showSuccessMessage(data);
 							}
 							//this.getContactsAssocialteCampaigns();
-							this.openCampaignsPopupForNewlyAddedPartners();
+                            this.contactService.addUserSuccessMessage = true;
+                            this.goBackToManageList();
 						} else if (data.statusCode == 418) {
 							this.showUnFormattedEmailAddresses(data);
 						}
@@ -943,7 +944,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             } else {
                                 this.showSuccessMessage(data);
 							}
-							this.openCampaignsPopupForNewlyAddedPartners();
+                            this.contactService.addUserSuccessMessage = true;
+                            this.goBackToManageList();
 						} else if (data.statusCode == 418) {
 							this.showUnFormattedEmailAddresses(data);
 						}
@@ -1608,7 +1610,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             } else {
                                 this.showSuccessMessage(data);
 							}
-							this.openCampaignsPopupForNewlyAddedPartners();
+                            this.contactService.addUserSuccessMessage = true;
+                            this.goBackToManageList();
 						} else if (data.statusCode == 418) {
 							this.showUnFormattedEmailAddresses(data);
 						}
@@ -3363,9 +3366,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.sendCampaignComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName);
 	}
 
-	openCampaignsPopupForNewlyAddedPartners() {
+	/*openCampaignsPopupForNewlyAddedPartners() {
 		this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(this.contactListId, this.newUserDetails, this.checkingContactTypeName);
-	}
+	}*/
 
 	goToCampaigns(contact: any) {
 		this.loading = true;

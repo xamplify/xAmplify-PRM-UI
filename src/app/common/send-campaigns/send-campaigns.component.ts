@@ -74,7 +74,7 @@ export class SendCampaignsComponent implements OnInit {
       this.listCampaigns(this.pagination);
   }
 
-  openPopUpForNewlyAddedPartnersOrContacts(partnerOrContactListId:number,users:any,type:string){
+  openPopUpForNewlyAddedPartnersOrContacts(partnerOrContactListId:number, type:string){
     let notPrmCompany = !this.authenticationService.module.isPrm && !this.authenticationService.module.isPrmTeamMember
                         && !this.authenticationService.module.isPrmAndPartner && !this.authenticationService.module.isPrmAndPartnerTeamMember;
     if(notPrmCompany){
@@ -84,7 +84,6 @@ export class SendCampaignsComponent implements OnInit {
       }
       $('#sendCampaignsPopup').modal('show');
         this.pagination.partnerId = 0;
-        this.newlyAddedPartners = users;
         this.pagination.userListId = partnerOrContactListId;
         this.type = type;
         this.newEmailIdsAreAdded = true;
@@ -95,41 +94,37 @@ export class SendCampaignsComponent implements OnInit {
   }
 
   listCampaigns(pagination: Pagination) {
-    this.customResponse = new CustomResponse();
-    this.referenceService.startLoader(this.httpRequestLoader);
-    pagination.userId = this.loggedInUserId;
-    this.campaignService.listCampaignsByUserListIdAndUserId(pagination,this.type)
-      .subscribe(
-        response => {
-          const data = response.data;
-          if(this.newEmailIdsAreAdded && data.totalRecords==0){
-            $('#sendCampaignsPopup').modal('hide');
-          }else{
-            pagination.totalRecords = data.totalRecords;
-            this.sortOption.totalRecords = data.totalRecords;
-            let campaigns = data.campaigns;
-            $.each(campaigns, function (_index: number, campaign: any) {
-              campaign.displayTime = new Date(campaign.launchTimeInString);
-            });
-            pagination = this.pagerService.getPagedItems(pagination, campaigns);
-            /*******Header checkbox will be chcked when navigating through page numbers*****/
-            var campaignIds = this.pagination.pagedItems.map(function (a) { return a.id; });
-            var items = $.grep(this.selectedCampaignIds, function (element:any) {
-              return $.inArray(element, campaignIds) !== -1;
-            });
-            if (items.length == campaignIds.length) {
-              this.isHeaderCheckBoxChecked = true;
-            } else {
-              this.isHeaderCheckBoxChecked = false;
-            }
-          }
-          this.referenceService.stopLoader(this.httpRequestLoader);
-        },
-        (_error: any) => {
-          this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-        },
-        () => this.xtremandLogger.info('Finished listCampaignsByUserListIdAndUserId()')
-      );
+      this.customResponse = new CustomResponse();
+      this.referenceService.startLoader(this.httpRequestLoader);
+      pagination.userId = this.loggedInUserId;
+      this.campaignService.listCampaignsByUserListIdAndUserId(pagination, this.type)
+          .subscribe(
+          response => {
+              const data = response.data;
+              pagination.totalRecords = data.totalRecords;
+              this.sortOption.totalRecords = data.totalRecords;
+              let campaigns = data.campaigns;
+              $.each(campaigns, function(_index: number, campaign: any) {
+                  campaign.displayTime = new Date(campaign.launchTimeInString);
+              });
+              pagination = this.pagerService.getPagedItems(pagination, campaigns);
+              /*******Header checkbox will be chcked when navigating through page numbers*****/
+              var campaignIds = this.pagination.pagedItems.map(function(a) { return a.id; });
+              var items = $.grep(this.selectedCampaignIds, function(element: any) {
+                  return $.inArray(element, campaignIds) !== -1;
+              });
+              if (items.length == campaignIds.length) {
+                  this.isHeaderCheckBoxChecked = true;
+              } else {
+                  this.isHeaderCheckBoxChecked = false;
+              }
+              this.referenceService.stopLoader(this.httpRequestLoader);
+          },
+          (_error: any) => {
+              this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+          },
+          () => this.xtremandLogger.info('Finished listCampaignsByUserListIdAndUserId()')
+          );
   }
 
   closePopup() {
@@ -270,7 +265,7 @@ export class SendCampaignsComponent implements OnInit {
     this.customResponse = new CustomResponse();
     if(this.selectedCampaignIds.length>0){
     this.ngxLoading = true;
-    let users = [];
+     let users = [];
     if(this.pagination.partnerId>0){
       let user = { 
         'emailId': this.pagination.partnerOrContactEmailId,
@@ -279,8 +274,6 @@ export class SendCampaignsComponent implements OnInit {
         'companyName':this.companyName 
       };
       users.push(user);
-    }else{
-      users = this.newlyAddedPartners;
     }
     let campaignDetails = {
       "campaignIds": this.selectedCampaignIds,
@@ -297,7 +290,7 @@ export class SendCampaignsComponent implements OnInit {
                 this.sendSuccess = true;
                 this.statusCode = data.statusCode;
                 if (data.statusCode == 200) {
-                  this.responseMessage = "Campaign(s) sent successfully";
+                  this.responseMessage = data.message;
                 } else {
                     this.responseMessage = data.message;
                 }
@@ -319,4 +312,5 @@ export class SendCampaignsComponent implements OnInit {
     }
     
   }
+  
 }

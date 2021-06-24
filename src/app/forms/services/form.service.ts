@@ -43,11 +43,7 @@ export class FormService {
     }
 
 
-    list( pagination: Pagination ): Observable<any> {
-        return this.http.post( this.URL + "list?access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
+   
 
     listFormNames( userId: number ) {
         return this.http.get( this.URL + "listFormNames/" + userId + "?access_token=" + this.authenticationService.access_token )
@@ -148,8 +144,21 @@ export class FormService {
             .catch( this.handleError );
     }
 
+    list( pagination: Pagination ): Observable<any> {
+        return this.http.post( this.URL + "list?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     listDefaultForms( pagination: Pagination ){
         return this.http.post( this.URL + "default/list?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+    findDefaultFormsOrUserDefinedForms(pagination:Pagination,defaultForm:boolean){
+        let url = defaultForm ? 'default/list' : 'list';
+        return this.http.post( this.URL + url+ "?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }

@@ -1763,6 +1763,7 @@ export class ReferenceService {
 			updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
 		}
 		/************My Merge Tags Info**********/
+		console.log(campaign.myMergeTagsInfo);
 		updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
 		return updatedBody;
 	}
@@ -1778,7 +1779,9 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal, myMergeTags.senderCompany);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrlGlobal, myMergeTags.myCompanyUrl);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumberGlobal, myMergeTags.myCompanyContactNumber);
-		    updatedBody = updatedBody.replace(this.senderMergeTag.privacyPolicyGlobal,myMergeTags.privacyPolicy);
+			updatedBody = updatedBody.replace(this.senderMergeTag.privacyPolicyGlobal,myMergeTags.privacyPolicy);
+			updatedBody = updatedBody.replace(this.senderMergeTag.senderAboutUs,myMergeTags.aboutUs);
+
 		}
 		return updatedBody;
 	}
@@ -1795,7 +1798,8 @@ export class ReferenceService {
 	hasMyMergeTagsExits(body: string) {
 		return body.indexOf(this.senderMergeTag.senderFirstName) > -1 || body.indexOf(this.senderMergeTag.senderLastName) > -1 || body.indexOf(this.senderMergeTag.senderFullName) > -1 ||
 			body.indexOf(this.senderMergeTag.senderTitle) > -1 || body.indexOf(this.senderMergeTag.senderEmailId) > -1 || body.indexOf(this.senderMergeTag.senderContactNumber) > -1 || body.indexOf(this.senderMergeTag.senderCompany) > -1
-			|| body.indexOf(this.senderMergeTag.senderCompanyUrl) > -1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber) > -1 || body.indexOf(this.senderMergeTag.aboutUs) > -1 || body.indexOf(this.senderMergeTag.privacyPolicy)>-1;
+			|| body.indexOf(this.senderMergeTag.senderCompanyUrl) > -1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber) > -1 || body.indexOf(this.senderMergeTag.aboutUs) > -1 
+			|| body.indexOf(this.senderMergeTag.privacyPolicy)>-1 || body.indexOf(this.senderMergeTag.senderAboutUs)>-1;
 	}
 
 	formatAMPM(date) {
@@ -2231,10 +2235,11 @@ export class ReferenceService {
 		mergeTags.push({ name: 'Sender Full Name', value: this.senderMergeTag.senderFullName });
 		mergeTags.push({ name: 'Sender Title', value: this.senderMergeTag.senderTitle });
 		mergeTags.push({ name: 'Sender Email Id', value: this.senderMergeTag.senderEmailId });
+		mergeTags.push({ name: 'Sender Contact Number', value: this.senderMergeTag.senderContactNumber });
+		mergeTags = this.addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags);
 		if (isCampaign == undefined || !isCampaign) {
-			mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
-			mergeTags.push({ name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs });
-			mergeTags.push({ name: 'Sender Privacy Policy', value: this.senderMergeTag.privacyPolicy });
+			mergeTags = this.addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags);
+			mergeTags.push({ name: 'Partner About Us', value: this.senderMergeTag.aboutUs });
 			mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
 		}
 		if (isEvent) {
@@ -2247,6 +2252,26 @@ export class ReferenceService {
 			mergeTags.push({ name: 'Vendor Name', value: '{{vendor_name}}' });
 			mergeTags.push({ name: 'Vendor Email Id', value: '{{vendor_emailId}}' });
 		}
+		return mergeTags;
+	}
+
+	addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags:any){
+		mergeTags.push({ name: 'Sender Company', value: this.senderMergeTag.senderCompany });
+		mergeTags.push({ name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl });
+		return mergeTags;
+	}
+
+	addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags:any){
+		mergeTags.push({ name: 'Sender About Us', value: this.senderMergeTag.senderAboutUs });
+		mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
+		mergeTags.push({ name: 'Sender Privacy Policy', value: this.senderMergeTag.privacyPolicy });
+		return mergeTags;
+	}
+
+	addPageMergeTags(){
+		let mergeTags = [];
+		mergeTags = this.addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags);
+		mergeTags = this.addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags);
 		return mergeTags;
 	}
 
