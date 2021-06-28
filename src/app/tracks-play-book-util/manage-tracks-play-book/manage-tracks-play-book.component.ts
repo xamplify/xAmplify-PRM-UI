@@ -178,6 +178,14 @@ export class ManageTracksPlayBookComponent implements OnInit {
           this.sortOption.totalRecords = data.totalRecords;
           $.each(data.data, function (index, learningTrack) {
             learningTrack.createdDateString = new Date(learningTrack.createdTime);
+            let toolTipTagNames: string = "";
+            learningTrack.tagNames.sort();
+            $.each(learningTrack.tagNames, function (index, tagName) {
+              if (index > 1) {
+                toolTipTagNames = toolTipTagNames + tagName + ", ";
+              }
+            });
+            learningTrack.toolTipTagNames = toolTipTagNames;
           });
           pagination = this.pagerService.getPagedItems(pagination, data.data);
         }
