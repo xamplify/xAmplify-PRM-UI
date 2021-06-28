@@ -141,3 +141,22 @@
 .progress-bar {
     background-color: #29d836!important;
 }
+
+.tag {
+    font-size: 14px;
+    background-color: #00a6e8;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    /*width: fit-content;*/
+    margin: 2px 2px;
+    /* font-weight: 600; */
+    border-radius: 20px;
+    padding: 5px 10px;
+    display: inline;
+}
+
+.tag-dots {
+    font-size: 16px;
+    margin: 0px 2px;
+}

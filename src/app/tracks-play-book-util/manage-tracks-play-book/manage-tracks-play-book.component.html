@@ -68,7 +68,7 @@
                                         <span *ngIf="type == undefined || (type != undefined && type == 'TRACK')" class="gridHeader" translate>Track</span>
                                         <span *ngIf="type != undefined && type == 'PLAYBOOK'" class="gridHeader" translate>Play Book</span>
                                     </th>
-
+                                    <th class="hidden-xs text-center" translate scope="col">Tags</th>
                                     <th class="hidden-xs text-center" translate scope="col">Created On</th>
                                     <ng-container *ngIf="isPartnerView">
                                         <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" translate>Progress</th>
@@ -99,6 +99,20 @@
                                                 <strong>{{learningTrack.createdByName}}</strong></span>
                                         </h6>
                                         <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner" style="background-color: #5cb85c;" translate>Published</h6>
+                                    </td>
+                                    <td class="hidden-xs text-center">
+                                        <ng-container *ngIf="learningTrack.tagNames?.length > 0">
+                                            <div class="tag">
+                                                {{learningTrack.tagNames[0]}}
+                                            </div>
+                                            <ng-container *ngIf="learningTrack.tagNames.length > 1">
+                                                <div class="tag">
+                                                    {{learningTrack.tagNames[1]}}
+                                                </div>
+                                            </ng-container>
+                                            <span *ngIf="learningTrack.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
+                                                title="{{learningTrack.toolTipTagNames}}">...</span>
+                                        </ng-container>
                                     </td>
                                     <td class="hidden-xs text-center">
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
