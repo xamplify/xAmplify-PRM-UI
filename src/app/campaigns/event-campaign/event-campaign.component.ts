@@ -1965,12 +1965,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
 
 
-                            data.body = data.body.replace(/{{address}}/g, fullAddress);
+                            data.body = data.body.replace(/{{event_address}}/g, fullAddress);
                             /* data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );*/
                         }
                     } else {
-                        data.body = data.body.replace(/{{address}}/g, "Online Meeting")
-                        data.body = data.body.replace(/{{address}}/g, " ")
+                        data.body = data.body.replace(/{{event_address}}/g, "Online Meeting")
+                        data.body = data.body.replace(/{{event_address}}/g, " ")
                     }
                     if (this.eventCampaign.fromName) {
                         data.body = data.body.replace("{{event_fromName}}", this.eventCampaign.fromName);
