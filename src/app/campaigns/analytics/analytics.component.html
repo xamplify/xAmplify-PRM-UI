@@ -3025,7 +3025,8 @@
                                       [dateAndTime]="formDataRow[columnValue]"> </app-timestamp>
                                     <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[columnValue]}}</span>
                                   </ng-container>
-                                  <ng-container *ngIf="columnValue!='RSVP Time'" [innerHtml]="formDataRow[columnValue]">
+                                  <ng-container *ngIf="columnValue!='RSVP Time'">
+                                    <div [innerHtml]="formDataRow[columnValue]"></div>
                                   </ng-container>
                                  </td>
                           </ng-container>
@@ -3051,7 +3052,8 @@
                                       [dateAndTime]="formDataRow[column]"> </app-timestamp>
                                     <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[column]}}</span>
                                   </ng-container>
-                                  <ng-container *ngIf="column!='RSVP Time'" [innerHtml]="formDataRow[column]">
+                                  <ng-container *ngIf="column!='RSVP Time'">
+                                    <div [innerHtml]="formDataRow[column]"></div>
                                   </ng-container>
                                 </td>
                               </tr>
