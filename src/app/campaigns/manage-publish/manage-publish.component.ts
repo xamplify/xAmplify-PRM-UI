@@ -291,17 +291,28 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.isloading = true;
         this.customResponse = new CustomResponse();
         if (campaign.campaignType.indexOf('EVENT') > -1) {
-            if (campaign.launched) {
-                this.isScheduledCampaignLaunched = true;
-                this.isloading = false;
-            } else {
-                if (campaign.nurtureCampaign) {
-                    this.campaignService.reDistributeEvent = false;
-                    this.isPartnerGroupSelected(campaign.campaignId,true);
-                } else {
-                     this.router.navigate(['/home/campaigns/event-edit/' + campaign.campaignId]); 
-                 }
-            }
+            let obj = { 'campaignId': campaign.campaignId }
+            this.campaignService.getCampaignById(obj)
+                .subscribe(
+                data => {
+                        this.campaignService.campaign = data;
+                        let isLaunched = this.campaignService.campaign.launched;
+                        let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
+                        if (isLaunched) {
+                        	this.isScheduledCampaignLaunched = true;
+                            this.isloading = false;
+                        } else {
+                        	 if (campaign.nurtureCampaign) {
+                                 this.campaignService.reDistributeEvent = false;
+                                 this.isPartnerGroupSelected(campaign.campaignId,true);
+                             } else {
+                                  this.router.navigate(['/home/campaigns/event-edit/' + campaign.campaignId]); 
+                              }
+                        }
+                },
+                error => { this.logger.errorPage(error) },
+                () => console.log())
+            this.isScheduledCampaignLaunched = false;     	
         }
         else {
             let obj = { 'campaignId': campaign.campaignId }
