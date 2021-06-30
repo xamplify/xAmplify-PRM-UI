@@ -54,6 +54,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     exportObject:any = {};
     modulesDisplayType = new ModulesDisplayType();
+    selectedFormTypeIndex = 0;
+
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -82,6 +84,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.selectedFormTypeIndex = 0;
+        this.pagination.filterKey = "All";
         if (this.router.url.endsWith('manage/')) {
             this.setViewType('Folder-Grid');
         } else {
@@ -450,4 +454,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.listForms(this.pagination);
       }
 
+      showAllForms(type: string, index: number) {
+        this.selectedFormTypeIndex = index;
+        this.pagination.filterKey = type;
+        this.pagination.pageIndex = 1;
+        this.listForms(this.pagination);
+      }
 }

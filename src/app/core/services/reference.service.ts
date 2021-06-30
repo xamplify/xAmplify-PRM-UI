@@ -2246,7 +2246,7 @@ export class ReferenceService {
 			mergeTags.push({ name: 'Event Title', value: '{{event_title}}' });
 			mergeTags.push({ name: 'Event Start Time', value: '{{event_start_time}}' });
 			mergeTags.push({ name: 'Event End Time', value: '{{event_end_time}}' });
-			mergeTags.push({ name: 'Address', value: '{{address}}' });
+			mergeTags.push({ name: 'Event Address', value: '{{event_address}}' });
 			mergeTags.push({ name: 'Event From Name', value: '{{event_fromName}}' });
 			mergeTags.push({ name: 'Event EmailId', value: '{{event_emailId}}' });
 			mergeTags.push({ name: 'Vendor Name', value: '{{vendor_name}}' });

@@ -754,6 +754,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if (this.isEditCampaign) {
             contactListsPagination.editCampaign = true;
             contactListsPagination.campaignId = this.eventCampaign.id;
+            contactListsPagination.channelCampaign = this.eventCampaign.channelCampaign ;
         }
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor)) {
             this.contactListsPagination.filterValue = false;
@@ -852,6 +853,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
         this.contactListsPagination.channelCampaign = this.eventCampaign.channelCampaign;
         this.contactListsPagination.pageIndex = 1;
+        this.showContactType = true;
         if (!this.eventCampaign.channelCampaign) {
             this.eventCampaign.enableCoBrandingLogo = false;
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
@@ -1963,12 +1965,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
 
 
-                            data.body = data.body.replace(/{{address}}/g, fullAddress);
+                            data.body = data.body.replace(/{{event_address}}/g, fullAddress);
                             /* data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );*/
                         }
                     } else {
-                        data.body = data.body.replace(/{{address}}/g, "Online Meeting")
-                        data.body = data.body.replace(/{{address}}/g, " ")
+                        data.body = data.body.replace(/{{event_address}}/g, "Online Meeting")
+                        data.body = data.body.replace(/{{event_address}}/g, " ")
                     }
                     if (this.eventCampaign.fromName) {
                         data.body = data.body.replace("{{event_fromName}}", this.eventCampaign.fromName);

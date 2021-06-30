@@ -227,9 +227,6 @@ export class AddTracksPlayBookComponent implements OnInit {
   }
 
   changeActiveTab(activeTab: string) {
-    if(this.activeTabName == "step-2") {
-      this.setDescription();
-    }
     this.activeTabName = activeTab;
     if (activeTab == "step-1") {
       this.stepOneTabClass = this.activeTabClass;
@@ -1403,7 +1400,5 @@ export class AddTracksPlayBookComponent implements OnInit {
           this.tracksPlayBook.description = CKEDITOR.instances[instanceName].getData();
       }
     }
-    this.validateDescription();
-    this.validateAllSteps();
   }
 }
