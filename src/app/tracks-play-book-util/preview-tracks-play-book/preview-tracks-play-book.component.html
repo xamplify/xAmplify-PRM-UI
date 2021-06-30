@@ -6,9 +6,9 @@
         <section *ngIf="showTracksPlayBook">
             <div class="row">
                 <div class="col-md-9 col-lg-9" style="padding-right: 0px;">
-                    <div class="page-bar" style="padding: 10px 10px;">
+                    <div class="page-bar" style="padding: 0px;">
                         <div class="col-md-12 col-lg-12"
-                            style="border-bottom: 2px solid #cac8c8;padding: 10px 0px 0px 0px;margin-bottom: 10px;">
+                            style="border-bottom: 2px solid #cac8c8;padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: #008fd5;border-top-left-radius: 5px;border-top-right-radius: 5px;">
                             <div class="row">
                                 <div class="col-md-6 col-lg-6" style="padding: 3px 17px;">
                                     <a class="title padding_bottom"
@@ -40,7 +40,8 @@
                         </div>
                         <div *ngIf="(type == undefined || type == 'TRACK') && isCreatedUser" class="center"
                             style="padding-top: 10px;">
-                            <button class="add-button-xamplify" (click)="saveAsPlayBook()" translate>Add To
+                            <button class="add-button-xamplify" (click)="saveAsPlayBook()" translate><i class="fa fa-plus" aria-hidden="true"></i>  Add
+                                To
                                 PlayBooks</button>
                         </div>
                     </div>
@@ -50,13 +51,12 @@
         <section *ngIf="!showTracksPlayBook">
             <div [ngClass]="{'page-bar ' : showAsset}">
                 <div class="col-md-12 col-lg-12" style="padding:0px;">
-                    <div style="padding: 10px 0px 0px 0px;
-                                                  margin-bottom: 10px;">
+                    <div style="padding: 10px 0px 0px 0px;">
                         <a (click)="closeView()" class="pull-right close-circle"
                             style="padding: 3px 5px; margin: 8px 10px 0px 0px;">
                             <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
                                 aria-hidden="true"></span></a>
-                        <div style="padding: 3px;">
+                        <div style="padding: 3px;border-bottom: 2px solid #cac8c8;">
                             <div class="title-page-bar"  style="font-size: 15px;" >
                                 <strong style="margin: 0px 0px 0px 10px;">{{tracksPlayBook.title}}</strong>
                             </div>
@@ -72,9 +72,9 @@
                                 <div class="page-bar" style="margin-bottom: 10px!important;padding:0px 0px !important;">
                                     <div class="row">
                                         <div class="col-md-8 col-lg-8 cpdam">
-                                            <div class="portlet light cphdam">
+                                            <div class="portlet light cphdam box-shadow" style="height: 217px;">
                                                 <div class="portlet-title port-heading">
-                                                    <div class="caption" style="color:#000!important;">
+                                                    <div class="caption" style="color: #fff!important;">
                                                         <h4>
                                                             <strong>{{assetDetails?.assetName |
                                                                 slice:0:50}}</strong>
@@ -88,9 +88,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-lg-4" style="padding: 6px 15px 0px 17px;">
+                                        <div class="col-md-4 col-lg-4" style="padding: 6px 10px 0px 10px;">
                                             <div>
-                                                <div class="grid-box" style="min-height: 200px;margin-top: 0px;">
+                                                <div class="grid-box box-shadow" style="min-height: 200px;margin-top: 0px;">
                                                     <img class="img-class img-max-width" src="{{assetDetails?.thumbnailPath}}"
                                                         alt="No Image Found"><br>
                                                     <a class="btn btn-primary"
@@ -98,10 +98,11 @@
                                                         (click)="downloadAsset(assetDetails)">Download</a>
                                                     <a class="btn btn-primary"
                                                         (click)="assetPreview(assetDetails)">View</a>
-                                                    <div class="center"
-                                                        style="padding: 10px;margin: 0 !important;font-size: 14px;"
-                                                        title="{{assetDetails.assetType}}" translate>
-                                                        Type: <strong>{{assetDetails.assetType}}</strong>
+                                                    <div class="center" style="padding: 10px;margin: 0 !important;font-size: 14px;" title="{{assetDetails.assetType}}"
+                                                        translate>
+                                                        <strong>Type: </strong>{{assetDetails.assetType}}<br>
+                                                        <strong>Title: </strong>{{assetDetails?.assetName | slice:0:50}}
+                                                        <span *ngIf="assetDetails?.assetName?.length>50">..</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -115,34 +116,33 @@
             </div>
         </section>
         <section *ngIf="showAsset || showTracksPlayBook">
-            <div class="page-bar">
-                <div class="col-md-12 col-lg-12" style="border-bottom: 2px solid #cac8c8;
-                          padding: 10px 0px 0px 0px;
-                          margin-bottom: 10px;">
+                <div class="col-md-12 col-lg-12"
+                    style="border-bottom: 2px solid #cac8c8;padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: #008fd5;border-top-left-radius: 5px;border-top-right-radius: 5px;">
                     <div style="padding: 3px;">
                         <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;">Content</a>
                     </div>
                 </div>
+            <div class="page-bar">
                 <div class="row padding_bottom">
-                    <div class="col-md-3 col-sm-4 col-xs-12"
-                        *ngFor="let content of tracksPlayBook.contents ;let i =index"
+                    <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let content of tracksPlayBook.contents ;let i =index"
                         id="ContentListDiv_{{content.id}}">
                         <div
                             [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}">
-                            <div class="grid-box" (click)="viewContent(content)">
+                            <div class="grid-box box-shadow" (click)="viewContent(content)">
                                 <img class="image-fixed" [src]="content.thumbnailPath"
                                     onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
-                                <h4 class="ellipsis mt5 mb5 f-w-600" title="{{content.assetName}}"
-                                    style="text-align: left !important;padding: 5px 0px 5px 10px !important;">
-                                    {{content.assetName | slice:0:25}} <span
-                                        *ngIf="content.assetName?.length>25">...</span><br>
-                                </h4>
-                                <h6 title="{{content.assetType}}" translate>
-                                    Type: <strong>{{content.assetType}}</strong>
+                                <!-- <h4 class="ellipsis mt5 mb5 f-w-600" title="{{content.assetName}}"
+                                    style="text-align: left !important;padding: 5px 0px 5px 10px !important;border-top: 2px solid #cac8c8;">
+                                    Title: {{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span>
+                                </h4> -->
+                                <h5 class="grid-asset-title" title="{{content.assetName}}" translate>
+                                    <strong>Title: </strong>{{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span>
+                                </h5>
+                                <h6 class="asset-type" title="{{content.assetType}}" translate>
+                                    <strong>Type: </strong>{{content.assetType}}
                                 </h6>
                                 <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')" class="ribbon">
-                                    <span style="background-color: #5cb85c;" *ngIf="content.finished"
-                                        translate>Finished</span>
+                                    <span style="background-color: #5cb85c;" *ngIf="content.finished" translate>Finished</span>
                                     <span style="background-color: #819081;" *ngIf="content.opened && !content.finished"
                                         translate>In
                                         Progress</span>
@@ -159,9 +159,9 @@
                     </div>
                     <div *ngIf="type == undefined || type == 'TRACK'" class="col-md-3 col-sm-4 col-xs-12">
                         <div [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
-                            <div class="grid-box" *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
-                                <img class="image-fixed" [src]="tracksPlayBook.featuredImage" onerror="this.src='assets/images/form.png';"
-                                    alt="Image Not Found">
+                            <div class="grid-box box-shadow" *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
+                                <img class="image-fixed" [src]="tracksPlayBook.featuredImage"
+                                    onerror="this.src='assets/images/form.png';" alt="Image Not Found">
                                 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{tracksPlayBook.quiz.name}}"
                                     style="text-align: left !important;padding: 5px 0px 5px 10px !important;">
                                     {{tracksPlayBook.quiz.name | slice:0:25}} <span
