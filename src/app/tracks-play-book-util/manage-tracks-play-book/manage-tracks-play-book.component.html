@@ -68,10 +68,10 @@
                                         <span *ngIf="type == undefined || (type != undefined && type == 'TRACK')" class="gridHeader" translate>Track</span>
                                         <span *ngIf="type != undefined && type == 'PLAYBOOK'" class="gridHeader" translate>Play Book</span>
                                     </th>
-                                    <th class="hidden-xs text-center" translate scope="col">Tags</th>
-                                    <th class="hidden-xs text-center" translate scope="col">Created On</th>
+                                    <th class="hidden-xs text-center" style="width: 15%;" translate scope="col">Tags</th>
+                                    <th class="hidden-xs text-center" style="width: 15%;" translate scope="col">Created On</th>
                                     <ng-container *ngIf="isPartnerView">
-                                        <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" translate>Progress</th>
+                                        <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" style="width: 15%;" translate>Progress</th>
                                         <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center"></th>
                                     </ng-container>
                                     <ng-container *ngIf="!isPartnerView">
@@ -128,7 +128,7 @@
                                             <span *ngIf="learningTrack.progress == undefined">0%</span>
                                         </div>
                                     </td>
-                                    <td id="actions-row">
+                                    <td id="actions-row" class="text-center">
                                         <div class="actions-block override-actions custom-width-icon">
                                             <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
