@@ -15,9 +15,9 @@
     border-radius: 1px;
 }
 
-#actions-row {
+/* #actions-row {
     width: 30%
-}
+} */
 
 #min-width {
     min-width: 145px;
@@ -148,12 +148,12 @@
     color: white;
     padding: 4px;
     text-align: center;
-    /*width: fit-content;*/
-    margin: 2px 2px;
+    width: fit-content;
+    margin: 2px auto;
     /* font-weight: 600; */
     border-radius: 20px;
     padding: 5px 10px;
-    display: inline;
+    /* display: inline; */
 }
 
 .tag-dots {

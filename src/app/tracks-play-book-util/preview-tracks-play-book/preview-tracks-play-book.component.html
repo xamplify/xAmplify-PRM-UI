@@ -162,17 +162,19 @@
                             <div class="grid-box box-shadow" *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
                                 <img class="image-fixed" [src]="tracksPlayBook.featuredImage"
                                     onerror="this.src='assets/images/form.png';" alt="Image Not Found">
-                                <h4 class="ellipsis mt5 mb5 f-w-600" title="{{tracksPlayBook.quiz.name}}"
-                                    style="text-align: left !important;padding: 5px 0px 5px 10px !important;">
-                                    {{tracksPlayBook.quiz.name | slice:0:25}} <span
+                                <h5 class="grid-asset-title" title="{{tracksPlayBook.quiz.name}}" translate>
+                                    <strong>Title: </strong>{{tracksPlayBook.quiz.name | slice:0:25}} <span
                                         *ngIf="tracksPlayBook.quiz.name?.length>25">...</span><br>
-                                </h4>
-                                <h6 title="Form" translate>
-                                    Type: <strong>Form</strong>
+                                </h5>
+                                <h6 class="asset-type" title="Form" translate>
+                                    <strong>Type: </strong>Form
                                 </h6>
                                 <div *ngIf="!isCreatedUser && !tracksPlayBook.enableQuiz && tracksPlayBook.progress != undefined && tracksPlayBook.progress === 100"
                                     class="ribbon">
                                     <span style="background-color: #5cb85c;" translate>Finished</span>
+                                </div>
+                                <div class="ribbon-right">
+                                    <span style="background-color: #5cb85c;" translate>Quiz</span>
                                 </div>
                                 <div class="bar">
                                     <a *ngIf="!isCreatedUser" [ngClass]="{'isDisabled' : !tracksPlayBook.enableQuiz}"
