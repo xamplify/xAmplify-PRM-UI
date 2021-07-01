@@ -11,9 +11,10 @@
 	</div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a
-				[routerLink]="referenseService.homeRouter">Home</a> <i
-				class="fa fa-angle-right"></i></li>
+			<li>
+				<i class="fa fa-home" aria-hidden="true"></i>
+				 <a	[routerLink]="referenseService.homeRouter">Home</a>
+				  <i class="fa fa-angle-right" aria-hidden="true"></i></li>
 			<li><a>Your Vendors</a></li>
 		</ul>
 	</div>
@@ -29,24 +30,23 @@
 							<div class="col-xs-12 col-sm-4 col-md-4"
 								*ngFor="let vendorReport of vendorDetails">
 								<a
-									class="dashboard-stat dashboard-stat-lighter dashboard-stat blue"
+									class="dashboard-stat dashboard-stat-lighter dashboard-stat blue vendor-shadow"
 									[class.disabled]="!vendorReport.campaignsCount"
 									(click)="navigateToVendorCampaigns(vendorReport)">
 									<div class="visual">
 										<img style="width: 100px; height: 66px;"
 											src="{{vendorReport.companyLogo}}"
-											(error)="errorHandler($event)">
-										<!-- <i class="fa fa-users"></i> -->
+											(error)="errorHandler($event)" alt="">
 									</div>
 									<div class="details">
-										<div class="number">{{vendorReport.campaignsCount}}</div>
-										<div [title]="vendorReport.companyName" class="desc">
+										<div class="number black">{{vendorReport.campaignsCount}}</div>
+										<div [title]="vendorReport.companyName" class="desc black">
 											{{vendorReport.companyName | slice:0:25}}<span
 												*ngIf="vendorReport.companyName?.length>25">..</span>
 										</div>
 									</div> <span id="permhref" class="morePadding"> <a
-										class="more"> Detailed view <i
-											class="m-icon-swapright m-icon-white"></i>
+										class="more"> Detailed view 
+										<i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
 									</a>
 								</span>
 								</a>
