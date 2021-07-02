@@ -66,6 +66,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	showContent = false;
 	contentDivs: Array<boolean> = new Array<boolean>();
 	isVendorTier = false;
+	formAccessForPrm = false;
 	constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
 	) {
@@ -289,6 +290,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.dashBoardService.listLeftSideNavBarItems(vanityUrlPostDto)
 			.subscribe(
 				data => {
+					this.formAccessForPrm = data.forms;
 					this.rssFeedAccess = data.rssFeeds;
 					this.authService.module.isContact = data.contacts;
 					this.mdfAccess = data.mdf;
