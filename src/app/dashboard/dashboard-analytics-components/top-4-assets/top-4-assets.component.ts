@@ -63,7 +63,12 @@ export class Top4AssetsComponent implements OnInit {
 		}, error => {
 			this.assetsLoader = false;
 		});
-	}
+  }
+  
+  goToAnalytics(asset:any){
+    this.assetsLoader = true;
+    this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+asset.id);
+  }
 
 
 }
