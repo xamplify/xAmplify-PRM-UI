@@ -55,6 +55,8 @@
 <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
 <!------------Vendor Activity---------------------->
 <app-vendor-activity-analytics></app-vendor-activity-analytics >
+<!--Top 4 Assets--------------->  
+<app-top-4-assets></app-top-4-assets>
 <!---Top 4 Campaigns--------->
 <div class="row" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && !authenticationService.partnershipEstablishedOnlyWithPrm && authenticationService.module.showCampaignsAnalyticsDivInDashboard">
     <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -71,7 +73,6 @@
                     Create Campaign
                 </a>
         </ng-container>
-            
 		</div>
 	<div class="portlet-body clearfix">
     <app-dynamic-grid-loader *ngIf="topFourCampaignsLoader.isLoading" [gridCount]=4></app-dynamic-grid-loader>

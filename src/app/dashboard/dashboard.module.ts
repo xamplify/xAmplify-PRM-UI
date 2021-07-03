@@ -64,6 +64,7 @@ import { AdminPartnerCompaniesComponent } from './admin-partner-companies/admin-
 import { RecentLoggedInUsersComponent } from './recent-logged-in-users/recent-logged-in-users.component';
 import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { UnsubscribeReasonsComponent } from './unsubscribe-reasons/unsubscribe-reasons.component';
+import { Top4AssetsComponent } from './dashboard-analytics-components/top-4-assets/top-4-assets.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -103,7 +104,8 @@ import { UnsubscribeReasonsComponent } from './unsubscribe-reasons/unsubscribe-r
         AdminPartnerCompaniesComponent,
         RecentLoggedInUsersComponent,
         AdminReportCampaignWorkflowAnalyticsComponent,
-        UnsubscribeReasonsComponent
+        UnsubscribeReasonsComponent,
+        Top4AssetsComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
