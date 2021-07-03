@@ -2,121 +2,42 @@
 	<div class="page-bar portlet light border-radius-0 shadow tfamt">
 		<div class="portlet-title">
 			<h4 class="pull-left m10 f-w-600 text-primary" translate>Assets</h4>
-			<a data-toggle="tooltip" title="Customize campaign report"
-				data-placement="left" id="right"> <i
-				id="customize-campaign-setting" class="fa fa-cog pull-right"
-				data-toggle="modal" data-target="#customizeCampaignModal"
-				aria-hidden="true"> </i>
+			<a class="close-circle" title="Refresh" data-placement="left" id="right" (click)="listAssets(pagination)">
+				 <i	 class="fa fa-refresh" aria-hidden="true"></i>
 			</a>
 		</div>
 		<div class="portlet-body clearfix">
-			<section>
-				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 xamplify-cursor-pointer">
+			<app-grid-loader [count]="4" *ngIf="assetsLoader"></app-grid-loader>
+			<section *ngIf="!assetsLoader">
+				<div *ngFor="let asset of pagination.pagedItems ;let i =index;" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 xamplify-cursor-pointer">
 					<div class="grid-box min-h">
-						<img class="img-class mxv"
-							src="https://s3.amazonaws.com/xamplify/qa/previews/bee-459/dam/172-459.png"
-							alt="">
-						<h4 class="ellipsis mt5 mb5 f-w-600"
-							title="https://s3.amazonaws.com/xamplify/qa/previews/bee-459/dam/172-459.png">
-							First Asset <br> <br>
-						</h4>
-						<div>
-							<span class="view-banner-dam">pdf</span>
-							<h6 translate>
-								<span>Published On</span> <strong>Spe 1, 2023 </strong>
-							</h6>
-							<h6 translate>
-								By <strong>ASSS</strong>
-
-							</h6>
-							<h6 class="moreipsis">
-								<span translate> Version <strong>A</strong></span>
-							</h6>
-						</div>
-						<div class="ribbon">
-							<span translate>Published</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-					<div class="grid-box min-h">
-						<img class="img-class mxv"
-							src="https://s3.amazonaws.com/xamplify/qa/previews/bee-459/dam/172-459.png"
-							alt="">
-						<h4 class="ellipsis mt5 mb5 f-w-600"
-							title="https://s3.amazonaws.com/xamplify/qa/previews/bee-459/dam/172-459.png">
-							First Asset <br> <br>
-						</h4>
-						<div>
-							<span class="view-banner-dam">pdf</span>
-							<h6 translate>
-								<span>Published On</span> <strong>Spe 1, 2023 </strong>
-							</h6>
-							<h6 translate>
-								By <strong>ASSS</strong>
-
-							</h6>
-							<h6 class="moreipsis">
-								<span translate> Version <strong>A</strong></span>
-							</h6>
-						</div>
-						<div class="ribbon">
-							<span translate>Published</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-					<div class="grid-box min-h">
-						<img class="img-class mxv"
-							src="https://s3.amazonaws.com/xamplify/qa/previews/bee-459/dam/172-459.png"
-							alt="">
-						<h4 class="ellipsis mt5 mb5 f-w-600"
-							title="https://s3.amazonaws.com/xamplify/qa/previews/bee-459/dam/172-459.png">
-							First Asset <br> <br>
-						</h4>
-						<div>
-							<span class="view-banner-dam">pdf</span>
-							<h6 translate>
-								<span>Published On</span> <strong>Spe 1, 2023 </strong>
-							</h6>
-							<h6 translate>
-								By <strong>ASSS</strong>
-
-							</h6>
-							<h6 class="moreipsis">
-								<span translate> Version <strong>A</strong></span>
-							</h6>
-						</div>
-						<div class="ribbon">
-							<span translate>Published</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-					<div class="grid-box min-h">
-						<img class="img-class mxv"
-							src="https://s3.amazonaws.com/xamplify/qa/previews/bee-459/dam/172-459.png"
-							alt="">
-						<h4 class="ellipsis mt5 mb5 f-w-600"
-							title="https://s3.amazonaws.com/xamplify/qa/previews/bee-459/dam/172-459.png">
-							First Asset <br> <br>
-						</h4>
-						<div>
-							<span class="view-banner-dam">pdf</span>
-							<h6 translate>
-								<span>Published On</span> <strong>Spe 1, 2023 </strong>
-							</h6>
-							<h6 translate>
-								By <strong>ASSS</strong>
-
-							</h6>
-							<h6 class="moreipsis">
-								<span translate> Version <strong>A</strong></span>
-							</h6>
-						</div>
-						<div class="ribbon">
-							<span translate>Published</span>
-						</div>
+						<img class="img-class mxv" src="{{asset?.thumbnailPath}}" alt="{{asset?.assetName}}">
+							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
+								{{asset?.assetName | slice:0:25}} 
+								<span *ngIf="asset?.assetName?.length>25">...</span>
+								<br>
+								<br>
+							</h4>
+							<div>
+								<span class="view-banner-dam">{{asset?.assetType}}</span>
+								<h6 translate>
+									 <span>Created On</span>
+									 <strong>
+										<app-timestamp	[showInLine]="'true'" [dateAndTime]="asset?.displayTime">
+										</app-timestamp>
+									</strong>
+								</h6>
+								<h6 title="{{asset?.displayName}}" translate>
+									By <strong>{{asset?.displayName | slice:0:17}}</strong>
+									 <span	*ngIf="asset?.displayName?.length>17">..</span>
+								</h6>
+								<h6 class="moreipsis" *ngIf="asset?.beeTemplate">
+									<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
+								</h6>
+							</div>
+							<div class="ribbon">
+								<span *ngIf="asset?.published" translate>Published</span>
+							</div>
 					</div>
 				</div>
 			</section>
