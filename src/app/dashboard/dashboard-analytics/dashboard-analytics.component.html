@@ -189,10 +189,17 @@
  </div>
 <app-social-accounts-analytics></app-social-accounts-analytics>
 <!--Top 4 Assets--------------->  
-<app-top-4-assets [isPartnerView]="false" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
+<app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
 <!--Top 4 Shared Assets--------------->  
-<app-top-4-assets [isPartnerView]="true" *ngIf="authenticationService?.module?.damAccessAsPartner"></app-top-4-assets>
-
+<app-top-4-assets [isPartnerView]="true" [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccessAsPartner"></app-top-4-assets>
+<!--Top 4 Tracks--------------->  
+<app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="true" *ngIf="authenticationService?.module?.lmsAccess"></app-top-4-tracks-and-play-books>
+<!--Top 4 Shared Tracks--------------->  
+<app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="true" *ngIf="authenticationService?.module?.lmsAccessAsPartner"></app-top-4-tracks-and-play-books>
+<!--Top 4 PlayBooks--------------->  
+<app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccess"></app-top-4-tracks-and-play-books>
+<!--Top 4 Shared PlayBooks--------------->  
+<app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
 </ng-container>
 </div>
 

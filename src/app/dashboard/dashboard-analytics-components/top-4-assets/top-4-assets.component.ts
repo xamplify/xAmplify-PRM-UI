@@ -3,10 +3,11 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Properties } from 'app/common/models/properties';
-import { DamService } from 'app/dam/services/dam.service';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { DamService } from 'app/dam/services/dam.service';
+
 
 declare var $: any;
 @Component({
@@ -22,6 +23,7 @@ export class Top4AssetsComponent implements OnInit {
   assets: Array<any> = new Array<any>();
   loggedInUserCompanyId: any;
   @Input() isPartnerView = false;
+  @Input() hideRowClass = false;
   title = "Assets";
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
 
