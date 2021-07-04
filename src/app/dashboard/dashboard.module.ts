@@ -65,6 +65,8 @@ import { RecentLoggedInUsersComponent } from './recent-logged-in-users/recent-lo
 import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { UnsubscribeReasonsComponent } from './unsubscribe-reasons/unsubscribe-reasons.component';
 import { Top4AssetsComponent } from './dashboard-analytics-components/top-4-assets/top-4-assets.component';
+import { CustomizeTop4Component } from './dashboard-analytics-components/customize-top-4/customize-top-4.component';
+import { Top4TracksAndPlayBooksComponent } from './dashboard-analytics-components/top-4-tracks-and-play-books/top-4-tracks-and-play-books.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -105,7 +107,9 @@ import { Top4AssetsComponent } from './dashboard-analytics-components/top-4-asse
         RecentLoggedInUsersComponent,
         AdminReportCampaignWorkflowAnalyticsComponent,
         UnsubscribeReasonsComponent,
-        Top4AssetsComponent
+        Top4AssetsComponent,
+        CustomizeTop4Component,
+        Top4TracksAndPlayBooksComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
