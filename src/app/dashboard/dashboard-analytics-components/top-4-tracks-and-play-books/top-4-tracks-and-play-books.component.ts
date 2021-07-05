@@ -97,4 +97,22 @@ export class Top4TracksAndPlayBooksComponent implements OnInit {
     this.referenceService.goToRouter(router);
   }
 
+  goToManage(){
+    let router = "";
+    if(this.isPartnerView){
+      if(this.tracks){
+        router = "home/tracks/shared";
+      }else{
+        router = "home/playbook/shared";
+      }
+    }else{
+      if(this.tracks){
+        router = "home/tracks/manage";
+      }else{
+        router = "home/playbook/manage";
+      }
+    }
+    this.referenceService.goToRouter(router);
+  }
+
 }

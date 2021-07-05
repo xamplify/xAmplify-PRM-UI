@@ -1,13 +1,12 @@
 <div [className]="hideRowClass ? '':'row'">
 	<div class="page-bar portlet light border-radius-0 shadow tfamt">
 		<div class="portlet-title" *ngIf="!loader">
-			<h4 class="pull-left m10 f-w-600 text-primary" translate>{{headerTitle}}</h4>
+			<h4 class="pull-left m10 f-w-600 text-primary" translate>
+                <a (click)="goToManage()">{{headerTitle}}</a>
+            </h4>
 			<a class="close-circle" title="Refresh"  (click)="refresh()">
 				 <i class="fa fa-refresh" aria-hidden="true"></i>
 			</a>
-			<a class="close-circle cog-padding" title="Customize Tracks"  (click)="openSettingsPopup()">
-				<i class="fa fa-cog" aria-hidden="true"></i>
-		   </a>
 		</div>
 		<div class="portlet-body clearfix">
 			<app-grid-loader [count]="4" *ngIf="loader"></app-grid-loader>
@@ -15,8 +14,8 @@
 				<div *ngIf="contents?.length==0" class="alert alert-info text-center">
 					<strong>No Data Found</strong>
 				</div>
-				<div *ngFor="let learningTrack of contents ;let i =index;" title="Click To See Analytics" (click)="goToAnalytics(learningTrack)" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 xamplify-cursor-pointer">
-					<div class="grid-box">
+				<div *ngFor="let learningTrack of contents ;let i =index;"  class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+					<div class="grid-box box-shadow">
                         <img class="img-grid-track " [src]="learningTrack?.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="{{learningTrack?.title}}">
                         <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack?.title}}" style="float: none !important;" translate>
                             {{learningTrack?.title | slice:0:25}} <span *ngIf="learningTrack?.title?.length>25">...</span><br><br>
@@ -31,7 +30,7 @@
                                 <span *ngIf="learningTrack?.progress == undefined">0%</span>
                                 <br>
                             </div>
-                            <h6  translate>
+                            <h6  translate title="{{learningTrack?.category?.name}}">
                                 Folder <strong>{{learningTrack?.category?.name | slice:0:17}}</strong>
                                 <span *ngIf="learningTrack?.category?.name?.length>17">..</span>
                             </h6>
@@ -41,13 +40,21 @@
                                     </app-timestamp>
                                 </strong>
                             </h6>
-                            <h6  translate>
+                            <h6  translate title="{{learningTrack?.createdByName}}">
                                 By <strong>{{learningTrack?.createdByName | slice:0:17}}</strong>
                                 <span *ngIf="learningTrack?.createdByName?.length>17">..</span>
                             </h6>
                         </div>
                         <div class="ribbon">
                             <span style="background-color: #5cb85c;" *ngIf="learningTrack?.published && !isPartnerView" translate>Published</span>
+                        </div>
+                        <div class="bar auto-height">
+                            <a *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top" title="View" (click)="goToAnalytics(learningTrack)">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="goToAnalytics(learningTrack)">
+                                <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            </a>
                         </div>
 					</div>
 				</div>
