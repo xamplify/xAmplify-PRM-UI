@@ -56,6 +56,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
 	partnershipEstablishedOnlyWithPrm = false;
 	opportunityLeadsAndDeals = false;
+	opportunityLeadsAndDealsAccessAsPartner = false;
 	opportunityDeals = false;
 	lms = false;
 	lmsAccess = false;
@@ -302,6 +303,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.damAccessAsPartner = data.damAccessAsPartner;
 					this.opportunityDeals = data.opportunityDeals;
 					this.opportunityLeadsAndDeals = data.opportunityLeadsAndDeals;
+					this.opportunityLeadsAndDealsAccessAsPartner = data.opportunityLeadsAndDealsAccessAsPartner;
 					this.authService.module.damAccess = data.dam;
 					this.authService.module.damAccessAsPartner = data.damAccessAsPartner;
 					this.authService.module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
