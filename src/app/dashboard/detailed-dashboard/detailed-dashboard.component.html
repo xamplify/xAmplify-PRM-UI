@@ -27,6 +27,7 @@
              && !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember)">
                 <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
             </ng-container>
+            <ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember">
             <!--Top 4 Assets--------------->  
             <app-top-4-assets [isPartnerView]="false" [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
             <!--Top 4 Shared Assets--------------->  
@@ -39,6 +40,8 @@
             <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="true" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccess"></app-top-4-tracks-and-play-books>
             <!--Top 4 Shared PlayBooks--------------->  
             <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="true" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
+            </ng-container>
+           
         </div>
     </div>
 </div>

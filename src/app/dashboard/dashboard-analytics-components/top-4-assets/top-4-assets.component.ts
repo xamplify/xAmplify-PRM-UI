@@ -131,5 +131,13 @@ export class Top4AssetsComponent implements OnInit {
     }
   }
 
+  goToManage(){
+    if(this.isPartnerView){
+      this.referenceService.goToRouter('/home/dam/shared');
+    }else{
+      this.referenceService.goToRouter('/home/dam/manage');
+    }
+  }
+
 
 }

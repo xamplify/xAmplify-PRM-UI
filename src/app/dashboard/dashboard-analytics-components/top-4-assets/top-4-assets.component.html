@@ -1,13 +1,12 @@
 <div [className]="hideRowClass ? '':'row'">
 	<div class="page-bar portlet light border-radius-0 shadow tfamt">
 		<div class="portlet-title" *ngIf="!assetsLoader">
-			<h4 class="pull-left m10 f-w-600 text-primary" translate>{{title}}</h4>
+			<h4 class="pull-left m10 f-w-600 text-primary" translate>
+				<a (click)="goToManage()">{{title}}</a>
+			</h4>
 			<a class="close-circle" title="Refresh"  (click)="refresh()">
 				 <i class="fa fa-refresh" aria-hidden="true"></i>
 			</a>
-			<a class="close-circle cog-padding" title="Customize Assets"  (click)="openSettingsPopup()">
-				<i class="fa fa-cog" aria-hidden="true"></i>
-		   </a>
 		</div>
 		<div class="portlet-body clearfix">
 			<app-grid-loader [count]="4" *ngIf="assetsLoader"></app-grid-loader>
@@ -16,7 +15,7 @@
 					<strong>No Data Found</strong>
 				</div>
 				<div *ngFor="let asset of assets ;let i =index;" title="Click To See Analytics" (click)="goToAnalytics(asset)" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 xamplify-cursor-pointer">
-					<div class="grid-box min-h">
+					<div class="grid-box min-h box-shadow">
 						<app-image-loader [moduleName]="'top-4-assets'" image="{{asset?.thumbnailPath}}"></app-image-loader>
 							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
 								{{asset?.assetName | slice:0:25}} 

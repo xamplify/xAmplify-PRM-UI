@@ -157,7 +157,7 @@
                      </div>
                  </div>
              </div>
-            </ng-container>
+    </ng-container>
      </div>
      <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1">
      <!------Regional Statistics, Video Statistics & Email Stats--------------->
@@ -185,9 +185,9 @@
             </div>
         </div>
     </div>
-    
  </div>
 <app-social-accounts-analytics></app-social-accounts-analytics>
+<!-- <ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember"> -->
 <!--Top 4 Assets--------------->  
 <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
 <!--Top 4 Shared Assets--------------->  
@@ -200,6 +200,7 @@
 <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccess"></app-top-4-tracks-and-play-books>
 <!--Top 4 Shared PlayBooks--------------->  
 <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
+<!-- </ng-container> -->
 </ng-container>
 </div>
 
