@@ -188,7 +188,7 @@
  </div>
 <app-social-accounts-analytics></app-social-accounts-analytics>
 <ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-|| authenticationService?.module?.damAccessAsPartner || authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccessAsPartner">
+|| authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
 <!--Top 4 Assets--------------->  
 <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
 <!--Top 4 Shared Assets--------------->  
