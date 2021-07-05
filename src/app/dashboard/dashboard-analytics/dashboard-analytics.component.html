@@ -186,7 +186,6 @@
         </div>
     </div>
  </div>
-<app-social-accounts-analytics></app-social-accounts-analytics>
 <ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
 || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
 <!--Top 4 Assets--------------->  
@@ -202,6 +201,7 @@
 <!--Top 4 Shared PlayBooks--------------->  
 <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
 </ng-container>
+<app-social-accounts-analytics></app-social-accounts-analytics>
 </ng-container>
 </div>
 
