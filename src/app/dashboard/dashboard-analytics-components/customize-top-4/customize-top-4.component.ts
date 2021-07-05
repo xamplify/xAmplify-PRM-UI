@@ -24,4 +24,8 @@ export class CustomizeTop4Component implements OnInit {
   selectOption(option){
   }
 
+save(){
+	
+}
+
 }
