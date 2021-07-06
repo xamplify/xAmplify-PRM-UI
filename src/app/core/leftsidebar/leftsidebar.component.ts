@@ -56,6 +56,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
 	partnershipEstablishedOnlyWithPrm = false;
 	opportunityLeadsAndDeals = false;
+	opportunityLeadsAndDealsAccessAsPartner = false;
 	opportunityDeals = false;
 	lms = false;
 	lmsAccess = false;
@@ -66,6 +67,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	showContent = false;
 	contentDivs: Array<boolean> = new Array<boolean>();
 	isVendorTier = false;
+	formAccessForPrm = false;
 	constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
 	) {
@@ -289,6 +291,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.dashBoardService.listLeftSideNavBarItems(vanityUrlPostDto)
 			.subscribe(
 				data => {
+					this.formAccessForPrm = data.forms;
 					this.rssFeedAccess = data.rssFeeds;
 					this.authService.module.isContact = data.contacts;
 					this.mdfAccess = data.mdf;
@@ -300,6 +303,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.damAccessAsPartner = data.damAccessAsPartner;
 					this.opportunityDeals = data.opportunityDeals;
 					this.opportunityLeadsAndDeals = data.opportunityLeadsAndDeals;
+					this.opportunityLeadsAndDealsAccessAsPartner = data.opportunityLeadsAndDealsAccessAsPartner;
 					this.authService.module.damAccess = data.dam;
 					this.authService.module.damAccessAsPartner = data.damAccessAsPartner;
 					this.authService.module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;

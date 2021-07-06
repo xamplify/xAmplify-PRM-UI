@@ -1,0 +1,66 @@
+<div class="modal right fade" id="customizeTopFourModal" tabindex="-1" role="dialog" aria-labelledby="customizeTopFourLabel">
+  <div class="modal-dialog modal-customize" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <a class="close-circle" data-dismiss="modal">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+              </a>
+              <h4 class="modal-title" id="customizeTopFourLabel">{{headerTitle}}</h4>
+          </div>
+          <div class="modal-body">
+              <div class="clearfix">
+                  <div class="col-xs-12" style="margin-bottom: 10px;">
+                     
+                  </div>
+                  <div>
+                      <div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let option of options">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="option" [value]="option" [checked]="item==selectedOption"
+                              (change)="selectOption(item)"> {{option}}
+                          </label>
+                      </div>
+                  </div>
+                  <div class="col-xs-12" *ngIf="selectedOption == 'CUSTOM'">
+                      <hr>
+                      <div [hidden]="assets?.length==0">
+                          <div style="margin-bottom: 10px;"><span>Select up to 4 assets by dragging & dropping</span></div>
+                          <div class="wrapper">
+                              <div class="col-xs-6" style="padding: 0 5px 0 0">
+                                  <div class="portlet light border-radius-0">
+                                      <div class="portlet-title">
+                                          <h5>{{assetTitle}}</h5>
+                                      </div>
+                                      <div class="portlet-body scrollbar assets" [dragula]='"bag-items"'>
+                                          <div class="gu-block" *ngFor="let item of assets">
+                                              <h6 class="gu-block-content" [id]="item.id">{{item.name | slice:0:27}}<span *ngIf="item.name?.length>27">...</span></h6>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-xs-6" style="padding: 0">
+                                  <div class="portlet light border-radius-0">
+                                      <div class="portlet-title">
+                                          <h5>SELECTED ASSETS
+                                              <strong>(MAX 4)</strong>
+                                          </h5>
+                                      </div>
+                                      <div class="portlet-body launchedCampaignsChild" style="min-height: 200px;" [dragula]='"bag-items"'>
+                                          <div class="gu-block" *ngFor="let item of assets">
+                                              <h6 class="gu-block-content" [id]="item.id">{{item?.name | slice:0:27}}<span *ngIf="item?.name?.length>27">...</span></h6>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <span [hidden]="assets?.length>0">No Assets Found.</span>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="color1 btn-campaign" (click)="save()">Save changes</button>
+              <button type="button" class="btn-campaign " data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>

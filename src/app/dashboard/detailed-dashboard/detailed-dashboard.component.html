@@ -13,7 +13,10 @@
                 <ng-container *ngIf="authenticationService?.mdf || authenticationService?.leadsAndDeals">
                     <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
                 </ng-container>
-                <ng-container *ngIf="!authenticationService?.mdf && !authenticationService?.leadsAndDeals">
+                <ng-container *ngIf="!authenticationService?.mdf && !authenticationService?.leadsAndDeals && 
+                !authenticationService?.module?.damAccess && !authenticationService?.module?.damAccessAsPartner && 
+                !authenticationService?.module?.lmsAccess && !authenticationService?.module?.lmsAccessAsPartner &&
+                !authenticationService?.module?.playbookAccess && !authenticationService?.module?.playbookAccessAsPartner">
                     <div class="alert alert-info center-align">
                         <strong>No Analytics Found</strong>
                     </div>
@@ -24,6 +27,22 @@
              && !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember)">
                 <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
             </ng-container>
+            <ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+            || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+            <!--Top 4 Assets--------------->  
+            <app-top-4-assets [isPartnerView]="false" [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
+            <!--Top 4 Shared Assets--------------->  
+            <app-top-4-assets [isPartnerView]="true" [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccessAsPartner"></app-top-4-assets>
+            <!--Top 4 Tracks--------------->  
+            <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="true" [tracks]="true" *ngIf="authenticationService?.module?.lmsAccess"></app-top-4-tracks-and-play-books>
+            <!--Top 4 Shared Tracks--------------->  
+            <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="true" [tracks]="true" *ngIf="authenticationService?.module?.lmsAccessAsPartner"></app-top-4-tracks-and-play-books>
+            <!--Top 4 PlayBooks--------------->  
+            <app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="true" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccess"></app-top-4-tracks-and-play-books>
+            <!--Top 4 Shared PlayBooks--------------->  
+            <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="true" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
+            </ng-container>
+           
         </div>
     </div>
 </div>

@@ -55,6 +55,7 @@
 <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
 <!------------Vendor Activity---------------------->
 <app-vendor-activity-analytics></app-vendor-activity-analytics >
+
 <!---Top 4 Campaigns--------->
 <div class="row" *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && !authenticationService.partnershipEstablishedOnlyWithPrm && authenticationService.module.showCampaignsAnalyticsDivInDashboard">
     <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -62,8 +63,8 @@
        <div class="portlet-title">
             <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
             <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
-                <a *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()" data-toggle="tooltip" title="Customize campaign report"
-                    data-placement="left" id="right"> 
+                <a *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"  title="Customize campaign report"
+                     id="right"> 
                     <i id="customize-campaign-setting" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal" aria-hidden="true"></i>
                 </a> 
                 <a *ngIf="campaigns?.length == 0 && ((hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)  && authenticationService.user.hasCompany)" [routerLink]="['/home/campaigns/select']"
@@ -71,7 +72,6 @@
                     Create Campaign
                 </a>
         </ng-container>
-            
 		</div>
 	<div class="portlet-body clearfix">
     <app-dynamic-grid-loader *ngIf="topFourCampaignsLoader.isLoading" [gridCount]=4></app-dynamic-grid-loader>
@@ -157,7 +157,7 @@
                      </div>
                  </div>
              </div>
-            </ng-container>
+    </ng-container>
      </div>
      <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1">
      <!------Regional Statistics, Video Statistics & Email Stats--------------->
@@ -171,7 +171,7 @@
      </div>
     </ng-container>
     </div><!--End of page bar-->
- </div><!--End of row-->
+</div><!--End of row-->
  <!----Show Anlaytics For PRM-->
  <div *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
  && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
@@ -185,8 +185,22 @@
             </div>
         </div>
     </div>
-    
  </div>
+<ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+|| authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+<!--Top 4 Assets--------------->  
+<app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
+<!--Top 4 Shared Assets--------------->  
+<app-top-4-assets [isPartnerView]="true" [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccessAsPartner"></app-top-4-assets>
+<!--Top 4 Tracks--------------->  
+<app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="true" *ngIf="authenticationService?.module?.lmsAccess"></app-top-4-tracks-and-play-books>
+<!--Top 4 Shared Tracks--------------->  
+<app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="true" *ngIf="authenticationService?.module?.lmsAccessAsPartner"></app-top-4-tracks-and-play-books>
+<!--Top 4 PlayBooks--------------->  
+<app-top-4-tracks-and-play-books [isPartnerView]="false" [hideRowClass]="false" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccess"></app-top-4-tracks-and-play-books>
+<!--Top 4 Shared PlayBooks--------------->  
+<app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
+</ng-container>
 <app-social-accounts-analytics></app-social-accounts-analytics>
 </ng-container>
 </div>
@@ -247,7 +261,7 @@
                                     <div class="portlet light border-radius-0">
                                         <div class="portlet-title">
                                             <h5>SELECTED CAMPAIGNS
-                                                <b>(MAX 4)</b>
+                                                <strong>(MAX 4)</strong>
                                             </h5>
                                         </div>
                                         <div class="portlet-body launchedCampaignsChild" style="min-height: 200px;" [dragula]='"bag-items"'>

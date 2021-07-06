@@ -183,7 +183,7 @@
 
             <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
-                    <div class="grid-box">
+                    <div class="grid-box box-shadow">
                         <img class="img-grid-track " [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="{{learningTrack.title}}">
                         <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}" style="float: none !important;" translate>
                             {{learningTrack.title | slice:0:25}} <span *ngIf="learningTrack.title?.length>25">...</span><br><br>

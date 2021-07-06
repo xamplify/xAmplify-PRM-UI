@@ -280,7 +280,7 @@
 					<div class="col-md-3 col-sm-4 col-xs-12"
 						*ngFor="let asset of pagination.pagedItems ;let i =index"
 						id="assetList_{{asset.id}}">
-						<div class="grid-box min-h default-cursor">
+						<div class="grid-box min-h default-cursor box-shadow">
 							<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
 								alt="{{asset?.assetName}}">
 							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
@@ -306,7 +306,7 @@
 									<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
 								</h6>
 								<h6 *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
-									By <strong>{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
+									From <strong>{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
 										*ngIf="asset?.vendorCompanyName?.length>17">..</span>
 								</h6>
 							</div>
@@ -378,7 +378,7 @@
 					<div class="col-md-3 col-sm-4 col-xs-12"
 						*ngFor="let asset of historyPagination.pagedItems ;let i =index"
 						id="assetList_{{asset.id}}">
-						<div class="grid-box">
+						<div class="grid-box box-shadow">
 							<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
 								alt="{{asset?.assetName}}">
 							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
@@ -478,8 +478,8 @@
 					</div>
 					<div class="col-md-4 col-lg-4" style="padding: 6px 40px 0px 17px;">
 						<div>
-							<div class="grid-box" style="min-height: 200px;">
-								<img class="img-class"
+							<div class="grid-box box-shadow" style="min-height: 200px;">
+								<img class="img-class mxv"
 									src="{{assetDetailsViewDto?.thumbnailPath}}"
 									alt="No Image Found"><br> <a class="btn btn-info"
 									(click)="openPopup(selectedAsset)">Download</a>
