@@ -72,8 +72,7 @@ export class Top4AssetsComponent implements OnInit {
 
   listAssets(pagination: Pagination) {
     this.assetsLoader = true;
-    this.pagination.maxResults =4;
-    this.pagination.companyId= this.loggedInUserCompanyId;
+    pagination.maxResults =4;
 		this.damService.list(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
@@ -92,7 +91,7 @@ export class Top4AssetsComponent implements OnInit {
 
   listPublishedAssets(pagination: Pagination) {
 		this.assetsLoader = true;
-    this.pagination.maxResults =4;
+    pagination.maxResults =4;
 		this.damService.listPublishedAssets(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;

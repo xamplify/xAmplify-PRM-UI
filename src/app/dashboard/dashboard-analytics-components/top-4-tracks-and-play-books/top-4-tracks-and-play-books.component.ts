@@ -28,6 +28,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit {
   constructor(public referenceService: ReferenceService,  public tracksPlayBookUtilService:TracksPlayBookUtilService, public authenticationService: AuthenticationService,public xtremandLogger:XtremandLogger,public pagerService:PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
+    this.pagination.maxResults =4;
    }
 
   ngOnInit() {
