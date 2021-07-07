@@ -390,6 +390,7 @@ export class AddMoreReceiversComponent implements OnInit {
           this.campaignService.sendEventToContactList(this.campaign).subscribe(
               (response: any) => {
                   if (response.access) {
+                	  this.contactSearchInput = "";
                       this.sendingRequest = false;
                       this.sendSuccess = true;
                       this.responseMessage = response.message;
@@ -417,6 +418,7 @@ export class AddMoreReceiversComponent implements OnInit {
 
 
 closeMoreInvitesPopup(){
+	this.contactSearchInput = "";
     $('#new-list-modal').modal('hide');
     this.resetAllFields();
 }
