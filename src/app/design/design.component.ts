@@ -35,7 +35,7 @@ export class DesignComponent implements OnInit {
               let statusCode = data.statusCode;
               if(statusCode==200){
                   this.emailTemplate = response.emailTemplate;
-                  this.form = response.form;
+                  this.form = response.form || this.authenticationService.module.isPrmTeamMember;
                   this.landingPage = response.landingPage;
                   // if(!this.emailTemplate && !this.form && !this.landingPage){
                   //     this.authenticationService.forceToLogout();
