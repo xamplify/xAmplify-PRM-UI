@@ -822,5 +822,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
          let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
          this.refService.post(param, completeUrl);
     }
+    
+    refreshPage() {
+    	   try {
+    		   this.isScheduledCampaignLaunched = false;
+            this.getCampaignTypes();
+        } catch (error) {
+            this.logger.error("error in manage-publish-component init() ", error);
+        }
+    }
 
 }
