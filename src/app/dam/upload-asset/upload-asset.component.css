@@ -121,3 +121,7 @@
   border: none;
   background: transparent;
 }
+
+.scroll-overflow{
+  overflow: scroll;
+}

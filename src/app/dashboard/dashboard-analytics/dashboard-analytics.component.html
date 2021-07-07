@@ -179,10 +179,6 @@
     <div class="row">
         <div class="page-bar portlet light border-radius-0 shadow mmtp">
             <app-mdf-statistics *ngIf="authenticationService?.mdf"></app-mdf-statistics>
-            <div class="clearfix" *ngIf="authenticationService?.leadsAndDeals">
-                <app-deals-statistics></app-deals-statistics>
-                <app-leads-statistics></app-leads-statistics>
-            </div>
         </div>
     </div>
  </div>
@@ -201,6 +197,16 @@
 <!--Top 4 Shared PlayBooks--------------->  
 <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="false" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
 </ng-container>
+<div class="clearfix" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
+&& authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
+(authenticationService?.leadsAndDeals)">
+    <div class="portlet light shadow">
+        <div class="portlet-body clearfix">
+        <app-leads-statistics></app-leads-statistics>
+        <app-deals-statistics></app-deals-statistics>
+        </div>
+    </div>
+ </div>
 <app-social-accounts-analytics></app-social-accounts-analytics>
 </ng-container>
 </div>
