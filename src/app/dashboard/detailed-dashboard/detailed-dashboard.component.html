@@ -42,7 +42,10 @@
             <!--Top 4 Shared PlayBooks--------------->  
             <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="true" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
             </ng-container>
-           
+            <div class="clearfix" *ngIf="authenticationService?.leadsAndDeals">
+                <app-leads-statistics></app-leads-statistics>
+                <app-deals-statistics></app-deals-statistics>
+             </div>
         </div>
     </div>
 </div>
