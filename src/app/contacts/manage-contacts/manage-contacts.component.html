@@ -772,7 +772,8 @@
                             </ng-container>
                             <th *ngIf="contactsByType.selectedCategory == 'non-active'"></th>
                             <th *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">Actions</th>
-                            <th *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all'">
+                            <th *ngIf="contactsByType.selectedCategory == 'invalid'"></th>
+                            <th *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all'">Actions
                             </th>
                           </tr>
                         </thead>
@@ -843,15 +844,23 @@
                                   (click)="activateUnsubscribedUser(contact.id)" translate>
                                   Subscribe
                                 </button>
-                                <div class="actions-block override-actions"
+                           <!--      <div class="actions-block override-actions"
                                   *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
                                   <a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom"
                                     title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)"> <i
                                       class="fa fa-envelope" aria-hidden="true"></i>
                                   </a>
-                                </div>
+                                </div> -->
+                       <div class="actions-block float-none" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+                      <a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="left" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
+                        <i class="fa fa-envelope"></i>
+                      </a>
+                    </div>
                               </td>
-                              <ng-container *ngIf="contactsByType.selectedCategory != 'non-active'">
+                              <ng-container *ngIf="(contactsByType.selectedCategory !== 'invalid') && isPartner">
+                                <td></td>
+                              </ng-container>
+                               <ng-container *ngIf="contactsByType.selectedCategory != 'non-active' && !isPartner">
                                 <td></td>
                               </ng-container>
                               <ng-container
@@ -916,7 +925,7 @@
                                   </div>
                                 </td>
                               </ng-container>
-                              <td *ngIf="contactsByType.selectedCategory == 'non-active' && isPartner"></td>
+                              <td *ngIf="contactsByType.selectedCategory == 'non-active'"></td>
                               <ng-template #NA>N/A</ng-template>
                             </tr>
                             <tr [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">

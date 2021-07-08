@@ -1009,6 +1009,9 @@
                             </a>
                           </div>
 												</td>
+							<ng-container *ngIf="(contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active') && !isPartner">
+                                <td></td>
+                              </ng-container>
 												<!-- <td>
 													<button id='more_less_button_{{i}}'
 														(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
