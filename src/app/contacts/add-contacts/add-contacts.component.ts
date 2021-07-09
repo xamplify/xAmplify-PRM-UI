@@ -796,7 +796,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
 
         }
-        else if(this.assignLeads && this.model.contactListName != '' && !this.isValidContactName && this.model.assignedTo != ''){
+        else if(this.assignLeads && this.model.contactListName != '' && !this.isValidContactName){
             if ( this.newUsers[0].emailId != undefined ) {
                 if ( !isDuplicate ) {
                     this.saveValidEmails();
@@ -846,7 +846,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
             if(this.assignLeads){
                 this.contactListObject.publicList = true;
-                this.contactListObject.assignedTo = this.model.assignedTo;
            }
 
             this.askForPermission('oneAtTime');
@@ -1021,7 +1020,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactListObject.isPartnerUserList = this.isPartner;
             if(this.assignLeads){
                 this.contactListObject.publicList = true;
-                this.contactListObject.assignedTo = this.model.assignedTo;
            }
             if ( this.model.contactListName != ' ' ) {
 
@@ -1138,7 +1136,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
                             if(this.assignLeads){
                                 this.contactListObject.publicList = true;
-                                this.contactListObject.assignedTo = this.model.assignedTo;
                            }
 
                             this.askForPermission('csvContacts');
@@ -1701,7 +1698,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
             this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
             this.contactListObject.publicList = true;
-            this.contactListObject.assignedTo = this.model.assignedTo;
             this.setSocialUsers(this.socialContact);
             this.setLegalBasisOptions(this.socialUsers);
 
@@ -1779,7 +1775,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
                this.contactListObject.socialNetwork = "MANUAL";
                this.contactListObject.publicList = true;
-               this.contactListObject.assignedTo = this.model.assignedTo;
                this.setLegalBasisOptions(this.allselectedUsers);
 
                this.userUserListWrapper.users = this.allselectedUsers;
@@ -2139,7 +2134,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                   this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
                   this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
                   this.contactListObject.publicList = true;
-                  this.contactListObject.assignedTo = this.model.assignedTo;
                   this.setSocialUsers(this.socialContact);
                   this.setLegalBasisOptions(this.socialUsers);
 
@@ -2220,7 +2214,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
             this.contactListObject.socialNetwork = "MANUAL";
             this.contactListObject.publicList = true;
-            this.contactListObject.assignedTo = this.model.assignedTo;
             this.setLegalBasisOptions(this.allselectedUsers);
 
             this.userUserListWrapper.users = this.allselectedUsers;
@@ -2632,7 +2625,6 @@ salesForceVanityAuthentication() {
                  this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
                  this.contactListObject.socialNetwork = "MANUAL";
                  this.contactListObject.publicList = true;
-                 this.contactListObject.assignedTo = this.model.assignedTo;
                  this.setLegalBasisOptions(this.allselectedUsers);
 
                  this.userUserListWrapper.users = this.allselectedUsers;
@@ -2711,7 +2703,6 @@ salesForceVanityAuthentication() {
             this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
             this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
             this.contactListObject.publicList = true;
-            this.contactListObject.assignedTo = this.model.assignedTo;
             this.setSocialUsers(this.socialContact);
             this.setLegalBasisOptions(this.socialUsers);
 
@@ -3336,7 +3327,6 @@ vanityCheckingMarketoContactsAuthentication(){
                this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
                this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
                this.contactListObject.publicList = true;
-               this.contactListObject.assignedTo = this.model.assignedTo;
                this.setSocialUsers(this.socialContact);
                this.setLegalBasisOptions(this.socialUsers);
 
@@ -3407,7 +3397,6 @@ vanityCheckingMarketoContactsAuthentication(){
                  this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
                  this.contactListObject.socialNetwork = "MANUAL";
                  this.contactListObject.publicList = true;
-                 this.contactListObject.assignedTo = this.model.assignedTo;
                  this.setLegalBasisOptions(this.allselectedUsers);
 
                  this.userUserListWrapper.users = this.allselectedUsers;
@@ -3934,7 +3923,6 @@ vanityCheckingMarketoContactsAuthentication(){
                this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
                this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
                this.contactListObject.publicList = true;
-               this.contactListObject.assignedTo = this.model.assignedTo;
                this.setSocialUsers(this.socialContact);
                this.setLegalBasisOptions(this.socialUsers);
 
@@ -3981,7 +3969,6 @@ vanityCheckingMarketoContactsAuthentication(){
             this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
             this.contactListObject.socialNetwork = "MANUAL";
             this.contactListObject.publicList = true;
-            this.contactListObject.assignedTo = this.model.assignedTo;
             this.setLegalBasisOptions(this.allselectedUsers);
 
             this.userUserListWrapper.users = this.allselectedUsers;
