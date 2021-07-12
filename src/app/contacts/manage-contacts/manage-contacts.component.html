@@ -851,7 +851,7 @@
                                       class="fa fa-envelope" aria-hidden="true"></i>
                                   </a>
                                 </div> -->
-                       <div class="actions-block float-none" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+                       <div class="actions-block no-float" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
                       <a *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="left" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
                         <i class="fa fa-envelope"></i>
                       </a>
