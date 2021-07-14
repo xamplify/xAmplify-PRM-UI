@@ -215,6 +215,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	loggedInThroughVanityUrl = false;
 	expandedUserList: any;
 	showExpandButton = false;
+	showShareListPopup : boolean = false;
 	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
@@ -2466,6 +2467,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	openPopUpForNewlyAddedPartnersOrContacts(contactList: ContactList) {
         this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(contactList.id, this.checkingContactTypeName);
     }
+	
+	notificationFromPublishToPartnersComponent() {
+		
+	}
+	
+	openShareListPopup(contactList: ContactList){
+		this.showShareListPopup = true;
+		this.selectedContactListId = contactList.id;
+	}
+	
+	
 	
 	
 }
