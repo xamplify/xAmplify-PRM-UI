@@ -137,6 +137,11 @@ export class ParterService {
         const apiUrl = this.URL + 'partnership/findPartnerCompanies?access_token=' + this.authenticationService.access_token
         return this.findPartnerCompainesOrGroups(apiUrl,pagination);
     }
+    
+    loadPartnerCompanies(pagination:Pagination, userId:number){
+        const apiUrl = this.URL + 'partnership/loadPartnerCompanies/'+userId+'?access_token=' + this.authenticationService.access_token
+        return this.findPartnerCompainesOrGroups(apiUrl,pagination);
+    }
 
     findPartnerGroups(pagination:Pagination){
         const apiUrl = this.URL + 'partnership/findPartnerGroups?access_token=' + this.authenticationService.access_token

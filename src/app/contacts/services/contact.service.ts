@@ -761,5 +761,11 @@ export class ContactService {
         .map( this.extractData )
         .catch( this.handleError );
     }
+    
+    shareLeadsListToPartners(shareLeadsDTO:any){
+    	return this._http.post( this.contactsUrl + "share-leads-list-to-partners?access_token=" + this.authenticationService.access_token, shareLeadsDTO)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
 
 }
