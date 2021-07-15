@@ -91,8 +91,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
          this.authenticationService.getUserByUserName( userName )
             .subscribe(
             data => {
-              console.log('logged in user profile info:');
-              console.log(data);
               this.authenticationService.user = data;
               this.authenticationService.userProfile = data;
             },
@@ -218,7 +216,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const isPartner = roles.indexOf(this.roles.companyPartnerRole)>-1;
         const orgAdmin =  roles.indexOf(this.roles.orgAdminRole)>-1;
         const isSuperAdmin =  roles.indexOf(this.roles.superAdminRole)>-1;
-        const userAccount =  roles.indexOf(this.roles.userRole)>-1;
         if(isSuperAdmin){
             this.router.navigate( ['/home/dashboard/admin-report'] );
             return true;
@@ -230,14 +227,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 hasFormAccess = campaignAccessDto.formBuilder;
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
-                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.formRole)>-1; 
+                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.formRole)>-1 
+                            || roles.indexOf(this.roles.prmRole)>-1 || roles.indexOf(this.roles.vendorTierRole); 
             let hasPartnerFormAccess = isPartner && (url.indexOf("/partner/")>-1);
             if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1)) || hasPartnerFormAccess){
                 return true;
             }else{
-                console.log(campaignAccessDto);
-                console.log("hasFormAcess:-"+hasFormAccess);
-                console.log("hasRole:-"+hasFormAccess);
                 return this.goToAccessDenied(url);
             }
         }else if(urlType==this.mdfUrl){
@@ -261,7 +256,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 hasLandingPageAccess = campaignAccessDto.landingPage;
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
-                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1;  
+                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1
+                            || roles.indexOf(this.roles.prmRole)>-1 || roles.indexOf(this.roles.vendorTierRole);  
             let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner")>-1);
             if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess){
                 return true;
