@@ -27,4 +27,5 @@ export class CampaignAccess {
   dashboardTypeInString = "";
   playbooks = false;
   excludeUsersOrDomains = false;
+  chatSupport =false;
 }

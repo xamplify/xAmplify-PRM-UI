@@ -12,7 +12,7 @@ import { Roles } from '../models/roles';
 import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
-declare var swal, require: any;
+declare var swal,$, require: any;
 var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
@@ -452,9 +452,16 @@ export class AuthenticationService {
     } catch (error) { console.log('error' + error); }
   }
 
+  removeZenDeskScript(){
+    var element = document.getElementById('ze-snippet');
+		if(element!=null){
+      element.parentNode.removeChild(element);
+    }
+    $('#launcher').contents().find('#Embed').hide();
+  }
+
   logout(): void {
-    this.xtremandLogger.log('Logout');
-    // clear token remove user from local storage to log user out
+    this.removeZenDeskScript();
     this.access_token = null;
     this.refresh_token = null;
     localStorage.removeItem('currentUser');
