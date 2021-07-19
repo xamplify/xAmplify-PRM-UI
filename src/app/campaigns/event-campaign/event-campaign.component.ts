@@ -2276,9 +2276,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.recipientsTab = false;
             this.emailTemplatesTab = false;
             this.launchTab = true;
-            if(this.allUsersCount===undefined){
             this.getValidUsersCount();
-            }
         }
 
     }
@@ -2356,7 +2354,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.launchTabClass = "disableLaunchTab";
         }
 
-        this.resetTabs(this.currentTab);
+        //this.resetTabs(this.currentTab);
 
         if (this.isPreviewEvent || this.isEventUpdate) {
             this.detailsTab = true;
@@ -2744,12 +2742,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
     getValidUsersCount() {
         try {
-            for (var i = 0; i < this.userListDTOObj.length; i++) {
+            /*for (var i = 0; i < this.userListDTOObj.length; i++) {
                 this.listOfSelectedUserListIds.push(this.userListDTOObj[i].id);
-            }
+            }*/
 
-            if (this.listOfSelectedUserListIds.length > 0) {
-                this.contactService.getValidUsersCount(this.listOfSelectedUserListIds)
+            if (this.parternUserListIds.length > 0) {
+                this.contactService.getValidUsersCount(this.parternUserListIds)
                     .subscribe(
                         data => {
                             this.validUsersCount = data['validContactsCount'];

@@ -1451,7 +1451,7 @@ a.disabled {
                       <a>
                         <span *ngIf="userListDTOObj?.length>2">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span>
                       </a><br>
-                      <span *ngIf="listOfSelectedUserListIds.length>0 && eventCampaign.emailNotification" style="color: cornflowerblue;font-weight: 600;">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                      <span *ngIf="parternUserListIds.length>0 && eventCampaign.emailNotification" style="color: cornflowerblue;font-weight: 600;">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
                       <span *ngIf="!eventCampaign.emailNotification && !reDistributeEvent" style="color: red;font-weight: 600;">No email will be sent to partners.</span>
                     </td>
                     <td style="text-align: right" width="20%">
