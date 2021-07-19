@@ -28,4 +28,5 @@ export class CampaignAccess {
   playbooks = false;
   excludeUsersOrDomains = false;
   chatSupport =false;
+  allBoundSamlSettings = false;
 }

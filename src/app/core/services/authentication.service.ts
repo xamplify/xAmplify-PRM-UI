@@ -530,7 +530,8 @@ export class AuthenticationService {
     this.folders = false;
     this.lmsAccess = false;
 	  this.isVendorAndPartnerTeamMember = false;
-	  this.isOrgAdminAndPartnerTeamMember = false;
+    this.isOrgAdminAndPartnerTeamMember = false;
+    module.allBoundSamlSettings = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
@@ -624,13 +625,13 @@ export class AuthenticationService {
     this.showTokenExpiredSweetAlert();
     setTimeout(function () {
       self.logout();
-    }, 5000);
+    }, 3000);
   }
 
   showTokenExpiredSweetAlert(){
     swal(
 			{
-				title: 'Your token is expried.We are redirecting you to login page.',
+				title: 'We are redirecting you to login page.',
 				text: "Please Wait...",
 				showConfirmButton: false,
 				imageUrl: "assets/images/loader.gif",

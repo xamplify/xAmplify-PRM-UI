@@ -120,7 +120,7 @@
                             <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" class="hidden-xs" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
                                 <a (click)="activateTab('dbButtonSettings');clearCustomResponse()">{{properties.dashboardButtons}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
+                            <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings | translate}}</a>
                             </li>		 
                             <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">

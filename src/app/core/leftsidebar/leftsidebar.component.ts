@@ -70,7 +70,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	isVendorTier = false;
 	formAccessForPrm = false;
 	constructor(private renderer2: Renderer2,
-		@Inject(DOCUMENT) private _document,location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
+		@Inject(DOCUMENT) private _document:any,location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
 		,private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
 	) {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
@@ -356,6 +356,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 						this.authService.module.contentDivsCount = 0;
 					}
 					this.authService.module.showPartnerEmailTemplatesFilter = (roleDisplayDto.vendorTierAndPartner || roleDisplayDto.vendorTierAndPartnerTeamMember || roleDisplayDto.vendorAndPartner || roleDisplayDto.vendorAndPartnerTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember);
+					this.authService.module.allBoundSamlSettings = data.allBoundSamlSettings;
 					this.addZendeskScript(data);
 				},
 				error => {
