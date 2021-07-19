@@ -2276,7 +2276,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.recipientsTab = false;
             this.emailTemplatesTab = false;
             this.launchTab = true;
+            if(this.allUsersCount===undefined){
             this.getValidUsersCount();
+            }
         }
 
     }
