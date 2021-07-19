@@ -235,6 +235,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     emptyContactsMessage: string = "";
     expandedUserList: any;
     showExpandButton = false;
+    
+    contactListTabName:string = "";
 
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
@@ -748,6 +750,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     eventHandlerContact(event: any) { if (event === 13) { this.searchContactList(); } }
 
     loadContactLists(contactListsPagination: Pagination) {
+    	this.contactListTabName = "Partners";
         this.paginationType = 'contactlists';
         const roles = this.authenticationService.getRoles();
         this.isVendor = roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 || roles.indexOf(this.roleName.prmRole) > -1;
@@ -799,6 +802,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 this.contactListsPagination.filterKey = 'isPartnerUserList';
             }
         }
+        
+        if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) || this.authenticationService.superiorRole === 'OrgAdmin & Partner') {
+            if (!this.eventCampaign.channelCampaign) {
+                this.contactListTabName = "Partners & Recipients";
+            }
+        }
+        
+        
         this.contactListMethod(this.contactListsPagination);
     }
 
@@ -848,6 +859,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     switchStatusChange() {
+    	this.contactListTabName = "Partners";
         this.clearSelectedContactList();
         this.clearSelectedTemplate();
         this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
@@ -869,6 +881,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor)) {
             if (!this.eventCampaign.channelCampaign) {
+            	this.contactListTabName = "Partners & Recipients";
                 this.contactListsPagination.filterValue = false;
                 this.contactListsPagination.filterKey = null;
                 this.contactListMethod(this.contactListsPagination);
