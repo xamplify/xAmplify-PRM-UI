@@ -51,6 +51,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isDefaultPartnerList: boolean;
 	@Input() isSynchronizationList: boolean;
 	@Input('value') value: number;
+	@Input() isFormList: boolean;
+	
 	editContacts: User;
 	@Output() notifyParent: EventEmitter<User>;
 	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
@@ -674,7 +676,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -902,7 +904,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -1571,7 +1573,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 

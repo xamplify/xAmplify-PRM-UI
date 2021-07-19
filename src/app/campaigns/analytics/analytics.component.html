@@ -820,7 +820,7 @@
                 </div>
               </div>
               <div class="portlet light"
-                [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader || !campaign.emailNotification">
+                [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader || !campaign.emailNotification ">
                 <div class="portlet-title col-xs-12">
                   <div class="caption col-xs-12 col-sm-7">
                     <span class="caption-subject font-red-sunglo" style="font-size: 13px !important;">
@@ -832,9 +832,6 @@
                       <span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
                     </span>
                   </div>
-
-
-
                   <div class="col-xs-5 col-sm-2" style="margin-top: -7px;padding-left:0px;" *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
                     <div class="btn-group pull-right" style="cursor:pointer; color: #7d8c98">
                       <div class="">
@@ -843,9 +840,8 @@
                           <option *ngFor="let sortOption of campaignViewsSortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
                         </select>
                       </div>
-                      </div>
                     </div>
-
+                  </div>
                   <div class="col-xs-5" [ngClass]="{'col-sm-4': campaignType !== 'VIDEO' && campaignType !== 'REGULAR', 'col-sm-2': campaignType === 'VIDEO' || campaignType === 'REGULAR' }"
                   style="margin-top: -7px;padding-right: 0px;padding-left:0px;">
                     <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
@@ -1235,6 +1231,7 @@
                   </div>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>
