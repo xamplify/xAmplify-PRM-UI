@@ -58,4 +58,6 @@ export class Module {
     showPartnerEmailTemplatesFilter = false;
     
     isAnyAdminOrSupervisor = false;
+
+    allBoundSamlSettings = false;
 }
