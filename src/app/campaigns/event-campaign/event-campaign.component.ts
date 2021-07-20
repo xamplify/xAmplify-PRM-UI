@@ -849,6 +849,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.userListIds = [];
             this.eventCampaign.userListIds = [];
         }
+        
+        if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) || this.authenticationService.superiorRole === 'OrgAdmin & Partner') {
+        	this.userListDTOObj = [];
+        }
     }
 
     clearSelectedTemplate() {
