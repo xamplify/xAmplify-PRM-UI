@@ -338,7 +338,7 @@
                                                                             <span
                                                                                 class="glyphicon glyphicon-trash"></span>
                                                                         </button>
-                                                                        <ng-container *ngIf="choice.correct"><i class="fa fa-check-circle check-icon" aria-hidden="true" (click)="selectedChoice(selectedColumn,choice.labelId,'labelId',false)"></i>
+                                                                        <ng-container *ngIf="choice.correct"><i class="fa fa-check-circle check-icon" aria-hidden="true" style="color: #5cb85c;" (click)="selectedChoice(selectedColumn,choice.labelId,'labelId',false)"></i>
                                                                         </ng-container>
                                                                         <ng-container *ngIf="!choice.correct"><i class="fa fa-check-circle-o check-icon" aria-hidden="true" (click)="selectedChoice(selectedColumn,choice.labelId,'labelId',true)"></i>
                                                                         </ng-container>

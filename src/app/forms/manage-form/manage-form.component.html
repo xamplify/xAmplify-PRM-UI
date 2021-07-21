@@ -35,11 +35,11 @@
                 </ng-container>
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
-                        <div class="page-toolbar">
+                        <div class="page-toolbar" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="col-xs-4">
                                 <ul class="mix-filter">
                                     <li class="filter" (click)="showAllForms('All',0)" [class.form-selected]="0 == selectedFormTypeIndex"
-                                        translate>All</li>
+                                        translate>All</li> 
                                     <li class="filter" (click)="showAllForms('Regular',1)"
                                         [class.form-selected]="1 == selectedFormTypeIndex" translate>Regular</li>
                                     <li class="filter" (click)="showAllForms('Quiz',2)" [class.form-selected]="2 == selectedFormTypeIndex"
@@ -48,7 +48,7 @@
                                         Default Form</li>
                                 </ul>
                             </div>
-                            <div class="col-xs-8" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                            <div class="col-xs-8">
                                 <div class="btn-group pull-right">
                                     <ng-container class='m10'>
                                         <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"

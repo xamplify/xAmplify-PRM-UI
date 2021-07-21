@@ -27,7 +27,8 @@ export class TracksPlayBook {
     status:ActivityType;
     createdByCompanyId:number;
     type:string = TracksPlayBookType[TracksPlayBookType.TRACK];
-
+    partnershipId:number;
+    
     quiz:Form;
     contents:Array<any> = new Array<any>();
     tags:Array<Tag> = new Array<Tag>();

@@ -22,7 +22,7 @@ declare var swal, $: any;
     selector: 'app-preview-popup',
     templateUrl: './preview-popup.component.html',
     styleUrls: ['./preview-popup.component.css'],
-    providers: [HttpRequestLoader, Pagination, SortOption, FormService]
+    providers: [HttpRequestLoader, Pagination, SortOption, FormService] 
 })
 export class PreviewPopupComponent implements OnInit {
     form: Form = new Form();
