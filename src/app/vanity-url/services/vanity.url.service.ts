@@ -32,6 +32,11 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
+  findCompanyProfileNameByCompanyId(companyId:number){
+    const url = this.authenticationService.REST_URL + "v_url/findCompanyProfileName/" + companyId + '?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
+
   saveDashboardButton(dashboardButton: DashboardButton) {
     const url = this.authenticationService.REST_URL + "v_url/save/dashboardButton?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, dashboardButton)

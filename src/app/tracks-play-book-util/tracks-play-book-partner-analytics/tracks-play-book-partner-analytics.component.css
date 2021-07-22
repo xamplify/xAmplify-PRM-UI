@@ -214,3 +214,7 @@
     width: 30%;
     text-align: center;
 }
+
+.no-float {
+    float: none;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
@@ -12,7 +12,13 @@ import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { TracksPlayBookUtilService } from '../services/tracks-play-book-util.service';
-import { TracksPlayBookType } from '../models/tracks-play-book-type.enum'
+import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
+import { FormPreviewWithSubmittedAnswersComponent } from '../form-preview-with-submitted-answers/form-preview-with-submitted-answers.component';
+import { Form } from 'app/forms/models/form';
+import { TracksPlayBook } from '../models/tracks-play-book';
+import { FormService } from '../../forms/services/form.service';
+import { ColumnInfo } from '../../forms/models/column-info';
+import { FormOption } from '../../forms/models/form-option';
 
 declare var $, swal: any;
 
@@ -20,7 +26,7 @@ declare var $, swal: any;
   selector: 'app-tracks-play-book-partner-analytics',
   templateUrl: './tracks-play-book-partner-analytics.component.html',
   styleUrls: ['./tracks-play-book-partner-analytics.component.css'],
-  providers: [HttpRequestLoader, SortOption, Properties]
+  providers: [HttpRequestLoader, SortOption, Properties, FormService]
 })
 export class TracksPlayBookPartnerAnalyticsComponent implements OnInit {
 
@@ -41,10 +47,17 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit {
   selectedPartnerId: number = 0;
   @Input() type: string;
   @Output() notifyAnalyticsRouter: EventEmitter<any>;
+  @ViewChild('formPreviewWithSubmittedAnswersComponent') formPreviewWithSubmittedAnswersComponent: FormPreviewWithSubmittedAnswersComponent;
+  formInput: Form;
+  selectedPartnerFormAnswers : Map<number, any> = new Map<number, any>();
+  quizId: number;
+  formBackgroundImage = "";
+  pageBackgroundColor = "";
+  formError = false;
 
   constructor(private route: ActivatedRoute, private utilService: UtilService,
     private pagerService: PagerService, public authenticationService: AuthenticationService,
-    public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
+    public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,private formService: FormService,
     private router: Router, public properties: Properties, public tracksPlayBookUtilService: TracksPlayBookUtilService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.notifyAnalyticsRouter = new EventEmitter<any>();
@@ -229,4 +242,87 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit {
 
   }
 
+  showFormAnalytics(partner: any){
+    this.getPartnerFormAnalytics(partner);
+  }
+
+  getPartnerFormAnalytics(partner: any) {
+    this.referenceService.startLoader(this.httpRequestLoader);
+    let formAnalytics: TracksPlayBook = new TracksPlayBook();
+    formAnalytics.userId = this.loggedInUserId;
+    formAnalytics.partnershipId = partner.id;
+    formAnalytics.quizId = partner.quizId;
+    formAnalytics.id = partner.learningTrackId;
+    this.tracksPlayBookUtilService.getPartnerFormAnalytics(formAnalytics).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          const data = response.data;
+          this.selectedPartnerFormAnswers = data;
+          this.referenceService.stopLoader(this.httpRequestLoader);
+          if(this.formInput == undefined || this.formInput.id != partner.quizId) {
+            this.previewForm(partner.quizId);
+          } else {
+            this.formPreviewWithSubmittedAnswersComponent.showFormWithAnswers(this.selectedPartnerFormAnswers, partner.quizId, this.formInput, this.formBackgroundImage, this.pageBackgroundColor);
+          }
+        } else {
+          this.referenceService.stopLoader(this.httpRequestLoader);
+          this.referenceService.showSweetAlertErrorMessage(response.message);
+        }
+      });
+    (error: any) => {
+      this.referenceService.stopLoader(this.httpRequestLoader);
+      this.customResponse = new CustomResponse('ERROR', 'Unable to get data.Please Contact Admin.', true);
+    }
+  } 
+
+  previewForm(id: number) {
+    this.customResponse = new CustomResponse();
+    this.referenceService.startLoader(this.httpRequestLoader);
+    this.formService.getById(id)
+        .subscribe(
+            (data: any) => {
+                if (data.statusCode === 200) {
+                    this.formInput = data.data;
+                    if(this.formInput.showBackgroundImage){
+                        this.formBackgroundImage = this.formInput.backgroundImage;
+                        this.pageBackgroundColor = "";
+                    }else{
+                        this.pageBackgroundColor = this.formInput.pageBackgroundColor;
+                        this.formBackgroundImage = "";
+                    }
+                    $.each(this.formInput.formLabelDTOs, function (index: number, value: ColumnInfo) {
+                        if (value.labelType == 'quiz_radio') {
+                            value.choices = value.radioButtonChoices;
+                        } else if (value.labelType == 'quiz_checkbox') {
+                            value.choices = value.checkBoxChoices;
+                        }
+                        if((value.labelType == 'quiz_radio') || (value.labelType == 'quiz_checkbox')){
+                            let correctValues = "";
+                            $.each(value.choices, function (index: number, value: FormOption) {
+                                if(value.correct){
+                                    if(correctValues.length > 0){
+                                        correctValues = correctValues + "," + value.name
+                                    } else {
+                                        correctValues = value.name  
+                                    }
+                                }
+                            });
+                            value.correctValues = correctValues; 
+                        }
+                    });
+                    this.formError = false;
+                    this.formPreviewWithSubmittedAnswersComponent.showFormWithAnswers(this.selectedPartnerFormAnswers, id, this.formInput, this.formBackgroundImage, this.pageBackgroundColor);
+                } else {
+                    this.formError = true;
+                    this.customResponse = new CustomResponse('ERROR', 'Unable to load the data.Please Contact Admin', true);
+                }
+                this.referenceService.stopLoader(this.httpRequestLoader);
+              },
+            (error: string) => {
+              this.referenceService.stopLoader(this.httpRequestLoader);
+              this.customResponse = new CustomResponse('ERROR', 'Unable to load the data.Please Contact Admin', true);
+            }
+        );
+}
+  
 }

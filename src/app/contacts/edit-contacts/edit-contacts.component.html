@@ -273,6 +273,7 @@
 															class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
 													</div>
 												</div>
+
 												<div class="col-xs-10 col-md-10 col-sm-10 p0">
 													<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8">
 														<div class="inputs" align="right" style="float: right">
@@ -301,6 +302,7 @@
 															</div>
 														</div>
 													</div>
+
 												</div>
 											</div>
 										
@@ -1012,6 +1014,9 @@
                             </a>
                           </div>
 												</td>
+							<ng-container *ngIf="(contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active') && !isPartner">
+                                <td></td>
+                              </ng-container>
 												<!-- <td>
 													<button id='more_less_button_{{i}}'
 														(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">

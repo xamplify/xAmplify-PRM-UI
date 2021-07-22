@@ -224,7 +224,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authenticationService.mdf = false;
     this.authenticationService.leadsAndDeals = false;
 	  this.authenticationService.isVendorAndPartnerTeamMember = false;
-	  this.authenticationService.isOrgAdminAndPartnerTeamMember = false;
+    this.authenticationService.isOrgAdminAndPartnerTeamMember = false;
+    module.allBoundSamlSettings = false;
   }
 
   ngOnInit() {

@@ -4,18 +4,14 @@ import { ReferenceService } from "../../core/services/reference.service";
 import { Pagination } from "../../core/models/pagination";
 import { DashboardService } from "../dashboard.service";
 import { PagerService } from "../../core/services/pager.service";
-import { PaginationComponent } from "../../common/pagination/pagination.component";
-import { Router } from "@angular/router";
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { CustomResponse } from '../../common/models/custom-response';
+import { CustomResponse } from "../../common/models/custom-response";
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
-declare var $: any;
 
 @Component({
   selector: "app-vendor-reports",
   templateUrl: "./vendor-reports.component.html",
   styleUrls: ["./vendor-reports.component.css"],
-  providers: [Pagination, PaginationComponent]
+  providers: [Pagination],
 })
 export class VendorReportsComponent implements OnInit {
   vendorDetails: any;
@@ -28,12 +24,8 @@ export class VendorReportsComponent implements OnInit {
     public dashboardService: DashboardService,
     public authenticationService: AuthenticationService,
     public pagerService: PagerService,
-    public paginationComponent: PaginationComponent,
-    private router: Router,
     private vanityURLService: VanityURLService
-  ) {
-
-  }
+  ) {}
 
   vendorReports() {
     this.loading = true;
@@ -43,7 +35,7 @@ export class VendorReportsComponent implements OnInit {
         this.pagination
       )
       .subscribe(
-        data => {
+        (data) => {
           this.vendorDetails = data.data;
           this.pagination.totalRecords = data.totalRecords;
           this.pagination = this.pagerService.getPagedItems(
@@ -52,10 +44,9 @@ export class VendorReportsComponent implements OnInit {
           );
           this.loading = false;
         },
-        error => console.log(error),
-        () => {
-          console.log("vendor reports completed");
+        (error) => {
           this.loading = false;
+          this.referenseService.showSweetAlertServerErrorMessage();
         }
       );
   }
@@ -72,32 +63,27 @@ export class VendorReportsComponent implements OnInit {
 
   navigateToVendorCampaigns(venderReport: any) {
     this.loading = true;
-    this.referenseService.vendorDetails = venderReport;    
-      this.vanityURLService.getCompanyProfileNameByCompanyName(venderReport.companyName).subscribe(result => {        
+    this.referenseService.vendorDetails = venderReport;
+    this.vanityURLService
+      .findCompanyProfileNameByCompanyId(venderReport.companyId)
+      .subscribe((result) => {
         if (result.statusCode === 200) {
-          let vanityURL = result.data + "au/" + this.authenticationService.user.alias;
+          let vanityURL =
+            result.data + "au/" + this.authenticationService.user.alias;
           window.open(vanityURL);
           this.loading = false;
+        } else if (result.statusCode === 100) {
+          window.open("/vanity-domain-error");
+          this.loading = false;
         }
-        else if(result.statusCode === 100){
-          this.router.navigate( ['/vanity-domain-error'] );
-          return;
-        }
+      },error=>{
+        this.loading = false;
+        this.referenseService.showSweetAlertServerErrorMessage();
       });
-       
-    
-    
-//     this.router.navigateByUrl("/home/campaigns/vendor/all");
-//     setTimeout(() => {
-//       this.loading = false;
-//     }, 3000);
-
-
   }
   errorHandler(event) {
-    event.target.src = 'assets/images/default-company.png';
+    event.target.src = "assets/images/default-company.png";
   }
-
 
   ngOnInit() {
     this.vendorReports();

@@ -1371,7 +1371,7 @@
                                     <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[columnValue]}}</span>
                                   </ng-container>
                                   <ng-container *ngIf="columnValue!='RSVP Time'">
-                                    {{formDataRow[columnValue]}}
+                                    <div [innerHtml]="formDataRow[columnValue]"></div>
                                   </ng-container>
                                  </td>
 
@@ -1399,7 +1399,7 @@
                                   <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[column]}}</span>
                                 </ng-container>
                                 <ng-container *ngIf="column!='RSVP Time'">
-                                  {{formDataRow[column]}}
+                                  <div [innerHtml]="formDataRow[column]"></div>
                                 </ng-container>
                               </td>
                             </tr>
@@ -3023,7 +3023,7 @@
                                     <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[columnValue]}}</span>
                                   </ng-container>
                                   <ng-container *ngIf="columnValue!='RSVP Time'">
-                                    {{formDataRow[columnValue]}}
+                                    <div [innerHtml]="formDataRow[columnValue]"></div>
                                   </ng-container>
                                  </td>
                           </ng-container>
@@ -3050,7 +3050,7 @@
                                     <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[column]}}</span>
                                   </ng-container>
                                   <ng-container *ngIf="column!='RSVP Time'">
-                                    {{formDataRow[column]}}
+                                    <div [innerHtml]="formDataRow[column]"></div>
                                   </ng-container>
                                 </td>
                               </tr>

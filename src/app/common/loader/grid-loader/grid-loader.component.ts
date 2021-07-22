@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-grid-loader',
-  templateUrl: './grid-loader.component.html',
-  styleUrls: ['./grid-loader.component.css']
+	selector: 'app-grid-loader',
+	templateUrl: './grid-loader.component.html',
+	styleUrls: ['./grid-loader.component.css']
 })
 export class GridLoaderComponent implements OnInit {
 
-  constructor() { }
+	@Input() count = 0;
+	rowsCount = [];
 
-  ngOnInit() {
-  }
+	constructor() { }
+
+	ngOnInit() {
+		if (this.count == 4) {
+			this.rowsCount = [0, 1, 2, 3];
+		} else {
+			this.rowsCount = [0, 1, 2, 3, 4, 5, 6, 7];
+		}
+	}
 
 }

@@ -110,6 +110,7 @@ export class PreviewTracksPlayBookComponent implements OnInit {
           let tracksPlayBook: TracksPlayBook = result.data;
           if (tracksPlayBook != undefined) {
             this.tracksPlayBook = tracksPlayBook;
+            this.tracksPlayBook.featuredImage = this.tracksPlayBook.featuredImage + "?" + Date.now();
           }
           //this.referenceService.stopLoader(this.httpRequestLoader);
           this.trackViewLoader = false;
@@ -149,25 +150,13 @@ export class PreviewTracksPlayBookComponent implements OnInit {
   }
 
   downloadBeeTemplate(assetDetails: any) {
-    this.referenceService.startLoader(this.httpRequestLoader);
     let object: TracksPlayBook = new TracksPlayBook();
     object.userId = this.loggedInUserId;
     object.contentId = assetDetails.id;
     object.id = this.tracksPlayBook.id;
-    this.tracksPlayBookUtilService.downloadBeeTemplate(object).subscribe(
-      (result: any) => {
-        if (result.statusCode == 200) {
-          this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED);
-          this.logger.info('Finished downloadBeeTemplate()');
-        }
-        this.referenceService.stopLoader(this.httpRequestLoader);
-      },
-      (error: string) => {
-        this.logger.error(this.referenceService.errorPrepender + " downloadBeeTemplate():" + error);
-        this.referenceService.stopLoader(this.httpRequestLoader);
-      });
+    let url = this.authenticationService.REST_URL + "lms" + "/download/pdf?access_token=" + this.authenticationService.access_token;
+    this.referenceService.post(object, url);
   }
-
 
   viewContent(asset: any) {
     this.showTracksPlayBook = false;

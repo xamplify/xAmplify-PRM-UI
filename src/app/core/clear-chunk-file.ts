@@ -7,7 +7,7 @@ export class ClearChunkFile implements ErrorHandler {
     console.log(error);
     let message = error.message;
     console.log("chunk"+message);
-    if (message!=undefined && message!="" && message.indexOf('failed') > -1) {
+    if (message!=undefined && message!="" && message.indexOf('chunk') > -1) {
       swal(
         {
           title: 'We are clearing the cache.',

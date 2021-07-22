@@ -37,7 +37,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     eventDescription = "{{event_description}}";
     eventStartTime = "{{event_start_time}}";
     eventEndTime = "{{event_end_time}}";
-    eventLocation = "{{address}}";
+    eventLocation = "{{event_address}}";
     loadTemplate = false;
     isAdd: boolean;
     isMinTimeOver: boolean = false;

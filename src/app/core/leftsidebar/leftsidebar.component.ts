@@ -1,4 +1,5 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck,Renderer2,Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -10,7 +11,7 @@ import { UserService } from '../services/user.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 
-declare var window: any;
+declare var window,$: any;
 
 @Component({
 	selector: 'app-leftsidebar',
@@ -56,6 +57,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
 	partnershipEstablishedOnlyWithPrm = false;
 	opportunityLeadsAndDeals = false;
+	opportunityLeadsAndDealsAccessAsPartner = false;
 	opportunityDeals = false;
 	lms = false;
 	lmsAccess = false;
@@ -66,8 +68,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	showContent = false;
 	contentDivs: Array<boolean> = new Array<boolean>();
 	isVendorTier = false;
-	constructor(location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
-		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
+	formAccessForPrm = false;
+	constructor(private renderer2: Renderer2,
+		@Inject(DOCUMENT) private _document:any,location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
+		,private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
 	) {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
 		this.updateLeftSideBar(location);
@@ -289,6 +293,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.dashBoardService.listLeftSideNavBarItems(vanityUrlPostDto)
 			.subscribe(
 				data => {
+					this.formAccessForPrm = data.forms;
 					this.rssFeedAccess = data.rssFeeds;
 					this.authService.module.isContact = data.contacts;
 					this.mdfAccess = data.mdf;
@@ -300,6 +305,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.damAccessAsPartner = data.damAccessAsPartner;
 					this.opportunityDeals = data.opportunityDeals;
 					this.opportunityLeadsAndDeals = data.opportunityLeadsAndDeals;
+					this.opportunityLeadsAndDealsAccessAsPartner = data.opportunityLeadsAndDealsAccessAsPartner;
 					this.authService.module.damAccess = data.dam;
 					this.authService.module.damAccessAsPartner = data.damAccessAsPartner;
 					this.authService.module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
@@ -350,6 +356,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 						this.authService.module.contentDivsCount = 0;
 					}
 					this.authService.module.showPartnerEmailTemplatesFilter = (roleDisplayDto.vendorTierAndPartner || roleDisplayDto.vendorTierAndPartnerTeamMember || roleDisplayDto.vendorAndPartner || roleDisplayDto.vendorAndPartnerTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember);
+					this.authService.module.allBoundSamlSettings = data.allBoundSamlSettings;
+					this.addZendeskScript(data);
 				},
 				error => {
 					this.loading = false;
@@ -372,6 +380,26 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			);
 
 
+	}
+
+	addZendeskScript(data:any){
+		let chatSupport = data.chatSupport;
+		let chatSupportAccessAsPartner = data.chatSupportAccessAsPartner;
+		if(chatSupport || chatSupportAccessAsPartner){
+			var element = document.getElementById('ze-snippet');
+			$('#launcher').contents().find('#Embed').show();
+			if(element==null){
+				const s = this.renderer2.createElement('script');
+				s.type = 'text/javascript';
+				s.src = 'https://static.zdassets.com/ekr/snippet.js?key=4fd51adb-a388-4f74-bfec-00878e3f02cf';
+				s.text = ``;
+				s.id = 'ze-snippet';
+				this.renderer2.appendChild(this._document.body, s);
+			}
+		}else{
+			this.authService.removeZenDeskScript();
+			
+		}
 	}
 
 

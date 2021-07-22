@@ -28,8 +28,9 @@
                             </li>
                         </ul>
                         <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
-                        <div id="bee-plugin-container"></div>
+                        <app-merge-tags *ngIf="loadLandingPage" [input]="mergeTagsInput"></app-merge-tags>
                     </div>
+                    <div id="bee-plugin-container"></div>
                 </div>
             </div>
         </div>
