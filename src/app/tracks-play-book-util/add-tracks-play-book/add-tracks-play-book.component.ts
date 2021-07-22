@@ -252,7 +252,7 @@ export class AddTracksPlayBookComponent implements OnInit {
           let tracksPlayBook: TracksPlayBook = response.data;
           if (tracksPlayBook != undefined) {
             this.tracksPlayBook = tracksPlayBook;
-            this.featuredImagePath = this.tracksPlayBook.featuredImage;
+            this.featuredImagePath = this.tracksPlayBook.featuredImage + "?" + Date.now();
             this.existingSlug = this.tracksPlayBook.slug;
             this.existingTitle = this.tracksPlayBook.title;
             this.completeLink = this.linkPrefix + this.tracksPlayBook.slug;

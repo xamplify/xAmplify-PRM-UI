@@ -110,6 +110,7 @@ export class PreviewTracksPlayBookComponent implements OnInit {
           let tracksPlayBook: TracksPlayBook = result.data;
           if (tracksPlayBook != undefined) {
             this.tracksPlayBook = tracksPlayBook;
+            this.tracksPlayBook.featuredImage = this.tracksPlayBook.featuredImage + "?" + Date.now();
           }
           //this.referenceService.stopLoader(this.httpRequestLoader);
           this.trackViewLoader = false;

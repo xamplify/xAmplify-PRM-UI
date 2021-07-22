@@ -215,6 +215,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	loggedInThroughVanityUrl = false;
 	expandedUserList: any;
 	showExpandButton = false;
+	isFormList = false;
 	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
@@ -867,7 +868,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, isDefaultPartnerList: boolean, isSynchronizationList: boolean) {
+	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
+		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
@@ -875,6 +877,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.isSynchronizationList = isSynchronizationList
 		this.showAll = false;
 		this.showEdit = true;
+		this.isFormList = isFormList;
 		$("#pagination").hide();
 	}
 

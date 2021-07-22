@@ -1054,23 +1054,29 @@
 <!-- Preview Assets -->
 <ng-container *ngIf="showFilePreview">
   <div class="overlay page-content">
-      <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
-          <i class="fa fa-times" aria-hidden="true"></i>
-      </button>
-      <div class="overlay-content">
-          <img *ngIf="isImage" [src]="filePath" alt="No Image Found"><br>
-          <video *ngIf="isVideo" width="320" height="240" controls>
-              <source [src]="filePath" [type]="fileType">
-              Your browser does not support the video tag.
-          </video>
-          <audio *ngIf="isAudio" controls>
-              <source [src]="filePath" [type]="fileType">
-              Your browser does not support the audio tag.
-          </audio>
-          <div *ngIf="isFile && filePath?.length > 0">
-              <iframe [src]="url" style="width:100%; height:75vh;" frameborder="0"></iframe>
-          </div>
+    <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
+    <div class="overlay-content">
+      <ng-container *ngIf="isImage">
+        <img class="fit-preview-asset" [src]="filePath" alt="No Image Found"><br>
+      </ng-container>
+      <ng-container *ngIf="isVideo">
+        <video class="fit-preview-asset" controls>
+          <source [src]="filePath" [type]="fileType">
+          Your browser does not support the video tag.
+        </video>
+      </ng-container>
+      <ng-container *ngIf="isAudio">
+        <audio controls>
+          <source [src]="filePath" [type]="fileType">
+          Your browser does not support the audio tag.
+        </audio>
+      </ng-container>
+      <div *ngIf="isFile && filePath?.length > 0">
+        <iframe [src]="url" style="width:100%; height:75vh;" frameborder="0"></iframe>
       </div>
+    </div>
   </div>
 </ng-container>
 
