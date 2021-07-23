@@ -43,7 +43,6 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
     selectedPartnershipIds: any[] = [];
     teamMembersPagination: Pagination = new Pagination();
     teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
-    showUsersPreview : boolean = false;
 
   constructor(public partnerService: ParterService,public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
 	        public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService, public contactService: ContactService) { 
@@ -52,7 +51,6 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
 
   ngOnInit() {
       this.openPopup();
-
   }
   
   openPopup() {
@@ -106,8 +104,17 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
           this.disableOrEnablePartnerListsTab();
   }
   
-  searchPartners(){
-	  
+  searchPartners() {
+      this.getAllFilteredResults("partnerCompanies", this.pagination, this.sortOption);
+  }
+  
+  getAllFilteredResults(type: string, pagination: Pagination, sortOption: SortOption) {
+      this.customResponse = new CustomResponse();
+      pagination.pageIndex = 1;
+      pagination.searchKey = sortOption.searchKey;
+          pagination = this.utilService.sortOptionValues(sortOption.selectedDamPartnerDropDownOption, pagination);
+          this.findPartnerCompanies(pagination);
+ 
   }
   
   viewTeamMembers(item: any) {
@@ -159,9 +166,6 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
       );
   }
   
-  searchAdminsAndTeamMembers(){
-	  
-  }
   highlightSelectedAdminOrTeamMemberRowOnRowClick(teamMemberId: number, partnershipId: number, event: any){
 	  
 	  
@@ -289,7 +293,14 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
       });
   }
   
+  partnersSearchOnKeyEvent(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+  
+  adminAndTeamMembersKeySearch(keyCode: any) { if (keyCode === 13) { this.searchAdminsAndTeamMembers(); } }
+  
+  searchAdminsAndTeamMembers() {
+      this.teamMembersPagination.pageIndex = 1;
+      this.getTeamMembersAndAdmins(this.teamMembersPagination);
+  }
   
   
-
 }

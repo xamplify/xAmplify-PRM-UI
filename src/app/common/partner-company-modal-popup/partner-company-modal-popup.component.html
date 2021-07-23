@@ -5,7 +5,7 @@
            <button *ngIf="!ngxLoading" type="button" class="close-circle" (click)="closePopup()">
            <i class="fa fa-times" aria-hidden="true"></i>
            </button>
-           <h4 class="modal-title text-center">Publish To Partners/Partner Lists</h4>
+           <h4 class="modal-title text-center">Share List To Partners</h4>
         </div>
         <div class="modal-body">
          <div class="thank-you-pop" *ngIf="sendSuccess">
@@ -87,7 +87,7 @@
                                                    </thead>
                                                    <tbody>
                                                       <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
-                                                      <tr [class.partner-company-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1">
+                                                      <tr [class.partner-company-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1" >
                                                         <td class="cw">
                                                           <div class="actions-block left-float">
                                                             <a  (click)="viewTeamMembers(partner)" title="View/Hide Team Members">
@@ -190,6 +190,3 @@
   </div>
 </div>
 </div>
-<ng-container *ngIf="showUsersPreview">
-<app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
-</ng-container>
