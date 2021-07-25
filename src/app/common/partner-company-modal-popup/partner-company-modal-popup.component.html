@@ -18,26 +18,9 @@
                <h4 class="event-info">{{responseMessage}}</h4>
             </ng-container>
          </div>
-         <div class="col-md-12 col-lg-12 pl2 pr0"  *ngIf="!sendSuccess">
+         <div class="col-md-12 col-lg-12 pl2 pr0" *ngIf="!sendSuccess">
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
-            <div>
-               <div>
-                  <app-modal-popup-loader [hidden]="!modalPopupLoader"></app-modal-popup-loader>
-               </div>
-               <div class="row" [hidden]="modalPopupLoader">
-                  <div class="col-md-12 col-lg-12">
-                     <div class="panel with-nav-tabs panel-default">
-                        <div class="panel-heading" id="company-and-group-tabs">
-                           <ul class="nav nav-tabs">
-                              <li id="partners-li" >
-                                 <a class="partnersC" title="Click to see partner companies" href="#partners" data-toggle="tab" (click)="findPartnerCompanies(pagination)">Partners</a>
-                              </li>
-                           </ul>
-                        </div>
-                        <div class="panel-body">
-                           <div class="tab-content">
-                              <div class="tab-pane fade in" id="partners">
                                        <ng-container *ngIf="!sendSuccess">
                                           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
                                              <div class="row">
@@ -173,13 +156,6 @@
                                        <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">
                                        </app-pagination>
                                     </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
          </div>
      </div>
      <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">

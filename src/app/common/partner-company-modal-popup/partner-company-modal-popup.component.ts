@@ -55,9 +55,7 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
   
   openPopup() {
       $('#partnerCompaniesPopup').modal('show');
-      () => {
           this.findPartnerCompanies(this.pagination);
-      }
   }
   
   findPartnerCompanies(pagination: Pagination) {
