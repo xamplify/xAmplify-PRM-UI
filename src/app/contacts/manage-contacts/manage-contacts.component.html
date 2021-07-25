@@ -1111,7 +1111,7 @@
 
 
 
-<!---Publish Pop Up-->
-<app-partner-company-modal-popup  [inputId] = "selectedContactListId"  *ngIf="showShareListPopup" >
+<!---Share Pop Up-->
+<app-partner-company-modal-popup  [inputId] = "selectedContactListId"  *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
 </app-partner-company-modal-popup>
 

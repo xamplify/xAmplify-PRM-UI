@@ -27,7 +27,7 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
     pagination: Pagination = new Pagination();
     customResponse: CustomResponse = new CustomResponse();
     @Input() inputId: any;
-    //@Output() notifyOtherComponent = new EventEmitter();
+    @Output() notifyOtherComponent = new EventEmitter();
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     sendSuccess = false;
     responseMessage = "";
@@ -80,7 +80,7 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
   }
   
   closePopup() {
-      //this.notifyOtherComponent.emit();
+      this.notifyOtherComponent.emit();
       $('#partnerCompaniesPopup').modal('hide');
       this.sendSuccess = false;
       this.responseMessage = "";
