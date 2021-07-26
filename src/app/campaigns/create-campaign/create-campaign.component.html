@@ -1010,18 +1010,25 @@
                                                                         <span translate> Created By <strong>{{contacts?.creatorName}}</strong></span>
                                                                     </h6>
                                                                     <ng-container *ngIf="!contacts?.partnerList">
-                                                                        <h6 class="view-banner" translate>
-                                                                            <span *ngIf="contacts?.publicList" data-toggle="tooltip" data-placement="top"
-                                                                                title="{{actionsDescription?.contact_list_public}}" translate>Public
-                                                                            </span>
-                                                                            <span *ngIf="!contacts?.publicList" data-toggle="tooltip" data-placement="top"
-                                                                                title="{{actionsDescription?.contact_list_private}}" translate>Private
-                                                                            </span>
-                                                                        </h6>
+                                                                        <div style="display: inline-flex;">
+                                                                            <h6 class="view-banner" translate>
+                                                                                <span *ngIf="contacts?.publicList" data-toggle="tooltip" data-placement="top"
+                                                                                    title="{{actionsDescription?.contact_list_public}}" translate>Public
+                                                                                </span>
+                                                                                <span *ngIf="!contacts?.publicList" data-toggle="tooltip" data-placement="top"
+                                                                                    title="{{actionsDescription?.contact_list_private}}" translate>Private
+                                                                                </span>
+                                                                            </h6> 
+                                                                            <h6 *ngIf="contacts?.formList" class="view-banner view-banner-green" translate>
+                                                                                <span data-toggle="tooltip" data-placement="top"
+                                                                                    title="This list is associated with a form." translate>Form Lead List
+                                                                                </span>
+                                                                            </h6>                                                                           
+                                                                        </div>                                                                        
                                                                     </ng-container>
                                                                 </td>
                                                                 <td class="text-center" *ngIf="showContactType">
-                                                                    {{contacts?.listType}}
+                                                                    {{contacts?.listType}}                                                                                                                                        
                                                                 </td>
                                                                 <td class="text-center sorting_1">
                                                                     <app-timestamp  [dateAndTime]="contacts?.displayTime">
