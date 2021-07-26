@@ -1081,6 +1081,7 @@ a.disabled {
 			
 														<th scope="row" style="text-align: center;" translate>Type</th>
 														<th scope="row" style="text-align: center;" translate>Uploaded Date</th>
+														<th *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage" scope="row" style="text-align: center;" translate>Count</th>
 														<th scope="row" style="text-align: center;" translate>Preview </th>
 													</tr>
 												</thead>
@@ -1142,18 +1143,25 @@ a.disabled {
 																		<strong>{{contactList?.creatorName}}</strong></span>
 																</h6>
 																<ng-container *ngIf="!contactList?.partnerList">
-																	<h6 class="view-banner" translate>
-																		<span *ngIf="contactList?.publicList" data-toggle="tooltip"
-																			data-placement="top"
-																			title="{{actionsDescription?.contact_list_public}}"
-																			translate>Public
-																		</span>
-																		<span *ngIf="!contactList?.publicList" data-toggle="tooltip"
-																			data-placement="top"
-																			title="{{actionsDescription?.contact_list_private}}"
-																			translate>Private
-																		</span>
-																	</h6>
+																	<div style="display: inline-flex;">
+																		<h6 class="view-banner" translate>
+																			<span *ngIf="contactList?.publicList" data-toggle="tooltip"
+																				data-placement="top"
+																				title="{{actionsDescription?.contact_list_public}}"
+																				translate>Public
+																			</span>
+																			<span *ngIf="!contactList?.publicList" data-toggle="tooltip"
+																				data-placement="top"
+																				title="{{actionsDescription?.contact_list_private}}"
+																				translate>Private
+																			</span>
+																		</h6>
+																		<h6 *ngIf="contactList?.formList" class="view-banner view-banner-green" translate>
+																			<span data-toggle="tooltip" data-placement="top"
+																				title="This list is associated with a form." translate>Form Lead List
+																			</span>
+																		</h6>
+																	</div>																	
 																</ng-container>
 															</td>
 			
@@ -1193,7 +1201,11 @@ a.disabled {
 																<span *ngIf="referenceService.isSafariBrowser()">
 																	{{contactList.createdDate}} </span>
 															</td>
-			
+
+															<td class="text-center" *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
+																{{contactList?.count}}
+															</td>
+
 															<td class="text-center">
 																<a (click)="$event.stopPropagation();previewUsers(contactList)">
 																	<i class="fa fa-eye" aria-hidden="true"
