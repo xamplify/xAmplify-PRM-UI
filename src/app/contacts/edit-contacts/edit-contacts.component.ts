@@ -984,9 +984,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					(data: any) => {
 						if (data.access) {
 							data = data;
-							if (data.statusCode == 200) {
+							if (data.statusCode == 200) {								
 								$('#contactListDiv_' + contactListId).remove();
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+								if (data.isEmptyFormList) {
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+									this.contactService.isEmptyFormList = true;
+								} else {
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+								}
+								
 								this.contactService.deleteUserSucessMessage = true;
 								this.goBackToManageList();
 							} else if (data.statusCode == 201) {
@@ -2120,7 +2126,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							} else {
 								this.loading = false;
 								$('#contactListDiv_' + this.contactListId).remove();
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+								if (data.isEmptyFormList) {
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+									this.contactService.isEmptyFormList = true;
+								} else {
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+								}
+								//this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
 								this.contactService.deleteUserSucessMessage = true;
 								this.goBackToManageList();
 							}
@@ -3266,6 +3278,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			};
 			/********Check Gdpr Settings******************/
 			this.checkTermsAndConditionStatus();
+			this.contactService.deleteUserSucessMessage = false;
 		}
 		catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");

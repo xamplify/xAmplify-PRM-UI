@@ -43,6 +43,7 @@ export class ContactService {
     publicList : boolean;
     assignedToPartner : boolean;
     contactType:string
+    isEmptyFormList: boolean = false;
 	
 
     url = this.authenticationService.REST_URL + "admin/";
