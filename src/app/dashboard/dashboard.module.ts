@@ -67,6 +67,7 @@ import { UnsubscribeReasonsComponent } from './unsubscribe-reasons/unsubscribe-r
 import { Top4AssetsComponent } from './dashboard-analytics-components/top-4-assets/top-4-assets.component';
 import { CustomizeTop4Component } from './dashboard-analytics-components/customize-top-4/customize-top-4.component';
 import { Top4TracksAndPlayBooksComponent } from './dashboard-analytics-components/top-4-tracks-and-play-books/top-4-tracks-and-play-books.component';
+import { VendorInvitationReportComponent } from './vendor-invitation-report/vendor-invitation-report.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -109,7 +110,8 @@ import { Top4TracksAndPlayBooksComponent } from './dashboard-analytics-component
         UnsubscribeReasonsComponent,
         Top4AssetsComponent,
         CustomizeTop4Component,
-        Top4TracksAndPlayBooksComponent
+        Top4TracksAndPlayBooksComponent,
+        VendorInvitationReportComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
