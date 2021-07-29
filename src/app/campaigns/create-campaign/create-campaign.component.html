@@ -2492,8 +2492,26 @@
             </div>
             <!-- End Of Line 18 -->
         </div>
+        <!--Edit Template Div---->
+        <div id="edit-template" style="display: none;">
+            <div class="portlet light shadow">
+                <h4 *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left">
+                    {{beeContainerInput?.emailTemplateName}}
+                    <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                </h4><hr><br>
+              <div class="portlet-body clearfix">
+                  <div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">
+                        <strong>{{templateUpdateMessage}}</strong>
+                  </div>
+                  <app-modal-popup-loader *ngIf="editTemplateLoader"></app-modal-popup-loader>
+                  <app-bee-template-util *ngIf="!editTemplateLoader && showEditTemplatePopup"  [beeContainerInput]="beeContainerInput" (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
+            </div>
+            </div>
+        </div>
         <!-- --------------------Email Template -->
-        <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static">
+        <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog full-width">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -2624,23 +2642,3 @@
 
 <app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags> 
 
-<!--Edit the template---->
-<div class="modal fade right" id="editTemplateModalPopup" data-backdrop="static">
-    <div class="modal-dialog full-width">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-circle" (click)="closeEditTemplatePopup()">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                <h4 class="modal-title text-center" id="email-template-title">{{beeContainerInput?.emailTemplateName}}</h4>
-            </div>
-            <div class="modal-body">
-               <app-modal-popup-loader *ngIf="editTemplateLoader"></app-modal-popup-loader>
-               <app-bee-template-util *ngIf="!editTemplateLoader && showEditTemplatePopup" [beeContainerInput]="beeContainerInput"></app-bee-template-util>
-            </div>
-            <div class="modal-footer">
-                <a  (click)="closeEditTemplatePopup()" class="btn btn-default" style="float: right" translate>Close</a>
-            </div>
-        </div>
-    </div>
-</div>

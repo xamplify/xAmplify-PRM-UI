@@ -235,8 +235,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     emptyContactsMessage: string = "";
     expandedUserList: any;
     showExpandButton = false;
-    
-    contactListTabName:string = "";
+
+    contactListTabName: string = "";
+
+    beeContainerInput: any = {};
+    editTemplateLoader = false;
+    jsonBody: any;
+    showEditTemplatePopup = false;
+    templateMessageClass = "";
+    templateUpdateMessage = "";
+    showEditTemplateMessageDiv = false;
+
 
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
@@ -750,14 +759,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     eventHandlerContact(event: any) { if (event === 13) { this.searchContactList(); } }
 
     loadContactLists(contactListsPagination: Pagination) {
-    	this.contactListTabName = "Partners";
+        this.contactListTabName = "Partners";
         this.paginationType = 'contactlists';
         const roles = this.authenticationService.getRoles();
         this.isVendor = roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 || roles.indexOf(this.roleName.prmRole) > -1;
         if (this.isEditCampaign) {
             contactListsPagination.editCampaign = true;
             contactListsPagination.campaignId = this.eventCampaign.id;
-            contactListsPagination.channelCampaign = this.eventCampaign.channelCampaign ;
+            contactListsPagination.channelCampaign = this.eventCampaign.channelCampaign;
         }
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor)) {
             this.contactListsPagination.filterValue = false;
@@ -802,14 +811,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 this.contactListsPagination.filterKey = 'isPartnerUserList';
             }
         }
-        
+
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) || this.authenticationService.superiorRole === 'OrgAdmin & Partner') {
             if (!this.eventCampaign.channelCampaign) {
                 this.contactListTabName = "Partners & Recipients";
             }
         }
-        
-        
+
+
         this.contactListMethod(this.contactListsPagination);
     }
 
@@ -849,9 +858,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.userListIds = [];
             this.eventCampaign.userListIds = [];
         }
-        
+
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) || this.authenticationService.superiorRole === 'OrgAdmin & Partner') {
-        	this.userListDTOObj = [];
+            this.userListDTOObj = [];
         }
     }
 
@@ -863,7 +872,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     switchStatusChange() {
-    	this.contactListTabName = "Partners";
+        this.contactListTabName = "Partners";
         this.clearSelectedContactList();
         this.clearSelectedTemplate();
         this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
@@ -885,7 +894,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor)) {
             if (!this.eventCampaign.channelCampaign) {
-            	this.contactListTabName = "Partners & Recipients";
+                this.contactListTabName = "Partners & Recipients";
                 this.contactListsPagination.filterValue = false;
                 this.contactListsPagination.filterKey = null;
                 this.contactListMethod(this.contactListsPagination);
@@ -2985,31 +2994,88 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
     }
 
-    openMergeTagsPopup(type:string,autoResponseSubject:any){
+    openMergeTagsPopup(type: string, autoResponseSubject: any) {
         this.mergeTagsInput['isEvent'] = false;
         this.mergeTagsInput['isCampaign'] = true;
         this.mergeTagsInput['hideButton'] = true;
         this.mergeTagsInput['type'] = type;
         this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
     }
-    
-    clearHiddenClick(){
+
+    clearHiddenClick() {
         this.mergeTagsInput['hideButton'] = false;
     }
-    
-    appendValueToSubjectLine(event:any){
-        if(event!=undefined){
+
+    appendValueToSubjectLine(event: any) {
+        if (event != undefined) {
             let type = event['type'];
             let copiedValue = event['copiedValue'];
-            if(type=="campaignSubjectLine"){
-                let updatedValue = this.eventCampaign.subjectLine+" "+copiedValue;
+            if (type == "campaignSubjectLine") {
+                let updatedValue = this.eventCampaign.subjectLine + " " + copiedValue;
                 this.eventCampaign.subjectLine = updatedValue;
                 this.eventSubjectLineError();
-            }else{
+            } else {
                 let autoResponse = event['autoResponseSubject'];
-                autoResponse.subject = autoResponse.subject+" "+copiedValue;
+                autoResponse.subject = autoResponse.subject + " " + copiedValue;
             }
-         }
-         this.mergeTagsInput['hideButton'] = false;
         }
+        this.mergeTagsInput['hideButton'] = false;
+    }
+
+    editTemplate(emailTemplate: any) {
+        this.showEditTemplateMessageDiv = false;
+        if (emailTemplate['type'] != 'UPLOADED' && emailTemplate.userDefined) {
+            this.referenceService.goToTop();
+            $('#event-tabs').hide(600);
+            $('#edit-template').show(600);
+            this.editTemplateLoader = true;
+            this.beeContainerInput['emailTemplateName'] = emailTemplate.name;
+            this.emailTemplateService.findJsonBody(emailTemplate.id).subscribe(
+                response => {
+                    this.beeContainerInput['module'] = "emailTemplates";
+                    this.beeContainerInput['jsonBody'] = response;
+                    this.beeContainerInput['id'] = emailTemplate.id;
+                    this.beeContainerInput['isEvent'] = (emailTemplate.beeEventTemplate ||emailTemplate.beeEventCoBrandingTemplate);
+                    this.showEditTemplatePopup = true;
+                    this.editTemplateLoader = false;
+                }, error => {
+                    this.hideEditTemplateDiv();
+                    this.referenceService.showSweetAlertServerErrorMessage();
+                }
+            );
+        } else {
+            this.referenceService.showSweetAlertErrorMessage('This is not BEE template');
+        }
+    }
+
+    hideEditTemplateDiv() {
+        $('#edit-template').hide(600);
+        this.showEditTemplatePopup = false;
+        this.editTemplateLoader = false;
+        this.beeContainerInput = {};
+        $('#event-tabs').show(600);
+    }
+
+    updateTemplate(event: any) {
+        this.completeLoader = true;
+        let emailTemplate = new EmailTemplate();
+        emailTemplate.id = event.id;
+        emailTemplate.jsonBody = event.jsonContent;
+        emailTemplate.body = event.htmlContent;
+        emailTemplate.userId = this.loggedInUserId;
+        this.emailTemplateService.updateJsonAndHtmlBody(emailTemplate).subscribe(
+            response => {
+                this.completeLoader = false;
+                this.showEditTemplateMessageDiv = true;
+                this.templateMessageClass = "alert alert-success";
+                this.templateUpdateMessage = "Template Updated Successfully";
+            }, error => {
+                this.completeLoader = false;
+                this.templateMessageClass = "alert alert-danger";
+                this.templateUpdateMessage = this.properties.serverErrorMessage;
+                this.showEditTemplateMessageDiv = true;
+            }
+        )
+
+    }
 }

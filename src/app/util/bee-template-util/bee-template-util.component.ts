@@ -25,17 +25,23 @@ export class BeeTemplateUtilComponent implements OnInit {
 	partnerCompanyLogoPath = "";
 	defaultJsonBody = "";
 	module = "";
+	mergeTagsInput: any = {};
+	mergeTagsLoader = true;
+	id:number = 0;
 	constructor(private referenceService: ReferenceService, private authenticationService: AuthenticationService, private router: Router, private xtremandLogger: XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 	ngOnInit() {
 		this.loading = true;
+		
 		if (this.beeContainerInput != undefined) {
 			this.defaultJsonBody = this.beeContainerInput['jsonBody'];
 			this.vendorCompanyLogoPath = this.beeContainerInput['vendorCompanyLogoPath'];
 			this.partnerCompanyLogoPath = this.beeContainerInput['partnerCompanyLogoPath'];
 			this.module = this.beeContainerInput['module'];
+			this.id = this.beeContainerInput['id'];
+			this.mergeTagsInput['isEvent'] = this.beeContainerInput['isEvent'];
 			this.isPartnerView = this.router.url.indexOf('/editp') > -1;
 			this.getCompanyId();
 		} else {
@@ -59,7 +65,7 @@ export class BeeTemplateUtilComponent implements OnInit {
 			},
 			() => {
 				if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
-
+					this.mergeTagsLoader = false;
 					this.loadContainer();
 				}
 			}
@@ -226,9 +232,9 @@ export class BeeTemplateUtilComponent implements OnInit {
 	updateEmailTemplate(jsonContent: string, htmlContent: string){
 		let input = {};
 		this.updateJsonAndHtmlContent(jsonContent, htmlContent,input);
+		input['id'] = this.id;
 		this.notifyParentComponent.emit(input);
 		this.loading = false;
-		this.referenceService.showSweetAlertInfoMessage();
 	}
 
 

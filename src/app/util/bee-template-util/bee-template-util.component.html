@@ -1,4 +1,8 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div *ngIf="!mergeTagsLoader">
+    <app-merge-tags  [input]="mergeTagsInput"></app-merge-tags>
+</div>
+<br>
 <div id="xamplify-bee-template-container"></div>
         
 

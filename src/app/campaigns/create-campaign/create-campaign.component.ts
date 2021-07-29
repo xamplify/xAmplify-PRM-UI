@@ -313,6 +313,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     editTemplateLoader = false;
     jsonBody: any;
     showEditTemplatePopup = false;
+    templateMessageClass = "";
+    templateUpdateMessage = "";
+    showEditTemplateMessageDiv = false;
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -3408,32 +3412,61 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
 
     editTemplate(emailTemplate: any) {
+        this.showEditTemplateMessageDiv = false;
         if (emailTemplate['type'] != 'UPLOADED' && emailTemplate.userDefined) {
+           this.refService.goToTop();
+           $('#campaign-tabs').hide(600);
+           $('#edit-template').show(600);
+           this.editTemplateLoader = true;
             this.beeContainerInput['emailTemplateName'] = emailTemplate.name;
-            $('#editTemplateModalPopup').modal('show');
-            this.editTemplateLoader = true;
             this.emailTemplateService.findJsonBody(emailTemplate.id).subscribe(
                 response => {
                     this.beeContainerInput['module'] = "emailTemplates";
                     this.beeContainerInput['jsonBody'] = response;
+                    this.beeContainerInput['id'] = emailTemplate.id;
                     this.showEditTemplatePopup = true;
                     this.editTemplateLoader = false;
                 }, error => {
-                    this.closeEditTemplatePopup();
+                    this.hideEditTemplateDiv();
                     this.refService.showSweetAlertServerErrorMessage();
                 }
             );
         } else {
             this.refService.showSweetAlertErrorMessage('This is not BEE template');
         }
-
     }
 
-    closeEditTemplatePopup() {
-        this.editTemplateLoader = false;
+    hideEditTemplateDiv() {
+        $('#edit-template').hide(600);
         this.showEditTemplatePopup = false;
+        this.editTemplateLoader = false;
         this.beeContainerInput = {};
-        $('#editTemplateModalPopup').modal('hide');
+        $('#campaign-tabs').show(600);
     }
+
+    updateTemplate(event:any){
+        this.loading =true;
+        let emailTemplate = new EmailTemplate();
+        emailTemplate.id = event.id;
+        emailTemplate.jsonBody = event.jsonContent;
+        emailTemplate.body = event.htmlContent;
+        emailTemplate.userId = this.loggedInUserId;
+        this.emailTemplateService.updateJsonAndHtmlBody(emailTemplate).subscribe(
+            response=>{
+                this.loading =false;
+                this.showEditTemplateMessageDiv = true;
+                this.templateMessageClass = "alert alert-success";
+                this.templateUpdateMessage = "Template Updated Successfully";
+            },error=>{
+                this.loading =false;
+                this.templateMessageClass = "alert alert-danger";
+                this.templateUpdateMessage = this.properties.serverErrorMessage;
+                this.showEditTemplateMessageDiv = true;
+            }
+        )
+
+    }
+
+    
 }
 
