@@ -2056,3 +2056,7 @@ legend {
 .full-width{
     width: 100% !important;
 }
+
+.text-left{
+    text-align: left !important;
+}

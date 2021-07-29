@@ -3409,9 +3409,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
     editTemplate(emailTemplate: any) {
         if (emailTemplate['type'] != 'UPLOADED' && emailTemplate.userDefined) {
+           this.refService.goToTop();
+           $('#campaign-tabs').hide(600);
+           $('#edit-template').show(600);
+           this.editTemplateLoader = true;
             this.beeContainerInput['emailTemplateName'] = emailTemplate.name;
-            $('#editTemplateModalPopup').modal('show');
-            this.editTemplateLoader = true;
             this.emailTemplateService.findJsonBody(emailTemplate.id).subscribe(
                 response => {
                     this.beeContainerInput['module'] = "emailTemplates";
@@ -3426,14 +3428,14 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         } else {
             this.refService.showSweetAlertErrorMessage('This is not BEE template');
         }
-
     }
 
     closeEditTemplatePopup() {
-        this.editTemplateLoader = false;
+        $('#edit-template').hide(600);
         this.showEditTemplatePopup = false;
+        this.editTemplateLoader = false;
         this.beeContainerInput = {};
-        $('#editTemplateModalPopup').modal('hide');
+        $('#campaign-tabs').show(600);
     }
 }
 

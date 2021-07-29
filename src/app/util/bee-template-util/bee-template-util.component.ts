@@ -25,6 +25,7 @@ export class BeeTemplateUtilComponent implements OnInit {
 	partnerCompanyLogoPath = "";
 	defaultJsonBody = "";
 	module = "";
+	mergeTagsInput: any = {};
 	constructor(private referenceService: ReferenceService, private authenticationService: AuthenticationService, private router: Router, private xtremandLogger: XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
