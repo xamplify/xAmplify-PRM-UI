@@ -2493,7 +2493,7 @@
             <!-- End Of Line 18 -->
         </div>
         <!--Edit Template Div---->
-        <div id="edit-template">
+        <div id="edit-template" style="display: none;">
             <div class="portlet light shadow">
                 <h4 *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left">
                     {{beeContainerInput?.emailTemplateName}}
@@ -2511,7 +2511,7 @@
             </div>
         </div>
         <!-- --------------------Email Template -->
-        <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static">
+        <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog full-width">
                 <div class="modal-content">
                     <div class="modal-header">

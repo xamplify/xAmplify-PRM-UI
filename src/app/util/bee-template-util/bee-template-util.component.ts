@@ -41,6 +41,7 @@ export class BeeTemplateUtilComponent implements OnInit {
 			this.partnerCompanyLogoPath = this.beeContainerInput['partnerCompanyLogoPath'];
 			this.module = this.beeContainerInput['module'];
 			this.id = this.beeContainerInput['id'];
+			this.mergeTagsInput['isEvent'] = this.beeContainerInput['isEvent'];
 			this.isPartnerView = this.router.url.indexOf('/editp') > -1;
 			this.getCompanyId();
 		} else {
