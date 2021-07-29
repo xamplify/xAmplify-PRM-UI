@@ -1674,7 +1674,7 @@ a.disabled {
                                             title="Preview"  (click)="$event.stopPropagation();getTemplateById(reply.emailTemplate)">
                                               <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
 										   </a>
-										   <a style="right: -15px;"  class="fm external-link" target="_BLANK"    data-toggle="tooltip" data-placement="top"
+										   <a *ngIf=" !reDistributeEventManage && !reDistributeEvent && !isPreviewEvent" style="right: -15px;"  class="fm external-link" target="_BLANK"    data-toggle="tooltip" data-placement="top"
 													title="Edit" (click)="$event.stopPropagation();editTemplate(reply.emailTemplate)">
 												<i class="fa fa-edit ext-css"  aria-hidden="true"></i>
 								  			</a>
@@ -1726,7 +1726,7 @@ a.disabled {
 										  getTemplateById(emailTemplate)">
                                           <i class="fa fa-external-link-square" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
 									  </a>
-									  <a style="right: -15px;"  class="fm external-link" target="_BLANK"    data-toggle="tooltip" data-placement="top"
+									  <a *ngIf="!reDistributeEventManage && !reDistributeEvent && !isPreviewEvent" style="right: -15px;"  class="fm external-link" target="_BLANK"    data-toggle="tooltip" data-placement="top"
 													title="Edit" (click)="$event.stopPropagation();editTemplate(emailTemplate)">
 										<i class="fa fa-edit ext-css"  aria-hidden="true"></i>
 								  		</a>
