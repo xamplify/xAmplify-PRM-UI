@@ -2495,14 +2495,18 @@
         <!--Edit Template Div---->
         <div id="edit-template">
             <div class="portlet light shadow">
-                <h4 class="caption-subject font-red-sunglo f-w-600 text-left">Edit Template
-                    <a class="close-circle pull-right" data-dismiss="modal" (click)="closeEditTemplatePopup()">
+                <h4 *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left">
+                    {{beeContainerInput?.emailTemplateName}}
+                    <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
                 </h4><hr><br>
               <div class="portlet-body clearfix">
+                  <div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">
+                        <strong>{{templateUpdateMessage}}</strong>
+                  </div>
                   <app-modal-popup-loader *ngIf="editTemplateLoader"></app-modal-popup-loader>
-                  <app-bee-template-util *ngIf="!editTemplateLoader && showEditTemplatePopup"  [beeContainerInput]="beeContainerInput"></app-bee-template-util>
+                  <app-bee-template-util *ngIf="!editTemplateLoader && showEditTemplatePopup"  [beeContainerInput]="beeContainerInput" (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
             </div>
             </div>
         </div>

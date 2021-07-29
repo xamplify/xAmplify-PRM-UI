@@ -216,9 +216,15 @@ export class EmailTemplateService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    updateJsonAndHtmlBody(emailTemplateDto:EmailTemplate){
+        return this.http.post(this.URL+"/email-template/updateJsonAndHtmlBody/?access_token="+this.authenticationService.access_token,emailTemplateDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
     private extractData( res: Response ) {
         let body = res.json();
-        console.log( body );
         return body || {};
     }
 
