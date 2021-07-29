@@ -39,7 +39,7 @@
             </app-response-message>
         </div>
         <!-- End of Line 2 -->
-        <div class="page-bar">
+        <div class="page-bar" id="campaign-tabs">
             <div class="container" style="width: 100%;border-radius: 0;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);padding-bottom: 10px;">
                 <div style="display: flex;padding-top: 1em;">
                     <div id="step2" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
@@ -1172,16 +1172,26 @@
                                                                                                 <font *ngIf="campaign?.emailTemplate?.category?.length>5">..</font>
                                                                                             </span>
                                                                                             <div class="item__actions">
-                                                                                                <span> <a
-                                                                                                        style="float:left; right: -6px;"
+                                                                                                <span>
+                                                                                                     <a  style="float:left; right: -6px;"
                                                                                                         class="fm external-link"
                                                                                                         target="_BLANK"
                                                                                                         data-toggle="tooltip"
                                                                                                         data-placement="top"
                                                                                                         title="Preview"
                                                                                                         (click)="$event.stopPropagation();getTemplateById(campaign.emailTemplate)">
-                                                                                                        <!-- (click)="preview(file)"  -->
                                                                                                         <i class="fa fa-external-link-square"
+                                                                                                            aria-hidden="true"
+                                                                                                            style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                                                    </a>
+                                                                                                    <a style="float:left; right: -15px;"
+                                                                                                        class="fm external-link"
+                                                                                                        target="_BLANK"
+                                                                                                        data-toggle="tooltip"
+                                                                                                        data-placement="top"
+                                                                                                        title="Edit"
+                                                                                                        (click)="$event.stopPropagation();editTemplate(campaign.emailTemplate)">
+                                                                                                        <i class="fa fa-edit"
                                                                                                             aria-hidden="true"
                                                                                                             style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                                                                                     </a>
@@ -1262,6 +1272,17 @@
                                                                                                     aria-hidden="true"
                                                                                                     style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
                                                                                             </a>
+                                                                                            <a style="float:left; right: -15px;"
+                                                                                                        class="fm external-link"
+                                                                                                        target="_BLANK"
+                                                                                                        data-toggle="tooltip"
+                                                                                                        data-placement="top"
+                                                                                                        title="Edit"
+                                                                                                        (click)="$event.stopPropagation();editTemplate(emailTemplate)">
+                                                                                                        <i class="fa fa-edit"
+                                                                                                            aria-hidden="true"
+                                                                                                            style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                                                    </a>
                                                                                         </span>
                                                                                     </div>
                                                                                 </div>
@@ -1383,7 +1404,6 @@
                                                                                                         data-placement="top"
                                                                                                         title="Preview"
                                                                                                         (click)="$event.stopPropagation();showLandingPagePreview(campaign.landingPage)">
-                                                                                                        <!-- (click)="preview(file)"  -->
                                                                                                         <i class="fa fa-external-link-square"
                                                                                                             aria-hidden="true"
                                                                                                             style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
@@ -1922,6 +1942,17 @@
                                                                                                                                                     aria-hidden="true"
                                                                                                                                                     style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                                                                                                                             </a>
+                                                                                                                                            <a style="float:left; right: -15px;"
+                                                                                                                                                class="fm external-link"
+                                                                                                                                                target="_BLANK"
+                                                                                                                                                data-toggle="tooltip"
+                                                                                                                                                data-placement="top"
+                                                                                                                                                title="Edit"
+                                                                                                                                                (click)="$event.stopPropagation();editTemplate(reply.emailTemplate)">
+                                                                                                                                                <i class="fa fa-edit"
+                                                                                                                                                    aria-hidden="true"
+                                                                                                                                                    style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                                                                                                </a>
                                                                                                                                         </span>
                                                                                                                                     </div>
                                                                                                                                 </div>
@@ -1997,6 +2028,17 @@
                                                                                                                                                 aria-hidden="true"
                                                                                                                                                 style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
                                                                                                                                         </a>
+                                                                                                                                        <a style="float:left; right: -15px;"
+                                                                                                                                                class="fm external-link"
+                                                                                                                                                target="_BLANK"
+                                                                                                                                                data-toggle="tooltip"
+                                                                                                                                                data-placement="top"
+                                                                                                                                                title="Edit"
+                                                                                                                                                (click)="$event.stopPropagation();editTemplate(emailTemplate)">
+                                                                                                                                                <i class="fa fa-edit"
+                                                                                                                                                    aria-hidden="true"
+                                                                                                                                                    style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                                                                                                </a>
                                                                                                                                     </span>
                                                                                                                                 </div>
                                                                                                                             </div>
@@ -2241,6 +2283,17 @@
                                                                                                                                                         aria-hidden="true"
                                                                                                                                                         style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                                                                                                                                 </a>
+                                                                                                                                                <a style="float:left; right: -15px;"
+                                                                                                                                                class="fm external-link"
+                                                                                                                                                target="_BLANK"
+                                                                                                                                                data-toggle="tooltip"
+                                                                                                                                                data-placement="top"
+                                                                                                                                                title="Edit"
+                                                                                                                                                (click)="$event.stopPropagation();editTemplate(url.emailTemplate)">
+                                                                                                                                                <i class="fa fa-edit"
+                                                                                                                                                    aria-hidden="true"
+                                                                                                                                                    style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                                                                                                </a>
                                                                                                                                             </span>
                                                                                                                                         </div>
                                                                                                                                     </div>
@@ -2312,6 +2365,17 @@
                                                                                                                                                     aria-hidden="true"
                                                                                                                                                     style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
                                                                                                                                             </a>
+                                                                                                                                            <a style="float:left; right: -15px;"
+                                                                                                                                                class="fm external-link"
+                                                                                                                                                target="_BLANK"
+                                                                                                                                                data-toggle="tooltip"
+                                                                                                                                                data-placement="top"
+                                                                                                                                                title="Edit"
+                                                                                                                                                (click)="$event.stopPropagation();editTemplate(emailTemplate)">
+                                                                                                                                                <i class="fa fa-edit"
+                                                                                                                                                    aria-hidden="true"
+                                                                                                                                                    style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                                                                                                </a>
                                                                                                                                         </span>
                                                                                                                                     </div>
                                                                                                                                 </div>
@@ -2429,8 +2493,8 @@
             <!-- End Of Line 18 -->
         </div>
         <!-- --------------------Email Template -->
-        <div class="modal right " id="show_email_template_preivew">
-            <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+        <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static">
+            <div class="modal-dialog full-width">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close-circle" data-dismiss="modal">
@@ -2556,6 +2620,27 @@
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
 <ng-container *ngIf="showUsersPreview">
     <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
-    </ng-container>
+</ng-container>
 
-<app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>  
+<app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags> 
+
+<!--Edit the template---->
+<div class="modal fade right" id="editTemplateModalPopup" data-backdrop="static">
+    <div class="modal-dialog full-width">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closeEditTemplatePopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title text-center" id="email-template-title">{{beeContainerInput?.emailTemplateName}}</h4>
+            </div>
+            <div class="modal-body">
+               <app-modal-popup-loader *ngIf="editTemplateLoader"></app-modal-popup-loader>
+               <app-bee-template-util *ngIf="!editTemplateLoader && showEditTemplatePopup" [beeContainerInput]="beeContainerInput"></app-bee-template-util>
+            </div>
+            <div class="modal-footer">
+                <a  (click)="closeEditTemplatePopup()" class="btn btn-default" style="float: right" translate>Close</a>
+            </div>
+        </div>
+    </div>
+</div>

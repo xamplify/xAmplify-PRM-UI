@@ -37,12 +37,14 @@ export class AddDamComponent implements OnInit {
   partnerCompanyLogoPath = "";
   isValidName = false;
   isValidDescription = false;
+  beeContainerInput = {};
   constructor(private xtremandLogger: XtremandLogger, public router: Router, private route: ActivatedRoute, public properties: Properties, private damService: DamService, private authenticationService: AuthenticationService, public referenceService: ReferenceService, private httpClient: HttpClient) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
     this.ngxloading = true;
+    this.beeContainerInput['module'] = "dam";
     if (this.router.url.indexOf('/edit') > -1) {
       this.assetId = parseInt(this.route.snapshot.params['id']);
       if (this.assetId > 0) {
@@ -60,6 +62,7 @@ export class AddDamComponent implements OnInit {
       this.saveOrUpdateButtonText = "Save";
       this.httpClient.get("assets/config-files/bee-default-asset.json").subscribe(data => {
         this.jsonBody = JSON.stringify(data);
+        this.beeContainerInput['jsonBody'] = this.jsonBody;
         this.ngxloading = false;
       });
     }
@@ -76,6 +79,7 @@ export class AddDamComponent implements OnInit {
         let dam = result.data;
         if (dam != undefined) {
           this.jsonBody = dam.jsonBody;
+          this.beeContainerInput['jsonBody'] = this.jsonBody;
           this.damPostDto.name = dam.assetName;
           this.damPostDto.description = dam.description;
           this.name = dam.assetName;
@@ -86,6 +90,8 @@ export class AddDamComponent implements OnInit {
           this.description = dam.description;
           this.vendorCompanyLogoPath = dam.vendorCompanyLogo;
           this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
+          this.beeContainerInput['vendorCompanyLogoPath'] = this.vendorCompanyLogoPath;
+          this.beeContainerInput['partnerCompanyLogoPath'] = this.partnerCompanyLogoPath;
         } else {
           this.goToManageSectionWithError();
         }
