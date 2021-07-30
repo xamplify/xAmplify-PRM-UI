@@ -2374,7 +2374,7 @@
                                 <div class="portlet-title border-none">
                                     <div class="col-xs-12 center-block">
                                         <button type="button" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
-                                        <button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
+                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
                                         <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
                                         <button *ngIf="campaignType!='landingPage'" type="button" class="btn green" (click)="spamCheck()" style="width: 10em;" translate>Spam check</button>
                                     </div>
@@ -2506,7 +2506,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closeFilterPopup()">
-                    <i class="fa fa-times"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
                 <h5 class="modal-title text-center" translate>Apply Filter</h5>
             </div>

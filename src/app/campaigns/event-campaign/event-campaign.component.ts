@@ -3071,6 +3071,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 this.showEditTemplateMessageDiv = true;
                 this.templateMessageClass = "alert alert-success";
                 this.templateUpdateMessage = "Template Updated Successfully";
+                this.referenceService.goToTop();
             }, error => {
                 this.completeLoader = false;
                 this.templateMessageClass = "alert alert-danger";

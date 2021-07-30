@@ -3318,6 +3318,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.landingPagePagination.categoryIds = [];
                 this.landingPagePagination.categoryFilter = false;
             }
+            this.landingPagePagination.pageIndex = 1;
             this.listLandingPages(this.landingPagePagination);
         } else {
             if (this.selectedFolderIds.length > 0) {
@@ -3327,10 +3328,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.emailTemplatesPagination.categoryIds = [];
                 this.emailTemplatesPagination.categoryFilter = false;
             }
+            this.emailTemplatesPagination.pageIndex = 1;
             this.loadEmailTemplates(this.emailTemplatesPagination);
         }
-
-
         this.closeFilterPopup();
     }
 
