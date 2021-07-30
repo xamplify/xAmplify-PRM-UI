@@ -309,6 +309,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     expandedUserList: any;
     showExpandButton = false;
     mergeTagsInput: any = {};
+    editTemplateMergeTagsInput:any = {};
     beeContainerInput: any = {};
     editTemplateLoader = false;
     jsonBody: any;
@@ -316,7 +317,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     templateMessageClass = "";
     templateUpdateMessage = "";
     showEditTemplateMessageDiv = false;
-
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -3432,7 +3432,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 }
             );
         } else {
-            this.refService.showSweetAlertErrorMessage('This is not BEE template');
+            this.refService.showSweetAlertErrorMessage('Uploaded Templates Cannot Be Edited');
         }
     }
 

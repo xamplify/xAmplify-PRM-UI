@@ -34,7 +34,7 @@
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="page-bar">
+        <div class="page-bar" *ngIf="folderCustomResponse.isVisible">
             <app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
             </app-response-message>
         </div>
@@ -2495,12 +2495,13 @@
         <!--Edit Template Div---->
         <div id="edit-template" style="display: none;">
             <div class="portlet light shadow">
-                <h4 *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left">
+                <div *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
                     {{beeContainerInput?.emailTemplateName}}
                     <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
-                </h4><hr><br>
+                    <app-merge-tags  [input]="editTemplateMergeTagsInput"></app-merge-tags>
+                </div>
               <div class="portlet-body clearfix">
                   <div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">
                         <strong>{{templateUpdateMessage}}</strong>
