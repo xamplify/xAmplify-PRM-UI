@@ -115,7 +115,11 @@ export class BeeTemplateUtilComponent implements OnInit {
 			};
 
 			let mergeTags = [];
-			mergeTags = this.referenceService.addMergeTags(mergeTags, false, false);
+			if(this.module=="pages"){
+				mergeTags = this.referenceService.addPageMergeTags();
+			}else{
+				mergeTags = this.referenceService.addMergeTags(mergeTags, false, this.mergeTagsInput['isEvent']);
+			}
 			var beeUserId = "bee-" + self.loggedInUserCompanyId;
 			let roleHash = self.authenticationService.vendorRoleHash;
 			if (self.isPartnerView) {

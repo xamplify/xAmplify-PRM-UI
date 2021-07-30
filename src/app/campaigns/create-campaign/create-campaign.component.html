@@ -2394,7 +2394,7 @@
                     <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
-                    <app-merge-tags  [input]="editTemplateMergeTagsInput"></app-merge-tags>
+                    <app-merge-tags *ngIf="showEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
                 </div>
               <div class="portlet-body clearfix">
                   <div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">
