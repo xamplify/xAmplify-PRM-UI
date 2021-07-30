@@ -109,10 +109,9 @@ export class BeeTemplateUtilComponent implements OnInit {
 			var save = function (jsonContent: string, htmlContent: string) {
 				if(self.module=="dam"){
 					self.saveContentForDam(jsonContent, htmlContent);
-				}else if(self.module=="emailTemplates"){
-					self.updateEmailTemplate(jsonContent,htmlContent);
+				}else if(self.module=="emailTemplates" || self.module=="pages"){
+					self.updateJsonAndHtmlContentAndSendDataBack(jsonContent,htmlContent);
 				}
-				
 			};
 
 			let mergeTags = [];
@@ -187,7 +186,7 @@ export class BeeTemplateUtilComponent implements OnInit {
 	goBack() {
 		this.loading = false;
 		this.referenceService.showSweetAlertErrorMessage("Input data not found for loading container.Please try aftersometime");
-		this.referenceService.goToRouter("/home/dashboard");
+		//this.referenceService.goToRouter("/home/dashboard");
 	}
 
 	replaceImagesForDam(body: any) {
@@ -229,14 +228,14 @@ export class BeeTemplateUtilComponent implements OnInit {
 		input['htmlContent'] = updatedHtmlContent;
 	}
 
-	updateEmailTemplate(jsonContent: string, htmlContent: string){
+	updateJsonAndHtmlContentAndSendDataBack(jsonContent: string, htmlContent: string){
 		let input = {};
 		this.updateJsonAndHtmlContent(jsonContent, htmlContent,input);
 		input['id'] = this.id;
+		input['module'] = this.module;
 		this.notifyParentComponent.emit(input);
 		this.loading = false;
 	}
-
 
 
 }
