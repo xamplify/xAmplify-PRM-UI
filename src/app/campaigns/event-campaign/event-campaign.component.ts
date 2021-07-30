@@ -226,7 +226,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
     isValidPipeline = true;
     mergeTagsInput: any = {};
-
+    editTemplateMergeTagsInput: any = {};
     showUsersPreview = false;
     selectedListName = "";
     selectedListId = 0;
@@ -3036,6 +3036,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     this.beeContainerInput['jsonBody'] = response;
                     this.beeContainerInput['id'] = emailTemplate.id;
                     this.beeContainerInput['isEvent'] = (emailTemplate.beeEventTemplate ||emailTemplate.beeEventCoBrandingTemplate);
+                    this.editTemplateMergeTagsInput['isEvent'] = (emailTemplate.beeEventTemplate ||emailTemplate.beeEventCoBrandingTemplate);
                     this.showEditTemplatePopup = true;
                     this.editTemplateLoader = false;
                 }, error => {
@@ -3044,7 +3045,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 }
             );
         } else {
-            this.referenceService.showSweetAlertErrorMessage('This is not BEE template');
+            this.referenceService.showSweetAlertErrorMessage('Uploaded Templates Cannot Be Edited');
         }
     }
 
@@ -3053,6 +3054,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.showEditTemplatePopup = false;
         this.editTemplateLoader = false;
         this.beeContainerInput = {};
+        this.editTemplateMergeTagsInput = {};
         $('#event-tabs').show(600);
     }
 
@@ -3069,6 +3071,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 this.showEditTemplateMessageDiv = true;
                 this.templateMessageClass = "alert alert-success";
                 this.templateUpdateMessage = "Template Updated Successfully";
+                this.referenceService.goToTop();
             }, error => {
                 this.completeLoader = false;
                 this.templateMessageClass = "alert alert-danger";

@@ -93,8 +93,6 @@ a.disabled {
                 <h4 class="pull-left f-w-600" *ngIf="!isEventUpdate" translate>Event Details</h4>
                 <h4 class="pull-left f-w-600" *ngIf="isEventUpdate" translate>Event Update</h4>
             </div>
-				<!-- <div class="page-bar  portlet light border-radius-0 shadow">
-		    <div class="portlet-body clearfix"> -->
 				<div class="col-xs-12 col-sm-7">
 					<form class="form-horizontal">
 						<div class="form-group">
@@ -233,20 +231,6 @@ a.disabled {
 							</div>
 						</div>
 
-
-							<!-- <div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && !reDistributeEvent && !reDistributeEventManage">
-								<label class="col-sm-3">Notify Partners ?</label>
-								<div class="col-sm-8">
-									<switch class="pull-left" [status]="eventCampaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue"
-									 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-									 (statusChange)="setPartnerEmailNotification($event)">
-									</switch>
-									<span style="cursor: pointer;color: #54a7e9;">
-										<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Sending email notifications to your partners about your campaign" style="padding: 8px;"></i>
-									</span>
-								</div>
-							</div> -->
-
 											<div class="form-group" *ngIf="(!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads)" [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
                                                 <label class="control-label col-sm-3" translate>Push To Marketing Automation</label>
                                                 <div class="col-sm-3">
@@ -271,9 +255,6 @@ a.disabled {
                                                         <div div class="col-md-4" *ngIf="enableLeads">
                                                             <div class="  cenetered-block1">
                                                                 <div class="">
-                                                                    <!-- <div>
-                                                                        <input class="pos" name="vehicle1" type="checkbox" value="">
-                                                                    </div> -->
                                                                     <label class="customcheck">
                                                                             <input type="checkbox" (click)="pushToCrmRequest('marketo', $event)" [checked]="eventCampaign.pushToMarketo">
                                                                             <span class="checkmark"></span>
@@ -288,9 +269,6 @@ a.disabled {
                                                         <div div class="col-md-4" *ngIf="enableLeads">
                                                             <div class="cenetered-block1">
                                                                 <div class="">
-                                                                    <!-- <div>
-                                                                        <input class="pos" name="vehicle1" type="checkbox" value="">
-                                                                    </div> -->
                                                                     <label class="customcheck">
                                                                             <input type="checkbox" (click)="pushToCrmRequest('hubspot', $event)"  [checked]="eventCampaign.pushToHubspot">
                                                                             <span class="checkmark"></span>
@@ -304,23 +282,6 @@ a.disabled {
 
 
                                                         </div>
-                                                        <!-- <div class="col-md-4" *ngIf="enableLeads">
-                                                            <div class=" cenetered-block1">
-                                                                <div class="">
-
-                                                                    <label class="customcheck">
-                                                                            <input type="checkbox" (click)="pushToCrmRequest('salesforce', $event)">
-                                                                            <span class="checkmark"></span>
-                                                                          </label>
-                                                                    <div>
-                                                                        <img class="image-size" src="assets/images/crm/salesforce-crm.png">
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5 class="hidden-xs">Salesforce</h5>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -374,57 +335,6 @@ a.disabled {
                                                     </select>
                                                 </div>
 											</div>
-
-<!-- 						<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads">
-												<label class="control-label col-sm-3">Push Leads To Marketo</label>
-												<div class="col-sm-9">
-													<div class="email-options-checkbox-group email-options-notify">
-														<div class="email-options-checkbox clearfix">
-															<div class="col-sm-1 ui-switch-custom-div">
-															 <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch>
-															 <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)" id="falseAction" *ngIf="!eventCampaign.pushToMarketo">
-																</switch>
-																<switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)" id="trueAction" *ngIf="eventCampaign.pushToMarketo">
-																</switch>
-															</div>
-																<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -12px">
-																<span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into Marketo">
-																		<i class="fa fa-question-circle" style="font-size: 18px;float: left;margin: -18px 0 0 0px;"></i>
-																	</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-						<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign">
-												<label class="control-label col-sm-3">Push Leads To Hubspot</label>
-												<div class="col-sm-9">
-													<div class="email-options-checkbox-group email-options-notify">
-														<div class="email-options-checkbox clearfix">
-															<div class="col-sm-1 ui-switch-custom-div">
-															 <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch>
-															 <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushHubspot(pushToHubspot)" id="falseAction" *ngIf="!eventCampaign.pushToHubspot">
-																</switch>
-																<switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushHubspot(pushToHubspot)" id="trueAction" *ngIf="eventCampaign.pushToHubspot">
-																</switch>
-															</div>
-																<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -12px">
-																<span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into Marketo">
-																		<i class="fa fa-question-circle" style="font-size: 18px;float: left;margin: -18px 0 0 0px;"></i>
-																	</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div> -->
-
-
-
 						<div class="form-group">
 							<label for="eventDateTime" class="col-sm-3 labal-css color-css" translate>Event Date/Time
 								 <span class="text-danger" style="margin-left: -3px;">*</span>
@@ -520,7 +430,6 @@ a.disabled {
 						<section *ngIf="eventCampaign.onlineMeeting">
 							<div class="form-group">
 								<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Description
-									<!-- <span class="text-danger" style="position: absolute;">*</span> -->
 								</label>
 								<div class="col-sm-9">
 								  <textarea style="font-size:14px !important" class="form-control" [(ngModel)]="eventCampaign.message" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
@@ -604,7 +513,7 @@ a.disabled {
 									</div>
 								</div>
 							</div>
-            </section>
+            			</section>
 
             <div class="form-group" *ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner() && enableSMS">
               <label class="control-label col-sm-3">SMS service</label>
@@ -612,7 +521,6 @@ a.disabled {
                 <div class="email-options-checkbox-group email-options-notify">
                   <div class="email-options-checkbox clearfix">
                     <div class="col-sm-1 ui-switch-custom-div">
-                     <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
                      <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="smsServices(smsService)" id="falseAction" *ngIf="!smsService">
                       </switch>
@@ -642,61 +550,18 @@ a.disabled {
               </div>
             </div>
 
-				<!-- 		<div class="form-group" *ngIf="reDistributeEvent || reDistributeEventManage">
-                  <label class="col-sm-3 labal-css color-css">Data Sharing</label>
-                  <div class="col-sm-9" style="margin-bottom: 10px;">
-                    <div class="email-options-checkbox-group email-options-notify">
-                      <div class="email-options-checkbox clearfix">
-                        <div class="col-sm-4 p0">
-											<switch [status]="eventCampaign.dataShare"
-												[onText]="callActionSwitch.onTextValue"
-												[offText]="callActionSwitch.offTextValue"
-												[onColor]="callActionSwitch.onGreenColorSwitch"
-												[offColor]="callActionSwitch.offDefaultColor"
-												[size]="callActionSwitch.size"
-												(statusChange)="shareAnalytics($event)">
-											</switch>
-										</div>
-                        <div class="col-sm-8 p0">
-                          <label style="margin: 5px 0;">
-                            <span style="cursor: pointer;color: #54a7e9;">
-                              <i class="fa fa-question-circle" style="font-size: 18px;float: left;"  data-toggle="tooltip" data-placement="bottom" title="{{properties.ENALEORDISABLE_VENDOR_MESSAGE}}"></i>
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-                      <section *ngIf="eventCampaign.dataShare" style="margin: 6px 15px;">
-                        <label class="col-xs-12 radio-inline" style="cursor:pointer; padding-left: 3px" (click)="checkInteractiveData('false')">
-                          <input name="options" type="radio" [checked]="!eventCampaign.detailedAnalyticsShared" style="cursor:pointer">
-                          <strong>Active participants</strong>
-                          <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="{{properties.ACTIVE_PARTICIPANTS}}">
-                          <i class="fa fa-question-circle" style="font-size: 18px;"></i>
-                         </span>
-                        </label>
-                        <label class="col-xs-12 radio-inline" style="cursor:pointer;margin-left: 0; padding-left: 3px" (click)="checkInteractiveData('true')">
-                          <input name="options" type="radio" [checked]="eventCampaign.detailedAnalyticsShared" style="cursor:pointer">
-                          <strong>All participants</strong>
-                          <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="{{properties.ALL_PARTICIPANTS}}">
-                            <i class="fa fa-question-circle" style="font-size: 18px;"></i>
-                          </span>
-                        </label>
-                      </section>
-                    </div>
-                  </div>
-                </div> -->
-
-						<div class="form-group" *ngIf="isEventUpdate">
-							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
-								style="color: red"> <b>*</b>
-							</font>
-							</label>
-							<div class="col-sm-9" style="padding-top: 10px;">
-								<textarea [(ngModel)]="eventCampaign.updateMessage" (input)="validateUpdateButton()" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
-							</div>
-						</div>
+			<div class="form-group" *ngIf="isEventUpdate">
+				<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
+					style="color: red"> <b>*</b>
+				</font>
+				</label>
+				<div class="col-sm-9" style="padding-top: 10px;">
+					<textarea [(ngModel)]="eventCampaign.updateMessage" (input)="validateUpdateButton()" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
+				</div>
+			</div>
 
 
-					</form>
+				</form>
 				</div>
 				<div class="col-xs-12 col-sm-5">
 					<div class="boxes portlet light">
@@ -945,63 +810,11 @@ a.disabled {
 						</div>
 					</div>
 				</div>
-				<!-- <div class="col-xs-12 p0 mb10">
-					<div class="form-group" (click)="imageClick()">
-						<label for="Event Image" class="col-sm-2 labal-css color-css"
-							style="width: 13%">Event Image</label>
-						<div class="col-sm-10" style="width: 85.44444%; margin-left: 16px;"
-							(drop)="fileChange($event)">
-							<div class="upload-media-wrapper"
-								*ngIf="! eventCampaign.campaignEventMedias[0].filePath">
-								<i class="fa fa-camera" aria-hidden="true"></i> <b>Add Event
-									Image</b><br> <span>Choose a compelling image that
-									brings your event to life</span> <input type="file"
-									[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
-									(change)="fileChange($event)" #input name="media[]"
-									accept="image/gif,image/jpeg,image/jpg,image/png"
-									class="file-input js-tooltip" data-original-title="Add photo"
-									id="eventImage">
-							</div>
-							<div
-								[attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null"
-								class="uploaded-media-wrapper"
-								*ngIf="eventCampaign.campaignEventMedias[0].filePath">
-								<span class="uploaded-span"> <img
-									src="{{eventCampaign.campaignEventMedias[0].filePath}}"
-									[attr.disabled]="isPreviewEvent? '' : null"> <i
-									*ngIf="!(isPreviewEvent || reDistributeEvent)"
-									class="fa fa-times-circle time-circle"
-									(click)="$event.stopPropagation();resetcampaignEventMedia()"></i>
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="hostedBy" class="col-sm-2 labal-css color-css"
-							style="margin-top: 10px; width: 15%">Event Description <i
-							class=text-danger>*</i></label>
-						<div class="col-sm-10 p0" (input)="resetTabClass()"
-							[ngClass]="{'disabled':(isPreviewEvent || reDistributeEvent)}"
-							style="margin-top: 10px; width: 83.11111%; margin-left: 8px;">
-							<ckeditor
-								[class.disabled]="(isPreviewEvent || reDistributeEvent)"
-								[(ngModel)]="eventCampaign.message"
-								(blur)="eventDescriptionError()"
-								(input)="eventDescriptionError(); resetTabClass()"
-								(change)="resetTabClass()"
-								[ngModelOptions]="{standalone: true}" #myckeditor
-								[config]="ckeConfig" debounce="500"></ckeditor>
-							<div class="text-danger" *ngIf="eventError.eventDescription">
-								Event message is required</div>
-						</div>
-					</div>
-				</div> -->
-				<!-- </div>
-          </div> -->
+			
          <div class="col-xs-12">
           <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" type="button" style="float: right" class=" btn green"
 			(click)="resetTabs('recipients')" title="Please Fill Campaign Details" [disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
-			</div>
+		</div>
 			</fieldset>
 			<!--  End Step one -->
 			<!--   Step two  Recipients  -->
@@ -1244,9 +1057,6 @@ a.disabled {
 				</div>
 			</div>
 			<!--     End Step two   -->
-
-
-
             <!-- Step three email templates   -->
 
           <div class="col-xs-12 mb10" [hidden]="!emailTemplatesTab" style="padding: 10px 0 0 0;">
@@ -1848,26 +1658,27 @@ a.disabled {
 			<div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate">
 				<app-create-bee-template  [partnerEmailTemplate]="eventCampaign.emailTemplate"></app-create-bee-template>
 			</div></div>
-		</div>
+	</div>
 
-		<!--Edit Template Div---->
-        <div id="edit-template" style="display: none;">
-            <div class="portlet light shadow">
-                <h4 *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left">
-                    {{beeContainerInput?.emailTemplateName}}
-                    <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                    </a>
-                </h4><hr><br>
-              <div class="portlet-body clearfix">
-                  <div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">
-                        <strong>{{templateUpdateMessage}}</strong>
-                  </div>
-                  <app-modal-popup-loader *ngIf="editTemplateLoader"></app-modal-popup-loader>
-                  <app-bee-template-util *ngIf="!editTemplateLoader && showEditTemplatePopup"  [beeContainerInput]="beeContainerInput" (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
-            </div>
-            </div>
-        </div>
+	<!--Edit Template Div---->
+	<div id="edit-template" style="display: none;">
+		<div class="portlet light shadow">
+			<div *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
+				{{beeContainerInput?.emailTemplateName}}
+				<a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</a>
+				<app-merge-tags  [input]="editTemplateMergeTagsInput"></app-merge-tags>
+			</div>
+			<div class="portlet-body clearfix">
+				<div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">
+					<strong>{{templateUpdateMessage}}</strong>
+				</div>
+			<app-modal-popup-loader *ngIf="editTemplateLoader"></app-modal-popup-loader>
+			<app-bee-template-util *ngIf="!editTemplateLoader && showEditTemplatePopup"  [beeContainerInput]="beeContainerInput" (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
+		</div>
+		</div>
+	</div>
 
 
 	</div>

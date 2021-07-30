@@ -309,6 +309,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     expandedUserList: any;
     showExpandButton = false;
     mergeTagsInput: any = {};
+    editTemplateMergeTagsInput:any = {};
     beeContainerInput: any = {};
     editTemplateLoader = false;
     jsonBody: any;
@@ -316,7 +317,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     templateMessageClass = "";
     templateUpdateMessage = "";
     showEditTemplateMessageDiv = false;
-
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -3318,6 +3318,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.landingPagePagination.categoryIds = [];
                 this.landingPagePagination.categoryFilter = false;
             }
+            this.landingPagePagination.pageIndex = 1;
             this.listLandingPages(this.landingPagePagination);
         } else {
             if (this.selectedFolderIds.length > 0) {
@@ -3327,10 +3328,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.emailTemplatesPagination.categoryIds = [];
                 this.emailTemplatesPagination.categoryFilter = false;
             }
+            this.emailTemplatesPagination.pageIndex = 1;
             this.loadEmailTemplates(this.emailTemplatesPagination);
         }
-
-
         this.closeFilterPopup();
     }
 
@@ -3418,8 +3418,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
            $('#campaign-tabs').hide(600);
            $('#edit-template').show(600);
            this.editTemplateLoader = true;
-            this.beeContainerInput['emailTemplateName'] = emailTemplate.name;
-            this.emailTemplateService.findJsonBody(emailTemplate.id).subscribe(
+           this.beeContainerInput['emailTemplateName'] = emailTemplate.name;
+           this.emailTemplateService.findJsonBody(emailTemplate.id).subscribe(
                 response => {
                     this.beeContainerInput['module'] = "emailTemplates";
                     this.beeContainerInput['jsonBody'] = response;
@@ -3432,7 +3432,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 }
             );
         } else {
-            this.refService.showSweetAlertErrorMessage('This is not BEE template');
+            this.refService.showSweetAlertErrorMessage('Uploaded Templates Cannot Be Edited');
         }
     }
 
@@ -3441,32 +3441,87 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.showEditTemplatePopup = false;
         this.editTemplateLoader = false;
         this.beeContainerInput = {};
+        this.editTemplateMergeTagsInput = {};
         $('#campaign-tabs').show(600);
     }
 
     updateTemplate(event:any){
         this.loading =true;
+        let module = event['module'];
+        if("pages"==module){
+            this.updatePage(event);
+        }else{
+            this.updateEmailTemplate(event);
+        }
+    }
+
+    updateEmailTemplate(event:any){
         let emailTemplate = new EmailTemplate();
         emailTemplate.id = event.id;
         emailTemplate.jsonBody = event.jsonContent;
         emailTemplate.body = event.htmlContent;
         emailTemplate.userId = this.loggedInUserId;
         this.emailTemplateService.updateJsonAndHtmlBody(emailTemplate).subscribe(
-            response=>{
-                this.loading =false;
-                this.showEditTemplateMessageDiv = true;
-                this.templateMessageClass = "alert alert-success";
-                this.templateUpdateMessage = "Template Updated Successfully";
-            },error=>{
-                this.loading =false;
-                this.templateMessageClass = "alert alert-danger";
-                this.templateUpdateMessage = this.properties.serverErrorMessage;
-                this.showEditTemplateMessageDiv = true;
+            response => {
+                this.showTemplateUpdatedSuccessMessage();
+            }, error => {
+                this.showTemplateUpdateErrorMessage();
             }
         )
-
     }
 
+    updatePage(event:any){
+        let landingPage = new LandingPage();
+        landingPage.id = event.id;
+        landingPage.jsonBody = event.jsonContent;
+        landingPage.htmlBody = event.htmlContent;
+        landingPage.userId = this.loggedInUserId;
+        this.landingPageService.updateJsonAndHtmlBody(landingPage).subscribe(
+            response => {
+                this.showTemplateUpdatedSuccessMessage();
+            }, error => {
+                this.showTemplateUpdateErrorMessage();
+            }
+        )
+    }
+
+    showTemplateUpdatedSuccessMessage(){
+        this.loading =false;
+        this.showEditTemplateMessageDiv = true;
+        this.templateMessageClass = "alert alert-success";
+        this.templateUpdateMessage = "Template Updated Successfully";
+        this.refService.goToTop();
+    }
+
+    showTemplateUpdateErrorMessage(){
+        this.loading =false;
+        this.templateMessageClass = "alert alert-danger";
+        this.templateUpdateMessage = this.properties.serverErrorMessage;
+        this.showEditTemplateMessageDiv = true;
+    }
+
+    editLandingPage(landingPage:any){
+        this.showEditTemplateMessageDiv = false;
+        this.refService.goToTop();
+        $('#campaign-tabs').hide(600);
+        $('#edit-template').show(600);
+        this.editTemplateLoader = true;
+        this.beeContainerInput['emailTemplateName'] = landingPage.name;
+        this.landingPageService.getJsonContent(landingPage.id).subscribe(
+            response=>{
+                this.beeContainerInput['module'] = "pages";
+                this.beeContainerInput['jsonBody'] = response.message;
+                this.beeContainerInput['id'] = landingPage.id;
+                this.editTemplateMergeTagsInput['page'] = true;
+                this.showEditTemplatePopup = true;
+                this.editTemplateLoader = false;
+            },error=>{
+                this.hideEditTemplateDiv();
+                this.refService.showSweetAlertServerErrorMessage();
+            }
+
+        );
+    }
     
 }
 

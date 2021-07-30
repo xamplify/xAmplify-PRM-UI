@@ -209,7 +209,11 @@
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                             </h4>
                             <div>
-                                <h6><span translate>Folder <strong>{{emailTemplate.category}}</strong></span></h6>
+                                <h6>
+                                    <span translate>Folder <strong>{{emailTemplate.category | slice:0:20}}</strong>
+                                        <span *ngIf="emailTemplate.category?.length>20">...</span>
+                                    </span>
+                                </h6>
                                 <h6 *ngIf="emailTemplate.type=='PARTNER'" translate>
                                     Shared On <strong>
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
@@ -288,8 +292,8 @@
         </div>
     </div>
 
-    <div class="modal right" id="show_email_template_preivew">
-        <div class="modal-dialog modal-lg modal-template" style="right:0">
+    <div class="modal fade right" id="show_email_template_preivew">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close-circle" data-dismiss="modal" (click)="emailTemplate = null" aria-hidden="true">
@@ -306,7 +310,7 @@
             </div>
         </div>
     </div>
-    <div class="modal right fade" id="email_spam_check">
+    <div class="modal fade right" id="email_spam_check">
         <div class="modal-dialog modal-lg modal-template" style="right:0">
             <div class="modal-content">
                 <div class="modal-header">
