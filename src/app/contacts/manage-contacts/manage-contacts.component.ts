@@ -215,6 +215,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	loggedInThroughVanityUrl = false;
 	expandedUserList: any;
 	showExpandButton = false;
+	showShareListPopup : boolean = false;
 	isFormList = false;
 	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -2301,43 +2302,47 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	ngOnInit() {
-		try {
-			this.pagination.maxResults = 12;
-			this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
-			if (this.isPartner) {
-				this.defaultPartnerList(this.authenticationService.getUserId());
-			}
+		this.callInitMethods();
+	}
+	
+	callInitMethods(){
+	      try {
+	            this.pagination.maxResults = 12;
+	            this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
+	            if (this.isPartner) {
+	                this.defaultPartnerList(this.authenticationService.getUserId());
+	            }
 
-			this.loadContactLists(this.pagination);
-			this.contactsCount();
-			this.loadContactListsNames();
+	            this.loadContactLists(this.pagination);
+	            this.contactsCount();
+	            this.loadContactListsNames();
 
-			/********Check Gdpr Settings******************/
-			this.checkTermsAndConditionStatus();
-			this.getLegalBasisOptions();
+	            /********Check Gdpr Settings******************/
+	            this.checkTermsAndConditionStatus();
+	            this.getLegalBasisOptions();
 
-			window.addEventListener('message', function(e) {
-				console.log('received message:  ' + e.data, e);
-				if (e.data == 'isGoogleAuth') {
-					localStorage.setItem('isGoogleAuth', 'yes');
-				}
-				else if (e.data == 'isSalesForceAuth') {
-					localStorage.setItem('isSalesForceAuth', 'yes');
-				}
-				else if (e.data == 'isHubSpotAuth') {
-					localStorage.setItem('isHubSpotAuth', 'yes');
-				}
-				else if (e.data == 'isZohoAuth') {
-					localStorage.setItem('isZohoAuth', 'yes');
-				}
+	            window.addEventListener('message', function(e) {
+	                console.log('received message:  ' + e.data, e);
+	                if (e.data == 'isGoogleAuth') {
+	                    localStorage.setItem('isGoogleAuth', 'yes');
+	                }
+	                else if (e.data == 'isSalesForceAuth') {
+	                    localStorage.setItem('isSalesForceAuth', 'yes');
+	                }
+	                else if (e.data == 'isHubSpotAuth') {
+	                    localStorage.setItem('isHubSpotAuth', 'yes');
+	                }
+	                else if (e.data == 'isZohoAuth') {
+	                    localStorage.setItem('isZohoAuth', 'yes');
+	                }
 
-			}, false);
+	            }, false);
 
 
-		}
-		catch (error) {
-			this.xtremandLogger.error("ERROR : MangeContactsComponent ngOnInit() " + error);
-		}
+	        }
+	        catch (error) {
+	            this.xtremandLogger.error("ERROR : MangeContactsComponent ngOnInit() " + error);
+	        }
 	}
 
 	ngOnDestroy() {
@@ -2470,9 +2475,25 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	} 
 	
-	openPopUpForNewlyAddedPartnersOrContacts(contactList: ContactList) {
+    openPopUpForNewlyAddedPartnersOrContacts(contactList: ContactList) {
         this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(contactList.id, this.checkingContactTypeName);
     }
+
+    notificationFromPublishToPartnersComponent() {
+
+    }
+
+    openShareListPopup(contactList: ContactList) {
+        this.showShareListPopup = true;
+        this.selectedContactListId = contactList.id;
+    }
+
+	closeShareListPopup() {
+      this.showShareListPopup = false;
+      this.callInitMethods();
+	}
+	
+	
 	
 	
 }
