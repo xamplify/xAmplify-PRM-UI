@@ -585,5 +585,12 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+   findVendorInvitationReports(pagination:Pagination){
+        const url = this.superAdminUrl + "findVendorInvitationReports"+ '?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
 }

@@ -162,7 +162,7 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.videoCampaign = false;
       this.campaignAccess.socialCampaign = false;
       this.campaignAccess.eventCampaign = false;
-      this.campaignAccess.formBuilder = false;
+      this.campaignAccess.formBuilder = true;
       this.campaignAccess.landingPage = false;
       this.campaignAccess.landingPageCampaign = false;
       this.campaignAccess.shareLeads = false;

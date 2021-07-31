@@ -1,5 +1,6 @@
 #xamplify-bee-template-container{
     height: 935px;
     overflow-x: auto;
+    margin-top: 20px !important;
 }
 

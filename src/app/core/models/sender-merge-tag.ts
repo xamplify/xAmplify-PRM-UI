@@ -12,6 +12,7 @@ export class SenderMergeTag {
     aboutUs = "{{partnerAboutUs}}";
     privacyPolicy = "{{senderPrivacyPolicy}}";
     unsubscribeLink = "{{unsubscribeLink}}";
+    senderAboutUs = "{{senderAboutUs}}";
     
     senderFirstNameGlobal = /{{senderFirstName}}/g;
     senderLastNameGlobal = /{{senderLastName}}/g;
@@ -25,6 +26,7 @@ export class SenderMergeTag {
     aboutUsGlobal = /{{partnerAboutUs}}/g;
     privacyPolicyGlobal = /{{senderPrivacyPolicy}}/g;
     unsubscribeLinkGlobal = /{{unsubscribeLink}}/g;
+    senderAboutUsGlobal = /{{senderAboutUs}}/g;
 
     
 }

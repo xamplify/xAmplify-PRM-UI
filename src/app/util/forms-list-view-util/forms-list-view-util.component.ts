@@ -53,6 +53,8 @@ export class FormsListViewUtilComponent implements OnInit {
     isGridView: boolean = false;
     @Input()folderListViewInput:any;
     @Output() updatedItemsCount = new EventEmitter();
+    selectedFormTypeIndex = 0;
+
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -68,6 +70,8 @@ export class FormsListViewUtilComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.selectedFormTypeIndex = 0;
+        this.pagination.filterKey = "All";
         this.isListView = true;
         this.isGridView = false;
 		if(this.folderListViewInput!=undefined){
@@ -346,4 +350,10 @@ export class FormsListViewUtilComponent implements OnInit {
         this.listForms(this.pagination);
     }
 
+    showAllForms(type: string, index: number) {
+        this.selectedFormTypeIndex = index;
+        this.pagination.filterKey = type;
+        this.pagination.pageIndex = 1;
+        this.listForms(this.pagination);
+      }
 }

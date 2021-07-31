@@ -37,7 +37,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     eventDescription = "{{event_description}}";
     eventStartTime = "{{event_start_time}}";
     eventEndTime = "{{event_end_time}}";
-    eventLocation = "{{address}}";
+    eventLocation = "{{event_address}}";
     loadTemplate = false;
     isAdd: boolean;
     isMinTimeOver: boolean = false;
@@ -88,6 +88,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                     if (req.readyState === 4 && req.status === 200) {
                         var response = JSON.parse(req.responseText);
                         callback(response);
+                    }else if (req.readyState === 4 && req.status !== 200) {
+                        self.refService.showSweetAlertErrorMessage("Please check your internet connection");
                     }
                 };
                 req.open(method, url, true);

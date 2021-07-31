@@ -64,6 +64,10 @@ import { AdminPartnerCompaniesComponent } from './admin-partner-companies/admin-
 import { RecentLoggedInUsersComponent } from './recent-logged-in-users/recent-logged-in-users.component';
 import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { UnsubscribeReasonsComponent } from './unsubscribe-reasons/unsubscribe-reasons.component';
+import { Top4AssetsComponent } from './dashboard-analytics-components/top-4-assets/top-4-assets.component';
+import { CustomizeTop4Component } from './dashboard-analytics-components/customize-top-4/customize-top-4.component';
+import { Top4TracksAndPlayBooksComponent } from './dashboard-analytics-components/top-4-tracks-and-play-books/top-4-tracks-and-play-books.component';
+import { VendorInvitationReportComponent } from './vendor-invitation-report/vendor-invitation-report.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -103,7 +107,11 @@ import { UnsubscribeReasonsComponent } from './unsubscribe-reasons/unsubscribe-r
         AdminPartnerCompaniesComponent,
         RecentLoggedInUsersComponent,
         AdminReportCampaignWorkflowAnalyticsComponent,
-        UnsubscribeReasonsComponent
+        UnsubscribeReasonsComponent,
+        Top4AssetsComponent,
+        CustomizeTop4Component,
+        Top4TracksAndPlayBooksComponent,
+        VendorInvitationReportComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

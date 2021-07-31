@@ -216,6 +216,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	expandedUserList: any;
 	showExpandButton = false;
 	showShareListPopup : boolean = false;
+	isFormList = false;
 	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
@@ -868,7 +869,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, isDefaultPartnerList: boolean, isSynchronizationList: boolean) {
+	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
+		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
@@ -876,6 +878,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.isSynchronizationList = isSynchronizationList
 		this.showAll = false;
 		this.showEdit = true;
+		this.isFormList = isFormList;
 		$("#pagination").hide();
 	}
 
@@ -907,7 +910,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	               } else if (this.isPartner) {
                     this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
                 } else {
-                    this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+					if (this.contactService.isEmptyFormList === true) {
+						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_UPDATE_SUCCESS, true);
+					} else {
+						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+					}                    
                 }
                 this.xtremandLogger.info(" delete Success Message in manage contact pape");
             }

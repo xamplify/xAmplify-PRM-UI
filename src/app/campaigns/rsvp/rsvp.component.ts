@@ -70,51 +70,55 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.isRsvp = this.eventcampaign.campaignEventRsvps.length>0 ? true: false;
         this.campaignRsvp.alias = this.alias;
         this.isDataLoaded = true;
-        if(this.eventcampaign.formDTOs[0].formLabelDTOs){
+         if (this.eventcampaign.formDTOs[0].formLabelDTOs) {
            // this.form.formLabelDTOs = response.formValuesDTO.fields;
-            this.eventcampaign.formDTOs[0].formLabelDTOs.forEach((dto)=>{
-                if(dto.checkBoxChoices && dto.dropdownIds){
-                 if(dto['checkBoxChoices']!==undefined && dto.checkBoxChoices.length>0 && dto.dropdownIds.length>0) {
-                    dto.checkBoxChoices.forEach((value)=>{ value['isChecked'] = false;})
-                    dto.value = dto.dropdownIds;
-                    dto.dropdownIds.forEach((ids)=>{
-                       dto.checkBoxChoices.forEach((check)=>{
-                           if(ids === check.id) { check.isChecked = true; }
-                       });
-                        
-                    });
+           this.eventcampaign.formDTOs[0].formLabelDTOs.forEach((dto) => {
+             if (dto.labelType == 'quiz_checkbox') {
+               dto.choices = dto.checkBoxChoices;
+             }
+             if (dto.checkBoxChoices && dto.dropdownIds) {
+               if (dto['checkBoxChoices'] !== undefined && dto.checkBoxChoices.length > 0 && dto.dropdownIds.length > 0) {
+                 dto.checkBoxChoices.forEach((value) => { value['isChecked'] = false; })
+                 dto.value = dto.dropdownIds;
+                 dto.dropdownIds.forEach((ids) => {
+                   dto.checkBoxChoices.forEach((check) => {
+                     if (ids === check.id) { check.isChecked = true; }
+                   });
+
+                 });
+               }
+             }
+
+             if (dto['dropDownChoices'] !== undefined && dto.dropDownChoices.length > 0) {
+               dto.dropDownChoices.forEach((value) => { value['selected'] = false; })
+
+               dto.dropDownChoices.forEach((select) => {
+                 if (dto.selectedValue) {
+                   //select.selected = true;
+                   dto.value = dto.selectedValue;
+                 } else {
+                   dto.value = dto.dropDownChoices[0].id;
                  }
-                }
-                
-                if(dto['dropDownChoices']!==undefined && dto.dropDownChoices.length>0) {
-                    dto.dropDownChoices.forEach((value)=>{ value['selected'] = false;})
-                    
-                       dto.dropDownChoices.forEach((select)=>{
-                           if(dto.selectedValue) { 
-                               //select.selected = true;
-                               dto.value = dto.selectedValue;
-                               }else{
-                                   dto.value = dto.dropDownChoices[0].id;
-                               }
-                       });
-                }
-                if(dto['radioButtonChoices']!==undefined && dto.radioButtonChoices.length>0) {
-                       dto.radioButtonChoices.forEach((select)=>{
-                           if(dto.selectedValue) { 
-                               dto.value = dto.selectedValue;
-                               }
-                       });
-                }
-                if (dto.labelType == 'quiz_radio') {
-                  dto.choices = dto.radioButtonChoices;
-                } else if (dto.labelType == 'quiz_checkbox') {
-                  dto.choices = dto.checkBoxChoices;
-                }
-            });
-            
-            this.authenticationService.formValues = this.eventcampaign.formDTOs[0].formLabelDTOs;
-            console.log(this.authenticationService.formValues);
-        }
+               });
+             }
+             if (dto['radioButtonChoices'] !== undefined && dto.radioButtonChoices.length > 0) {
+               dto.radioButtonChoices.forEach((select) => {
+                 if (dto.selectedValue) {
+                   dto.value = dto.selectedValue;
+                 }
+               });
+             }
+             if (dto.labelType == 'quiz_radio') {
+              dto.choices = dto.radioButtonChoices;
+              dto.radioButtonChoices.forEach((choice) => {
+                if (dto.selectedValue === choice.id) { choice.isChecked = true; }
+              });
+            }
+           });
+
+           this.authenticationService.formValues = this.eventcampaign.formDTOs[0].formLabelDTOs;
+           console.log(this.authenticationService.formValues);
+         }
         this.replyUserName = this.eventcampaign.targetUserDTO.firstName;
         this.processor.remove(this.processor);
         this.eventStartTimeError();

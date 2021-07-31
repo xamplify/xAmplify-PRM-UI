@@ -227,9 +227,6 @@ export class AddTracksPlayBookComponent implements OnInit {
   }
 
   changeActiveTab(activeTab: string) {
-    if(this.activeTabName == "step-2") {
-      this.setDescription();
-    }
     this.activeTabName = activeTab;
     if (activeTab == "step-1") {
       this.stepOneTabClass = this.activeTabClass;
@@ -255,7 +252,7 @@ export class AddTracksPlayBookComponent implements OnInit {
           let tracksPlayBook: TracksPlayBook = response.data;
           if (tracksPlayBook != undefined) {
             this.tracksPlayBook = tracksPlayBook;
-            this.featuredImagePath = this.tracksPlayBook.featuredImage;
+            this.featuredImagePath = this.tracksPlayBook.featuredImage + "?" + Date.now();
             this.existingSlug = this.tracksPlayBook.slug;
             this.existingTitle = this.tracksPlayBook.title;
             this.completeLink = this.linkPrefix + this.tracksPlayBook.slug;
@@ -1403,7 +1400,5 @@ export class AddTracksPlayBookComponent implements OnInit {
           this.tracksPlayBook.description = CKEDITOR.instances[instanceName].getData();
       }
     }
-    this.validateDescription();
-    this.validateAllSteps();
   }
 }

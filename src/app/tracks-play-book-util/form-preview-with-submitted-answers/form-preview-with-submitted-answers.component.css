@@ -1,0 +1,109 @@
+#bottom-right {
+    float: right;
+}
+
+#right {
+    float: right;
+    margin-bottom: 10px;
+}
+
+#left {
+    float: left;
+    ;
+}
+
+#search {
+    margin-right: 35px;
+}
+
+#search-icon {
+    position: relative;
+    right: -11px;
+}
+
+#search-text {
+    height: 34px;
+}
+
+#circle {
+    margin-top: 4px;
+}
+
+.success {
+    color: green;
+}
+
+.modal-icon {
+    border: 1px solid #5bb2f5;
+    color: #5bb2f5;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    vertical-align: middle;
+    margin-right: 7px;
+    font-size: 13px;
+}
+
+#forms-list {
+    padding-right: 0px !important;
+}
+
+.ml {
+    margin-left: -65px;
+}
+
+.cmif {
+    margin-left: -15px;
+}
+
+#copy-link {
+    width: 270px;
+    height: 35px;
+    cursor: not-allowed;
+    background-color: #eae9e9;
+}
+
+.full {
+    height: 100%;
+    width: 100%;
+}
+
+.vertical-center {
+    /* display: flex;*/
+    align-items: center;
+    justify-content: center;
+    display: block;
+    margin: 10px 100px 0px 100px;
+}
+
+.button-padding {
+    padding: 7px 14px;
+    font-size: 14px;
+    border-width: 0;
+}
+
+.testing {
+    transform: scale(0.77);
+    -webkit-transform: scale(0.77);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    cursor: not-allowed;
+}
+
+.show-forms-btn{
+	color: white;
+    background-color: #008fd5;
+    float: right;
+    margin-right: 10px;
+    margin-bottom: 10px;
+	margin-right: 10px;
+}
+
+.correct-answer-div {
+    background-color: #9de49d;
+    padding: 5px 5px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 6px -3px #333;
+}

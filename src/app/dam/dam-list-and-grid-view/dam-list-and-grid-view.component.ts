@@ -144,7 +144,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 						} else {
 							this.listAssets(this.pagination);
 						}
-
 					}
 				}
 			);

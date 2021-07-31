@@ -1,0 +1,134 @@
+<div class="modal right " id="form-preview-modal" data-backdrop="static">
+  <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+      <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close-circle" data-dismiss="modal">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+            <h4 class="modal-title text-center">Form Preview</h4>
+          </div>
+          <div [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}" [style.backgroundColor]="pageBackgroundColor">
+              <div class="modal-body">
+                  <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+                  <div *ngIf="form.showCompanyLogo">
+                      <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')===0;" [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" />
+                      <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
+                  </div>
+                  <div class="vertical-center">
+                      <div class="panel panel-info " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
+                          <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
+                              <div class="panel-title">{{form.name}}</div>
+                          </div>
+                          <div class="panel-body" *ngIf="!formError">
+                              <h5>{{form.description}}</h5>
+                              <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
+                                  <div class="form-group">
+                                      <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
+                                        <span class="required" *ngIf="columnInfo.required">*</span>
+                                      </label>
+                                      <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
+                                          <input type="{{columnInfo.labelType}}" class="form-control" [value]="columnInfo?.value" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000" disabled="disabled">
+                                      </ng-container>
+
+                                      <ng-container *ngIf="columnInfo.labelType=='textarea'">
+                                          <textarea rows="4" cols="4" [value]="columnInfo?.value" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="1000" disabled="disabled"></textarea>
+                                      </ng-container>
+                                      <!-- ---------------------------Date----------------------------- -->
+                                      <ng-container *ngIf="columnInfo.labelType=='date'">
+                                          <app-date-picker [(dataField)]="columnInfo.value" [class.disabled]='true' [isFromForm]='true'></app-date-picker>
+                                      </ng-container>
+                                      <!-- ---------------------------Price----------------------------- -->
+                                      <ng-container *ngIf="columnInfo.labelType=='price'">
+                                        <div class="input-group prefix">
+                                          <span class="input-group-addon" style="pointer-events: none;">
+                                            {{columnInfo.priceSymbol}}
+                                          </span>
+                                          <input type="number" min="0" [value]="columnInfo?.value" class="form-control" disabled="disabled" placeholder="{{columnInfo.placeHolder}}">
+                                        </div>
+                                      </ng-container>
+                                      <!-- ---------------------------Upload----------------------------- -->
+                                      <ng-container *ngIf="columnInfo.labelType=='upload'">
+                                          <input type="file" [value]="columnInfo?.value" class="form-control" disabled="disabled">
+                                      </ng-container>
+                                      <!-- ---------------------------Radio Button----------------------------- -->
+                                      <ng-container *ngIf="columnInfo.labelType=='radio'">
+                                        <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                                          <div class="form-check">
+                                            <label class="form-check-label" [style.color]="form.labelColor">
+                                              <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
+                                                disabled="disabled" [checked]="columnInfo?.value?.indexOf(radioButton.id) > -1">
+                                              {{radioButton.name}}
+                                            </label>
+                                          </div>
+                                          <br>
+                                        </ng-container>
+                                      </ng-container>
+                                      <!-- ---------------------------Check Box----------------------------- -->
+                                      <ng-container *ngIf="columnInfo.labelType=='checkbox'">
+                                        <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+                                          <div class="form-check">
+                                            <label class="form-check-label" [style.color]="form.labelColor">
+                                              <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
+                                                disabled="disabled" [checked]="columnInfo?.value?.indexOf(checkBox.id) > -1">
+                                              {{checkBox.name}}
+                                            </label>
+                                          </div>
+                                          <br>
+                                        </ng-container>
+                                      </ng-container>
+                                      <!-- ---------------------------DropDown Menu----------------------------- -->
+                                      <ng-container *ngIf="columnInfo.labelType=='select'">
+                                        <select class="form-control" [value]="columnInfo.value" style="background-color: #eeeeee;">
+                                          <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" disabled>
+                                            {{dropDownValue.name}}</option>
+                                        </select>
+                                      </ng-container>
+                                      <!-- ---------------------------Quiz Choices----------------------------- -->
+                                      <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
+                                          <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
+                                              <div class="form-check">
+                                                  <label class="form-check-label" [style.color]="form.labelColor">
+                                                      <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
+                                                          disabled="disabled" [checked]="columnInfo?.value?.indexOf(choice.id) > -1">
+                                                      {{choice.name}}
+                                                  </label>
+                                              </div>
+                                              <br>
+                                          </ng-container>
+                                          <div class="correct-answer-div">
+                                              <ng-container *ngIf="columnInfo?.correctValues">
+                                                Correct Answer: {{columnInfo.correctValues}}
+                                              </ng-container>
+                                          </div>
+                                      </ng-container>
+                                  </div>
+                              </ng-container>
+                              <div *ngIf="form.showCaptcha">
+                                  <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                              </div>
+                              <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
+                              <ng-template #show>
+                                  <button type="submit" disabled="disabled" class="button-padding" id="bottom-right" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                              </ng-template>
+                              <ng-template #dontShow>
+                                  <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right" [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                              </ng-template>
+                          </div>
+                      </div>
+                      <!------Show Footer-------->
+                      <footer>
+                          <div style="text-align: center;" *ngIf="form.showFooter && form.footer" [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
+                      </footer>
+                  </div>
+                  <div *ngIf="formError">
+                      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                      </app-response-message>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <a data-dismiss="modal" class="btn btn-default" id="bottom-right">Close</a>
+          </div>
+      </div>
+  </div>
+</div>

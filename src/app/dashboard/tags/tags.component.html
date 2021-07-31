@@ -16,7 +16,7 @@
                     {{option.name}}</option>
                 </select>
                             </div>
-                            <div class="portlet-input input-inline" id="search-div">
+                            <div class="portlet-input input-inline" id="search-div" style="padding-left: 5px;">
                                 <div class="input-icon right" id="icon">
                                     <input type="text" id="sort-text" class="form-control" [(ngModel)]="tagSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="tagEventHandler($event.keyCode)">
                                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSortOption.searchKey" (click)="tagSortOption.searchKey='';searchTags();"></button>

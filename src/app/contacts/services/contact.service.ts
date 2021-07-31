@@ -27,7 +27,7 @@ export class ContactService {
     saveAsErrorMessage: any;
     successMessage: boolean;
     deleteUserSucessMessage: boolean;
-    addUserSuccessMessage : boolean;
+    addUserSuccessMessage : boolean = false;
     socialContact: SocialContact[];
     zohoContact: ZohoContact;
     salesforceContact: SalesforceContact;
@@ -43,6 +43,7 @@ export class ContactService {
     publicList : boolean;
     assignedToPartner : boolean;
     contactType:string
+    isEmptyFormList: boolean = false;
 	
 
     url = this.authenticationService.REST_URL + "admin/";

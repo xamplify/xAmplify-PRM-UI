@@ -92,19 +92,14 @@ export class AddTagsUtilComponent implements OnInit {
     let keyCode = event.keyCode;
     if (keyCode === 13) {
       if (this.isAddTag) {
-        let names = [];
-        $.each(this.tagNames, function (index: number, tagName: any) {
-          let name: string;
-          name = tagName['value'].toLowerCase().substring(0,225);
-          names.push(name);
-        });
-        let lastEntry = names[names.length - 1];
-        if (names.length > 1) {
-          let index = names.indexOf(lastEntry);
-          if(index != names.length-1){
+        let lastEntry = this.tagNames[this.tagNames.length - 1]['value'];
+        let name = "";
+        name =  lastEntry.toLowerCase().substring(0,225);
+        this.tagNames[this.tagNames.length - 1] = name;
+        let index = this.tagNames.findIndex(item => name.toLowerCase() === item.toLowerCase());
+          if(index > -1 && index != this.tagNames.length-1){
             this.tagNames.pop();
           }
-        }
         this.tag.isTagNameValid = true;
       } else {
         this.saveOrUpdateTag();
@@ -116,15 +111,20 @@ export class AddTagsUtilComponent implements OnInit {
         } else {
           this.tag.isTagNameValid = true;
         }
-        if(event.target.value.length > 225){
-          let value = event.target.value.substring(0,225);
-          console.log(value)
+        if(event.target.value.length > 0) {
+          let value = event.target.value;
+          if(event.target.value.length > 225){
+            value = event.target.value.substring(0,225);
+          }
           event.target.value = value;
         }
       } else {
         if (this.tag.tagName == undefined || this.tag.tagName.length < 1) {
           this.tag.isTagNameValid = false;
         } else {
+          if(this.tag.tagName != undefined && this.tag.tagName .length > 225){
+            this.tag.tagName = this.tag.tagName.substring(0,225);
+          }
           this.tag.isTagNameValid = true;
         }
       }
@@ -135,13 +135,12 @@ export class AddTagsUtilComponent implements OnInit {
     this.referenceService.startLoader(this.addTagLoader);
     if (this.tag.id > 0) {
       this.tag.updatedBy = this.loggedInUserId;
+      if(this.tag.tagName != undefined && this.tag.tagName .length > 225){
+        this.tag.tagName = this.tag.tagName.substring(0,225);
+      }
     } else {
       this.tag.createdBy = this.loggedInUserId;
-      var list = [];
-      $.each(this.tagNames, function (index: number, val: any) {
-        list.push(val['value']);
-      });
-      this.tag.tagNames = list;
+      this.tag.tagNames = this.tagNames;
     }
     this.userService.saveOrUpdateTag(this.tag)
       .subscribe(

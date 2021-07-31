@@ -61,6 +61,10 @@ export class ModuleAnalyticsComponent implements OnInit {
         this.router.navigate(["/home/emailtemplates"]);
       }else if(moduleId==8){
         this.router.navigate(["/home/team/add-team"]);
+      }else if(moduleId==9){
+        this.router.navigate(["/home/partners/manage"]);
+      }else if(moduleId==10){
+        this.router.navigate(["/home/forms/manage"]);
       }
     }
     }

@@ -138,6 +138,12 @@ export class TracksPlayBookUtilService {
     .catch(this.handleError);
   }
 
+  getPartnerFormAnalytics(tracksPlayBook:TracksPlayBook){
+    return this.http.post(this.trackURL + "/partner/quiz/analytics?access_token=" + this.authenticationService.access_token, tracksPlayBook)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     let body = res;
     return body || {};

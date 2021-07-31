@@ -12,7 +12,7 @@ import { Roles } from '../models/roles';
 import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
-declare var swal, require: any;
+declare var swal,$, require: any;
 var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
@@ -106,7 +106,7 @@ export class AuthenticationService {
     this.APP_URL = this.envService.CLIENT_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
     if(this.SERVER_URL.indexOf('localhost')>-1){
-      this.MEDIA_URL = 'https://aravindu.com/vod/';
+      this.MEDIA_URL = 'http://127.0.0.1:8887/';
     }else{
       this.MEDIA_URL = this.SERVER_URL + 'vod/';
     }
@@ -452,9 +452,16 @@ export class AuthenticationService {
     } catch (error) { console.log('error' + error); }
   }
 
+  removeZenDeskScript(){
+    var element = document.getElementById('ze-snippet');
+		if(element!=null){
+      element.parentNode.removeChild(element);
+    }
+    $('#launcher').contents().find('#Embed').hide();
+  }
+
   logout(): void {
-    this.xtremandLogger.log('Logout');
-    // clear token remove user from local storage to log user out
+    this.removeZenDeskScript();
     this.access_token = null;
     this.refresh_token = null;
     localStorage.removeItem('currentUser');
@@ -523,7 +530,8 @@ export class AuthenticationService {
     this.folders = false;
     this.lmsAccess = false;
 	  this.isVendorAndPartnerTeamMember = false;
-	  this.isOrgAdminAndPartnerTeamMember = false;
+    this.isOrgAdminAndPartnerTeamMember = false;
+    module.allBoundSamlSettings = false;
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
@@ -568,7 +576,6 @@ export class AuthenticationService {
 
   getModulesByUserId() {
     let userId = this.getUserId();
-    console.log(userId);
     return this.http.get(this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token)
       .map(this.extractData)
       .catch(this.handleError);
@@ -618,13 +625,13 @@ export class AuthenticationService {
     this.showTokenExpiredSweetAlert();
     setTimeout(function () {
       self.logout();
-    }, 5000);
+    }, 3000);
   }
 
   showTokenExpiredSweetAlert(){
     swal(
 			{
-				title: 'Your token is expried.We are redirecting you to login page.',
+				title: 'We are redirecting you to login page.',
 				text: "Please Wait...",
 				showConfirmButton: false,
 				imageUrl: "assets/images/loader.gif",

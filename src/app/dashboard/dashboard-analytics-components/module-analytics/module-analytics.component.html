@@ -7,7 +7,7 @@
  [className]="dto.hasAccess? 'col-sm-4 col-xs-6 col-lg-3 col-md-3' : 'col-sm-4 col-xs-6 col-lg-3 col-md-3 dashboard-access-denied'" (click)="goToManage(dto)">
 <a  class="{{dto.color}}">
   <div class="visual">
-    <i *ngIf="dto.moduleId!=3" class="{{dto.faIcon}}" aria-hidden="true"></i>
+    <i *ngIf="dto.moduleId!=3" class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
     <img *ngIf="dto.moduleId==3"  class="img-dash" src="assets/images/white15.png" alt="No Image Found">
   </div>
   <div class="details">
