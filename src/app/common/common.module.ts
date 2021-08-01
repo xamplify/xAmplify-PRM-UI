@@ -94,6 +94,7 @@ import { TracksPlayBookPartnerAnalyticsComponent } from 'app/tracks-play-book-ut
 import { TracksPlayBookPartnerCompanyAndListsComponent } from 'app/tracks-play-book-util/tracks-play-book-partner-company-and-lists/tracks-play-book-partner-company-and-lists.component';
 import { AddDefaultTemplateDetailsComponent } from 'app/util/add-default-template-details/add-default-template-details.component';
 import { UserlistUsersComponent } from 'app/contacts/userlist-users/userlist-users.component';
+import { PartnerCompanyModalPopupComponent } from './partner-company-modal-popup/partner-company-modal-popup.component';
 import { FormPreviewWithSubmittedAnswersComponent } from 'app/tracks-play-book-util/form-preview-with-submitted-answers/form-preview-with-submitted-answers.component';
 
 @NgModule({
@@ -111,7 +112,8 @@ import { FormPreviewWithSubmittedAnswersComponent } from 'app/tracks-play-book-u
 		EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
-		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, FormPreviewWithSubmittedAnswersComponent],
+		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,FormPreviewWithSubmittedAnswersComponent],
+
 
 
 
@@ -129,7 +131,8 @@ import { FormPreviewWithSubmittedAnswersComponent } from 'app/tracks-play-book-u
 		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
-		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, FormPreviewWithSubmittedAnswersComponent]
+		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,FormPreviewWithSubmittedAnswersComponent]
+
 
 
 

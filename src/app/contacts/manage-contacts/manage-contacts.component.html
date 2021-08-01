@@ -413,7 +413,7 @@
                                   <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner())
                                                     && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner)"
                                     data-toggle="tooltip" data-placement="top"
-                                    (click)="storeListDetails(contactList);authenticationService.isSharePartnerModal = true"
+                                    (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                                     title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share"></i>
                                   </a> <a [class.disabled]="contactList.noOfContacts == 0 "
                                     *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isPartner || authenticationService.isPartner() ||
@@ -1137,4 +1137,15 @@
 <!-- END PAGE CONTENT-->
 
 
+
 <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
+
+
+
+<!---Share Pop Up-->
+<app-partner-company-modal-popup  [inputId] = "selectedContactListId"  *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
+</app-partner-company-modal-popup>
+
+
+<app-send-campaigns #sendCampaignComponent></app-send-campaigns>
+
