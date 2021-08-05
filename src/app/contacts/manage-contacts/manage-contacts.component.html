@@ -229,6 +229,7 @@
                               <ng-container *ngFor="let sort of sortOptions; let i = index">
                                 <option *ngIf="i == 0" [ngValue]="sort">{{sort.name}}</option>
                                 <option *ngIf="sort.for == 'contactList'" [ngValue]="sort">{{sort.name}}</option>
+                                <option *ngIf="sort.for == 'shareLeadsList'" [ngValue]="sort">{{sort.name}}</option>
                               </ng-container>
                             </select>
                           </div>

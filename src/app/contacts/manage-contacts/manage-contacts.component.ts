@@ -244,6 +244,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.isPartner = false;
             this.assignLeads = true;
             this.checkingContactTypeName = "Lead"
+            this.sortOptions.push({ 'name': 'Assigned date (ASC)', 'value': 'assignedTime-ASC', 'for': 'shareLeadsList' });
+            this.sortOptions.push({ 'name': 'Assigned date (DESC)', 'value': 'assignedTime-DESC', 'for': 'shareLeadsList' });
         } else if (currentUrl.includes('home/contacts')) {
             this.isPartner = false;
             this.module = 'contacts';
