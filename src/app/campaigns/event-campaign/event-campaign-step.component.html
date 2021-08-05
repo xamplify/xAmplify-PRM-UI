@@ -983,6 +983,11 @@ a.disabled {
 																<h4 class="moreipsis mt5 mb5 f-w-600" title="{{contactList?.name}}">
 																	<span><strong>{{contactList?.name}}</strong></span>
 																</h4>
+																<h6 *ngIf="contactList?.formList" class="view-banner view-banner-green mt10" translate>
+																	<span data-toggle="tooltip" data-placement="top"
+																		title="This list is associated with a form." translate>Form Lead List
+																	</span>
+																</h6>
 															</td>
 			
 			
@@ -996,6 +1001,7 @@ a.disabled {
 															<td style="text-align:center"
 																*ngIf="this.reDistributeEvent || this.reDistributeEventManage">
 																{{contactList.type}}
+																
 															</td>
 															<td class="text-center sorting_1"
 																*ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
