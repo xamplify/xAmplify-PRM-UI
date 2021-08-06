@@ -296,7 +296,8 @@
                                         <span> {{contacts.name}}</span>
                                       </td>
                                       <td class="text-center moreipsis">
-                                        <span>{{contacts.type}}</span>
+                                        <span>{{contacts.type}}<ng-template [ngIf]="contacts?.formList">, Form Lead List</ng-template></span>
+                                        
                                       </td>
                                       <td class="text-center sorting_1">
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
