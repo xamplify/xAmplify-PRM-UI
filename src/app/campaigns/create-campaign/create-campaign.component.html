@@ -1067,8 +1067,8 @@
                                                                                                 </span>
                                                                                             </ng-container>
                                                                                             <span *ngIf="campaign?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{campaign?.emailTemplate?.category}}">
-                                                                                                <strong translate>Folder:</strong><p>{{campaign?.emailTemplate?.category|slice:0:5}}</p>
-                                                                                                <p *ngIf="campaign?.emailTemplate?.category?.length>5">..</p>
+                                                                                                <strong translate>Folder:</strong><span>{{campaign?.emailTemplate?.category|slice:0:5}}</span>
+                                                                                                <span *ngIf="campaign?.emailTemplate?.category?.length>5">..</span>
                                                                                             </span>
                                                                                             <div class="item__actions">
                                                                                                 <span>
@@ -1158,8 +1158,8 @@
                                                                                     </ng-container>
                                                                                     <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
                                                                                         <strong translate>Folder:</strong>
-                                                                                        <p>{{emailTemplate?.category|slice:0:5}}</p>
-                                                                                        <p *ngIf="emailTemplate?.category?.length>5">..</p>
+                                                                                        <span>{{emailTemplate?.category|slice:0:5}}</span>
+                                                                                        <span *ngIf="emailTemplate?.category?.length>5">..</span>
                                                                                     </span>
                                                                                     <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                                                                     <div class="item__actions">
@@ -1286,8 +1286,8 @@
                                                                                                 </span>
                                                                                             </span>
                                                                                             <span *ngIf="campaign.landingPage?.categoryName?.length>0" class="campaign-email-template-category" title="{{campaign.landingPage?.categoryName}}">
-                                                                                                <strong translate>Folder:</strong><p>{{campaign?.landingPage?.categoryName|slice:0:7}}</p>
-                                                                                                <p *ngIf="campaign?.landingPage?.categoryName?.length>7">..</p>
+                                                                                                <strong translate>Folder:</strong><span>{{campaign?.landingPage?.categoryName|slice:0:7}}</span>
+                                                                                                <span *ngIf="campaign?.landingPage?.categoryName?.length>7">..</span>
                                                                                             </span>
                                                                                             <div class="item__actions">
                                                                                                 <span>
@@ -1349,8 +1349,8 @@
                                                                                                 *ngIf="landingPage.createdUser?.length>13">..</span></span>
                                                                                     </span>
                                                                                     <span *ngIf="landingPage?.categoryName?.length>0" class="campaign-email-template-category" title="{{landingPage?.categoryName}}">
-                                                                                        <strong translate>Folder:</strong><p>{{landingPage?.categoryName|slice:0:7}}</p>
-                                                                                        <p *ngIf="landingPage?.categoryName?.length>7">..</p>
+                                                                                        <strong translate>Folder:</strong><span>{{landingPage?.categoryName|slice:0:7}}</span>
+                                                                                        <span *ngIf="landingPage?.categoryName?.length>7">..</span>
                                                                                     </span>
                                                                                     <div class="item__actions">
                                                                                         <span> <a
@@ -2394,6 +2394,7 @@
                     <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
+                    <app-preview-popup #previewPopUpComponent *ngIf="showEditTemplatePopup && campaignType=='landingPage'"></app-preview-popup>
                     <app-merge-tags *ngIf="showEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
                 </div>
               <div class="portlet-body clearfix">
@@ -2407,7 +2408,7 @@
         </div>
         <!-- --------------------Email Template -->
         <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog full-width">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close-circle" data-dismiss="modal">

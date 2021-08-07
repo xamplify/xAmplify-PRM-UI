@@ -50,6 +50,7 @@ import { EnvService } from 'app/env.service';
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
 import { ActionsDescription } from '../../common/models/actions-description';
+import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.component';
 
 declare var swal, $, videojs, Metronic, Layout, Demo, flatpickr, CKEDITOR, require: any;
 var moment = require('moment-timezone');
@@ -317,6 +318,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     templateMessageClass = "";
     templateUpdateMessage = "";
     showEditTemplateMessageDiv = false;
+    @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -1816,27 +1819,34 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
 
     getTemplateBodyById(emailTemplate: EmailTemplate) {
+        this.ngxloading = true;
         this.emailTemplateService.getById(emailTemplate.id)
             .subscribe(
                 (data: any) => {
                     emailTemplate.body = data.body;
                     this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
                 },
-                error => console.error(error),
+                error => {
+                    this.ngxloading = false;
+                },
                 () => {
-
+                    this.ngxloading = false;
                 }
             );
     }
 
     getTemplateById(emailTemplate: EmailTemplate) {
+        this.ngxloading = true;
         this.emailTemplateService.getById(emailTemplate.id)
             .subscribe(
                 (data: any) => {
                     emailTemplate.body = data.body;
                     this.getEmailTemplatePreview(emailTemplate);
                 },
-                error => console.error(error),
+                error => {
+                    this.ngxloading = false;
+                    this.refService.showSweetAlertServerErrorMessage();
+                },
                 () => {
 
                 }

@@ -534,8 +534,8 @@
                           <app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
                         </h6>
                         <!--  -->
-                        <td class="hidden-xs">
-                          <h6 class="mt10 mb0 ellipsis" *ngIf="!contactList?.partnerUserList" translate>
+                        <td class="hidden-xs" *ngIf="!isPartner&& !assignLeads">
+                          <h6 class="mt10 mb0 ellipsis"  translate>
                             Type:
                             <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
                               title="{{actionsDescription.contact_list_public}}"><b translate>Public</b></span>
