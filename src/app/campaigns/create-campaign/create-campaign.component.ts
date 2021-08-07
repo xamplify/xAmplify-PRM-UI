@@ -1819,27 +1819,34 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
 
     getTemplateBodyById(emailTemplate: EmailTemplate) {
+        this.ngxloading = true;
         this.emailTemplateService.getById(emailTemplate.id)
             .subscribe(
                 (data: any) => {
                     emailTemplate.body = data.body;
                     this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
                 },
-                error => console.error(error),
+                error => {
+                    this.ngxloading = false;
+                },
                 () => {
-
+                    this.ngxloading = false;
                 }
             );
     }
 
     getTemplateById(emailTemplate: EmailTemplate) {
+        this.ngxloading = true;
         this.emailTemplateService.getById(emailTemplate.id)
             .subscribe(
                 (data: any) => {
                     emailTemplate.body = data.body;
                     this.getEmailTemplatePreview(emailTemplate);
                 },
-                error => console.error(error),
+                error => {
+                    this.ngxloading = false;
+                    this.refService.showSweetAlertServerErrorMessage();
+                },
                 () => {
 
                 }
