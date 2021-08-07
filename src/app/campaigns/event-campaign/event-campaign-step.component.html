@@ -1125,8 +1125,8 @@ a.disabled {
                                         </app-timestamp></span>
 									</span>
 									<span *ngIf="eventCampaign?.selectedEditEmailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{eventCampaign?.selectedEditEmailTemplate?.category}}">
-										<strong>Folder:</strong><p>{{eventCampaign?.selectedEditEmailTemplate?.category|slice:0:5}}</p>
-										<p *ngIf="eventCampaign?.selectedEditEmailTemplate?.category?.length>5">..</p>
+										<strong>Folder:</strong><span>{{eventCampaign?.selectedEditEmailTemplate?.category|slice:0:5}}</span>
+										<span *ngIf="eventCampaign?.selectedEditEmailTemplate?.category?.length>5">..</span>
 									</span>
                                     <div class="item__actions">
                                       <span>
@@ -1188,8 +1188,8 @@ a.disabled {
 															</span>
 														<br>
 														<span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate?.category}}">
-															<strong>Folder:</strong><p>{{emailTemplate?.category|slice:0:5}}</p>
-															<p *ngIf="emailTemplate?.category?.length>5">..</p>
+															<strong>Folder:</strong><span>{{emailTemplate?.category|slice:0:5}}</span>
+															<span *ngIf="emailTemplate?.category?.length>5">..</span>
 														</span>
 														<div class="item__actions">
 															<span>
