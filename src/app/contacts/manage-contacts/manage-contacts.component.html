@@ -552,7 +552,7 @@
                           <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember|| authenticationService.module.isVendorTier || (hasContactRole) || authenticationService.isOnlyPartner())
                                                 && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner)"
                             data-toggle="tooltip" data-placement="top" style="width:11%;"
-                            (click)="storeListDetails(contactList);authenticationService.isSharePartnerModal = true"
+                            (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                             title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share"></i>
                           </a>
                           <a style="width:11%;" [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
