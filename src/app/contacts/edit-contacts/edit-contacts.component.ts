@@ -3424,6 +3424,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
                     this.contactsByType.activeContactsCount = data.activecontacts;
                     this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
+                    this.contactsByType.validContactsCount = data.validContactsCount;
                     this.allUsers = this.contactsByType.allContactsCount;
                 },
                 (error: any) => {

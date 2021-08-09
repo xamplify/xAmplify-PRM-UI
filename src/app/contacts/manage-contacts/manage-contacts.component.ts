@@ -1447,6 +1447,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
 						this.contactsByType.activeContactsCount = data.activecontacts;
 						this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
+						this.contactsByType.validContactsCount = data.validContactsCount;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);

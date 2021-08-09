@@ -47,7 +47,7 @@
                   <!-- END DASHBOARD STATS -->
                   <div class="clearfix"></div>
                   <div class="row mt5 mb5">
-                    <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
+                    <div class="col-xs-6 col-sm-2 col-lg-2  margin-top-10"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat blue"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
                         (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('all')"
@@ -73,7 +73,7 @@
                         </span>
                       </button>
                     </div>
-                    <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
+                    <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat green"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
                         (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('active')"
@@ -99,7 +99,7 @@
                         </span>
                       </button>
                     </div>
-                    <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
+                    <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat purple"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
                         (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('non-active')"
@@ -124,7 +124,30 @@
                         </span>
                       </button>
                     </div>
-                    <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
+                    <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10"  *ngIf="!isPartner" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+                      <button class="btn-block dashboard-stat purple"
+                        [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'valid'"
+                        (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('valid')"
+                        [disabled]="contactsByType.validContactsCount == 0">
+                        <div class="visual">
+                          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                            [ngStyle]="{'color': contactsByType.selectedCategory == 'valid' ? '#white' : '#ccc' }"
+                            *ngIf="contactsByType.selectedCategory == 'valid'"></i>
+                        </div>
+                        <div class="details">
+                          <div class="number" style="font-weight: 300 !important;">
+                            {{contactsByType.validContactsCount}}</div>
+                          <div class="desc" style="font-size: 20px" translate>
+                            Valid
+                          </div>
+                        </div>
+                        <span class="morePadding"> <a class="more" style="text-align: left;" translate> Detailed view <i
+                              class="m-icon-swapright m-icon-white"></i>
+                          </a>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat yellow-gold"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
                         (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('invalid')"
@@ -153,7 +176,7 @@
                         </span>
                       </button>
                     </div>
-                    <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
+                    <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat red"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
                         (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('unsubscribe')"
