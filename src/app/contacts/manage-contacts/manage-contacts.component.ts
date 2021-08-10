@@ -1819,7 +1819,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.logListName = 'All_Invalid_' + this.checkingContactTypeName + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 				this.logListName = 'All_Unsubscribed_' + this.checkingContactTypeName + 's_list.csv';
-			}
+			}else if (this.contactsByType.selectedCategory === 'valid') {
+                this.logListName = 'All_Valid_' + this.checkingContactTypeName + 's_list.csv';
+            }
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
 				if(!this.authenticationService.module.isPrm && !this.authenticationService.module.isPrmTeamMember && !this.authenticationService.module.isPrmAndPartner && !this.authenticationService.module.isPrmAndPartnerTeamMember){
