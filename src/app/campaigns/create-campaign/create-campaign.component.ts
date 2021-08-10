@@ -3486,11 +3486,18 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         landingPage.jsonBody = event.jsonContent;
         landingPage.htmlBody = event.htmlContent;
         landingPage.userId = this.loggedInUserId;
+        landingPage.companyProfileName = this.authenticationService.companyProfileName;
         this.landingPageService.updateJsonAndHtmlBody(landingPage).subscribe(
             response => {
                 this.showTemplateUpdatedSuccessMessage();
             }, error => {
-                this.showTemplateUpdateErrorMessage();
+                this.loading =false;
+                if (error.status == 400) {
+                    let message = JSON.parse(error['_body']).message;
+                    swal(message, "", "error");
+                } else {
+                    this.showTemplateUpdateErrorMessage();
+                }
             }
         )
     }

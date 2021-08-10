@@ -80,7 +80,14 @@ h3 {
 		width: 20% !important;
 		float: left !important;
 	}
+	
+		.col-sm-4ths {
+		width: 25% !important;
+		float: left !important;
+	}
 }
+
+
 
 .view-banner{
     background-color: #00a6e8;

@@ -78,6 +78,10 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 		width: 20% !important;
 		float: left !important;
 	}
+	.col-sm-4ths {
+		width: 25% !important;
+		float: left !important;
+	}
 }
 .popup-header-title-font { font-weight: 600;}
 
