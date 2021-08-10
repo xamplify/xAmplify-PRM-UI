@@ -3047,7 +3047,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.logListName = this.selectedContactListName + '_list_Invalid_' + this.checkingContactTypeName + 's.csv';
 		} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 			this.logListName = this.selectedContactListName + '_list_Unsubscribe_' + this.checkingContactTypeName + 's.csv';
-		}
+		}else if (this.contactsByType.selectedCategory === 'valid') {
+            this.logListName = this.selectedContactListName + '_list_Valid_' + this.checkingContactTypeName + 's.csv';
+        }
 		this.downloadDataList.length = 0;
 		for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
 
