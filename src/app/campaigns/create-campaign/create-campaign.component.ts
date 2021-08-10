@@ -2620,6 +2620,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             }
         } else if (step == "step-5") {
             //Highlighting Email Templatet Tab With Oragne
+            this.refreshPagesOrEmailTemplates();
             this.emailTemplateTabClass = this.currentTabActiveClass;
             this.videoTabClass = this.successTabClass;
             this.campaignDetailsTabClass = this.successTabClass;
@@ -3540,5 +3541,13 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         );
     }
     
+
+    refreshPagesOrEmailTemplates(){
+        if(this.campaignType=="landingPage"){
+            this.searchLandingPage();
+        }else{
+            this.searchEmailTemplate();
+        }
+    }
 }
 
