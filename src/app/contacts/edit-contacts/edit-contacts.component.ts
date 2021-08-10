@@ -51,6 +51,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isDefaultPartnerList: boolean;
 	@Input() isSynchronizationList: boolean;
 	@Input('value') value: number;
+	@Input() isFormList: boolean;
+	
 	editContacts: User;
 	@Output() notifyParent: EventEmitter<User>;
 	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
@@ -674,7 +676,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -902,7 +904,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -982,9 +984,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					(data: any) => {
 						if (data.access) {
 							data = data;
-							if (data.statusCode == 200) {
+							if (data.statusCode == 200) {								
 								$('#contactListDiv_' + contactListId).remove();
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+								if (data.isEmptyFormList) {
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+									this.contactService.isEmptyFormList = true;
+								} else {
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+								}
+								
 								this.contactService.deleteUserSucessMessage = true;
 								this.goBackToManageList();
 							} else if (data.statusCode == 201) {
@@ -1571,7 +1579,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 
@@ -2118,7 +2126,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							} else {
 								this.loading = false;
 								$('#contactListDiv_' + this.contactListId).remove();
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+								if (data.isEmptyFormList) {
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+									this.contactService.isEmptyFormList = true;
+								} else {
+									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+								}
+								//this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
 								this.contactService.deleteUserSucessMessage = true;
 								this.goBackToManageList();
 							}
@@ -3033,7 +3047,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.logListName = this.selectedContactListName + '_list_Invalid_' + this.checkingContactTypeName + 's.csv';
 		} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 			this.logListName = this.selectedContactListName + '_list_Unsubscribe_' + this.checkingContactTypeName + 's.csv';
-		}
+		}else if (this.contactsByType.selectedCategory === 'valid') {
+            this.logListName = this.selectedContactListName + '_list_Valid_' + this.checkingContactTypeName + 's.csv';
+        }
 		this.downloadDataList.length = 0;
 		for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
 
@@ -3264,6 +3280,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			};
 			/********Check Gdpr Settings******************/
 			this.checkTermsAndConditionStatus();
+			this.contactService.deleteUserSucessMessage = false;
 		}
 		catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
@@ -3409,6 +3426,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
                     this.contactsByType.activeContactsCount = data.activecontacts;
                     this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
+                    this.contactsByType.validContactsCount = data.validContactsCount;
                     this.allUsers = this.contactsByType.allContactsCount;
                 },
                 (error: any) => {

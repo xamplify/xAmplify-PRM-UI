@@ -43,6 +43,7 @@ export class ContactService {
     publicList : boolean;
     assignedToPartner : boolean;
     contactType:string
+    isEmptyFormList: boolean = false;
 	
 
     url = this.authenticationService.REST_URL + "admin/";
@@ -758,6 +759,12 @@ export class ContactService {
 
     findUsersByUserListId(pagination:Pagination){
         return this._http.post( this.contactsUrl + "findUsersByUserListId?access_token=" + this.authenticationService.access_token, pagination)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    shareLeadsListToPartners(shareLeadsDTO:any){
+    	return this._http.post( this.contactsUrl + "share-leads-list-to-partners?access_token=" + this.authenticationService.access_token, shareLeadsDTO)
         .map( this.extractData )
         .catch( this.handleError );
     }

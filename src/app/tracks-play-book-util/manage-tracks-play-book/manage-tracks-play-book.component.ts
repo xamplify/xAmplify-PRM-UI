@@ -15,6 +15,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { TracksPlayBook } from '../models/tracks-play-book'
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum'
+import { LearningTrack } from 'app/lms/models/learningTrack';
 
 declare var swal, $: any;
 
@@ -178,11 +179,16 @@ export class ManageTracksPlayBookComponent implements OnInit {
           this.sortOption.totalRecords = data.totalRecords;
           $.each(data.data, function (index, learningTrack) {
             learningTrack.createdDateString = new Date(learningTrack.createdTime);
+            learningTrack.featuredImage = learningTrack.featuredImage + "?" + Date.now();
             let toolTipTagNames: string = "";
             learningTrack.tagNames.sort();
             $.each(learningTrack.tagNames, function (index, tagName) {
               if (index > 1) {
-                toolTipTagNames = toolTipTagNames + tagName + ", ";
+                if(toolTipTagNames.length > 0){
+                  toolTipTagNames = toolTipTagNames + ", " + tagName ;
+                } else {
+                  toolTipTagNames = tagName;
+                }
               }
             });
             learningTrack.toolTipTagNames = toolTipTagNames;
@@ -369,4 +375,5 @@ export class ManageTracksPlayBookComponent implements OnInit {
   refreshPage() {
     this.listLearningTracks(this.pagination);
   }
+
 }

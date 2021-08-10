@@ -8,6 +8,7 @@ export class ContactsByType {
     unsubscribedContactsCount: number = 0;
     activeContactsCount: number = 0;
     inactiveContactsCount: number = 0;
+    validContactsCount : number =0;
 
     contacts: Array<User> = new Array<User>();
     listOfAllContacts: any;

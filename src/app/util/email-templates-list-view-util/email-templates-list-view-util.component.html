@@ -14,7 +14,6 @@
                                   <li class="filter" (click)="filterTemplates('EMAIL',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Email</li>
                                   <li class="filter" (click)="filterTemplates('VIDEO',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
                                   <li class="filter" (click)="filterTemplates('UPLOADED',false,5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded</li>
-                                  <!-- <li class="filter" (click)="filterTemplates('PARTNER',false,6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex">Partner</li> -->
                                   <li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign">Email Co-Branding
                                   </li>
                                   <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',false,8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video Co-Branding
@@ -169,7 +168,11 @@
                               {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                           </h4>
                           <div>
-                              <h6><span>Folder <strong>{{emailTemplate.category}}</strong></span></h6>
+                            <h6>
+                                <span translate>Folder <strong>{{emailTemplate.category | slice:0:20}}</strong>
+                                    <span *ngIf="emailTemplate.category?.length>20">...</span>
+                                </span>
+                            </h6>
                               <h6 *ngIf="emailTemplate.type=='PARTNER'">
                                   Shared On <strong>
                                       <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">

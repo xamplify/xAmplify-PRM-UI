@@ -215,6 +215,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	loggedInThroughVanityUrl = false;
 	expandedUserList: any;
 	showExpandButton = false;
+	showShareListPopup : boolean = false;
+	isFormList = false;
 	
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
@@ -242,6 +244,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.isPartner = false;
             this.assignLeads = true;
             this.checkingContactTypeName = "Lead"
+            this.sortOptions.push({ 'name': 'Assigned date (ASC)', 'value': 'assignedTime-ASC', 'for': 'shareLeadsList' });
+            this.sortOptions.push({ 'name': 'Assigned date (DESC)', 'value': 'assignedTime-DESC', 'for': 'shareLeadsList' });
         } else if (currentUrl.includes('home/contacts')) {
             this.isPartner = false;
             this.module = 'contacts';
@@ -867,7 +871,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, isDefaultPartnerList: boolean, isSynchronizationList: boolean) {
+	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
+		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
@@ -875,6 +880,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.isSynchronizationList = isSynchronizationList
 		this.showAll = false;
 		this.showEdit = true;
+		this.isFormList = isFormList;
 		$("#pagination").hide();
 	}
 
@@ -906,7 +912,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	               } else if (this.isPartner) {
                     this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
                 } else {
-                    this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+					if (this.contactService.isEmptyFormList === true) {
+						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_UPDATE_SUCCESS, true);
+					} else {
+						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+					}                    
                 }
                 this.xtremandLogger.info(" delete Success Message in manage contact pape");
             }
@@ -1437,6 +1447,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
 						this.contactsByType.activeContactsCount = data.activecontacts;
 						this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
+						this.contactsByType.validContactsCount = data.validContactsCount;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -1808,7 +1819,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.logListName = 'All_Invalid_' + this.checkingContactTypeName + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 				this.logListName = 'All_Unsubscribed_' + this.checkingContactTypeName + 's_list.csv';
-			}
+			}else if (this.contactsByType.selectedCategory === 'valid') {
+                this.logListName = 'All_Valid_' + this.checkingContactTypeName + 's_list.csv';
+            }
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
 				if(!this.authenticationService.module.isPrm && !this.authenticationService.module.isPrmTeamMember && !this.authenticationService.module.isPrmAndPartner && !this.authenticationService.module.isPrmAndPartnerTeamMember){
@@ -2294,43 +2307,47 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	ngOnInit() {
-		try {
-			this.pagination.maxResults = 12;
-			this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
-			if (this.isPartner) {
-				this.defaultPartnerList(this.authenticationService.getUserId());
-			}
+		this.callInitMethods();
+	}
+	
+	callInitMethods(){
+	      try {
+	            this.pagination.maxResults = 12;
+	            this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
+	            if (this.isPartner) {
+	                this.defaultPartnerList(this.authenticationService.getUserId());
+	            }
 
-			this.loadContactLists(this.pagination);
-			this.contactsCount();
-			this.loadContactListsNames();
+	            this.loadContactLists(this.pagination);
+	            this.contactsCount();
+	            this.loadContactListsNames();
 
-			/********Check Gdpr Settings******************/
-			this.checkTermsAndConditionStatus();
-			this.getLegalBasisOptions();
+	            /********Check Gdpr Settings******************/
+	            this.checkTermsAndConditionStatus();
+	            this.getLegalBasisOptions();
 
-			window.addEventListener('message', function(e) {
-				console.log('received message:  ' + e.data, e);
-				if (e.data == 'isGoogleAuth') {
-					localStorage.setItem('isGoogleAuth', 'yes');
-				}
-				else if (e.data == 'isSalesForceAuth') {
-					localStorage.setItem('isSalesForceAuth', 'yes');
-				}
-				else if (e.data == 'isHubSpotAuth') {
-					localStorage.setItem('isHubSpotAuth', 'yes');
-				}
-				else if (e.data == 'isZohoAuth') {
-					localStorage.setItem('isZohoAuth', 'yes');
-				}
+	            window.addEventListener('message', function(e) {
+	                console.log('received message:  ' + e.data, e);
+	                if (e.data == 'isGoogleAuth') {
+	                    localStorage.setItem('isGoogleAuth', 'yes');
+	                }
+	                else if (e.data == 'isSalesForceAuth') {
+	                    localStorage.setItem('isSalesForceAuth', 'yes');
+	                }
+	                else if (e.data == 'isHubSpotAuth') {
+	                    localStorage.setItem('isHubSpotAuth', 'yes');
+	                }
+	                else if (e.data == 'isZohoAuth') {
+	                    localStorage.setItem('isZohoAuth', 'yes');
+	                }
 
-			}, false);
+	            }, false);
 
 
-		}
-		catch (error) {
-			this.xtremandLogger.error("ERROR : MangeContactsComponent ngOnInit() " + error);
-		}
+	        }
+	        catch (error) {
+	            this.xtremandLogger.error("ERROR : MangeContactsComponent ngOnInit() " + error);
+	        }
 	}
 
 	ngOnDestroy() {
@@ -2463,9 +2480,25 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	} 
 	
-	openPopUpForNewlyAddedPartnersOrContacts(contactList: ContactList) {
+    openPopUpForNewlyAddedPartnersOrContacts(contactList: ContactList) {
         this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(contactList.id, this.checkingContactTypeName);
     }
+
+    notificationFromPublishToPartnersComponent() {
+
+    }
+
+    openShareListPopup(contactList: ContactList) {
+        this.showShareListPopup = true;
+        this.selectedContactListId = contactList.id;
+    }
+
+	closeShareListPopup() {
+      this.showShareListPopup = false;
+      this.callInitMethods();
+	}
+	
+	
 	
 	
 }

@@ -36,5 +36,6 @@ export class ColumnInfo {
     editQuizChoiceDivClass = "default-fieldset";
     sfCustomField:boolean;
     labelLength:string;
+    correctValues: string = "";
 
 }

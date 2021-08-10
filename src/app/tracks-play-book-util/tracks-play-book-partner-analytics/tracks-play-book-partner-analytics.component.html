@@ -75,7 +75,7 @@
                       <span *ngIf="partner.learningTrackProgress == undefined">0%</span>
                     </td>
                     <td class="quiz-width" *ngIf="type == undefined || type == 'TRACK'">
-                      <div *ngIf="partner.hasLearningTrackQuiz && partner.learningTrackProgress == 100">
+                      <div *ngIf="partner.hasLearningTrackQuiz && partner.learningTrackProgress == 100" (click)="showFormAnalytics(partner)">
                         <div class="quiz-score-margin">
                         <h6 class="view-banner" style="background-color: #5cb85c;" translate>
                           {{partner.learningTrackScore}} out of {{partner.learningTrackMaxScore}}
@@ -101,7 +101,7 @@
                       </app-timestamp>
                   </td>
                     <td id="actions-row" class="text-center">
-                      <div class="actions-block override-actions custom-width-icon">
+                      <div class="actions-block override-actions custom-width-icon" [ngClass]="{'no-float' : type != undefined && type == 'PLAYBOOK'}" >
                         <a data-toggle="tooltip" data-placement="top" title="View Analytics"
                           (click)="viewAnalytics(partner,i)">
                           <i class="fa fa-line-chart" aria-hidden="true"></i>
@@ -249,3 +249,7 @@
     </div>
   </div>
 </div>
+
+<!-- Form analytics -->
+<app-form-preview-with-submitted-answers #formPreviewWithSubmittedAnswersComponent>
+</app-form-preview-with-submitted-answers>

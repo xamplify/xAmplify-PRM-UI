@@ -658,12 +658,13 @@ label {
     width: 88%;
     position: fixed;
     z-index: 1;
-    top: 10%;
+    top: 8%;
     left: 0;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.9);
     overflow-x: hidden;
     transition: 0.5s;
+    min-height: 750px;
 }
 
 .overlay-content {
@@ -1027,4 +1028,11 @@ input.cmn-toggle-round-flat:checked+label:after {
 
 .remove-button:hover {
     background: #cb5a5e;
+}
+
+.fit-preview-asset {
+    max-height: 600px;
+    height: 600px;
+    max-width: 100%;
+    width: 100%;
 }

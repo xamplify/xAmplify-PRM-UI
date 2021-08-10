@@ -101,6 +101,9 @@
 	margin-right: 10px;
 }
 
-.full-width{
-    width: 100% !important;
+.correct-answer-div {
+    background-color: #9de49d;
+    padding: 5px 5px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 6px -3px #333;
 }
