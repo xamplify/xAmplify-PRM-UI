@@ -879,7 +879,7 @@
                               </td>
                               <td align="center"
                                 *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">
-                                <button class="btn green"
+                                <button class="btn green" [disabled] = "assignLeads"
                                   *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || referenceService.roles.contactsRole || referenceService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
                                   (click)="activateUnsubscribedUser(contact.id)" translate>
                                   Subscribe
