@@ -3417,6 +3417,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         try {
             this.contactListObject = new ContactList;
             this.contactListObject.id = id;
+            this.contactListObject.assignedLeadsList = this.assignLeads;
 
             this.contactService.loadContactsCount(this.contactListObject)
                 .subscribe(
