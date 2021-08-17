@@ -768,5 +768,11 @@ export class ContactService {
         .map( this.extractData )
         .catch( this.handleError );
     }
+    
+    showListSharedDetails(contactListId:number, pagination: Pagination){
+        return this._http.post( this.contactsUrl +contactListId+ "/list-shared-details/"+"?access_token=" + this.authenticationService.access_token, pagination)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
 
 }

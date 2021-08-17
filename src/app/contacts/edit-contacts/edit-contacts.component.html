@@ -1022,7 +1022,7 @@
 																	*ngIf="allcontacts.isShowDetails">Less</span>
 															</button> -->
 															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || refService.roles.contactsRole || refService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
-																(click)="activateUnsubscribedUser(allcontacts.id)" translate>
+																 [disabled] = "assignLeads" (click)="activateUnsubscribedUser(allcontacts.id)" translate>
 																Subscribe
 															</button>
                             <div class="actions-block" style="float: none !important;" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">

@@ -27,7 +27,6 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 
-
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
 @Component({
@@ -57,6 +56,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	hasAllAccess = false;
 	contactListUsers = [];
 	gettingAllUserspagination: Pagination = new Pagination();
+	sharedDetailsPagination: Pagination = new Pagination();
 
 	selectedContactListIds = [];
 	selectedInvalidContactIds = [];
@@ -461,7 +461,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		if (event.type == 'contacts') {
 			this.pagination.pageIndex = event.page;
 			this.loadContactLists(this.pagination);
-		}
+		}else if (event.type == 'sharedDetails') {
+            this.sharedDetailsPagination.pageIndex = event.page;
+            this.showListSharedDetails();
+        }
 		else {
 			this.contactsByType.pagination.pageIndex = event.page;
 			this.listContactsByType(event.type);
@@ -2313,6 +2316,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	callInitMethods(){
 	      try {
 	            this.pagination.maxResults = 12;
+	            this.sharedDetailsPagination.pageIndex = 1;
+	            this.sharedDetailsPagination.maxResults = 12;
 	            this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
 	            if (this.isPartner) {
 	                this.defaultPartnerList(this.authenticationService.getUserId());
@@ -2497,8 +2502,36 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
       this.showShareListPopup = false;
       this.callInitMethods();
 	}
-	
-	
+
+    showListSharedDetails() {
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.loading = true;
+        this.contactService.showListSharedDetails(this.selectedContactListId, this.sharedDetailsPagination).subscribe(
+            response => {
+                let data = response.data;
+                if (response.statusCode == 200) {
+                    $.each(data.list, function(_index: number, list: any) {
+                        list.createdDate = new Date(list.createdTime);
+                        list.sharedDate = new Date(list.sharedTime);
+                    });
+                    this.sharedDetailsPagination.totalRecords = data.totalRecords;
+                    $('#listSharedDetailsModal').modal();
+                    this.sharedDetailsPagination = this.pagerService.getPagedItems(this.sharedDetailsPagination, data.list);
+                    this.loading = false;
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                }
+            },
+            error => {
+                this.loading = false;
+                this.referenceService.loading(this.httpRequestLoader, false);
+                this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+            }
+        );
+    }
+    
+    closeSharedDetailsPopup(){
+    	$("#listSharedDetailsModal").modal().hide();
+    }
 	
 	
 }
