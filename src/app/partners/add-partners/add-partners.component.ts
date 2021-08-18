@@ -2353,46 +2353,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	listTeamMembers() {
-		try {
-			this.teamMemberService.listOrganizationTeamMembers(this.loggedInUserId)
-				.subscribe(
-					data => {
-						console.log(data);
-						for (let i = 0; i < data.length; i++) {
-							this.teamMembersList.push(data[i]);
-						}
 
-					},
-					error => {
-						this.xtremandLogger.errorPage(error);
-					},
-					() => this.xtremandLogger.info("Finished listTeamMembers()")
-				);
-		} catch (error) {
-			this.xtremandLogger.log(error);
-		}
-
-	}
-
-	/*    listOrgAdmin() {
-			try {
-				this.contactService.listOrgAdmins()
-					.subscribe(
-					data => {
-						console.log( data );
-						this.orgAdminsList = data;
-					},
-					error => {
-						this.xtremandLogger.errorPage( error );
-					},
-					() => this.xtremandLogger.info( "Finished listOrgAdmins()" )
-					);
-			} catch ( error ) {
-				this.xtremandLogger.log( error );
-			}
-	
-		}*/
 
 	closeModal(event) {
 		if (event === "Emails Send Successfully") {
@@ -2480,14 +2441,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		try {
 			this.socialContactImage();
-			/* this.listOrgAdmin();*/
-
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
-			this.listTeamMembers();
 			this.defaultPartnerList(this.loggedInUserId);
-
 			if (localStorage.getItem('vanityUrlFilter')) {
 				localStorage.removeItem('vanityUrlFilter');
 				if (this.contactService.vanitySocialProviderName == 'zoho') {

@@ -1,5 +1,6 @@
 
 <ng-container *ngIf="!refService.loaderFromAdmin">
+    <ngx-loading [show]="loadTopNavBar" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-header navbar navbar-fixed-top zero-padding">
     <ng2-slim-loading-bar [color]="'#00a6e8'" [height]="'2px'" style="position: fixed; top: 0px;
     margin: 0px; padding: 0px; z-index: 10000; width: 100%;">
@@ -62,16 +63,7 @@
                             <i class="fa fa-line-chart" data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                         </div>
                     </li>
-                    <li style="margin-top: 17px;margin-right: 5px;" *ngIf="(refService.hasAllAccess()
-										|| authenticationService.module.hasSocialStatusRole
-										|| authenticationService.module.isOrgAdmin
-                                        || authenticationService.module.isVendor || 
-                                         authenticationService.module.isPrm  || 
-                                         authenticationService.module.isPrmAndPartner  || 
-                                         authenticationService.module.isVendorTier) 
-                                         && authenticationService.user.hasCompany 
-                                         && !authenticationService.isOnlyUser() && 
-                                         !authenticationService.isPartnerTeamMember">
+                    <li style="margin-top: 17px;margin-right: 5px;" *ngIf="authenticationService?.module?.hasSocialStatusRole">
                         <button class="btn btn-primary" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
 							<span class="hidden-xs" translate>Update Status</span>
 							<i class="fa fa-share" data-toggle="tooltip" aria-hidden="true"></i>
@@ -174,11 +166,11 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
-                                <a [routerLink]="['/home/dashboard/myprofile']" translate> <i class="icon-user"></i> My Profile
+                                <a (click)="goToRouter('/home/dashboard/myprofile')" translate> <i class="icon-user"></i> My Profile
                                 </a>
                             </li>
                             <li *ngIf="(!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin() && authenticationService.superiorRole != 'Partner') || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
-                                <a [routerLink]="['/home/dashboard/edit-company-profile']" translate> <i class="fa fa-building-o"></i> Company Profile
+                                <a  (click)="goToRouter('/home/dashboard/edit-company-profile')"  translate> <i class="fa fa-building-o"></i> Company Profile
                                 </a>
                             </li>
                             <li *ngIf="(refService.hasAllAccess()
@@ -188,7 +180,7 @@
 										 || authenticationService.module.isPrm
 										 || authenticationService.module.isVendorTier
 										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
-                                <a [routerLink]="['/home/social/manage/all']" translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
+                                <a (click)="goToRouter('/home/social/manage/all')"  translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                             </li>
                             <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany">
                                 <ng-container *ngFor="let dashboardType of dashboardTypes">

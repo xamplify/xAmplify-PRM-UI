@@ -32,6 +32,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     hasSocialStatusRole = false;
     contactOrPartnerLink:string ="";
     welcomeVideoInfo: any;
+    showDiv = false;
     vendor_welcome_text = {
         "videos": "Upload your content and you'll soon be ready for primetime.",
         "contacts": "Add, segment, manage, and edit the members of your Strategic Network.",
@@ -186,6 +187,9 @@ export class WelcomeComponent implements OnInit, OnDestroy {
           data => {
             this.welcomePageItemsLoader = false;
            this.welcomePageItems = data;
+           /**XNFR-2*****/
+           this.showDiv = data.showAnalytics || data.showCampaigns || data.showContacts || data.showContent 
+           || data.showPartners || data.showSocialAccounts || data.showTeamMembers || data.showTemplates;
         },
         _error => {
           this.welcomePageItemsLoader = false;

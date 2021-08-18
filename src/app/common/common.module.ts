@@ -96,6 +96,8 @@ import { AddDefaultTemplateDetailsComponent } from 'app/util/add-default-templat
 import { UserlistUsersComponent } from 'app/contacts/userlist-users/userlist-users.component';
 import { PartnerCompanyModalPopupComponent } from './partner-company-modal-popup/partner-company-modal-popup.component';
 import { FormPreviewWithSubmittedAnswersComponent } from 'app/tracks-play-book-util/form-preview-with-submitted-answers/form-preview-with-submitted-answers.component';
+import { TeamMembersUtilComponent } from 'app/util/team-members-util/team-members-util.component';
+import { ConfirmSweetAlertUtilComponent } from 'app/util/confirm-sweet-alert-util/confirm-sweet-alert-util.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -112,7 +114,8 @@ import { FormPreviewWithSubmittedAnswersComponent } from 'app/tracks-play-book-u
 		EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
-		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,FormPreviewWithSubmittedAnswersComponent],
+		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
+		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent],
 
 
 
@@ -131,7 +134,8 @@ import { FormPreviewWithSubmittedAnswersComponent } from 'app/tracks-play-book-u
 		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
-		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,FormPreviewWithSubmittedAnswersComponent]
+		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
+		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent]
 
 
 

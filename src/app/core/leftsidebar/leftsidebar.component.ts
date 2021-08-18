@@ -3,15 +3,15 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { Roles } from '../../core/models/roles';
 import { ReferenceService } from '../../core/services/reference.service';
 import { DashboardService } from '../../dashboard/dashboard.service';
-import { Pagination } from '../models/pagination';
 import { UserService } from '../services/user.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
+import { MenuItem } from '../models/menu-item';
+import { Roles } from '../../core/models/roles';
 
-declare var window,$: any;
+declare var $: any;
 
 @Component({
 	selector: 'app-leftsidebar',
@@ -19,368 +19,187 @@ declare var window,$: any;
 	styleUrls: ['./leftsidebar.component.css']
 })
 export class LeftsidebarComponent implements OnInit, DoCheck {
-	location: Location;
-	baseRoute: string;
-	enableLink = true;
-	roleName: Roles = new Roles();
-	isOnlyPartner = false;
-	emailtemplates = false;
-	campaigns = false;
-	videos = false;
-	contacts = false;
-	assignLeads = false;
-	sharedLeads = false;
-	sharedLeadsAccess = false;
-	partners = false;
-	enableLeads = false;
-	enableLeadsByVendor = false;
-	changeTemplateCss = false;
-	pagination = new Pagination();
-	formAccess = false;
-	forms: any;
-	landingPages: any;
 	isLoggedInAsTeamMember = false;
-	sourceType = "";
-	isLoggedInFromAdminPortal = false;
-	loggedInThroughVanityUrl: boolean = false;
-	checkCreateCampaignOptionForVanityURL: boolean = true;
+	sourceType: any;
+	isLoggedInFromAdminPortal: boolean;
 	loading = false;
-	rssFeedAccess: boolean;
-	mdfAccess: boolean;
-	mdfAccessAsPartner: boolean;
-	mdf: boolean;
-	dam: boolean;
-	damAccess = false;
-	shareLeadsAccess = false;
-	damAccessAsPartner = false;
-	deals: boolean;
-	partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
-	partnershipEstablishedOnlyWithPrm = false;
-	opportunityLeadsAndDeals = false;
-	opportunityLeadsAndDealsAccessAsPartner = false;
-	opportunityDeals = false;
-	lms = false;
-	lmsAccess = false;
-	lmsAccessAsPartner = false;
-	playbook = false;
-	playbookAccessAsPartner: false;
-	playbookAccess = false;
-	showContent = false;
+	menuItem: MenuItem = new MenuItem();
+	menuItemError = false;
 	contentDivs: Array<boolean> = new Array<boolean>();
-	isVendorTier = false;
-	formAccessForPrm = false;
+	isSuperAdmin = false;
+	roleName: Roles = new Roles();
+	
 	constructor(private renderer2: Renderer2,
-		@Inject(DOCUMENT) private _document:any,location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
-		,private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
+		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
+		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
 	) {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
-		this.updateLeftSideBar(location);
-		this.sourceType = this.authService.getSource();
+		this.sourceType = this.authenticationService.getSource();
 		this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal();
+		this.isSuperAdmin = this.authenticationService.getUserId() == 1;
 	}
 
-	updateLeftSideBar(location: Location) {
-		this.location = location;
-		try {
-			const roles = this.authService.getRoles();
-			if (roles) {
-				if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
-					this.authService.isCompanyPartner = true;
-				} else {
-					this.authService.isCompanyPartner = false;
-				}
-
-				if (roles.indexOf(this.roleName.campaignRole) > -1 ||
-					roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-					roles.indexOf(this.roleName.vendorRole) > -1 ||
-					roles.indexOf(this.roleName.vendorTierRole) > -1 ||
-					roles.indexOf(this.roleName.marketingRole) > -1 ||
-					roles.indexOf(this.roleName.companyPartnerRole) > -1) {
-					this.authService.module.isCampaign = true;
-					if ((roles.indexOf(this.roleName.campaignRole) > -1 && (this.authService.superiorRole === 'OrgAdmin & Partner' || this.authService.superiorRole === 'Vendor & Partner' || this.authService.superiorRole === 'Partner'))
-						|| this.authService.isCompanyPartner) {
-						this.authService.module.isReDistribution = true;
-					} else {
-						this.authService.module.isReDistribution = false;
-					}
-				}
-				if (roles.indexOf(this.roleName.emailTemplateRole) > -1 ||
-					roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-					roles.indexOf(this.roleName.vendorTierRole) > -1 ||
-					roles.indexOf(this.roleName.marketingRole) > -1 ||
-					roles.indexOf(this.roleName.vendorRole) > -1) {
-					this.authService.module.isEmailTemplate = true;
-				}
-				if (roles.indexOf(this.roleName.statsRole) > -1 ||
-					roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-					roles.indexOf(this.roleName.vendorTierRole) > -1 ||
-					roles.indexOf(this.roleName.marketingRole) > -1 ||
-					roles.indexOf(this.roleName.prmRole) > -1 ||
-					roles.indexOf(this.roleName.vendorRole) > -1) {
-					this.authService.module.isStats = true;
-				}
-				if (roles.indexOf(this.roleName.partnersRole) > -1 ||
-					roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-					roles.indexOf(this.roleName.vendorTierRole) > -1 ||
-					roles.indexOf(this.roleName.marketingRole) > -1 ||
-					roles.indexOf(this.roleName.prmRole) > -1 ||
-					roles.indexOf(this.roleName.vendorRole) > -1) {
-					this.authService.module.isPartner = true;
-				}
-				if (roles.indexOf(this.roleName.videRole) > -1 ||
-					roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-					roles.indexOf(this.roleName.vendorTierRole) > -1 ||
-					roles.indexOf(this.roleName.marketingRole) > -1 ||
-					roles.indexOf(this.roleName.vendorRole) > -1) {
-					this.authService.module.isVideo = true;
-				}
-				if (roles.indexOf(this.roleName.opportunityRole) > -1 ||
-					roles.indexOf(this.roleName.orgAdminRole) > -1 ||
-					roles.indexOf(this.roleName.vendorTierRole) > -1 ||
-					roles.indexOf(this.roleName.marketingRole) > -1 ||
-					roles.indexOf(this.roleName.prmRole) > -1 ||
-					roles.indexOf(this.roleName.vendorRole) > -1) {
-					this.authService.module.hasOpportunityRole = true;
-				}
-
-				if (roles.indexOf(this.roleName.companyPartnerRole) > -1 &&
-					roles.indexOf(this.roleName.orgAdminRole) < 0 &&
-					roles.indexOf(this.roleName.vendorRole) < 0 &&
-					roles.indexOf(this.roleName.vendorTierRole) < 0 &&
-					roles.indexOf(this.roleName.prmRole) < 0 &&
-					roles.indexOf(this.roleName.marketingRole) < 0) {
-					this.authService.module.isOnlyPartner = true;
-				}
-
-				if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
-					this.authService.module.isOrgAdmin = true;
-				}
-
-				if (roles.indexOf(this.roleName.vendorRole) > -1) {
-					this.authService.module.isVendor = true;
-				}
-				if (roles.indexOf(this.roleName.vendorTierRole) > -1) {
-					this.isVendorTier = true;
-				}
-				if (roles.indexOf(this.roleName.prmRole) > -1) {
-					this.authService.module.isPrm = true;
-				}
-				if (roles.indexOf(this.roleName.marketingRole) > -1) {
-					this.authService.module.isMarketing = true;
-				}
-
-				this.authService.module.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
-
-				this.refService.getCompanyIdByUserId(this.authService.getUserId()).subscribe(response => {
-					this.refService.getOrgCampaignTypes(response).subscribe(data => {
-						this.enableLeads = data.enableLeads;
-						this.formAccess = data.form;
-						let anyAdminRole = roles.indexOf(this.roleName.orgAdminRole) > -1 || roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 || roles.indexOf(this.roleName.marketingRole) > -1;
-						/**********Form**************/
-						if ((anyAdminRole || roles.indexOf(this.roleName.formRole) > -1 || roles.indexOf(this.roleName.emailTemplateRole)) && this.formAccess) {
-							this.authService.module.hasFormAccess = true;
-						}
-						/**********Landing Page**************/
-						if ((anyAdminRole || roles.indexOf(this.roleName.landingPageRole) > -1) && data.landingPage) {
-							this.authService.module.hasLandingPageAccess = true;
-						}
-						/*************Landing Page Campaign*************/
-						if ((anyAdminRole) && data.landingPageCampaign) {
-							this.authService.module.hasLandingPageCampaignAccess = true;
-						}
-
-						if (this.authService.vanityURLEnabled && this.authService.vanityURLUserRoles && this.authService.loggedInUserRole === "Team Member" && (this.authService.superiorRole === "Vendor & Partner" || this.authService.superiorRole === "OrgAdmin & Partner")) {
-							if (!this.authService.vanityURLUserRoles.find(role => role.roleId === 11 || role.roleId === 10 || role.roleId === 8 || role.roleId === 4 || role.roleId === 7)) {
-								this.checkCreateCampaignOptionForVanityURL = false;
-							}
-						}
-
-					});
-					/**********Landing Page************/
-				});
-			}
-		} catch (error) { console.log(error); }
-	}
 
 	ngOnInit() {
-		this.isOnlyPartner = this.authService.loggedInUserRole == "Partner" && this.authService.isPartnerTeamMember == false;
-		this.listLeftSideBarNavItems();
+		this.findMenuItems();
 	}
 	ngDoCheck() {
-		if (window.innerWidth > 990) {
-			this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, false, false, false, false, false);
-		}
-	}
-	openOrCloseTabs(urlType: string) {
-		if (window.innerWidth < 990) {
-			if (urlType === 'emailtemplates') {
-				this.emailtemplates = this.router.url.includes('emailtemplates') ? true : (this.emailtemplates = !this.emailtemplates);
-				this.clearSubMenuValues(this.emailtemplates, false, false, false, false, false, false, false, false, false, false, false, false, false);
-			}
-			else if (urlType === 'contacts') {
-				this.contacts = this.router.url.includes('contacts') ? true : (this.contacts = !this.contacts);
-				this.clearSubMenuValues(false, false, false, this.contacts, false, false, false, false, false, false, false, false, false, false);
-			}
-			else if (urlType === 'partners') {
-				this.partners = this.router.url.includes('partners') ? true : (this.partners = !this.partners);
-				this.clearSubMenuValues(false, false, false, false, this.partners, false, false, false, false, false, false, false, false, false);
-			}
-			else if (urlType === 'campaigns') {
-				this.campaigns = this.router.url.includes('campaigns') ? true : (this.campaigns = !this.campaigns);
-				this.clearSubMenuValues(false, this.campaigns, false, false, false, false, false, false, false, false, false, false, false, false);
-			}
-			else if (urlType === 'content') {
-				this.videos = this.router.url.includes('content') ? true : (this.videos = !this.videos);
-				this.clearSubMenuValues(false, false, this.videos, false, false, false, false, false, false, false, false, false, false, false);
-			}
-			else if (urlType === 'forms') {
-				this.videos = this.router.url.includes('forms') ? true : (this.forms = !this.forms);
-				this.clearSubMenuValues(false, false, false, false, false, this.forms, false, false, false, false, false, false, false, false);
-			}
-			else if (urlType === 'landing-pages') {
-				this.videos = this.router.url.includes('forms') ? true : (this.landingPages = !this.landingPages);
-				this.clearSubMenuValues(false, false, false, false, false, false, this.landingPages, false, false, false, false, false, false, false);
-			}
-			else if (urlType === 'mdf') {
-				this.mdf = this.router.url.includes('mdf') ? true : (this.mdf = !this.mdf);
-				this.clearSubMenuValues(false, false, false, false, false, false, false, this.mdf, false, false, false, false, false, false);
-			}
-			else if (urlType === 'dam') {
-				this.dam = this.router.url.includes('dam') ? true : (this.dam = !this.dam);
-				this.clearSubMenuValues(false, false, false, false, false, false, false, false, this.dam, false, false, false, false, false);
-			}
-			else if (urlType === 'assignleads') {
-				this.assignLeads = this.router.url.includes('assignleads') ? true : (this.assignLeads = !this.assignLeads);
-				this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, true, false, false, false, false);
-			}
-			else if (urlType === 'deal') {
-				this.deals = this.router.url.includes('deal') ? true : (this.deals = !this.deals);
-				this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, false, this.deals, false, false, false);
-			}
-			else if (urlType === 'sharedleads') {
-				this.sharedLeads = this.router.url.includes('sharedleads') ? true : (this.sharedLeads = !this.sharedLeads);
-				this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, false, false, this.sharedLeads, false, false);
-			} else if (urlType === 'lms') {
-				this.lms = this.router.url.includes('lms') ? true : (this.lms = !this.lms);
-				this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, false, false, false, this.lms, false);
-			} else if (urlType === 'playbook') {
-				this.playbook = this.router.url.includes('playbook') ? true : (this.playbook = !this.playbook);
-				this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, false, false, false, false, this.playbook);
-			}
-		}
-	}
-	clearSubMenuValues(emailTemplate, campaigs, videos, contacts, partners, forms, landingPages, mdf, dam, assignLeads, deals, sharedLeads, lms, playbook) {
-		this.emailtemplates = emailTemplate; this.campaigns = campaigs; this.videos = videos; this.contacts = contacts; this.partners = partners;
-		this.forms = forms; this.landingPages = landingPages; this.mdf = mdf; this.dam = dam; this.assignLeads = assignLeads; this.sharedLeads = sharedLeads;
-		this.deals = deals;
-		this.lms = lms;
-		this.playbook = playbook;
-	}
-	logout() {
-		this.authService.logout();
-		this.router.navigate(['/login']);
+
 	}
 
-	listLeftSideBarNavItems() {
+	findMenuItems() {
 		this.loading = true;
-		this.authService.module.contentLoader = true;
+		let module = this.authenticationService.module;
+		module.contentLoader = true;
 		let vanityUrlPostDto = {};
-		if (this.authService.companyProfileName !== undefined && this.authService.companyProfileName !== '') {
-			vanityUrlPostDto['vendorCompanyProfileName'] = this.authService.companyProfileName;
+		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+			vanityUrlPostDto['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
 			vanityUrlPostDto['vanityUrlFilter'] = true;
 		}
-		vanityUrlPostDto['userId'] = this.authService.getUserId();
+		vanityUrlPostDto['userId'] = this.authenticationService.getUserId();
 		this.dashBoardService.listLeftSideNavBarItems(vanityUrlPostDto)
 			.subscribe(
 				data => {
-					this.formAccessForPrm = data.forms;
-					this.rssFeedAccess = data.rssFeeds;
-					this.authService.module.isContact = data.contacts;
-					this.mdfAccess = data.mdf;
-					this.mdfAccessAsPartner = data.mdfAccessAsPartner;
-					this.authService.contactsCount = data.contactsCount;
-					this.damAccess = data.dam;
-					this.shareLeadsAccess = data.shareLeads;
-					this.sharedLeadsAccess = data.sharedLeads;
-					this.damAccessAsPartner = data.damAccessAsPartner;
-					this.opportunityDeals = data.opportunityDeals;
-					this.opportunityLeadsAndDeals = data.opportunityLeadsAndDeals;
-					this.opportunityLeadsAndDealsAccessAsPartner = data.opportunityLeadsAndDealsAccessAsPartner;
-					this.authService.module.damAccess = data.dam;
-					this.authService.module.damAccessAsPartner = data.damAccessAsPartner;
-					this.authService.module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
-					let roleDisplayDto = data.roleDisplayDto;
-					this.authService.module.showCampaignsAnalyticsDivInDashboard = roleDisplayDto.showCampaignsAnalyticsDivInDashboard;
-					this.authService.module.isPrm = roleDisplayDto.prm;
-					this.authService.module.isPrmTeamMember = roleDisplayDto.prmTeamMember;
-					this.authService.module.isPrmAndPartner = roleDisplayDto.prmAndPartner;
-					this.authService.module.isPrmAndPartnerTeamMember = roleDisplayDto.prmAndPartnerTeamMember;
-					this.authService.module.isVendorTier = roleDisplayDto.vendorTier;
-					this.authService.module.isVendorTierTeamMember = roleDisplayDto.vendorTierTeamMember;
-					this.authService.module.isVendorTierAndPartner = roleDisplayDto.vendorTierAndPartner;
-					this.authService.module.isVendorTierAndPartnerTeamMember = roleDisplayDto.vendorTierAndPartnerTeamMember;
-					this.authService.isVendorAndPartnerTeamMember = roleDisplayDto.vendorAndPartnerTeamMember;
-					this.authService.isOrgAdminAndPartnerTeamMember = roleDisplayDto.orgAdminAndPartnerTeamMember;
-					this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = data.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
-					this.authService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
-					this.partnershipEstablishedOnlyWithPrm = data.partnershipEstablishedOnlyWithPrm;
-					this.authService.partnershipEstablishedOnlyWithPrm = this.partnershipEstablishedOnlyWithPrm;
-					this.authService.folders = data.folders;
-					this.lmsAccess = data.lms;
-					this.authService.lmsAccess = data.lms;
-					this.lmsAccessAsPartner = data.lmsAccessAsPartner;
-					this.authService.module.lmsAccess = data.lms;
-					this.authService.module.lmsAccessAsPartner = data.lmsAccessAsPartner;
-					this.authService.leadsAndDeals = data.enableLeads;
-					this.authService.mdf = data.mdf;
-					this.authService.module.hasPartnerLandingPageAccess = data.pagesAccessAsPartner;
-					this.playbookAccess = data.playbook;
-					this.playbookAccessAsPartner = data.playbookAccessAsPartner;
-					this.authService.module.playbookAccess = data.playbook;
-					this.authService.module.playbookAccessAsPartner = data.playbookAccessAsPartner;
-					this.showContent = (this.authService.module.isVideo || this.authService.module.damAccess || this.authService.module.damAccessAsPartner ||
-					this.authService.module.lmsAccess || this.authService.module.lmsAccessAsPartner || this.authService.module.playbookAccess ||
-					this.authService.module.playbookAccessAsPartner);
-					this.authService.module.showContent = this.showContent;
-					this.authService.module.isPartnerSuperVisor = roleDisplayDto.partnerSuperVisor;
-					this.authService.module.isAnyAdminOrSupervisor = roleDisplayDto.anyAdminOrSuperVisor;
-					if (this.showContent) {
-						this.contentDivs.push(this.authService.module.isVideo);
-						this.contentDivs.push(this.authService.module.damAccess || this.authService.module.damAccessAsPartner);
-						this.contentDivs.push(this.authService.module.lmsAccess || this.authService.module.lmsAccessAsPartner);
-						this.contentDivs.push(this.authService.module.playbookAccess || this.authService.module.playbookAccessAsPartner);
-						this.contentDivs.push();
-						const count = this.contentDivs.filter((value) => value).length;
-						this.authService.module.contentDivsCount = count;
-					} else {
-						this.authService.module.contentDivsCount = 0;
-					}
-					this.authService.module.showPartnerEmailTemplatesFilter = (roleDisplayDto.vendorTierAndPartner || roleDisplayDto.vendorTierAndPartnerTeamMember || roleDisplayDto.vendorAndPartner || roleDisplayDto.vendorAndPartnerTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember);
-					this.authService.module.allBoundSamlSettings = data.allBoundSamlSettings;
+					this.menuItem.companyProfileCreated = data.companyProfileCreated;
+					this.menuItem.accountDashboard = data.accountDashboard;
+					this.menuItem.partners = data.partners;
+					this.authenticationService.module.isPartner = data.partners;
+					this.setContentMenu(data, module);
+					this.menuItem.contacts = data.contacts;
+					this.menuItem.shareLeads = data.shareLeads;
+					this.menuItem.sharedLeads = data.sharedLeads;
+					this.menuItem.pagesAccessAsPartner = data.pagesAccessAsPartner;
+
+					this.setDesignMenu(data);
+
+					this.menuItem.campaign = data.campaign;
+					this.menuItem.campaignAccessAsPartner = data.redistribute;
+					this.authenticationService.module.isCampaign = data.campaign || data.redistribute;
+					this.authenticationService.module.isReDistribution = data.redistribute;
+					this.authenticationService.module.hasLandingPageCampaignAccess = data.pageCampaign;
+
+					this.authenticationService.module.isStats = data.stats;
+
+					this.menuItem.opportunities = data.opportunities;
+					module.hasOpportunityRole = data.opportunities;
+					this.menuItem.opportunitiesAccessAsPartner = data.opportunitiesAccessAsPartner;
+					this.authenticationService.enableLeads = data.opportunities;
+
+					this.menuItem.socialFeeds = data.rssFeeds;
+					this.menuItem.socialFeedsAccessAsPartner = data.rssFeedsAccessAsPartner;
+					module.hasSocialStatusRole = data.socialShare;
+
+					this.menuItem.mdf = data.mdf;
+					this.menuItem.mdfAccessAsPartner = data.mdfAccessAsPartner;
+					
+					this.menuItem.team = data.team;
+
+					this.setAuthenticationServiceVariables(module,data);
+
+					const roles = this.authenticationService.getRoles();
+					this.authenticationService.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
+					module.isCompanyPartner = roles.indexOf(this.roleName.companyPartnerRole) > -1;
+					module.isOrgAdmin = roles.indexOf(this.roleName.orgAdminRole) > -1;
+					module.isVendor = roles.indexOf(this.roleName.vendorRole) > -1;
+					module.isPrm = roles.indexOf(this.roleName.prmRole) > -1;
+					module.isMarketing = roles.indexOf(this.roleName.marketingRole) > -1;
+					module.isVendorTier = roles.indexOf(this.roleName.vendorTierRole) > -1;
+
 					this.addZendeskScript(data);
+					
+					
 				},
 				error => {
-					this.loading = false;
-					this.authService.module.contentLoader = false;
-					this.authService.leftSideMenuLoader = false;
-					this.rssFeedAccess = false;
-					this.mdfAccess = false;
-					this.mdfAccessAsPartner = false;
-					this.authService.contactsCount = false;
 					let statusCode = JSON.parse(error['status']);
 					if (statusCode == 401) {
-						this.authService.revokeAccessToken();
+						this.loading = false;
+						this.authenticationService.revokeAccessToken();
+					} else if (statusCode == 500) {
+						this.loading = false;
+						this.menuItemError = true;
 					}
 				},
 				() => {
 					this.loading = false;
-					this.authService.module.contentLoader = false;
-					this.authService.leftSideMenuLoader = false;
+					this.authenticationService.module.contentLoader = false;
+					this.authenticationService.leftSideMenuLoader = false;
+					this.menuItemError = false;
 				}
 			);
-
-
 	}
+
+	setAuthenticationServiceVariables(module: any, data: any) {
+		module.isContact = data.contacts;
+		module.showCampaignsAnalyticsDivInDashboard = data.showCampaignsAnalyticsDivInDashboard;
+		this.authenticationService.contactsCount = data.contactsCount;
+		module.damAccess = data.dam;
+		module.damAccessAsPartner = data.damAccessAsPartner;
+		module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
+		let roleDisplayDto = data.roleDisplayDto;
+		module.isOnlyPartner = roleDisplayDto.partner;
+		module.isPrm = roleDisplayDto.prm;
+		module.isPrmTeamMember = roleDisplayDto.prmTeamMember;
+		module.isPrmAndPartner = roleDisplayDto.prmAndPartner;
+		module.isPrmAndPartnerTeamMember = roleDisplayDto.prmAndPartnerTeamMember;
+		module.isVendorTier = roleDisplayDto.vendorTier;
+		module.isVendorTierTeamMember = roleDisplayDto.vendorTierTeamMember;
+		module.isVendorTierAndPartner = roleDisplayDto.vendorTierAndPartner;
+		module.isVendorTierAndPartnerTeamMember = roleDisplayDto.vendorTierAndPartnerTeamMember;
+		this.authenticationService.isVendorAndPartnerTeamMember = roleDisplayDto.vendorAndPartnerTeamMember;
+		this.authenticationService.isOrgAdminAndPartnerTeamMember = roleDisplayDto.orgAdminAndPartnerTeamMember;
+		this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = data.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
+		this.authenticationService.partnershipEstablishedOnlyWithPrm = data.partnershipEstablishedOnlyWithPrm;
+		this.authenticationService.folders = data.folders;
+		this.authenticationService.lmsAccess = data.lms;
+		this.authenticationService.leadsAndDeals = data.opportunities;
+		this.authenticationService.mdf = data.mdf;
+		this.authenticationService.mdfAccessAsPartner = data.mdfAccessAsPartner;
+		module.hasPartnerLandingPageAccess = data.pagesAccessAsPartner;
+		module.playbookAccess = data.playbook;
+		module.playbookAccessAsPartner = data.playbookAccessAsPartner;
+		module.showContent = data.content;
+		module.showPartnerEmailTemplatesFilter = (roleDisplayDto.vendorTierAndPartner || roleDisplayDto.vendorTierAndPartnerTeamMember || roleDisplayDto.vendorAndPartner || roleDisplayDto.vendorAndPartnerTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember);
+		module.isPartnerSuperVisor = roleDisplayDto.partnerSuperVisor;
+		module.isAnyAdminOrSupervisor = roleDisplayDto.anyAdminOrSuperVisor;
+		module.allBoundSamlSettings = data.allBoundSamlSettings;
+		
+	}
+
+	setContentMenu(data: any, module: any) {
+		this.menuItem.content = data.content;
+		module.showContent = data.content;
+		module.isVideo = data.videos;
+		module.damAccess = data.dam;
+		module.damAccessAsPartner = data.damAccessAsPartner;
+		module.lmsAccess = data.lms;
+		module.lmsAccessAsPartner = data.lmsAccessAsPartner;
+		module.playbookAccess = data.playbook;
+		module.playbookAccessAsPartner = data.playbookAccessAsPartner;
+		if (data.content) {
+			this.contentDivs.push(module.isVideo);
+			this.contentDivs.push(module.damAccess || module.damAccessAsPartner);
+			this.contentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
+			this.contentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);
+			this.contentDivs.push();
+			const count = this.contentDivs.filter((value) => value).length;
+			module.contentDivsCount = count;
+		} else {
+			module.contentDivsCount = 0;
+		}
+	}
+
+	setDesignMenu(data: any) {
+		this.menuItem.design = data.design;
+		this.menuItem.emailTemplates = data.emailTemplates;
+		this.menuItem.forms = data.forms;
+		this.menuItem.pages = data.pages;
+		this.authenticationService.module.isEmailTemplate = data.emailTemplates;
+		this.authenticationService.module.hasFormAccess = data.forms;
+		this.authenticationService.module.hasLandingPageAccess = data.pages;
+		
+	}
+
+	
 
 	addZendeskScript(data:any){
 		let chatSupport = data.chatSupport;
@@ -397,12 +216,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 				this.renderer2.appendChild(this._document.body, s);
 			}
 		}else{
-			this.authService.removeZenDeskScript();
+			this.authenticationService.removeZenDeskScript();
 			
 		}
-	}
-
-
+	}	
 
 
 }

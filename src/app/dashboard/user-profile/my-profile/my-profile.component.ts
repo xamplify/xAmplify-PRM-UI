@@ -49,7 +49,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { ExcludeUser } from "../../models/exclude-user";
 import { FileUtil } from '../../../core/models//file-util';
 
-declare var swal, $, videojs: any, Papa: any;;
+declare var swal, $, videojs: any, Papa: any;
 
 @Component({
 	selector: 'app-my-profile',
@@ -241,7 +241,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	csvUsersPager: any = {};
 	csvDomainsPager: any = {};
 	showUnsubscribeReasonsDiv = false;
-
+	showTeamMemberGroups = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1651,6 +1651,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				  self.showUnsubscribeReasonsDiv = true;
 				  self.ngxloading = false;
  			}, 500);
+		}else if(this.activeTabName =="team-group"){
+			this.ngxloading = true;
+			this.showTeamMemberGroups = false;
+			this.activeTabHeader = this.properties.teamMemberGroups;
+			let self = this;
+			setTimeout(()=>{                         
+				  self.showTeamMemberGroups = true;
+				  self.ngxloading = false;
+ 			}, 500);
+
 		}
 		this.referenceService.goToTop();
 	}
