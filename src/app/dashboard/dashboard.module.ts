@@ -68,6 +68,7 @@ import { Top4AssetsComponent } from './dashboard-analytics-components/top-4-asse
 import { CustomizeTop4Component } from './dashboard-analytics-components/customize-top-4/customize-top-4.component';
 import { Top4TracksAndPlayBooksComponent } from './dashboard-analytics-components/top-4-tracks-and-play-books/top-4-tracks-and-play-books.component';
 import { VendorInvitationReportComponent } from './vendor-invitation-report/vendor-invitation-report.component';
+import { ManageTeamMemberGroupComponent } from './manage-team-member-group/manage-team-member-group.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -111,7 +112,8 @@ import { VendorInvitationReportComponent } from './vendor-invitation-report/vend
         Top4AssetsComponent,
         CustomizeTop4Component,
         Top4TracksAndPlayBooksComponent,
-        VendorInvitationReportComponent
+        VendorInvitationReportComponent,
+        ManageTeamMemberGroupComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

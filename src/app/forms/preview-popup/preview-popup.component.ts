@@ -55,7 +55,6 @@ export class PreviewPopupComponent implements OnInit {
             || this.router.url.indexOf("/home/campaigns/edit") > -1) {
             this.showButton = true;
         }
-
         if (this.authenticationService.isShowForms) {
             this.pagination.campaignType = 'EVENT';
         }

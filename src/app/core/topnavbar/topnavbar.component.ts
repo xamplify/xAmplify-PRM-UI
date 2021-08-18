@@ -53,6 +53,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   sourceType = "";
   isLoggedInFromAdminSection = false;
   dashboardTypes = [];
+  loadTopNavBar = false;
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,private vanityServiceURL:VanityURLService) {
@@ -417,14 +418,27 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.translateService.use(langCode);
   }
 
-  navigateToDashboardType(dashboardType:string){
-    if(dashboardType=="Detailed Dashboard"){
-      this.refService.goToRouter('/home/dashboard/detailed');
-    }else if(dashboardType=="Welcome"){
-      this.refService.goToRouter('/home/dashboard/welcome');
-    }else if(dashboardType=="Advanced Dashboard" || dashboardType=="Dashboard"){
-      this.refService.goToRouter('/home/dashboard');
+  navigateToDashboardType(dashboardType: string) {
+    if (dashboardType == "Detailed Dashboard") {
+      this.delayAndNavigate('/home/dashboard/detailed');
+    } else if (dashboardType == "Welcome") {
+      this.delayAndNavigate('/home/dashboard/welcome');
+    } else if (dashboardType == "Advanced Dashboard" || dashboardType == "Dashboard") {
+      this.delayAndNavigate('/home/dashboard');
     }
-    
+
   }
+
+  goToRouter(url:string){
+    this.delayAndNavigate(url);
+}
+
+delayAndNavigate(url:string){
+  this.loadTopNavBar = true;
+    let self = this;
+    setTimeout(()=>{                         
+      self.refService.goToRouter(url);
+		}, 500);
+  }
+  
 }

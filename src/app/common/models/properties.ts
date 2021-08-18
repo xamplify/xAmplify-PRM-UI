@@ -197,5 +197,7 @@ export class Properties {
 	manualImage: string = 'assets/admin/pages/media/works/contacts2.png';
 	marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
+
+	teamMemberGroups = 'Team Member Groups';
 }
 

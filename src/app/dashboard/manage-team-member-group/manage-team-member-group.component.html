@@ -1,0 +1,215 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<!----------Manage Team Member Group-->
+
+<div id="manage-team-member-groups">
+<div class="portlet-title">
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+  </app-response-message>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
+      <div class="col-xs-12 col-sm-5 col-lg-5 p0">
+        <button class="add-button-xamplify"  (click)="openCreateDiv()" translate>Add</button>
+      </div>
+      <div class="col-xs-12 col-sm-7 col-lg-7 p0">
+        <div class="page-toolbar">
+          <div class="btn-group pull-right">
+            <div class="inputs float-right" style="display: inline-flex;">
+              <div id="left">
+                <select class="form-control" [(ngModel)]="sortOption.selectedTeamMemberGroupSortDropDown" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                <option
+                *ngFor="let option of sortOption.teamMemberGroupDropDownOptions"
+                [ngValue]="option">
+                {{option.name}}</option>
+                </select>
+              </div>
+              <div class="portlet-input input-inline" id="search-div">
+                <div class="input-icon right" id="icon">
+                  <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search Group Name..." (keypress)="searchGroupsOnKeyPress($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchGroups();"></button>
+                  <button type="submit" class="search-box-item-click" (click)="searchGroups()">
+                    <i class="fa fa-search"  aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading">
+</app-landing-page-loader>
+<div class="table-responsive" *ngIf="!httpRequestLoader?.isLoading">
+  <ng-container *ngFor="let group of pagination.pagedItems ;let i =index" >
+    <ng-container *ngTemplateOutlet="groupGridView;context:{groupInfo:group,showPreviewIcon:true}">
+    </ng-container>
+  </ng-container>
+</div>
+ <!-- <ng-container *ngIf="!httpRequestLoader.isLoading">
+  <div class="table-responsive">
+    <table class='table tgrid table-hover table-sm' id="team-member-groups" *ngIf="pagination?.pagedItems?.length>0" aria-describedby="">
+      <thead>
+        <tr>
+          <th colspan="1" style="width: 30%" id="border-bottom">
+            <span class="ui-column-resizer gray" (mousedown)="referenceService?.onMouseDown($event,'team-member-groups',1)"> </span>
+            <span class="gridHeader" translate>Group Name</span>
+          </th>
+          <th class="text-center" id="border-bottom" translate>Created On</th>
+          <th class="text-center float-right" id="border-bottom">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let group of pagination.pagedItems ;let i =index" id="group-list-{{group.id}}">
+          <td>
+            <h4 class="moreipsis" title="{{group?.name}}">
+              <span>{{group?.name}}</span>
+            </h4>
+            <h6 class="moreipsis">
+              <span translate> Created By <strong>{{group?.createdBy}}</strong></span>
+            </h6>
+          </td>
+          <td class="text-center">
+            <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="group?.displayTime">
+            </app-timestamp>
+            <span *ngIf="referenceService.isSafariBrowser()">{{group?.displayTime}}</span>
+          </td>
+          <td>
+            <div class="actions-block override-actions">
+              <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="findGroupDetailsById(group.id)">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </a>
+              <a id="template-delete" (click)="confirmAlert(group.id)" data-toggle="tooltip" data-placement="top" title="Delete">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>  -->
+<div *ngIf="pagination?.pagedItems.length !== 0" class="pg8">
+  <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)" (notifyParentDropDown)="findGroups($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+</div>
+<!-- End of 24 -->
+<div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+  <strong translate>No Data Found.</strong>
+</div>
+</div>
+
+<!----------Add Team Member Group-->
+<div class="portlet-body clearfix" id="add-team-member-group" style="display: none;">
+  <app-modal-popup-loader *ngIf="addGroupLoader?.isLoading"></app-modal-popup-loader>
+  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+  </app-response-message>
+  <div class="tab-content" *ngIf="!addGroupLoader?.isLoading">
+    <a class="close-circle" (click)="goToManage()">
+      <i class="fa fa-close" aria-hidden="true"></i>
+    </a>
+    <form role="form" aria-labelledby="add-team-member-group-form">
+      <div class="form-group">
+        <label class="control-label" translate>Name</label>
+        <span class="required">*</span>
+        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()"/>
+        <span class="required" *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
+      </div>
+    <div class="form-group">
+      <label class="control-label" translate>Description</label>
+      <textarea class="form-control" rows="4" cols="4" placeholder="Description" [(ngModel)]="groupDto.description"  [ngModelOptions]="{standalone: true}"></textarea>
+  </div>
+  <div class="form-group">
+    <label class="control-label" translate>Select Modules</label>
+    <span class="required">*</span>
+  </div>
+  <div  class="table-responsive">
+    <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
+      <tr *ngFor="let defaultModule of defaultModules;let i = index">
+        <th scope="row">
+          <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+          {{defaultModule?.moduleName}}
+          <br>
+          <p class="dodgerblue">{{defaultModule?.description}}</p>
+        </th>
+        <td>
+          <switch  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
+          </switch>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="right">
+    <button type="button" [disabled]="!groupDto.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{groupSubmitButtonText}}</button>
+    <button type="button"  class="btn btn-default" (click)="goToManage()" translate>Cancel</button>
+  </div>
+  </form>
+  </div>
+</div>
+
+
+
+
+<!--Preview Team Member Group-->
+<div id="preview-group" style="display: none;" >
+   <a class="close-circle" (click)="clearPreviewDataAndGoToManage()">
+      <i class="fa fa-close" aria-hidden="true"></i>
+    </a>
+    <ng-container *ngIf="previewGroup">
+      <div class="table-responsive">
+        <ng-container *ngTemplateOutlet="groupGridView;context:{groupInfo:selectedGroup,showPreviewIcon:false}">
+        </ng-container>
+      </div>
+        <app-team-members-util  [moduleName]="'teamMemberGroup'" [teamMemberGroupId]="selectedGroupId"></app-team-members-util>
+    </ng-container>
+</div>
+
+<app-confirm-sweet-alert-util *ngIf="isDelete" (notifyComponent)="deleteGroup($event)"></app-confirm-sweet-alert-util>
+
+<!--ng-template-outlet-->
+<ng-template #groupGridView let-group="groupInfo" let-isPreview="showPreviewIcon">
+  <div class="col-md-4 col-sm-4 col-xs-12">
+    <div class="grid-box-team">
+      <h4 class="ellipsis mt5 mb5 f-w-600 left-align plfpx" title="{{group?.name}}">
+        {{group?.name | slice:0:20}}
+        <span *ngIf="group?.name?.length>20">..</span>
+        <br>
+      </h4>
+      <p class="tm-count left-align plfpx">Total users with this group:
+        {{group?.teamMembersCount}}
+      </p>
+       <div class="table-responsive">
+         <div class="alert alert-danger left-align" *ngIf="group?.teamMemberModuleDTOs?.length==0">
+           <strong>No Modules Found</strong>
+         </div>
+        <table class="table table-striped" aria-describedby="" *ngIf="group?.teamMemberModuleDTOs?.length>0">
+          <tbody>
+            <tr *ngFor="let module of group?.teamMemberModuleDTOs;let j=index;" class="text-center module-text-color">
+              <th *ngIf="j<=4" scope="row">
+                <i aria-hidden="true" class="{{module?.moduleIcon}} wtfpx"></i>
+                <span>{{module?.moduleName}}</span>
+              </th>
+            </tr>
+            <tr *ngIf="group?.teamMemberModuleDTOs?.length>4" class="text-center module-text-color">
+              <th  scope="row" class="plfpx">
+                 <a>and {{group?.teamMemberModuleDTOs?.length-5}} More..</a>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+       </div> 
+      <div class="bar" *ngIf="isPreview">
+        <a  data-toggle="tooltip" data-placement="top" title="View" (click)="showPreview(group)">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        </a>
+        <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="findGroupDetailsById(group.id)">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </a>
+        <a  data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmAlert(group.id)">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</ng-template>
