@@ -3125,50 +3125,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	listTeamMembers() {
-		try {
-			try {
-				this.teamMemberService.listOrganizationTeamMembers(this.loggedInUserId)
-					.subscribe(
-						data => {
-							console.log(data);
-							for (let i = 0; i < data.length; i++) {
-								this.teamMembersList.push(data[i]);
-							}
-						},
-						error => {
-							this.xtremandLogger.errorPage(error);
-						},
-						() => this.xtremandLogger.info("Finished listTeamMembers()")
-					);
-			} catch (error) {
-				this.xtremandLogger.log(error);
-			}
-		} catch (error) {
-			this.xtremandLogger.error(error, "editContactComponent", "gettingAllTeammemberList()");
-		}
-
-	}
-
-	/*    listOrgAdmin() {
-			try {
-				this.contactService.listOrgAdmins()
-					.subscribe(
-					data => {
-						console.log( data );
-						this.orgAdminsList = data;
-					},
-					error => {
-						this.xtremandLogger.errorPage( error );
-					},
-					() => this.xtremandLogger.info( "Finished listTeamMembers()" )
-					);
-			} catch ( error ) {
-				this.xtremandLogger.log( error );
-			}
-
-		}
-	*/
+	
 	closeModal(event) {
 		if (event == "Emails Send Successfully") {
 			if (this.isPartner) {
@@ -3260,11 +3217,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		try {
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
-			if (this.isPartner) {
-				this.listTeamMembers();
-				/*  this.listOrgAdmin();*/
-			}
-
 			this.selectedContactListName = this.contactListName;
 			this.checkingLoadContactsCount = true;
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
