@@ -98,6 +98,8 @@ import { PartnerCompanyModalPopupComponent } from './partner-company-modal-popup
 import { FormPreviewWithSubmittedAnswersComponent } from 'app/tracks-play-book-util/form-preview-with-submitted-answers/form-preview-with-submitted-answers.component';
 import { TeamMembersUtilComponent } from 'app/util/team-members-util/team-members-util.component';
 import { ConfirmSweetAlertUtilComponent } from 'app/util/confirm-sweet-alert-util/confirm-sweet-alert-util.component';
+import { ChartPieComponent } from 'app/util/charts/chart-pie/chart-pie.component';
+import { ChartVariablePieComponent } from 'app/util/charts/chart-variable-pie/chart-variable-pie.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -115,7 +117,7 @@ import { ConfirmSweetAlertUtilComponent } from 'app/util/confirm-sweet-alert-uti
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
-		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent],
+		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent],
 
 
 
@@ -135,7 +137,7 @@ import { ConfirmSweetAlertUtilComponent } from 'app/util/confirm-sweet-alert-uti
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
-		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent]
+		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent]
 
 
 

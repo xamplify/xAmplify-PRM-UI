@@ -29,6 +29,7 @@ import { EnvService } from 'app/env.service'
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData } from 'html-to-image';
+import { FormSubType } from 'app/forms/models/form-sub-type.enum';
 
 declare var $: any, swal: any, CKEDITOR: any;
 
@@ -955,6 +956,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
   saveOrUpdateForm() {
       this.form.formLabelDTOs = this.columnInfos;
+      
       this.form.createdBy = this.authenticationService.getUserId();
       if(CKEDITOR!=undefined){
         for (var instanceName in CKEDITOR.instances) {
@@ -965,6 +967,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       
       if (!this.form.companyLogo) {
           this.form.companyLogo = this.companyLogoImageUrlPath;
+      }
+     
+      if (this.form.quizForm) {
+          this.form.formSubType = FormSubType.QUIZ;
+      } else if (this.form.formSubType.toString() === FormSubType[FormSubType.QUIZ]) {
+          this.form.formSubType = FormSubType.REGULAR;
       }
       let self = this;
       htmlToImage.toBlob(document.getElementById('create-from-div'))

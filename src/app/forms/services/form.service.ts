@@ -169,6 +169,12 @@ export class FormService {
             .catch( this.handleError );
     }
 
+    getSurveyAnalytics(alias:string){        
+        return this.http.get(this.URL+"survey/analytics/"+alias+"?access_token=" + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     private extractData( res: Response ) {
         const body = res.json();
         return body || {};
