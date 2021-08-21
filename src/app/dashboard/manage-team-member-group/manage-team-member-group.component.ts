@@ -24,6 +24,7 @@ declare var $: any;
 export class ManageTeamMemberGroupComponent implements OnInit {
 
   customResponse: CustomResponse = new CustomResponse();
+  updateGroupResponse: CustomResponse = new CustomResponse();
   pagination: Pagination = new Pagination();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   addGroupLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -41,6 +42,7 @@ export class ManageTeamMemberGroupComponent implements OnInit {
   previewGroup = false;
   selectedGroupId: number = 0;
   selectedGroup: any = {};
+  groupEditedFromPreviewSection = false;
   constructor(public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public properties: Properties,
     public utilService: UtilService, public teamMemberService: TeamMemberService, public callActionSwitch: CallActionSwitch) {
@@ -132,6 +134,7 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     $('#add-team-member-group').hide(500);
     $('#manage-team-member-groups').show(500);
     this.referenceService.goToTop();
+    this.findGroups(this.pagination);
   }
 
   changeStatus(event: any, module: any) {
@@ -171,12 +174,16 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     this.teamMemberService.saveOrUpdateGroup(this.groupDto, this.isAdd).subscribe(
       response => {
         if (response.statusCode == 200) {
-          this.goToManage();
-          let message = this.isAdd ? 'created' : 'updated';
-          this.customResponse = new CustomResponse('SUCCESS', 'Group ' + message + ' successfully', true);
-          this.pagination = new Pagination();
-          this.sortOption = new SortOption();
-          this.findGroups(this.pagination);
+          if(this.groupEditedFromPreviewSection && !this.isAdd){
+             this.showPreview(this.groupDto.id,true);
+          }else{
+            this.goToManage();
+            let message = this.isAdd ? 'created' : 'updated';
+            this.customResponse = new CustomResponse('SUCCESS', 'Group ' + message + ' successfully', true);
+            this.pagination = new Pagination();
+            this.sortOption = new SortOption();
+            this.findGroups(this.pagination);
+          }
         } else {
           this.customResponse = new CustomResponse('ERROR', 'Please select atleast one module', true);
         }
@@ -198,11 +205,11 @@ export class ManageTeamMemberGroupComponent implements OnInit {
   }
 
   findGroupDetailsById(id: number) {
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.groupDto = {};
     this.referenceService.goToTop();
     this.defaultModules = [];
     this.customResponse = new CustomResponse();
-    this.referenceService.loading(this.httpRequestLoader, true);
     this.teamMemberService.findTeamMemberGroupById(id).subscribe(
       response => {
         let map = response.data;
@@ -258,23 +265,57 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     this.isDelete = false;
   }
 
-  showPreview(group:any){
+  showPreview(id:number,showHeaderMessage:boolean){
     this.referenceService.goToTop();
-    this.selectedGroupId = group.id;
-    this.selectedGroup = group;
-    this.previewGroup = true;
-    $('#manage-team-member-groups').hide(500);
-    $('#preview-group').show(500);
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.teamMemberService.previewTeamMemberGroup(id).subscribe(
+      response=>{
+        if(showHeaderMessage){
+          this.updateGroupResponse = new CustomResponse('SUCCESS', 'Group updated successfully', true);
+        }
+        this.selectedGroupId = id;
+        this.selectedGroup = response.data;
+        this.previewGroup = true;
+        $('#manage-team-member-groups').hide(500);
+        $('#add-team-member-group').hide(500);
+        $('#preview-group').show(500);
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },error=>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
+    
   }
 
   clearPreviewDataAndGoToManage(){
     this.referenceService.goToTop();
     this.previewGroup = false;
     $('#preview-group').hide(600);
-    $('#manage-team-member-groups').show(500);
+    this.groupEditedFromPreviewSection = false;
     this.selectedGroupId = 0;
     this.selectedGroup = {};
+    this.updateGroupResponse = new CustomResponse();
+    this.goToManage();
   }
   
+  editGroupFromPreviewSection(id:number){
+    $('#preview-group').hide(500);
+    this.groupEditedFromPreviewSection = true;
+    this.findGroupDetailsById(id);
+  }
+
+  goToManageOrPreview(){
+    this.updateGroupResponse = new CustomResponse();
+    if(this.groupEditedFromPreviewSection){
+        if(this.groupDto.id!=undefined){
+          this.showPreview(this.groupDto.id,false);
+        }else{
+          this.goToManage();
+        }
+    }else{
+      this.goToManage();
+    }
+  }
   
 }

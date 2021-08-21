@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-lg-12">
       <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-        <button class="add-button-xamplify"  (click)="openCreateDiv()" translate>Add</button>
+        <button class="add-button-xamplify"  (click)="openCreateDiv()" translate>Create Group</button>
       </div>
       <div class="col-xs-12 col-sm-7 col-lg-7 p0">
         <div class="page-toolbar">
@@ -47,49 +47,6 @@
     </ng-container>
   </ng-container>
 </div>
- <!-- <ng-container *ngIf="!httpRequestLoader.isLoading">
-  <div class="table-responsive">
-    <table class='table tgrid table-hover table-sm' id="team-member-groups" *ngIf="pagination?.pagedItems?.length>0" aria-describedby="">
-      <thead>
-        <tr>
-          <th colspan="1" style="width: 30%" id="border-bottom">
-            <span class="ui-column-resizer gray" (mousedown)="referenceService?.onMouseDown($event,'team-member-groups',1)"> </span>
-            <span class="gridHeader" translate>Group Name</span>
-          </th>
-          <th class="text-center" id="border-bottom" translate>Created On</th>
-          <th class="text-center float-right" id="border-bottom">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let group of pagination.pagedItems ;let i =index" id="group-list-{{group.id}}">
-          <td>
-            <h4 class="moreipsis" title="{{group?.name}}">
-              <span>{{group?.name}}</span>
-            </h4>
-            <h6 class="moreipsis">
-              <span translate> Created By <strong>{{group?.createdBy}}</strong></span>
-            </h6>
-          </td>
-          <td class="text-center">
-            <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="group?.displayTime">
-            </app-timestamp>
-            <span *ngIf="referenceService.isSafariBrowser()">{{group?.displayTime}}</span>
-          </td>
-          <td>
-            <div class="actions-block override-actions">
-              <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="findGroupDetailsById(group.id)">
-              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-              </a>
-              <a id="template-delete" (click)="confirmAlert(group.id)" data-toggle="tooltip" data-placement="top" title="Delete">
-              <i class="fa fa-trash-o" aria-hidden="true"></i>
-              </a>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</ng-container>  -->
 <div *ngIf="pagination?.pagedItems.length !== 0" class="pg8">
   <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)" (notifyParentDropDown)="findGroups($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 </div>
@@ -105,7 +62,7 @@
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
   </app-response-message>
   <div class="tab-content" *ngIf="!addGroupLoader?.isLoading">
-    <a class="close-circle" (click)="goToManage()">
+    <a class="close-circle" (click)="goToManageOrPreview()">
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
     <form role="form" aria-labelledby="add-team-member-group-form">
@@ -115,10 +72,6 @@
         <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()"/>
         <span class="required" *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
-    <div class="form-group">
-      <label class="control-label" translate>Description</label>
-      <textarea class="form-control" rows="4" cols="4" placeholder="Description" [(ngModel)]="groupDto.description"  [ngModelOptions]="{standalone: true}"></textarea>
-  </div>
   <div class="form-group">
     <label class="control-label" translate>Select Modules</label>
     <span class="required">*</span>
@@ -142,7 +95,7 @@
   </div>
   <div id="right">
     <button type="button" [disabled]="!groupDto.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{groupSubmitButtonText}}</button>
-    <button type="button"  class="btn btn-default" (click)="goToManage()" translate>Cancel</button>
+    <button type="button"  class="btn btn-default" (click)="goToManageOrPreview()" translate>Cancel</button>
   </div>
   </form>
   </div>
@@ -153,6 +106,8 @@
 
 <!--Preview Team Member Group-->
 <div id="preview-group" style="display: none;" >
+  <app-response-message class="pg8" [customResponse]="updateGroupResponse" *ngIf="updateGroupResponse.isVisible">
+  </app-response-message>
    <a class="close-circle" (click)="clearPreviewDataAndGoToManage()">
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
@@ -193,14 +148,14 @@
             </tr>
             <tr *ngIf="group?.teamMemberModuleDTOs?.length>4" class="text-center module-text-color">
               <th  scope="row" class="plfpx">
-                 <a>and {{group?.teamMemberModuleDTOs?.length-5}} More..</a>
+                 <a (click)="editGroupFromPreviewSection(group.id)">and {{group?.teamMemberModuleDTOs?.length-5}} More..</a>
               </th>
             </tr>
           </tbody>
         </table>
        </div> 
       <div class="bar" *ngIf="isPreview">
-        <a  data-toggle="tooltip" data-placement="top" title="View" (click)="showPreview(group)">
+        <a  data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(group.id,false)">
           <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
         <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="findGroupDetailsById(group.id)">

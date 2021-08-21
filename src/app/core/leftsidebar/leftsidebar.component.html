@@ -21,10 +21,10 @@
 
           <!--Partners-->
           <li *ngIf="menuItem?.partners" [ngClass]="{'active': location.path().includes('partners')}">
-            <a href="javascript:;">
+            <a href="javascript:void(0);">
                 <i class="fa fa-handshake-o" aria-hidden="true"></i>
                 <span class="title" translate>Partners</span>
-                <span class="arrow "></span>
+                <span class="arrow"></span>
                 <span class="selected"></span>
             </a>
             <ul class="sub-menu">
@@ -49,7 +49,6 @@
             <a [routerLink]="['/home/select-modules']">
               <i class="fa fa-cloud-upload" aria-hidden="true"></i>
               <span class="title">Content</span>
-              <span class="arrow"></span>
               <span class="selected"></span>
             </a>
           </li> 
@@ -107,7 +106,6 @@
               <a [routerLink]="['./sharedleads/manage']">
               <i class="fa fa-id-badge"aria-hidden="true"></i> 
               <span class="title" translate>Shared Leads</span>
-              <span class="arrow "></span> 
               <span class="selected"></span>
               </a>
           </li>
@@ -117,7 +115,6 @@
               <a [routerLink]="['./pages/partner']"> 
                 <i class="fa fa-wpforms" aria-hidden="true"></i> 
                 <span class="title" translate>Pages</span>
-                <span class="arrow "></span> 
                 <span class="selected"></span>
               </a>
           </li>
@@ -129,7 +126,6 @@
             <a [routerLink]="['./design/add']">
                 <i class="fa fa-paint-brush" aria-hidden="true"></i>
                 <span class="title" translate>Design</span>
-                <span class="arrow "></span>
                 <span class="selected"></span>
             </a>
           </li>
@@ -202,7 +198,6 @@
             <a [routerLink]="['/home/rss/']">
              <i class="fa fa-rss" aria-hidden="true"></i>
              <span class="title">Social Feeds</span>
-             <span class="arrow "></span>
              <span class="selected"></span>
             </a>
           </li> 
@@ -212,7 +207,6 @@
             <a  [routerLink]="['/home/mdf/select']">
               <i class="fa fa-dollar" aria-hidden="true"></i>
               <span class="title">MDF</span>
-              <span class="arrow"></span>
               <span class="selected"></span>
             </a>
           </li> 
@@ -223,7 +217,6 @@
               <a [routerLink]="['./team/add-team']">
                   <i class="fa fa-users" aria-hidden="true"></i>
                   <span class="title" translate>Team</span>
-                  <span class="arrow "></span>
                   <span class="selected"></span>
               </a>
           </li>

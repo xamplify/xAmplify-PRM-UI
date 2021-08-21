@@ -438,7 +438,7 @@ delayAndNavigate(url:string){
     let self = this;
     setTimeout(()=>{                         
       self.refService.goToRouter(url);
-		}, 500);
+		}, 300);
   }
   
 }
