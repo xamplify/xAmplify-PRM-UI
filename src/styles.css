@@ -1042,5 +1042,14 @@ b, strong {
 }
 
 .backdrop{
-	height: 2422px !important;
+	position: fixed !important;
+}
+
+.merge-tag-input-border {
+	box-sizing: border-box !important;
+	border: 1px solid #c8e0e0 !important;
+}
+
+.margin-left-negative-fifteen-px{
+	margin-left: -15px !important;
 }
