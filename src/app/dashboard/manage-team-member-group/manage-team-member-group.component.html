@@ -69,7 +69,7 @@
       <div class="form-group">
         <label class="control-label" translate>Name</label>
         <span class="required">*</span>
-        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()"/>
+        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255"/>
         <span class="required" *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
   <div class="form-group">

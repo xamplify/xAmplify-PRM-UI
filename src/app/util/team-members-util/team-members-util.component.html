@@ -216,7 +216,118 @@
       </div>
   </div>
   </div>
-  <!--End of portlet-light---->
+
+ <!--List Of Team members Copy---->
+ <div class="portlet light">
+  <div class="portlet-title">
+    <div class="caption" translate>Team Members</div>
+    <div class="tools zero-padding-margin">
+        <div class="inputs zero-padding-display-inline">
+            <div class="portlet-input input-inline input-small tmutttpx">
+                <div class="input-icon right">
+                    <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a team member" (keypress)="eventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchTeamMembers()"></button>
+                    <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <a class="reload tmu-refresh-padding" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()"></a>
+    </div>
+  </div>
+  <div class="portlet-body clearfix">
+    <div class="table-responsive">
+      <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+      <table class="table table-striped silvertm" id="team-members" *ngIf="!httpRequestLoader.isLoading" aria-describedby="TeamMemberList">
+        <thead>
+          <tr>
+            <th scope="row">
+              <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs fif" translate>
+                <i class="fa fa-sign-in" aria-hidden="true"></i> Logout
+            </button>
+            <h4 class="user-permission-min-width" translate>
+                <img src="assets/images/user-permission.png" alt="No Image Found">
+                Team Member
+            </h4>
+            </th>
+            <th *ngIf="isTeamMemberModule" scope="" translate>
+              <i class="fa fa-object-group" aria-hidden="true"></i><br>Group
+            </th>
+            <th *ngIf="isOrgAdmin && isTeamMemberModule"  scope="" translate>
+              <i class="fa fa-user" aria-hidden="true"></i><br>Second Admin
+            </th>
+            <th  scope="" translate>
+              <i class="fa fa-ban" aria-hidden="true"></i><br>Enabled
+            </th>
+            <th scope="" translate>
+              <i class="fa fa-tasks" aria-hidden="true"></i><br>Actions
+            </th>
+          </tr>
+        </thead>
+        <ng-container *ngIf="pagination.totalRecords>0">
+        <tbody>
+          <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}" class="list-team-member-class">
+            <td>
+              <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
+            </td>
+            <!---Assigned Group-->
+            <td *ngIf="isTeamMemberModule" title="{{teamMember?.teamMemberGroupName}}">
+              <strong>{{teamMember?.teamMemberGroupName |slice:0:25}}</strong>
+              <strong *ngIf="teamMember?.teamMemberGroupName.length>25">..</strong>
+            </td>
+            <!---Second Admin---->
+            <td *ngIf="isOrgAdmin && isTeamMemberModule">
+                <i class="fa fa-check-circle-o" style="font-size: 20px;color: green;" aria-hidden="true"></i>
+            </td>
+            <!---Enabled---->
+            <td *ngIf="teamMember?.status=='UNAPPROVED'" [title]="teamMember?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+              <i class="fa fa-times-circle" style="font-size: 20px;color: red;" aria-hidden="true"></i>
+            </td>
+            <td *ngIf="teamMember?.status!='UNAPPROVED'">
+              <i class="fa fa-check-circle-o" style="font-size: 20px;color: green;" aria-hidden="true"></i>
+            </td>
+            <!---Actions-->
+            <td id="actions-row">
+              <div class="actions-block override-actions custom-width-icon">
+                <!--Edit--->
+                <a *ngIf="isTeamMemberModule" title="Edit" (click)="edit(team.id)">
+                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+                <!---Analytics--->
+                <a title="Campaigns" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember" class="btn-btn-primay" (click)="goToCampaignAnalytics(teamMember.teamMemberId)">
+                  <i class="fa fa-line-chart" aria-hidden="true"></i>
+                </a>
+                <!--Resend Invitation-->
+                <a *ngIf="teamMember.status=='UNAPPROVED'" title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'inactive':''"  (click)="resendEmailInvitation(teamMember.emailId)">
+                  <i class="fa fa-envelope" aria-hidden="true"></i>
+                </a>
+                <a  *ngIf="teamMember.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="inactive">
+                  <i class="fa fa-envelope gray" aria-hidden="true"></i>
+                </a>
+                <!---Delete-->
+                <a title="Delete" *ngIf="isTeamMemberModule" [className]="isLoggedInAsTeamMember? 'inactive':''"  (click)="showPopup(teamMember)">
+                  <i class="fa fa-trash red" aria-hidden="true"></i>
+                </a>
+              </div>
+            </td> 
+        </tr>
+        </tbody>
+      </ng-container>
+      <tr>
+        <td colspan="16">
+            <div *ngIf="pagination.totalRecords==0" class="alert alert-info" style="text-align: center;"><strong translate>No Team Members Found</strong></div>
+        </td>
+    </tr>
+      </table>
+    </div>
+    <!-- -----------Pagination-------------- -->
+    <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+        <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
+      </div>
+  </div>
+</div>
+
   </ng-container>
   <!---End Of Team Members---->
 
