@@ -278,10 +278,6 @@ span.ui-column-resizer {
 	cursor: default !important;
 }
 
-.merge-tag-input-border {
-	box-sizing: border-box !important;
-	border: 1px solid #c8e0e0 !important;
-}
 
 .button-loader {
 	position: fixed;

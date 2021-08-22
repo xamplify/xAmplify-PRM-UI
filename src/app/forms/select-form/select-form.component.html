@@ -22,6 +22,7 @@
                                     <li class="filter" (click)="showAllForms('All',0)" [class.form-selected]="0 == selectedFormTypeIndex" translate>All</li>
                                     <li class="filter" (click)="showAllForms('Regular',1)" [class.form-selected]="1 == selectedFormTypeIndex" translate>Regular</li>
                                     <li class="filter" (click)="showAllForms('Quiz',2)" [class.form-selected]="2 == selectedFormTypeIndex" translate>Quiz</li>
+                                    <li class="filter" (click)="showAllForms('Survey',3)" [class.form-selected]="3 == selectedFormTypeIndex" translate>Survey</li>
                                     <li *ngIf="loggedInAsSuperAdmin" class="filter" (click)="addDefaultForm()" class="btn btn-primary">Add Default Form</li>
                                 </ul>
                             </div>
@@ -45,8 +46,9 @@
                         <ng-container *ngIf="!httpRequestLoader.isLoading">
                             <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let form of pagination.pagedItems ;let i =index">
                                 <div class="grid-box" (click)="previewForm(form.id)">
-                                    <span class="ribbon" *ngIf="form.quizForm"><span translate>Quiz</span></span>
-                                    <span class="ribbon" *ngIf="!form.quizForm"><span translate>Regular</span></span>
+                                    <span class="ribbon" *ngIf="form.formSubType === 'QUIZ'"><span translate>Quiz</span></span>
+                                    <span class="ribbon" *ngIf="form.formSubType === 'REGULAR'"><span translate>Regular</span></span>
+                                    <span class="ribbon" *ngIf="form.formSubType === 'SURVEY'"><span translate>Survey</span></span>
                                     <div class="img-responsive center-block fit-in-image">
                                         <img [src]="form.thumbnailImage"
                                             onerror="this.src='assets/images/form.png';"

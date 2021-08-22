@@ -222,67 +222,93 @@
 
 <!--Add a Team Member Div-->
 <ng-container *ngIf="showAddTeamMemberDiv && !showUploadedTeamMembers">
-    <div class="portlet light">
-      <div class="portlet-title">
-        <div class="caption" translate>Add Team Member</div>
-        <div>
-          <a class="close-circle" data-toggle="tooltip"  title="Go Back" (click)="clearForm()">
-            <i class="fa fa-close" aria-hidden="true"></i>
-          </a>
-      </div>
-      </div>
-      <div class="portlet-body clearfix">
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div class="portlet light">
+        <div class="portlet-title">
+          <div class="caption" translate>
+            Add Team Member
+          </div>
+          <div>
+            <a class="close-circle" data-toggle="tooltip"  title="Go Back" (click)="clearForm()">
+              <i class="fa fa-close" aria-hidden="true"></i>
+            </a>
+        </div>
+        </div>
         <app-modal-popup-loader *ngIf="addTeamMemberLoader.isLoading"></app-modal-popup-loader>
-        <div *ngIf="!addTeamMemberLoader.isLoading">
-          <form>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="firstName"><span>First Name</span></label>
-                <input type="text"  id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
-              </div>
-              <div class="form-group col-md-6">
-                <label for="lastName"><span>Last Name</span></label>
-                <input type="text"  id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="team.lastName" [ngModelOptions]="{standalone: true}" name="lastName" maxlength="255">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="{{emaillIdDivClass}}">
-                <label for="emailId"><span>Email Id</span><span class="required"> *</span></label>
-                <input type="email" class="form-control" (input)="validateAddTeamMemberForm('emailId')"  placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
-                <span class="required" *ngIf="team?.emailIdErrorMessage?.length>0">{{team?.emailIdErrorMessage}}</span>
-              </div>
-              <div [ngClass]="isOrgAdmin ? 'form-group col-md-3':'form-group col-md-4'">
-                <label for="teamMemberGroup"><span>Team Member Group</span><span class="required"> *</span></label>
-                <select class="form-control" (ngModelChange)="selectTeamMemberGroupId($event);"  [(ngModel)]="team.teamMemberGroupId"  [ngModelOptions]="{standalone: true}">
-                  <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
-                  {{teamMemberGroup.name}}
-                </option>
-                </select>
-              </div>
-              <div [ngClass]="isOrgAdmin ? 'form-group col-md-1 mltpxat':'form-group col-md-2 mltpxat'">
-                <label><span>Preview</span></label><br>
-                <button class="btn btn-info" [disabled]="team?.teamMemberGroupId==0" (click)="previewModules(team.teamMemberGroupId)">
-                  <i class="fa fa-eye white" aria-hidden="true"></i>
-                </button>
-                <button *ngIf="teamMemberGroups?.length==1" class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                title="Go to 'My Profile' -> 'Team Member Groups' to create a group">
-                  <i class="fa fa-question-circle white" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="form-group col-md-2" *ngIf="isOrgAdmin">
-                <label><span>Enable As An Admin</span></label><br>
-                <div [title]="!team?.enableOption? 'This option is not available for the selected group':''">
-                  <switch [status]="team.secondAdmin" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
-                  [size]="callActionSwitch.bsize" (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
-                  </switch>
+        <div *ngIf="!addTeamMemberLoader.isLoading" class="row" style="margin-top: 20px;">
+          <form role="form" class="form-horizontal form-bordered form-label-stripped">
+            <div class="portlet box">
+              <div class="">
+                <!---First Name--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">First Name</label>
+                      <div class="col-sm-8">
+                        <input type="text"  id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
+                      </div>
+                  </div>
                 </div>
+
+                <!---Last Name--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Last Name</label>
+                      <div class="col-sm-8">
+                        <input type="text"  id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="team.lastName" [ngModelOptions]="{standalone: true}" name="lastName" maxlength="255">
+                      </div>
+                  </div>
+                </div>
+
+                <!---Email Id--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Email Id<span class="required">*</span></label>
+                      <div class="{{emaillIdDivClass}}">
+                        <input type="email" class="form-control" (input)="validateAddTeamMemberForm('emailId')"  placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                        <span class="required" *ngIf="team?.emailIdErrorMessage?.length>0">{{team?.emailIdErrorMessage}}</span>
+                      </div>
+                  </div>
+                </div>
+
+                <!---Team Member Group--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Team Member Group<span class="required">*</span></label>
+                    <button class="btn btn-info margin-left-negative-fifteen-px" [disabled]="team?.teamMemberGroupId==0" (click)="previewModules(team.teamMemberGroupId)">
+                      <i class="fa fa-eye white" aria-hidden="true"></i>
+                    </button>
+                    <div class="col-sm-8">
+                        <select class="form-control" (ngModelChange)="selectTeamMemberGroupId($event);"  [(ngModel)]="team.teamMemberGroupId"  [ngModelOptions]="{standalone: true}">
+                          <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+                          {{teamMemberGroup.name}}
+                        </option>
+                        </select>
+                      </div>
+                  </div>
+                </div>
+
+                <!---Enable As An Admin--->
+                <div class="col-md-12 col-lg-12" *ngIf="isOrgAdmin">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Enable As An Admin</label>
+                      <div class="col-sm-8">
+                        <div [title]="!team?.enableOption? 'This option is not available for the selected group':''">
+                          <switch [status]="team.secondAdmin" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                          [size]="callActionSwitch.defaultSize" (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
+                          </switch>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <button [disabled]="!team?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addTeamMember()">Save</button>
               </div>
             </div>
-            <button [disabled]="!team?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addTeamMember()">Save</button>
           </form>
-      </div>
+        </div>
       </div>
     </div>
+  </div>
 </ng-container>
 <!--End of Add a Team Member Div-->
 

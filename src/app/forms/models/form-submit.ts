@@ -1,3 +1,4 @@
+import { GeoLocationAnalytics } from 'app/util/geo-location-analytics';
 import {FormSubmitField} from './form-submit-field';
 export class FormSubmit {
     id:number;
@@ -5,4 +6,5 @@ export class FormSubmit {
     fields:Array<FormSubmitField> = new Array<FormSubmitField>();
     userId:number;
     learningTrackId:number;
+    geoLocationAnalyticsDTO: GeoLocationAnalytics;
 }

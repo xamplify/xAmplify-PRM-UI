@@ -50,12 +50,12 @@ export class TeamMembersUtilComponent implements OnInit {
   teamMemberUi:TeamMemberUi = new TeamMemberUi();
   team:any;
   /*****Form Related**************/
-	formGroupClass: string = "form-group col-md-6";
+	formGroupClass: string = "col-sm-8";
   emaillIdDivClass: string = this.formGroupClass;
   groupNameDivClass:string = this.formGroupClass;
-	errorClass: string = "form-group col-md-6 has-error has-feedback";
-	successClass: string = "form-group col-md-6 has-success has-feedback";
-  defaultClass: string = "form-group col-md-6";
+	errorClass: string = "col-sm-8 has-error has-feedback";
+	successClass: string = "col-sm-8 has-success has-feedback";
+  defaultClass: string = this.formGroupClass;
   /************CSV Related************* */
   showUploadedTeamMembers = false;
   csvErrors: any[];

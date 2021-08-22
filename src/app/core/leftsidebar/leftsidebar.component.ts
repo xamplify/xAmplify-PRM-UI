@@ -11,7 +11,7 @@ import { UtilService } from '../../core/services/util.service';
 import { MenuItem } from '../models/menu-item';
 import { Roles } from '../../core/models/roles';
 
-declare var $: any;
+declare var window,$: any;
 
 @Component({
 	selector: 'app-leftsidebar',
@@ -43,9 +43,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	ngOnInit() {
 		this.findMenuItems();
 	}
-	ngDoCheck() {
-
-	}
+	
 
 	findMenuItems() {
 		this.loading = true;
@@ -221,5 +219,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}
 	}	
 
+	ngDoCheck() {
+		
+	}
+
+	expandOrClose(module:string){
+		
+	}
+	
 
 }

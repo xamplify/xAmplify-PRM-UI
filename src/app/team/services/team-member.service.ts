@@ -235,7 +235,14 @@ export class TeamMemberService{
 		return this.http.post(url, input)
 			.map(this.extractData)
 			.catch(this.handleError);
-	}
+    }
+    
+    previewTeamMemberGroup(id:number){
+        const url = this.URL + "teamMemberGroup/previewById/"+id+"?access_token=" + this.authenticationService.access_token;
+		return this.http.get(url)
+			.map(this.extractData)
+			.catch(this.handleError);
+    }
 
 	deleteTeamMemberGroups(id: number) {
 		const url = this.URL + "teamMemberGroup/delete/" + id + '?access_token=' + this.authenticationService.access_token;
