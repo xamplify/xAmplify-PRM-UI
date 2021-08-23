@@ -61,7 +61,7 @@
       </div>
         <div class="col-xs-12 col-sm-2">
             <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddTeamMemberDiv()">
-                <h6 style="font-size:14px" translate>Add Team Member</h6>
+                <h6 style="font-size:14px" translate>Add</h6>
             </button>
         </div>
         <div class="col-xs-12 col-sm-3 hidden-xs pull-right">
@@ -140,7 +140,7 @@
             <!---Second Admin---->
             <td *ngIf="isOrgAdmin && isTeamMemberModule">
               <div class="actions-block float-none">
-                <i  [className]="teamMember?.secondAdmin ? 'fa fa-check green':'fa fa-times red'" aria-hidden="true"></i >
+                <i  [className]="teamMember?.secondAdmin ? 'fa fa-check active-status':'fa fa-times red'" aria-hidden="true"></i >
               </div>
             </td>
             <!---Enabled---->
@@ -151,7 +151,7 @@
             </td>
             <td *ngIf="teamMember?.status!='UNAPPROVED' && teamMember?.status!='DECLINE'">
             <div class="actions-block float-none">
-              	<i class="fa fa-check green" aria-hidden="true"></i>
+              	<i class="fa fa-check active-status" aria-hidden="true"></i>
               </div>
             </td>
             <td *ngIf="teamMember?.status=='DECLINE'" title="This team member is inactive">
@@ -215,6 +215,9 @@
 <!--Add a Team Member Div-->
 <ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
       <div class="portlet light">
+        <div class="alert alert-info" *ngIf="teamMemberGroups?.length==1">
+          <strong translate>Please Go to 'My Profile' ---> 'Team Member Groups' to create a group</strong>
+      </div>
         <div class="portlet-title">
           <div class="caption" translate>
             <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
@@ -453,7 +456,7 @@
           <div class="modal-body">
               <div id="modal-content">
                   <app-modal-popup-loader *ngIf="modulesLoader"></app-modal-popup-loader>
-                  <div  class="table-responsive">
+                  <div  class="table-responsive" *ngIf="!modulesLoader">
                     <div class="alert alert-danger" *ngIf="emptyModules">
                       <strong>No Modules Found</strong>
                    </div>
