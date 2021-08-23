@@ -280,6 +280,13 @@ export class TeamMemberService{
 		return this.http.post(url, teamMember)
 		.map(this.extractData)
 		.catch(this.handleError);
+    }
+    
+    findById(id:number){
+		var url = this.URL + "teamMember/findById/"+id+"?access_token=" + this.authenticationService.access_token;
+		return this.http.get(url)
+		.map(this.extractData)
+		.catch(this.handleError);
 	}
 
 	findUsersToTransferData() {

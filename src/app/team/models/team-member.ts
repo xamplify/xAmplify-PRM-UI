@@ -26,6 +26,14 @@ export class TeamMember{
     secondOrgAdmin = false;
     loggedInUserId:number;
     vanityUrlFilter = false;
-	 vanityUrlDomainName:string;
+    vanityUrlDomainName:string;
+    emailIdErrorMessage = "";
+    teamMemberGroupId = 0;
+    enableOption = false;
+    validEmailId = false;
+    validTeamMemberGroupId = false;
+    validForm = false;
+    secondAdmin = false;
+    userId  = 0;
 
 }

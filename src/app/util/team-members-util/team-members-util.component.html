@@ -48,7 +48,7 @@
 
 <div class="row">
   <!---Team Members---->
-  <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers">
+  <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
   <!---Header-->
   <div class="clearfix" *ngIf="isTeamMemberModule">
     <section class="clearfix">
@@ -112,7 +112,7 @@
               <i class="fa fa-user" aria-hidden="true"></i><br>Second Admin
             </th>
             <th  scope="" translate>
-              <i class="fa fa-ban" aria-hidden="true"></i><br>Enabled
+              <i class="fa fa-ban" aria-hidden="true"></i><br>Status
             </th>
             <th class="padding-left-eight-per" scope="" translate>
               <i class="fa fa-tasks" aria-hidden="true"></i><br>Actions
@@ -140,20 +140,25 @@
             <!---Second Admin---->
             <td *ngIf="isOrgAdmin && isTeamMemberModule">
               <div class="actions-block float-none">
-                <i  [className]="teamMember?.secondAdmin ? 'fa fa-check-circle-o green':'fa fa-times-circle red'" aria-hidden="true"></i >
+                <i  [className]="teamMember?.secondAdmin ? 'fa fa-check green':'fa fa-times red'" aria-hidden="true"></i >
               </div>
             </td>
             <!---Enabled---->
             <td *ngIf="teamMember?.status=='UNAPPROVED'" [title]="teamMember?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
               <div class="actions-block float-none">
-              	<i class="fa fa-times-circle red" aria-hidden="true"></i>
+              	<i class="fa fa-times red" aria-hidden="true"></i>
               </div>
             </td>
-            <td *ngIf="teamMember?.status!='UNAPPROVED'">
+            <td *ngIf="teamMember?.status!='UNAPPROVED' && teamMember?.status!='DECLINE'">
             <div class="actions-block float-none">
-              	<i class="fa fa-check-circle-o green" aria-hidden="true"></i>
+              	<i class="fa fa-check green" aria-hidden="true"></i>
               </div>
             </td>
+            <td *ngIf="teamMember?.status=='DECLINE'" title="This team member is inactive">
+              <div class="actions-block float-none">
+              	<i class="fa fa-times red" aria-hidden="true"></i>
+              </div>
+              </td>
             <!---Actions-->
             <td  [className]="isLoggedInAsTeamMember ? 'actions-row inactive ':'actions-row'" [title]="isLoggedInAsTeamMember ? 'These options are not available':''">
               <div class="actions-block override-actions custom-width-icon">
@@ -167,7 +172,7 @@
                   </a>
                 </ng-container>
                 <!--Edit--->
-                <a *ngIf="isTeamMemberModule" title="Edit" (click)="edit(team.id)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
+                <a *ngIf="isTeamMemberModule" title="Edit" (click)="edit(teamMember.teamMemberId)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </a>
                 <!---Analytics--->
@@ -208,14 +213,15 @@
   <!---End Of Team Members---->
 
 <!--Add a Team Member Div-->
-<ng-container *ngIf="showAddTeamMemberDiv && !showUploadedTeamMembers">
+<ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
       <div class="portlet light">
         <div class="portlet-title">
           <div class="caption" translate>
-            Add Team Member
+            <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
+            <span *ngIf="editTeamMember">Edit Team Member</span>
           </div>
           <div>
-            <a class="close-circle" data-toggle="tooltip"  title="Go Back" (click)="clearForm()">
+            <a class="close-circle"  title="Go Back" (click)="clearForm()">
               <i class="fa fa-close" aria-hidden="true"></i>
             </a>
         </div>
@@ -250,8 +256,13 @@
                   <div class="form-group">
                     <label class="control-label col-sm-3">Email Id<span class="required">*</span></label>
                       <div class="{{emaillIdDivClass}}">
-                        <input type="email" class="form-control" (input)="validateAddTeamMemberForm('emailId')"  placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
-                        <span class="required" *ngIf="team?.emailIdErrorMessage?.length>0">{{team?.emailIdErrorMessage}}</span>
+                        <ng-container *ngIf="showAddTeamMemberDiv">
+                          <input  type="email" class="form-control" (input)="validateAddTeamMemberForm('emailId')"  placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                          <span class="required" *ngIf="team?.emailIdErrorMessage?.length>0">{{team?.emailIdErrorMessage}}</span>
+                        </ng-container>
+                        <ng-container *ngIf="editTeamMember">
+                          <input disabled type="email" class="form-control"   placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                        </ng-container>
                       </div>
                   </div>
                 </div>
@@ -286,7 +297,24 @@
                       </div>
                   </div>
                 </div>
-                <button [disabled]="!team?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addTeamMember()">Save</button>
+
+                <!---Status--->
+                <div class="col-md-12 col-lg-12" *ngIf="editTeamMember">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Status</label>
+                      <div class="col-sm-8">
+                        <div [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+                          <switch *ngIf="team.status=='UNAPPROVED'" [status]="team.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                          [size]="callActionSwitch.defaultSize" [disabled]="callActionSwitch.disabled">
+                          </switch>
+                          <switch *ngIf="team.status!='UNAPPROVED'" [status]="team.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                          [size]="callActionSwitch.defaultSize" (statusChange)="changeTeamMemberStatus(team,$event)">
+                          </switch>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <button [disabled]="!team?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addOrUpdateTeamMember()">{{saveOrUpdateButtonText}}</button>
               </div>
             </div>
           </form>
@@ -296,7 +324,7 @@
 <!--End of Add a Team Member Div-->
 
 <!-----Uplodaded Team Members----->
-<div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv ">
+<div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMembers ">
   <div class="portlet-title">
     <div class="caption" translate>Uploaded Team Members</div>
     <div [hidden]="addTeamMemberLoader.isLoading">
@@ -373,7 +401,6 @@
 <!----End Of Uploaded Team Members-->
 </div>
 <!-----End Of Uplodaded Team Members----->
-
 </div>
 
 <!-- Delete Team Member Modal Popup -->
