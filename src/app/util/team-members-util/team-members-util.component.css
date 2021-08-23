@@ -246,9 +246,7 @@ hr {
     margin-left: 50%
 }
 
-.inactive {
-    cursor: not-allowed;
-}
+
 
 .user-permission-min-width {
     min-width: 230px;
@@ -319,10 +317,18 @@ hr {
     margin: -5px 15px !important;
 }
 
-#actions-row{
+.actions-row{
 	width: 30%;
 }
 
 .custom-width-icon{
 	min-width: 130px;
+}
+
+.margin-left-one-per{
+    margin-left: 1% !important;
+}
+
+.padding-left-eight-per{
+    padding-left: 8%;
 }

@@ -1053,3 +1053,24 @@ b, strong {
 .margin-left-negative-fifteen-px{
 	margin-left: -15px !important;
 }
+
+.fa-twenty-px{
+	font-size: 20px !important;
+}
+
+.green{
+    color:green !important;
+}
+
+.red{
+    color:red !important;
+}
+
+.inactive {
+    cursor: not-allowed !important;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
