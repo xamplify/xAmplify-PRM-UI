@@ -327,7 +327,7 @@
 <!--End of Add a Team Member Div-->
 
 <!-----Uplodaded Team Members----->
-<div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMembers ">
+<div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMember">
   <div class="portlet-title">
     <div class="caption" translate>Uploaded Team Members</div>
     <div [hidden]="addTeamMemberLoader.isLoading">

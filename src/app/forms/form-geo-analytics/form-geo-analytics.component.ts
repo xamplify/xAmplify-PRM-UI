@@ -18,7 +18,7 @@ export class FormGeoAnalyticsComponent implements OnInit {
 
   pagination: Pagination = new Pagination();
   customResponse: CustomResponse = new CustomResponse();
-
+  searchKey = "";
   constructor(public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public formService: FormService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService,
