@@ -112,7 +112,7 @@
               <i class="fa fa-user" aria-hidden="true"></i><br>Second Admin
             </th>
             <th  scope="" translate>
-              <i class="fa fa-ban" aria-hidden="true"></i><br>Status
+              <i class="fa fa-lock" aria-hidden="true"></i><br>Status
             </th>
             <th class="padding-left-eight-per" scope="" translate>
               <i class="fa fa-tasks" aria-hidden="true"></i><br>Actions
@@ -459,7 +459,7 @@
                    </div>
                     <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
                       <ng-container *ngFor="let defaultModule of defaultModules;let i = index">
-                        <tr *ngIf="defaultModule?.enabled">
+                        <tr>
                           <th scope="row">
                             <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
                             {{defaultModule?.moduleName}}

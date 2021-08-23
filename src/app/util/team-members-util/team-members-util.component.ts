@@ -732,13 +732,11 @@ export class TeamMembersUtilComponent implements OnInit {
     this.emptyModules = false;
     this.defaultModules = [];
     $('#preview-team-member-popup').modal('show');
-    this.teamMemberService.findTeamMemberGroupById(teamMemberGroupId).subscribe(
+    this.teamMemberService.previewTeamMemberGroup(teamMemberGroupId).subscribe(
       response => {
-        let map = response.data;
-        this.defaultModules = map['modules'];
-        let roleIds  = map['teamMemberGroupDTO']['roleIds'];
-        this.emptyModules = roleIds == undefined ||(roleIds!= undefined &&roleIds.length==0) ;
-        this.modulesLoader = false;
+       this.defaultModules = response.data.teamMemberModuleDTOs;
+       this.emptyModules = this.defaultModules.length==0;
+       this.modulesLoader = false;
       }, error => {
         this.logger.log(error);
         this.modulesLoader = false;
