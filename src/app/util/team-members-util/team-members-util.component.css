@@ -246,10 +246,6 @@ hr {
     margin-left: 50%
 }
 
-.inactive {
-    cursor: not-allowed;
-}
-
 .user-permission-min-width {
     min-width: 230px;
 }
@@ -258,47 +254,92 @@ hr {
     width: 200px !important;
 }
 
-
-.white{
+.white {
     color: white !important;
-  
 }
 
-.silvertm{
+.silvertm {
     background: #a9a9a930;
 }
 
-.mltpxat{
+.mltpxat {
     margin-left: -30px !important;
 }
 
-.ecc{
+.ecc {
     color: #a94442 !important;
     border: 1px solid !important;
     margin-bottom: 5px !important;
 }
-.scc{
+
+.scc {
     color: #3c763d !important;
     border: 1px solid !important;
     margin-bottom: 5px !important;
 }
-.align-bold{
+
+.align-bold {
     text-align: center !important;
-    font-weight:bold !important;
+    font-weight: bold !important;
 }
 
-.mrfpx{
-	margin-right:5px;
+.mrfpx {
+    margin-right: 5px;
 }
 
-.dodgerblue{
-	font-weight: 500 !important;
+.dodgerblue {
+    font-weight: 500 !important;
 }
 
-.border-error{
+.border-error {
     outline: none !important;
-    border:1px solid red !important;
+    border: 1px solid red !important;
     box-shadow: 0 0 10px #719ECE !important;
 }
 
+.zero-padding-margin {
+    padding: 0;
+    margin: 0;
+}
 
+.zero-padding-display-inline {
+    padding: 0;
+    display: inline;
+}
+
+.tmutttpx {
+    width: 236px !important;
+}
+
+.tmu-refresh-padding {
+    margin: -5px 15px !important;
+}
+
+.actions-row {
+    width: 30%;
+}
+
+.custom-width-icon {
+    min-width: 130px;
+}
+
+.margin-left-one-per {
+    margin-left: 1% !important;
+}
+
+.padding-left-eight-per {
+    padding-left: 8%;
+}
+
+.pttpx {
+    padding-top: 2px!important;
+}
+
+.group-name-cclass{
+    border-radius: 3px 0px 0px 3px;
+    width: 200px;
+}
+
+.tm-group-preview-css{
+    border-radius: 0px 3px 3px 0px;
+}

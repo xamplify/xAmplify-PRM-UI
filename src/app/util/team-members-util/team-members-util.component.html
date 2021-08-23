@@ -48,7 +48,7 @@
 
 <div class="row">
   <!---Team Members---->
-  <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers">
+  <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
   <!---Header-->
   <div class="clearfix" *ngIf="isTeamMemberModule">
     <section class="clearfix">
@@ -61,7 +61,7 @@
       </div>
         <div class="col-xs-12 col-sm-2">
             <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddTeamMemberDiv()">
-                <h6 style="font-size:14px" translate>Add Team Member</h6>
+                <h6 style="font-size:14px" translate>Add</h6>
             </button>
         </div>
         <div class="col-xs-12 col-sm-3 hidden-xs pull-right">
@@ -71,25 +71,27 @@
     </section>
   </div>
  <!---End Of Header-->
- 
  <!--List Of Team members---->
-  <div class="portlet light">
-    <div class="portlet-title">
-      <div class="caption" translate>Team Members</div>
-      <div class="tools" style="padding: 0;margin: 0;">
-          <div class="inputs" style="padding:0;display: inline;">
-              <div class="portlet-input input-inline input-small" style="width: 236px !important;">
-                  <div class="input-icon right">
-                      <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a team member" (keypress)="eventHandler($event.keyCode)">
-                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchTeamMembers()"></button>
-                      <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                      </button>
-                  </div>
-              </div>
-          </div>
-          <a class="reload" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()" style="margin: -5px 15px;"></a>
-      </div>
+ <div class="portlet light">
+  <div class="portlet-title">
+    <div class="caption" translate>Team Members</div>
+    <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
+      <i class="fa fa-sign-in" aria-hidden="true"></i> Logout
+    </button>
+    <div class="tools zero-padding-margin">
+        <div class="inputs zero-padding-display-inline">
+            <div class="portlet-input input-inline input-small tmutttpx">
+                <div class="input-icon right">
+                    <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a team member" (keypress)="eventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchTeamMembers()"></button>
+                    <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <a class="reload tmu-refresh-padding" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()"></a>
+    </div>
   </div>
   <div class="portlet-body clearfix">
     <div class="table-responsive">
@@ -98,109 +100,99 @@
         <thead>
           <tr>
             <th scope="row">
-              <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs fif" translate>
-                <i class="fa fa-sign-in" aria-hidden="true"></i> Logout
-            </button>
             <h4 class="user-permission-min-width" translate>
                 <img src="assets/images/user-permission.png" alt="No Image Found">
                 Team Member
             </h4>
-             </th>
-             <th *ngIf="isOrgAdmin && isTeamMemberModule" scope="" translate>
-               Enable As An Admin
-             </th>
-             <th *ngIf="isTeamMemberModule" scope="" translate>
+            </th>
+            <th *ngIf="isTeamMemberModule" scope="" translate>
               <i class="fa fa-object-group" aria-hidden="true"></i><br>Group
             </th>
-             <th  scope="" translate>
-              <i class="fa fa-ban" aria-hidden="true"></i><br>Enabled
+            <th *ngIf="isOrgAdmin && isTeamMemberModule"  scope="" translate>
+              <i class="fa fa-user" aria-hidden="true"></i><br>Second Admin
             </th>
-            <th  scope="" translate *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember">
-                <i class="fa fa-line-chart" aria-hidden="true"></i><br>Analytics
+            <th  scope="" translate>
+              <i class="fa fa-lock" aria-hidden="true"></i><br>Status
             </th>
-            <th  scope="" *ngIf="pagination.totalRecords>0 && isTeamMemberModule" translate>
-              <i class="fa fa-save" aria-hidden="true"></i><br>Update
-          </th>
-            <th   scope="" *ngIf="pagination.totalRecords>0 && isTeamMemberModule" translate>
-              <i class="fa fa-trash" aria-hidden="true"></i><br>Delete
-          </th>
-          <th  scope="" *ngIf="pagination.totalRecords>0" translate>
-            <i class="fa fa-envelope" aria-hidden="true"></i><br>Resend Invitation
-        </th>
+            <th class="padding-left-eight-per" scope="" translate>
+              <i class="fa fa-tasks" aria-hidden="true"></i><br>Actions
+            </th>
           </tr>
         </thead>
         <ng-container *ngIf="pagination.totalRecords>0">
         <tbody>
           <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}" class="list-team-member-class">
             <td>
-              <ng-container *ngIf="teamMember?.loginAs">
-                <button *ngIf="teamMember?.enabled" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)" translate>
-                    <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
-                </button>
-                <button *ngIf="!teamMember?.enabled" class="btn btn-default btn-xs fif inactive" title="{{teamMember.loginAsButtonToolTipMessage}}" translate>
-                    <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
-                </button>
-            </ng-container>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
-            </td>
-             <!-- Enable As An Admin  -->
-             <td  *ngIf="isOrgAdmin && isTeamMemberModule">
-              <switch  [status]="teamMember.secondAdmin" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
-                  [size]="callActionSwitch.bsize" (statusChange)="changeOrgAdminStatus(teamMember,$event)">
-              </switch>
             </td>
             <!---Assigned Group-->
             <td *ngIf="isTeamMemberModule">
-              <div [ngClass]="teamMember?.highlightDropDown ? 'input-group border-error':'input-group'">
-              <select class="form-control cwtpxtm" [(ngModel)]="teamMember.teamMemberGroupId">
-                <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
-                {{teamMemberGroup.name}}
-              </option>
-              </select>
-              <span class="input-group-btn">
-                <button class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)">
-                  <i class="fa fa-eye white" aria-hidden="true"></i>
+              <div class="btn-group">
+                <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
+                  <span>{{teamMember?.teamMemberGroupName | slice:0:20}}</span>
+                  <span *ngIf="teamMember?.teamMemberGroupName?.length>20">...</span>
                 </button>
-              </span>
+                <button class="tm-group-preview-css" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                </button>
             </div>
             </td>
-            <!-- Enabled  -->
-            <td [title]="teamMember?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
-              <switch *ngIf="teamMember.status=='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
-                  [size]="callActionSwitch.bsize" [disabled]="callActionSwitch.disabled">
-              </switch>
-              <switch *ngIf="teamMember.status!='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
-                  [size]="callActionSwitch.bsize" (statusChange)="changeTeamMemberStatus(teamMember,$event)">
-              </switch>
+            <!---Second Admin---->
+            <td *ngIf="isOrgAdmin && isTeamMemberModule">
+              <div class="actions-block float-none">
+                <i  [className]="teamMember?.secondAdmin ? 'fa fa-check active-status':'fa fa-times red'" aria-hidden="true"></i >
+              </div>
             </td>
-            <!-- -Analytics--- -->
-            <td *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember">
-              <a class="btn-btn-primay" (click)="goToCampaignAnalytics(teamMember.teamMemberId)">
-                  <i class="fa fa-line-chart" aria-hidden="true"></i>
-              </a>
+            <!---Enabled---->
+            <td *ngIf="teamMember?.status=='UNAPPROVED'" [title]="teamMember?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+              <div class="actions-block float-none">
+              	<i class="fa fa-times red" aria-hidden="true"></i>
+              </div>
             </td>
-            <!-- -Edit--- -->
-            <td *ngIf="isTeamMemberModule">
-              <a [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'" (click)="updateTeamMember(teamMember,i)">
-                <i class="fa fa-save" aria-hidden="true"></i>
-              </a>
+            <td *ngIf="teamMember?.status!='UNAPPROVED' && teamMember?.status!='DECLINE'">
+            <div class="actions-block float-none">
+              	<i class="fa fa-check active-status" aria-hidden="true"></i>
+              </div>
             </td>
-            <!-- -Delete--- -->
-              <td *ngIf="isTeamMemberModule">
-                <a [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'"  (click)="showPopup(teamMember)">
-                    <i class="fa fa-trash red" aria-hidden="true"></i>
-                </a>
+            <td *ngIf="teamMember?.status=='DECLINE'" title="This team member is inactive">
+              <div class="actions-block float-none">
+              	<i class="fa fa-times red" aria-hidden="true"></i>
+              </div>
               </td>
-            <!-- -Invitation Email--- -->
-            <td>
-              <a *ngIf="teamMember.status=='UNAPPROVED'" title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'"  (click)="resendEmailInvitation(teamMember.emailId)">
+            <!---Actions-->
+            <td  [className]="isLoggedInAsTeamMember ? 'actions-row inactive ':'actions-row'" [title]="isLoggedInAsTeamMember ? 'These options are not available':''">
+              <div class="actions-block override-actions custom-width-icon">
+                <!--Login As-->
+                <ng-container *ngIf="teamMember?.loginAs">
+                  <a *ngIf="teamMember?.enabled" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" title="Login As"  (click)="loginAs(teamMember)" translate>
+                      <i class="fa fa-sign-in" aria-hidden="true"></i>
+                  </a>
+                  <a *ngIf="!teamMember?.enabled" [className]="isLoggedInAsTeamMember? 'pointer-events-none':'inactive'" title="{{teamMember.loginAsToolTipMessage}}" translate>
+                      <i class="fa fa-sign-in gray" aria-hidden="true"></i>
+                  </a>
+                </ng-container>
+                <!--Edit--->
+                <a *ngIf="isTeamMemberModule" title="Edit" (click)="edit(teamMember.teamMemberId)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
+                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+                <!---Analytics--->
+                <a title="Campaigns" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="goToCampaignAnalytics(teamMember.teamMemberId)">
+                  <i class="fa fa-line-chart" aria-hidden="true"></i>
+                </a>
+                <!--Resend Invitation-->
+                <a *ngIf="teamMember.status=='UNAPPROVED'" title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="resendEmailInvitation(teamMember.emailId)">
                   <i class="fa fa-envelope" aria-hidden="true"></i>
-              </a>
-              <a  *ngIf="teamMember.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="btn-sm inactive">
-                <i class="fa fa-envelope gray" aria-hidden="true"></i>
-            </a>
-            </td>
-         </tr>
+                </a>
+                <a  *ngIf="teamMember.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="inactive">
+                  <i class="fa fa-envelope gray" aria-hidden="true"></i>
+                </a>
+                <!---Delete-->
+                <a title="Delete" *ngIf="isTeamMemberModule" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="showPopup(teamMember)">
+                  <i class="fa fa-trash red" aria-hidden="true"></i>
+                </a>
+              </div>
+            </td> 
+        </tr>
         </tbody>
       </ng-container>
       <tr>
@@ -215,22 +207,24 @@
         <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
       </div>
   </div>
-  </div>
-  <!--End of portlet-light---->
+</div>
+
   </ng-container>
   <!---End Of Team Members---->
 
 <!--Add a Team Member Div-->
-<ng-container *ngIf="showAddTeamMemberDiv && !showUploadedTeamMembers">
-  <div class="row">
-    <div class="col-md-12 col-lg-12">
+<ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
       <div class="portlet light">
+        <div class="alert alert-info" *ngIf="teamMemberGroups?.length==1">
+          <strong translate>Please Go to 'My Profile' ---> 'Team Member Groups' to create a group</strong>
+      </div>
         <div class="portlet-title">
           <div class="caption" translate>
-            Add Team Member
+            <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
+            <span *ngIf="editTeamMember">Edit Team Member</span>
           </div>
           <div>
-            <a class="close-circle" data-toggle="tooltip"  title="Go Back" (click)="clearForm()">
+            <a class="close-circle"  title="Go Back" (click)="clearForm()">
               <i class="fa fa-close" aria-hidden="true"></i>
             </a>
         </div>
@@ -265,8 +259,13 @@
                   <div class="form-group">
                     <label class="control-label col-sm-3">Email Id<span class="required">*</span></label>
                       <div class="{{emaillIdDivClass}}">
-                        <input type="email" class="form-control" (input)="validateAddTeamMemberForm('emailId')"  placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
-                        <span class="required" *ngIf="team?.emailIdErrorMessage?.length>0">{{team?.emailIdErrorMessage}}</span>
+                        <ng-container *ngIf="showAddTeamMemberDiv">
+                          <input  type="email" class="form-control" (input)="validateAddTeamMemberForm('emailId')"  placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                          <span class="required" *ngIf="team?.emailIdErrorMessage?.length>0">{{team?.emailIdErrorMessage}}</span>
+                        </ng-container>
+                        <ng-container *ngIf="editTeamMember">
+                          <input disabled type="email" class="form-control"   placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                        </ng-container>
                       </div>
                   </div>
                 </div>
@@ -301,19 +300,34 @@
                       </div>
                   </div>
                 </div>
-                <button [disabled]="!team?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addTeamMember()">Save</button>
+
+                <!---Status--->
+                <div class="col-md-12 col-lg-12" *ngIf="editTeamMember">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Status</label>
+                      <div class="col-sm-8">
+                        <div [title]="team?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+                          <switch *ngIf="team.status=='UNAPPROVED'" [status]="team.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                          [size]="callActionSwitch.defaultSize" [disabled]="callActionSwitch.disabled">
+                          </switch>
+                          <switch *ngIf="team.status!='UNAPPROVED'" [status]="team.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                          [size]="callActionSwitch.defaultSize" (statusChange)="changeTeamMemberStatus(team,$event)">
+                          </switch>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <button [disabled]="!team?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addOrUpdateTeamMember()">{{saveOrUpdateButtonText}}</button>
               </div>
             </div>
           </form>
         </div>
       </div>
-    </div>
-  </div>
 </ng-container>
 <!--End of Add a Team Member Div-->
 
 <!-----Uplodaded Team Members----->
-<div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv ">
+<div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMembers ">
   <div class="portlet-title">
     <div class="caption" translate>Uploaded Team Members</div>
     <div [hidden]="addTeamMemberLoader.isLoading">
@@ -390,7 +404,6 @@
 <!----End Of Uploaded Team Members-->
 </div>
 <!-----End Of Uplodaded Team Members----->
-
 </div>
 
 <!-- Delete Team Member Modal Popup -->
@@ -443,13 +456,13 @@
           <div class="modal-body">
               <div id="modal-content">
                   <app-modal-popup-loader *ngIf="modulesLoader"></app-modal-popup-loader>
-                  <div  class="table-responsive">
+                  <div  class="table-responsive" *ngIf="!modulesLoader">
                     <div class="alert alert-danger" *ngIf="emptyModules">
                       <strong>No Modules Found</strong>
                    </div>
                     <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
                       <ng-container *ngFor="let defaultModule of defaultModules;let i = index">
-                        <tr *ngIf="defaultModule?.enabled">
+                        <tr>
                           <th scope="row">
                             <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
                             {{defaultModule?.moduleName}}

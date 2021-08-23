@@ -19,6 +19,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Properties } from '../../common/models/properties';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+
 declare var $, swal: any;
 @Component({
   selector: 'app-team-members-util',
@@ -47,8 +48,10 @@ export class TeamMembersUtilComponent implements OnInit {
   isLoggedInThroughVanityUrl: boolean;
   loggedInUserId: number;
   showAddTeamMemberDiv = false;
+  editTeamMember = false;
   teamMemberUi:TeamMemberUi = new TeamMemberUi();
-  team:any;
+  team:TeamMember = new TeamMember();
+  saveOrUpdateButtonText = "Save";
   /*****Form Related**************/
 	formGroupClass: string = "col-sm-8";
   emaillIdDivClass: string = this.formGroupClass;
@@ -186,23 +189,17 @@ export class TeamMembersUtilComponent implements OnInit {
   }
 
   /******************Update Team Member********************** */
-  updateTeamMember(teamMember: any, index: number) {
+  updateTeamMember() {
     if (!this.isLoggedInAsTeamMember) {
       this.loading = true;
-      this.referenceService.loading(this.httpRequestLoader, true);
+      this.referenceService.loading(this.addTeamMemberLoader, true);
       this.customResponse = new CustomResponse();
-      teamMember['highlightDropDown'] = false;
       this.referenceService.goToTop();
-      let teamMemberInput = {};
-      teamMemberInput['id'] = teamMember.teamMemberId;
-      teamMemberInput['teamMemberGroupId'] = teamMember.teamMemberGroupId;
-      teamMemberInput['userId'] = this.loggedInUserId;
-      teamMemberInput['status'] = teamMember.status;
-      teamMemberInput['secondAdmin'] = teamMember.secondAdmin;
-      this.teamMemberService.updateTeamMemberXNFR2(teamMemberInput)
+      this.teamMemberService.updateTeamMemberXNFR2(this.team)
         .subscribe(
           data => {
-            this.referenceService.loading(this.httpRequestLoader, false);
+            this.editTeamMember = false;
+            this.referenceService.loading(this.addTeamMemberLoader, false);
             this.referenceService.goToTop();
             this.loading = false;
             if (data.statusCode == 200) {
@@ -211,13 +208,10 @@ export class TeamMembersUtilComponent implements OnInit {
               this.findAll(this.pagination);
             } else if (data.statusCode == 403) {
               this.authenticationService.forceToLogout();
-            } else {
-              teamMember['highlightDropDown'] = true;
-              this.customResponse = new CustomResponse('ERROR', data.message, true);
-            }
+            } 
           },
           error => {
-            this.referenceService.loading(this.httpRequestLoader, false);
+            this.referenceService.loading(this.addTeamMemberLoader, false);
             this.loading = false;
             this.addServerError(error);
           }
@@ -404,13 +398,7 @@ export class TeamMembersUtilComponent implements OnInit {
   /***********Add Team Member(s) ********************/
   goToAddTeamMemberDiv(){
     this.referenceService.hideDiv('csv-error-div');
-    this.team = {};
-    this.team.validEmailId = false;
-    this.team.validTeamMemberGroupId = false;
-    this.team.teamMemberGroupId = 0;
-    this.team.validForm = false;
-    this.team.secondAdmin = false;
-    this.team.enableOption =false;
+    this.team = new TeamMember();
     this.customResponse = new CustomResponse();
     this.teamMemberUi = new TeamMemberUi();
     this.showAddTeamMemberDiv = true;
@@ -449,6 +437,9 @@ export class TeamMembersUtilComponent implements OnInit {
     this.validateAllFields();
   }
   validateAllFields() {
+    if(this.editTeamMember){
+      this.team.validEmailId = this.referenceService.validateEmailId(this.team.emailId);
+    }
     this.team.validForm = this.team.validEmailId && this.team.validTeamMemberGroupId;
 	}
 
@@ -456,46 +447,59 @@ export class TeamMembersUtilComponent implements OnInit {
 
 	clearForm() {
 		this.emaillIdDivClass = this.defaultClass;
-    this.team = {};
+    this.team = new TeamMember();
     this.showAddTeamMemberDiv = false;
     this.showUploadedTeamMembers = false;
+    this.editTeamMember = false;
+    this.saveOrUpdateButtonText = "Save";
     this.refreshList();
   }
   
 
-  addTeamMember(){
+  addOrUpdateTeamMember(){
     this.customResponse = new CustomResponse();
     if(this.team.validForm){
       this.referenceService.loading(this.addTeamMemberLoader, true);
       this.team.userId = this.loggedInUserId;
-      let teamMemberDtos = new Array<any>();
-      let teamMemberDto = {'emailId':this.team.emailId,'firstName':this.team.firstName,'lastName':this.team.lastName,'teamMemberGroupId':this.team.teamMemberGroupId,'secondAdmin':this.team.secondAdmin};
-      teamMemberDtos.push(teamMemberDto);
-      let teamInput = {};
-      this.setTeamInputData(teamMemberDtos,teamInput);
-      this.teamMemberService.saveTeamMembersXNFR2(teamInput).
-      subscribe(
-        data=>{
-          if(data.statusCode==200){
-            this.customResponse = new CustomResponse('SUCCESS', data.message, true);
-            this.clearForm();
-          }else if(data.statusCode==3008 || data.statusCode==3010){
-            this.customResponse = new CustomResponse('ERROR', data.message, true);
-          }else{
-            this.team.validEmailId = false;
-            this.team.emailIdErrorMessage  = data.message;
-            this.emaillIdDivClass = this.errorClass;
-            this.team.validForm = false;
-          }
-          this.referenceService.loading(this.addTeamMemberLoader, false);
-        },error=>{
-          this.addServerError(error);
-        }
-      );
+      if(this.editTeamMember){
+          this.updateTeamMember();
+      }else{
+        this.addTeamMember();
+      }
     }else{
       this.referenceService.showSweetAlertErrorMessage("Invalid Email Id/Team Member Group.")
     }
+
   }
+
+  addTeamMember(){
+    let teamMemberDtos = new Array<any>();
+    let teamMemberDto = {'emailId':this.team.emailId,'firstName':this.team.firstName,'lastName':this.team.lastName,'teamMemberGroupId':this.team.teamMemberGroupId,'secondAdmin':this.team.secondAdmin};
+    teamMemberDtos.push(teamMemberDto);
+    let teamInput = {};
+    this.setTeamInputData(teamMemberDtos,teamInput);
+    this.teamMemberService.saveTeamMembersXNFR2(teamInput).
+    subscribe(
+      data=>{
+        if(data.statusCode==200){
+          this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+          this.clearForm();
+        }else if(data.statusCode==3008 || data.statusCode==3010){
+          this.customResponse = new CustomResponse('ERROR', data.message, true);
+        }else{
+          this.team.validEmailId = false;
+          this.team.emailIdErrorMessage  = data.message;
+          this.emaillIdDivClass = this.errorClass;
+          this.team.validForm = false;
+        }
+        this.referenceService.loading(this.addTeamMemberLoader, false);
+      },error=>{
+        this.addServerError(error);
+      }
+    );
+  }
+
+  
 
   addTeamMembers(){
     this.referenceService.goToTop();
@@ -728,13 +732,11 @@ export class TeamMembersUtilComponent implements OnInit {
     this.emptyModules = false;
     this.defaultModules = [];
     $('#preview-team-member-popup').modal('show');
-    this.teamMemberService.findTeamMemberGroupById(teamMemberGroupId).subscribe(
+    this.teamMemberService.previewTeamMemberGroup(teamMemberGroupId).subscribe(
       response => {
-        let map = response.data;
-        this.defaultModules = map['modules'];
-        let roleIds  = map['teamMemberGroupDTO']['roleIds'];
-        this.emptyModules = roleIds == undefined ||(roleIds!= undefined &&roleIds.length==0) ;
-        this.modulesLoader = false;
+       this.defaultModules = response.data.teamMemberModuleDTOs;
+       this.emptyModules = this.defaultModules.length==0;
+       this.modulesLoader = false;
       }, error => {
         this.logger.log(error);
         this.modulesLoader = false;
@@ -749,8 +751,29 @@ export class TeamMembersUtilComponent implements OnInit {
     this.referenceService.goToRouter(this.referenceService.homeRouter);
   }
 
-  goToAdminReport(url){
+  goToAdminReport(url:string){
     this.loading = true;
     this.referenceService.goToRouter(url);
+  }
+
+  edit(id:number){
+    this.customResponse = new CustomResponse();
+    this.referenceService.hideDiv('csv-error-div');
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.httpRequestLoader.isHorizontalCss = true;
+    this.teamMemberService.findById(id).subscribe(
+      response=>{
+        this.team = response.data;
+        this.team.id = id;
+        this.editTeamMember = true;
+        this.saveOrUpdateButtonText = "Update";
+        this.team.validForm = true;
+      },error=>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    );
+    
+
   }
 }
