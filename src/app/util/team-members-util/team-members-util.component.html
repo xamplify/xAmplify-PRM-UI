@@ -126,20 +126,33 @@
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
             </td>
             <!---Assigned Group-->
-            <td *ngIf="isTeamMemberModule" title="{{teamMember?.teamMemberGroupName}}">
-              <strong>{{teamMember?.teamMemberGroupName |slice:0:25}}</strong>
-              <strong *ngIf="teamMember?.teamMemberGroupName.length>25">..</strong>
+            <td *ngIf="isTeamMemberModule">
+              <div class="btn-group">
+                <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
+                  <span>{{teamMember?.teamMemberGroupName | slice:0:20}}</span>
+                  <span *ngIf="teamMember?.teamMemberGroupName?.length>20">...</span>
+                </button>
+                <button class="tm-group-preview-css" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                </button>
+            </div>
             </td>
             <!---Second Admin---->
             <td *ngIf="isOrgAdmin && isTeamMemberModule">
-                <i  [className]="teamMember?.secondAdmin ? 'fa fa-check-circle-o green fa-twenty-px':'fa fa-times-circle red fa-twenty-px'" aria-hidden="true"></i >
+              <div class="actions-block float-none">
+                <i  [className]="teamMember?.secondAdmin ? 'fa fa-check-circle-o green':'fa fa-times-circle red'" aria-hidden="true"></i >
+              </div>
             </td>
             <!---Enabled---->
             <td *ngIf="teamMember?.status=='UNAPPROVED'" [title]="teamMember?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
-              <i class="fa fa-times-circle red fa-twenty-px" aria-hidden="true"></i>
+              <div class="actions-block float-none">
+              	<i class="fa fa-times-circle red" aria-hidden="true"></i>
+              </div>
             </td>
             <td *ngIf="teamMember?.status!='UNAPPROVED'">
-              <i class="fa fa-check-circle-o green fa-twenty-px" aria-hidden="true"></i>
+            <div class="actions-block float-none">
+              	<i class="fa fa-check-circle-o green" aria-hidden="true"></i>
+              </div>
             </td>
             <!---Actions-->
             <td  [className]="isLoggedInAsTeamMember ? 'actions-row inactive ':'actions-row'" [title]="isLoggedInAsTeamMember ? 'These options are not available':''">

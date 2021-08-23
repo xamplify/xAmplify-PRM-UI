@@ -1074,3 +1074,60 @@ b, strong {
     pointer-events: none;
 }
 
+.btn-group button {
+    background-color: #008fd5;
+    border: 1px solid #3575b5;
+    color: #fff;
+    padding: 6px 16px;
+    cursor: pointer;
+    float: left;
+    font-size: 14px;
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none;
+}
+
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.btn-group button:hover {
+    background-color: #4db1e2;
+}
+
+.fa-circle-icons i {
+	border: 1px solid 5bf58e;
+    color: #5bf58e;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px !important;
+    vertical-align: middle;
+	margin-right: 7px;
+	font-size: 13px !important;
+}
+
+.fa-circle-icons .disable i{
+	color: #a7a7a7;
+    border: 1px solid #a7a7a7;
+}
+.fa-circle-icons .fa-trash-o {
+	color: #cb5a5e;
+    border: 1px solid #cb5a5e;
+}
+.fa-circle-icons i:hover{
+    background: #5bf58e;
+    color: white;
+}
+.fa-circle-icons .disable i:hover{
+	background: #a7a7a7;
+}
+
+.float-none{
+	float: none !important;
+}
+
