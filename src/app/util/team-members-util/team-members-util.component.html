@@ -76,7 +76,7 @@
   <div class="portlet-title">
     <div class="caption" translate>Team Members</div>
     <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
-      <i class="fa fa-sign-in" aria-hidden="true"></i> Logout
+      <i class="fa fa-power-off" aria-hidden="true"></i> Logout
     </button>
     <div class="tools zero-padding-margin">
         <div class="inputs zero-padding-display-inline">
@@ -160,11 +160,11 @@
               </div>
               </td>
             <!---Actions-->
-            <td  [className]="isLoggedInAsTeamMember ? 'actions-row inactive ':'actions-row'" [title]="isLoggedInAsTeamMember ? 'These options are not available':''">
+            <td  class="actions-row">
               <div class="actions-block override-actions custom-width-icon">
                 <!--Login As-->
                 <ng-container *ngIf="teamMember?.loginAs">
-                  <a *ngIf="teamMember?.enabled" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" title="Login As"  (click)="loginAs(teamMember)" translate>
+                  <a *ngIf="teamMember?.enabled"  title="Login As"  (click)="loginAs(teamMember)" translate>
                       <i class="fa fa-sign-in" aria-hidden="true"></i>
                   </a>
                   <a *ngIf="!teamMember?.enabled" [className]="isLoggedInAsTeamMember? 'pointer-events-none':'inactive'" title="{{teamMember.loginAsToolTipMessage}}" translate>
@@ -176,7 +176,7 @@
                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </a>
                 <!---Analytics--->
-                <a title="Campaigns" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="goToCampaignAnalytics(teamMember.teamMemberId)">
+                <a title="Campaigns" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember"  (click)="goToCampaignAnalytics(teamMember.teamMemberUserId)">
                   <i class="fa fa-line-chart" aria-hidden="true"></i>
                 </a>
                 <!--Resend Invitation-->
@@ -328,6 +328,9 @@
 
 <!-----Uplodaded Team Members----->
 <div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMember">
+  <div class="alert alert-info" *ngIf="teamMemberGroups?.length==1">
+    <strong translate>Please Go to 'My Profile' ---> 'Team Member Groups' to create a group</strong>
+</div>
   <div class="portlet-title">
     <div class="caption" translate>Uploaded Team Members</div>
     <div [hidden]="addTeamMemberLoader.isLoading">
@@ -375,7 +378,7 @@
             <div class="input-group">
             <select class="form-control" [(ngModel)]="teamMember.teamMemberGroupId" (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);" >
               <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
-              {{teamMemberGroup.name}}
+             		{{teamMemberGroup?.name}}
             </option>
             </select>
             <span class="input-group-btn">
@@ -383,12 +386,6 @@
                 <i class="fa fa-eye white" aria-hidden="true"></i>
               </button>
             </span>
-            <span class="input-group-btn" *ngIf="teamMemberGroups?.length==1">
-            <button class="btn btn-info" data-toggle="tooltip" data-placement="right"
-            title="Go to 'My Profile' -> 'Team Member Groups' to create a group">
-              <i class="fa fa-question-circle white" aria-hidden="true"></i>
-            </button>
-          </span>
           </div>
           </td>
           <!---Delete-->

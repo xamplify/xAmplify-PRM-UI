@@ -214,8 +214,12 @@ export class FormPreviewComponent implements OnInit {
 
   validateEmail(columnInfo: ColumnInfo) {
     if (columnInfo.labelType == 'email') {
-      if (!this.referenceService.validateEmailId($.trim(columnInfo.value))) {
-        columnInfo.divClass = "error";
+      if(columnInfo.value != undefined && columnInfo.value.length > 0) {
+        if (!this.referenceService.validateEmailId($.trim(columnInfo.value))) {
+          columnInfo.divClass = "error";
+        } else {
+          columnInfo.divClass = "success";
+        }
       } else {
         columnInfo.divClass = "success";
       }

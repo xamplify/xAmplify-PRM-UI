@@ -978,8 +978,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       htmlToImage.toBlob(document.getElementById('create-from-div'))
           .then(function (blob) {
               self.thumbnailFileObj = self.utilService.blobToFile(blob);
+              self.form.saveAs = self.isSaveAs;
               if (self.isAdd || self.isSaveAs) {
-                 self.form.saveAs = self.isSaveAs;
                   self.save(self.form);
               } else {
                  self.update(self.form);
@@ -1687,6 +1687,9 @@ saveAs(){
 	this.validateForm();
 }
 
-
+addOrUpdate(){
+	this.isSaveAs = false;
+	this.validateForm();
+}
 
 }

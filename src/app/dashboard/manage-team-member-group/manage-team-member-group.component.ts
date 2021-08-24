@@ -177,12 +177,11 @@ export class ManageTeamMemberGroupComponent implements OnInit {
           if(this.groupEditedFromPreviewSection && !this.isAdd){
              this.showPreview(this.groupDto.id,true);
           }else{
-            this.goToManage();
-            let message = this.isAdd ? 'created' : 'updated';
-            this.customResponse = new CustomResponse('SUCCESS', 'Group ' + message + ' successfully', true);
             this.pagination = new Pagination();
             this.sortOption = new SortOption();
-            this.findGroups(this.pagination);
+            this.goToManage();
+			let message = this.isAdd ? 'created' : 'updated';
+            this.customResponse = new CustomResponse('SUCCESS', 'Group ' + message + ' successfully', true);
           }
         } else {
           this.customResponse = new CustomResponse('ERROR', 'Please select atleast one module', true);

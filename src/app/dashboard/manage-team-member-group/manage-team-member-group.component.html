@@ -127,8 +127,8 @@
   <div class="col-md-4 col-sm-4 col-xs-12">
     <div class="grid-box-team">
       <h4 class="ellipsis mt5 mb5 f-w-600 left-align plfpx" title="{{group?.name}}">
-        {{group?.name | slice:0:20}}
-        <span *ngIf="group?.name?.length>20">..</span>
+        {{group?.name | slice:0:15}}
+        <span *ngIf="group?.name?.length>15">..</span>
         <br>
       </h4>
       <p class="tm-count left-align plfpx">Total users with this group:
@@ -146,7 +146,7 @@
                 <span>{{module?.moduleName}}</span>
               </th>
             </tr>
-            <tr *ngIf="group?.teamMemberModuleDTOs?.length>4" class="text-center module-text-color">
+            <tr *ngIf="group?.teamMemberModuleDTOs?.length>5" class="text-center module-text-color">
               <th  scope="row" class="plfpx">
                  <a (click)="editGroupFromPreviewSection(group.id)">and {{group?.teamMemberModuleDTOs?.length-5}} More..</a>
               </th>

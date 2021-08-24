@@ -1,0 +1,69 @@
+<div class="col-xs-12 p5">
+  <div class="portlet light">
+    
+    <div class="portlet-title" *ngIf="!httpRequestLoader.isLoading">
+      <span class="col-xs-8">
+        <h3><b>Detailed Response</b></h3>
+      </span>
+      <span class="col-xs-4">
+        <a (click)="closeDetailedResponse()" class="pull-right close-circle"
+          style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+          <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span>
+        </a>
+      </span>
+    </div>
+
+    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+    <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+      <div class="row portlet light deal-box bglite">
+        <div class="col-sm-4 col-xs-12 mt10">
+          <div class="form-group" style="margin-bottom: 20px">
+            <label class="control-label black">Device Details:</label>
+            <div class="capitalize">{{geoLocationDetails.deviceType}}</div>
+            <div class="capitalize">{{geoLocationDetails.os}} OS</div>
+          </div>          
+          <div class="form-group" style="margin-bottom: 20px">
+            <label class="control-label black">IP Address:</label>
+            <div>{{geoLocationDetails.ipAddress}}</div>
+          </div>          
+        </div>
+        <div class="col-sm-4 col-xs-12 mt10">
+          <div class="form-group" style="margin-bottom: 20px">
+            <label class="control-label black">Location: </label>
+            <div>{{geoLocationDetails.city}},  {{geoLocationDetails.state}}</div>
+            <div>{{geoLocationDetails.zip}}</div>
+            <div><b>{{geoLocationDetails.country}}</b></div>
+          </div>         
+          <div class="form-group" style="margin-bottom: 20px">
+            <label class="control-label black">Timezone: </label>
+            <span>{{geoLocationDetails.timezone}}</span>
+          </div>          
+        </div>
+        <div class="col-sm-4 col-xs-12 mt10">
+          <div class="form-group" style="margin-bottom: 20px">
+            <label class="control-label black">Latitude & Longitude: </label>
+            <div>{{geoLocationDetails.latitude}}, {{geoLocationDetails.longitude}}</div>
+          </div>         
+          <div class="form-group" style="margin-bottom: 20px">
+            <label class="control-label black">Submited On: </label>
+            <div>
+              <app-timestamp [isOnlyDate]="false" [dateAndTime]="geoLocationDetails.openedTimeInString">
+              </app-timestamp>
+            </div>
+          </div>          
+        </div>
+      </div>
+      <div class="row portlet light deal-box">          
+        <h4 class="caption" class="portlet-title">Question & Answers</h4>
+        <div class="col-sm-12 col-xs-12">
+          <ng-container *ngFor="let qa of questionAndAnswers;let rowIndex = index">
+            <div class="form-group" style="margin-bottom: 20px">
+              <label class="control-label"><b>Q{{rowIndex+1}}. </b>{{qa.question}}</label>
+              <div class="deviceType">{{qa.value}}</div>
+            </div>
+          </ng-container>
+        </div>        
+      </div>
+    </div>
+  </div>
+</div>
