@@ -129,8 +129,8 @@
             <td *ngIf="isTeamMemberModule">
               <div class="btn-group">
                 <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
-                  <span>{{teamMember?.teamMemberGroupName | slice:0:20}}</span>
-                  <span *ngIf="teamMember?.teamMemberGroupName?.length>20">...</span>
+                  <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
+                  <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
                 </button>
                 <button class="tm-group-preview-css" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
                 <i class="fa fa-eye" aria-hidden="true"></i>
