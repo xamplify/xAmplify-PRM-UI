@@ -343,3 +343,28 @@ hr {
 .tm-group-preview-css{
     border-radius: 0px 3px 3px 0px;
 }
+
+
+.btn-group button {
+    background-color: #008fd5;
+    border: 1px solid #3575b5;
+    color: #fff;
+    padding: 6px 16px;
+    cursor: pointer;
+    float: left;
+    font-size: 14px;
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none;
+}
+
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.btn-group button:hover {
+    background-color: #4db1e2;
+}
