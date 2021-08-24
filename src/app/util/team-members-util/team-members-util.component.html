@@ -176,7 +176,7 @@
                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </a>
                 <!---Analytics--->
-                <a title="Campaigns" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="goToCampaignAnalytics(teamMember.teamMemberUserId)">
+                <a title="Campaigns" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember"  (click)="goToCampaignAnalytics(teamMember.teamMemberUserId)">
                   <i class="fa fa-line-chart" aria-hidden="true"></i>
                 </a>
                 <!--Resend Invitation-->
@@ -378,7 +378,7 @@
             <div class="input-group">
             <select class="form-control" [(ngModel)]="teamMember.teamMemberGroupId" (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);" >
               <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
-              {{teamMemberGroup.name}}
+             		{{teamMemberGroup?.name}}
             </option>
             </select>
             <span class="input-group-btn">
