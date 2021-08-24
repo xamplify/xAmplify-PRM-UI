@@ -1,0 +1,15 @@
+.deal-box{
+    margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.bglite {
+    background-color: #f1f3fa;
+}
+
+.black {
+    color: #000;
+}

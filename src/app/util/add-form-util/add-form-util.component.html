@@ -401,7 +401,7 @@
                         </div>
                         <!-- End Of Row---- -->
                         <div id="bottom-right">
-                            <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="validateForm()">{{buttonName}}</button>
+                            <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="addOrUpdate()">{{buttonName}}</button>
                             <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="saveAs()">Save As</button>
                             <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true">Cancel</button>
                         </div>

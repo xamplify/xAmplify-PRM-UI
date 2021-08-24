@@ -17,6 +17,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { SelectFormComponent } from './select-form/select-form.component';
 import { SurveyAnalyticsComponent } from './survey-analytics/survey-analytics.component';
 import { FormGeoAnalyticsComponent } from './form-geo-analytics/form-geo-analytics.component';
+import { FormDetailResponseComponent } from './form-detail-response/form-detail-response.component';
 
 
 
@@ -24,7 +25,7 @@ import { FormGeoAnalyticsComponent } from './form-geo-analytics/form-geo-analyti
     imports: [
         CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule,CKEditorModule
     ],
-    declarations: [AddFormComponent, ManageFormComponent, CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent, SelectFormComponent, SurveyAnalyticsComponent, FormGeoAnalyticsComponent],
+    declarations: [AddFormComponent, ManageFormComponent, CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent, SelectFormComponent, SurveyAnalyticsComponent, FormGeoAnalyticsComponent, FormDetailResponseComponent],
     providers: [FormService]
 } )
 export class FormsModule { }

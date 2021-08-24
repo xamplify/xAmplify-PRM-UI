@@ -45,3 +45,8 @@
     border-bottom: solid 3px;
 }
 
+.scroll {
+	height: 300px;
+    overflow: auto;
+}
+

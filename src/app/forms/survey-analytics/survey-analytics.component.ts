@@ -23,6 +23,8 @@ export class SurveyAnalyticsComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   pointFormat = '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>Response Percentage: <b>{point.percentage:.2f}%</b><br/>Response Count: <b>{point.z}</b><br/>';
   showTab = "question-summarries";
+  selectedFormSubmitId: number;
+  detailedResponse = false;
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService, public router: Router,
@@ -73,11 +75,17 @@ export class SurveyAnalyticsComponent implements OnInit {
 
   showIndividualResponses() {
     this.showTab = "individual-responses";
-    //call individual responses
+    this.detailedResponse = false;
   }
 
   showQuestionSummaries() {
     this.showTab = "question-summarries";
+    this.detailedResponse = false;
+  }
+
+  viewDetailedResponse(formSubmitId: any) {
+    this.selectedFormSubmitId = formSubmitId;
+    this.detailedResponse = true;
   }
 
 }
