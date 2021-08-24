@@ -160,11 +160,11 @@
               </div>
               </td>
             <!---Actions-->
-            <td  [className]="isLoggedInAsTeamMember ? 'actions-row inactive ':'actions-row'" [title]="isLoggedInAsTeamMember ? 'These options are not available':''">
+            <td  class="actions-row">
               <div class="actions-block override-actions custom-width-icon">
                 <!--Login As-->
                 <ng-container *ngIf="teamMember?.loginAs">
-                  <a *ngIf="teamMember?.enabled" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" title="Login As"  (click)="loginAs(teamMember)" translate>
+                  <a *ngIf="teamMember?.enabled"  title="Login As"  (click)="loginAs(teamMember)" translate>
                       <i class="fa fa-sign-in" aria-hidden="true"></i>
                   </a>
                   <a *ngIf="!teamMember?.enabled" [className]="isLoggedInAsTeamMember? 'pointer-events-none':'inactive'" title="{{teamMember.loginAsToolTipMessage}}" translate>
