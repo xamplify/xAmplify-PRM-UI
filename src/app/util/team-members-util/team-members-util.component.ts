@@ -473,6 +473,7 @@ export class TeamMembersUtilComponent implements OnInit {
   }
 
   addTeamMember(){
+    this.loading = true;
     let teamMemberDtos = new Array<any>();
     let teamMemberDto = {'emailId':this.team.emailId,'firstName':this.team.firstName,'lastName':this.team.lastName,'teamMemberGroupId':this.team.teamMemberGroupId,'secondAdmin':this.team.secondAdmin};
     teamMemberDtos.push(teamMemberDto);
@@ -493,6 +494,7 @@ export class TeamMembersUtilComponent implements OnInit {
           this.team.validForm = false;
         }
         this.referenceService.loading(this.addTeamMemberLoader, false);
+        this.loading = false;
       },error=>{
         this.addServerError(error);
       }
@@ -658,7 +660,6 @@ export class TeamMembersUtilComponent implements OnInit {
 		}
 	}				
 
-
   validateHeaders(headers:any){
     return (headers[0] == "Email Id"  &&  headers[1] == "First Name" && headers[2]=="Last Name");
   }
@@ -710,13 +711,10 @@ export class TeamMembersUtilComponent implements OnInit {
     this.fileReset();
   }
 
-  
-
-
-
   addServerError(error: any) {
     this.referenceService.goToTop();
     this.referenceService.loading(this.addTeamMemberLoader, false);
+    this.loading = false;
     let statusCode = JSON.parse(error['status']);
     let message = this.properties.serverErrorMessage;
     if (statusCode == 409) {
