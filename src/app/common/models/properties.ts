@@ -170,7 +170,8 @@ export class Properties {
 	spfHeaderText = "Publish an SPF record with your DNS registrar";
 	unsubscribeReasons = "Unsubscribe Reasons";
 	unsubscribeReasonsHeaderText = "Manage Unsubscribe Reasons";
-	notifyPartners = "Notify Partners";
+	notifyPartners = "Onboarding Configurations";
+	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
 
 
