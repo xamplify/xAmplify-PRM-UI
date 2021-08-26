@@ -60,4 +60,6 @@ export class Module {
     isAnyAdminOrSupervisor = false;
 
     allBoundSamlSettings = false;
+
+    notifyPartners = false;
 }

@@ -102,7 +102,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					module.isPrm = roles.indexOf(this.roleName.prmRole) > -1;
 					module.isMarketing = roles.indexOf(this.roleName.marketingRole) > -1;
 					module.isVendorTier = roles.indexOf(this.roleName.vendorTierRole) > -1;
-
 					this.addZendeskScript(data);
 					
 					
@@ -160,7 +159,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isPartnerSuperVisor = roleDisplayDto.partnerSuperVisor;
 		module.isAnyAdminOrSupervisor = roleDisplayDto.anyAdminOrSuperVisor;
 		module.allBoundSamlSettings = data.allBoundSamlSettings;
-		
+		module.notifyPartners = data.notifyPartners;
 	}
 
 	setContentMenu(data: any, module: any) {
