@@ -1,11 +1,11 @@
-<div id="addContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="addContactModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
 <div class="modal-dialog  accounts-modal" style="position: relative !important;">
   <!-- Modal content-->
   <div class="modal-content">
     <div class="modal-header">
-      <button type="button" class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></button>
-      <!-- <a class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></a> -->
+      <button type="button" class="close-circle"  (click)="addContactModalClose()">
+      <i class="fa fa-times"></i></button>
       <h4 class="modal-title size-font" *ngIf="!isUpdateUser" translate>Add {{checkingContactTypeName}}</h4>
       <h4 class="modal-title size-font" *ngIf="isUpdateUser" translate>Edit {{checkingContactTypeName}}</h4>
     </div>

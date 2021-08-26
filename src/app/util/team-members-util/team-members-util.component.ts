@@ -603,12 +603,15 @@ export class TeamMembersUtilComponent implements OnInit {
 			let row = rows[0].split(',');
 			this.teamMemberUi.emptyTable = false;
       let team = {};
-      team['emailId'] = row[0].toLowerCase();
-      team['firstName'] = row[1];
-      team['lastName'] = row[2];
-      team['teamMemberGroupId'] = 0;
-      team['secondAdmin'] = false;
-			this.newlyAddedTeamMembers.push(team);
+      let emailId = row[0].toLowerCase();
+      if(emailId!=undefined && $.trim(emailId).length>0){
+        team['emailId'] = emailId;
+        team['firstName'] = row[1];
+        team['lastName'] = row[2];
+        team['teamMemberGroupId'] = 0;
+        team['secondAdmin'] = false;
+        this.newlyAddedTeamMembers.push(team);
+      }
     }
   }
 

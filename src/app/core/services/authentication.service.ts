@@ -463,13 +463,7 @@ export class AuthenticationService {
 
   logout(): void {
     this.removeZenDeskScript();
-    this.access_token = null;
-    this.refresh_token = null;
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem("campaignRouter");
-    localStorage.removeItem("superiorId");
-    localStorage.removeItem("logedInCustomerCompanyNeme");
-    localStorage.clear();
+    
     this.utilService.topnavBareLoading = false;
     this.isCompanyAdded = false;
     const module = this.module;
@@ -523,6 +517,8 @@ export class AuthenticationService {
     module.contentLoader = false;
     module.showPartnerEmailTemplatesFilter = false;
     module.isAnyAdminOrSupervisor = false;
+    module.allBoundSamlSettings = false;
+    module.notifyPartners = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;
@@ -532,8 +528,14 @@ export class AuthenticationService {
     this.lmsAccess = false;
 	  this.isVendorAndPartnerTeamMember = false;
     this.isOrgAdminAndPartnerTeamMember = false;
-    module.allBoundSamlSettings = false;
     this.setUserLoggedIn(false);
+    this.access_token = null;
+    this.refresh_token = null;
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem("campaignRouter");
+    localStorage.removeItem("superiorId");
+    localStorage.removeItem("logedInCustomerCompanyNeme");
+    localStorage.clear();
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
         this.closeSwal();
@@ -791,6 +793,18 @@ findUnsusbcribePageContent(){
   return this.http.get(this.REST_URL+"unsubscribe/findUnsubscribePageContent/"+this.getUserId()+"?access_token="+this.access_token)
   .map(this.extractData)
   .catch(this.handleError);
+}
+
+findNotifyPartnersOption(companyId:number){
+  return this.http.get(this.REST_URL + `admin/findNotifyPartnersOption/${companyId}?access_token=${this.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
+updateNotifyPartnersOption(companyId:number,status:boolean){
+  return this.http.get(this.REST_URL+"admin/updateNotifyPartnersOption/"+companyId+"/"+status+"?access_token="+this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
 }
   
   

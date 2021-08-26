@@ -30,6 +30,7 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
+import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -39,7 +40,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Pa
 	styleUrls: ['../../../assets/css/button.css',
 		'../../../assets/css/numbered-textarea.css',
 		'./edit-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
-	providers: [FileUtil, Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService]
+	providers: [FileUtil, Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService,CallActionSwitch]
 })
 export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() contacts: User[];
@@ -219,12 +220,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	processingPartnersLoader = false;
 	contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
 	sharedLeads : boolean = false;
+	showNotifyPartnerOption = false;
 
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService) {
+		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService,public callActionSwitch: CallActionSwitch) {
 
 		this.addContactuser.country = (this.countryNames.countries[0]);
 		this.contactsByType.selectedCategory = "all";
@@ -1661,6 +1663,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	closeAssignContactAndMdfAmountPopup() {
 		$('#assignContactAndMdfPopup').modal('hide');
+		this.showNotifyPartnerOption = false;
 		this.contactAndMdfPopupResponse = new CustomResponse();
 		this.cancelContacts();
 	}
@@ -1670,12 +1673,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			(data: any) => {
 				this.users = data.data;
 				this.loading = false;
+				this.showNotifyPartnerOption = true;
 				$('#assignContactAndMdfPopup').modal('show');
 			}, (error: any) => {
 				this.loading = false;
 				this.refService.showSweetAlertServerErrorMessage();
 				this.cancelContacts();
 			});
+	}
+
+	setNotifyPartnerOption(partner:any,event:any){
+		partner.notifyPartners = event;
 	}
 
 	validatePartners() {
@@ -1707,6 +1715,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				if (statusCode == 200) {
 					$('#assignContactAndMdfPopup').modal('hide');
 					this.processingPartnersLoader = false;
+					this.showNotifyPartnerOption = false;
 					this.saveData();
 				} else {
 					let emailIds = "";
