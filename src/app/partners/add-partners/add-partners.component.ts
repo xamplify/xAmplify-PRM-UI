@@ -202,6 +202,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	public zohoCurrentUser: any;
 	public providerName: String = 'zoho';
 	pageLoader = false;
+	showNotifyPartnerOption = false;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -588,18 +589,35 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	openAssignContactAndMdfAmountPopup() {
+		this.processingPartnersLoader = true;
+		$('#assignContactAndMdfPopup').modal('show');
+		this.authenticationService.findNotifyPartnersOption(this.companyId).subscribe(
+			response=>{
+				this.iteratePartnersAndAssignContactsCount(response.data);
+			},error=>{
+				this.iteratePartnersAndAssignContactsCount(false);
+			});
+
+	}
+	iteratePartnersAndAssignContactsCount(notifyPartners:boolean){
 		if (this.allselectedUsers.length > 0) {
 			this.newPartnerUser = this.allselectedUsers;
 		}
-		$.each(this.newPartnerUser, function(index: number, partner: any) {
+		$.each(this.newPartnerUser, function(_index: number, partner: any) {
 			partner.contactsLimit = 1;
+			partner.notifyPartners = notifyPartners;
 		});
-		$('#assignContactAndMdfPopup').modal('show');
+		this.processingPartnersLoader = false;
+		this.showNotifyPartnerOption = true;
+	}
 
+	setNotifyPartnerOption(partner:any,event:any){
+		partner.notifyPartners = event;
 	}
 
 	closeAssignContactAndMdfAmountPopup() {
 		$('#assignContactAndMdfPopup').modal('hide');
+		this.showNotifyPartnerOption = false;
 		this.newPartnerUser = [];
 		this.allselectedUsers = [];
 		this.contactAndMdfPopupResponse = new CustomResponse();
@@ -633,6 +651,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				let statusCode = data.statusCode;
 				if (statusCode == 200) {
 					$('#assignContactAndMdfPopup').modal('hide');
+					this.showNotifyPartnerOption = false;
 					this.processingPartnersLoader = false;
 					this.savePartners();
 				} else {

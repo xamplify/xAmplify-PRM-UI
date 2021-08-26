@@ -68,12 +68,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     }
 
     addContactModalClose() {
-        $( '#addContactModal' ).modal( 'toggle' );
-        $( "#addContactModal .close" ).click()
-        $( '#addContactModal' ).modal( 'hide' );
-        $( 'body' ).removeClass( 'modal-open' );
-        $( '.modal-backdrop fade in' ).remove();
-        $( ".modal-backdrop in" ).css( "display", "none" );
+ 		$( '#addContactModal' ).modal( 'hide' );
         this.contactService.isContactModalPopup = false;
     }
 

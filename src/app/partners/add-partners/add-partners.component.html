@@ -1254,7 +1254,8 @@
             <div class="modal-body">
                 <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
                 </app-response-message>
-                <div class="table-responsive" >
+                <app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
+                <div class="table-responsive" *ngIf="!processingPartnersLoader">
                     <table class="table tgrid table-hover table-sm" id="assignContactAndTable" aria-describedby="assignContactAndTable">
                         <thead>
                             <tr>
@@ -1262,6 +1263,11 @@
                                 <th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts
                                      <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner (Minimum 1)"></i>
+                                    </span>
+                                </th>
+                                <th scope="row" class="cwosn" translate>Notify Partners
+                                    <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Send/Unsend email notification to partner"></i>
                                     </span>
                                 </th>
                             </tr>
@@ -1276,12 +1282,16 @@
                                     <td *ngIf="authenticationService.contactsCount" class="contact-count error" id="contact-count-{{i}}">
                                         <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
                                     </td>
+                                    <td *ngIf="showNotifyPartnerOption">
+                                        <switch [status]="partner.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                        [size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)">
+                                        </switch>
+                                    </td>
                                 </tr>
                             </ng-container>
                         </tbody>
                     </table>
                 </div>
-
             <br>
             </div>
             <ngx-loading [show]="processingPartnersLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>

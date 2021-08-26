@@ -792,6 +792,18 @@ findUnsusbcribePageContent(){
   .map(this.extractData)
   .catch(this.handleError);
 }
+
+findNotifyPartnersOption(companyId:number){
+  return this.http.get(this.REST_URL + `admin/findNotifyPartnersOption/${companyId}?access_token=${this.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
+updateNotifyPartnersOption(companyId:number,status:boolean){
+  return this.http.get(this.REST_URL+"admin/updateNotifyPartnersOption/"+companyId+"/"+status+"?access_token="+this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
   
   
 }
