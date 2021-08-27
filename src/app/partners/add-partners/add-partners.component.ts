@@ -286,7 +286,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.contactService.defaultPartnerList(userId)
 				.subscribe(
 					(data: any) => {
-						console.log(data);
 						this.partnerListId = data.id;
 						this.contactService.partnerListName = data.name;
 					},
@@ -2315,13 +2314,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				.subscribe(
 					data => {
 						if (data.access) {
-							console.log(data);
 							this.loading = false;
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
 							this.referenceService.goToTop();
-							// if (data.message == "success") {
-							//     this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-							// }
+							this.defaultPartnerList(this.loggedInUserId);
 						} else {
 							this.authenticationService.forceToLogout();
 						}
