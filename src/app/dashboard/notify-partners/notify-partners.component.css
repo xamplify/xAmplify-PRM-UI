@@ -9,6 +9,10 @@
     font-weight: bold;
 }
 
+.h5-custom-font{
+    font-size: 17px;
+}
+
 .btp{
     padding-bottom: 30px !important;
 }
