@@ -2911,33 +2911,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	updateContactListNameType(newContactListName: string, isPublic: boolean) {
-		try {
-			var object = {
-				"id": this.selectedContactListId,
-				"name": newContactListName,
-				"publicList": isPublic
-			}
-			this.addContactModalClose();
-			this.contactService.updateContactListName(object)
-				.subscribe(
-					(data: any) => {
-						console.log(data);
-						this.selectedContactListName = newContactListName;
-						if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_NAME_UPDATE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
-						}
-					},
-					error => this.xtremandLogger.error(error),
-					() => this.xtremandLogger.info("EditContactsComponent updateContactListName() finished")
-				)
-		} catch (error) {
-			this.xtremandLogger.error(error, "editContactComponent", "listNameUpdating()");
-		}
-	}
-
 	loadContactListsNames() {
 		try {
 			this.contactService.loadContactListsNames()

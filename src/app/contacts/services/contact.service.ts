@@ -302,7 +302,7 @@ export class ContactService {
     }
 
     updateContactListName( updatingObject: any ): Observable<any> {
-        var newUrl = this.contactsUrl + 'rename?access_token=' + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + this.authenticationService.getUserId() +'/rename?access_token=' + this.authenticationService.access_token;
         this.logger.info( newUrl );
         return this._http.post( newUrl, updatingObject )
             .map(( response: any ) => response.json() )
