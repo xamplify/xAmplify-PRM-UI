@@ -18,6 +18,7 @@ export class NotifyPartnersComponent implements OnInit {
  customResponse: CustomResponse = new CustomResponse();
  companyId:number = 0;
  notifyPartners = false;
+ notifyPartnersOptionFromDb = false;
  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService,public callActionSwitch: CallActionSwitch) { }
   
  ngOnInit() {
@@ -37,6 +38,7 @@ export class NotifyPartnersComponent implements OnInit {
       response=>{
         this.loading = false;
         this.notifyPartners = response.data;
+        this.notifyPartnersOptionFromDb = response.data;
       },error=>{
         this.loading = false;
       }
@@ -53,7 +55,7 @@ export class NotifyPartnersComponent implements OnInit {
     this.authenticationService.updateNotifyPartnersOption(this.companyId,this.notifyPartners).subscribe(
       response=>{
         this.loading = false;
-        this.customResponse = new CustomResponse('SUCCESS','Option updated successfully.',true);
+        this.customResponse = new CustomResponse('SUCCESS','Success in updating the onboarding configuration.',true);
       },error=>{
         this.loading = false;
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
