@@ -463,7 +463,13 @@ export class AuthenticationService {
 
   logout(): void {
     this.removeZenDeskScript();
-    
+    this.access_token = null;
+    this.refresh_token = null;
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem("campaignRouter");
+    localStorage.removeItem("superiorId");
+    localStorage.removeItem("logedInCustomerCompanyNeme");
+    localStorage.clear();
     this.utilService.topnavBareLoading = false;
     this.isCompanyAdded = false;
     const module = this.module;
@@ -529,13 +535,6 @@ export class AuthenticationService {
 	  this.isVendorAndPartnerTeamMember = false;
     this.isOrgAdminAndPartnerTeamMember = false;
     this.setUserLoggedIn(false);
-    this.access_token = null;
-    this.refresh_token = null;
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem("campaignRouter");
-    localStorage.removeItem("superiorId");
-    localStorage.removeItem("logedInCustomerCompanyNeme");
-    localStorage.clear();
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
         this.closeSwal();
