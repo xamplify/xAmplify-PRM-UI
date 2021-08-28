@@ -56,6 +56,7 @@ export class NotifyPartnersComponent implements OnInit {
       response=>{
         this.loading = false;
         this.customResponse = new CustomResponse('SUCCESS','Success in updating the onboarding configuration.',true);
+        this.findNotifyPartnersOption();
       },error=>{
         this.loading = false;
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);

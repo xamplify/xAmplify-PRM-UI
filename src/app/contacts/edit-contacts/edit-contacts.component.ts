@@ -93,6 +93,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isShowUsers: boolean = true;
 	public users: Array<User>;
 	customResponse: CustomResponse = new CustomResponse();
+	emailNotificationCustomResponse:CustomResponse = new CustomResponse();
 	names: string[] = [];
 
 	selectedContactForSave = [];
@@ -2911,33 +2912,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	updateContactListNameType(newContactListName: string, isPublic: boolean) {
-		try {
-			var object = {
-				"id": this.selectedContactListId,
-				"name": newContactListName,
-				"publicList": isPublic
-			}
-			this.addContactModalClose();
-			this.contactService.updateContactListName(object)
-				.subscribe(
-					(data: any) => {
-						console.log(data);
-						this.selectedContactListName = newContactListName;
-						if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_NAME_UPDATE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
-						}
-					},
-					error => this.xtremandLogger.error(error),
-					() => this.xtremandLogger.info("EditContactsComponent updateContactListName() finished")
-				)
-		} catch (error) {
-			this.xtremandLogger.error(error, "editContactComponent", "listNameUpdating()");
-		}
-	}
-
 	loadContactListsNames() {
 		try {
 			this.contactService.loadContactListsNames()
@@ -3163,17 +3137,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(this.searchContactType); } }
 
 	sendMail(partnerId: number) {
+		this.emailNotificationCustomResponse = new CustomResponse();
+		this.loading = true;
 		try {
 			this.contactService.mailSend(partnerId, this.selectedContactListId)
 				.subscribe(
 					data => {
-						console.log(data);
-						if (data.message == "success") {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-						}
+						this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+						this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+						this.loading = false;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
+						this.loading = false;
 					},
 					() => this.xtremandLogger.log("Manage Partner component Mail send method successfull")
 				);

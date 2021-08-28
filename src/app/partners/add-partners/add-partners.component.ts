@@ -2317,7 +2317,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							this.loading = false;
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
 							this.referenceService.goToTop();
-							this.defaultPartnerList(this.loggedInUserId);
+							this.loadPartnerList(this.pagination);
 						} else {
 							this.authenticationService.forceToLogout();
 						}
