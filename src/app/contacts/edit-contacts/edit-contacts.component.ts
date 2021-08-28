@@ -93,6 +93,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isShowUsers: boolean = true;
 	public users: Array<User>;
 	customResponse: CustomResponse = new CustomResponse();
+	emailNotificationCustomResponse:CustomResponse = new CustomResponse();
 	names: string[] = [];
 
 	selectedContactForSave = [];
@@ -3136,17 +3137,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(this.searchContactType); } }
 
 	sendMail(partnerId: number) {
+		this.emailNotificationCustomResponse = new CustomResponse();
+		this.loading = true;
 		try {
 			this.contactService.mailSend(partnerId, this.selectedContactListId)
 				.subscribe(
 					data => {
-						console.log(data);
-						if (data.message == "success") {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-						}
+						this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+						this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+						this.loading = false;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
+						this.loading = false;
 					},
 					() => this.xtremandLogger.log("Manage Partner component Mail send method successfull")
 				);
