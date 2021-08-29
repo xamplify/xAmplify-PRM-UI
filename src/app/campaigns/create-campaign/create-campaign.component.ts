@@ -410,17 +410,17 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             this.getCampaignUrls(this.campaign);
             this.contactsPagination.campaignId = this.campaign.campaignId;
             /******************Campaign Details Tab**************************/
-            // var campaignNameLength= $.trim(this.campaign.campaignName).length;
-            // var fromNameLength = $.trim(this.campaign.fromName).length;
-            // var subjectLineLength = $.trim(this.campaign.subjectLine).length;
-            // var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
-
-            // if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0 && this.isValidCrmOption){
-            //     this.isCampaignDetailsFormValid = true;
-            // }else{
-            //     this.isCampaignDetailsFormValid = false;
-            // }
             this.validateForm();
+             var campaignNameLength= $.trim(this.campaign.campaignName).length;
+             var fromNameLength = $.trim(this.campaign.fromName).length;
+             var subjectLineLength = $.trim(this.campaign.subjectLine).length;
+             var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
+
+             if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0 && this.isValidCrmOption){
+                 this.isCampaignDetailsFormValid = true;
+             }else{
+                this.isCampaignDetailsFormValid = false;
+             }
             /***********Select Video Tab*************************/
             if (this.campaign.partnerVideoSelected || this.isOnlyPartner) {
                 this.partnerVideosClass = this.tabClassActive;
