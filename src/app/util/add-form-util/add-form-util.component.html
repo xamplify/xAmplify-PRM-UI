@@ -797,8 +797,9 @@
                 <div class="portlet-body clearfix">
                     <div class="tab-content">
                         <div class="btn-group-form">
-                            <ng-container *ngFor="let customField of customFields;let i=index">
-                                <button (click)="addColumn(customField,false)">{{customField.labelName}}</button>
+                            <ng-container *ngFor="let customField of customFields;let i=index">        
+                                <button *ngIf="customField.labelType !== 'quiz_radio' && customField.labelType !== 'quiz_checkbox'" (click)="addColumn(customField,false)">{{customField.labelName}}</button>                        
+                                <button *ngIf="(customField.labelType === 'quiz_radio' || customField.labelType === 'quiz_checkbox') && showQuizField" (click)="addColumn(customField,false)">{{customField.labelName}}</button>
                             </ng-container>
                         </div>
                     </div>
