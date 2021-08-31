@@ -177,7 +177,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   thumbnailFileObj: any;
   loggedInAsSuperAdmin = false;
   isCreateDefaultForm = false;
-
+  showQuizField= true;
+  
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
@@ -219,7 +220,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         } else {
             this.listDefaultColumns();
             this.highlightByLength(1);
-        }
+        }        
         this.cropperSettings();
         this.pageNumber = this.numberPerPage[0];
 
@@ -243,8 +244,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                 this.removeBlurClass();
             }
         }
+        
 
+    }
 
+    setShowQuizField() {
+        if (this.form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
+            this.showQuizField = false;
+        }
     }
 
     getCompanyLogo(){
@@ -316,6 +323,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.listExistingColumns(this.form.formLabelDTOs);
         this.characterSize();
         this.highlightByLength(1);
+        this.setShowQuizField();
     }
 
     getById(id: number) {
