@@ -48,5 +48,6 @@ export class Form {
     saveAs = false;
     thumbnailImage="";
     saveAsDefaultForm = false;
-    formSubType:FormSubType;
+    formSubType:FormSubType = FormSubType.REGULAR;
+    isSurvey = false;
 }

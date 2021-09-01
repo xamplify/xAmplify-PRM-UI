@@ -448,6 +448,10 @@
                     <label>Description</label>
                     <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
                 </div>
+                <div class="form-group" *ngIf="loggedInAsSuperAdmin">
+                    <input type="checkbox" [(ngModel)]="form.isSurvey">
+                    <label>Survey</label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" [disabled]="!form.isValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>

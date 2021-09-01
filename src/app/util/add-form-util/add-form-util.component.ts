@@ -437,7 +437,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       $('#add-form-parent-div').removeClass(this.portletBodyBlur);
       $('#add-form-parent-div').addClass(this.portletBody);
       $('#add-form-name-modal').modal('hide');
-      $('#add-form-designs').modal('hide')
+      $('#add-form-designs').modal('hide');
+
+      if (this.isCreateDefaultForm && this.form.isSurvey) {
+        this.form.formSubType = FormSubType.SURVEY;
+        this.showQuizField = false;
+      }
   }
   showAddForm() {
       $('#add-form-name-modal').modal('show');
@@ -981,7 +986,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           this.form.formSubType = FormSubType.QUIZ;
       } else if (this.form.formSubType.toString() === FormSubType[FormSubType.QUIZ]) {
           this.form.formSubType = FormSubType.REGULAR;
-      }
+      }      
       let self = this;
       htmlToImage.toBlob(document.getElementById('create-from-div'))
           .then(function (blob) {
@@ -999,7 +1004,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if(this.isCreateDefaultForm){
         form.formType = FormType.XAMPLIFY_DEFAULT_FORM;
         form.saveAsDefaultForm = true;
-        form.createdBy = 1;
+        form.createdBy = 1;        
       }else{
         form.formType = this.formType;
         form.saveAsDefaultForm = false;
