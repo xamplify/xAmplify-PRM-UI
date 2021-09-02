@@ -225,10 +225,30 @@ export class TeamMembersUtilComponent implements OnInit {
   /*************************Delete Team Member************** */
   showPopup(teamMember:any) {
     if (!this.isLoggedInAsTeamMember) {
-      this.selectedId = 0;
-      this.deletePopupLoader = true;
-      $('#delete-team-member-popup').modal('show');
-      this.teamMemberService.findUsersToTransferData()
+      if(teamMember.status=="UNAPPROVED"){
+        let self = this;
+        swal({
+          title: 'Are you sure?',
+          text: "You won't be able to undo this action!",
+          type: 'warning',
+          showCancelButton: true,
+          swalConfirmButtonColor: '#54a7e9',
+          swalCancelButtonColor: '#999',
+          confirmButtonText: 'Yes, delete it!'
+        }).then(function() {
+          self.loading = true;
+          self.selectedId = 0;
+          self.teamMemberIdToDelete = teamMember.teamMemberUserId;
+          self.selectedTeamMemberEmailId = teamMember.emailId;
+          self.delete();
+        }, function(dismiss: any) {
+          
+        });
+      }else{
+        this.selectedId = 0;
+        this.deletePopupLoader = true;
+        $('#delete-team-member-popup').modal('show');
+        this.teamMemberService.findUsersToTransferData()
         .subscribe(
           data => {
             this.setDropDownData(data);
@@ -241,9 +261,12 @@ export class TeamMembersUtilComponent implements OnInit {
             $('#delete-team-member-popup').modal('hide');
             this.referenceService.showSweetAlertServerErrorMessage();
           });
+      }
     }
 
   }
+
+ 
 
   delete() {
     this.deletePopupLoader = true;
@@ -254,6 +277,7 @@ export class TeamMembersUtilComponent implements OnInit {
       .subscribe(
         data => {
           this.deletePopupLoader = false;
+          this.loading = false;
           $('#delete-team-member-popup').modal('hide');
           this.referenceService.goToTop();
           this.successMessage = this.selectedTeamMemberEmailId + " deleted successfully.";
@@ -265,6 +289,7 @@ export class TeamMembersUtilComponent implements OnInit {
         },
         _error => {
           this.deletePopupLoader = false;
+          this.loading = false;
           this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         });
   }
