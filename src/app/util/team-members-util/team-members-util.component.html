@@ -176,7 +176,7 @@
                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </a>
                 <!---Analytics--->
-                <a title="Campaigns" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember"  (click)="goToCampaignAnalytics(teamMember.teamMemberUserId)">
+                <a [title]="teamMember.status=='UNAPPROVED'? 'Not available for inactive team member':'Click here to see campaign anlaytics'" [className]="teamMember.status=='UNAPPROVED'? 'inactive':''" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember"  (click)="goToCampaignAnalytics(teamMember)">
                   <i class="fa fa-line-chart" aria-hidden="true"></i>
                 </a>
                 <!--Resend Invitation-->
