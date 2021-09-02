@@ -160,9 +160,13 @@ export class TeamMembersUtilComponent implements OnInit {
 
 
 
-  goToCampaignAnalytics(teamMemberId: number) {
-    this.loading = true;
-    this.router.navigate(['/home/campaigns/manage/tm/' + teamMemberId])
+  goToCampaignAnalytics(teamMember:any) {
+    if(teamMember.status!="UNAPPROVED"){
+      this.loading = true;
+      let teamMemberId = teamMember.teamMemberUserId;
+      this.router.navigate(['/home/campaigns/manage/tm/' + teamMemberId]);
+    }
+    
   }
 
   /**************Search TeamMembers***************/
