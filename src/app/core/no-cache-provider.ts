@@ -28,7 +28,7 @@ export class NoCacheHeadersInterceptor implements HttpInterceptor {
                 if (status == 0 && !this.router.url.includes('/login') && !this.router.url.includes('https://pro.ip-api.com')) {
                     //this.router.navigate(['/logout']);
                 } else if (status == 401 && !this.router.url.includes('/login')) {
-                    this.router.navigate(['/expired']);
+                    this.router.navigate(['/401']);
                 }
             }
         });

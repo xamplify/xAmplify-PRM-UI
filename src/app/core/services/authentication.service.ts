@@ -253,7 +253,8 @@ export class AuthenticationService {
         if (!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; }); }
         return roleNames;
       }
-    } catch (error) { this.xtremandLogger.log('error' + error); this.router.navigate(['/']); }
+    } catch (error) { this.xtremandLogger.log('error' + error); 
+}
 
   }
   showRoles(): string {
@@ -461,10 +462,13 @@ export class AuthenticationService {
     $('#launcher').contents().find('#Embed').hide();
   }
 
-  logout(): void {
+  navigateToUnauthorizedPage(){
+    this.resetData();
+    this.closeSwal();
+  }
+
+  resetData(){
     this.removeZenDeskScript();
-    this.access_token = null;
-    this.refresh_token = null;
     localStorage.removeItem('currentUser');
     localStorage.removeItem("campaignRouter");
     localStorage.removeItem("superiorId");
@@ -535,6 +539,12 @@ export class AuthenticationService {
 	  this.isVendorAndPartnerTeamMember = false;
     this.isOrgAdminAndPartnerTeamMember = false;
     this.setUserLoggedIn(false);
+  }
+
+  logout(): void {
+    this.resetData();
+    this.access_token = null;
+    this.refresh_token = null;
     if (!this.router.url.includes('/userlock')) {
       if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
         this.closeSwal();
@@ -544,7 +554,6 @@ export class AuthenticationService {
           window.location.href = 'https://www.xamplify.com/';
         } else {
           this.closeSwal();
-          this.router.navigate(['/']);
         }
       }
     }
@@ -623,23 +632,7 @@ export class AuthenticationService {
   }
 
   revokeAccessToken(){
-    let self = this;
-    this.showTokenExpiredSweetAlert();
-    setTimeout(function () {
-      self.logout();
-    }, 3000);
-  }
-
-  showTokenExpiredSweetAlert(){
-    swal(
-			{
-				title: 'We are redirecting you to login page.',
-				text: "Please Wait...",
-				showConfirmButton: false,
-				imageUrl: "assets/images/loader.gif",
-				allowOutsideClick:false
-			}
-		);
+    this.navigateToUnauthorizedPage();
   }
 
 
