@@ -102,6 +102,7 @@ export class AuthenticationService {
   leadsAndDeals = false;
   dashboardTypes = [];
   mdfAccessAsPartner = false;
+  unauthorized = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -554,6 +555,7 @@ export class AuthenticationService {
           window.location.href = 'https://www.xamplify.com/';
         } else {
           this.closeSwal();
+          this.router.navigate(["/"]);
         }
       }
     }

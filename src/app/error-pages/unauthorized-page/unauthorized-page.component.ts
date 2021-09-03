@@ -12,6 +12,7 @@ export class UnauthorizedPageComponent implements OnInit {
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
+    this.authenticationService.unauthorized = true;
     this.authenticationService.revokeAccessToken();
   }
 
