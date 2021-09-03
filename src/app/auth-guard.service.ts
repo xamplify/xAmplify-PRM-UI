@@ -99,7 +99,7 @@ export class AuthGuardService implements CanActivate {
       this.authenticationService.user = data;
       this.authenticationService.userProfile = data;
     },
-    error => {console.log( error ); this.router.navigate(['/login'])},
+    error => {console.log( error )},
     () => { }
     );
   }

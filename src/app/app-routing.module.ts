@@ -42,6 +42,7 @@ import { VanitySynchronizeContactsComponent } from './contacts/vanity-synchroniz
 import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
 import { LogoutComponent } from 'app/authentication/logout/logout.component';
 import {SelectContentModulesComponent} from 'app/core/select-content-modules/select-content-modules.component';
+import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unauthorized-page.component';
 
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
@@ -133,6 +134,7 @@ export const routes: Routes = [
 	{ path: 'au/:alias', component: SamlsecurityauthComponent },
 	{ path: 'vanity-domain-error', component: DomainErrorComponent },
 	{ path: '404', component: PageNotFoundComponent },
+	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },
 ];
 

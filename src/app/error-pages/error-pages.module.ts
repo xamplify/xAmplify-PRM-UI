@@ -6,12 +6,13 @@ import { ErrorPagesComponent } from './error-pages/error-pages.component';
 import { ServiceUnavailableComponent } from './service-unavailable/service-unavailable.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { UnauthorizedPageComponent } from './unauthorized-page/unauthorized-page.component';
 
 @NgModule({
   imports: [
     CommonModule, RouterModule
   ],
-  declarations: [ErrorPagesComponent, ServiceUnavailableComponent, PageNotFoundComponent, AccessDeniedComponent],
+  declarations: [ErrorPagesComponent, ServiceUnavailableComponent, PageNotFoundComponent, AccessDeniedComponent, UnauthorizedPageComponent],
   exports: [ErrorPagesComponent, ServiceUnavailableComponent, PageNotFoundComponent, AccessDeniedComponent]
 
 })
