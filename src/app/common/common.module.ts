@@ -100,6 +100,7 @@ import { TeamMembersUtilComponent } from 'app/util/team-members-util/team-member
 import { ConfirmSweetAlertUtilComponent } from 'app/util/confirm-sweet-alert-util/confirm-sweet-alert-util.component';
 import { ChartPieComponent } from 'app/util/charts/chart-pie/chart-pie.component';
 import { ChartVariablePieComponent } from 'app/util/charts/chart-variable-pie/chart-variable-pie.component';
+import { SelectDropdownComponent } from 'app/util/select-dropdown/select-dropdown.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -117,7 +118,7 @@ import { ChartVariablePieComponent } from 'app/util/charts/chart-variable-pie/ch
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
-		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent],
+		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,SelectDropdownComponent],
 
 
 
