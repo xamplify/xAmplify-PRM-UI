@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,EventEmitter,Output } from '@angular/core';
+import { ReferenceService } from '../../core/services/reference.service';
 
 @Component({
   selector: 'app-select-dropdown',
@@ -7,14 +8,16 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SelectDropdownComponent implements OnInit {
 
-  dropDownValue:string = "";
+  @Input()defaultOption:string = "";
   items:Array<any> = new Array<any>();
   showFolderDropDown: boolean = false;
   @Input() dropDownItems:Array<any> = new Array<any>();
-  constructor() { }
+  @Output() notifyParentComponent = new EventEmitter();
+  constructor(public referenceService:ReferenceService) { }
 
   ngOnInit() {
-     
+    // let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems,'name');
+    // this.defaultOption = names[0];
   }
 
   filterDropDownData(inputElement: any) {
@@ -32,9 +35,10 @@ export class SelectDropdownComponent implements OnInit {
   }
 
   setDropDownValue(input: any) {
-    this.dropDownValue = input.name;
+    this.defaultOption = input.name;
     this.items = this.dropDownItems;
     this.showFolderDropDown = false;
+    this.notifyParentComponent.emit(input.id);
   }
 
 
