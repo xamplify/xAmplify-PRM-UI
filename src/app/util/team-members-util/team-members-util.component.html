@@ -278,11 +278,12 @@
                       <i class="fa fa-eye white" aria-hidden="true"></i>
                     </button>
                     <div class="col-sm-8">
-                        <select class="form-control" (ngModelChange)="selectTeamMemberGroupId($event);"  [(ngModel)]="team.teamMemberGroupId"  [ngModelOptions]="{standalone: true}">
+                        <!-- <select class="form-control" (ngModelChange)="selectTeamMemberGroupId($event);"  [(ngModel)]="team.teamMemberGroupId"  [ngModelOptions]="{standalone: true}">
                           <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                           {{teamMemberGroup.name}}
                         </option>
-                        </select>
+                        </select> -->
+                        <app-select-dropdown [dropDownItems]="teamMemberGroups"></app-select-dropdown>
                       </div>
                   </div>
                 </div>
