@@ -13,6 +13,7 @@ export class SelectDropdownComponent implements OnInit {
   showFolderDropDown: boolean = false;
   @Input() dropDownItems:Array<any> = new Array<any>();
   @Output() notifyParentComponent = new EventEmitter();
+  dropDownSearchValue:any;
   constructor(public referenceService:ReferenceService) { }
 
   ngOnInit() {
