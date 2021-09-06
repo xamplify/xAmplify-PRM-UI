@@ -114,6 +114,7 @@ export class ModuleAccessComponent implements OnInit {
   
 
   updateModuleAccess(){
+    this.referenceService.goToTop();
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.campaignAccess.roleId = $('#roleId option:selected').val();
