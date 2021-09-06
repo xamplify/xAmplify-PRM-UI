@@ -598,9 +598,8 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    mailSend(partnerId: number, partnerListId: number) {
-        this.logger.info( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token +"&partnerId=" + partnerId +"&customerId=" + this.authenticationService.getUserId());
-        return this._http.get( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token +"&partnerId=" + partnerId +"&customerId=" + this.authenticationService.getUserId() + "&userListId=" + partnerListId )
+    mailSend(pagination : Pagination) {
+        return this._http.post( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
