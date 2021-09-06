@@ -169,6 +169,8 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.allBoundSource = false;
       this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
       this.campaignAccess.salesEnablement = false;
+    }else if(this.roleId==19){
+      this.campaignAccess.shareLeads = false;
     }else{
      this.getModuleAccessByCompanyId();
     }
