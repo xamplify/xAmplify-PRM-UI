@@ -228,7 +228,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
 		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService,public callActionSwitch: CallActionSwitch) {
-
+	    if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this.pagination.vanityUrlFilter = true;
+        }
 		this.addContactuser.country = (this.countryNames.countries[0]);
 		this.contactsByType.selectedCategory = "all";
 		this.sourceType = this.authenticationService.getSource();
@@ -3140,7 +3143,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.emailNotificationCustomResponse = new CustomResponse();
 		this.loading = true;
 		try {
-			this.contactService.mailSend(partnerId, this.selectedContactListId)
+			 this.pagination.partnerId = partnerId;
+	            this.pagination.userListId = this.selectedContactListId;
+	            this.pagination.userId = this.authenticationService.getUserId();
+			this.contactService.mailSend(this.pagination)
 				.subscribe(
 					data => {
 						this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);

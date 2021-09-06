@@ -2123,7 +2123,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	sendMail(partnerId: number) {
 		this.emailNotificationCustomResponse = new CustomResponse();
 		try {
-			this.contactService.mailSend(partnerId, this.defaultPartnerListId)
+			this.pagination.partnerId = partnerId;
+            this.pagination.userListId = this.defaultPartnerListId;
+            this.pagination.userId = this.authenticationService.getUserId();          
+            this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+            this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+			this.contactService.mailSend(this.pagination)
 				.subscribe(
 					data => {
 						this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);

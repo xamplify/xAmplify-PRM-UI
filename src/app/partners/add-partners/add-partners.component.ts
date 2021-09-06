@@ -210,6 +210,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, private hubSpotService: HubSpotService, public userService: UserService,
 		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public campaignService: CampaignService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		  //Added for Vanity URL
+	    if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+	        this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+	        this.pagination.vanityUrlFilter = true;
+	    }
 		this.sourceType = this.authenticationService.getSource();
 		if (this.sourceType == "ALLBOUND") {
 			this.router.navigate(['/access-denied']);
@@ -233,6 +238,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.companyId = campaginAccessDto.companyId;
 		}
 	}
+	
+  
 
 	onChangeAllPartnerUsers(event: Pagination) {
 		this.pagination = event;
@@ -2310,7 +2317,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	sendMail(partnerId: number) {
 		try {
 			this.loading = true;
-			this.contactService.mailSend(partnerId, this.partnerListId)
+			this.pagination.partnerId = partnerId;
+			this.pagination.userListId = this.partnerListId;
+			this.pagination.userId = this.authenticationService.getUserId();
+			
+			this.contactService.mailSend(this.pagination)
 				.subscribe(
 					data => {
 						if (data.access) {
