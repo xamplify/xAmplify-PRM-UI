@@ -13,3 +13,9 @@
 .black {
     color: #000;
 }
+
+.label-box {
+    border: #ddd solid 1px;
+    border-radius: 3px !important;
+    padding: 20px;
+}

@@ -57,7 +57,7 @@
         <h4 class="caption" class="portlet-title">Question & Answers</h4>
         <div class="col-sm-12 col-xs-12">
           <ng-container *ngFor="let qa of questionAndAnswers;let rowIndex = index">
-            <div class="form-group" style="margin-bottom: 20px">
+            <div class="form-group label-box" style="margin-bottom: 20px">
               <label class="control-label"><b>Q{{rowIndex+1}}. </b>{{qa.question}}</label>
               <div class="deviceType">{{qa.value}}</div>
             </div>
