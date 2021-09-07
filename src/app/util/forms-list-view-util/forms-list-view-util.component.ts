@@ -15,6 +15,7 @@ import { SortOption } from '../../core/models/sort-option';
 import { FormService } from '../../forms/services/form.service';
 import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { FormSubType } from 'app/forms/models/form-sub-type.enum';
 
 declare var swal, $: any;
 
@@ -320,10 +321,18 @@ export class FormsListViewUtilComponent implements OnInit {
         } else if (this.pagination.partnerLandingPageForm) {
             this.router.navigate(['/home/forms/partner/f/' + form.id + '/' + this.partnerLandingPageAlias + '/analytics']);
         } else {
-            if(this.categoryId>0){
-                this.router.navigate(['/home/forms/category/' + form.alias +'/'+this.categoryId+ '/analytics']);
-            }else{
-                this.router.navigate(['/home/forms/' + form.alias + '/analytics']);
+            if(this.categoryId>0){                
+                if (form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
+                    this.router.navigate(['/home/forms/' + form.alias + '/survey/analytics']);
+                } else {
+                    this.router.navigate(['/home/forms/category/' + form.alias +'/'+this.categoryId+ '/analytics']);
+                }
+            }else{                
+                if (form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
+                    this.router.navigate(['/home/forms/' + form.alias + '/survey/analytics']);
+                } else {
+                    this.router.navigate(['/home/forms/' + form.alias + '/analytics']);
+                }
             }
         }
 
