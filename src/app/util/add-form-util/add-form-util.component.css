@@ -1522,3 +1522,17 @@ div.switch5>input.switch:focus~label:before {
 .drop-down-custom {
     height: 30px;
 }
+
+.label-box {
+    border: #ddd solid 1px;
+    border-radius: 3px !important;
+    padding: 20px;
+}
+
+.dflex {
+    display: flex;
+}
+
+.label-text {
+    width: 95%;
+}

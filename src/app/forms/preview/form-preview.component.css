@@ -114,3 +114,17 @@ body {
 .swal-wide{
     width:850px !important;
 }
+
+.label-box {
+    border: #ddd solid 1px;
+    border-radius: 3px !important;
+    padding: 20px;
+}
+
+.label-box:hover {
+    background-color: #e6e5e5;
+}
+
+.mb15 {
+    margin-bottom: 15px!important;
+}

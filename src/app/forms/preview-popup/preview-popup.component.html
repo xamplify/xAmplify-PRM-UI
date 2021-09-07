@@ -155,7 +155,7 @@
                             <div class="panel-body" *ngIf="!formError">
                                 <h5>{{form.description}}</h5>
                                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
-                                    <div class="form-group">
+                                    <div class="form-group label-box">
                                         <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
                     						<span class="required" *ngIf="columnInfo.required">*</span>
                   						</label>
