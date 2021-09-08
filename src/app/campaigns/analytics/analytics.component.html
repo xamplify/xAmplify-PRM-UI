@@ -1750,7 +1750,7 @@
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   class="btn btn-success">{{dealButtonText}}</button>
               </span> -->
-              <span   *ngIf="authenticationService?.enableLeads && campaign.nurtureCampaign && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
+              <span   *ngIf="authenticationService?.opportunitiesAccessAsPartner && enableLeads && campaign.nurtureCampaign && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   class="btn btn-success">{{dealButtonText}}</button>
               </span>

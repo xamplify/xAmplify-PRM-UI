@@ -102,6 +102,7 @@ export class AuthenticationService {
   leadsAndDeals = false;
   dashboardTypes = [];
   mdfAccessAsPartner = false;
+  opportunitiesAccessAsPartner = false;
   unauthorized = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
@@ -539,6 +540,7 @@ export class AuthenticationService {
     this.lmsAccess = false;
 	  this.isVendorAndPartnerTeamMember = false;
     this.isOrgAdminAndPartnerTeamMember = false;
+    this.opportunitiesAccessAsPartner = false;
     this.setUserLoggedIn(false);
   }
 
