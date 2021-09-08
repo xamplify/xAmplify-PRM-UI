@@ -96,8 +96,11 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let textResponse of questionSummary.textResponses;let i  = index">
-                      <th scope="row">{{i+1}}</th>
-                      <td>{{textResponse.value}}</td>
+                      <td scope="row">{{i+1}}</td>
+                      <td *ngIf="textResponse.questionType != 'upload'">{{textResponse.value}}</td>
+                      <td *ngIf="textResponse.questionType === 'upload'">
+                        <a href="{{textResponse.filePath}}" class="link12" id="link{{i}}">{{textResponse.value}}</a>
+                      </td>
                       <td>
                         <app-timestamp [isOnlyDate]="false" [dateAndTime]="textResponse.createdDateUTC">
                         </app-timestamp>
