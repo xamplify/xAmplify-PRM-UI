@@ -230,4 +230,10 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
     this.referenceService.isCreated = false;
   }
 
+  goToSelectMdfPage(){
+    this.loading = true;
+    this.referenceService.goToRouter('/home/mdf/select');
+  }
+
+
 }

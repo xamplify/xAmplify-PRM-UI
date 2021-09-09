@@ -249,7 +249,11 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     setShowQuizField() {
-        if (this.form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
+        if(this.form.formSubType!=undefined){
+            if (this.form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
+                this.showQuizField = false;
+            }
+        }else{
             this.showQuizField = false;
         }
     }
@@ -981,12 +985,15 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if (!this.form.companyLogo) {
           this.form.companyLogo = this.companyLogoImageUrlPath;
       }
-     
-      if (this.form.quizForm) {
-          this.form.formSubType = FormSubType.QUIZ;
-      } else if (this.form.formSubType.toString() === FormSubType[FormSubType.QUIZ]) {
-          this.form.formSubType = FormSubType.REGULAR;
-      }      
+     if(this.form.formSubType!=undefined){
+        if (this.form.quizForm) {
+            this.form.formSubType = FormSubType.QUIZ;
+        } else if (this.form.formSubType.toString() === FormSubType[FormSubType.QUIZ]) {
+            this.form.formSubType = FormSubType.REGULAR;
+        }   
+     }else{
+        this.form.formSubType = FormSubType.REGULAR;
+     }
       let self = this;
       htmlToImage.toBlob(document.getElementById('create-from-div'))
           .then(function (blob) {

@@ -184,4 +184,9 @@ export class ManageMdfDetailsComponent implements OnInit {
     this.listPartners(this.pagination);
   }
 
+  goToSelectMdfPage(){
+    this.loading = true;
+    this.referenceService.goToRouter('/home/mdf/select');
+  }
+
 }

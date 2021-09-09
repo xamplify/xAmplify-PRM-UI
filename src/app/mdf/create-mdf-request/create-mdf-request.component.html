@@ -12,7 +12,14 @@
                   <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter"  translate>Home</a>
                      <i class="fa fa-angle-right" aria-hidden="true"></i>
                   </li>
-                  <li><a (click)="goToManageMdfRequests()" translate>Manage MDF Requests</a>  <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+                  <li>
+                     <a (click)="goToSelectMdfPage()" translate>MDF</a>
+                       <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  </li>
+                  <li>
+                     <a (click)="goToManageMdfRequests()" translate>Manage MDF Requests</a>
+                       <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  </li>
                   <li><a translate>Create Request</a></li>
                </ul>
             </div>
