@@ -99,3 +99,56 @@
 .left-align{
 	text-align: left;
 }
+
+.ribbon1 {
+    position: absolute;
+    top: 50px;
+    right: -0px;
+}
+
+.ribbon1:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 0;
+    margin-left: -44px;
+    border-left: 44px solid transparent;
+    border-right: 44px solid transparent;
+    border-top: 10px solid #8dd8f8;
+}
+
+.ribbon1 span {
+    position: relative;
+    display: block;
+    text-align: center;
+    background: #8dd8f8;
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 1;
+    padding: 12px 8px 10px;
+    border-top-right-radius: 8px;
+    width: 90px;
+}
+
+.ribbon1 span:before,
+.ribbon1 span:after {
+    position: absolute;
+    content: "";
+}
+
+.ribbon1 span:before {
+    height: 6px;
+    width: 6px;
+    left: -6px;
+    top: 0;
+    background: #8dd8f8;
+}
+
+.ribbon1 span:after {
+    height: 6px;
+    width: 8px;
+    left: -8px;
+    top: 0;
+    border-radius: 8px 8px 0 0;
+    background: #65b4d6;
+}
