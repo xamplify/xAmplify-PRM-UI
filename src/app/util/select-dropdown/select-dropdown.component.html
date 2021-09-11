@@ -6,11 +6,11 @@
     <input type="text" placeholder="Search.." id="myInput"
       (input)="filterDropDownData(dropDownSearchValue)" #dropDownSearchValue>
     <div class="xamplify-dropdown-option" [ngClass]="{'xamplify-dropdown-content-odd': 0 === i % 2}"
-      *ngFor="let item of items;let i=index"
+      *ngFor="let item of filteredDropDownItems;let i=index"
       (click)="setDropDownValue(item)">
       <div title="{{item.name}}">{{item?.name | slice: 0: 50}}<span *ngIf="item?.name?.length>50">...</span></div>
     </div>
-    <div *ngIf="items?.length==0" class="alert alert-info custom-center">
+    <div *ngIf="filteredDropDownItems?.length==0" class="alert alert-info custom-center">
       <strong>No Records Found</strong>
     </div>
   </div>

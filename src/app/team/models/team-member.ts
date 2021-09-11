@@ -35,5 +35,6 @@ export class TeamMember{
     validForm = false;
     secondAdmin = false;
     userId  = 0;
+    teamMemberGroupName = "";
 
 }

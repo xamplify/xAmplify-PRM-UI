@@ -9,7 +9,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 export class SelectDropdownComponent implements OnInit {
 
   @Input()defaultOption:string = "";
-  items:Array<any> = new Array<any>();
+  filteredDropDownItems:Array<any> = new Array<any>();
   showFolderDropDown: boolean = false;
   @Input() dropDownItems:Array<any> = new Array<any>();
   @Output() notifyParentComponent = new EventEmitter();
@@ -23,21 +23,21 @@ export class SelectDropdownComponent implements OnInit {
 
   filterDropDownData(inputElement: any) {
     if (inputElement == null || inputElement == undefined) {
-      this.items = this.dropDownItems;
+      this.filteredDropDownItems = this.dropDownItems;
     } else {
       let value = inputElement.value;
       if (value != undefined && value != null && value != "") {
-        this.items = this.dropDownItems.filter(
+        this.filteredDropDownItems = this.dropDownItems.filter(
           item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
       } else {
-        this.items = this.dropDownItems;
+        this.filteredDropDownItems = this.dropDownItems;
       }
     }
   }
 
   setDropDownValue(input: any) {
     this.defaultOption = input.name;
-    this.items = this.dropDownItems;
+    this.filteredDropDownItems = this.dropDownItems;
     this.showFolderDropDown = false;
     this.notifyParentComponent.emit(input.id);
   }
