@@ -186,4 +186,10 @@ export class ChangeMdfRequestComponent implements OnInit {
     this.loadData();
   }
 
+  goToSelectMdfPage(){
+    this.loading = true;
+    this.referenceService.goToTop();
+    this.referenceService.goToRouter('/home/mdf/select');
+  }
+
 }

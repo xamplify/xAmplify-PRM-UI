@@ -269,4 +269,10 @@ export class CreateMdfRequestComponent implements OnInit {
     this.router.navigate(["/home/mdf/requests/p"]);
   }
 
+  goToSelectMdfPage(){
+    this.loading = true;
+    this.referenceService.goToTop();
+    this.referenceService.goToRouter('/home/mdf/select');
+  }
+
 }

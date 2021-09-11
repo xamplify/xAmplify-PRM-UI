@@ -803,7 +803,11 @@ export class TeamMembersUtilComponent implements OnInit {
         this.referenceService.showSweetAlertServerErrorMessage();
       }
     );
-    
-
   }
+
+
+  getSelectedTeamMemberGroup(selectedTeamMemberGroupId:any){
+    this.team.teamMemberGroupId = selectedTeamMemberGroupId;
+  }
+
 }

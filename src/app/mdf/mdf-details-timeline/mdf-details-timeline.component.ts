@@ -101,4 +101,11 @@ export class MdfDetailsTimelineComponent implements OnInit {
     this.getHistoryAndAmountDetails();
   }
 
+  goToSelectMdfPage(){
+    this.loading = true;
+    this.referenceService.goToTop();
+    this.referenceService.goToRouter('/home/mdf/select');
+  }
+
+
 }

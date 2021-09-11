@@ -134,6 +134,7 @@
       <p class="tm-count left-align plfpx">Total users with this group:
         {{group?.teamMembersCount}}
       </p>
+      <span class="ribbon1" *ngIf="group?.defaultGroup"><span translate>Default Group</span></span>
        <div class="table-responsive">
          <div class="alert alert-danger left-align" *ngIf="group?.teamMemberModuleDTOs?.length==0">
            <strong>No Modules Found</strong>
