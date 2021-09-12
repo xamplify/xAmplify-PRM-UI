@@ -1744,9 +1744,7 @@
             <div class="row mb10">
               <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
              <ng-container *ngIf="!disabled">
-              <span
-                *ngIf="((campaign.nurtureCampaign || !channelCampaign) &&  (campaignType!='LANDINGPAGE') &&(campaignType!='SOCIAL')&&
-                  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf) || campaign.showRegisterLeadButton">
+              <span   *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   class="btn btn-success">{{dealButtonText}}</button>
               </span>

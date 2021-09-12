@@ -9,7 +9,14 @@
         <li><i class="fa fa-home" aria-hidden="true"></i> 
            <a  [routerLink]="referenceService.homeRouter"translate>Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i>
         </li>
-        <li><a (click)="goBack()" translate>Manage MDF Requests</a>  <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+        <li>
+            <a (click)="goToSelectMdfPage()" translate>MDF</a>  
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li>
+            <a (click)="goBack()" translate>Manage MDF Requests</a>  
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
         <li><a translate>Timeline</a></li>
      </ul>
      <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">

@@ -21,13 +21,13 @@
 
           <!--Partners-->
           <li *ngIf="menuItem?.partners" [ngClass]="{'active': location.path().includes('partners')}">
-            <a href="javascript:void(0);">
+            <a href="javascript:;" (click)="openOrCloseTabs('partners')">
                 <i class="fa fa-handshake-o" aria-hidden="true"></i>
                 <span class="title" translate>Partners</span>
                 <span class="arrow"></span>
                 <span class="selected"></span>
             </a>
-            <ul class="sub-menu">
+            <ul class="sub-menu" [ngStyle]="{'display': partners? 'block': 'none' }" >
               <li>
                   <a [routerLink]="['./partners/add']">
                       <i class="fa fa-users" aria-hidden="true"></i>
@@ -55,13 +55,13 @@
 
           <!--Contacts-->
           <li *ngIf="menuItem?.contacts"  [ngClass]="{'active': location.path().includes('contacts')}">
-          <a href="javascript:;">
+          <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
               <i class="fa fa-id-card" aria-hidden="true"></i>
               <span class="title" translate>Contacts</span>
               <span class="arrow "></span>
               <span class="selected"></span>
           </a>
-          <ul class="sub-menu">
+          <ul class="sub-menu" [ngStyle]="{'display': contacts? 'block': 'none' }">
               <li>
                   <a [routerLink]="['./contacts/add']">
                       <i class="fa fa-users" aria-hidden="true"></i>
@@ -79,13 +79,13 @@
 
           <!--Share Leads-->
           <li *ngIf="menuItem?.shareLeads" [ngClass]="{'active': location.path().includes('assignleads')}">
-          <a href="javascript:;"> 
+          <a href="javascript:;" (click)="openOrCloseTabs('assignleads')"> 
             <i class="fa fa-id-badge" aria-hidden="true"></i> 
             <span class="title"	translate>Share Leads</span>
             <span class="arrow "></span> 
             <span	class="selected"></span>
           </a>
-          <ul class="sub-menu">
+          <ul class="sub-menu" [ngStyle]="{'display': assignLeads? 'block': 'none' }">
             <li>
               <a [routerLink]="['./assignleads/add']"> 
                 <i class="fa fa-users" aria-hidden="true"></i>
@@ -132,13 +132,13 @@
 
           <!---Campaigns---->
           <li *ngIf="menuItem?.campaign || menuItem?.campaignAccessAsPartner" [ngClass]="{'active':(location.path().includes('campaigns') || location.path().includes('campaign'))}">
-            <a href="javascript:;">
+            <a href="javascript:;" (click)="openOrCloseTabs('campaigns')">
                 <i class="fa fa-bullhorn" aria-hidden="true"></i>
                 <span class="title" translate>Campaign</span>
                 <span class="arrow "></span>
                 <span class="selected"></span>
             </a>
-            <ul class="sub-menu" [ngStyle]="{'display': menuItem?.campaignsMenuSelected? 'block': 'none' }">
+            <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
                 <!--Redistribute Campaign-->
                 <li *ngIf="menuItem?.campaignAccessAsPartner">
                   <a [routerLink]="['./campaigns/partner/all']">
@@ -169,13 +169,13 @@
           <!-- ------Oppportunities----- -->
           <li *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner" [ngClass]="{'active': (location.path().includes('deal') || location.path().includes('leads') && !location.path().includes('assign') 
                   && !location.path().includes('shared')) }">
-            <a href="javascript:;">
+            <a href="javascript:;" (click)="openOrCloseTabs('deal')">
                 <i class="fa fa-money" aria-hidden="true"></i>
                 <span class="title" translate>Opportunities</span>
                 <span class="arrow"></span>
                 <span class="selected"></span>
             </a>
-            <ul class="sub-menu">
+            <ul class="sub-menu" [ngStyle]="{'display': deals? 'block': 'none' }">
                 <!--Manage Leads-->
                 <li>
                     <a [routerLink]="['/home/leads/']">

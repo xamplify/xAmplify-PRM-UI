@@ -233,4 +233,11 @@ export class MdfRequestTimelineComponent implements OnInit {
     window.open(this.authenticationService.REST_URL+"mdf/download/"+alias+"?access_token="+this.authenticationService.access_token);
   }
 
+  goToSelectMdfPage(){
+    this.loading = true;
+    this.referenceService.goToTop();
+    this.referenceService.goToRouter('/home/mdf/select');
+  }
+
+
 }

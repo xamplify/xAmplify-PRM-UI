@@ -33,7 +33,6 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
 
     if (this.errorCode === 503 || this.errorCode === 0 || this.errorCode==401) {
       this.authenticationService.logout();
-      //this.router.navigate(['/login']);
     }
   }
 

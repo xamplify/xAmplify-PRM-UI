@@ -182,6 +182,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     bgImageChangedEvent: any = '';
     allLoginScreenDirectionsList:string[] = [];  
     prm = false;  
+    vendorTier = false;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -1603,6 +1604,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       setModulesByRole(){
           let roleId =  $('#selectedRole option:selected').val();
           this.prm = roleId==20;
+          this.vendorTier = roleId==19;
           if(this.prm){
             this.campaignAccess.emailCampaign = false;
             this.campaignAccess.videoCampaign = false;
@@ -1612,6 +1614,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.formBuilder = true;
             this.campaignAccess.landingPage = false;
             this.campaignAccess.landingPageCampaign = false;
+            this.campaignAccess.shareLeads = false;
+            this.campaignAccess.allBoundSource = false;
+            this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
+            this.campaignAccess.salesEnablement = false;
+          }else if(this.vendorTier){
+              this.campaignAccess.shareLeads = false;
           }
       }
 

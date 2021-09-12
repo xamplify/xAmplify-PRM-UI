@@ -30,6 +30,7 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
+import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -39,7 +40,7 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Pa
 	styleUrls: ['../../../assets/css/button.css',
 		'../../../assets/css/numbered-textarea.css',
 		'./edit-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
-	providers: [FileUtil, Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService]
+	providers: [FileUtil, Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService,CallActionSwitch]
 })
 export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() contacts: User[];
@@ -92,6 +93,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isShowUsers: boolean = true;
 	public users: Array<User>;
 	customResponse: CustomResponse = new CustomResponse();
+	emailNotificationCustomResponse:CustomResponse = new CustomResponse();
 	names: string[] = [];
 
 	selectedContactForSave = [];
@@ -219,13 +221,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	processingPartnersLoader = false;
 	contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
 	sharedLeads : boolean = false;
+	showNotifyPartnerOption = false;
 
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService) {
-
+		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService,public callActionSwitch: CallActionSwitch) {
+	    if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this.pagination.vanityUrlFilter = true;
+        }
 		this.addContactuser.country = (this.countryNames.countries[0]);
 		this.contactsByType.selectedCategory = "all";
 		this.sourceType = this.authenticationService.getSource();
@@ -1661,6 +1667,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	closeAssignContactAndMdfAmountPopup() {
 		$('#assignContactAndMdfPopup').modal('hide');
+		this.showNotifyPartnerOption = false;
 		this.contactAndMdfPopupResponse = new CustomResponse();
 		this.cancelContacts();
 	}
@@ -1670,12 +1677,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			(data: any) => {
 				this.users = data.data;
 				this.loading = false;
+				this.showNotifyPartnerOption = true;
 				$('#assignContactAndMdfPopup').modal('show');
 			}, (error: any) => {
 				this.loading = false;
 				this.refService.showSweetAlertServerErrorMessage();
 				this.cancelContacts();
 			});
+	}
+
+	setNotifyPartnerOption(partner:any,event:any){
+		partner.notifyPartners = event;
 	}
 
 	validatePartners() {
@@ -1707,6 +1719,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				if (statusCode == 200) {
 					$('#assignContactAndMdfPopup').modal('hide');
 					this.processingPartnersLoader = false;
+					this.showNotifyPartnerOption = false;
 					this.saveData();
 				} else {
 					let emailIds = "";
@@ -2902,33 +2915,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	updateContactListNameType(newContactListName: string, isPublic: boolean) {
-		try {
-			var object = {
-				"id": this.selectedContactListId,
-				"name": newContactListName,
-				"publicList": isPublic
-			}
-			this.addContactModalClose();
-			this.contactService.updateContactListName(object)
-				.subscribe(
-					(data: any) => {
-						console.log(data);
-						this.selectedContactListName = newContactListName;
-						if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_NAME_UPDATE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
-						}
-					},
-					error => this.xtremandLogger.error(error),
-					() => this.xtremandLogger.info("EditContactsComponent updateContactListName() finished")
-				)
-		} catch (error) {
-			this.xtremandLogger.error(error, "editContactComponent", "listNameUpdating()");
-		}
-	}
-
 	loadContactListsNames() {
 		try {
 			this.contactService.loadContactListsNames()
@@ -3154,17 +3140,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(this.searchContactType); } }
 
 	sendMail(partnerId: number) {
+		this.emailNotificationCustomResponse = new CustomResponse();
+		this.loading = true;
 		try {
-			this.contactService.mailSend(partnerId, this.selectedContactListId)
+			 this.pagination.partnerId = partnerId;
+	            this.pagination.userListId = this.selectedContactListId;
+	            this.pagination.userId = this.authenticationService.getUserId();
+			this.contactService.mailSend(this.pagination)
 				.subscribe(
 					data => {
-						console.log(data);
-						if (data.message == "success") {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-						}
+						this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+						this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+						this.loading = false;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
+						this.loading = false;
 					},
 					() => this.xtremandLogger.log("Manage Partner component Mail send method successfull")
 				);

@@ -57,6 +57,7 @@ export class Properties {
 	PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
 	PARTNER_LIST_SAVE_SUCCESS = "Your partner list has been saved successfully";
 	PARTNER_LIST_NAME_UPDATE_SUCCESS = "Your partner list name has been updated successfully.";
+	LEAD_LIST_NAME_UPDATE_SUCCESS = "Your lead list name has been updated successfully.";
 
 	PARTNER_LIST_SYNCHRONIZATION_SUCCESS = "Your Parntner List has been synchronized successfully.";
 	PARTNER_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your partner list.";
@@ -170,6 +171,8 @@ export class Properties {
 	spfHeaderText = "Publish an SPF record with your DNS registrar";
 	unsubscribeReasons = "Unsubscribe Reasons";
 	unsubscribeReasonsHeaderText = "Manage Unsubscribe Reasons";
+	notifyPartners = "Onboarding Configurations";
+	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
 
 

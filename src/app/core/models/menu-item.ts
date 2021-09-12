@@ -28,4 +28,7 @@ export class MenuItem {
     mdfAccessAsPartner = false;
     team = false;
     companyProfileCreated = false;
+
+
+    
 }

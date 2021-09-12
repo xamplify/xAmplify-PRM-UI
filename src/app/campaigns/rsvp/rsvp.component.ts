@@ -14,6 +14,9 @@ import { Form } from '../../forms/models/form';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { FormService } from '../../forms/services/form.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { GeoLocationAnalytics } from 'app/util/geo-location-analytics';
+import { UtilService } from 'app/core/services/util.service';
+import { Ng2DeviceService } from 'ng2-device-detector';
 
 
 declare var $: any;
@@ -48,8 +51,11 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   selectedUtmType: string;
   hideForm = false;
   isCaptchaValid = false;
-  constructor(private changeDetectorRef: ChangeDetectorRef, public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
-  public authenticationService:AuthenticationService, private vanityURLService: VanityURLService, private formService: FormService,  private logger: XtremandLogger) { }
+  geoLocationAnalytics : GeoLocationAnalytics;
+
+  constructor(private changeDetectorRef: ChangeDetectorRef, public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor: Processor,
+    public authenticationService: AuthenticationService, private vanityURLService: VanityURLService, private formService: FormService, private logger: XtremandLogger, public utilService: UtilService, 
+    public deviceService: Ng2DeviceService) { }
 
   getEventCampaign (alias: string) {
     this.campaignService.getEventCampaignByAlias(alias)
@@ -264,7 +270,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         formSubmit.fields.push(formField);
         //self.campaignRsvp.formSubmitDTO.push(formField);
     });
-    
+    formSubmit.geoLocationAnalyticsDTO = this.geoLocationAnalytics;
     this.campaignRsvp.formSubmitDTO = formSubmit;
     
     this.campaignRsvp.eventCampaignRsvp = this.selectedType;
@@ -317,23 +323,24 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   ngOnInit() {
-    try{
-      if(this.vanityURLService.isVanityURLEnabled()){
+    try {
+      if (this.vanityURLService.isVanityURLEnabled()) {
         this.vanityURLService.checkVanityURLDetails();
       }
-        this.authenticationService.isFromRsvpPage = true;
-        $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
-        this.processor.set(this.processor);
-        this.alias = this.route.snapshot.params['alias'];
-        //this.type = this.route.snapshot.queryParams['type'];
-        this.campaignRsvp.eventCampaignRsvp = this.route.snapshot.queryParams['type'];
-        this.selectedType = this.route.snapshot.queryParams['type'];
-        this.selectedUtmType = this.route.snapshot.queryParams['utm_source'];
-        console.log(this.selectedType,this.selectedUtmType);
-        this.getEventCampaign(this.alias);
-       }catch(error){
-        console.error(error);
-       }
+      this.authenticationService.isFromRsvpPage = true;
+      $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
+      this.processor.set(this.processor);
+      this.alias = this.route.snapshot.params['alias'];
+      //this.type = this.route.snapshot.queryParams['type'];
+      this.campaignRsvp.eventCampaignRsvp = this.route.snapshot.queryParams['type'];
+      this.selectedType = this.route.snapshot.queryParams['type'];
+      this.selectedUtmType = this.route.snapshot.queryParams['utm_source'];
+      console.log(this.selectedType, this.selectedUtmType);
+      this.getEventCampaign(this.alias);
+      this.setLocationDetails();
+    } catch (error) {
+      console.error(error);
+    }
   }
   
   ngOnDestroy() {
@@ -347,4 +354,33 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.isCaptchaValid = event;
   }
 
+  setLocationDetails() {
+    this.utilService.getJSONLocation()
+      .subscribe(
+        (response: any) => {
+          let geoLocationAnalytics = new GeoLocationAnalytics();
+          let deviceInfo = this.deviceService.getDeviceInfo();
+          if (deviceInfo.device === 'unknown') {
+            deviceInfo.device = 'computer';
+          }
+          geoLocationAnalytics.openedTime = new Date();
+          geoLocationAnalytics.deviceType = deviceInfo.device;
+          geoLocationAnalytics.os = deviceInfo.os;
+          geoLocationAnalytics.city = response.city;
+          geoLocationAnalytics.country = response.country;
+          geoLocationAnalytics.isp = response.isp;
+          geoLocationAnalytics.ipAddress = response.query;
+          geoLocationAnalytics.state = response.regionName;
+          geoLocationAnalytics.zip = response.zip;
+          geoLocationAnalytics.latitude = response.lat;
+          geoLocationAnalytics.longitude = response.lon;
+          geoLocationAnalytics.countryCode = response.countryCode;
+          geoLocationAnalytics.timezone = response.timezone;          
+          this.geoLocationAnalytics = geoLocationAnalytics;
+        },
+        (error: string) => {
+          this.logger.error("Error In Fetching Location Details");
+        }
+      );
+  }
 }

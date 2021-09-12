@@ -49,7 +49,11 @@ export class HomeComponent implements OnInit {
     try {
       if (!localStorage.getItem("currentUser")) {
         $(".page-container,.page-header.navbar.navbar-fixed-top").html("");
-        this.router.navigateByUrl("/login");
+        if(this.authenticationService.unauthorized){
+          this.router.navigateByUrl("/401");
+        }else{
+          this.router.navigateByUrl("/login");
+        }
         return false;
       }
     } catch (error) {

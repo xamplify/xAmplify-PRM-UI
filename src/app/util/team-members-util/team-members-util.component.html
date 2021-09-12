@@ -108,13 +108,13 @@
             <th *ngIf="isTeamMemberModule" scope="" translate>
               <i class="fa fa-object-group" aria-hidden="true"></i><br>Group
             </th>
-            <th *ngIf="isOrgAdmin && isTeamMemberModule"  scope="" translate>
+            <th id="second-admin-td" *ngIf="isOrgAdmin && isTeamMemberModule"  scope="" translate>
               <i class="fa fa-user" aria-hidden="true"></i><br>Second Admin
             </th>
             <th  scope="" translate>
               <i class="fa fa-lock" aria-hidden="true"></i><br>Status
             </th>
-            <th class="padding-left-eight-per" scope="" translate>
+            <th  scope="" translate>
               <i class="fa fa-tasks" aria-hidden="true"></i><br>Actions
             </th>
           </tr>
@@ -126,7 +126,7 @@
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
             </td>
             <!---Assigned Group-->
-            <td *ngIf="isTeamMemberModule">
+            <td *ngIf="isTeamMemberModule" id="group-min-td">
               <div class="btn-group">
                 <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
                   <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
@@ -176,7 +176,7 @@
                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </a>
                 <!---Analytics--->
-                <a title="Campaigns" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember"  (click)="goToCampaignAnalytics(teamMember.teamMemberUserId)">
+                <a [title]="teamMember.status=='UNAPPROVED'? 'Not available for inactive team member':'Click here to see campaign anlaytics'" [className]="teamMember.status=='UNAPPROVED'? 'inactive':''" *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember"  (click)="goToCampaignAnalytics(teamMember)">
                   <i class="fa fa-line-chart" aria-hidden="true"></i>
                 </a>
                 <!--Resend Invitation-->
@@ -283,6 +283,7 @@
                           {{teamMemberGroup.name}}
                         </option>
                         </select>
+                        <!-- <app-select-dropdown [dropDownItems]="teamMemberGroups" [defaultOption]="team.teamMemberGroupName" (notifyParentComponent)="getSelectedTeamMemberGroup($event)"></app-select-dropdown> -->
                       </div>
                   </div>
                 </div>
@@ -379,8 +380,9 @@
             <select class="form-control" [(ngModel)]="teamMember.teamMemberGroupId" (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);" >
               <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
              		{{teamMemberGroup?.name}}
-            </option>
+            </option> 
             </select>
+            <!-- <app-select-dropdown [dropDownItems]="teamMemberGroups" [defaultOption]="team.teamMemberGroupName" (notifyParentComponent)="getSelectedTeamMemberGroup($event)"></app-select-dropdown> -->
             <span class="input-group-btn">
               <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)">
                 <i class="fa fa-eye white" aria-hidden="true"></i>

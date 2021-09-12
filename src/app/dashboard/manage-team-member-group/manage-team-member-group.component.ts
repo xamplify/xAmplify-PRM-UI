@@ -228,9 +228,11 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     );
   }
 
-  confirmAlert(id: number) {
-    this.isDelete = true;
-    this.idToDelete = id;
+  confirmAlert(teamMemberGroup:any) {
+    if(!teamMemberGroup.defaultGroup){
+      this.isDelete = true;
+      this.idToDelete = teamMemberGroup.id;
+    }
   }
 
   deleteGroup(event: any) {

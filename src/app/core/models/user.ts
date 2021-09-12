@@ -51,4 +51,6 @@ export class User {
 
     contactsLimit:number;
     mdfAmount:any;
+    notifyPartners = false;
+    disableNotifyPartnersOption = false;
 }

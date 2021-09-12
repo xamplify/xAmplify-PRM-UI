@@ -134,6 +134,7 @@
       <p class="tm-count left-align plfpx">Total users with this group:
         {{group?.teamMembersCount}}
       </p>
+      <span class="ribbon1" *ngIf="group?.defaultGroup"><span translate>Default Group</span></span>
        <div class="table-responsive">
          <div class="alert alert-danger left-align" *ngIf="group?.teamMemberModuleDTOs?.length==0">
            <strong>No Modules Found</strong>
@@ -161,7 +162,7 @@
         <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="findGroupDetailsById(group.id)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         </a>
-        <a  data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmAlert(group.id)">
+        <a  data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'" [className]="group?.defaultGroup ? 'delete inactive':'delete'" (click)="confirmAlert(group)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
         </a>
       </div>

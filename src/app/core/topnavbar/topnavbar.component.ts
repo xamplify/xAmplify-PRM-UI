@@ -285,7 +285,6 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     document.body.className = 'login page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo';
     localStorage.setItem('isLogout', 'loggedOut');
     this.authenticationService.logout();
-   // this.router.navigate(['/']);
   }
 
 
@@ -435,10 +434,10 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
 
 delayAndNavigate(url:string){
   this.loadTopNavBar = true;
-    let self = this;
+  let self = this;
     setTimeout(()=>{                         
       self.refService.goToRouter(url);
-		}, 300);
+		}, 500);
   }
   
 }

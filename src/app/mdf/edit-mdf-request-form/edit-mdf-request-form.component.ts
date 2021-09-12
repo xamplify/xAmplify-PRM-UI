@@ -72,4 +72,10 @@ export class EditMdfRequestFormComponent implements OnInit {
     this.referenceService.goToRouter("/home/mdf/details");
   }
 
+  goToSelectMdfPage(){
+    this.loading = true;
+    this.referenceService.goToRouter('/home/mdf/select');
+  }
+
+
 }

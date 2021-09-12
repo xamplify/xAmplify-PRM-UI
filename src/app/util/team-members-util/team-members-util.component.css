@@ -320,7 +320,7 @@ hr {
 }
 
 .custom-width-icon {
-    min-width: 130px;
+    min-width: 250px;
 }
 
 .margin-left-one-per {
@@ -367,4 +367,12 @@ hr {
 
 .btn-group button:hover {
     background-color: #4db1e2;
+}
+
+#group-min-td{
+    min-width: 250px;
+}
+
+#second-admin-td{
+    min-width: 120px;
 }
