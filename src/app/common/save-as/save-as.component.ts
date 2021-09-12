@@ -10,6 +10,7 @@ import { UserUserListWrapper } from '../../contacts/models/user-userlist-wrapper
 import { User } from '../../core/models/user';
 import { ContactList } from '../../contacts/models/contact-list';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { CustomResponse } from '../../common/models/custom-response';
 
 
 declare var $:any;
@@ -42,6 +43,7 @@ export class SaveAsComponent implements OnInit {
   contactListObject: ContactList;
   userUserListWrapper: UserUserListWrapper ;
   loading = false;
+  assignLeads : boolean = false;
 
 
 
@@ -54,6 +56,7 @@ export class SaveAsComponent implements OnInit {
         this.module = 'contacts';
     } else if( this.router.url.includes( 'home/assignleads' ) ){
         this.module = 'leads';
+        this.assignLeads = true;
     }else {
       this.module = 'partners';
     }
@@ -213,9 +216,7 @@ export class SaveAsComponent implements OnInit {
                    } else {
                        if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
                            //if(this.isValidLegalOptions){
-                               this.editContactsComponent.updateContactListNameType(this.saveAsListName, this.model.isPublic );
-                               $('#saveAsModal').modal('hide');
-                               this.notifyParentSaveAs.emit('success');
+                               this.updateContactListNameType(this.saveAsListName, this.model.isPublic );
                           // }
        
                        }
@@ -231,6 +232,45 @@ export class SaveAsComponent implements OnInit {
 	          this.xtremandLogger.error( error, "Add partner Component", "saveAsInputChecking()" );
 	        }
 	    }
+  
+  updateContactListNameType(newContactListName: string, isPublic: boolean) {
+      try {
+          var object = {
+              "id": this.editContactsComponent.selectedContactListId,
+              "name": newContactListName,
+              "publicList": isPublic,
+              "isPartnerUserList": this.isPartner,
+              "assignedLeadsList": this.assignLeads
+          }
+          this.editContactsComponent.addContactModalClose();
+          this.contactService.updateContactListName(object)
+              .subscribe(
+              (data: any) => {
+                  if (data.statusCode == 200) {
+                      console.log(data);
+                      this.editContactsComponent.selectedContactListName = newContactListName;
+                      $('#saveAsModal').modal('hide');
+                      if (this.assignLeads) {
+                          this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.LEAD_LIST_NAME_UPDATE_SUCCESS, true);
+                      } else if (this.isPartner) {
+                          this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.PARTNER_LIST_NAME_UPDATE_SUCCESS, true);
+                      } else {
+                          this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
+                      }
+                      this.notifyParentSaveAs.emit('success');
+                  } else if (data.statusCode == 1001) {
+                      this.saveAsError = 'This list name is already taken.';
+
+                  }
+              },
+              error => this.xtremandLogger.error(error),
+              () => this.xtremandLogger.info("EditContactsComponent updateContactListName() finished")
+              )
+      } catch (error) {
+          this.xtremandLogger.error(error, "editContactComponent", "listNameUpdating()");
+      }
+  }
+  
     closeModal(){
       this.notifyParentSaveAs.emit('closedModal');
     }

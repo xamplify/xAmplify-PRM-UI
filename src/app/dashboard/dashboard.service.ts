@@ -276,7 +276,7 @@ export class DashboardService {
 
 
     changeAccess(campaignAccess: any) {
-        return this.http.post(this.authenticationService.REST_URL + `admin/updateAccess?access_token=${this.authenticationService.access_token}`, campaignAccess)
+        return this.http.post(this.authenticationService.REST_URL + `module/updateAccess?access_token=${this.authenticationService.access_token}`, campaignAccess)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -585,12 +585,22 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-   findVendorInvitationReports(pagination:Pagination){
+
+    /****XNFR-2********/
+    findVendorInvitationReports(pagination:Pagination){
         const url = this.superAdminUrl + "findVendorInvitationReports"+ '?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
+    /****XNFR-2********/
+    upgradeAsVendor(partnerId:number){
+        const url = this.superAdminUrl + "upgradeAsVendor"+"/"+partnerId+'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
 
 }

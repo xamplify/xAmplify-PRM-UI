@@ -16,6 +16,7 @@ import { FormService } from '../services/form.service';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { FormSubType } from '../models/form-sub-type.enum';
 
 declare var swal, $: any;
 
@@ -358,13 +359,18 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         } else if (this.pagination.partnerLandingPageForm) {
             this.router.navigate(['/home/forms/partner/f/' + form.id + '/' + this.partnerLandingPageAlias + '/analytics']);
         } else {
-            if(this.categoryId>0){
-                this.router.navigate(['/home/forms/category/' + form.alias +'/'+this.categoryId+ '/analytics']);
-            }else{
-                this.router.navigate(['/home/forms/' + form.alias + '/analytics']);
-            }
-        }
+            if (form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
+                this.router.navigate(['/home/forms/' + form.alias + '/survey/analytics']);
+            } else {
+                if(this.categoryId>0){
+                    this.router.navigate(['/home/forms/category/' + form.alias +'/'+this.categoryId+ '/analytics']);
+                }else{
+                    this.router.navigate(['/home/forms/' + form.alias + '/analytics']);
+                }
+            }    
 
+            
+        }
     }
     goToCampaignAnalytics() {
         this.router.navigate(['home/campaigns/' + this.landingPageCampaignId + '/details']);

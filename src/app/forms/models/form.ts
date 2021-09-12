@@ -1,6 +1,7 @@
 import {ColumnInfo} from './column-info';
 import { GeoLocationAnalyticsType } from '../../util/geo-location-analytics-type.enum';
 import {FormType} from './form-type.enum';
+import { FormSubType } from './form-sub-type.enum';
 export class Form {
     id:number;
     name = "";
@@ -47,4 +48,6 @@ export class Form {
     saveAs = false;
     thumbnailImage="";
     saveAsDefaultForm = false;
+    formSubType:FormSubType = FormSubType.REGULAR;
+    isSurvey = false;
 }

@@ -44,6 +44,8 @@
                                         [class.form-selected]="1 == selectedFormTypeIndex" translate>Regular</li>
                                     <li class="filter" (click)="showAllForms('Quiz',2)" [class.form-selected]="2 == selectedFormTypeIndex"
                                         translate>Quiz</li>
+                                    <li class="filter" (click)="showAllForms('Survey',3)" 
+                                        [class.form-selected]="3 == selectedFormTypeIndex" translate>Survey</li>
                                     <li *ngIf="loggedInAsSuperAdmin" class="filter" (click)="addDefaultForm()" class="btn btn-primary">Add
                                         Default Form</li>
                                 </ul>
@@ -150,8 +152,9 @@
                                             <h6 class="moreipsis" title="{{form.createdName}}">
                                                 <span translate> Created By <b>{{form.createdName}}</b></span>
                                             </h6>
-                                            <h6 class="view-banner" *ngIf="!form.quizForm" translate>Regular</h6>
-                                            <h6 class="view-banner" *ngIf="form.quizForm" translate>Quiz</h6>
+                                            <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
+                                            <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
+                                            <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
@@ -228,8 +231,9 @@
                                 </h6>
                             </div>
                             <div class="ribbon">
-                                <span *ngIf="!form.quizForm" translate>Regular</span>
-                                <span *ngIf="form.quizForm" translate>Quiz</span>
+                                <span *ngIf="form.formSubType === 'REGULAR'" translate>Regular</span>
+                                <span *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</span>
+                                <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
                             </div>
                             <div class="bar">
                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"

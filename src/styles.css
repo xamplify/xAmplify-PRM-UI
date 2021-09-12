@@ -1040,3 +1040,42 @@ b, strong {
   color: red!important;
   border-color: #008fd5 !important;
 }
+
+.backdrop{
+	position: fixed !important;
+}
+
+.merge-tag-input-border {
+	box-sizing: border-box !important;
+	border: 1px solid #c8e0e0 !important;
+}
+
+.margin-left-negative-fifteen-px{
+	margin-left: -15px !important;
+}
+
+.fa-twenty-px{
+	font-size: 20px !important;
+}
+
+.active-status{
+    color:green !important;
+}
+
+.inactive-status{
+    color:red !important;
+}
+
+.inactive {
+    cursor: not-allowed !important;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+
+.float-none{
+	float: none !important;
+}
+

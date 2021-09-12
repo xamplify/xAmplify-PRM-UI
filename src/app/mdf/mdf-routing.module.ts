@@ -8,8 +8,11 @@ import { EditMdfRequestFormComponent } from './edit-mdf-request-form/edit-mdf-re
 import { MdfRequestTimelineComponent } from './mdf-request-timeline/mdf-request-timeline.component';
 import { MdfDetailsTimelineComponent } from './mdf-details-timeline/mdf-details-timeline.component';
 import {MdfHtmlComponent} from './mdf-html/mdf-html.component';
+import { SelectMdfComponent } from './select-mdf/select-mdf.component';
+
 export const routes: Routes = [
-  { path: "", redirectTo: "details", pathMatch: "full" },
+  { path: "", redirectTo: "select", pathMatch: "full" },
+  { path: "select", component: SelectMdfComponent },
   { path: "details", component: ManageMdfDetailsComponent },
   { path: "requests", component: ManageMdfRequestsComponent },
   { path: "requests/:role", component: ManageMdfRequestsComponent },

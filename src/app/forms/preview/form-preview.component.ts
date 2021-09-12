@@ -21,6 +21,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SocialService } from 'app/social/services/social.service'
 import { EnvService } from 'app/env.service'
+import { GeoLocationAnalyticsType } from 'app/util/geo-location-analytics-type.enum';
 
 declare var $,swal: any;
 
@@ -55,6 +56,8 @@ export class FormPreviewComponent implements OnInit {
   @Input() learningTrackId:number;
   @Output() notifyParent: EventEmitter<any>;
   @Output() captchaValue: EventEmitter<any>;
+
+  geoLocationAnalytics : GeoLocationAnalytics;
 
   resolved(captchaResponse: string) {
     if(captchaResponse){
@@ -186,6 +189,7 @@ export class FormPreviewComponent implements OnInit {
           geoLocationAnalytics.campaignId = form.campaignId;
           geoLocationAnalytics.userId = form.userId;
           geoLocationAnalytics.partnerCompanyId = form.partnerCompanyId;
+          this.geoLocationAnalytics = geoLocationAnalytics;
           this.saveAnalytics(geoLocationAnalytics);
         },
         (error: string) => {
@@ -210,8 +214,12 @@ export class FormPreviewComponent implements OnInit {
 
   validateEmail(columnInfo: ColumnInfo) {
     if (columnInfo.labelType == 'email') {
-      if (!this.referenceService.validateEmailId($.trim(columnInfo.value))) {
-        columnInfo.divClass = "error";
+      if(columnInfo.value != undefined && columnInfo.value.length > 0) {
+        if (!this.referenceService.validateEmailId($.trim(columnInfo.value))) {
+          columnInfo.divClass = "error";
+        } else {
+          columnInfo.divClass = "success";
+        }
       } else {
         columnInfo.divClass = "success";
       }
@@ -294,6 +302,9 @@ export class FormPreviewComponent implements OnInit {
         formSubmit.userId = this.authenticationService.getUserId();
         formSubmit.learningTrackId = this.learningTrackId;
       }
+      
+      let geoLocationAnalytics = this.geoLocationAnalytics;    
+      formSubmit.geoLocationAnalyticsDTO = geoLocationAnalytics;
       this.formService.submitForm(formSubmit, formType)
         .subscribe(
           (response: any) => {
@@ -341,6 +352,15 @@ export class FormPreviewComponent implements OnInit {
 
 
     }
+  }
+
+  resetGeoLocationAnalyticsTypeInfo(geoLocationAnalytics : GeoLocationAnalytics) {
+          geoLocationAnalytics.formId = null;
+          geoLocationAnalytics.landingPageId = null;
+          geoLocationAnalytics.analyticsType = null;
+          geoLocationAnalytics.campaignId = null;
+          geoLocationAnalytics.userId = null;
+          geoLocationAnalytics.partnerCompanyId = null;
   }
 
   addHeaderMessage(message: string, divAlertClass: string) {

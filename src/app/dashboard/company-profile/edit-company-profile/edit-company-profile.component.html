@@ -293,7 +293,7 @@
 														[(ngModel)]="campaignAccess.landingPageCampaign"
 														[ngModelOptions]="{standalone: true}"></td>
 												</tr>
-												<tr>
+												<tr *ngIf="!vendorTier">
 													<th scope="col">Share Leads</th>
 													<td><input type="checkbox"
 														[(ngModel)]="campaignAccess.shareLeads"

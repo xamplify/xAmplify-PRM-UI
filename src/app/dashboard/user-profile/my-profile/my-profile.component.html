@@ -59,7 +59,6 @@
                     </div>
                     <div class="profile-usermenu">
                         <ul class="nav">
-                            <!-- commented for future work -->
                             <li [ngClass]="{'active-tab': activeTabName == 'personalInfo'}">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'personalInfo'}" (click)="activateTab('personalInfo');clearCustomResponse()">
                                  {{properties.personalInfo | translate}}
@@ -71,7 +70,7 @@
                                 </a> 
                             </li>
                             <ng-container *ngIf="!isUser">
-                            <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
+                            <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType | translate}}</a>
                             </li>
 
@@ -85,42 +84,42 @@
                                     <span>{{properties.defaultPlayerSettings | translate}}</span>
                                 </a> 
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || 
+                            <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}"  *ngIf="(hasAllAccess || 
                                     hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
                                      || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
                                      !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
                                       authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"  (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                            <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
                                authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
                                 authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}" class="hidden-xs" *ngIf=" !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
+                            <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}"  *ngIf=" !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                             &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
                                authenticationService.isVendor() || authenticationService.isVendorPartner())">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}" (click)="activateTab('leadPipelines');clearCustomResponse()"> {{properties.leadPipelines | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'dealPipelines'}" class="hidden-xs"
+                            <li [ngClass]="{'active-tab': activeTabName == 'dealPipelines'}" 
                                 *ngIf="!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
                                 authenticationService.isVendor() || authenticationService.isVendorPartner())">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealPipelines'}"
                                     (click)="activateTab('dealPipelines');clearCustomResponse()"> {{properties.dealPipelines | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="(authenticationService.isOrgAdmin() || 
+                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}"  *ngIf="(authenticationService.isOrgAdmin() || 
                                         authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
                                         authenticationService.isOnlyPartner() || roleNames=='Partner') && !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                                         &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"  (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings | translate}}</a>
                             </li>
-                            <li *ngIf="authenticationService.folders"  [ngClass]="{'active-tab': activeTabName == 'categories'}" class="hidden-xs">
+                            <li *ngIf="authenticationService.folders"  [ngClass]="{'active-tab': activeTabName == 'categories'}" >
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}" (click)="activateTab('categories');clearCustomResponse()">{{properties.folders | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" class="hidden-xs" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+                            <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
                                 <a (click)="activateTab('dbButtonSettings');clearCustomResponse()">{{properties.dashboardButtons}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
+                            <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"  *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings | translate}}</a>
                             </li>		 
                             <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
@@ -132,15 +131,24 @@
                                     {{properties.tags | translate}} </a>
                             </li>
                             <ng-container *ngIf="excludeUsersOrDomains">
-                                <li [ngClass]="{'active-tab': activeTabName == 'exclude'}" class="hidden-xs" >
+                                <li [ngClass]="{'active-tab': activeTabName == 'exclude'}"  >
                                  <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}" (click)="activateTab('exclude');clearCustomResponse()"> {{properties.exclude | translate}}</a>
                                 </li>
                             </ng-container>
-                            <li  [ngClass]="{'active-tab': activeTabName == 'spf'}" class="hidden-xs">
+                            <li  [ngClass]="{'active-tab': activeTabName == 'spf'}" >
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}" (click)="activateTab('spf');clearCustomResponse()">{{properties.spf | translate}}</a>
                             </li>
-                            <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}" class="hidden-xs">
+                            <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}" (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons | translate}}</a>
+                            </li>
+                            <!--Team Member Groups-->
+                            <li   [ngClass]="{'active-tab': activeTabName == 'team-group'}"  *ngIf="authenticationService.user.hasCompany && (authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || 
+                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" >
+                            <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
+                            </li>
+                            <!--Notify Partners-->
+                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module.notifyPartners" [ngClass]="{'active-tab': activeTabName == 'notifyPartners'}" >
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'notifyPartners'}" (click)="activateTab('notifyPartners');clearCustomResponse()">{{properties.notifyPartners | translate}}</a>
                             </li>
                         </ng-container>
                         </ul>
@@ -393,11 +401,7 @@
                                                 <div class="col-lg-4" [class.disabled] = "isMarketoProcess" (click)="configmarketo()">
                                                     <div class="card mb-5 mb-lg-0">
                                                         <div class="card-body" style="padding:10px">
-                                                            <!-- <div class="triangle-up-right">
-
-																</div> -->
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Marketo</h5>
-
                                                             <div class="ribbon draft" style="left:10px">
                                                                 <span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
                                                             </div>
@@ -1032,6 +1036,9 @@
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
+                                    <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
+                                   <!--Notify Partners--> 
+                                    <app-notify-partners *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners" class="tab-pane" [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
                                     <!--video default player settings-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                         <div>
@@ -1167,338 +1174,336 @@
                                         </div>
                                     </div>
                                     <!--Exclude functionality code-->
-										<div class="tab-pane hidden-xs"
-											[ngClass]="{'active': activeTabName == 'exclude'}">
-											<app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
-											</app-dashboard-loader>
-											<app-response-message [customResponse]="excludeUserCustomResponse"></app-response-message>
-											<form action="#" novalidate=""
-												class="ng-untouched ng-pristine ng-valid"
-												*ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-												<table class="table table-light"
-													style="border: 0px !important; background-color: transparent !important">
-													<tbody>
-														<fieldset>
-														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-bottom: 1px solid #e5e5e5;"> 
-														<h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A User</h4>
-															<button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-					Download User CSV Template
-					<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
-				</button>
-														 </div>
-																
-														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-															<div class="col-sm-6 col-lg-6 col-md-6 btn-group p0" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
-                                                                    authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-																<button id="add_contact" class="col-sm-4 col-lg-4 col-md-4 btn green" [disabled] ="csvExcludeUsersFilePreview"
-																	(click)="addContactModalOpen()" translate>
-																	One at a Time <i class="fa fa-plus"
-																		style="font-size: 12px; margin-left: 5px;"></i>
-																</button>
-																
-																<button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn green" translate>
-																	<span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
-													 (click)="input.value = null" (change)="fileChange(input, 'exclude-users')" accept=".csv" #input />
-																	<i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
-																</button>											
-																	
-															</div>
+                                    <div class="tab-pane hidden-xs"
+                                        [ngClass]="{'active': activeTabName == 'exclude'}">
+                                        <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
+                                        </app-dashboard-loader>
+                                        <app-response-message [customResponse]="excludeUserCustomResponse"></app-response-message>
+                                        <form action="#" novalidate=""
+                                            class="ng-untouched ng-pristine ng-valid"
+                                            *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                                            <table class="table table-light"
+                                                style="border: 0px !important; background-color: transparent !important">
+                                                <tbody>
+                                                    <fieldset>
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-bottom: 1px solid #e5e5e5;"> 
+                                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A User</h4>
+                                                        <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                Download User CSV Template
+                <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+            </button>
+                                                        </div>
+                                                            
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+                                                        <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                                authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
+                                                            <button id="add_contact" class="col-sm-4 col-lg-4 col-md-4 btn green" [disabled] ="csvExcludeUsersFilePreview"
+                                                                (click)="addContactModalOpen()" translate>
+                                                                One at a Time <i class="fa fa-plus"
+                                                                    style="font-size: 12px; margin-left: 5px;"></i>
+                                                            </button>
+                                                            
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn green" translate>
+                                                                <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
+                                                    (click)="input.value = null" (change)="fileChange(input, 'exclude-users')" accept=".csv" #input />
+                                                                <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
+                                                            </button>											
+                                                                
+                                                        </div>
 
-															<div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6" style="float:right;margin-top:10px;" *ngIf="!csvExcludeUsersFilePreview"
-																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-																<div class="input-icon right">
-																	<input type="text" [(ngModel)]="searchExcludedUserKey" (keydown.enter)="searchData('excludeUsers')"
-																		[ngModelOptions]="{standalone: true}"
-																		class="form-control" placeholder="Search for a user">
-																	<button *ngIf="searchExcludedUserKey"
-																		class="glyphicon glyphicon-remove search-box-item-clear"
-																		(click)="searchExcludedUserKey='';search('excludeUsers')"></button>
-																	<button type="submit" class="search-box-item-click"
-																		(click)="search('excludeUsers')">
-																		<i class="fa fa-search"></i>
-																	</button>
-																</div>
-															</div>
-															</div>
-
-															<div style="margin-top: 100px;" *ngIf="excludeUserPagination.pagedItems?.length === 0" class="alert alert-info">
-																<strong>No Records Found.</strong>
-															</div>
-															
-															<!--  starting file preview -->
-															
-															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row" id="file_preview" *ngIf="csvExcludeUsersFilePreview">
-							<div class="col-xs-12 p0" style="margin-top: 10px;">
-								<!-- BEGIN EXAMPLE TABLE PORTLET-->
-								<div class="portlet box blue">
-									<div class="portlet-title">
-										<div class="caption" translate>
-											<i class="fa fa-edit"></i>File Preview
-										</div>
-										<button type="submit" class="btn green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedUsers(excludedUsers)"
-																					translate>Save</button>
-																				<button class="btn btn-default"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-users')" translate>Cancel</button>
-									</div>
-									<div class="portlet-body">
-										<app-list-loader *ngIf="isListLoader"></app-list-loader>
-										<app-response-message [customResponse]="filePreviewexcludeUserCustomResponse"></app-response-message>
-																			<div class="table-responsive">
-										<table class="table tgrid" id="sample_editable_2">
-											<thead>
-												<tr>													
-													<th translate>EMAILID</th>
-													
-												</tr>
-											</thead>
-											<tbody>
-												<ng-container *ngFor="let user of csvUserPagination.pagedItems;let i=index">
-													<tr>
-														<td title="{{user.emailId}}">{{user.emailId | slice:0:35}}
-														<span *ngIf="user.emailId?.length>35">...</span>
-														</td>
-													</tr>
-	
-												</ng-container>
-											</tbody>
-										</table>
-										</div>
-										
-											<!-- paignation added-->
-									 <div *ngIf="csvUserPagination.pagedItems.length !== 0" class="pg8">
-                                            <app-pagination [type]="'csvUsers'" [pagination]="csvUserPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="setPage($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-                                        </div> 
-									<!-- paignation end-->
-
-									</div>
-								</div>
-							</div>
-						</div>
-<!--  ending file preview -->
-															<div class="clearfix" *ngIf="excludeUserPagination.pagedItems?.length>0 && !csvExcludeUsersFilePreview" >
-										<div class="col-xs-12 p0" style="margin-top: 10px;">
-											<div class="table-responsive">
-												<table class='table tgrid'
-													*ngIf="excludeUserPagination.pagedItems?.length>0" >
-													<thead>
-														<tr>
-															<!-- <th class='text-center'><input type="checkbox"
-																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-																(change)="checkAll($event)"
-																id="checkAllExistingContacts"/></th> -->
-															<th style="width: 25%"  translate>Name</th>
-															<th style="width: 25%"  translate>Time</th>										
-														<th style="width:16%"  translate>ACTIONS</th>
-														</tr>
-													</thead>
-													<tbody>
-														<ng-container *ngFor="let user of excludeUserPagination.pagedItems ;let i =index">															
-														<tr class='row_{{i}}' style="background-color: #FFFFFF;">
-															<!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
-															<td>
-															<app-user-info  [userInfo]="user" [isExclusion]="true"> </app-user-info>
-															</td>
-															<td>
-															<h6>
-                        <app-timestamp [dateAndTime]="user.time"> </app-timestamp>
-                      </h6>
-															</td>
-																<td  >
-															<div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
-                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedUserAlert(user.userId)" >
-																		<i class="fa fa-trash-o" aria-hidden="true"></i>
-																</a>
+                                                        <div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6" style="float:right;margin-top:10px;" *ngIf="!csvExcludeUsersFilePreview"
+                                                            [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                                                            <div class="input-icon right">
+                                                                <input type="text" [(ngModel)]="searchExcludedUserKey" (keydown.enter)="searchData('excludeUsers')"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    class="form-control" placeholder="Search for a user">
+                                                                <button *ngIf="searchExcludedUserKey"
+                                                                    class="glyphicon glyphicon-remove search-box-item-clear"
+                                                                    (click)="searchExcludedUserKey='';search('excludeUsers')"></button>
+                                                                <button type="submit" class="search-box-item-click"
+                                                                    (click)="search('excludeUsers')">
+                                                                    <i class="fa fa-search"></i>
+                                                                </button>
                                                             </div>
-															</td>
-															
-														</ng-container>
-												</tbody>
-												</table>
-											</div>
-										</div>
-										
-										<!-- paignation added-->
-									 <div *ngIf="excludeUserPagination.pagedItems.length !== 0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pg8">
-                                            <app-pagination [type]="'excludeUsers'" [pagination]="excludeUserPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedUsers($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-                                        </div>
-									<!-- paignation end-->
-									</div>
-									
-									
+                                                        </div>
+                                                        </div>
 
-															<!-- new -->
-														</fieldset>
-														<br>
-													</tbody>
-												</table>
-											</form>
-											
-											<app-response-message [customResponse]="excludeDomainCustomResponse"></app-response-message>
-											<form action="#" novalidate=""
-												class="ng-untouched ng-pristine ng-valid"
-												*ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-												<table class="table table-light"
-													style="border: 0px !important; background-color: transparent !important">
-													<tbody>
-														<fieldset>
-														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-bottom: 1px solid #e5e5e5;">
-														<h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A Domain</h4>
-																<button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-					Download Domain CSV Template
-					<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
-				</button>
-														
-														</div>
-															<!-- new -->
-				
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-															<div class="col-sm-6 col-lg-6 col-md-6 btn-group p0" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
-                                                                    authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-																<button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn green" [disabled] ="csvExcludeDomainsFilePreview"
-																	(click)="addDomainModalOpen()" translate>
-																	One at a Time <i class="fa fa-plus"
-																		style="font-size: 12px; margin-left: 5px;"></i>
-																</button>
-																
-																<button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn green" translate>
-																	<span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
-													 (click)="input.value = null" (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
-																	<i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
-																</button>											
-																	
-															</div>
+                                                        <div style="margin-top: 100px;" *ngIf="excludeUserPagination.pagedItems?.length === 0" class="alert alert-info">
+                                                            <strong>No Records Found.</strong>
+                                                        </div>
+                                                        
+                                                        <!--  starting file preview -->
+                                                        
+                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row" id="file_preview" *ngIf="csvExcludeUsersFilePreview">
+                        <div class="col-xs-12 p0" style="margin-top: 10px;">
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption" translate>
+                                        <i class="fa fa-edit"></i>File Preview
+                                    </div>
+                                    <button type="submit" class="btn green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedUsers(excludedUsers)"
+                                                                                translate>Save</button>
+                                                                            <button class="btn btn-default"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-users')" translate>Cancel</button>
+                                </div>
+                                <div class="portlet-body">
+                                    <app-list-loader *ngIf="isListLoader"></app-list-loader>
+                                    <app-response-message [customResponse]="filePreviewexcludeUserCustomResponse"></app-response-message>
+                                                                        <div class="table-responsive">
+                                    <table class="table tgrid" id="sample_editable_2">
+                                        <thead>
+                                            <tr>													
+                                                <th translate>EMAILID</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let user of csvUserPagination.pagedItems;let i=index">
+                                                <tr>
+                                                    <td title="{{user.emailId}}">{{user.emailId | slice:0:35}}
+                                                    <span *ngIf="user.emailId?.length>35">...</span>
+                                                    </td>
+                                                </tr>
 
-															<div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6" style="float:right;margin-top:10px;" *ngIf="!csvExcludeDomainsFilePreview"
-																[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-																<div class="input-icon right">
-																	<input type="text" [(ngModel)]="searchExcludedDomainKey" (keydown.enter)="searchData('excludedDomains')"
-																		[ngModelOptions]="{standalone: true}"
-																		class="form-control" placeholder="Search for a domain">
-																	<button *ngIf="searchExcludedDomainKey"
-																		class="glyphicon glyphicon-remove search-box-item-clear"
-																		(click)="searchExcludedDomainKey='';search('excludedDomains')"></button>
-																	<button type="submit" class="search-box-item-click"
-																		(click)="search('excludedDomains')">
-																		<i class="fa fa-search"></i>
-																	</button>
-																</div>
-															</div>
-															</div>
-
-						<div style="margin-top: 100px;" *ngIf="excludeDomainPagination.pagedItems?.length === 0" class="alert alert-info">
-						<strong>No Records Found.</strong>
-						</div>
-															
-								<!--  starting file preview -->
-															
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row" id="file_preview" *ngIf="csvExcludeDomainsFilePreview">
-							<div class="col-xs-12 p0" style="margin-top: 10px;">
-								<!-- BEGIN EXAMPLE TABLE PORTLET-->
-								<div class="portlet box blue">
-									<div class="portlet-title">
-										<div class="caption" translate>
-											<i class="fa fa-edit"></i>File Preview
-										</div>
-										<button type="submit" class="btn green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedDomains(excludedDomains)"
-																					translate>Save</button>
-																				<button class="btn btn-default"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-domains')" translate>Cancel</button>
-									</div>
-									<div class="portlet-body">
-										<app-list-loader *ngIf="isListLoader"></app-list-loader>
-										<app-response-message [customResponse]="filePreviewexcludeUserCustomResponse"></app-response-message>
-																			<div class="table-responsive">
-										<table class="table tgrid" id="sample_editable_2">
-											<thead>
-												<tr>													
-													<th translate>DOMAIN</th>
-													
-												</tr>
-											</thead>
-											<tbody>
-												<ng-container *ngFor="let domainName of csvDomainPagination.pagedItems;let i=index">
-													<tr>
-														<td><h6>
-															{{domainName}}  </h6>
-															</td>
-													</tr>
-	
-												</ng-container>
-											</tbody>
-										</table>
-										</div>
-										
-											<!-- paignation added-->
-									 <div *ngIf="csvDomainPagination.pagedItems.length !== 0" class="pg8">
-                                            <app-pagination [type]="'csvDomains'" [pagination]="csvDomainPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="setPage($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-                                        </div> 
-									<!-- paignation end-->
-
-									</div>
-								</div>
-							</div>
-						</div>
-<!--  ending file preview -->
-
-										<div class="clearfix" *ngIf="excludeDomainPagination.pagedItems?.length>0 && !csvExcludeDomainsFilePreview" >
-										<div class="col-xs-12 p0" style="margin-top: 10px;">
-											<div class="table-responsive">
-												<table class='table tgrid'
-													*ngIf="excludeDomainPagination.pagedItems?.length>0" >
-													<thead>
-														<tr>
-															<!-- <th class='text-center'><input type="checkbox"
-																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-																(change)="checkAll($event)"
-																id="checkAllExistingContacts"/></th> -->
-															<th style="width: 25%"  translate>Name</th>
-															<th style="width: 25%"  translate>Time</th>										
-														<th style="width:16%"  translate>ACTIONS</th>
-														</tr>
-													</thead>
-													<tbody>
-														<ng-container *ngFor="let obj of excludeDomainPagination.pagedItems ;let i =index">															
-														<tr class='row_{{i}}' style="background-color: #FFFFFF;">
-															<!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
-															<td><h6>
-															{{obj.domainName}}  </h6>
-															</td>
-															<td>
-															<h6>
-                        <app-timestamp [dateAndTime]="obj.time"> </app-timestamp>
-                      </h6>
-															</td>
-																<td >
-															<div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
-                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-																<a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedDomainAlert(obj.domainName)" >
-																		<i class="fa fa-trash-o" aria-hidden="true"></i>
-																</a>
-                                                            </div>
-															</td>
-															
-														</ng-container>
-												</tbody>
-												</table>
-											</div>
-										</div>
-											<!-- paignation added-->
-									 <div *ngIf="excludeDomainPagination.pagedItems.length !== 0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pg8">
-                                            <app-pagination [type]="'excludedDomains'" [pagination]="excludeDomainPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedDomains($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-                                        </div>
-									<!-- paignation end-->
-									</div>
-
-															<!-- new -->
-														</fieldset>
-														<br>
-													</tbody>
-												</table>
-											</form>
-
-
-										</div>
-										<!--Exclude functionality code-->
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                    </div>
                                     
+                                        <!-- paignation added-->
+                                    <div *ngIf="csvUserPagination.pagedItems.length !== 0" class="pg8">
+                                        <app-pagination [type]="'csvUsers'" [pagination]="csvUserPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="setPage($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                    </div> 
+                                <!-- paignation end-->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--  ending file preview -->
+                                                        <div class="clearfix" *ngIf="excludeUserPagination.pagedItems?.length>0 && !csvExcludeUsersFilePreview" >
+                                    <div class="col-xs-12 p0" style="margin-top: 10px;">
+                                        <div class="table-responsive">
+                                            <table class='table tgrid'
+                                                *ngIf="excludeUserPagination.pagedItems?.length>0" >
+                                                <thead>
+                                                    <tr>
+                                                        <!-- <th class='text-center'><input type="checkbox"
+                                                            name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+                                                            (change)="checkAll($event)"
+                                                            id="checkAllExistingContacts"/></th> -->
+                                                        <th style="width: 25%"  translate>Name</th>
+                                                        <th style="width: 25%"  translate>Time</th>										
+                                                    <th style="width:16%"  translate>ACTIONS</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container *ngFor="let user of excludeUserPagination.pagedItems ;let i =index">															
+                                                    <tr class='row_{{i}}' style="background-color: #FFFFFF;">
+                                                        <!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+                                                        <td>
+                                                        <app-user-info  [userInfo]="user" [isExclusion]="true"> </app-user-info>
+                                                        </td>
+                                                        <td>
+                                                        <h6>
+                    <app-timestamp [dateAndTime]="user.time"> </app-timestamp>
+                    </h6>
+                                                        </td>
+                                                            <td  >
+                                                        <div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                            authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
+                                                            <a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedUserAlert(user.userId)" >
+                                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                        </td>
+                                                        
+                                                    </ng-container>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- paignation added-->
+                                    <div *ngIf="excludeUserPagination.pagedItems.length !== 0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pg8">
+                                        <app-pagination [type]="'excludeUsers'" [pagination]="excludeUserPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedUsers($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                    </div>
+                                <!-- paignation end-->
+                                </div>
+                                
+                                
+
+                                                        <!-- new -->
+                                                    </fieldset>
+                                                    <br>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                        
+                                        <app-response-message [customResponse]="excludeDomainCustomResponse"></app-response-message>
+                                        <form action="#" novalidate=""
+                                            class="ng-untouched ng-pristine ng-valid"
+                                            *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                                            <table class="table table-light"
+                                                style="border: 0px !important; background-color: transparent !important">
+                                                <tbody>
+                                                    <fieldset>
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-bottom: 1px solid #e5e5e5;">
+                                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A Domain</h4>
+                                                            <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                Download Domain CSV Template
+                <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+            </button>
+                                                    
+                                                    </div>
+                                                        <!-- new -->
+            
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+                                                        <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                                authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
+                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn green" [disabled] ="csvExcludeDomainsFilePreview"
+                                                                (click)="addDomainModalOpen()" translate>
+                                                                One at a Time <i class="fa fa-plus"
+                                                                    style="font-size: 12px; margin-left: 5px;"></i>
+                                                            </button>
+                                                            
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn green" translate>
+                                                                <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
+                                                    (click)="input.value = null" (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
+                                                                <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
+                                                            </button>											
+                                                                
+                                                        </div>
+
+                                                        <div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6" style="float:right;margin-top:10px;" *ngIf="!csvExcludeDomainsFilePreview"
+                                                            [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                                                            <div class="input-icon right">
+                                                                <input type="text" [(ngModel)]="searchExcludedDomainKey" (keydown.enter)="searchData('excludedDomains')"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    class="form-control" placeholder="Search for a domain">
+                                                                <button *ngIf="searchExcludedDomainKey"
+                                                                    class="glyphicon glyphicon-remove search-box-item-clear"
+                                                                    (click)="searchExcludedDomainKey='';search('excludedDomains')"></button>
+                                                                <button type="submit" class="search-box-item-click"
+                                                                    (click)="search('excludedDomains')">
+                                                                    <i class="fa fa-search"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+
+                    <div style="margin-top: 100px;" *ngIf="excludeDomainPagination.pagedItems?.length === 0" class="alert alert-info">
+                    <strong>No Records Found.</strong>
+                    </div>
+                                                        
+                            <!--  starting file preview -->
+                                                        
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row" id="file_preview" *ngIf="csvExcludeDomainsFilePreview">
+                        <div class="col-xs-12 p0" style="margin-top: 10px;">
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption" translate>
+                                        <i class="fa fa-edit"></i>File Preview
+                                    </div>
+                                    <button type="submit" class="btn green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedDomains(excludedDomains)"
+                                                                                translate>Save</button>
+                                                                            <button class="btn btn-default"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-domains')" translate>Cancel</button>
+                                </div>
+                                <div class="portlet-body">
+                                    <app-list-loader *ngIf="isListLoader"></app-list-loader>
+                                    <app-response-message [customResponse]="filePreviewexcludeUserCustomResponse"></app-response-message>
+                                                                        <div class="table-responsive">
+                                    <table class="table tgrid" id="sample_editable_2">
+                                        <thead>
+                                            <tr>													
+                                                <th translate>DOMAIN</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let domainName of csvDomainPagination.pagedItems;let i=index">
+                                                <tr>
+                                                    <td><h6>
+                                                        {{domainName}}  </h6>
+                                                        </td>
+                                                </tr>
+
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                    
+                                        <!-- paignation added-->
+                                    <div *ngIf="csvDomainPagination.pagedItems.length !== 0" class="pg8">
+                                        <app-pagination [type]="'csvDomains'" [pagination]="csvDomainPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="setPage($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                    </div> 
+                                <!-- paignation end-->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--  ending file preview -->
+
+                                    <div class="clearfix" *ngIf="excludeDomainPagination.pagedItems?.length>0 && !csvExcludeDomainsFilePreview" >
+                                    <div class="col-xs-12 p0" style="margin-top: 10px;">
+                                        <div class="table-responsive">
+                                            <table class='table tgrid'
+                                                *ngIf="excludeDomainPagination.pagedItems?.length>0" >
+                                                <thead>
+                                                    <tr>
+                                                        <!-- <th class='text-center'><input type="checkbox"
+                                                            name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+                                                            (change)="checkAll($event)"
+                                                            id="checkAllExistingContacts"/></th> -->
+                                                        <th style="width: 25%"  translate>Name</th>
+                                                        <th style="width: 25%"  translate>Time</th>										
+                                                    <th style="width:16%"  translate>ACTIONS</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container *ngFor="let obj of excludeDomainPagination.pagedItems ;let i =index">															
+                                                    <tr class='row_{{i}}' style="background-color: #FFFFFF;">
+                                                        <!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+                                                        <td><h6>
+                                                        {{obj.domainName}}  </h6>
+                                                        </td>
+                                                        <td>
+                                                        <h6>
+                    <app-timestamp [dateAndTime]="obj.time"> </app-timestamp>
+                    </h6>
+                                                        </td>
+                                                            <td >
+                                                        <div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                            authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
+                                                            <a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedDomainAlert(obj.domainName)" >
+                                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                        </td>
+                                                        
+                                                    </ng-container>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                        <!-- paignation added-->
+                                    <div *ngIf="excludeDomainPagination.pagedItems.length !== 0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pg8">
+                                        <app-pagination [type]="'excludedDomains'" [pagination]="excludeDomainPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listExcludedDomains($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                    </div>
+                                <!-- paignation end-->
+                                </div>
+
+                                                        <!-- new -->
+                                                    </fieldset>
+                                                    <br>
+                                                </tbody>
+                                            </table>
+                                        </form>
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1695,7 +1700,7 @@
                                         <option value="lost">Lost</option>
                                         <option value="none">None</option>
                                     </select>
-                                    <button type="button" *ngIf="x != 0 && !pipelinePreview"  class="btn-danger button-blue" (click)="deleteStage(x)"
+                  			          <button type="button" *ngIf="x != 0 && !pipelinePreview"  class="btn-danger button-blue" (click)="deleteStage(x)"
                                     style="float: right;" [disabled]="!pipelineStage.canDelete"><span class="glyphicon glyphicon-trash"></span></button>
                                 </li>
                             </ng-container>                            

@@ -302,7 +302,7 @@ export class ContactService {
     }
 
     updateContactListName( updatingObject: any ): Observable<any> {
-        var newUrl = this.contactsUrl + 'rename?access_token=' + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + this.authenticationService.getUserId() +'/rename?access_token=' + this.authenticationService.access_token;
         this.logger.info( newUrl );
         return this._http.post( newUrl, updatingObject )
             .map(( response: any ) => response.json() )
@@ -598,9 +598,8 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    mailSend(partnerId: number, partnerListId: number) {
-        this.logger.info( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token +"&partnerId=" + partnerId +"&customerId=" + this.authenticationService.getUserId());
-        return this._http.get( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token +"&partnerId=" + partnerId +"&customerId=" + this.authenticationService.getUserId() + "&userListId=" + partnerListId )
+    mailSend(pagination : Pagination) {
+        return this._http.post( this.contactsUrl + "send-partner-mail?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }

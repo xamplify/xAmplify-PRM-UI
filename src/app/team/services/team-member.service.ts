@@ -113,12 +113,7 @@ export class TeamMemberService{
     }
     
     
-    delete(teamMember:TeamMember) {
-        teamMember.loggedInUserId = this.authenticationService.getUserId();
-        return this.http.post(this.URL + "admin/deleteTeamMember?access_token=" + this.authenticationService.access_token,teamMember)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
+   
     
     changeStatus(teamMember:TeamMember) {
         return this.http.post(this.URL + "admin/changeTeamMemberStatus?access_token=" + this.authenticationService.access_token,teamMember)
@@ -190,13 +185,130 @@ export class TeamMemberService{
         let input = {};
         let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         input['vanityUrlFilter'] = vanityUrlFilter;
-        input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+        input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
         input['emailId'] = emailId;
         var url =this.URL+"teamMember/getVanityUrlRoles/?access_token="+this.authenticationService.access_token;
         return this.http.post(url, input)
         .map(this.extractData)
         .catch(this.handleError);   
     }
+
+	/************XNFR-2***********************/
+	findDefaultModules() {
+		let input = {};
+		let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+		input['vanityUrlFilter'] = vanityUrlFilter;
+		input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+		input['userId'] = this.authenticationService.getUserId();
+		var url = this.URL + "teamMemberGroup/findDefaultModules?access_token=" + this.authenticationService.access_token;
+		return this.http.post(url, input)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+	findTeamMemberGroups(pagination: Pagination) {
+		pagination.userId = this.authenticationService.getUserId();
+		const url = this.URL + "teamMemberGroup/findAll" + '?access_token=' + this.authenticationService.access_token;
+		return this.http.post(url, pagination)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+	saveOrUpdateGroup(groupDto: any, isAdd: boolean) {
+		groupDto.userId = this.authenticationService.getUserId();
+		let suffixUrl = isAdd ? 'save' : 'update';
+		var url = this.URL + "teamMemberGroup/" + suffixUrl + "?access_token=" + this.authenticationService.access_token;
+		return this.http.post(url, groupDto)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+	findTeamMemberGroupById(id: number) {
+		let input = {};
+		let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+		input['vanityUrlFilter'] = vanityUrlFilter;
+		input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+		input['userId'] = this.authenticationService.getUserId();
+		let map = { "teamMemberGroupId": id };
+		input['map'] = map;
+		const url = this.URL + "teamMemberGroup/findById?access_token=" + this.authenticationService.access_token;
+		return this.http.post(url, input)
+			.map(this.extractData)
+			.catch(this.handleError);
+    }
+    
+    previewTeamMemberGroup(id:number){
+        const url = this.URL + "teamMemberGroup/previewById/"+id+"?access_token=" + this.authenticationService.access_token;
+		return this.http.get(url)
+			.map(this.extractData)
+			.catch(this.handleError);
+    }
+
+	deleteTeamMemberGroups(id: number) {
+		const url = this.URL + "teamMemberGroup/delete/" + id + '?access_token=' + this.authenticationService.access_token;
+		return this.http.get(url)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+	/************XNFR-2********************** */
+	findAll(pagination: Pagination) {
+		pagination.userId = this.authenticationService.getUserId();
+		var url = this.URL + "teamMember/findAll?access_token=" + this.authenticationService.access_token;
+		return this.http.post(url, pagination)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+	findAllTeamMemberGroupIdsAndNames(addDefaultOption:boolean) {
+		let userId = this.authenticationService.getUserId();
+		var url = this.URL + "teamMemberGroup/findAllGroupIdsAndNames/"+userId+"/"+addDefaultOption+"?access_token=" + this.authenticationService.access_token;
+		return this.http.get(url)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+	saveTeamMembersXNFR2(teamMember:any){
+		var url = this.URL + "teamMember/save?access_token=" + this.authenticationService.access_token;
+		return this.http.post(url, teamMember)
+		.map(this.extractData)
+		.catch(this.handleError);
+	}
+
+	updateTeamMemberXNFR2(teamMember:any){
+		var url = this.URL + "teamMember/update?access_token=" + this.authenticationService.access_token;
+		return this.http.post(url, teamMember)
+		.map(this.extractData)
+		.catch(this.handleError);
+    }
+    
+    findById(id:number){
+		var url = this.URL + "teamMember/findById/"+id+"?access_token=" + this.authenticationService.access_token;
+		return this.http.get(url)
+		.map(this.extractData)
+		.catch(this.handleError);
+	}
+
+	findUsersToTransferData() {
+		let url = this.URL+"teamMember/findUsersToTransferData/"+this.authenticationService.getUserId();
+		return this.http.get(url+ "?access_token=" + this.authenticationService.access_token)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+	delete(teamMember: any) {
+		teamMember['userId'] = this.authenticationService.getUserId();
+		return this.http.post(this.URL + "teamMember/delete?access_token=" + this.authenticationService.access_token, teamMember)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+	hasSuperVisorRole(teamMemberGroupId:number){
+		return this.http.get(this.URL + "teamMemberGroup/hasSuperVisorRole/"+teamMemberGroupId+"?access_token=" + this.authenticationService.access_token)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
     
     private extractData(res: Response) {
         let body = res.json();

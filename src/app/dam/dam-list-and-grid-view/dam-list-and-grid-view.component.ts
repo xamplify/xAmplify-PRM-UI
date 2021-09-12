@@ -142,6 +142,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							this.pagination.userId = this.loggedInUserId;
 							this.listPublishedAssets(this.pagination);
 						} else {
+							this.pagination.userId = this.loggedInUserId;
 							this.listAssets(this.pagination);
 						}
 					}

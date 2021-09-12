@@ -36,10 +36,10 @@
                                 <div class="panel-title" title="{{form.name}}">{{form.name | slice:0:50}}<span *ngIf="form.name?.length>50">..</span></div>
                             </div>
                             <div class="panel-body">
-                                <h5 title="{{form.description}}">{{form.description | slice:0:40}} <span *ngIf="form.description?.length>40">..</span></h5>
+                                <h5 class="mb15" title="{{form.description}}">{{form.description}}</h5>
                                 <div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
                                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
-                                    <div class="form-group">
+                                    <div class="form-group label-box">
                                         <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
 												<span class="required" *ngIf="columnInfo.required">*</span>
 											</label>

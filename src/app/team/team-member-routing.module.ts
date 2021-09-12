@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import {ManageTeamMembersComponent} from "./manage-team-members/manage-team-members.component";
+import { AddAndManageTeamMembersComponent } from './add-and-manage-team-members/add-and-manage-team-members.component';
 
 export const routes: Routes = [
   { path: "", redirectTo: "add-team", pathMatch: "full" },
-  { path: "add-team", component: ManageTeamMembersComponent }
+  { path: "add-team", component:  AddAndManageTeamMembersComponent}
 ];
 
 @NgModule({

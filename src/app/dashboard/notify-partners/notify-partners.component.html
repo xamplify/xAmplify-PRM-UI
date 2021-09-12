@@ -1,0 +1,20 @@
+<app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
+<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+</app-response-message>
+<div *ngIf="!loading">
+  <div>
+    <h4 class="bold-font-weight">Turn Email notifications on or off
+    </h4>
+    <label class="bold-font">You have the ability to control email notifications to newly onboarded partners.</label>
+  </div>
+  <div>
+    <h5 class="bold-font-weight h5-custom-font">Send signup email notifications to your newly onboarded partners:
+      <switch  [status]="notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption($event)">
+    </switch>
+  </h5>
+  </div>
+  <div id="right">
+    <button type="button" [disabled]="notifyPartners==notifyPartnersOptionFromDb"  class="btn btn-primary" translate (click)="save()">Update</button>
+  </div>
+</div>

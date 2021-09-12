@@ -79,11 +79,16 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
         }else{
             this.authenticationService.redirectUrl = url;
-            // Navigate to the login page
-            this.router.navigate( ['/login'] );
+            if(this.authenticationService.unauthorized){
+                this.router.navigate( ['/401'] );
+            }else{
+                this.router.navigate( ['/login'] );
+            }
+            
             return false;
         }
-      }catch(error){console.log('error'+error); this.router.navigate( ['/login'] ); }
+      }catch(error){console.log('error'+error);
+ }
     }
 
      getUserByUserName( userName: string ) {
@@ -94,7 +99,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
               this.authenticationService.user = data;
               this.authenticationService.userProfile = data;
             },
-            error => {console.log( error ); this.router.navigate(['/su'])},
+            error => {
+                console.log( error );
+            
+            },
             () => { }
             );
         }catch(error){ console.log('error'+error); }

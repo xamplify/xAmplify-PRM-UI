@@ -29,6 +29,7 @@ import { EnvService } from 'app/env.service'
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData } from 'html-to-image';
+import { FormSubType } from 'app/forms/models/form-sub-type.enum';
 
 declare var $: any, swal: any, CKEDITOR: any;
 
@@ -176,7 +177,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   thumbnailFileObj: any;
   loggedInAsSuperAdmin = false;
   isCreateDefaultForm = false;
-
+  showQuizField= true;
+  
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
@@ -218,7 +220,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         } else {
             this.listDefaultColumns();
             this.highlightByLength(1);
-        }
+        }        
         this.cropperSettings();
         this.pageNumber = this.numberPerPage[0];
 
@@ -242,8 +244,18 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                 this.removeBlurClass();
             }
         }
+        
 
+    }
 
+    setShowQuizField() {
+        if(this.form.formSubType!=undefined){
+            if (this.form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
+                this.showQuizField = false;
+            }
+        }else{
+            this.showQuizField = false;
+        }
     }
 
     getCompanyLogo(){
@@ -315,6 +327,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.listExistingColumns(this.form.formLabelDTOs);
         this.characterSize();
         this.highlightByLength(1);
+        this.setShowQuizField();
     }
 
     getById(id: number) {
@@ -428,7 +441,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       $('#add-form-parent-div').removeClass(this.portletBodyBlur);
       $('#add-form-parent-div').addClass(this.portletBody);
       $('#add-form-name-modal').modal('hide');
-      $('#add-form-designs').modal('hide')
+      $('#add-form-designs').modal('hide');
+
+      if (this.isCreateDefaultForm && this.form.isSurvey) {
+        this.form.formSubType = FormSubType.SURVEY;
+        this.showQuizField = false;
+      }
   }
   showAddForm() {
       $('#add-form-name-modal').modal('show');
@@ -955,6 +973,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
   saveOrUpdateForm() {
       this.form.formLabelDTOs = this.columnInfos;
+      
       this.form.createdBy = this.authenticationService.getUserId();
       if(CKEDITOR!=undefined){
         for (var instanceName in CKEDITOR.instances) {
@@ -966,12 +985,21 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if (!this.form.companyLogo) {
           this.form.companyLogo = this.companyLogoImageUrlPath;
       }
+     if(this.form.formSubType!=undefined){
+        if (this.form.quizForm) {
+            this.form.formSubType = FormSubType.QUIZ;
+        } else if (this.form.formSubType.toString() === FormSubType[FormSubType.QUIZ]) {
+            this.form.formSubType = FormSubType.REGULAR;
+        }   
+     }else{
+        this.form.formSubType = FormSubType.REGULAR;
+     }
       let self = this;
       htmlToImage.toBlob(document.getElementById('create-from-div'))
           .then(function (blob) {
               self.thumbnailFileObj = self.utilService.blobToFile(blob);
+              self.form.saveAs = self.isSaveAs;
               if (self.isAdd || self.isSaveAs) {
-                 self.form.saveAs = self.isSaveAs;
                   self.save(self.form);
               } else {
                  self.update(self.form);
@@ -983,7 +1011,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if(this.isCreateDefaultForm){
         form.formType = FormType.XAMPLIFY_DEFAULT_FORM;
         form.saveAsDefaultForm = true;
-        form.createdBy = 1;
+        form.createdBy = 1;        
       }else{
         form.formType = this.formType;
         form.saveAsDefaultForm = false;
@@ -1679,6 +1707,9 @@ saveAs(){
 	this.validateForm();
 }
 
-
+addOrUpdate(){
+	this.isSaveAs = false;
+	this.validateForm();
+}
 
 }

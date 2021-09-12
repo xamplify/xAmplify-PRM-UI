@@ -569,14 +569,16 @@
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption" translate> <i class="fa fa-edit" style="font-size: 19px;"></i>List of Partners</div>
+                        <div class="caption" translate> 
+                            <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>List of Partners
+                        </div>
                         <div class="inputs" align="right" style="float: right; padding: 4px" *ngIf="!referenceService.isMobileScreenSize()">
                             <div style="float: left; margin: 0 10px;">
                                 <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
-                <ng-container *ngFor="let sort of sortOptions; let i = index">
-                  <option [ngValue]="sort">{{sort.name}}</option>
-                </ng-container>
-              </select>
+                                    <ng-container *ngFor="let sort of sortOptions; let i = index">
+                                    <option [ngValue]="sort">{{sort.name}}</option>
+                                    </ng-container>
+                                </select>
                             </div>
                             <div class="portlet-input input-inline">
                                 <div class="input-icon right">
@@ -600,20 +602,16 @@
                                 <div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList" class="alert alert-info alert-dismissable">No Partners found.
                                 </div>
                                 <div class="table-responsive">
-                                    <table class='table tgrid'>
+                                    <table class='table tgrid' aria-describedby="">
                                         <thead *ngIf="pagination.pagedItems?.length != 0">
                                             <tr>
                                                 <th class='text-center'>
                                                     <input type="checkbox" name="all" [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked" (change)="editContactComponent.checkAll($event, partners)" id="checkAllExistingContacts" /></th>
                                                 <th style="width: 23%;" translate>Entity info</th>
-                                                <!-- <th style="width: 26%;" class="hidden-xs">PHONE</th> -->
-                                                <!-- <th class="hidden-xs">JOB TITLE</th> -->
                                                 <th class="hidden-xs" translate>VERTICAL</th>
                                                 <th class="hidden-xs" translate>REGION</th>
                                                 <th class="hidden-xs" translate>TYPE</th>
                                                 <th class="hidden-xs hidden-sm" translate>CATEGORY</th>
-                                                <!-- <th class='text-center hidden-xs'>ADDRESS</th> -->
-                                                <!-- <th class='text-center'>MORE</th> -->
                                                 <th></th>
                                                 <th class='text-center'translate>ACTIONS</th>
                                             </tr>
@@ -628,15 +626,7 @@
                                                     <td>
                                                         <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact"> </app-user-info>
                                                     </td>
-                                                    <!-- <td class="hidden-xs">
-												<img
-													src="https://lipis.github.io/flag-icon-css/flags/4x3/in.svg"
-													width="15px">
-													<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-														<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-													</div>
-												</td> -->
+                                                  
                                                     <td class="hidden-xs white-space-transform" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
                                                         <span *ngIf="contact.vertical?.length>14">..</span>
                                                     </td>
@@ -649,34 +639,18 @@
                                                     <td class="hidden-xs hidden-sm white-space-transform" title="{{contact.category}}">{{contact.category | slice:0:14}}
                                                         <span *ngIf="contact.category?.length>14">..</span>
                                                     </td>
-                                                    <!-- <td class="hidden-xs">
-													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:20}}
-													<span *ngIf="contact.jobTitle?.length>20">...</span>
-													</h5>
-													<h6 class='mt0'>{{contact.contactCompany}}</h6>
-												</td> -->
-                                                    <!-- <td align="center" class="hidden-xs">
-													<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-													<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
-													<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
-												</td> -->
-                                                    <!-- <td align="center">
-													<button id='more_less_button_{{i}}'
-														(click)="contact.isShowDetails = ! contact.isShowDetails">
-														<span *ngIf="!contact.isShowDetails">More</span> <span
-															*ngIf="contact.isShowDetails">Less</span>
-													</button>
-                        </td> -->
+                        
                                                     <td>
                                                         <button id='more_less_button_{{i}}' class="hidden-xs" (click)="contact.isShowDetails = ! contact.isShowDetails">
-                          <span *ngIf="!contact.isShowDetails" translate>More</span> <span
-                            *ngIf="contact.isShowDetails" translate>Less</span>
-                        </button>
+                                                            <span *ngIf="!contact.isShowDetails" translate>More</span> <span
+                                                                *ngIf="contact.isShowDetails" translate>Less</span>
+                                                        </button>
                                                     </td>
-                                                    <td align="center">
+                                                    <td>
                                                         <div class="actions-block override-actions">
-                                                            <a id="envolope_{{i}}" *ngIf="!contact.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(contact.id)">
-                                                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                                            <a id="envolope_{{i}}" *ngIf="!contact.signedUp || !contact.notifyPartners"  (click)="sendMail(contact.id)">
+                                                                <i class="fa fa-envelope" *ngIf="contact.notifyPartners && !contact.signedUp" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="{{actionsDescription.partner_reSendMail}}"></i>
+                                                                <i class="fa fa-envelope" style="color:#ff0000" *ngIf="!contact.notifyPartners" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
                                                             </a>
                                                             <a id="edit_{{i}}" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_edit}}" (click)="editUserDetails(contact)">
                                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -1254,14 +1228,20 @@
             <div class="modal-body">
                 <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
                 </app-response-message>
-                <div class="table-responsive" >
+                <app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
+                <div class="table-responsive" *ngIf="!processingPartnersLoader">
                     <table class="table tgrid table-hover table-sm" id="assignContactAndTable" aria-describedby="assignContactAndTable">
                         <thead>
                             <tr>
                                 <th scope="row" translate>Entity Info</th>
                                 <th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts
                                      <span id="tooltip-helper">
-                                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner (Minimum 1)"></i>
+                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Assign number of contacts to each partner (Minimum 1)"></i>
+                                    </span>
+                                </th>
+                                <th scope="row" translate>Sign up Notification
+                                    <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded partners"></i>
                                     </span>
                                 </th>
                             </tr>
@@ -1276,12 +1256,16 @@
                                     <td *ngIf="authenticationService.contactsCount" class="contact-count error" id="contact-count-{{i}}">
                                         <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
                                     </td>
+                                    <td *ngIf="showNotifyPartnerOption">
+                                        <switch [status]="partner.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                        [size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)">
+                                        </switch>
+                                    </td>
                                 </tr>
                             </ng-container>
                         </tbody>
                     </table>
                 </div>
-
             <br>
             </div>
             <ngx-loading [show]="processingPartnersLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>

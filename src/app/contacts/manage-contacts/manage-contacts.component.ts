@@ -80,6 +80,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	listContactData: boolean = true;
 	customResponse: CustomResponse = new CustomResponse();
+	emailNotificationCustomResponse:CustomResponse = new CustomResponse();
 	invalidRemovableContacts = [];
 	allselectedUsers = [];
 	isInvalidHeaderCheckBoxChecked: boolean = false;
@@ -2120,19 +2121,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(this.searchContactType); } }
 
 	sendMail(partnerId: number) {
+		this.emailNotificationCustomResponse = new CustomResponse();
 		try {
-			this.contactService.mailSend(partnerId, this.defaultPartnerListId)
+			this.pagination.partnerId = partnerId;
+            this.pagination.userListId = this.defaultPartnerListId;
+            this.pagination.userId = this.authenticationService.getUserId();          
+            this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+            this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+			this.contactService.mailSend(this.pagination)
 				.subscribe(
 					data => {
-						console.log(data);
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+						this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
 						this.contactService.successMessage = true;
-						// if (data.message == "success") {
-						// 	this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-						// 	this.contactService.successMessage = true;
-						// } else {
-						// 	this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
-						// }
+						this.listContactsByType(this.contactsByType.selectedCategory);
 					},
 					(error: any) => {
 						this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
