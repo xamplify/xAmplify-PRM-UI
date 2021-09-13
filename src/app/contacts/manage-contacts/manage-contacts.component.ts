@@ -52,6 +52,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	filterValue: any;
 
 	hasContactRole: boolean = false;
+	hasPartnersRole : boolean = false;
 	loggedInUserId = 0;
 	hasAllAccess = false;
 	contactListUsers = [];
@@ -316,6 +317,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 		this.hasContactRole = this.referenceService.hasRole(this.referenceService.roles.contactsRole);
 		console.log("ContactRole" + this.hasContactRole);
+		
+		this.hasPartnersRole = this.referenceService.hasRole(this.referenceService.roles.partnersRole);
 
 		this.hasAllAccess = this.referenceService.hasAllAccess();
 		//this.loggedInUserId = this.authenticationService.getUserId();
