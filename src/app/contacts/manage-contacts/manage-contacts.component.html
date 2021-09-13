@@ -458,7 +458,7 @@
                                       <i class="fa fa-refresh" aria-hidden="true"></i>
                                     </a>
                                   </span> <a
-                                    *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner())
+                                    *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId))
                                                     && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST') && !contactList.formList)"
                                     (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_delete}}">
