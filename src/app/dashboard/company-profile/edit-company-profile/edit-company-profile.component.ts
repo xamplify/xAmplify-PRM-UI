@@ -1402,6 +1402,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
        this.refService.goToDiv("module-access-blur-content-div");
    }
    updateAccess(){
+       this.refService.goToTop();
        this.isLoading = true;
        this.customResponse = new CustomResponse();
        if(this.createAccount){
