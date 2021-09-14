@@ -1727,7 +1727,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 <div class="modal-dialog  accounts-modal" style="position: relative !important;">
   <!-- Modal content-->
   <div class="modal-content">
-    <app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader>
+    <!-- <app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader> -->
     <div class="modal-header">
       <button type="button" class="close-circle" data-dismiss="modal" (click)="addContactModalClose()">
           <i class="fa fa-times" aria-hidden="true"></i>
@@ -1762,7 +1762,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
     <div class="modal-footer" style="border:none">
       <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
-      <button  type="submit" class="btn green"  (click)="confirmAndsaveExcludedUser(addContactuser)"  [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
+      <button  type="button" class="btn green"  (click)="confirmAndsaveExcludedUser(addContactuser)"  [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
     </div>
   </div>
 </div>
@@ -1774,7 +1774,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 <div class="modal-dialog  accounts-modal" style="position: relative !important;">
   <!-- Modal content-->
   <div class="modal-content">
-    <app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader>
+    <!-- <app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader> -->
     <div class="modal-header">
       <button type="button" class="close-circle" data-dismiss="modal" (click)="addDomainModalClose()">
           <i class="fa fa-times" aria-hidden="true"></i>
@@ -1807,7 +1807,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
     <div class="modal-footer" style="border:none">
       <button class="btn btn-default" (click)="addDomainModalClose()" translate>Cancel</button>
-      <button  type="submit" class="btn green"  (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern"  translate>Add</button>
+      <button  type="button" class="btn green"  (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern"  translate>Add</button>
     </div>
   </div>
 </div>
