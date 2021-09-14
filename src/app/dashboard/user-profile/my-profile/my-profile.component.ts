@@ -243,6 +243,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showUnsubscribeReasonsDiv = false;
 	showTeamMemberGroups = false;
 	showNotifyPartnersOption = false;
+	excludeUserLoader: HttpRequestLoader = new HttpRequestLoader();
+	excludeDomainLoader: HttpRequestLoader = new HttpRequestLoader();
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -413,7 +415,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.addContactModalClose();
 		try {
 			if (this.referenceService.integrationCallBackStatus) {
 				this.activeTabName = 'integrations';
@@ -2779,7 +2780,7 @@ configSalesforce() {
 
     addContactModalOpen() {
     	this.addContactuser = new User();
-    	$('#addContactModal').modal('show');    	
+    	$('#addExcludeUserPopupModal').modal('show');    	
     } 
     
     validateEmail(emailId: string) {
@@ -2795,9 +2796,9 @@ configSalesforce() {
     }
     
     addContactModalClose() {
-        $('#addContactModal').modal('toggle');
-        $("#addContactModal .close").click();
-        $('#addContactModal').modal('hide');
+        $('#addExcludeUserPopupModal').modal('toggle');
+        $("#addExcludeUserPopupModal .close").click();
+        $('#addExcludeUserPopupModal').modal('hide');
         $('.modal').removeClass('show');
         this.validEmailPatternSuccess = true;
         this.validEmailFormat = true;
@@ -2877,7 +2878,7 @@ configSalesforce() {
     }
 	
     listExcludedUsers(excludeUserPagination: Pagination) {
-        this.ngxloading = true;
+    	this.referenceService.startLoader(this.excludeUserLoader);
         if(this.searchExcludedUserKey!=null){
         	excludeUserPagination.searchKey = this.searchExcludedUserKey;
         }
@@ -2887,10 +2888,10 @@ configSalesforce() {
                 response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
                 excludeUserPagination.totalRecords = response.data.totalRecords;
                 excludeUserPagination = this.pagerService.getPagedItems(excludeUserPagination, response.data.data);
-                this.ngxloading = false;
+                this.referenceService.stopLoader(this.excludeUserLoader);
             },
             error => {
-                this.ngxloading = false;
+            	this.referenceService.stopLoader(this.excludeUserLoader);
             },
             () => { }
             );
@@ -3018,7 +3019,7 @@ configSalesforce() {
     }
     
     listExcludedDomains(excludeDomainPagination: Pagination) {
-        this.ngxloading = true;
+    	this.referenceService.startLoader(this.excludeDomainLoader);
         if(this.searchExcludedDomainKey!=null){
         	excludeDomainPagination.searchKey = this.searchExcludedDomainKey;
         }
@@ -3028,10 +3029,10 @@ configSalesforce() {
                 response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
                 excludeDomainPagination.totalRecords = response.data.totalRecords;
                 excludeDomainPagination = this.pagerService.getPagedItems(excludeDomainPagination, response.data.data);
-                this.ngxloading = false;
+                this.referenceService.stopLoader(this.excludeDomainLoader);
             },
             error => {
-                this.ngxloading = false;
+            	this.referenceService.stopLoader(this.excludeDomainLoader);
             },
             () => { }
             );
@@ -3087,12 +3088,18 @@ configSalesforce() {
         }
     }
     
-    searchData(type: string) {
-    	   this.addContactModalClose();
-    	   this.addDomainModalClose();
-    	   this.modalpopuploader = false;
-        this.search(type);
+    searchExcludeUsersDataEventHandler(keyCode: any) {
+        if (keyCode === 13) {
+            this.excludeUserPagination.pageIndex = 1;
+            this.listExcludedUsers(this.excludeUserPagination);
+        }
     }
+    searchExcludeDomainsDataEventHandler(keyCode: any) {
+        if (keyCode === 13) {
+            this.excludeDomainPagination.pageIndex = 1;
+            this.listExcludedDomains(this.excludeDomainPagination);
+        }
+      }
     
     downloadEmptyCSV(excludetype: string) {
         if (excludetype === 'exclude-users'){
