@@ -2796,8 +2796,6 @@ configSalesforce() {
     }
     
     addContactModalClose() {
-        $('#addExcludeUserPopupModal').modal('toggle');
-        $("#addExcludeUserPopupModal .close").click();
         $('#addExcludeUserPopupModal').modal('hide');
         $('.modal').removeClass('show');
         this.validEmailPatternSuccess = true;
