@@ -123,7 +123,7 @@ export class ModuleAccessComponent implements OnInit {
 
     }, _error => {
       this.ngxLoading = false;
-      this.customResponse = new CustomResponse('Error', "Something went wrong.", true);
+      this.customResponse = new CustomResponse('ERROR', "Something went wrong.", true);
     },
     ()=>{
         if(this.campaignAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible){
@@ -152,7 +152,7 @@ export class ModuleAccessComponent implements OnInit {
         this.showSuccessMessage();
     }, _error => {
       this.ngxLoading = false;
-      this.customResponse = new CustomResponse('Error', "Something went wrong while adding default mdf form.", true);
+      this.customResponse = new CustomResponse('ERROR', "Something went wrong while adding default mdf form.", true);
     });
   }
 
