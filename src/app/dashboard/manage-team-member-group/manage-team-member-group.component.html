@@ -149,17 +149,20 @@
             </tr>
             <tr *ngIf="group?.teamMemberModuleDTOs?.length>5" class="text-center module-text-color">
               <th  scope="row" class="plfpx">
-                 <a (click)="editGroupFromPreviewSection(group.id)">and {{group?.teamMemberModuleDTOs?.length-5}} More..</a>
+                 <a (click)="editGroupFromPreviewSection(group)">and {{group?.teamMemberModuleDTOs?.length-5}} More..</a>
               </th>
             </tr>
           </tbody>
         </table>
        </div> 
       <div class="bar" *ngIf="isPreview">
+        <a  data-toggle="tooltip" data-placement="top" title="Save As" (click)="saveAs(group)">
+          <i class="fa fa-copy" aria-hidden="true"></i>
+        </a>
         <a  data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(group.id,false)">
           <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
-        <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="findGroupDetailsById(group.id)">
+        <a data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'" [className]="group?.defaultGroup ? 'inactive':''" (click)="findGroupDetailsById(group)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         </a>
         <a  data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'" [className]="group?.defaultGroup ? 'delete inactive':'delete'" (click)="confirmAlert(group)">
