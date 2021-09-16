@@ -106,6 +106,9 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     $('#add-team-member-group').show(500);
     this.groupSubmitButtonText = "Save";
     this.groupDto.isValidForm = false;
+    this.groupDto.defaultGroup = false;
+    this.groupDto.saveAs = false;
+    this.groupDto.previewGroup = false;
     this.findDefaultModules();
 
   }
@@ -203,33 +206,7 @@ export class ManageTeamMemberGroupComponent implements OnInit {
     );
   }
 
-  findGroupDetailsById(group:any) {
-    if(!group.defaultGroup){
-      let id = group.id;
-      this.referenceService.loading(this.httpRequestLoader, true);
-      this.groupDto = {};
-      this.referenceService.goToTop();
-      this.defaultModules = [];
-      this.customResponse = new CustomResponse();
-      this.teamMemberService.findTeamMemberGroupById(id).subscribe(
-        response => {
-          let map = response.data;
-          this.groupDto.id = id;
-          this.groupDto = map['teamMemberGroupDTO'];
-          this.defaultModules = map['modules'];
-          this.isAdd = false;
-          this.groupSubmitButtonText = "Update";
-          this.groupDto.isValidForm = map['validForm'];
-          $('#manage-team-member-groups').hide(500);
-          $('#add-team-member-group').show(500);
-        }, error => {
-          this.xtremandLogger.log(error);
-          this.referenceService.loading(this.httpRequestLoader, false);
-          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-        }
-      );
-    }
-  }
+ 
 
   confirmAlert(teamMemberGroup:any) {
     if(!teamMemberGroup.defaultGroup){
@@ -304,12 +281,50 @@ export class ManageTeamMemberGroupComponent implements OnInit {
   }
   
   editGroupFromPreviewSection(group:any){
+    $('#preview-group').hide(500);
+     this.groupEditedFromPreviewSection = true;
+     this.getTeamMemberGroupDetailsById(group,false);
+  }
+
+  findGroupDetailsById(group:any) {
     if(!group.defaultGroup){
-      $('#preview-group').hide(500);
-      this.groupEditedFromPreviewSection = true;
-      this.findGroupDetailsById(group);
+      this.getTeamMemberGroupDetailsById(group,false);
     }
-    
+  }
+
+
+
+  getTeamMemberGroupDetailsById(group:any,saveAs:boolean){
+    let id = group.id;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.groupDto = {};
+    this.referenceService.goToTop();
+    this.defaultModules = [];
+    this.customResponse = new CustomResponse();
+    this.teamMemberService.findTeamMemberGroupById(id).subscribe(
+      response => {
+        let map = response.data;
+        this.groupDto.id = id;
+        this.groupDto = map['teamMemberGroupDTO'];
+        this.groupDto.saveAs = saveAs;
+        this.groupDto.previewGroup = group.defaultGroup && !saveAs;
+        this.defaultModules = map['modules'];
+        this.isAdd = saveAs;
+        if(saveAs){
+          this.groupSubmitButtonText = "Save As";
+          this.groupDto.name = this.groupDto.name+"_copy";
+        }else{
+          this.groupSubmitButtonText = "Update";
+        }
+        this.groupDto.isValidForm = map['validForm'];
+        $('#manage-team-member-groups').hide(500);
+        $('#add-team-member-group').show(500);
+      }, error => {
+        this.xtremandLogger.log(error);
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+      }
+    );
   }
 
   goToManageOrPreview(){
@@ -326,7 +341,7 @@ export class ManageTeamMemberGroupComponent implements OnInit {
   }
 
   saveAs(group){
-    this.referenceService.showSweetAlertInfoMessage();
+    this.getTeamMemberGroupDetailsById(group,true);
   }
   
 }
