@@ -66,15 +66,17 @@
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
     <form role="form" aria-labelledby="add-team-member-group-form">
+      <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span>
       <div class="form-group">
         <label class="control-label" translate>Name</label>
-        <span class="required">*</span>
-        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255"/>
+        <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
+        <input *ngIf="!groupDto?.previewGroup" type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255"/>
+        <input *ngIf="groupDto?.previewGroup" disabled  type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control"/>
         <span class="required" *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
   <div class="form-group">
     <label class="control-label" translate>Select Modules</label>
-    <span class="required">*</span>
+    <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
   </div>
   <div  class="table-responsive">
     <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
@@ -86,7 +88,7 @@
           <p class="dodgerblue">{{defaultModule?.description}}</p>
         </th>
         <td>
-          <switch  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+          <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
           </switch>
         </td>
@@ -94,7 +96,7 @@
     </table>
   </div>
   <div id="right">
-    <button type="button" [disabled]="!groupDto.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{groupSubmitButtonText}}</button>
+    <button *ngIf="!groupDto?.previewGroup"  type="button" [disabled]="!groupDto.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{groupSubmitButtonText}}</button>
     <button type="button"  class="btn btn-default" (click)="goToManageOrPreview()" translate>Cancel</button>
   </div>
   </form>
