@@ -215,7 +215,8 @@ export class TeamMemberService{
 	}
 
 	saveOrUpdateGroup(groupDto: any, isAdd: boolean) {
-		groupDto.userId = this.authenticationService.getUserId();
+        groupDto.userId = this.authenticationService.getUserId();
+        groupDto.defaultGroup = false;
 		let suffixUrl = isAdd ? 'save' : 'update';
 		var url = this.URL + "teamMemberGroup/" + suffixUrl + "?access_token=" + this.authenticationService.access_token;
 		return this.http.post(url, groupDto)
