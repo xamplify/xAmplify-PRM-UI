@@ -215,9 +215,6 @@
 <!--Add a Team Member Div-->
 <ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
       <div class="portlet light">
-        <div class="alert alert-info" *ngIf="teamMemberGroups?.length==1">
-          <strong translate>Please Go to 'My Profile' ---> 'Team Member Groups' to create a group</strong>
-      </div>
         <div class="portlet-title">
           <div class="caption" translate>
             <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
@@ -329,9 +326,6 @@
 
 <!-----Uplodaded Team Members----->
 <div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMember">
-  <div class="alert alert-info" *ngIf="teamMemberGroups?.length==1">
-    <strong translate>Please Go to 'My Profile' ---> 'Team Member Groups' to create a group</strong>
-</div>
   <div class="portlet-title">
     <div class="caption" translate>Uploaded Team Members</div>
     <div [hidden]="addTeamMemberLoader.isLoading">
