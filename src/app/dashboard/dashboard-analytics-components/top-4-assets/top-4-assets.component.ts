@@ -7,9 +7,11 @@ import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DamService } from 'app/dam/services/dam.service';
+import { DamUploadPostDto } from 'app/dam/models/dam-upload-post-dto';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 
-declare var $: any;
+declare var $:any,swal: any;
 @Component({
   selector: 'app-top-4-assets',
   templateUrl: './top-4-assets.component.html',
@@ -25,8 +27,16 @@ export class Top4AssetsComponent implements OnInit {
   @Input() isPartnerView = false;
   @Input() hideRowClass = false;
   title = "Assets";
+  manageAssetsText = "Click here to manage assets";
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
-
+  loading = false;
+  customResponse:CustomResponse = new CustomResponse();
+  isPreview = false;
+  asset:any;
+  showPublishPopup = false; 
+  selectedAssetId: number;
+  showPdfModalPopup: boolean;
+  deleteAsset = false;
   constructor(public properties: Properties, public damService: DamService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,private pagerService: PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
@@ -40,6 +50,7 @@ export class Top4AssetsComponent implements OnInit {
   ngOnInit() {
     this.assetsLoader = true;
     this.title = this.isPartnerView ? 'Shared Assets' : 'Assets';
+    this.manageAssetsText =  this.isPartnerView ? 'Click here to access shared assets' : 'Click here to manage assets';
     this.getCompanyId();
   }
 
@@ -62,6 +73,7 @@ export class Top4AssetsComponent implements OnInit {
             this.pagination.userId = this.loggedInUserId;
             this.listPublishedAssets(this.pagination);
           } else {
+            this.pagination.userId = this.loggedInUserId;
             this.listAssets(this.pagination);
           }
         }
@@ -131,12 +143,95 @@ export class Top4AssetsComponent implements OnInit {
   }
 
   goToManage(){
+    this.loading = true;
     if(this.isPartnerView){
       this.referenceService.goToRouter('/home/dam/shared');
     }else{
       this.referenceService.goToRouter('/home/dam/manage');
     }
   }
+
+  goToAddDam(){
+    this.loading = true;
+    this.referenceService.goToRouter('/home/dam/select');
+  }
+
+  addOrEdit(id:number){
+    this.loading = true;
+    if (this.isPartnerView) {
+			this.referenceService.goToRouter("/home/dam/editp/" + id);
+		} else {
+			this.referenceService.goToRouter("/home/dam/edit/" + id);
+		}
+  }
+
+  editDetails(id:number){
+    this.loading = true;
+    this.referenceService.goToRouter("/home/dam/editDetails/"+id);
+ }
+
+
+
+assetGridViewActionsEmitter(event:any){
+  let input =event;
+  let preview = input['preview'];
+  let showPublishPopup = input['publishPopup'];
+  this.asset = input['asset'];
+  if(preview){
+    this.isPreview = true;
+  }else if(showPublishPopup){
+    this.selectedAssetId = this.asset.id;
+    this.showPublishPopup = true;
+  }
+  
+}
+
+previewAssetPopupEmitter(){
+  this.isPreview = false;
+  this.asset = {};
+}
+/*********Publish Popup **********/
+notificationFromPublishToPartnersComponent() {
+  this.showPublishPopup = false;
+  this.selectedAssetId = 0;
+  this.getCompanyId();
+}
+
+
+/*************Download PDF***********/
+assetGridViewActionsPdfEmitter(event:any){
+  this.asset = event;
+  this.showPdfModalPopup = true;
+}
+
+downloadAssetPopupEventEmitter(){
+  this.asset = {};
+  this.showPdfModalPopup = false;
+}
+
+/**********Delete***********/
+assetGridViewActionsDeleteActionEmitter(event:any){
+  this.deleteAsset = true;
+  this.asset = event;
+}
+
+deleteAssetSuccessEmitter(){
+  this.customResponse = new CustomResponse('SUCCESS',this.asset.assetName+" Deleted Successfully",true);
+  this.deleteAsset = false;
+  this.assetsLoader = false;
+  this.asset = {};
+  this.pagination.pageIndex = 1;
+  this.listAssets(this.pagination);
+}
+
+deleteAssetLoaderEmitter(){
+  this.assetsLoader = true;
+}
+
+deleteAssetCancelEmitter(){
+  this.deleteAsset = false;
+  this.asset = {};
+}  
 
 
 }
