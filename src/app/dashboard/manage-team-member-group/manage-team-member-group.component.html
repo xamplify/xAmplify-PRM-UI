@@ -81,11 +81,11 @@
   <div  class="table-responsive">
     <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
       <tr *ngFor="let defaultModule of defaultModules;let i = index">
-        <th scope="row">
+        <th scope="row" class="fstcw-tm">
           <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
           {{defaultModule?.moduleName}}
           <br>
-          <p class="dodgerblue">{{defaultModule?.description}}</p>
+          <!-- <p class="dodgerblue">{{defaultModule?.description}}</p> -->
         </th>
         <td>
           <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
