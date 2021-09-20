@@ -2847,29 +2847,29 @@ configSalesforce() {
 	}
       
     saveExcludedUser(excludedUser: User) {
-    	this.modalpopuploader = true;
-    	this.validEmailFormat  = true;   
-        this.isEmailExist  = false;
+        this.referenceService.startLoader(this.excludeUserLoader);
+        this.validEmailFormat = true;
+        this.isEmailExist = false;
         this.excludedUsers = [];
-        this.excludedUsers.push(excludedUser );
+        this.excludedUsers.push(excludedUser);
         this.userService.saveExcludedUsers(this.excludedUsers, this.loggedInUserId)
             .subscribe(
             data => {
                 if (data.statusCode == 200) {
                     this.addContactModalClose();
-                    this.excludeUserCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
+                    this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
                     this.listExcludedUsers(this.excludeUserPagination);
-                    this.modalpopuploader = false;
-                } else if (data.statusCode == 401) { 
-                	   this.modalpopuploader = false;
-                	this.validEmailFormat = false;
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                } else if (data.statusCode == 401) {
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.validEmailFormat = false;
                 } else if (data.statusCode == 402) {
-                	this.modalpopuploader = false;
-                	this.isEmailExist = true;
-                }                
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.isEmailExist = true;
+                }
             },
             error => {
-                this.modalpopuploader = false;
+                this.referenceService.stopLoader(this.excludeUserLoader);
             },
             () => { }
             );
@@ -2988,7 +2988,7 @@ configSalesforce() {
 	}
     
     saveExcludedDomain(domain:string){
-    	this.modalpopuploader = true;
+    	this.referenceService.startLoader(this.excludeDomainLoader);
     	this.isDomainExist = false;
     	this.validDomainFormat = true;
     	this.excludedDomains = [];
@@ -3000,17 +3000,17 @@ configSalesforce() {
                 this.addDomainModalClose();
                 this.excludeDomainCustomResponse  = new CustomResponse('SUCCESS', data.message, true);
                 this.listExcludedDomains(this.excludeDomainPagination);
-                this.modalpopuploader = false;
+                this.referenceService.stopLoader(this.excludeDomainLoader);
             } else if (data.statusCode == 401) { 
-                   this.modalpopuploader = false;
+            	this.referenceService.stopLoader(this.excludeDomainLoader);
                    this.isDomainExist = true;
             } else if (data.statusCode == 402) {
             	this.validDomainFormat = false;
-                this.modalpopuploader = false;
+            	this.referenceService.stopLoader(this.excludeDomainLoader);
             }                
         },
         error => {
-            this.modalpopuploader = false;
+        	this.referenceService.stopLoader(this.excludeDomainLoader);
         },
         () => { }
         );
@@ -3243,31 +3243,30 @@ configSalesforce() {
     }
     
     saveExcludedUsers(excludedUsers: User[]) {
-        this.modalpopuploader = true;
-        this.validEmailFormat  = true;   
-        this.isEmailExist  = false;
+        this.referenceService.startLoader(this.excludeUserLoader);
+        this.validEmailFormat = true;
+        this.isEmailExist = false;
         this.userService.saveExcludedUsers(excludedUsers, this.loggedInUserId)
             .subscribe(
             data => {
                 if (data.statusCode == 200) {
-                	 this.csvExcludeUsersFilePreview = false;
-                    this.addContactModalClose();
-                    this.excludeUserCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
+                    this.csvExcludeUsersFilePreview = false;
+                    this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
                     this.listExcludedUsers(this.excludeUserPagination);
-                    this.modalpopuploader = false;
-                } else if (data.statusCode == 401) { 
-                       this.modalpopuploader = false;
-                       this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                } else if (data.statusCode == 401) {
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
                 } else if (data.statusCode == 402) {
-                    this.modalpopuploader = false;
-                    this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
-                }else if (data.statusCode == 403) {
-                    this.modalpopuploader = false;
-                    this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
-                }                   
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+                } else if (data.statusCode == 403) {
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+                }
             },
             error => {
-                this.modalpopuploader = false;
+                this.referenceService.stopLoader(this.excludeUserLoader);
             },
             () => { }
             );
@@ -3305,35 +3304,33 @@ configSalesforce() {
     }
     
     saveExcludedDomains(excludedDomains: string[]) {
-        this.modalpopuploader = true;
+        this.referenceService.startLoader(this.excludeDomainLoader);
         this.isDomainExist = false;
         this.validDomainFormat = true;
         this.userService.saveExcludedDomains(excludedDomains, this.loggedInUserId)
             .subscribe(
             data => {
                 if (data.statusCode == 200) {
-                	this.csvExcludeDomainsFilePreview = false;
-                    this.addDomainModalClose();
+                    this.referenceService.stopLoader(this.excludeDomainLoader);
+                    this.csvExcludeDomainsFilePreview = false;
                     this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', data.message, true);
                     this.listExcludedDomains(this.excludeDomainPagination);
-                    this.modalpopuploader = false;
                 } else if (data.statusCode == 401) {
-                    this.modalpopuploader = false;
-                    this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                    this.referenceService.stopLoader(this.excludeDomainLoader);
+                    this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
                 } else if (data.statusCode == 402) {
-                	 this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
-                    this.modalpopuploader = false;
-                }else if (data.statusCode == 403) {
-                     this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
-                    this.modalpopuploader = false;
+                    this.referenceService.stopLoader(this.excludeDomainLoader);
+                    this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
+                } else if (data.statusCode == 403) {
+                    this.referenceService.stopLoader(this.excludeDomainLoader);
+                    this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
                 }
             },
             error => {
-                this.modalpopuploader = false;
+                this.referenceService.stopLoader(this.excludeDomainLoader);
             },
             () => { }
             );
     }
-    
 
 }
