@@ -15,11 +15,8 @@ import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
-import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
-import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
 import { Ng2DeviceService } from 'ng2-device-detector';
-import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var $, swal: any;
@@ -61,7 +58,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	damViewStatusCode = 200;
 	isPreview: boolean;
 	asset: any;
-	showPdfModalPopup:boolean;
+	showPdfModalPopup: boolean;
 	deleteAsset = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -320,88 +317,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.historyPagination = new Pagination();
 	}
 
-	
-	
-	
 
-	viewDetails(asset: any) {
-		this.damViewStatusCode = 200;
-		this.selectedAsset = asset;
-		this.assetDetailsPreview = true;
-		this.selectedAssetId = asset.id;
-		this.assetViewLoader = true;
-		this.damService.getSharedAssetDetailsById(asset.id)
-			.subscribe(
-				(response: any) => {
-					this.damViewStatusCode = response.statusCode;
-					if (response.access) {
-						if (response.statusCode == 200) {
-							this.assetDetailsViewDto = response.data;
-							this.assetDetailsViewDto.displayTime = new Date(this.assetDetailsViewDto.publishedTimeInUTCString);
-						} else if (response.statusCode == 404) {
-							this.referenceService.goToPageNotFound();
-						}
-					} else {
-						this.authenticationService.forceToLogout();
-					}
-				},
-				(error: string) => {
-					this.xtremandLogger.errorPage(error);
-				},
-				() => {
-					if (this.damViewStatusCode == 200) {
-						this.utilService.getJSONLocation().subscribe(
-							(response: any) => {
-								let damAnalyticsPostDto = new DamAnalyticsPostDto();
-								let geoLocationDetails = new GeoLocationAnalytics();
-								let deviceInfo = this.deviceService.getDeviceInfo();
-								if (deviceInfo.device === 'unknown') {
-									deviceInfo.device = 'computer';
-								}
-								geoLocationDetails.openedTime = new Date();
-								geoLocationDetails.deviceType = deviceInfo.device;
-								geoLocationDetails.os = deviceInfo.os;
-								geoLocationDetails.city = response.city;
-								geoLocationDetails.country = response.country;
-								geoLocationDetails.isp = response.isp;
-								geoLocationDetails.ipAddress = response.query;
-								geoLocationDetails.state = response.regionName;
-								geoLocationDetails.zip = response.zip;
-								geoLocationDetails.latitude = response.lat;
-								geoLocationDetails.longitude = response.lon;
-								geoLocationDetails.countryCode = response.countryCode;
-								geoLocationDetails.timezone = response.timezone;
-								damAnalyticsPostDto.geoLocationDetails = geoLocationDetails;
-								damAnalyticsPostDto.damPartnerId = asset.id;
-								this.saveAnalytics(damAnalyticsPostDto);
-							}, (_error: any) => {
-								this.xtremandLogger.error("Error In Fetching Location Details");
-							}
-						);
-					}
-				}
-			);
-	}
 
-	saveAnalytics(damAnalyticsPostDto: DamAnalyticsPostDto) {
-		damAnalyticsPostDto.loggedInUserId = this.loggedInUserId;
-		damAnalyticsPostDto.actionType = 1;
-		this.damService.saveDamAnalytics(damAnalyticsPostDto).
-			subscribe(
-				(response: any) => {
-					this.assetViewLoader = false;
-					this.xtremandLogger.info("View Analytics Are Saved");
-				}, (error: string) => {
-					this.xtremandLogger.errorPage(error);
-				}
-			);
-	}
 
-	closeAssetDetails() {
-		this.selectedAsset = undefined;
-		this.assetDetailsPreview = false;
-		this.assetDetailsViewDto = new AssetDetailsViewDto();
-	}
+
+
 
 	viewAnalytics(asset: any) {
 		this.loading = true;
@@ -464,20 +384,20 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/********Download */
 
-	openPopup(asset:any){
+	openPopup(asset: any) {
 		this.showPdfModalPopup = true;
 		this.asset = asset;
 	}
 
-	downloadAssetPopupEventEmitter(){
+	downloadAssetPopupEventEmitter() {
 		this.showPdfModalPopup = false;
 		this.asset = {};
 	}
 
-	assetGridViewActionsPdfEmitter(event:any){
+	assetGridViewActionsPdfEmitter(event: any) {
 		this.asset = event;
 		this.showPdfModalPopup = true;
-	  }
+	}
 
 	/*************Delete******************/
 	confirmDelete(asset: any) {
@@ -485,30 +405,34 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.asset = asset;
 	}
 
-	assetGridViewActionsDeleteActionEmitter(event:any){
+	assetGridViewActionsDeleteActionEmitter(event: any) {
 		this.deleteAsset = true;
 		this.asset = event;
-	  }
+	}
 
-	deleteAssetSuccessEmitter(){
-		this.customResponse = new CustomResponse('SUCCESS',this.asset.assetName+" Deleted Successfully",true);
+	deleteAssetSuccessEmitter() {
+		this.customResponse = new CustomResponse('SUCCESS', this.asset.assetName + " Deleted Successfully", true);
 		this.deleteAsset = false;
 		this.referenceService.loading(this.listLoader, false);
 		this.asset = {};
 		this.pagination.pageIndex = 1;
 		this.listAssets(this.pagination);
-	  }
-	  
-	  deleteAssetLoaderEmitter(){
+	}
+
+	deleteAssetLoaderEmitter() {
 		this.referenceService.loading(this.listLoader, true);
-	  }
-	  
-	  deleteAssetCancelEmitter(){
+	}
+
+	deleteAssetCancelEmitter() {
 		this.deleteAsset = false;
 		this.asset = {};
-	  }
+	}
 
-	
+	viewDetails(asset:any){
+		this.referenceService.goToRouter("/home/dam/shared/view/"+asset.id);
+	}
+
+
 
 
 }
