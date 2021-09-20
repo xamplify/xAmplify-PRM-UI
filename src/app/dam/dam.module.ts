@@ -14,11 +14,12 @@ import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
 import { DamPublishedPartnersAnalyticsComponent } from './dam-published-partners-analytics/dam-published-partners-analytics.component';
 import { SelectUploadTypeComponent } from './select-upload-type/select-upload-type.component';
 import { ShowHistoryComponent } from './show-history/show-history.component';
+import { ViewDamComponent } from './view-dam/view-dam.component';
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule
   ],
-  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent],
+  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent],
   providers: [DamService]
 })
 export class DamModule { }

@@ -79,6 +79,7 @@ export class ReferenceService {
 	nurtureCampaignId = 0;
 	homeRouter = '/home/dashboard/default';
 	selectModuleRouter = '/home/select-modules';
+	sharedDamRouter = "/home/dam/shared";
 	manageCampaignsRouter = '/home/campaigns/manage';
 	loginUrl = '/login';
 	pageContnetBgColor = "#F1F3FA";

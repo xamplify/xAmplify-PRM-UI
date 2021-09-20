@@ -401,56 +401,7 @@
 				</app-pagination>
 			</div>
 			</ng-container>
-		<!-------END of PDF History------>
-
-			<!---View Asset Details For Partner-->
-			<ng-container *ngIf="assetDetailsPreview">
-				<app-modal-popup-loader	[hidden]="!assetViewLoader"></app-modal-popup-loader>
-			<div [hidden]="assetViewLoader">
-				<h4>
-					<a class="close-circle ml5" (click)="closeAssetDetails()"> <i
-						class="fa fa-times" aria-hidden="true"></i>
-					</a>
-				</h4>
-				<div class="row">
-					<div class="col-md-8 col-lg-8 cpdam">
-						<div class="portlet light cphdam">
-							<div class="portlet-title port-heading">
-								<div class="caption" style="color: #000 !important;">
-									Overview</div>
-							</div>
-							<div style="margin-left: 10px;">
-								<h2>
-									<strong>{{assetDetailsViewDto?.assetName |
-										slice:0:50}}</strong> <span
-										*ngIf="assetDetailsViewDto?.assetName?.length>50">..</span>
-								</h2>
-								<br>
-								<div>
-									{{assetDetailsViewDto?.description}} <br>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 col-lg-4" style="padding: 6px 40px 0px 17px;">
-						<div>
-							<div class="grid-box box-shadow" style="min-height: 200px;">
-								<img class="img-class mxv"
-									src="{{assetDetailsViewDto?.thumbnailPath}}"
-									alt="No Image Found"><br> <a class="btn btn-info"
-									(click)="openPopup(selectedAsset)">Download</a>
-								<h4>
-									Published On :
-									<app-timestamp [showInLine]="'true'"
-										[dateAndTime]="assetDetailsViewDto?.displayTime">
-									</app-timestamp>
-								</h4>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			</ng-container>
+			<!-------END of PDF History------>			
 		</div>
 	</div>
 </div>

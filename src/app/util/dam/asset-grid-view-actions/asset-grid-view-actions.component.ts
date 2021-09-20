@@ -72,13 +72,14 @@ export class AssetGridViewActionsComponent implements OnInit {
 
   /*******View Details (Partner) ********/
   viewDetails(asset:any){
-    this.referenceService.showSweetAlertInfoMessage();
+    this.referenceService.goToRouter('/home/dam/shared/view/'+asset.id);
   }
 
   /*******Delete Asset ********/
   confirmDelete(asset:any){
     this.assetGridViewActionsDeleteActionEmitter.emit(asset);
   }
+
 
  
 
