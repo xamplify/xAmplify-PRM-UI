@@ -6,6 +6,7 @@ import { UploadAssetComponent } from './upload-asset/upload-asset.component';
 import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
 import { DamPublishedPartnersAnalyticsComponent } from './dam-published-partners-analytics/dam-published-partners-analytics.component';
 import { SelectUploadTypeComponent } from './select-upload-type/select-upload-type.component';
+import { ShowHistoryComponent } from './show-history/show-history.component';
 
 export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
@@ -20,7 +21,8 @@ export const routes: Routes = [
 	{ path: "pda/:damPartnerId", component: DamAnalyticsComponent },
 	{ path: "partnerAnalytics/:damId", component: DamPublishedPartnersAnalyticsComponent },
 	{ path: "vda/:damId/:damPartnerId/:partnerId", component: DamAnalyticsComponent },
-	{path:"select",component:SelectUploadTypeComponent}
+	{path:"select",component:SelectUploadTypeComponent},
+	{path:"history/:assetId",component:ShowHistoryComponent}
 
 
 
