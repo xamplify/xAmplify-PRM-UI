@@ -246,6 +246,15 @@ export class Top4TracksAndPlayBooksComponent implements OnInit {
       })
   }
 
+  view(tracksPlayBook: TracksPlayBook) {
+    let route = "";
+    if (this.tracks) {
+      route = "/home/tracks/tb/" + tracksPlayBook.createdByCompanyId + "/" + tracksPlayBook.slug;
+    } else {
+      route = "/home/playbook/pb/" + tracksPlayBook.createdByCompanyId + "/" + tracksPlayBook.slug;
+    }
+    this.referenceService.goToRouter(route);
+  }
 
 
   

@@ -180,7 +180,7 @@ body {
 }
 
 .img-max-width {
-    max-width: 350px;
+    max-width: 250px !important;
 }
 
 .box-shadow {
