@@ -243,6 +243,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showUnsubscribeReasonsDiv = false;
 	showTeamMemberGroups = false;
 	showNotifyPartnersOption = false;
+	excludeUserLoader: HttpRequestLoader = new HttpRequestLoader();
+	excludeDomainLoader: HttpRequestLoader = new HttpRequestLoader();
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -413,7 +415,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.addContactModalClose();
 		try {
 			if (this.referenceService.integrationCallBackStatus) {
 				this.activeTabName = 'integrations';
@@ -2779,7 +2780,7 @@ configSalesforce() {
 
     addContactModalOpen() {
     	this.addContactuser = new User();
-    	$('#addContactModal').modal('show');    	
+    	$('#addExcludeUserPopupModal').modal('show');    	
     } 
     
     validateEmail(emailId: string) {
@@ -2795,9 +2796,7 @@ configSalesforce() {
     }
     
     addContactModalClose() {
-        $('#addContactModal').modal('toggle');
-        $("#addContactModal .close").click();
-        $('#addContactModal').modal('hide');
+        $('#addExcludeUserPopupModal').modal('hide');
         $('.modal').removeClass('show');
         this.validEmailPatternSuccess = true;
         this.validEmailFormat = true;
@@ -2848,36 +2847,36 @@ configSalesforce() {
 	}
       
     saveExcludedUser(excludedUser: User) {
-    	this.modalpopuploader = true;
-    	this.validEmailFormat  = true;   
-        this.isEmailExist  = false;
+        this.referenceService.startLoader(this.excludeUserLoader);
+        this.validEmailFormat = true;
+        this.isEmailExist = false;
         this.excludedUsers = [];
-        this.excludedUsers.push(excludedUser );
+        this.excludedUsers.push(excludedUser);
         this.userService.saveExcludedUsers(this.excludedUsers, this.loggedInUserId)
             .subscribe(
             data => {
                 if (data.statusCode == 200) {
                     this.addContactModalClose();
-                    this.excludeUserCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
+                    this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
                     this.listExcludedUsers(this.excludeUserPagination);
-                    this.modalpopuploader = false;
-                } else if (data.statusCode == 401) { 
-                	   this.modalpopuploader = false;
-                	this.validEmailFormat = false;
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                } else if (data.statusCode == 401) {
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.validEmailFormat = false;
                 } else if (data.statusCode == 402) {
-                	this.modalpopuploader = false;
-                	this.isEmailExist = true;
-                }                
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.isEmailExist = true;
+                }
             },
             error => {
-                this.modalpopuploader = false;
+                this.referenceService.stopLoader(this.excludeUserLoader);
             },
             () => { }
             );
     }
 	
     listExcludedUsers(excludeUserPagination: Pagination) {
-        this.ngxloading = true;
+    	this.referenceService.startLoader(this.excludeUserLoader);
         if(this.searchExcludedUserKey!=null){
         	excludeUserPagination.searchKey = this.searchExcludedUserKey;
         }
@@ -2887,10 +2886,10 @@ configSalesforce() {
                 response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
                 excludeUserPagination.totalRecords = response.data.totalRecords;
                 excludeUserPagination = this.pagerService.getPagedItems(excludeUserPagination, response.data.data);
-                this.ngxloading = false;
+                this.referenceService.stopLoader(this.excludeUserLoader);
             },
             error => {
-                this.ngxloading = false;
+            	this.referenceService.stopLoader(this.excludeUserLoader);
             },
             () => { }
             );
@@ -2989,7 +2988,7 @@ configSalesforce() {
 	}
     
     saveExcludedDomain(domain:string){
-    	this.modalpopuploader = true;
+    	this.referenceService.startLoader(this.excludeDomainLoader);
     	this.isDomainExist = false;
     	this.validDomainFormat = true;
     	this.excludedDomains = [];
@@ -3001,24 +3000,24 @@ configSalesforce() {
                 this.addDomainModalClose();
                 this.excludeDomainCustomResponse  = new CustomResponse('SUCCESS', data.message, true);
                 this.listExcludedDomains(this.excludeDomainPagination);
-                this.modalpopuploader = false;
+                this.referenceService.stopLoader(this.excludeDomainLoader);
             } else if (data.statusCode == 401) { 
-                   this.modalpopuploader = false;
+            	this.referenceService.stopLoader(this.excludeDomainLoader);
                    this.isDomainExist = true;
             } else if (data.statusCode == 402) {
             	this.validDomainFormat = false;
-                this.modalpopuploader = false;
+            	this.referenceService.stopLoader(this.excludeDomainLoader);
             }                
         },
         error => {
-            this.modalpopuploader = false;
+        	this.referenceService.stopLoader(this.excludeDomainLoader);
         },
         () => { }
         );
     }
     
     listExcludedDomains(excludeDomainPagination: Pagination) {
-        this.ngxloading = true;
+    	this.referenceService.startLoader(this.excludeDomainLoader);
         if(this.searchExcludedDomainKey!=null){
         	excludeDomainPagination.searchKey = this.searchExcludedDomainKey;
         }
@@ -3028,10 +3027,10 @@ configSalesforce() {
                 response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
                 excludeDomainPagination.totalRecords = response.data.totalRecords;
                 excludeDomainPagination = this.pagerService.getPagedItems(excludeDomainPagination, response.data.data);
-                this.ngxloading = false;
+                this.referenceService.stopLoader(this.excludeDomainLoader);
             },
             error => {
-                this.ngxloading = false;
+            	this.referenceService.stopLoader(this.excludeDomainLoader);
             },
             () => { }
             );
@@ -3087,12 +3086,18 @@ configSalesforce() {
         }
     }
     
-    searchData(type: string) {
-    	   this.addContactModalClose();
-    	   this.addDomainModalClose();
-    	   this.modalpopuploader = false;
-        this.search(type);
+    searchExcludeUsersDataEventHandler(keyCode: any) {
+        if (keyCode === 13) {
+            this.excludeUserPagination.pageIndex = 1;
+            this.listExcludedUsers(this.excludeUserPagination);
+        }
     }
+    searchExcludeDomainsDataEventHandler(keyCode: any) {
+        if (keyCode === 13) {
+            this.excludeDomainPagination.pageIndex = 1;
+            this.listExcludedDomains(this.excludeDomainPagination);
+        }
+      }
     
     downloadEmptyCSV(excludetype: string) {
         if (excludetype === 'exclude-users'){
@@ -3238,31 +3243,30 @@ configSalesforce() {
     }
     
     saveExcludedUsers(excludedUsers: User[]) {
-        this.modalpopuploader = true;
-        this.validEmailFormat  = true;   
-        this.isEmailExist  = false;
+        this.referenceService.startLoader(this.excludeUserLoader);
+        this.validEmailFormat = true;
+        this.isEmailExist = false;
         this.userService.saveExcludedUsers(excludedUsers, this.loggedInUserId)
             .subscribe(
             data => {
                 if (data.statusCode == 200) {
-                	 this.csvExcludeUsersFilePreview = false;
-                    this.addContactModalClose();
-                    this.excludeUserCustomResponse  = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
+                    this.csvExcludeUsersFilePreview = false;
+                    this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
                     this.listExcludedUsers(this.excludeUserPagination);
-                    this.modalpopuploader = false;
-                } else if (data.statusCode == 401) { 
-                       this.modalpopuploader = false;
-                       this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                } else if (data.statusCode == 401) {
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
                 } else if (data.statusCode == 402) {
-                    this.modalpopuploader = false;
-                    this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
-                }else if (data.statusCode == 403) {
-                    this.modalpopuploader = false;
-                    this.excludeUserCustomResponse = new CustomResponse( 'ERROR', data.message, true );
-                }                   
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+                } else if (data.statusCode == 403) {
+                    this.referenceService.stopLoader(this.excludeUserLoader);
+                    this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+                }
             },
             error => {
-                this.modalpopuploader = false;
+                this.referenceService.stopLoader(this.excludeUserLoader);
             },
             () => { }
             );
@@ -3300,35 +3304,33 @@ configSalesforce() {
     }
     
     saveExcludedDomains(excludedDomains: string[]) {
-        this.modalpopuploader = true;
+        this.referenceService.startLoader(this.excludeDomainLoader);
         this.isDomainExist = false;
         this.validDomainFormat = true;
         this.userService.saveExcludedDomains(excludedDomains, this.loggedInUserId)
             .subscribe(
             data => {
                 if (data.statusCode == 200) {
-                	this.csvExcludeDomainsFilePreview = false;
-                    this.addDomainModalClose();
+                    this.referenceService.stopLoader(this.excludeDomainLoader);
+                    this.csvExcludeDomainsFilePreview = false;
                     this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', data.message, true);
                     this.listExcludedDomains(this.excludeDomainPagination);
-                    this.modalpopuploader = false;
                 } else if (data.statusCode == 401) {
-                    this.modalpopuploader = false;
-                    this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
+                    this.referenceService.stopLoader(this.excludeDomainLoader);
+                    this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
                 } else if (data.statusCode == 402) {
-                	 this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
-                    this.modalpopuploader = false;
-                }else if (data.statusCode == 403) {
-                     this.excludeDomainCustomResponse = new CustomResponse( 'ERROR', data.message, true );
-                    this.modalpopuploader = false;
+                    this.referenceService.stopLoader(this.excludeDomainLoader);
+                    this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
+                } else if (data.statusCode == 403) {
+                    this.referenceService.stopLoader(this.excludeDomainLoader);
+                    this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
                 }
             },
             error => {
-                this.modalpopuploader = false;
+                this.referenceService.stopLoader(this.excludeDomainLoader);
             },
             () => { }
             );
     }
-    
 
 }

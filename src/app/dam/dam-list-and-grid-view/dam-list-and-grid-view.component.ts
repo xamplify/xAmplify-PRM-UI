@@ -15,11 +15,8 @@ import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
-import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
-import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
 import { Ng2DeviceService } from 'ng2-device-detector';
-import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var $, swal: any;
@@ -54,18 +51,22 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	assetViewLoader = false;
 	assetDetailsViewDto: AssetDetailsViewDto = new AssetDetailsViewDto();
 	selectedAsset: any;
-	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 	beeTemplatePreview = false;
 	assetPath = "";
 	imageLoading = false;
 	damViewStatusCode = 200;
+	isPreview: boolean;
+	asset: any;
+	showPdfModalPopup: boolean;
+	deleteAsset = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
-		if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-			this.vanityLoginDto.userId = this.loggedInUserId; 
+			this.vanityLoginDto.userId = this.loggedInUserId;
 			this.vanityLoginDto.vanityUrlFilter = true;
-		 }
+		}
 	}
 
 	ngOnInit() {
@@ -90,7 +91,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
 		} else if (this.referenceService.isUploaded) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Uploaded Successfully', true);
-		}else if(this.referenceService.isAssetDetailsUpldated){
+		} else if (this.referenceService.isAssetDetailsUpldated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Details Updated Successfully', true);
 		}
 		this.getCompanyId();
@@ -135,8 +136,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
 						this.pagination.companyId = this.loggedInUserCompanyId;
 						if (this.isPartnerView) {
-							if(this.vanityLoginDto.vanityUrlFilter){
-								this.pagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+							if (this.vanityLoginDto.vanityUrlFilter) {
+								this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
 								this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 							}
 							this.pagination.userId = this.loggedInUserId;
@@ -228,11 +229,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listAssets(this.pagination);
 		}
 	}
-	listItems(event:any){
+	listItems(event: any) {
 		this.pagination = event;
-		if(this.isPartnerView){
+		if (this.isPartnerView) {
 			this.listPublishedAssets(this.pagination);
-		}else{
+		} else {
 			this.listAssets(this.pagination);
 		}
 	}
@@ -300,162 +301,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	}
 
-	openPopup(asset: any) {
-		try {
-			let alias = asset.alias;
-			if (asset.beeTemplate) {
-				this.selectedPdfAlias = alias;
-				if (this.isPartnerView) {
-					this.downloadAsPdf();
-				} else {
-					$('#downloadPdfModalPopup').modal('show');
-					this.getDownloadOptions(alias);
-				}
-			} else {
-				this.downloadContent(alias);
-			}
-		} catch (error) {
-			this.xtremandLogger.error(error);
-			this.referenceService.showSweetAlertErrorMessage(error.message + " " + error.name);
-		}
-	}
-
-	downloadContent(alias: string) {
-		if (this.isPartnerView) {
-			this.utilService.getJSONLocation().subscribe(
-				(response: any) => {
-					let param = this.getLocationDetails(response, alias);
-					let completeUrl = this.authenticationService.REST_URL + "dam/downloadpc?access_token=" + this.authenticationService.access_token;
-					this.referenceService.post(param, completeUrl);
-				}, (_error: any) => {
-					this.xtremandLogger.error("Error In Fetching Location Details");
-				}
-			);
-		} else {
-			window.open(this.authenticationService.REST_URL + "dam/downloadc/" + alias + "?access_token=" + this.authenticationService.access_token);
-
-		}
-	}
-
-	getLocationDetails(response: any, alias: string) {
-		let deviceInfo = this.deviceService.getDeviceInfo();
-		if (deviceInfo.device === 'unknown') {
-			deviceInfo.device = 'computer';
-		}
-		let param = {
-			'alias': alias,
-			'loggedInUserId': this.loggedInUserId,
-			'deviceType': deviceInfo.device,
-			'os': deviceInfo.os,
-			'city': response.city,
-			'country': response.country,
-			'isp': response.isp,
-			'ipAddress': response.query,
-			'state': response.regionName,
-			'zip': response.zip,
-			'latitude': response.lat,
-			'longitude': response.lon,
-			'countryCode': response.countryCode,
-			'timezone': response.timezone
-		};
-		return param;
-	}
-
-	downloadAsPdf() {
-		this.modalPopupLoader = true;
-		let selectedSize = $('#selectedSize option:selected').val();
-		let selectedOrientation = $('#selectedOrientation option:selected').val();
-		let self = this;
-		swal({
-			title: 'Please Wait',
-			allowOutsideClick: false,
-			showConfirmButton: false,
-			imageUrl: 'assets/images/loader.gif',
-		});
-		setTimeout(function () {
-			if (self.isPartnerView) {
-				self.downloadForPartner();
-			} else {
-				let downloadUrl = 'download/' + self.selectedPdfAlias + "/" + selectedSize + "/" + selectedOrientation;
-				self.downloadPdfForVendor(self, downloadUrl);
-			}
-			swal.close();
-		}, 1500);
-	}
-
-	downloadPdfForVendor(self: any, downloadUrl: string) {
-		window.open(self.authenticationService.REST_URL + "dam/" + downloadUrl + "?access_token=" + self.authenticationService.access_token);
-		$('#downloadPdfModalPopup').modal('hide');
-		self.modalPopupLoader = false;
-	}
-
-	downloadForPartner() {
-		this.utilService.getJSONLocation().subscribe(
-			(response: any) => {
-				let param = this.getLocationDetails(response, this.selectedPdfAlias);
-				let completeUrl = this.authenticationService.REST_URL + "dam/downloadp?access_token=" + this.authenticationService.access_token;
-				this.referenceService.post(param, completeUrl);
-			}, (_error: any) => {
-				this.xtremandLogger.error("Error In Fetching Location Details");
-			}
-		);
-	}
-
-	hidePopup() {
-		$('#downloadPdfModalPopup').modal('hide');
-		this.modalPopupLoader = false;
-		this.selectedPdfAlias = "";
-		this.downloadOptionsCustomResponse = new CustomResponse();
-	}
-
-	openPublishPopup(assetId: number) {
-		this.showPublishPopup = true;
-		this.selectedAssetId = assetId;
-	}
-
-	notificationFromPublishToPartnersComponent() {
-		this.showPublishPopup = false;
-		this.selectedAssetId = 0;
-		this.callInitMethods();
-	}
-
-	updateDownloadOptions() {
-		this.downloadOptionsCustomResponse = new CustomResponse();
-		this.modalPopupLoader = true;
-		let selectedSize = $('#selectedSize option:selected').val();
-		let selectedOrientation = $('#selectedOrientation option:selected').val();
-		let input = {};
-		input['alias'] = this.selectedPdfAlias;
-		input['pageSize'] = selectedSize;
-		input['pageOrientation'] = selectedOrientation;
-		input['userId'] = this.loggedInUserId;
-		this.damService.updateDownloadOptions(input).subscribe((result: any) => {
-			this.modalPopupLoader = false;
-			this.downloadOptionsCustomResponse = new CustomResponse('SUCCESS', 'Options Updated Successfully', true);
-		}, error => {
-			this.modalPopupLoader = false;
-			this.downloadOptionsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-		});
-	}
-
-	getDownloadOptions(alias: string) {
-		this.modalPopupLoader = true;
-		this.damService.getDownloadOptions(alias).subscribe((result: any) => {
-			let data = result.data;
-			$('#selectedSize').val(data.pageSize);
-			$('#selectedOrientation').val(data.pageOrientation);
-			this.modalPopupLoader = false;
-		}, error => {
-			this.modalPopupLoader = false;
-			this.downloadOptionsCustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-		});
-	}
 
 	viewGirdHistory(asset: any) {
 		this.isGridViewHistory = true;
 		this.selectedAssetId = asset.id;
 		this.selectedAssetName = asset.assetName;
-		//this.historyPagination.campaignId = asset.parentId;
 		this.historyPagination.campaignId = asset.id;
 		this.listAssetsHistory(this.historyPagination);
 	}
@@ -467,149 +317,27 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.historyPagination = new Pagination();
 	}
 
-	confirmDelete(asset: any) {
-		try {
-			let self = this;
-			swal({
-				title: 'Are you sure?',
-				text: "You won't be able to undo this action!",
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				confirmButtonText: 'Yes, delete it!'
 
-			}).then(function () {
-				self.deleteById(asset);
-			}, function (dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
-		} catch (error) {
-			this.xtremandLogger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
-		}
-	}
 
-	deleteById(asset: any) {
-		this.customResponse = new CustomResponse();
-		this.referenceService.loading(this.listLoader, true);
-		this.referenceService.goToTop();
-		let damUploadPostDto = new DamUploadPostDto();
-		damUploadPostDto.loggedInUserId = this.loggedInUserId;
-		damUploadPostDto.id = asset.id;
-		this.damService.delete(damUploadPostDto)
-			.subscribe(
-				(response: any) => {
-					if (response.access) {
-						if (response.statusCode == 200) {
-							this.customResponse = new CustomResponse('SUCCESS', "Asset Deleted Successfully", true);
-							this.pagination.pageIndex = 1;
-							this.listAssets(this.pagination);
-						}
-					} else {
-						this.authenticationService.forceToLogout();
-					}
-				},
-				(_error: string) => {
-					this.referenceService.showServerErrorMessage(this.listLoader);
-					this.customResponse = new CustomResponse('ERROR', this.listLoader.message, true);
-				}
-			);
-	}
 
-	viewDetails(asset: any) {
-		this.damViewStatusCode = 200;
-		this.selectedAsset = asset;
-		this.assetDetailsPreview = true;
-		this.selectedAssetId = asset.id;
-		this.assetViewLoader = true;
-		this.damService.getSharedAssetDetailsById(asset.id)
-			.subscribe(
-				(response: any) => {
-					this.damViewStatusCode = response.statusCode;
-					if (response.access) {
-						if (response.statusCode == 200) {
-							this.assetDetailsViewDto = response.data;
-							this.assetDetailsViewDto.displayTime = new Date(this.assetDetailsViewDto.publishedTimeInUTCString);
-						}else if(response.statusCode==404){
-							this.referenceService.goToPageNotFound();
-						}
-					} else {
-						this.authenticationService.forceToLogout();
-					}
-				},
-				(error: string) => {
-					this.xtremandLogger.errorPage(error);
-				},
-				() => {
-					if(this.damViewStatusCode==200){
-						this.utilService.getJSONLocation().subscribe(
-							(response: any) => {
-								let damAnalyticsPostDto = new DamAnalyticsPostDto();
-								let geoLocationDetails = new GeoLocationAnalytics();
-								let deviceInfo = this.deviceService.getDeviceInfo();
-								if ( deviceInfo.device === 'unknown' ) {
-									deviceInfo.device = 'computer';
-								}
-								geoLocationDetails.openedTime = new Date();
-								geoLocationDetails.deviceType = deviceInfo.device;
-								geoLocationDetails.os =deviceInfo.os;
-								geoLocationDetails.city = response.city;
-								geoLocationDetails.country = response.country;
-								geoLocationDetails.isp = response.isp;
-								geoLocationDetails.ipAddress = response.query;
-								geoLocationDetails.state = response.regionName;
-								geoLocationDetails.zip = response.zip;
-								geoLocationDetails.latitude = response.lat;
-								geoLocationDetails.longitude = response.lon;
-								geoLocationDetails.countryCode = response.countryCode;
-								geoLocationDetails.timezone = response.timezone;
-								damAnalyticsPostDto.geoLocationDetails = geoLocationDetails;
-								damAnalyticsPostDto.damPartnerId = asset.id;
-								this.saveAnalytics(damAnalyticsPostDto);
-							}, (_error: any) => {
-								this.xtremandLogger.error("Error In Fetching Location Details");
-							}
-						);
-					}
-				}
-			);
-	}
 
-	saveAnalytics(damAnalyticsPostDto:DamAnalyticsPostDto) {
-		damAnalyticsPostDto.loggedInUserId = this.loggedInUserId;
-		damAnalyticsPostDto.actionType = 1;
-		this.damService.saveDamAnalytics(damAnalyticsPostDto).
-			subscribe(
-				(response: any) => {
-					this.assetViewLoader = false;
-					this.xtremandLogger.info("View Analytics Are Saved");
-				}, (error: string) => {
-					this.xtremandLogger.errorPage(error);
-				}
-			);
-	}
 
-	closeAssetDetails() {
-		this.selectedAsset = undefined;
-		this.assetDetailsPreview = false;
-		this.assetDetailsViewDto = new AssetDetailsViewDto();
-	}
 
-	viewAnalytics(asset:any){
+	viewAnalytics(asset: any) {
 		this.loading = true;
-		if(this.isPartnerView){
-			this.referenceService.goToRouter("/home/dam/pda/"+asset.id);
-		}else{
-			this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+asset.id);
+		if (this.isPartnerView) {
+			this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+		} else {
+			this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
 		}
 	}
 
-	editDetails(id:number){
-		 this.loading = true;
-		 this.referenceService.goToRouter("/home/dam/editDetails/"+id);
+	editDetails(id: number) {
+		this.loading = true;
+		this.referenceService.goToRouter("/home/dam/editDetails/" + id);
 	}
 
-	refreshList(){
+	refreshList() {
 		if (this.isPartnerView) {
 			this.listPublishedAssets(this.pagination);
 		} else {
@@ -617,36 +345,94 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	preview(asset:any){
-		this.imageLoading = false;
-		let htmlContent = "#asset-preview-content";
-		$(htmlContent).empty();
-		this.assetPath = "";
-		$('#assetTitle').val('');
-		this.referenceService.setModalPopupProperties();
-		$("#asset-preview-modal").modal('show');
-		this.modalPopupLoader = true;
-		this.damService.previewAssetById(asset.id).subscribe(
-			(response:any) =>{
-				this.imageLoading = true;
-				let assetDetails = response.data;
-				this.beeTemplatePreview = assetDetails.beeTemplate;
-				if(assetDetails.beeTemplate){
-					$(htmlContent).append(assetDetails.htmlBody);
-				}else{
-					this.assetPath = assetDetails.assetPath;
-				}
-				$('#assetTitle').text(assetDetails.name);
-				this.modalPopupLoader = false;
-			},(error:any) =>{
-				swal("Please Contact Admin!", "Unable to show  preview", "error"); 
-				this.modalPopupLoader = false;
-				this.xtremandLogger.log(error);
-				$("#asset-preview-modal").modal('hide');
-			}
-		);
+
+	assetGridViewActionsEmitter(event: any) {
+		let input = event;
+		let preview = input['preview'];
+		let showPublishPopup = input['publishPopup'];
+		this.asset = input['asset'];
+		if (preview) {
+			this.isPreview = true;
+		} else if (showPublishPopup) {
+			this.selectedAssetId = this.asset.id;
+			this.showPublishPopup = true;
+		}
+
 	}
-	hideLoader(){
-		this.imageLoading=false;
-	  }
+
+	/*****Publish To Partners******* */
+	openPublishPopup(assetId: number) {
+		this.showPublishPopup = true;
+		this.selectedAssetId = assetId;
+	}
+
+	notificationFromPublishToPartnersComponent() {
+		this.showPublishPopup = false;
+		this.selectedAssetId = 0;
+		this.callInitMethods();
+	}
+	/*****Preview Asset******* */
+	preview(asset: any) {
+		this.isPreview = true;
+		this.asset = asset;
+	}
+
+	previewAssetPopupEmitter() {
+		this.isPreview = false;
+		this.asset = {};
+	}
+
+	/********Download */
+
+	openPopup(asset: any) {
+		this.showPdfModalPopup = true;
+		this.asset = asset;
+	}
+
+	downloadAssetPopupEventEmitter() {
+		this.showPdfModalPopup = false;
+		this.asset = {};
+	}
+
+	assetGridViewActionsPdfEmitter(event: any) {
+		this.asset = event;
+		this.showPdfModalPopup = true;
+	}
+
+	/*************Delete******************/
+	confirmDelete(asset: any) {
+		this.deleteAsset = true;
+		this.asset = asset;
+	}
+
+	assetGridViewActionsDeleteActionEmitter(event: any) {
+		this.deleteAsset = true;
+		this.asset = event;
+	}
+
+	deleteAssetSuccessEmitter() {
+		this.customResponse = new CustomResponse('SUCCESS', this.asset.assetName + " Deleted Successfully", true);
+		this.deleteAsset = false;
+		this.referenceService.loading(this.listLoader, false);
+		this.asset = {};
+		this.pagination.pageIndex = 1;
+		this.listAssets(this.pagination);
+	}
+
+	deleteAssetLoaderEmitter() {
+		this.referenceService.loading(this.listLoader, true);
+	}
+
+	deleteAssetCancelEmitter() {
+		this.deleteAsset = false;
+		this.asset = {};
+	}
+
+	viewDetails(asset:any){
+		this.referenceService.goToRouter("/home/dam/shared/view/"+asset.id);
+	}
+
+
+
+
 }

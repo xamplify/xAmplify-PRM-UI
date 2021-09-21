@@ -3,10 +3,18 @@
 		<div class="portlet-title" *ngIf="!loader">
 			<h4 class="pull-left m10 f-w-600 text-primary" translate>
                 <a (click)="goToManage()">{{headerTitle}}</a>
+                <a class="fstpx" (click)="goToManage()">( {{subHeaderTitle}} )</a>
             </h4>
 			<a class="close-circle" title="Refresh"  (click)="refresh()">
 				 <i class="fa fa-refresh" aria-hidden="true"></i>
-			</a>
+            </a>
+            <button *ngIf="!isPartnerView" class="btn btn-primary add-design-upload" (click)="goToCreate()">
+				<i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
+				<span class="hidden-xs" translate>{{addButtonText}}</span>
+			</button>
+        </div>
+        <div style="position: relative; top: -10px;">
+			<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
 		</div>
 		<div class="portlet-body clearfix">
 			<app-grid-loader [count]="4" *ngIf="loader"></app-grid-loader>
@@ -49,11 +57,23 @@
                             <span style="background-color: #5cb85c;" *ngIf="learningTrack?.published && !isPartnerView" translate>Published</span>
                         </div>
                         <div class="bar auto-height">
-                            <a *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top" title="View" (click)="goToAnalytics(learningTrack)">
+                            <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
+                                <i class="fa fa-reply" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                <i class="fa fa-share" aria-hidden="true"></i>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
                             </a>
                             <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="goToAnalytics(learningTrack)">
                                 <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
                         </div>
 					</div>

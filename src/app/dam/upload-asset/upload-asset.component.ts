@@ -89,7 +89,7 @@ export class UploadAssetComponent implements OnInit {
 			 files = event.target.files; 
 		}else if ( event.dataTransfer.files ) { 
 			files = event.dataTransfer.files;
-	 	}
+		 }
 		if (files.length > 0) {
 			this.formData.delete("uploadedFile");
 			this.uploadedAssetName  = "";
@@ -97,7 +97,10 @@ export class UploadAssetComponent implements OnInit {
 			let file = files[0];
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
-			if(sizeInKb>maxFileSizeInKb){
+			let fileType = file['type'];
+			if(fileType.length==0){
+				this.showAssetErrorMessage('Invalid File');
+			}else if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
 			}else{
 				this.formData.append("uploadedFile", file, file['name']);

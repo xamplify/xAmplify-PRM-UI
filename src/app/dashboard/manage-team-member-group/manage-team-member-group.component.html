@@ -66,27 +66,29 @@
       <i class="fa fa-close" aria-hidden="true"></i>
     </a>
     <form role="form" aria-labelledby="add-team-member-group-form">
+      <span *ngIf="groupDto?.previewGroup" class="default-group-banner" translate>Default Group</span>
       <div class="form-group">
         <label class="control-label" translate>Name</label>
-        <span class="required">*</span>
-        <input type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255"/>
+        <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
+        <input *ngIf="!groupDto?.previewGroup" type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" maxlength="255"/>
+        <input *ngIf="groupDto?.previewGroup" disabled  type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control"/>
         <span class="required" *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
   <div class="form-group">
     <label class="control-label" translate>Select Modules</label>
-    <span class="required">*</span>
+    <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
   </div>
   <div  class="table-responsive">
     <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
       <tr *ngFor="let defaultModule of defaultModules;let i = index">
-        <th scope="row">
+        <th scope="row" class="fstcw-tm">
           <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
           {{defaultModule?.moduleName}}
           <br>
-          <p class="dodgerblue">{{defaultModule?.description}}</p>
+          <!-- <p class="dodgerblue">{{defaultModule?.description}}</p> -->
         </th>
         <td>
-          <switch  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+          <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
           </switch>
         </td>
@@ -94,7 +96,7 @@
     </table>
   </div>
   <div id="right">
-    <button type="button" [disabled]="!groupDto.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{groupSubmitButtonText}}</button>
+    <button *ngIf="!groupDto?.previewGroup"  type="button" [disabled]="!groupDto.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{groupSubmitButtonText}}</button>
     <button type="button"  class="btn btn-default" (click)="goToManageOrPreview()" translate>Cancel</button>
   </div>
   </form>
@@ -149,17 +151,20 @@
             </tr>
             <tr *ngIf="group?.teamMemberModuleDTOs?.length>5" class="text-center module-text-color">
               <th  scope="row" class="plfpx">
-                 <a (click)="editGroupFromPreviewSection(group.id)">and {{group?.teamMemberModuleDTOs?.length-5}} More..</a>
+                 <a (click)="editGroupFromPreviewSection(group)">and {{group?.teamMemberModuleDTOs?.length-5}} More..</a>
               </th>
             </tr>
           </tbody>
         </table>
        </div> 
       <div class="bar" *ngIf="isPreview">
+        <a  data-toggle="tooltip" data-placement="top" title="Save As" (click)="saveAs(group)">
+          <i class="fa fa-copy" aria-hidden="true"></i>
+        </a>
         <a  data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(group.id,false)">
           <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
-        <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="findGroupDetailsById(group.id)">
+        <a data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'" [className]="group?.defaultGroup ? 'inactive':''" (click)="findGroupDetailsById(group)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         </a>
         <a  data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'" [className]="group?.defaultGroup ? 'delete inactive':'delete'" (click)="confirmAlert(group)">

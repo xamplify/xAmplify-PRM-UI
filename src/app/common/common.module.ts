@@ -101,6 +101,10 @@ import { ConfirmSweetAlertUtilComponent } from 'app/util/confirm-sweet-alert-uti
 import { ChartPieComponent } from 'app/util/charts/chart-pie/chart-pie.component';
 import { ChartVariablePieComponent } from 'app/util/charts/chart-variable-pie/chart-variable-pie.component';
 import { SelectDropdownComponent } from 'app/util/select-dropdown/select-dropdown.component';
+import { PreviewAssetPopupComponent } from 'app/util/dam/preview-asset-popup/preview-asset-popup.component';
+import { AssetGridViewActionsComponent } from 'app/util/dam/asset-grid-view-actions/asset-grid-view-actions.component';
+import { DownloadAssetPopupComponent } from 'app/util/dam/download-asset-popup/download-asset-popup.component';
+import { DeleteAssetsComponent } from 'app/util/dam/delete-assets/delete-assets.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -118,7 +122,8 @@ import { SelectDropdownComponent } from 'app/util/select-dropdown/select-dropdow
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
-		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,SelectDropdownComponent],
+		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
+		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent],
 
 
 
@@ -138,7 +143,8 @@ import { SelectDropdownComponent } from 'app/util/select-dropdown/select-dropdow
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
 		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
-		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent]
+		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
+		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent]
 
 
 

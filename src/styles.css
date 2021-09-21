@@ -1079,3 +1079,22 @@ b, strong {
 	float: none !important;
 }
 
+.delete{
+	background: #cb5a5e;
+}
+.custom-loader{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.25) url(assets/images/loader.gif) no-repeat center center;
+}
+
+.add-design-upload{
+	border-radius: 3px !important;
+	float: right;
+	margin-right: 10px;
+}
+
