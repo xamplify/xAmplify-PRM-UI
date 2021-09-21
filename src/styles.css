@@ -1092,3 +1092,9 @@ b, strong {
 	background: rgba(0, 0, 0, 0.25) url(assets/images/loader.gif) no-repeat center center;
 }
 
+.add-design-upload{
+	border-radius: 3px !important;
+	float: right;
+	margin-right: 10px;
+}
+
