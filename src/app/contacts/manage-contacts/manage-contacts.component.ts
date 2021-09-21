@@ -605,6 +605,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	synchronizeContactList(contactListId: number, socialNetwork: string) {
+		localStorage.setItem('socialNetwork', socialNetwork);
+		localStorage.setItem('selectedContactListId', JSON.stringify(contactListId) );
+		
 		if (socialNetwork == 'GOOGLE') {
 			this.googleContactsSynchronizationAuthentication(contactListId, socialNetwork);
 			this.contactListIdForSyncLocal = contactListId;
@@ -639,7 +642,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				}
 			}
 			this.socialContact.contactType = this.contactType;
-			this.socialContact.socialNetwork = socialNetwork;
+			this.socialContact.socialNetwork = socialNetwork;			
 			let providerName = 'google';
 			let currentModule = "";
 			if (this.assignLeads) {
@@ -666,6 +669,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 							} else 
 							{
+								localStorage.setItem('currentPage', 'manage-contacts');
 								localStorage.setItem( "userAlias", data.userAlias )
                                 localStorage.setItem( "currentModule", data.module )
 								window.location.href = "" + data.redirectUrl;
@@ -690,6 +694,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	syncronizeContactList(contactListId: number, socialNetwork: string) {
 		try {
+			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 			this.resetResponse();
 			this.socialContact.socialNetwork = socialNetwork;
 			this.xtremandLogger.info("contactsSyncronize() socialNetWork" + this.socialContact.socialNetwork);
@@ -717,9 +722,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.xtremandLogger.error(error, "ManageContactsComponent", "sychronizationList()");
 		}
 	}
-
-
-
 	
 	zohoContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
 		try {
@@ -2321,6 +2323,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	
 	callInitMethods(){
 	      try {
+	    	  
+              if (this.contactService.socialProviderName == 'google' ||
+                  this.contactService.socialProviderName == 'salesforce'
+                  || this.contactService.socialProviderName == 'zoho') {
+            	  
+            	  this.syncronizeContactList(JSON.parse(localStorage.getItem('selectedContactListId')), localStorage.getItem('socialNetwork'));
+            	  localStorage.removeItem("currentPage");
+            	  localStorage.removeItem("selectedContactListId");
+            	  localStorage.removeItem("socialNetwork");
+	    		  }
 	            this.pagination.maxResults = 12;
 	            this.sharedDetailsPagination.pageIndex = 1;
 	            this.sharedDetailsPagination.maxResults = 12;

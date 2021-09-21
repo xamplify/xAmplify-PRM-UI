@@ -22,7 +22,9 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 	vanityUrlFilter: string;
 
 
-	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger, private hubSpotService: HubSpotService, private integrationService: IntegrationService) {
+	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router,
+			private contactService: ContactService, public xtremandLogger: XtremandLogger, private hubSpotService: HubSpotService,
+			private integrationService: IntegrationService) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.currentModule = 'contacts';
@@ -89,9 +91,13 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 							}else{
 								this.contactService.socialProviderName = 'zoho';
 							}
-						} if (this.currentModule === 'contacts') {
+						} 
+						
+						if (this.currentModule === 'contacts'  && localStorage.getItem('currentPage')==='manage-contacts') {
+                            this.router.navigate(['/home/contacts/manage']);
+                        }else if (this.currentModule === 'contacts' ) {
 							this.router.navigate(['/home/contacts/add']);
-						} else if (this.currentModule === 'partners') {
+						}else if (this.currentModule === 'partners') {
 							this.router.navigate(['/home/partners']);
 						} else if (this.currentModule === 'leads') {
 							this.router.navigate(['/home/assignleads/add']);
