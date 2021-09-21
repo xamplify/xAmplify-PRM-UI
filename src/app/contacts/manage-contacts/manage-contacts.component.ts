@@ -666,6 +666,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 							} else 
 							{
+								localStorage.setItem( "userAlias", data.userAlias )
+                                localStorage.setItem( "currentModule", data.module )
 								window.location.href = "" + data.redirectUrl;
 							}
 						}
