@@ -52,6 +52,7 @@ export class ContactService {
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
 	hubSpotContactUrl = this.authenticationService.REST_URL + 'hubSpot';
+	oauthCallbackMessage = "";
     constructor( private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
         console.log( logger );
     }
@@ -524,7 +525,7 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    socialContactsCallback(queryParam: any): Observable<String> {
+    socialContactsCallback(queryParam: any): Observable<any> {
         /*let queryParam: string;
         this.activatedRoute.queryParams.subscribe(
             ( param: any ) => {

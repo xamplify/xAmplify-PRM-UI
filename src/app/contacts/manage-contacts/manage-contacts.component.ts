@@ -655,7 +655,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					data => {
 						this.storeLogin = data;
 						console.log(data);
-						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+						if (data.statusCode==200) {
 							console.log("AddContactComponent googleContacts() Authentication Success");
 							this.syncronizeContactList(contactListId, socialNetwork);
 						} else {
@@ -663,16 +663,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							let vanityUserId = JSON.parse(currentUser)['userId'];
 							if (this.loggedInThroughVanityUrl)
 							{
-								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + currentModule;
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + currentModule;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 							} else 
 							{
 								localStorage.setItem('currentPage', 'manage-contacts');
-								localStorage.setItem( "userAlias", data.userAlias )
-                                localStorage.setItem( "currentModule", data.module )
-								window.location.href = "" + data.redirectUrl;
+								localStorage.setItem( "userAlias", data.data.userAlias )
+                                localStorage.setItem( "currentModule", data.data.module )
+								window.location.href = "" + data.data.redirectUrl;
 							}
 						}
 					},
@@ -710,7 +710,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.loadContactLists(this.pagination);
 							this.contactsCount();
 						}
-
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -2323,16 +2322,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	
 	callInitMethods(){
 	      try {
-	    	  
               if (this.contactService.socialProviderName == 'google' ||
                   this.contactService.socialProviderName == 'salesforce'
                   || this.contactService.socialProviderName == 'zoho') {
-            	  
-            	  this.syncronizeContactList(JSON.parse(localStorage.getItem('selectedContactListId')), localStorage.getItem('socialNetwork'));
+            	  this.contactService.socialProviderName = "nothing";
             	  localStorage.removeItem("currentPage");
-            	  localStorage.removeItem("selectedContactListId");
-            	  localStorage.removeItem("socialNetwork");
-	    		  }
+                  if (this.contactService.oauthCallbackMessage.length > 0) {
+                	  this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
+                  } else {
+                      this.syncronizeContactList(JSON.parse(localStorage.getItem('selectedContactListId')), localStorage.getItem('socialNetwork'));
+                      localStorage.removeItem("selectedContactListId");
+                      localStorage.removeItem("socialNetwork");
+                  }
+	    		}
 	            this.pagination.maxResults = 12;
 	            this.sharedDetailsPagination.pageIndex = 1;
 	            this.sharedDetailsPagination.maxResults = 12;

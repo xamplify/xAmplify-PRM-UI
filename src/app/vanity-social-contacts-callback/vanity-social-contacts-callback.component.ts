@@ -62,6 +62,9 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 			this.contactService.socialContactsCallback(queryParam)
 				.subscribe(
 					result => {
+						if(result.statusCode == 402){
+							this.contactService.oauthCallbackMessage = result.message;
+						}
 						localStorage.removeItem("userAlias");
 						localStorage.removeItem("currentModule");
 						this.xtremandLogger.info("result: " + result);
@@ -95,7 +98,7 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 						
 						if (this.currentModule === 'contacts'  && localStorage.getItem('currentPage')==='manage-contacts') {
                             this.router.navigate(['/home/contacts/manage']);
-                        }else if (this.currentModule === 'contacts' ) {
+                        }else if (this.currentModule === 'contacts' && localStorage.getItem('currentPage')==='add-contacts'){
 							this.router.navigate(['/home/contacts/add']);
 						}else if (this.currentModule === 'partners') {
 							this.router.navigate(['/home/partners']);

@@ -1447,16 +1447,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         data => {
                             this.storeLogin = data;
                             console.log( data );
-                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                            if ( data.statusCode==200 ) {
                                 console.log( "AddContactComponent googleContacts() Authentication Success" );
                                 this.getGoogleContactsUsers();
                                 this.xtremandLogger.info( "called getGoogle contacts method:" );
                             } else {
-                                localStorage.setItem( "userAlias", data.userAlias )
-                                localStorage.setItem( "currentModule", data.module )
-                                console.log( data.redirectUrl );
-                                console.log( data.userAlias );
-                                window.location.href = "" + data.redirectUrl;
+                            	localStorage.setItem('currentPage', 'add-contacts');
+                                localStorage.setItem( "userAlias", data.data.userAlias )
+                                localStorage.setItem( "currentModule", data.data.module )
+                                console.log( data.data.redirectUrl );
+                                console.log( data.data.userAlias );
+                                window.location.href = "" + data.data.redirectUrl;
                             }
                         },
                         ( error: any ) => {
@@ -2961,9 +2962,14 @@ salesForceVanityAuthentication() {
 					this.contactService.vanitySocialProviderName = 'nothing';
 				}*/
 			}
-			else if (this.contactService.socialProviderName == 'google') {
-				this.getGoogleContactsUsers();
-				this.contactService.socialProviderName = "nothing";
+              else if (this.contactService.socialProviderName == 'google') {
+            	  localStorage.removeItem("currentPage");
+                  if (this.contactService.oauthCallbackMessage.length > 0) {
+                      this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
+                  } else {
+                      this.getGoogleContactsUsers();
+                      this.contactService.socialProviderName = "nothing";
+                  }
 			}
 			else if (this.contactService.socialProviderName == 'salesforce') {
 				this.showModal();
