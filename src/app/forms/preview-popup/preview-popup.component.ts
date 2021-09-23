@@ -41,6 +41,13 @@ export class PreviewPopupComponent implements OnInit {
     pageBackgroundColor = "";
     siteKey = "";
     showDefaultForms = false;
+
+    // 1.Regular
+    // 2.Quiz
+    // 3.Survey
+    @Input() filter: any[];
+
+
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
         public router: Router, private vanityUrlService: VanityURLService, public sanitizer: DomSanitizer) {
