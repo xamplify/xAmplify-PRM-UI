@@ -62,4 +62,5 @@ export class Module {
     allBoundSamlSettings = false;
 
     notifyPartners = false;
+    prmContentDivsCount = 0;
 }
