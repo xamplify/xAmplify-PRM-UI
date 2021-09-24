@@ -798,19 +798,22 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				.subscribe(
 					data => {
 						this.storeLogin = data;
-						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+						if (data.statusCode==200) {
 							this.syncronizeContactList(contactListId, socialNetwork);
 						} else {
 							let currentUser = localStorage.getItem('currentUser');
 							let vanityUserId = JSON.parse(currentUser)['userId'];
 							if (this.loggedInThroughVanityUrl)
 							{
-								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + currentModule;
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + currentModule;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 							} else {
-								window.location.href = "" + data.redirectUrl;
+								localStorage.setItem('currentPage', 'manage-contacts');
+                                localStorage.setItem( "userAlias", data.data.userAlias )
+                                localStorage.setItem( "currentModule", data.data.module )
+                                window.location.href = "" + data.data.redirectUrl;
 							}
 						}
 					},

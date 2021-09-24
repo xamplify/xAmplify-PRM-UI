@@ -2318,10 +2318,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     showModal() {
         $( '#ContactSalesForceModal' ).modal( 'show' );
-        /* $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
-        $( '#salesforceModal' ).modal( 'show' );
-        $('#salesforceModal').modal('toggle');
-        $("#salesforceModal").modal();*/
     }
 
     zohoShowModal(){
@@ -2360,16 +2356,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         data => {
                             this.storeLogin = data;
                             console.log( data );
-                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                            if (data.statusCode==200){
                                 this.showModal();
                                 console.log( "AddContactComponent salesforce() Authentication Success" );
                                 this.checkingPopupValues();
                             } else {
-                                localStorage.setItem( "userAlias", data.userAlias )
-                                localStorage.setItem( "currentModule", data.module )
-                                console.log( data.redirectUrl );
-                                console.log( data.userAlias );
-                                window.location.href = "" + data.redirectUrl;
+                                localStorage.setItem('currentPage', 'manage-contacts');
+                                localStorage.setItem( "userAlias", data.data.userAlias )
+                                localStorage.setItem( "currentModule", data.data.module )
+                                window.location.href = "" + data.data.redirectUrl;
                             }
                         },
                         ( error: any ) => {
@@ -2972,8 +2967,13 @@ salesForceVanityAuthentication() {
                   }
 			}
 			else if (this.contactService.socialProviderName == 'salesforce') {
-				this.showModal();
-				this.contactService.socialProviderName = "nothing";
+				 localStorage.removeItem("currentPage");
+			       if (this.contactService.oauthCallbackMessage.length > 0) {
+	                      this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
+	                  } else {
+	                	  this.showModal();
+	                      this.contactService.socialProviderName = "nothing";
+	                  }
 			}
 			else if (this.contactService.socialProviderName == 'zoho' || this.socialContactType == "zoho") {
 				this.zohoShowModal();
