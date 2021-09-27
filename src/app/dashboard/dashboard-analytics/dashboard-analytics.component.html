@@ -56,8 +56,6 @@
 <!------------Vendor Activity---------------------->
 <app-vendor-activity-analytics></app-vendor-activity-analytics >
 
-<!---Top 4 Campaigns--------->
-<!--*ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && !authenticationService.partnershipEstablishedOnlyWithPrm && authenticationService.module.showCampaignsAnalyticsDivInDashboard"-->
 <div class="row" *ngIf="authenticationService.module.showCampaignsAnalyticsDivInDashboard">
     <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
@@ -73,7 +71,8 @@
                     Create Campaign
                 </a>
         </ng-container>
-		</div>
+        </div>
+    <!---Top 4 Campaigns--------->
 	<div class="portlet-body clearfix">
     <app-dynamic-grid-loader *ngIf="topFourCampaignsLoader.isLoading" [gridCount]=4></app-dynamic-grid-loader>
     <div style="position: relative; top:-4px;">
@@ -189,6 +188,10 @@
 <!---PRM Dashboard -->
 <ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
 || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+<!----Show PRM Content--------->
+<app-show-prm-content [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
+authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
+</app-show-prm-content>
 <!--Top 4 Assets--------------->  
 <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
 <!--Top 4 Shared Assets--------------->  

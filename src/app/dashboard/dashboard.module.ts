@@ -70,6 +70,7 @@ import { Top4TracksAndPlayBooksComponent } from './dashboard-analytics-component
 import { VendorInvitationReportComponent } from './vendor-invitation-report/vendor-invitation-report.component';
 import { ManageTeamMemberGroupComponent } from './manage-team-member-group/manage-team-member-group.component';
 import { NotifyPartnersComponent } from './notify-partners/notify-partners.component';
+import { ShowPrmContentComponent } from './dashboard-analytics-components/show-prm-content/show-prm-content.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -115,7 +116,8 @@ import { NotifyPartnersComponent } from './notify-partners/notify-partners.compo
         Top4TracksAndPlayBooksComponent,
         VendorInvitationReportComponent,
         ManageTeamMemberGroupComponent,
-        NotifyPartnersComponent
+        NotifyPartnersComponent,
+        ShowPrmContentComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
