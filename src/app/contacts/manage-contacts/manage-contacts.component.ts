@@ -710,10 +710,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		try {
 			this.resetResponse();
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-	
 			let providerName = 'zoho';
-			this.socialContact.socialNetwork = "ZOHO";
-			this.socialContact.contactType = this.contactType;
 			this.contactService.checkingZohoAuthentication(this.module)
 				.subscribe(
 					(data: any) => {
