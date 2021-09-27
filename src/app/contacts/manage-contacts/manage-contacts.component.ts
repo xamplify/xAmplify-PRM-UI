@@ -238,6 +238,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		
 
         if (currentUrl.includes('home/sharedleads')) {
+        	this.module = 'sharedleads';
             this.isPartner = false;
             this.assignLeads = false;
             this.sharedLeads = true;
@@ -245,6 +246,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         } else if (currentUrl.includes('home/assignleads')) {
             this.isPartner = false;
             this.assignLeads = true;
+            this.module = 'leads';
             this.checkingContactTypeName = "Lead"
             this.sortOptions.push({ 'name': 'Assigned date (ASC)', 'value': 'assignedTime-ASC', 'for': 'shareLeadsList' });
             this.sortOptions.push({ 'name': 'Assigned date (DESC)', 'value': 'assignedTime-DESC', 'for': 'shareLeadsList' });
@@ -254,6 +256,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.checkingContactTypeName = "Contact"
         } else {
             this.isPartner = true;
+            this.module = 'partners';
             this.checkingContactTypeName = "Partner"
             this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
@@ -605,76 +608,57 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	synchronizeContactList(contactList: ContactList) {
-		localStorage.setItem('socialNetwork', contactList.socialNetwork);
-		localStorage.setItem('selectedContactListId', JSON.stringify(contactList.id) );
+		this.socialContact.contactType = contactList.contactType;
+		this.socialContact.contactListId = contactList.id;
+		this.socialContact.socialNetwork = contactList.socialNetwork;
+		this.socialContact.alias = contactList.alias;
 		
 		if (contactList.socialNetwork == 'GOOGLE') {
-			this.googleContactsSynchronizationAuthentication(contactList.id, contactList.socialNetwork);
+			this.googleContactsSynchronizationAuthentication(this.socialContact);
 			this.contactListIdForSyncLocal = contactList.id;
 			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 		}
 		else if (contactList.socialNetwork == 'SALESFORCE') {
-			localStorage.setItem('contactType', contactList.contactType);
-	        localStorage.setItem('alias', contactList.alias );
-			this.salesforceContactsSynchronizationAuthentication(contactList.id, contactList.socialNetwork);
+			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
 			this.contactListIdForSyncLocal = contactList.id;
 			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 		}
 		
 		else if (contactList.socialNetwork == 'HUBSPOT') {
-			this.syncronizeContactList(contactList.id, contactList.socialNetwork);
+			this.syncronizeContactList(this.socialContact);
 			this.contactListIdForSyncLocal = contactList.id;
 			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			
 		}
 		else if (contactList.socialNetwork == 'ZOHO') {
-			this.zohoContactsSynchronizationAuthentication(contactList.id, contactList.socialNetwork);
+			this.zohoContactsSynchronizationAuthentication(this.socialContact);
 		}
 	}
 
 
-		googleContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+		googleContactsSynchronizationAuthentication(socialContact : SocialContact) {
 		try {
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-			if (this.contactLists != undefined) {
-				for (let i = 0; i < this.contactLists.length; i++) {
-					if (this.contactLists[i].id == contactListId) {
-						this.contactType = this.contactLists[i].contactType;
-					}
-				}
-			}
-			this.socialContact.contactType = this.contactType;
-			this.socialContact.socialNetwork = socialNetwork;			
 			let providerName = 'google';
-			let currentModule = "";
-			if (this.assignLeads) {
-				currentModule = 'leads'
-			} else {
-				currentModule = 'contacts'
-			}
-			this.contactService.googleLogin(currentModule)
+			this.contactService.googleLogin(this.module)
 				.subscribe(
 					data => {
-						this.storeLogin = data;
 						console.log(data);
 						if (data.statusCode==200) {
-							console.log("AddContactComponent googleContacts() Authentication Success");
-							this.syncronizeContactList(contactListId, socialNetwork);
+							console.log("ManageContactComponent googleContacts() Authentication Success");
+							this.syncronizeContactList(socialContact);
 						} else {
 							let currentUser = localStorage.getItem('currentUser');
 							let vanityUserId = JSON.parse(currentUser)['userId'];
 							if (this.loggedInThroughVanityUrl)
 							{
-								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + currentModule;
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + this.module;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 							} else 
 							{
-								localStorage.setItem('currentPage', 'manage-contacts');
-								localStorage.setItem( "userAlias", data.data.userAlias )
-                                localStorage.setItem( "currentModule", data.data.module )
-								window.location.href = "" + data.data.redirectUrl;
+								this.setLValuesToLocalStorageAndReditectToLoginPage(socialContact, data);
 							}
 						}
 					},
@@ -694,14 +678,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 
 
-	syncronizeContactList(contactListId: number, socialNetwork: string) {
+	syncronizeContactList(socialContact : SocialContact) {
 		try {
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 			this.resetResponse();
-			this.socialContact.socialNetwork = socialNetwork;
 			this.xtremandLogger.info("contactsSyncronize() socialNetWork" + this.socialContact.socialNetwork);
-			this.xtremandLogger.info("contactsSyncronize() ContactListId" + contactListId);
-			this.contactService.contactListSynchronization(contactListId, this.socialContact)
+			this.contactService.contactListSynchronization(socialContact.contactListId, socialContact)
 				.subscribe(
 					(data: any) => {
 						swal.close();
@@ -724,46 +706,31 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 	
-	zohoContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+	zohoContactsSynchronizationAuthentication(socialContact : SocialContact) {
 		try {
 			this.resetResponse();
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-			if (this.contactLists != undefined) {
-				for (let i = 0; i < this.contactLists.length; i++) {
-					if (this.contactLists[i].id == contactListId) {
-						this.contactType = this.contactLists[i].contactType;
-					}
-				}
-			}
+	
 			let providerName = 'zoho';
-			let currentModule = "";
-            if (this.assignLeads) {
-                currentModule = 'leads';
-            } else {
-                currentModule = 'contacts';
-            }
 			this.socialContact.socialNetwork = "ZOHO";
 			this.socialContact.contactType = this.contactType;
-			this.contactService.checkingZohoAuthentication(currentModule)
+			this.contactService.checkingZohoAuthentication(this.module)
 				.subscribe(
 					(data: any) => {
 						  if (data.statusCode==200) {
-	                            this.syncronizeContactList(contactListId, socialNetwork);
+	                            this.syncronizeContactList(socialContact);
 	                        }else {
 	                            let currentUser = localStorage.getItem('currentUser');
 	                            let vanityUserId = JSON.parse(currentUser)['userId'];
 	                            if (this.loggedInThroughVanityUrl)
 	                            {
-	                                let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + currentModule;
+	                                let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + this.module;
 	                                var x = screen.width / 2 - 700 / 2;
 	                                var y = screen.height / 2 - 450 / 2;
 	                                window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 	                            } else 
 	                            {
-	                                localStorage.setItem('currentPage', 'manage-contacts');
-	                                localStorage.setItem( "userAlias", data.data.userAlias )
-	                                localStorage.setItem( "currentModule", data.data.module )
-	                                window.location.href = "" + data.data.redirectUrl;
+	                            	this.setLValuesToLocalStorageAndReditectToLoginPage(socialContact, data);
 	                            }
 	                        }
 					},
@@ -777,48 +744,27 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	salesforceContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+	salesforceContactsSynchronizationAuthentication(socialContact : SocialContact) {
 		try {
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 			this.xtremandLogger.info("socialContacts" + this.socialContact.socialNetwork);
-			
-            if (this.contactLists != undefined) {
-                for (let i = 0; i < this.contactLists.length; i++) {
-                    if (this.contactLists[i].id == contactListId) {
-                        this.alias = this.contactLists[i].alias;
-                        this.contactType = this.contactLists[i].contactType;
-                    }
-                }
-		}
-			this.socialContact.contactType = this.contactType;
-			this.socialContact.socialNetwork = socialNetwork;
-			let currentModule = "";
-			if (this.assignLeads) {
-				currentModule = 'leads'
-			} else {
-				currentModule = 'contacts'
-			}
 			let providerName = 'salesforce';
-			this.contactService.salesforceLogin(currentModule)
+			this.contactService.salesforceLogin(this.module)
 				.subscribe(
 					data => {
-						this.storeLogin = data;
 						if (data.statusCode==200) {
-							this.syncronizeContactList(contactListId, socialNetwork);
+							this.syncronizeContactList(socialContact);
 						} else {
 							let currentUser = localStorage.getItem('currentUser');
 							let vanityUserId = JSON.parse(currentUser)['userId'];
 							if (this.loggedInThroughVanityUrl)
 							{
-								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + currentModule;
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + this.module;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 							} else {
-								localStorage.setItem('currentPage', 'manage-contacts');
-                                localStorage.setItem( "userAlias", data.data.userAlias )
-                                localStorage.setItem( "currentModule", data.data.module )
-                                window.location.href = "" + data.data.redirectUrl;
+								this.setLValuesToLocalStorageAndReditectToLoginPage(socialContact, data);
 							}
 						}
 					},
@@ -837,36 +783,22 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 	
 	
-	hubSpotContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+	hubSpotContactsSynchronizationAuthentication(socialContact : SocialContact) {
 		try {
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 			this.xtremandLogger.info("socialContacts" + this.socialContact.socialNetwork);
-			for (let i = 0; i < this.contactLists.length; i++) {
-				if (this.contactLists[i].id == contactListId) {
-					this.alias = this.contactLists[i].alias;
-					this.contactType = this.contactLists[i].contactType;
-				}
-			}
-			this.socialContact.contactType = this.contactType;
-			this.socialContact.socialNetwork = socialNetwork;
-			let currentModule = "";
-			if (this.assignLeads) {
-				currentModule = 'leads'
-			} else {
-				currentModule = 'contacts'
-			}
 			let providerName = 'hubSpot';
-			this.contactService.hubSpotLogin(currentModule)
+			this.contactService.hubSpotLogin(this.module)
 				.subscribe(
 					data => {
 						this.storeLogin = data;
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-							this.syncronizeContactList(contactListId, socialNetwork);
+							this.syncronizeContactList(socialContact);
 						} else {
 							let currentUser = localStorage.getItem('currentUser');
 							let vanityUserId = JSON.parse(currentUser)['userId'];
 							if (this.loggedInThroughVanityUrl) {
-								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + currentModule;
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + this.module;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
@@ -2297,13 +2229,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isZohoAuth');
 
+		this.socialContact.contactListId = this.contactListIdForSyncLocal;
+        this.socialContact.socialNetwork = this.socialNetworkForSyncLocal;
 		if (tempCheckGoogleAuth == 'yes' && !this.isPartner) {
-			this.googleContactsSynchronizationAuthentication(this.contactListIdForSyncLocal, this.socialNetworkForSyncLocal);
+			
+			this.googleContactsSynchronizationAuthentication(this.socialContact);
 			tempCheckGoogleAuth = 'no';
 		}
 
 		else if (tempCheckSalesForceAuth == 'yes' && !this.isPartner) {
-			this.salesforceContactsSynchronizationAuthentication(this.contactListIdForSyncLocal, this.socialNetworkForSyncLocal);
+			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
 			tempCheckSalesForceAuth = 'no';
 
 		}
@@ -2318,7 +2253,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			if (!this.isCalledZohoSycronization && this.contactListIdZoho != null) {
 				this.isCalledZohoSycronization = true;
 				this.iszohoAccessTokenExpired = false;
-				this.zohoContactsSynchronizationAuthentication(this.contactListIdZoho, this.socialNetworkZoho);
+				this.zohoContactsSynchronizationAuthentication(this.socialContact);
 				tempIsZohoSynchronization = 'no';
 			}
 		}
@@ -2330,17 +2265,24 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	
 	callInitMethods(){
 	      try {
-              if (this.contactService.socialProviderName == 'google' ||
-                  this.contactService.socialProviderName == 'salesforce'
+              if (this.contactService.socialProviderName == 'google'
+            	  || this.contactService.socialProviderName == 'salesforce'
                   || this.contactService.socialProviderName == 'zoho') {
             	  this.contactService.socialProviderName = "nothing";
-            	  localStorage.removeItem("currentPage");
                   if (this.contactService.oauthCallbackMessage.length > 0) {
                 	  this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
                   } else {
-                      this.syncronizeContactList(JSON.parse(localStorage.getItem('selectedContactListId')), localStorage.getItem('socialNetwork'));
+                	  this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
+                	  this.socialContact.contactListId = JSON.parse(localStorage.getItem('selectedContactListId'));
+                	  this.socialContact.contactType = localStorage.getItem('contactType');
+                	  this.socialContact.alias = localStorage.getItem('alias');
+                      this.syncronizeContactList( this.socialContact);
+                      localStorage.removeItem("currentPage");
+                      localStorage.removeItem("currentModule");
                       localStorage.removeItem("selectedContactListId");
                       localStorage.removeItem("socialNetwork");
+                      localStorage.removeItem("contactType");
+                      localStorage.removeItem("alias");
                   }
 	    		}
 	            this.pagination.maxResults = 12;
@@ -2559,6 +2501,21 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     
     closeSharedDetailsPopup(){
     	$("#listSharedDetailsModal").modal().hide();
+    }
+    
+    setLValuesToLocalStorageAndReditectToLoginPage(socialContact : SocialContact, data : any) {
+    	   if (this.assignLeads) {
+            localStorage.setItem('currentPage', 'manage-leads');
+        } else {
+            localStorage.setItem('currentPage', 'manage-contacts');
+        }
+        localStorage.setItem('socialNetwork', socialContact.socialNetwork);
+        localStorage.setItem('selectedContactListId', JSON.stringify(socialContact.contactListId));
+        localStorage.setItem("userAlias", data.data.userAlias);
+        localStorage.setItem("currentModule", data.data.module);
+        localStorage.setItem('contactType', socialContact.contactType);
+        localStorage.setItem('alias', socialContact.alias);
+        window.location.href = "" + data.data.redirectUrl;
     }
 	
 	

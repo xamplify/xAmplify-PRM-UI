@@ -66,7 +66,6 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 							this.contactService.oauthCallbackMessage = result.message;
 						}
 						localStorage.removeItem("userAlias");
-						localStorage.removeItem("currentModule");
 						this.xtremandLogger.info("result: " + result);
 
 						if (this.callbackName == 'google') {
@@ -102,9 +101,11 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 							this.router.navigate(['/home/contacts/add']);
 						}else if (this.currentModule === 'partners') {
 							this.router.navigate(['/home/partners']);
-						} else if (this.currentModule === 'leads') {
-							this.router.navigate(['/home/assignleads/add']);
-						}
+						} else if (this.currentModule === 'leads' && localStorage.getItem('currentPage')==='manage-leads'){
+							this.router.navigate(['/home/assignleads/manage']);
+						}else if (this.currentModule === 'leads' && localStorage.getItem('currentPage')==='add-leads'){
+                            this.router.navigate(['/home/assignleads/add']);
+                        }
 					},
 					error => {
 						localStorage.removeItem("userAlias");
@@ -212,7 +213,6 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 				});
 			this.xtremandLogger.info("Router URL :: " + this.router.url);
 			if (this.router.url.includes("hubspot-callback")) {
-				// this.hubSpotCallback(code);
 				this.integrationCallback(code, "hubspot");
 			} else if (this.router.url.includes("isalesforce-callback")) {
 				this.integrationCallback(code, "isalesforce");
