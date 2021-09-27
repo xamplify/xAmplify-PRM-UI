@@ -604,29 +604,31 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		window.URL.revokeObjectURL(url);
 	}
 
-	synchronizeContactList(contactListId: number, socialNetwork: string) {
-		localStorage.setItem('socialNetwork', socialNetwork);
-		localStorage.setItem('selectedContactListId', JSON.stringify(contactListId) );
+	synchronizeContactList(contactList: ContactList) {
+		localStorage.setItem('socialNetwork', contactList.socialNetwork);
+		localStorage.setItem('selectedContactListId', JSON.stringify(contactList.id) );
 		
-		if (socialNetwork == 'GOOGLE') {
-			this.googleContactsSynchronizationAuthentication(contactListId, socialNetwork);
-			this.contactListIdForSyncLocal = contactListId;
-			this.socialNetworkForSyncLocal = socialNetwork;
+		if (contactList.socialNetwork == 'GOOGLE') {
+			this.googleContactsSynchronizationAuthentication(contactList.id, contactList.socialNetwork);
+			this.contactListIdForSyncLocal = contactList.id;
+			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 		}
-		else if (socialNetwork == 'SALESFORCE') {
-			this.salesforceContactsSynchronizationAuthentication(contactListId, socialNetwork);
-			this.contactListIdForSyncLocal = contactListId;
-			this.socialNetworkForSyncLocal = socialNetwork;
+		else if (contactList.socialNetwork == 'SALESFORCE') {
+			localStorage.setItem('contactType', contactList.contactType);
+	        localStorage.setItem('alias', contactList.alias );
+			this.salesforceContactsSynchronizationAuthentication(contactList.id, contactList.socialNetwork);
+			this.contactListIdForSyncLocal = contactList.id;
+			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 		}
 		
-		else if (socialNetwork == 'HUBSPOT') {
-			this.syncronizeContactList(contactListId, socialNetwork);
-			this.contactListIdForSyncLocal = contactListId;
-			this.socialNetworkForSyncLocal = socialNetwork;
+		else if (contactList.socialNetwork == 'HUBSPOT') {
+			this.syncronizeContactList(contactList.id, contactList.socialNetwork);
+			this.contactListIdForSyncLocal = contactList.id;
+			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			
 		}
-		else if (socialNetwork == 'ZOHO') {
-			this.zohoContactsSynchronizationAuthentication(contactListId, socialNetwork);
+		else if (contactList.socialNetwork == 'ZOHO') {
+			this.zohoContactsSynchronizationAuthentication(contactList.id, contactList.socialNetwork);
 		}
 	}
 
@@ -733,45 +735,45 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					}
 				}
 			}
+			let providerName = 'zoho';
+			let currentModule = "";
+            if (this.assignLeads) {
+                currentModule = 'leads';
+            } else {
+                currentModule = 'contacts';
+            }
 			this.socialContact.socialNetwork = "ZOHO";
 			this.socialContact.contactType = this.contactType;
-			this.contactService.checkingZohoSyncAuthentication()
+			this.contactService.checkingZohoAuthentication(currentModule)
 				.subscribe(
 					(data: any) => {
-						if (data.statusCode == 402)
-						{
-							swal.close();
-							this.iszohoAccessTokenExpired = true;
-							this.zohoExpiredAccessTokenMessage = data.message;
-							this.contactListIdZoho = contactListId;
-							this.contactListIdZoho = localStorage.setItem("contactListIdZoho", this.contactListIdZoho);
-							this.socialNetworkZoho = localStorage.setItem("socialNetworkZoho", socialNetwork);
-						}
-						else
-						{
-							this.syncronizeContactList(contactListId, socialNetwork);
-						}
+						  if (data.statusCode==200) {
+	                            this.syncronizeContactList(contactListId, socialNetwork);
+	                        }else {
+	                            let currentUser = localStorage.getItem('currentUser');
+	                            let vanityUserId = JSON.parse(currentUser)['userId'];
+	                            if (this.loggedInThroughVanityUrl)
+	                            {
+	                                let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + currentModule;
+	                                var x = screen.width / 2 - 700 / 2;
+	                                var y = screen.height / 2 - 450 / 2;
+	                                window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+	                            } else 
+	                            {
+	                                localStorage.setItem('currentPage', 'manage-contacts');
+	                                localStorage.setItem( "userAlias", data.data.userAlias )
+	                                localStorage.setItem( "currentModule", data.data.module )
+	                                window.location.href = "" + data.data.redirectUrl;
+	                            }
+	                        }
 					},
 					(error: any) => {
-						var body = error['_body'];
-						if (body != "")
-						{
-							var response = JSON.parse(body);
-							if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!") {
-								this.customResponse = new CustomResponse('INFO', response.message, true);
-								//this.responseMessage = ['INFO', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!','show'];
-							} else {
-								this.xtremandLogger.errorPage(error);
-							}
-						} else {
-							this.xtremandLogger.errorPage(error);
-						}
-						console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+						this.xtremandLogger.error("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
 					},
-					() => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
+					() => this.xtremandLogger.info("ManageContactsComponent zohoContactsSynchronizationAuthentication() finished")
 				)
 		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "SynchronizationZohoList()");
+			this.xtremandLogger.error(error, "ManageContactsComponent", "zohoContactsSynchronizationAuthentication()");
 		}
 	}
 
@@ -779,12 +781,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		try {
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 			this.xtremandLogger.info("socialContacts" + this.socialContact.socialNetwork);
-			for (let i = 0; i < this.contactLists.length; i++) {
-				if (this.contactLists[i].id == contactListId) {
-					this.alias = this.contactLists[i].alias;
-					this.contactType = this.contactLists[i].contactType;
-				}
-			}
+			
+            if (this.contactLists != undefined) {
+                for (let i = 0; i < this.contactLists.length; i++) {
+                    if (this.contactLists[i].id == contactListId) {
+                        this.alias = this.contactLists[i].alias;
+                        this.contactType = this.contactLists[i].contactType;
+                    }
+                }
+		}
 			this.socialContact.contactType = this.contactType;
 			this.socialContact.socialNetwork = socialNetwork;
 			let currentModule = "";

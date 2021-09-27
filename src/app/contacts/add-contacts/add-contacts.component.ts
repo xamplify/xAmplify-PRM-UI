@@ -1417,7 +1417,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     googleContacts() {
         try {
             if(this.loggedInThroughVanityUrl){
-             //   this.referenceService.showSweetAlertInfoMessage();
 			      this.googleVanityAuthentication();
 
             }else{
@@ -2361,7 +2360,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 console.log( "AddContactComponent salesforce() Authentication Success" );
                                 this.checkingPopupValues();
                             } else {
-                                localStorage.setItem('currentPage', 'manage-contacts');
+                                localStorage.setItem('currentPage', 'add-contacts');
                                 localStorage.setItem( "userAlias", data.data.userAlias )
                                 localStorage.setItem( "currentModule", data.data.module )
                                 window.location.href = "" + data.data.redirectUrl;
@@ -2951,11 +2950,7 @@ salesForceVanityAuthentication() {
 				} else if (this.contactService.vanitySocialProviderName == 'zoho' || this.socialContactType == "zoho") {
 					this.zohoShowModal();
 					this.contactService.socialProviderName = "nothing";
-				}/*else if(this.contactService.vanitySocialProviderName == 'hubspot'){
-					this.showHubSpotModal();
-					this.contactService.socialProviderName = "nothing";
-					this.contactService.vanitySocialProviderName = 'nothing';
-				}*/
+				}
 			}
               else if (this.contactService.socialProviderName == 'google') {
             	  localStorage.removeItem("currentPage");
@@ -2968,7 +2963,7 @@ salesForceVanityAuthentication() {
 			}
 			else if (this.contactService.socialProviderName == 'salesforce') {
 				 localStorage.removeItem("currentPage");
-			       if (this.contactService.oauthCallbackMessage.length > 0) {
+			       if(this.contactService.oauthCallbackMessage.length > 0) {
 	                      this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
 	                  } else {
 	                	  this.showModal();
@@ -2976,14 +2971,15 @@ salesForceVanityAuthentication() {
 	                  }
 			}
 			else if (this.contactService.socialProviderName == 'zoho' || this.socialContactType == "zoho") {
-				this.zohoShowModal();
-				this.contactService.socialProviderName = "nothing";
+				localStorage.removeItem("currentPage");
+			       if(this.contactService.oauthCallbackMessage.length > 0) {
+                       this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
+                   } else {
+                	   this.zohoShowModal();
+                       this.contactService.socialProviderName = "nothing";
+                   }
 			}
-			/*else if(this.contactService.vanitySocialProviderName = 'hubspot'){
-				this.showHubSpotModal();
-				this.contactService.socialProviderName = "nothing";
-				this.contactService.vanitySocialProviderName = 'nothing';
-			}*/
+			
 
             this.contactListName = '';
             $( "#Gfile_preview" ).hide();
@@ -4050,7 +4046,7 @@ vanityCheckingMarketoContactsAuthentication(){
                             .subscribe(
                                 (data: any) => {
                                     this.storeLogin = data;
-                                    if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+                                    if (data.statusCode==200) {
                                         let self = this;
                                         self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
                                         if (this.selectedZohoDropDown == "contact") {
@@ -4064,10 +4060,10 @@ vanityCheckingMarketoContactsAuthentication(){
 
                                     } else {
                                         this.zohoPopupLoader = false;
-                                        localStorage.setItem("userAlias", data.userAlias)
-                                        localStorage.setItem("currentModule", data.module);
-                                        localStorage.setItem("statusCode", data.statusCode);
-                                        window.location.href = "" + data.redirectUrl;
+                                        localStorage.setItem('currentPage', 'add-contacts');
+                                        localStorage.setItem( "userAlias", data.data.userAlias )
+                                        localStorage.setItem( "currentModule", data.data.module )
+                                        window.location.href = "" + data.data.redirectUrl;
 
                                     }
                                 },
