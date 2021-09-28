@@ -449,12 +449,12 @@
                                     data-placement="top" title="{{actionsDescription.contact_list_download}}"
                                     data-rel="fancybox-button"> <i class="fa fa-download"></i>
                                   </a> <span
-                                    *ngIf="contactList.synchronisedList == true || contactList.marketoMasterList == true">
+                                    *ngIf="(contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.contactType!='ASSIGNED_LEADS_LIST'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
                                     <a data-toggle="tooltip" data-placement="top"
                                       title="{{actionsDescription.contact_list_synchronize}}" 
 									[class.disabled]= "contactList.socialNetwork=='GOOGLE' && loggedInUserId != contactList.uploadedUserId"
                                       *ngIf="hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier || authenticationService.vanityURLEnabled == true  || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
-                                      (click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
+                                      (click)="synchronizeContactList(contactList)">
                                       <i class="fa fa-refresh" aria-hidden="true"></i>
                                     </a>
                                   </span> <a
@@ -604,12 +604,12 @@
                               class="fa fa-download"></i>
                           </a>
                           <ng-container
-                            *ngIf="contactList.synchronisedList == true || contactList.marketoMasterList == true">
+                            *ngIf="(contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.contactType!='ASSIGNED_LEADS_LIST'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
                             <a data-toggle="tooltip" data-placement="top" 
                               title="{{actionsDescription.contact_list_synchronize}}"
                               [class.disabled]="!contactList.emailValidationInd"
                               *ngIf="hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
-                              (click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
+                              (click)="synchronizeContactList(contactList)"
                               data-rel="fancybox-button" style="left: 18%; top: -20px;width:11%;">
                               <i class="fa fa-refresh" aria-hidden="true" style="color: white;"></i>
                             </a>
