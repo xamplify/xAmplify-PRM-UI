@@ -96,6 +96,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.menuItem.opportunities = data.opportunities;
 					module.hasOpportunityRole = data.opportunities;
 					this.menuItem.opportunitiesAccessAsPartner = data.opportunitiesAccessAsPartner;
+					module.opportunitiesAccessAsPartner = data.opportunitiesAccessAsPartner;
 					this.authenticationService.enableLeads = data.opportunities;
 
 					this.menuItem.socialFeeds = data.rssFeeds;

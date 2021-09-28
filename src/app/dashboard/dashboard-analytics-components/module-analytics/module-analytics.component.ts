@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from "@angular/router";
 import { ActivatedRoute } from '@angular/router';
 import { DashboardService } from "../../dashboard.service";
@@ -8,17 +8,27 @@ import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dt
 import { ReferenceService } from 'app/core/services/reference.service';
 import {DashboardModuleAnalyticsViewDto} from "app/dashboard/models/dashboard-module-analytics-view-dto";
 import {VanityURLService} from "app/vanity-url/services/vanity.url.service";
+import { LeadsService } from 'app/leads/services/leads.service';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 @Component({
   selector: 'app-module-analytics',
   templateUrl: './module-analytics.component.html',
-  styleUrls: ['./module-analytics.component.css']
+  styleUrls: ['./module-analytics.component.css'],
+  providers: [LeadsService]
 })
 export class ModuleAnalyticsComponent implements OnInit {
   dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
   dashboardModuleAnalyticsViewDtos: Array<DashboardModuleAnalyticsViewDto> = new Array<DashboardModuleAnalyticsViewDto>();
   loader = true;
   ngxLoading = false;
+  showLeadForm: boolean = false;
+  actionType: string = "add";
+  leadId: number = 0;
+  customResponse: CustomResponse = new CustomResponse();
+  showDealForm: boolean;
+  @Output() notifyShowDealForm = new EventEmitter();
+
   constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
     public authenticationService: AuthenticationService,public referenceService:ReferenceService,private route: ActivatedRoute,private vanityUrlService:VanityURLService) { 
 
@@ -69,6 +79,26 @@ export class ModuleAnalyticsComponent implements OnInit {
     }
     }
     
+    addLead() {      
+       this.showLeadForm = true;
+       this.actionType = "add";
+       this.leadId = 0;    
+     }
+   
+     resetValues(){
+       this.showLeadForm = false;
+     }
+
+     showSubmitLeadSuccess() {  
+      this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+      this.showLeadForm = false;
+    }
+
+    addDeal() {   
+      //this.showDealForm = true;
+      //this.actionType = "add";
+      this.notifyShowDealForm.emit();
+    }
 
 
 }

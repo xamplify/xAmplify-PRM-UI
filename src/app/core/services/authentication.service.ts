@@ -531,6 +531,7 @@ export class AuthenticationService {
     module.isAnyAdminOrSupervisor = false;
     module.allBoundSamlSettings = false;
     module.notifyPartners = false;
+    module.opportunitiesAccessAsPartner = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;
