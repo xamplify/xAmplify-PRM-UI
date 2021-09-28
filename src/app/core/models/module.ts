@@ -63,4 +63,6 @@ export class Module {
 
     notifyPartners = false;
     prmContentDivsCount = 0;
+
+    opportunitiesAccessAsPartner = false;
 }
