@@ -534,6 +534,7 @@ export class AuthenticationService {
     module.opportunitiesAccessAsPartner = false;
     module.isOnlyPartnerCompany = false;
     module.showAddLeadsAndDealsOptionInTheDashboard = false;
+    module.showCampaignOptionInManageVideos = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;

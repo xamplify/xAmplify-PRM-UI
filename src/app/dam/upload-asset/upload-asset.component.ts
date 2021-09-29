@@ -97,8 +97,7 @@ export class UploadAssetComponent implements OnInit {
 			let file = files[0];
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
-			let fileType = file['type'];
-			if(fileType.length==0){
+			if(sizeInKb==0){
 				this.showAssetErrorMessage('Invalid File');
 			}else if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
