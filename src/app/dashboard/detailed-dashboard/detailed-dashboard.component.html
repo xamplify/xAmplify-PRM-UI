@@ -29,6 +29,10 @@
             </ng-container>
             <ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
             || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+            <!----Show PRM Content--------->
+			<app-show-prm-content [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
+			authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
+			</app-show-prm-content>
             <!--Top 4 Assets--------------->  
             <app-top-4-assets [isPartnerView]="false" [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
             <!--Top 4 Shared Assets--------------->  

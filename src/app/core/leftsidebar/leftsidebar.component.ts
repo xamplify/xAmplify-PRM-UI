@@ -26,6 +26,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	menuItem: MenuItem = new MenuItem();
 	menuItemError = false;
 	contentDivs: Array<boolean> = new Array<boolean>();
+	prmContentDivs: Array<boolean> = new Array<boolean>();
 	isSuperAdmin = false;
 	roleName: Roles = new Roles();
 	emailtemplates: boolean;
@@ -95,6 +96,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.menuItem.opportunities = data.opportunities;
 					module.hasOpportunityRole = data.opportunities;
 					this.menuItem.opportunitiesAccessAsPartner = data.opportunitiesAccessAsPartner;
+					module.opportunitiesAccessAsPartner = data.opportunitiesAccessAsPartner;
 					this.authenticationService.enableLeads = data.opportunities;
 
 					this.menuItem.socialFeeds = data.rssFeeds;
@@ -191,11 +193,15 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			this.contentDivs.push(module.damAccess || module.damAccessAsPartner);
 			this.contentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
 			this.contentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);
-			this.contentDivs.push();
 			const count = this.contentDivs.filter((value) => value).length;
 			module.contentDivsCount = count;
+			this.prmContentDivs.push(module.damAccess || module.damAccessAsPartner);
+			this.prmContentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
+			this.prmContentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);
+			module.prmContentDivsCount = this.prmContentDivs.filter((value) => value).length;
 		} else {
 			module.contentDivsCount = 0;
+			module.prmContentDivsCount = 0;
 		}
 	}
 
