@@ -208,8 +208,8 @@
 
         <!----Show Anlaytics For PRM-->
         <div *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
- && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
- (authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
+                        && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
+                        (authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
             <div class="row">
                 <div class="page-bar portlet light border-radius-0 shadow mmtp">
                     <app-mdf-statistics *ngIf="authenticationService?.mdf"></app-mdf-statistics>
@@ -220,12 +220,12 @@
         <!---PRM Dashboard -->
         <ng-container
             *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-|| authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+                || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
             <!----Show PRM Content--------->
             <app-show-prm-content [hideRowClass]="false"
                 *ngIf="!authenticationService?.module.isOnlyPartner && !authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && 
                 (authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
-authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner)">
+                authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner)">
             </app-show-prm-content>
             <!--Top 4 Assets--------------->
             <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false"

@@ -22,7 +22,7 @@
 </a>
 </div>
 <!-- show add leads and Add Deals buttons to Only PRM Partner  -->
-<div class="col-sm-4 col-xs-6 col-lg-3 col-md-3" *ngIf="(authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner || authenticationService?.partnershipEstablishedOnlyWithPrm) && authenticationService?.module?.isOnlyPartner && authenticationService?.module?.opportunitiesAccessAsPartner">
+<div class="col-sm-4 col-xs-6 col-lg-3 col-md-3" *ngIf="authenticationService?.module?.showAddLeadsAndDealsOptionInTheDashboard">
   <div class="addLeadsDiv">
     <a (click)="addLead()" style="padding-left: 11px;">
       <button class="btn btn-primary" style="width:200px; border-radius: 3px !important;" translate>
