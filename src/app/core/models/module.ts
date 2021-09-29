@@ -67,4 +67,5 @@ export class Module {
     opportunitiesAccessAsPartner = false;
     isOnlyPartnerCompany = false;
     showAddLeadsAndDealsOptionInTheDashboard = false;
+    showCampaignOptionInManageVideos = false;
 }

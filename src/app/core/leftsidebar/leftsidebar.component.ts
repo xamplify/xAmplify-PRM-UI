@@ -90,6 +90,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.menuItem.campaign = data.campaign;
 					this.menuItem.campaignAccessAsPartner = data.redistribute;
 					module.isCampaign = data.campaign || data.redistribute;
+					module.showCampaignOptionInManageVideos = data.campaign;
 					module.isReDistribution = data.redistribute;
 					module.hasLandingPageCampaignAccess = data.pageCampaign;
 
