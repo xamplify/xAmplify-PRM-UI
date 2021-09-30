@@ -13,6 +13,7 @@ import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.c
 import { DamService } from '../../dam/services/dam.service';
 import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 declare var $, swal: any;
 
@@ -44,7 +45,8 @@ export class PreviewTracksPlayBookComponent implements OnInit {
   fileTypes: Array<string> = ['doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx'];
   url: SafeResourceUrl;
   trackViewLoader: boolean = false;
-  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();;
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  modulesDisplayType = new ModulesDisplayType();
   @Input() showTracksPlayBook: boolean;
   @Input() showAsset: boolean;
   @Input() isCreatedUser: boolean;
@@ -68,6 +70,7 @@ export class PreviewTracksPlayBookComponent implements OnInit {
     this.createdUserCompanyId = parseInt(this.route.snapshot.params['companyId']);
     this.slug = this.route.snapshot.params['slug'];
     this.getBySlug();
+    this.setViewType("List");
   }
 
   getCompanyId() {
@@ -307,6 +310,16 @@ export class PreviewTracksPlayBookComponent implements OnInit {
           this.referenceService.showServerError(this.httpRequestLoader);
           this.referenceService.stopLoader(this.httpRequestLoader);
         });
+    }
+  }
+
+  setViewType(viewType: string) {
+    if ("List" == viewType) {
+      this.modulesDisplayType.isListView = true;
+      this.modulesDisplayType.isGridView = false;
+    } else if ("Grid" == viewType) {
+      this.modulesDisplayType.isListView = false;
+      this.modulesDisplayType.isGridView = true;
     }
   }
 
