@@ -1592,10 +1592,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	search(searchType: string) {
 		this.searchContactType = searchType;
+		this.searchKey = this.searchKey.trim();
 		try {
 			this.resetResponse();
 			if (searchType == 'contactList') {	
-				if (this.searchKey != "" && this.searchKey!=undefined) {
+				if (this.searchKey != undefined && this.searchKey != null && this.searchKey != "") {
 					this.showExpandButton = true;
 					this.isListView = true;
 				} else {

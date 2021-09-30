@@ -1529,8 +1529,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     getAllFilteredResults() {
         try {
             this.contactsPagination.pageIndex = 1;
-            this.contactsPagination.searchKey = this.recipientsSortOption.searchKey;
-            if (this.contactsPagination.searchKey != "") {
+            this.contactsPagination.searchKey = this.recipientsSortOption.searchKey.trim();
+            if (this.contactsPagination.searchKey != undefined && this.contactsPagination.searchKey != null 
+                && this.contactsPagination.searchKey != "") {
                 this.showExpandButton = true;
             } else {
                 this.showExpandButton = false;
