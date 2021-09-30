@@ -227,6 +227,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.listPriceTypes();
         if (this.isMdfForm) {
             this.formHeader = "EDIT MDF FORM";
+            this.showQuizField = false;
             this.removeBlurClass();
         } else {
             if (this.router.url.indexOf('edit') > -1) {
@@ -373,7 +374,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               this.categoryNames = data.data;
               let categoryIds = this.categoryNames.map(function (a: any) { return a.id; });
               if (this.isAdd) {
-                  this.form.categoryId = categoryIds[0];
+                  //this.form.categoryId = categoryIds[0];
+                  this.selectCategory(categoryIds[0]);
               }
 
           },

@@ -10,7 +10,7 @@
                         <div class="col-md-12 col-lg-12"
                             style="border-bottom: 2px solid #cac8c8;padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: #008fd5;border-top-left-radius: 5px;border-top-right-radius: 5px;">
                             <div class="row">
-                                <div class="col-md-6 col-lg-6" style="padding: 3px 17px;">
+                                <div class="col-md-6 col-lg-6" style="padding: 3px 17px; width: 95%;">
                                     <a class="title padding_bottom"
                                         style="font-size: 15px; padding-top: 10px;">{{tracksPlayBook.title}}</a>
 
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-lg-3">
-                    <div class="page-bar" style="padding: 10px 10px;">
+                    <div class="page-bar" style="padding: 10px 10px; min-height: 255px;">
                         <img class="img-asset-class" [src]="tracksPlayBook.featuredImage" alt=""
                             onerror="this.src='assets/images/lms.jpg';" style="height: 140px !important;
                                                        width: 100% !important;">
@@ -72,14 +72,14 @@
                             <div [hidden]="assetViewLoader">
                                 <div class="page-bar" style="margin-bottom: 10px!important;padding:0px 0px !important;">
                                     <div class="row">
-                                        <div class="col-md-8 col-lg-8 cpdam">
-                                            <div class="portlet light cphdam box-shadow" style="height: 217px;">
+                                        <div class="col-md-8 col-lg-8 cpdam" style="padding-top: 6px;">
+                                            <div class="portlet light cphdam box-shadow" style="height: 235px;">
                                                 <div class="portlet-title port-heading">
                                                     <div class="caption" style="color: #fff!important;">
-                                                        <h4>
+                                                        <h4 title="{{assetDetails?.assetName}}">
                                                             <strong>{{assetDetails?.assetName |
-                                                                slice:0:50}}</strong>
-                                                            <span *ngIf="assetDetails?.assetName?.length>50">..</span>
+                                                                slice:0:100}}</strong>
+                                                            <span *ngIf="assetDetails?.assetName?.length>100">..</span>
                                                         </h4>
                                                     </div>
                                                 </div>
@@ -91,7 +91,7 @@
                                         </div>
                                         <div class="col-md-4 col-lg-4" style="padding: 6px 10px 0px 10px;">
                                             <div>
-                                                <div class="grid-box box-shadow" style="min-height: 200px;margin-top: 0px;">
+                                                <div class="grid-box box-shadow" style="min-height: 235px;margin-top: 0px;">
                                                     <img class="img-class img-max-width" src="{{assetDetails?.thumbnailPath}}"
                                                         alt="No Image Found"><br>
                                                     <a class="btn btn-primary"
@@ -102,8 +102,10 @@
                                                     <div class="center" style="padding: 10px;margin: 0 !important;font-size: 14px;" title="{{assetDetails.assetType}}"
                                                         translate>
                                                         <strong>Type: </strong>{{assetDetails.assetType}}<br>
-                                                        <strong>Title: </strong>{{assetDetails?.assetName | slice:0:50}}
-                                                        <span *ngIf="assetDetails?.assetName?.length>50">..</span>
+                                                        <div title="{{assetDetails?.assetName}}">
+                                                            <strong>Title: </strong>{{assetDetails?.assetName | slice:0:100}}
+                                                            <span *ngIf="assetDetails?.assetName?.length>100">..</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -117,79 +119,238 @@
             </div>
         </section>
         <section *ngIf="showAsset || showTracksPlayBook">
-                <div class="col-md-12 col-lg-12"
-                    style="border-bottom: 2px solid #cac8c8;padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: #008fd5;border-top-left-radius: 5px;border-top-right-radius: 5px;">
-                    <div style="padding: 3px;">
-                        <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;">Content</a>
-                    </div>
+            <div class="col-md-12 col-lg-12"
+                style="border-bottom: 2px solid #cac8c8;padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: #008fd5;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+                <div style="padding: 3px; display: inline;">
+                    <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;">Content</a>
                 </div>
+                <div class="btn-group pull-right">
+                    <ng-container class='m10'>
+                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                            title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
+                            <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
+                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
+                            title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
+                            <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                        </span>
+                    </ng-container>
+                </div>
+            </div>
             <div class="page-bar">
-                <div class="row padding_bottom">
-                    <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let content of tracksPlayBook.contents ;let i =index"
-                        id="ContentListDiv_{{content.id}}">
-                        <div
-                            [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}">
-                            <div class="grid-box box-shadow" (click)="viewContent(content)">
-                                <img class="image-fixed" [src]="content.thumbnailPath"
-                                    onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
-                                <!-- <h4 class="ellipsis mt5 mb5 f-w-600" title="{{content.assetName}}"
-                                    style="text-align: left !important;padding: 5px 0px 5px 10px !important;border-top: 2px solid #cac8c8;">
-                                    Title: {{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span>
-                                </h4> -->
-                                <h5 class="grid-asset-title" title="{{content.assetName}}" translate>
-                                    <strong>Title: </strong>{{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span>
-                                </h5>
-                                <h6 class="asset-type" title="{{content.assetType}}" translate>
-                                    <strong>Type: </strong>{{content.assetType}}
-                                </h6>
-                                <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')" class="ribbon">
-                                    <span style="background-color: #5cb85c;" *ngIf="content.finished" translate>Finished</span>
-                                    <span style="background-color: #819081;" *ngIf="content.opened && !content.finished"
-                                        translate>In
-                                        Progress</span>
+                <app-list-loader *ngIf="trackViewLoader && modulesDisplayType.isListView">
+                </app-list-loader>
+                <app-grid-loader *ngIf="trackViewLoader && modulesDisplayType.isGridView">
+                </app-grid-loader>
+                <!---List View----->
+                <section *ngIf="modulesDisplayType.isListView && !trackViewLoader">
+                    <div class="table-responsive" style="float: left;">
+                        <table class='table tgrid table-hover table-sm' id="manage-assets-table"
+                            *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" style="width: 70%" id="border-bottom"><span class="gridHea
+                                                        der" translate>Asset
+                                            Details </span></th>
+                                    <th class="text-center" scope="row" translate>Type</th>
+                                    <th class="text-center" id="min-width" translate>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
+                                    <tr
+                                        [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}">
+                                        <td style="width: 10%;">
+                                            <div class="list-image-container">
+                                                <div class="thumbnail-wrapper">
+                                                    <img class="custom-image-css" src="{{content?.thumbnailPath}}"
+                                                        alt="Image Not Found">
+                                                </div>
+                                                <div *ngIf="content.assetType == 'mp4' || content.assetType == 'wmv'"
+                                                    class="overlay-icon">
+                                                    <button
+                                                        [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                                        class="list-play-icon-wrap" title="Play Video"
+                                                        (click)="$event.stopPropagation();assetPreview(content)">
+                                                        <i class="fa fa-play list-play-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <div *ngIf="content.assetType == undefined || (content.assetType != 'mp4' && content.assetType != 'wmv')"
+                                                    class="overlay-icon">
+                                                    <button
+                                                        [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                                        class="list-play-icon-wrap" title="Open File"
+                                                        (click)="$event.stopPropagation();assetPreview(content)">
+                                                        <i class="fa fa-file list-file-icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{content?.assetName}}">
+                                                <span><strong>{{content?.assetName}}</strong></span>
+                                            </h4>
+                                            <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
+                                                style="padding-top: 5px;">
+                                                <h6 *ngIf="content.finished" style="background-color: #5cb85c;" class="banner"
+                                                    translate>
+                                                    Finished</h6>
+                                                <h6 *ngIf="content.opened && !content.finished" style="background-color: #819081;"
+                                                    class="banner" translate>In
+                                                    Progress</h6>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">{{content?.assetType}}</td>
+                                        <td id="actions-row" class="text-center">
+                                            <div class="actions-block override-actions custom-width-icon no-float">
+                                                <a [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                                    data-toggle="tooltip" data-placement="top" title="View"
+                                                    (click)="$event.stopPropagation();viewContent(content)">
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <tr *ngIf="(type == undefined || type == 'TRACK') && tracksPlayBook.quiz" [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
+                                    <td style="width: 10%;">
+                                        <div class="thumbnail-wrapper">
+                                            <img class="custom-image-css" [src]="tracksPlayBook.featuredImage"
+                                                onerror="this.src='assets/images/form.png';" alt="Image Not Found">
+                                            <div class="ribbon">
+                                                <span style="background-color: #5cb85c;" translate>Quiz</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{tracksPlayBook.quiz.name}}">
+                                            <span><strong>{{tracksPlayBook.quiz.name}}</strong></span>
+                                        </h4>
+                                        <div *ngIf="!isCreatedUser && !tracksPlayBook.enableQuiz && tracksPlayBook.progress != undefined && tracksPlayBook.progress === 100"
+                                            style="padding-top: 5px;">
+                                            <h6 style="background-color: #5cb85c;" class="banner" translate>
+                                                Finished</h6>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">Form</td>
+                                    <td id="actions-row" class="text-center">
+                                        <div class="actions-block override-actions custom-width-icon no-float">
+                                            <a *ngIf="!isCreatedUser" [ngClass]="{'isDisabled' : !tracksPlayBook.enableQuiz}"
+                                                data-toggle="tooltip" data-placement="top" title="View" (click)="viewQuiz()">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </a>
+                                            <a *ngIf="isCreatedUser" data-toggle="tooltip" data-placement="top" title="View"
+                                                (click)="viewQuiz()">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <!----Grid View------->
+                <section *ngIf="modulesDisplayType.isGridView && !trackViewLoader">
+                    <div class="row padding_bottom">
+                        <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let content of tracksPlayBook.contents ;let i =index"
+                            id="ContentListDiv_{{content.id}}">
+                            <div
+                                [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}">
+                                <div class="grid-box box-shadow" [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}" (click)="viewContent(content)" >
+                                    <div class="grid-image-container">
+                                        <div *ngIf="content?.thumbnailPath?.indexOf('assets/images/')===0;then defaultThumbnail else thumbnail">
+                                        </div>
+                                        <ng-template #defaultThumbnail>
+                                            <img class="image-fixed-default" [src]="content.thumbnailPath"
+                                            onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
+                                        </ng-template>
+                                        <ng-template #thumbnail>
+                                            <img class="image-fixed" [src]="content.thumbnailPath"
+                                            onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
+                                        </ng-template>
+                                        <div *ngIf="content.assetType == 'mp4' || content.assetType == 'wmv'" class="overlay-icon">
+                                            <button
+                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                                class="grid-play-icon-wrap" title="Play Video"
+                                                (click)="$event.stopPropagation();assetPreview(content)">
+                                                <i class="fa fa-play grid-play-icon"></i>
+                                            </button>
+                                        </div>
+                                        <div *ngIf="content.assetType == undefined || (content.assetType != 'mp4' && content.assetType != 'wmv')"
+                                            class="overlay-icon">
+                                            <button
+                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                                class="grid-play-icon-wrap" title="Open File"
+                                                (click)="$event.stopPropagation();assetPreview(content)">
+                                                <i class="fa fa-file grid-file-icon"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- <h4 class="ellipsis mt5 mb5 f-w-600" title="{{content.assetName}}"
+                                                                                        style="text-align: left !important;padding: 5px 0px 5px 10px !important;border-top: 2px solid #cac8c8;">
+                                                                                        Title: {{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span>
+                                                                                    </h4> -->
+                                    <h5 class="grid-asset-title" title="{{content.assetName}}" translate>
+                                        <strong>Title: </strong>{{content.assetName | slice:0:25}} <span
+                                            *ngIf="content.assetName?.length>25">...</span>
+                                    </h5>
+                                    <h6 class="asset-type" title="{{content.assetType}}" translate>
+                                        <strong>Type: </strong>{{content.assetType}}
+                                    </h6>
+                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')" class="ribbon">
+                                        <span style="background-color: #5cb85c;" *ngIf="content.finished" translate>Finished</span>
+                                        <span style="background-color: #819081;" *ngIf="content.opened && !content.finished"
+                                            translate>In
+                                            Progress</span>
+                                    </div>
+                                    <div class="bar">
+                                        <a [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                            data-toggle="tooltip" data-placement="top" title="View"
+                                            (click)="$event.stopPropagation();viewContent(content)">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="bar">
-                                    <a [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
-                                        data-toggle="tooltip" data-placement="top" title="View"
-                                        (click)="$event.stopPropagation();viewContent(content)">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </a>
+                            </div>
+                        </div>
+                        <div *ngIf="type == undefined || type == 'TRACK'" class="col-md-3 col-sm-4 col-xs-12">
+                            <div [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
+                                <div class="grid-box box-shadow" [ngClass]="{'disable-click' : !isCreatedUser && !tracksPlayBook.enableQuiz}" *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
+                                    <div class="grid-image-container">
+                                        <img class="image-fixed" [src]="tracksPlayBook.featuredImage"
+                                            onerror="this.src='assets/images/form.png';" alt="Image Not Found">
+                                    </div>
+                                    <h5 class="grid-asset-title" title="{{tracksPlayBook.quiz.name}}" translate>
+                                        <strong>Title: </strong>{{tracksPlayBook.quiz.name | slice:0:25}} <span
+                                            *ngIf="tracksPlayBook.quiz.name?.length>25">...</span><br>
+                                    </h5>
+                                    <h6 class="asset-type" title="Form" translate>
+                                        <strong>Type: </strong>Form
+                                    </h6>
+                                    <div *ngIf="!isCreatedUser && !tracksPlayBook.enableQuiz && tracksPlayBook.progress != undefined && tracksPlayBook.progress === 100"
+                                        class="ribbon">
+                                        <span style="background-color: #5cb85c;" translate>Finished</span>
+                                    </div>
+                                    <div class="ribbon-right">
+                                        <span style="background-color: #5cb85c;" translate>Quiz</span>
+                                    </div>
+                                    <div class="bar">
+                                        <a *ngIf="!isCreatedUser" [ngClass]="{'disable-click' : !tracksPlayBook.enableQuiz}"
+                                            data-toggle="tooltip" data-placement="top" title="View" (click)="viewQuiz()">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </a>
+                                        <a *ngIf="isCreatedUser" data-toggle="tooltip" data-placement="top" title="View"
+                                            (click)="viewQuiz()">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="type == undefined || type == 'TRACK'" class="col-md-3 col-sm-4 col-xs-12">
-                        <div [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
-                            <div class="grid-box box-shadow" *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
-                                <img class="image-fixed" [src]="tracksPlayBook.featuredImage"
-                                    onerror="this.src='assets/images/form.png';" alt="Image Not Found">
-                                <h5 class="grid-asset-title" title="{{tracksPlayBook.quiz.name}}" translate>
-                                    <strong>Title: </strong>{{tracksPlayBook.quiz.name | slice:0:25}} <span
-                                        *ngIf="tracksPlayBook.quiz.name?.length>25">...</span><br>
-                                </h5>
-                                <h6 class="asset-type" title="Form" translate>
-                                    <strong>Type: </strong>Form
-                                </h6>
-                                <div *ngIf="!isCreatedUser && !tracksPlayBook.enableQuiz && tracksPlayBook.progress != undefined && tracksPlayBook.progress === 100"
-                                    class="ribbon">
-                                    <span style="background-color: #5cb85c;" translate>Finished</span>
-                                </div>
-                                <div class="ribbon-right">
-                                    <span style="background-color: #5cb85c;" translate>Quiz</span>
-                                </div>
-                                <div class="bar">
-                                    <a *ngIf="!isCreatedUser" [ngClass]="{'isDisabled' : !tracksPlayBook.enableQuiz}"
-                                        data-toggle="tooltip" data-placement="top" title="View" (click)="viewQuiz()">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </a>
-                                    <a *ngIf="isCreatedUser" data-toggle="tooltip" data-placement="top" title="View"
-                                        (click)="viewQuiz()">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </section>
+                <div *ngIf="tracksPlayBook.contents?.length==0 && !trackViewLoader" class="alert alert-info text-center">
+                    <strong>No Data Found.</strong>
                 </div>
             </div>
         </section>
