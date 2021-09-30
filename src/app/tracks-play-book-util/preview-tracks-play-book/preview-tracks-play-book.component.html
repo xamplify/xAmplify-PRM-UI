@@ -211,7 +211,7 @@
                                         </td>
                                     </tr>
                                 </ng-container>
-                                <tr *ngIf="type == undefined || type == 'TRACK'" [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
+                                <tr *ngIf="(type == undefined || type == 'TRACK') && tracksPlayBook.quiz" [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
                                     <td style="width: 10%;">
                                         <div class="thumbnail-wrapper">
                                             <img class="custom-image-css" [src]="tracksPlayBook.featuredImage"
@@ -258,8 +258,16 @@
                                 [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}">
                                 <div class="grid-box box-shadow" [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}" (click)="viewContent(content)" >
                                     <div class="grid-image-container">
-                                        <img class="image-fixed" [src]="content.thumbnailPath"
+                                        <div *ngIf="content?.thumbnailPath?.indexOf('assets/images/')===0;then defaultThumbnail else thumbnail">
+                                        </div>
+                                        <ng-template #defaultThumbnail>
+                                            <img class="image-fixed-default" [src]="content.thumbnailPath"
                                             onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
+                                        </ng-template>
+                                        <ng-template #thumbnail>
+                                            <img class="image-fixed" [src]="content.thumbnailPath"
+                                            onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
+                                        </ng-template>
                                         <div *ngIf="content.assetType == 'mp4' || content.assetType == 'wmv'" class="overlay-icon">
                                             <button
                                                 [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
