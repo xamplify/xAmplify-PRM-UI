@@ -219,7 +219,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showExpandButton = false;
 	showShareListPopup : boolean = false;
 	isFormList = false;
-	
+	selectedFilterIndex = 0;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService) {
@@ -347,7 +347,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     loadContactLists(pagination: Pagination) {
-   
         if (this.assignLeads) {
         	this.loadAssignedLeadsLists(pagination);
         } else {
@@ -1595,8 +1594,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.searchContactType = searchType;
 		try {
 			this.resetResponse();
-			if (searchType == 'contactList') {		
-				if (this.searchKey != "") {
+			if (searchType == 'contactList') {	
+				if (this.searchKey != "" && this.searchKey!=undefined) {
 					this.showExpandButton = true;
 					this.isListView = true;
 				} else {
@@ -2325,8 +2324,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	            this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
 	            if (this.isPartner) {
 	                this.defaultPartnerList(this.authenticationService.getUserId());
-	            }
-
+				}
+				if(this.checkingContactTypeName=="Contact"){
+					this.pagination.filterBy = 'MY-CONTACTS';
+				}
 	            this.loadContactLists(this.pagination);
 	            this.contactsCount();
 	            this.loadContactListsNames();
@@ -2535,7 +2536,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     
     closeSharedDetailsPopup(){
     	$("#listSharedDetailsModal").modal().hide();
-    }
+	}
+	
+	filterContacts(filterType:string,index:number){
+		this.customResponse = new CustomResponse();
+		this.selectedFilterIndex = index;//This is to highlight the tab
+		this.pagination.pageIndex = 1;
+		this.pagination.filterBy = filterType;
+		this.loadContactLists(this.pagination);
+	}
 	
 	
 }
