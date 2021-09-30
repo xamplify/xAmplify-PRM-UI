@@ -65,4 +65,7 @@ export class Module {
     prmContentDivsCount = 0;
 
     opportunitiesAccessAsPartner = false;
+    isOnlyPartnerCompany = false;
+    showAddLeadsAndDealsOptionInTheDashboard = false;
+    showCampaignOptionInManageVideos = false;
 }
