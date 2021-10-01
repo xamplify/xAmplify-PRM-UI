@@ -165,21 +165,21 @@
                                                     <img class="custom-image-css" src="{{content?.thumbnailPath}}"
                                                         alt="Image Not Found">
                                                 </div>
-                                                <div *ngIf="content.assetType == 'mp4' || content.assetType == 'wmv'"
+                                                <div *ngIf="content?.assetType != undefined && (videoFormats.indexOf(content.assetType?.toLowerCase())>-1)"
                                                     class="overlay-icon">
                                                     <button
                                                         [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
-                                                        class="list-play-icon-wrap" title="Play Video"
-                                                        (click)="$event.stopPropagation();assetPreview(content)">
+                                                        class="list-play-icon-wrap" title="View"
+                                                        (click)="$event.stopPropagation();viewContent(content)">
                                                         <i class="fa fa-play list-play-icon"></i>
                                                     </button>
                                                 </div>
-                                                <div *ngIf="content.assetType == undefined || (content.assetType != 'mp4' && content.assetType != 'wmv')"
+                                                <div *ngIf="content?.assetType == undefined || !(videoFormats.indexOf(content.assetType?.toLowerCase())>-1)"
                                                     class="overlay-icon">
                                                     <button
                                                         [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
-                                                        class="list-play-icon-wrap" title="Open File"
-                                                        (click)="$event.stopPropagation();assetPreview(content)">
+                                                        class="list-play-icon-wrap" title="View"
+                                                        (click)="$event.stopPropagation();viewContent(content)">
                                                         <i class="fa fa-file list-file-icon"></i>
                                                     </button>
                                                 </div>
@@ -256,40 +256,41 @@
                             id="ContentListDiv_{{content.id}}">
                             <div
                                 [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}">
-                                <div class="grid-box box-shadow" [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}" (click)="viewContent(content)" >
-                                    <div class="grid-image-container">
-                                        <div *ngIf="content?.thumbnailPath?.indexOf('assets/images/')===0;then defaultThumbnail else thumbnail">
-                                        </div>
-                                        <ng-template #defaultThumbnail>
-                                            <img class="image-fixed-default" [src]="content.thumbnailPath"
+                                <div class="grid-box box-shadow"
+                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                    (click)="viewContent(content)">
+                                    <div
+                                        *ngIf="content?.thumbnailPath?.indexOf('assets/images/')===0;then defaultThumbnail else thumbnail">
+                                    </div>
+                                    <ng-template #defaultThumbnail>
+                                        <img class="image-fixed-default" [src]="content.thumbnailPath"
                                             onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
-                                        </ng-template>
-                                        <ng-template #thumbnail>
-                                            <img class="image-fixed" [src]="content.thumbnailPath"
+                                    </ng-template>
+                                    <ng-template #thumbnail>
+                                        <img class="image-fixed" [src]="content.thumbnailPath"
                                             onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
-                                        </ng-template>
-                                        <div *ngIf="content.assetType == 'mp4' || content.assetType == 'wmv'" class="overlay-icon">
-                                            <button
-                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
-                                                class="grid-play-icon-wrap" title="Play Video"
-                                                (click)="$event.stopPropagation();assetPreview(content)">
-                                                <i class="fa fa-play grid-play-icon"></i>
-                                            </button>
-                                        </div>
-                                        <div *ngIf="content.assetType == undefined || (content.assetType != 'mp4' && content.assetType != 'wmv')"
-                                            class="overlay-icon">
-                                            <button
-                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
-                                                class="grid-play-icon-wrap" title="Open File"
-                                                (click)="$event.stopPropagation();assetPreview(content)">
-                                                <i class="fa fa-file grid-file-icon"></i>
-                                            </button>
-                                        </div>
+                                    </ng-template>
+                                    <div *ngIf="content?.assetType != undefined && (videoFormats.indexOf(content.assetType?.toLowerCase())>-1)" class="overlay-icon padding-grid-overlay">
+                                        <button
+                                            [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                            class="grid-play-icon-wrap" title="View"
+                                            (click)="$event.stopPropagation();viewContent(content)">
+                                            <i class="fa fa-play grid-play-icon"></i>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="content?.assetType == undefined || !(videoFormats.indexOf(content.assetType?.toLowerCase())>-1)"
+                                        class="overlay-icon padding-grid-overlay">
+                                        <button
+                                            [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                            class="grid-play-icon-wrap" title="View"
+                                            (click)="$event.stopPropagation();viewContent(content)">
+                                            <i class="fa fa-file grid-file-icon"></i>
+                                        </button>
                                     </div>
                                     <!-- <h4 class="ellipsis mt5 mb5 f-w-600" title="{{content.assetName}}"
-                                                                                        style="text-align: left !important;padding: 5px 0px 5px 10px !important;border-top: 2px solid #cac8c8;">
-                                                                                        Title: {{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span>
-                                                                                    </h4> -->
+                                                                                                                        style="text-align: left !important;padding: 5px 0px 5px 10px !important;border-top: 2px solid #cac8c8;">
+                                                                                                                        Title: {{content.assetName | slice:0:25}} <span *ngIf="content.assetName?.length>25">...</span>
+                                                                                                                    </h4> -->
                                     <h5 class="grid-asset-title" title="{{content.assetName}}" translate>
                                         <strong>Title: </strong>{{content.assetName | slice:0:25}} <span
                                             *ngIf="content.assetName?.length>25">...</span>
@@ -315,11 +316,11 @@
                         </div>
                         <div *ngIf="type == undefined || type == 'TRACK'" class="col-md-3 col-sm-4 col-xs-12">
                             <div [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
-                                <div class="grid-box box-shadow" [ngClass]="{'disable-click' : !isCreatedUser && !tracksPlayBook.enableQuiz}" *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
-                                    <div class="grid-image-container">
-                                        <img class="image-fixed" [src]="tracksPlayBook.featuredImage"
-                                            onerror="this.src='assets/images/form.png';" alt="Image Not Found">
-                                    </div>
+                                <div class="grid-box box-shadow"
+                                    [ngClass]="{'disable-click' : !isCreatedUser && !tracksPlayBook.enableQuiz}"
+                                    *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
+                                    <img class="image-fixed" [src]="tracksPlayBook.featuredImage"
+                                        onerror="this.src='assets/images/form.png';" alt="Image Not Found">
                                     <h5 class="grid-asset-title" title="{{tracksPlayBook.quiz.name}}" translate>
                                         <strong>Title: </strong>{{tracksPlayBook.quiz.name | slice:0:25}} <span
                                             *ngIf="tracksPlayBook.quiz.name?.length>25">...</span><br>
