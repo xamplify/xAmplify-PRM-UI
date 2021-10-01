@@ -202,5 +202,8 @@ export class Properties {
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 
 	teamMemberGroups = 'Team Member Groups';
+
+	activeMasterPartnerList = 'Active Master Partner List';
+	inActiveMasterPartnerList= 'Inactive Master Partner List';
 }
 
