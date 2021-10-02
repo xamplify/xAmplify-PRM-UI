@@ -28,17 +28,13 @@ export class SocialLoginComponent implements OnInit {
 	login(providerName: string) {
 		if (providerName == 'google' && this.isLoggedInVanityUrl == 'true') {
 			let currentModule = localStorage.getItem('vanityCurrentModule');
-			/*let currentModule = "";
-			if (this.assignLeads) {
-				currentModule = 'leads';
-			} else {
-				currentModule = 'contacts';
-			}*/
+			
 			
 			this.contactService.googleVanityLogin(currentModule)
 				.subscribe(
-					data => {
-						this.storeLogin = data;
+					response => {
+						this.storeLogin = response.data;
+						let data = response.data;
 						localStorage.setItem("userAlias", data.userAlias);
 						localStorage.setItem("currentModule", data.module);
 						window.location.href = "" + data.redirectUrl;

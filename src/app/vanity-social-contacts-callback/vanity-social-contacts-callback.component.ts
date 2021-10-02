@@ -20,6 +20,7 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 	currentModule = '';
 	callbackName: string;
 	vanityUrlFilter: string;
+	postingMessage : string = '';
 
 
 	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router,
@@ -71,8 +72,13 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 						if (this.callbackName == 'google') {
 							let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 							if (vanityUrlFilter == 'true') {
-								var message = "isGoogleAuth";
-								this.postingMessageToParentWindow(message);
+							    if(result.statusCode == 402){
+                                    this.postingMessage = result.message;
+                                }else{
+                                this.postingMessage = "isGoogleAuth";;
+                                //var message = "isGoogleAuth";
+                                }
+							    this.postingMessageToParentWindow(this.postingMessage);
 							}else{
 								this.contactService.socialProviderName = 'google';
 							}

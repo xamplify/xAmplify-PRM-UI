@@ -42,6 +42,7 @@ declare var swal, $, Papa: any;
     providers: [FileUtil, SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent, CallActionSwitch]
 })
 export class AddContactsComponent implements OnInit, OnDestroy {
+	//oauthValidationMessage : string ='';
     partnerEmailIds: string[] = [];
     userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 
@@ -1440,10 +1441,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 		let providerName = 'google';
 		this.contactService.googleLogin(currentModule)
 			.subscribe(
-				data => {
+				response => {
+					let data = response.data;
 					this.storeLogin = data;
 					console.log(data);
-					if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+					if (response.statusCode==200) {
 						console.log("AddContactComponent googleContacts() Authentication Success");
 						this.getGoogleContactsUsers();
 						this.xtremandLogger.info("called getGoogle contacts method:");
@@ -1451,7 +1453,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 						localStorage.setItem("userAlias", data.userAlias);
 						localStorage.setItem("currentModule", data.module);
 						localStorage.setItem("statusCode", data.statusCode);
-						localStorage.setItem('vanityUrlFilter', 'true');
+						localStorage.setItem('vanityUrlFilter', 'true');						
 						console.log(data.redirectUrl);
 						console.log(data.userAlias);
 						this.googleCurrentUser = localStorage.getItem('currentUser');
@@ -2840,10 +2842,13 @@ salesForceVanityAuthentication() {
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
 		let tempZohoAuth = localStorage.getItem('isZohoAuth');
+		let tempValidationMessage : string = '';
+		tempValidationMessage = localStorage.getItem('validationMessage');
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isZohoAuth');
+		localStorage.removeItem('validationMessage');
 		if (tempCheckGoogleAuth == 'yes' && !this.isPartner) {
 			this.router.navigate(['/home/contacts/add']);
 		}
@@ -2853,9 +2858,12 @@ salesForceVanityAuthentication() {
 		else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
 			this.router.navigate(['/home/contacts/add']);
 		}
-		else if (tempZohoAuth == 'yes' && !this.isPartner) {
+		else if (tempValidationMessage!=null && !this.isPartner) {
+			localStorage.setItem('validationMessage2', tempValidationMessage);
 			this.router.navigate(['/home/contacts/add']);
 		}
+		
+		
 	}
 
     ngOnInit() {
@@ -2870,8 +2878,16 @@ salesForceVanityAuthentication() {
          	if (localStorage.getItem('vanityUrlFilter')) {
 				localStorage.removeItem('vanityUrlFilter');
 				if (this.contactService.vanitySocialProviderName == 'google') {
+					let message : string =  '';
+					message = localStorage.getItem('validationMessage2');
+					if(this.contactService.oauthCallbackMessage!=null && this.contactService.oauthCallbackMessage.length > 0){
+						 this.customResponse = new CustomResponse('ERROR', message, true);
+					}else if(message!=null && message.length>0){
+						 this.customResponse = new CustomResponse('ERROR', message, true);
+					}else{
 					this.getGoogleContactsUsers();
-					this.contactService.socialProviderName = "nothing";
+                    this.contactService.socialProviderName = "nothing";
+					}
 				} else if (this.contactService.vanitySocialProviderName == 'salesforce') {
 					this.showModal();
 					this.contactService.socialProviderName = "nothing";
@@ -2982,6 +2998,8 @@ salesForceVanityAuthentication() {
 				}
 				else if (e.data == 'isZohoAuth') {
 					localStorage.setItem('isZohoAuth', 'yes');
+				}else if(e.data !=''){
+					localStorage.setItem('validationMessage', e.data);
 				}
 			}, false);
 		
