@@ -32,4 +32,5 @@ export class ContactList {
     vanityUrlFilter : boolean = false;
     vendorCompanyProfileName : string;
     synchronisedList : boolean = false;
+    moduleName : string;
 }

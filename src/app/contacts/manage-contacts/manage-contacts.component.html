@@ -349,7 +349,7 @@
                                   </h5>
                                 </h5>
                                 <h5 style=" position: relative;top: 10px;text-align: left;"
-                                  *ngIf="contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads">
+                                  *ngIf="contactList.moduleName=='SHARE LEADS' && !assignLeads">
                                   <span class="view-banner" data-toggle="tooltip" data-placement="top"
                                     title="assigned status" translate>Shared
                                     leads list</span>
@@ -420,36 +420,36 @@
                                 <div class="actions-block override-actions" style="float:none !important;"
                                   *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)">
                                   <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner())
-                                                    && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner)"
+                                                    && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
                                     data-toggle="tooltip" data-placement="top"
                                     (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                                     title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share"></i>
                                   </a> <a [class.disabled]="contactList.noOfContacts == 0 "
                                     *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isPartner || authenticationService.isPartner() ||
-                                                    (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST'))"
+                                                    (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!assignLeads && contactList.moduleName!='SHARE LEADS'))"
                                     (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList);setListType(contactList.publicList)"
                                     data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_edit}}"> <i
                                       class="fa fa-pencil-square-o"></i>
                                   </a> <a
                                     *ngIf="!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier ||
-                                                    contactList.synchronisedList || ((contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads)  || (assignLeads && contactList.assignedToPartner))"
+                                                    contactList.synchronisedList || ((contactList.moduleName=='SHARE LEADS' && !assignLeads)  || (assignLeads && contactList.assignedToPartner))"
                                     (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                                     data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_info}}"> <i class="fa fa-info"></i>
                                   </a> <a [class.disabled]="contactList.noOfContacts == 0 " data-toggle="tooltip"
                                     data-placement="top"
-                                    *ngIf="assignLeads || (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
+                                    *ngIf="assignLeads || (contactList.moduleName !== 'SHARE LEADS' && !assignLeads)"
                                     title="{{actionsDescription.contact_list_saveAs}}"
                                     (click)="saveAsNewList(contactList.id,contactList.name,contactList.publicList)">
                                     <i class="fa fa-files-o"></i>
                                   </a> <a [class.disabled]="contactList.noOfContacts == 0 "
-                                    *ngIf="assignLeads || (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
+                                    *ngIf="assignLeads || (contactList.moduleName!== 'SHARE LEADS' && !assignLeads)"
                                     (click)="hasDownLoadAccess(contactList.id, contactList.name)" data-toggle="tooltip"
                                     data-placement="top" title="{{actionsDescription.contact_list_download}}"
                                     data-rel="fancybox-button"> <i class="fa fa-download"></i>
                                   </a> <span
-                                    *ngIf="(contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.contactType!='ASSIGNED_LEADS_LIST'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
+                                    *ngIf="(contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
                                     <a data-toggle="tooltip" data-placement="top"
                                       title="{{actionsDescription.contact_list_synchronize}}" 
 									[class.disabled]= "contactList.socialNetwork=='GOOGLE' && loggedInUserId != contactList.uploadedUserId"
@@ -459,7 +459,7 @@
                                     </a>
                                   </span> <a
                                     *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId))
-                                                    && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST') && !contactList.formList)"
+                                                    && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
                                     (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_delete}}">
                                     <i class="fa fa-trash-o"></i>
@@ -514,7 +514,7 @@
                             </span>
                           </h3>
                         </div>
-                        <div id="container" *ngIf="contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads">
+                        <div id="container" *ngIf="contactList.moduleName=='SHARE LEADS' && !assignLeads">
                           <h3 translate style="font-size: 14px;">
                             Shared leads list
                             <span class="arrow"></span>
@@ -567,14 +567,14 @@
                         <div class="bar" 
                           *ngIf="!authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
                           <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember|| authenticationService.module.isVendorTier || (hasContactRole) || authenticationService.isOnlyPartner())
-                                                && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner)"
+                                                && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
                             data-toggle="tooltip" data-placement="top" style="width:11%;"
                             (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                             title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share"></i>
                           </a>
                           <a style="width:11%;" [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
                             *ngIf="(hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isPartner() ||
-                                                (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList  && ((assignLeads && !contactList.assignedToPartner) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST'))"
+                                                (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList  && ((assignLeads && !contactList.assignedToPartner) || (!assignLeads && contactList.moduleName!='SHARE LEADS'))"
                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList);setListType(contactList.publicList)"
                             data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}"
                             data-rel="fancybox-button"> <i class="fa fa-pencil-square-o"></i>
@@ -582,13 +582,13 @@
                           <a [class.disabled]="!contactList.emailValidationInd" style="width:11%;"
 
                             *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) || contactList.synchronisedList
-                                                || ((contactList.contactType=='ASSIGNED_LEADS_LIST' && !assignLeads)  || (assignLeads && contactList.assignedToPartner))"
+                                                || ((contactList.moduleName=='SHARE LEADS' && !assignLeads)  || (assignLeads && contactList.assignedToPartner))"
                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                             data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}"
                             data-rel="fancybox-button"> <i class="fa fa-info" style="color: white;"></i>
                           </a> 
                           <a data-toggle="tooltip" data-placement="top"
-                            *ngIf="assignLeads || (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
+                            *ngIf="assignLeads || (contactList.moduleName !== 'SHARE LEADS' && !assignLeads)"
                             title="{{actionsDescription.contact_list_saveAs}}"
                             (click)="saveAsNewList(contactList.id,contactList.name, contactList.publicList)"
                             [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
@@ -598,13 +598,13 @@
                           </a> <a [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0" style="width:11%;"
 
                             (click)="hasDownLoadAccess(contactList.id, contactList.name)"
-                            *ngIf="assignLeads || (contactList.contactType !== 'ASSIGNED_LEADS_LIST' && !assignLeads)"
+                            *ngIf="assignLeads || (contactList.moduleName !== 'SHARE LEADS' && !assignLeads)"
                             data-toggle="tooltip" data-placement="top"
                             title="{{actionsDescription.contact_list_download}}" data-rel="fancybox-button"> <i
                               class="fa fa-download"></i>
                           </a>
                           <ng-container
-                            *ngIf="(contactList.contactType=='ASSIGNED_LEADS_LIST' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.contactType!='ASSIGNED_LEADS_LIST'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
+                            *ngIf="(contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
                             <a data-toggle="tooltip" data-placement="top" 
                               title="{{actionsDescription.contact_list_synchronize}}"
                               [class.disabled]="!contactList.emailValidationInd"
@@ -616,7 +616,7 @@
                           </ng-container>
                           <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList" style="width:11%;"
                             *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember|| authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId)
-                                                || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST') && !contactList.formList)"
+                                                || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
                             (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
                             title="{{actionsDescription.contact_list_delete}}" data-rel="fancybox-button" lang="{{contactList.id}}"> <i
                               class="fa fa-trash-o"></i>

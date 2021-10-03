@@ -690,7 +690,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						if (data.statusCode == 402) {
 							this.customResponse = new CustomResponse('INFO', data.message, true);
 						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true);
+							let successMessage = this.assignLeads?this.properties.LEAD_LIST_SYNCHRONIZATION_SUCCESS:this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS;
+							this.customResponse = new CustomResponse('SUCCESS', successMessage, true);
 							this.loadContactLists(this.pagination);
 							this.contactsCount();
 						}
@@ -1187,7 +1188,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         value.legalBasis = selectedLegalBasisOptions;
                     });
                     this.contactListObject.name = listName;
-                    this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+                    this.contactListObject.contactType = "CONTACT";
                     this.contactListObject.socialNetwork = "MANUAL";
                     this.contactListObject.publicList = true;
                     this.userUserListWrapper.users = this.allselectedUsers;
@@ -1974,9 +1975,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     	contactListObject.name = contactListName;
     	contactListObject.id = contactSelectedListId;
     	contactListObject.isPartnerUserList = false;
-    	contactListObject.contactType = 'ASSIGNED_LEADS_LIST';
     	contactListObject.publicList = true;
-    	contactListObject.socialNetwork = 'MANUAL';
 
         this.contactService.saveAsSharedLeadsList(contactListObject)
             .subscribe(
@@ -2267,7 +2266,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                   || this.contactService.socialProviderName == 'zoho') {
             	  this.contactService.socialProviderName = "nothing";
                   if (this.contactService.oauthCallbackMessage.length > 0) {
-                	  this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
+                	  let oauthCallbackValidatonMessage = this.contactService.oauthCallbackMessage;
+                	  this.contactService.oauthCallbackMessage = "";
+                	  this.customResponse = new CustomResponse('ERROR', oauthCallbackValidatonMessage, true);
                   } else {
                 	  this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
                 	  this.socialContact.contactListId = JSON.parse(localStorage.getItem('selectedContactListId'));

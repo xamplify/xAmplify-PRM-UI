@@ -52,7 +52,7 @@ export class ContactService {
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
 	hubSpotContactUrl = this.authenticationService.REST_URL + 'hubSpot';
-	oauthCallbackMessage = "";
+	oauthCallbackMessage : string = "";
     constructor( private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
         console.log( logger );
     }
