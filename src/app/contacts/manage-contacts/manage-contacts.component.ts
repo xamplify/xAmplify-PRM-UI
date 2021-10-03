@@ -1592,7 +1592,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	search(searchType: string) {
 		this.searchContactType = searchType;
-		this.searchKey = this.searchKey.trim();
+		this.searchKey = $.trim(this.searchKey);
 		try {
 			this.resetResponse();
 			if (searchType == 'contactList') {	
@@ -1971,10 +1971,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 const name = this.saveAsListName;
                 const self = this;
                 this.isValidLegalOptions = true;
-                const inputName = name.toLowerCase().replace(/\s/g, '');
+				const inputName = $.trim(name.toLowerCase().replace(/\s/g, ''));
+				const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+				const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
                 if ($.inArray(inputName, self.names) > -1) {
                     this.saveAsError = 'This list name is already taken.';
-                } else {
+				}else if(inputName==activeMasterPartnerList || inputName==inActiveMasterPartnerList){
+					this.saveAsError = 'This list name cannot be added';
+				}else {
                     if (name !== "" && name.length < 250) {
                         this.saveAsError = '';
                         this.validateLegalBasisOptions();
@@ -2004,11 +2008,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     saveAsLeadsInputChecking() {
         try {
-            const name = this.saveAsListName;
+            const name =  $.trim(this.saveAsListName.toLowerCase().replace(/\s/g, ''));;
             const self = this;
             this.isValidLegalOptions = true;
-            const inputName = name.toLowerCase().replace(/\s/g, '');
-            if (name !== "" && name.length < 250) {
+			const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+			const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+			if(name==activeMasterPartnerList || name==inActiveMasterPartnerList){
+				this.saveAsError = 'This list name cannot be added';
+			}else  if (name !== "" && name.length < 250) {
                 this.saveAsError = '';
                 this.validateLegalBasisOptions();
                 if (this.saveAsTypeList === 'manage-contacts') {
@@ -2019,9 +2026,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         this.saveSelectedUsers(name, this.selectedLegalBasisOptions, this.model.isPublic);
                     }
                 }
-            }
-            else if (name == "") { this.saveAsError = 'List Name is Required.'; }
-            else { this.saveAsError = 'You have exceeded 250 characters!'; }
+            } else if (name == "") { this.saveAsError = 'List Name is Required.'; }
+             else { this.saveAsError = 'You have exceeded 250 characters!'; }
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAs()");
         }
