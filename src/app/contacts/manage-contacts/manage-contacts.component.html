@@ -459,13 +459,17 @@
                                       (click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
                                       <i class="fa fa-refresh" aria-hidden="true"></i>
                                     </a>
-                                  </span> <a
-                                    *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId))
-                                                    && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST') && !contactList.formList)"
-                                    (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
-                                    title="{{actionsDescription.contact_list_delete}}">
-                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                  </a>
+                                  </span> 
+                                  <!---XNFR-81----->
+                                <ng-container *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList">
+                                    <a
+                                      *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId))
+                                                      && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST') && !contactList.formList)"
+                                      (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
+                                      title="{{actionsDescription.contact_list_delete}}">
+                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                                  </ng-container>
                                   <a *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
                                     data-toggle="tooltip" data-placement="top"
                                     (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
@@ -611,13 +615,16 @@
                               <i class="fa fa-refresh" aria-hidden="true" style="color: white;"></i>
                             </a>
                           </ng-container>
-                          <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList" style="width:11%;"
+                          <!---XNFR-81----->
+                          <ng-container *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList">
+                            <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList" style="width:11%;"
                             *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember|| authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId)
                                                 || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST') && !contactList.formList)"
                             (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
                             title="{{actionsDescription.contact_list_delete}}" data-rel="fancybox-button" lang="{{contactList.id}}"> <i
                               class="fa fa-trash-o" aria-hidden="true"></i>
                           </a>
+                          </ng-container>
                            <a *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
                                     data-toggle="tooltip" data-placement="top" style="width:11.3%;"
                                     (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
@@ -748,9 +755,10 @@
                       <ul class="dropdown-menu pull-right">
                         <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads "><a (click)="saveAs()"
                             translate> Save As </a></li>
-                        <li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads"><a id="delete_button"
-                            (click)="invalidContactsShowAlert()" translate>
-                            Delete </a>
+                        <li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
+                          <a id="delete_button" (click)="invalidContactsShowAlert()" translate>
+                            Delete 
+                          </a>
                         </li>
                         <li>
                           <a id="delete_button" *ngIf="!sharedLeads"

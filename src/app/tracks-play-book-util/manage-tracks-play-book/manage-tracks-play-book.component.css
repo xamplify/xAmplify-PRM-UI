@@ -15,7 +15,8 @@
     border-radius: 1px; */
 
     max-height: 150px;
-    height: 170px;
+    min-height: 150px;
+    height: 150px;
     max-width: 100%;
     overflow: hidden;
     background-size: cover;
