@@ -218,7 +218,7 @@
 															<li><a *ngIf="selectedAddContactsOption != 8 && !isSegmentation" id="save_button" (click)="saveContacts()">Save
 															</a></li>
 															<li><a id="saveAs_button"
-																*ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST'))"
+																*ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
 																(click)="saveAs(true)" translate>Save As </a></li>
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8 && (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !sharedLeads"
@@ -226,12 +226,12 @@
 															<li><a id="download_empy_csv"
 																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))" translate>Download CSV Template</a></li>
 															<li><a id="delete_button"
-																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) && !sharedLeads"
+																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!sharedLeads)) && !sharedLeads"
 																(click)="showAlert(selectedContactListId)" translate> Delete</a></li>
 														</ul>
 													</div>
 													</div>
-													<button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) "
+													<button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
 															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070" translate> Save As
 														</button>
 								</div>
@@ -239,7 +239,7 @@
 									<div class="table-toolbar">
 										<div class="clearfix">
 											<ng-container
-												*ngIf="showAddOptions && ((assignLeads && !contactService?.assignedToPartner) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST'))">
+												*ngIf="showAddOptions && ((assignLeads && !contactService?.assignedToPartner) || (!sharedLeads))">
 												<div class="col-xs-12 col-md-6 col-sm-6 p0" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
 																					 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner ||
 																					 (hasContactRole && loggedInUserId==uploadedUserId) || assignLeads">
@@ -751,18 +751,18 @@
 															</td>
 															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard && !sharedLeads">
 															<div class="actions-block override-actions" style="width:170px" >
-															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')|| (assignLeads && !contactService?.assignedToPartner)">
+															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)" *ngIf= "(!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																 </a>
-																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner)">
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)" *ngIf= "(!sharedLeads) || (assignLeads && !contactService?.assignedToPartner)">
 																		<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
 
 																<ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
-																	<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')">
+																	<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!sharedLeads)">
 																		<i class="fa fa-bullhorn" aria-hidden="true"></i></a>
 																</ng-container>
-                                                                <a *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') "   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
+                                                                <a *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) "   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
                                                                 <i class="fa fa-line-chart" aria-hidden="true"></i></a>
                                                             </div>
 															</td>

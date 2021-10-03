@@ -2150,7 +2150,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
-            //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.contactType = "CONTACT";
             this.contactListObject.socialNetwork = "MANUAL";
             this.contactListObject.publicList = true;
             this.setLegalBasisOptions(this.allselectedUsers);
@@ -2546,7 +2546,7 @@ salesForceVanityAuthentication() {
         	     this.contactListObject = new ContactList;
                  this.contactListObject.name = this.model.contactListName;
                  this.contactListObject.isPartnerUserList = this.isPartner;
-                 //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+                 this.contactListObject.contactType = "CONTACT";
                  this.contactListObject.socialNetwork = "MANUAL";
                  this.contactListObject.publicList = true;
                  this.setLegalBasisOptions(this.allselectedUsers);
@@ -3362,7 +3362,7 @@ vanityCheckingMarketoContactsAuthentication(){
         	     this.contactListObject = new ContactList;
                  this.contactListObject.name = this.model.contactListName;
                  this.contactListObject.isPartnerUserList = this.isPartner;
-                 //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+                 this.contactListObject.contactType = "CONTACT";
                  this.contactListObject.socialNetwork = "MANUAL";
                  this.contactListObject.publicList = true;
                  this.setLegalBasisOptions(this.allselectedUsers);
@@ -3935,7 +3935,7 @@ vanityCheckingMarketoContactsAuthentication(){
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
-            //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.contactType = "CONTACT";
             this.contactListObject.socialNetwork = "MANUAL";
             this.contactListObject.publicList = true;
             this.setLegalBasisOptions(this.allselectedUsers);
