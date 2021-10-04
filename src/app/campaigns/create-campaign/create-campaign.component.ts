@@ -1547,24 +1547,37 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
     highlightRow(contactList: any, event: any) {
         let contactId = contactList.id;
-        let isChecked = $('#' + contactId).is(':checked');
-        if (isChecked) {
-            $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
-            this.selectedContactListIds.push(contactId);
-            this.userListDTOObj.push(contactList);
-        } else {
-            $('#campaignContactListTable_' + contactId).removeClass('contact-list-selected');
-            this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
-            this.userListDTOObj = this.refService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
+        let count = contactList.count;
+        let isEmptyActiveMasterPartnerList = count==0 && contactList.name==this.properties.activeMasterPartnerList;
+        let isEmptyInActiveMasterPartnerList = count==0 && contactList.name==this.properties.inActiveMasterPartnerList;
+        if(isEmptyActiveMasterPartnerList || isEmptyInActiveMasterPartnerList){
+            this.refService.showSweetAlertErrorMessage('This list cannot be selected');
+            $('#' + contactId).prop("checked", false);
+        }else{
+            let isChecked = $('#' + contactId).is(':checked');
+            if (isChecked) {
+                $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
+                this.selectedContactListIds.push(contactId);
+                this.userListDTOObj.push(contactList);
+            } else {
+                $('#campaignContactListTable_' + contactId).removeClass('contact-list-selected');
+                this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
+                this.userListDTOObj = this.refService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
+            }
+            this.contactsUtility();
+            event.stopPropagation();
         }
-        this.contactsUtility();
-        event.stopPropagation();
+        
     }
     highlightContactRow(contactList: any, event: any, count: number, isValid: boolean) {
         let contactId = contactList.id;
         if (isValid) {
             this.emptyContactsMessage = "";
-            if (count > 0) {
+            let isEmptyActiveMasterPartnerList = count==0 && contactList.name==this.properties.activeMasterPartnerList;
+            let isEmptyInActiveMasterPartnerList = count==0 && contactList.name==this.properties.inActiveMasterPartnerList;
+            if(isEmptyActiveMasterPartnerList || isEmptyInActiveMasterPartnerList){
+                this.refService.showSweetAlertErrorMessage('This list cannot be selected');
+            }else if (count > 0) {
                 let isChecked = $('#' + contactId).is(':checked');
                 if (isChecked) {
                     //Removing Highlighted Row
