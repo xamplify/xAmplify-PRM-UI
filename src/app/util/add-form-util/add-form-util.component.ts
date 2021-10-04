@@ -28,8 +28,8 @@ import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-c
 import { EnvService } from 'app/env.service'
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import * as htmlToImage from 'html-to-image';
-import { toPng, toJpeg, toBlob, toPixelData } from 'html-to-image';
 import { FormSubType } from 'app/forms/models/form-sub-type.enum';
+import { Properties } from '../../common/models/properties';
 
 declare var $: any, swal: any, CKEDITOR: any;
 
@@ -38,7 +38,7 @@ declare var $: any, swal: any, CKEDITOR: any;
   selector: 'app-add-form-util',
   templateUrl: './add-form-util.component.html',
   styleUrls: ['./add-form-util.component.css','../../dashboard/company-profile/edit-company-profile/edit-company-profile.component.css', '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'],
-  providers: [RegularExpressions,FormService,CallActionSwitch, HttpRequestLoader, SocialPagerService, Pagination, ActionsDescription, ContentManagement]
+  providers: [RegularExpressions,FormService,CallActionSwitch, HttpRequestLoader, SocialPagerService, Pagination, ActionsDescription, ContentManagement,Properties]
 
 })
 export class AddFormUtilComponent implements OnInit, OnDestroy {
@@ -181,7 +181,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
-      private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
+      private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, 
+      public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement,public properties:Properties) {
       this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
       this.loggedInUserId = this.authenticationService.getUserId();
       let categoryId = this.route.snapshot.params['categoryId'];
@@ -467,8 +468,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
   validateFormNames(formName: string) {
       if ($.trim(formName).length > 0) {
-          if (this.names.indexOf($.trim(formName).toLowerCase()) > -1 && $.trim(formName).toLowerCase() != this.existingFormName) {
-              this.addFormNameErrorMessage(this.duplicateLabelMessage);
+        const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+        const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+        const name =  $.trim(formName.toLowerCase().replace(/\s/g, ''));
+        if(name==activeMasterPartnerList || name==inActiveMasterPartnerList){
+            this.addFormNameErrorMessage("This name cannot be used");
+        }else  if (this.names.indexOf($.trim(formName).toLowerCase()) > -1 && 
+            $.trim(formName).toLowerCase() != this.existingFormName) {
+            this.addFormNameErrorMessage(this.duplicateLabelMessage);
           } else {
               this.removeFormNameErrorClass();
           }
@@ -477,7 +484,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       }
   }
 
-  sumbitOnEnter(event) {
+  sumbitOnEnter(event:any) {
       if (event.keyCode == 13 && this.form.isValid) {
           this.unBlurDiv();
       }
