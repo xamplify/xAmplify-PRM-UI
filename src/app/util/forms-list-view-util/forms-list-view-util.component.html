@@ -82,7 +82,8 @@
                                             </span>
                                             <span class="gridHeader">Form</span>
                                         </th>
-                                        <th class="hidden-xs text-center">Created On</th>
+                                        <th class="text-center" scope="col">Created On</th>
+                                        <th class="text-center" scope="col">Updated On</th>
                                         <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width">Actions</th>
                                         <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner">Actions</th>
                                     </tr>
@@ -97,61 +98,65 @@
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{form.name}}">
-                                                <span><b>{{form.name}}</b></span>
+                                                <span><strong>{{form.name}}</strong></span>
                                             </h4>
                                             <h6 class="moreipsis" title="{{form.categoryName}}">
-                                                <span> Folder <b>{{form.categoryName}}</b></span>
+                                                <span> Folder <strong>{{form.categoryName}}</strong></span>
                                             </h6>
                                             <h6 class="moreipsis" title="{{form.createdName}}">
-                                                <span> Created By <b>{{form.createdName}}</b></span>
+                                                <span> Created By <strong>{{form.createdName}}</strong></span>
                                             </h6>
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
                                         </td>
-                                        <td class="hidden-xs text-center">
-                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
+                                        <td class="text-center">
+                                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.createdDateString">
                                             </app-timestamp>
+                                        </td>
+                                        <td *ngIf="form?.updatedDateString?.length>0" class="text-center">
+                                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.updatedDateString">
+                                            </app-timestamp>
+                                        </td>
+                                        <td *ngIf="form?.updatedDateString?.length==0" class="text-center">
+                                           -
                                         </td>
                                         <td id="actions-row">
                                             <div class="actions-block override-actions">
                                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
                                                     (click)="edit(form.id)">
-                                                    <i class="fa fa-pencil-square-o"></i>
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
                                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
-                                                    <i class="fa fa-eye"></i>
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a>
                                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
-                                                    <i class="fa fa-clipboard"></i>
+                                                    <i class="fa fa-clipboard" aria-hidden="true"></i>
                                                 </a>
                                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
                                                     <a class="cursor">
-                                                        <i class="fa fa-line-chart"></i>
+                                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                         <span class="badge" id="notification">{{form.count}}</span>
                                                     </a>
-                                                    <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
-                                                        <img src="../assets/images/disabled-icon.png">
-                                                    </a> -->
                                                 </ng-container>
                                                 <ng-container *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
                                                     <!-------------Disable onclick if count==0   ----->
                                                     <ng-container *ngIf="form.count==0">
                                                         <a class="cursor">
-                                                            <i class="fa fa-line-chart"></i>
+                                                            <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                             <span class="badge" id="notification">{{form.count}}</span>
                                                         </a>
                                                     </ng-container>
                                                     <ng-container *ngIf="form.count>0">
                                                         <a data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip" data-placement="top" title="Form Analytics">
-                                                            <i class="fa fa-line-chart"></i>
+                                                            <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                             <span class="badge" id="notification">{{form.count}}</span>
                                                         </a>
                                                     </ng-container>
                                                 </ng-container>
                                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" id="template-delete" (click)="confirmDelete(form)"
                                                     data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="fa fa-trash-o"></i>
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                         </td>

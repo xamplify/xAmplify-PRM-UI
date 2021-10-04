@@ -158,8 +158,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                 if (this.statusCode == 200) {
                     pagination.totalRecords = data.totalRecords;
                     this.sortOption.totalRecords = data.totalRecords;
-                    $.each(data.forms, function (index, form) {
+                    $.each(data.forms, function (_index, form:any) {
                         form.createdDateString = new Date(form.createdDateString);
+                        if(form.updatedString!=undefined && $.trim(form.updatedString).length>0){
+                            form.updatedDateString = new Date(form.updatedDateString);
+                        }
                     });
                     pagination = this.pagerService.getPagedItems(pagination, data.forms);
                 }
