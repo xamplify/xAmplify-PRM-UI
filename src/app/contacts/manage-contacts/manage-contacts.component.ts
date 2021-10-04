@@ -2008,7 +2008,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     saveAsLeadsInputChecking() {
         try {
-            const name =  $.trim(this.saveAsListName.toLowerCase().replace(/\s/g, ''));;
+            const name =  $.trim(this.saveAsListName.toLowerCase().replace(/\s/g, ''));
             const self = this;
             this.isValidLegalOptions = true;
 			const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));

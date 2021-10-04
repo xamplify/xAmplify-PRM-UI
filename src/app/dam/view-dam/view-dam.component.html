@@ -38,12 +38,12 @@
 				<div [hidden]="assetViewLoader">
 				<div class="row">
 					<div class="col-md-8 col-lg-8">
-						<div class="portlet light">
+						<div class="portlet light mhtpx">
 							<div class="portlet-title port-heading">
 								<div class="caption" style="color: #000 !important;">Overview</div>
 							</div>
 							<div style="margin-left: 10px;">
-								<h2>
+								<h2 title="{{assetDetailsViewDto?.assetName}}">
 									<strong>{{assetDetailsViewDto?.assetName |
 										slice:0:50}}</strong> <span
 										*ngIf="assetDetailsViewDto?.assetName?.length>50">..</span>

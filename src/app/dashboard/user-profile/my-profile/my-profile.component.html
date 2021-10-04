@@ -96,9 +96,9 @@
                                 authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}"  *ngIf=" !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
-                            &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                               authenticationService.isVendor() || authenticationService.isVendorPartner())">
+                            <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}"  *ngIf="!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                               authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
+                               || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember)">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}" (click)="activateTab('leadPipelines');clearCustomResponse()"> {{properties.leadPipelines | translate}}</a>
                             </li>
                             <li [ngClass]="{'active-tab': activeTabName == 'dealPipelines'}" 

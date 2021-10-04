@@ -121,8 +121,8 @@
           
           <!--Design (Email Templates/ Forms Pages)-->
           <li  *ngIf="menuItem?.design" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') || 
-              (location.path().includes('forms') && !location.path().includes('forms/partner')) || (location.path().includes('pages')
-               && !location.path().includes('pages/partner') )  }">
+              (location.path().includes('forms') && !location.path().includes('forms/partner') && !location.path().includes('forms/clpf') && !location.path().includes('/analytics/cfa') )
+               ||(location.path().includes('pages') && !location.path().includes('pages/partner')) && !location.path().includes('campaign')  }">
             <a [routerLink]="['./design/add']">
                 <i class="fa fa-paint-brush" aria-hidden="true"></i>
                 <span class="title" translate>Design</span>
@@ -131,7 +131,8 @@
           </li>
 
           <!---Campaigns---->
-          <li *ngIf="menuItem?.campaign || menuItem?.campaignAccessAsPartner" [ngClass]="{'active':(location.path().includes('campaigns') || location.path().includes('campaign'))}">
+          <li *ngIf="menuItem?.campaign || menuItem?.campaignAccessAsPartner" [ngClass]="{'active':(location.path().includes('campaigns') || 
+                    location.path().includes('campaign') || location.path().includes('clpf') || location.path().includes('/analytics/cfa'))}">
             <a href="javascript:;" (click)="openOrCloseTabs('campaigns')">
                 <i class="fa fa-bullhorn" aria-hidden="true"></i>
                 <span class="title" translate>Campaign</span>

@@ -129,7 +129,8 @@
                                             <span class="gridHeader" translate>Form</span>
                                         </th>
 
-                                        <th class="hidden-xs text-center" translate>Created On</th>
+                                        <th scope="row" class="text-center" translate>Created On</th>
+                                        <th scope="row" class="text-center" translate>Updated On</th>
                                         <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width" translate>Actions</th>
                                         <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner" translate>Actions</th>
                                     </tr>
@@ -156,9 +157,16 @@
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
                                         </td>
-                                        <td class="hidden-xs text-center">
-                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
+                                        <td class="text-center">
+                                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.createdDateString">
                                             </app-timestamp>
+                                        </td>
+                                        <td *ngIf="form?.updatedDateString?.length>0" class="text-center">
+                                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.updatedDateString">
+                                            </app-timestamp>
+                                        </td>
+                                        <td *ngIf="form?.updatedDateString?.length==0" class="text-center">
+                                           -
                                         </td>
                                         <td id="actions-row">
                                             <div class="actions-block override-actions custom-width-icon">
