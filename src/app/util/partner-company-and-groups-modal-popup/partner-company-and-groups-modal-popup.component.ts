@@ -196,12 +196,12 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 	getAllFilteredResults(type: string, pagination: Pagination, sortOption: SortOption) {
 		this.customResponse = new CustomResponse();
 		pagination.pageIndex = 1;
-		pagination.searchKey = sortOption.searchKey.trim();
+		pagination.searchKey = sortOption.searchKey;
 		if (type == "partnerCompanies") {
 			pagination = this.utilService.sortOptionValues(sortOption.selectedDamPartnerDropDownOption, pagination);
 			this.findPartnerCompanies(pagination);
 		} else if (type == "partnerGroups") {
-			if (pagination.searchKey != undefined && pagination.searchKey != null && pagination.searchKey != "") {
+			if (pagination.searchKey != undefined && pagination.searchKey != null && pagination.searchKey.trim() != "") {
 				this.showExpandButton = true;
 			} else {
 				this.showExpandButton = false;

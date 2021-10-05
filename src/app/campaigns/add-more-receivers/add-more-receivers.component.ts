@@ -124,11 +124,10 @@ export class AddMoreReceiversComponent implements OnInit {
       if(event===13 && type==='contact'){ this.searchContactList();}
   }
   searchContactList(){
-      this.contactSearchInput = this.contactSearchInput.trim();
       this.contactsPagination.pageIndex = 1;
       this.contactsPagination.searchKey = this.contactSearchInput;
       if (this.contactsPagination.searchKey != undefined && this.contactsPagination.searchKey != null 
-        && this.contactsPagination.searchKey != "") {
+        && this.contactsPagination.searchKey.trim() != "") {
         this.showExpandButton = true;
     } else {
         this.showExpandButton = false;
