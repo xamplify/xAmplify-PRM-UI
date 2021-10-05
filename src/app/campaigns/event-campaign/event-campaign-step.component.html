@@ -909,7 +909,7 @@ a.disabled {
 															<td class="text-center">
 																<div class="form-group">
 																	<input value="{{contactList.id}}" name="campaignContact[]"
-																		[attr.disabled]="isPreviewEvent? '' : null" type='checkbox'
+																		[attr.disabled]="isPreviewEvent || ((contactList.name==properties.activeMasterPartnerList  || contactList.name==properties.inActiveMasterPartnerList) && contactList.count==0)? '' : null" type='checkbox'
 																		id='{{contactList.id}}'
 																		[checked]="parternUserListIds.indexOf(contactList.id)>-1"
 																		(click)="$event.stopPropagation();partnerHighlightRow(contactList)"

@@ -895,7 +895,9 @@
                                                                 (mouseover)='showContactsAlert(contacts.count)' [attr.title]="emptyContactsMessage">
                                                                 <td class="text-center">
                                                                     <div class="form-group">
-                                                                        <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
+                                                                        <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
+                                                                        name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)"
+                                                                         [disabled]="(contacts.name==properties.activeMasterPartnerList  || contacts.name==properties.inActiveMasterPartnerList) && contacts.count==0">
                                                                     </div>
                                                                 </td>
                                                                 <td class="cw" *ngIf="showExpandButton">
