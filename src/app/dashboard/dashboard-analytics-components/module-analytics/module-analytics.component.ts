@@ -28,6 +28,7 @@ export class ModuleAnalyticsComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   showDealForm: boolean;
   @Output() notifyShowDealForm = new EventEmitter();
+  @Output() notifyLeadSuccess = new EventEmitter();
 
   constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
     public authenticationService: AuthenticationService,public referenceService:ReferenceService,private route: ActivatedRoute,private vanityUrlService:VanityURLService) { 
@@ -90,7 +91,8 @@ export class ModuleAnalyticsComponent implements OnInit {
      }
 
      showSubmitLeadSuccess() {  
-      this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+      //this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+      this.notifyLeadSuccess.emit();
       this.showLeadForm = false;
     }
 

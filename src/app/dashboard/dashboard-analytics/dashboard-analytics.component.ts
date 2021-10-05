@@ -407,5 +407,9 @@ showCampaignDetails(campaign:any){
     this.showDealForm = false;
   }
 
+  showSubmitLeadSuccess() {
+    this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+  }
+
 
 }
