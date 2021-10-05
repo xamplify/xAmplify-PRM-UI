@@ -36,5 +36,6 @@ export class SocialContact{
     publicList=false;
     contactCompany:string;
     contactListId : number;
+    moduleName : string="";
     
 }

@@ -178,6 +178,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     sharedPartnerDetails: any;
     //leadsPartnerEmail = "";
 	isLoggedInVanityUrl: any;
+    public alias: any;
 	
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
@@ -813,7 +814,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else {
 
             this.loading = true;
-            this.contactService.saveContactList(this.newUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+            this.contactService.saveContactList(this.newUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
                 .subscribe(
                 data => {
                     if (data.access) {
@@ -851,6 +852,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveAssignedLeadsList(){
         this.loading = true;
+        this.contactListObject.moduleName = this.getModuleName();
+        this.contactListObject.alias = this.salesforceListViewId;
         this.userUserListWrapper.userList = this.contactListObject;
 
         this.contactService.saveAssignedLeadsList( this.userUserListWrapper)
@@ -989,7 +992,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.loading = true;
             this.xtremandLogger.info("update contacts #contactSelectedListId " + " data => " + JSON.stringify(this.clipboardUsers));
             this.setLegalBasisOptions(this.clipboardUsers);
-            this.contactService.saveContactList(this.clipboardUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+            this.contactService.saveContactList(this.clipboardUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
                 .subscribe(
                 data => {
                     if (data.access) {
@@ -1119,7 +1122,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else {
             this.loading = true;
             this.setLegalBasisOptions(this.contacts);
-            this.contactService.saveContactList(this.contacts, this.model.contactListName, this.isPartner, this.model.isPublic)
+            this.contactService.saveContactList(this.contacts, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
                 .subscribe(
                 data => {
                     if (data.access) {
@@ -1646,6 +1649,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.loading = true;
             this.setLegalBasisOptions(this.socialContact.contacts);
             this.socialContact.publicList = this.model.isPublic;
+            this.socialContact.moduleName = this.getModuleName();
             this.contactService.saveSocialContactList(this.socialContact)
                 .subscribe(
                 data => {
@@ -1720,7 +1724,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
                 .subscribe(
                 data => {
                     if (data.access) {
@@ -2069,7 +2073,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         	      this.contactListObject = new ContactList;
                   this.contactListObject.name = this.model.contactListName;
                   this.contactListObject.isPartnerUserList = this.isPartner;
-                  //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+                  this.contactListObject.contactType = this.contactType;
                   this.contactListObject.synchronisedList = true;
                   this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
                   this.contactListObject.publicList = true;
@@ -2083,6 +2087,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.setLegalBasisOptions(this.socialContact.contacts);
             this.socialContact.publicList = this.model.isPublic;
             //  this.socialContact.contactType = 'CONTACT';//Added after oAuth2.0 implementation by Sravan
+            this.socialContact.moduleName = this.getModuleName();
             this.contactService.saveSocialContactList(this.socialContact)
                 .subscribe(
                 data => {
@@ -2160,7 +2165,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
                 .subscribe(
                 data => {
                     if (data.access) {
@@ -2556,7 +2561,7 @@ salesForceVanityAuthentication() {
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
                 .subscribe(
                 data => {
                     if (data.access) {
@@ -2624,7 +2629,7 @@ salesForceVanityAuthentication() {
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
-            //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+            this.contactListObject.contactType = this.contactType;
             this.contactListObject.synchronisedList = true;
             this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
             this.contactListObject.publicList = true;
@@ -2637,6 +2642,7 @@ salesForceVanityAuthentication() {
             this.loading = true;
             this.setLegalBasisOptions(this.socialContact.contacts);
             this.socialContact.publicList = this.model.isPublic;
+            this.socialContact.moduleName = this.getModuleName();
             this.contactService.saveSocialContactList(this.socialContact)
                 .subscribe(
                 data => {
@@ -3304,6 +3310,7 @@ vanityCheckingMarketoContactsAuthentication(){
             this.loading = true;
             this.setLegalBasisOptions(this.socialContact.contacts);
             this.socialContact.publicList = this.model.isPublic;
+            this.socialContact.moduleName = this.getModuleName();
             this.contactService.saveMarketoContactList(this.socialContact)
                 .subscribe(
                 data => {
@@ -3372,7 +3379,7 @@ vanityCheckingMarketoContactsAuthentication(){
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
                 .subscribe(
                 data => {
                     if (data.access) {
@@ -3904,6 +3911,7 @@ vanityCheckingMarketoContactsAuthentication(){
             this.socialContact.externalListId = this.hubSpotSelectContactListOption;
             this.setLegalBasisOptions(this.socialContact.contacts);
             this.socialContact.publicList = this.model.isPublic;
+            this.socialContact.moduleName = this.getModuleName();
             this.hubSpotService.saveHubSpotContacts(this.socialContact)
                 .subscribe(
                 data => {
@@ -3945,7 +3953,7 @@ vanityCheckingMarketoContactsAuthentication(){
         } else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic)
+            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
                 .subscribe(
                 data => {
                     if (data.access) {
@@ -4268,6 +4276,17 @@ vanityCheckingMarketoContactsAuthentication(){
      localStorage.setItem('alias', socialContact.alias);
      window.location.href = "" + data.data.redirectUrl;
  }
-
+    
+    getModuleName() {
+        let moduleName: string = '';
+        if (this.module === 'leads') {
+            moduleName = "SHARE LEADS";
+        } else if (this.module === 'contacts') {
+            moduleName = "CONTACTS";
+        } else if (this.module === 'partners') {
+            moduleName = "PARTNERS";
+        }
+        return moduleName;
+    }
 
 }

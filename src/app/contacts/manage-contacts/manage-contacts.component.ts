@@ -1133,7 +1133,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         $.each(this.allselectedUsers, function(index, value: User) {
                             value.legalBasis = selectedLegalBasisOptions;
                         });
-                        this.contactService.saveContactList(this.allselectedUsers, listName, this.isPartner, isPublic)
+                        this.contactService.saveContactList(this.allselectedUsers, listName, this.isPartner, isPublic, this.alias)
                             .subscribe(
                             data => {
                                 data = data;
@@ -1860,11 +1860,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-    saveAsNewList(contactSelectedListId: number, contactListName: string, isPublic: boolean) {
+    saveAsNewList( contactList: ContactList       //contactSelectedListId: number, contactListName: string, isPublic: boolean, alias : string) {
         try {
             this.saveAsTypeList = 'manage-contacts';
             this.saveAsListName = contactListName + '_copy';
             this.saveAsContactListId = contactSelectedListId;
+            this.alias = alias;
             this.saveAsIsPublic = isPublic;
             this.loadContactListsNames();
             this.saveAsError = '';
@@ -2034,7 +2035,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 
 
-			this.contactService.saveContactList(this.contactListUsers, contactListName, this.isPartner, isPublic)
+			this.contactService.saveContactList(this.contactListUsers, contactListName, this.isPartner, isPublic, this.alias)
 				.subscribe(
 					data => {
 						data = data;
