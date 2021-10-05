@@ -73,11 +73,15 @@ export class SaveAsComponent implements OnInit {
                 this.saveAsError = "";
                 this.isValidLegalOptions = true;
                 const names = this.referenceService.namesArray;
-                const inputName = this.saveAsListName.toLowerCase().replace(/\s/g, '');
+                const inputName = $.trim(this.saveAsListName.toLowerCase().replace(/\s/g, ''));
+				const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+				const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
                 this.validateLegalBasisOptions();
                 if ($.inArray(inputName, names) > -1) {
                     this.saveAsError = 'This list name is already taken.';
-                } else {
+                }else if(inputName==activeMasterPartnerList || inputName==inActiveMasterPartnerList){
+					this.saveAsError = 'This list name cannot be added';
+				} else {
                     if (this.saveAsListName !== "" && this.saveAsListName.length < 250) {
                         if (this.isValidLegalOptions) {
                             this.editContactsComponent.saveDuplicateContactList(this.saveAsListName, this.selectedLegalBasisOptions, this.model.isPublic);
@@ -103,8 +107,12 @@ export class SaveAsComponent implements OnInit {
           if(this.saveAsListName!=undefined){
             const name = this.saveAsListName;
             this.validateLegalBasisOptions();
-            const inputName = name.toLowerCase().replace(/\s/g, '');
-            if (name !== "" && name.length < 250) {
+            const inputName = $.trim(name.toLowerCase().replace(/\s/g, ''));
+            const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+            const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+            if(inputName==activeMasterPartnerList || inputName==inActiveMasterPartnerList){
+                this.saveAsError = 'This list name cannot be added';
+            }else  if (name !== "" && name.length < 250) {
                 this.editContactsComponent.validateLegalBasisOptions();
                 if (this.isValidLegalOptions) {
                     this.saveDuplicateLeadList(this.saveAsListName, this.selectedLegalBasisOptions, this.model.isPublic);

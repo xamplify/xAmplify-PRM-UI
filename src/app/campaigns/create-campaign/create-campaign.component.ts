@@ -1531,7 +1531,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             this.contactsPagination.pageIndex = 1;
             this.contactsPagination.searchKey = this.recipientsSortOption.searchKey.trim();
             if (this.contactsPagination.searchKey != undefined && this.contactsPagination.searchKey != null 
-                && this.contactsPagination.searchKey != "") {
+                && this.contactsPagination.searchKey.trim() != "") {
                 this.showExpandButton = true;
             } else {
                 this.showExpandButton = false;
@@ -1573,11 +1573,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         let contactId = contactList.id;
         if (isValid) {
             this.emptyContactsMessage = "";
-            let isEmptyActiveMasterPartnerList = count==0 && contactList.name==this.properties.activeMasterPartnerList;
-            let isEmptyInActiveMasterPartnerList = count==0 && contactList.name==this.properties.inActiveMasterPartnerList;
-            if(isEmptyActiveMasterPartnerList || isEmptyInActiveMasterPartnerList){
-                this.refService.showSweetAlertErrorMessage('This list cannot be selected');
-            }else if (count > 0) {
+             if (count > 0) {
                 let isChecked = $('#' + contactId).is(':checked');
                 if (isChecked) {
                     //Removing Highlighted Row
@@ -1595,7 +1591,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.contactsUtility();
                 event.stopPropagation();
             } else {
-                this.emptyContactsMessage = "Contacts are in progress";
+                this.emptyContactsMessage = "Users are in progress";
             }
 
         }
