@@ -205,9 +205,7 @@
                                     <h4 style="padding-top: 4px; font-size: 15px;    font-weight: 600;" translate>Event</h4>
                                 </div>
                             </div>
-                        </div>
-                        
-                        
+                        </div>                       
                         <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.landingPageCampaign">
                             <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('landingPage')">
                                 <div class="pricing-head">
@@ -227,6 +225,28 @@
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
                                     <h4 style="padding-top: 4px;font-weight: 600;" translate>Page</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.emailCampaign">
+                            <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('survey')">
+                                <div class="pricing-head">
+                                    <h4 class="camp-card-bg">
+                                        <img alt="Survey Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/landing-page.png"></h4>
+
+                                </div>
+                                <div class="box-content">
+                                    <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
+                                    <ul class="pricing-content list-unstyled">
+                                        <li translate><i class="fa fa-list"  aria-hidden="true"></i> Provide campaign details</li>
+
+                                        <li translate><i class="fa fa-users"  aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-envelope"  aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
+                                        <li translate><i class="fa fa-rocket"  aria-hidden="true"></i> Preview and Launch</li>
+                                    </ul>
+                                </div>
+                                <div class="pricing-footer" style="margin-bottom: -2px;">
+                                    <h4 style="padding-top: 4px; font-size: 15px;  font-weight: 600;" translate>Survey </h4>
                                 </div>
                             </div>
                         </div>

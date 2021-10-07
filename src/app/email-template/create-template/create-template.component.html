@@ -1,6 +1,9 @@
 <div class="page-content" [style.background-color]="refService.pageContnetBgColor">
-    <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+    <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>    
     <ng-container *ngIf="!httpRequestLoader.isLoading">
+        <div style="position: relative; top: -10px">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        </div>
         <div class="row">
             <div class="col-xs-12">
                 <div class="tile">
@@ -23,8 +26,8 @@
                                 <a translate><span *ngIf="emailTemplateService.isNewTemplate; else Other" translate>Create</span>
                           <ng-template #Other translate>Update</ng-template> Template</a>
                             </li>
-                        </ul>
-                        <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate" filter="[3]"></app-preview-popup>
+                        </ul>                        
+                        <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'"></app-preview-popup>
                         <app-merge-tags *ngIf="loadTemplate" [input]="mergeTagsInput"></app-merge-tags>
                         <div id="bee-plugin-container"></div>
                     </div>

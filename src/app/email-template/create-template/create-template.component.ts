@@ -47,6 +47,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     categoryId: number = 0;
     manageRouterLink = "/home/emailtemplates/manage";
     mergeTagsInput: any = {};
+    showForms: boolean = false;
+
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, private route: ActivatedRoute) {
         this.categoryId = this.route.snapshot.params['categoryId'];
@@ -58,6 +60,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             var names: any = [];
             let self = this;
             self.loggedInUserId = this.authenticationService.getUserId();
+            this.showForms = this.emailTemplateService.emailTemplate.surveyTemplate || this.emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
 
             emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
                 (data: any) => {
@@ -287,6 +290,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                                     } else {
                                         bee.start(template);
                                     }
+                                    self.showForms = emailTemplateService.emailTemplate.surveyTemplate || emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
                                     self.loadTemplate = true;
                                 });
                         });
@@ -312,8 +316,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
         emailTemplate.beeEventTemplate = emailTemplateService.emailTemplate.beeEventTemplate;
         emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
+        emailTemplate.surveyTemplate = emailTemplateService.emailTemplate.surveyTemplate;
+        emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
+
         emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
-        let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate || emailTemplate.beeEventCoBrandingTemplate;
+        let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate
+            || emailTemplate.beeEventCoBrandingTemplate || emailTemplate.surveyCoBrandingTemplate;
         if (emailTemplateService.emailTemplate.subject.indexOf('basic') > -1 && !isCoBrandingTemplate) {
             emailTemplate.type = EmailTemplateType.BASIC;
         } else if (emailTemplateService.emailTemplate.subject.indexOf('rich') > -1 && !isCoBrandingTemplate) {
@@ -326,23 +334,27 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             emailTemplate.type = EmailTemplateType.VIDEO_CO_BRANDING;
         } else if (emailTemplate.beeEventCoBrandingTemplate) {
             emailTemplate.type = EmailTemplateType.EVENT_CO_BRANDING;
+        } else if (emailTemplate.surveyCoBrandingTemplate) {
+            emailTemplate.type = EmailTemplateType.SURVEY_CO_BRANDING;
         }
         this.updateCompanyLogo(emailTemplate);
         emailTemplateService.save(emailTemplate).subscribe(
             data => {
                 if (data.access) {
                     this.refService.stopLoader(this.httpRequestLoader);
-                    if (!isOnDestroy) {
-                        this.refService.isCreated = true;
-                        this.navigateToManageSection();
-                    } else {
-                        this.emailTemplateService.goToManage();
-                    }
+                    if (data.statusCode == 702) {                        
+                        if (!isOnDestroy) {
+                            this.refService.isCreated = true;
+                            this.navigateToManageSection();
+                        } else {
+                            this.emailTemplateService.goToManage();
+                        }
+                    } else if (data.statusCode == 500) {
+                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                    }                    
                 } else {
                     this.authenticationService.forceToLogout();
                 }
-
-
             },
             error => {
                 this.refService.stopLoader(this.httpRequestLoader);
@@ -403,7 +415,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnInit() {
+    ngOnInit() {        
     }
     ngOnDestroy() {
         this.emailTemplateService.isNewTemplate = false;

@@ -51,6 +51,10 @@
                                     </li>
                                     <li class="filter" (click)="filterTemplates('EVENT_CO_BRANDING',false,10)" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex"  translate>Event Co-Branding
                                     </li>
+                                    <li class="filter" (click)="filterTemplates('SURVEY',false,11)" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" *ngIf="campaignAccess.formBuilder" translate>Survey
+                                    </li>
+                                    <li class="filter" (click)="filterTemplates('SURVEY_CO_BRANDING',false,12)" *ngIf="campaignAccess.formBuilder" [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex"  translate>Survey Co-Branding
+                                    </li>
                                     <li class="filter" style="display: none;" translate>Own Template</li>
                                 </ul>
                             </div>
@@ -160,11 +164,13 @@
                                             <h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'" translate>PARTNER</h5>
                                         </td>
                                         <td class="hidden-xs text-center">
-                                            <h5 class="view-banner display-ib">
-                                                <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else Other" translate>Email Co-Branding
-                                                    </span>
-                                                <ng-template #Other>{{emailTemplate.emailTemplateType | translate}}</ng-template>
-                                            </h5>
+                                            <div class="text-center">
+                                                <span class="view-banner display-ib mb5">
+                                                    <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else Other" translate>Email Co-Branding
+                                                        </span>
+                                                    <ng-template #Other>{{emailTemplate.emailTemplateType | translate}}</ng-template>
+                                                </span>
+                                            </div>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">

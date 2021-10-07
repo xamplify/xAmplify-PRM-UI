@@ -41,12 +41,9 @@ export class PreviewPopupComponent implements OnInit {
     pageBackgroundColor = "";
     siteKey = "";
     showDefaultForms = false;
-
-    // 1.Regular
-    // 2.Quiz
-    // 3.Survey
-    @Input() filter: any[];
-
+    
+    @Input() filter: any;
+    showEmbedLink = true;
 
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
@@ -65,6 +62,12 @@ export class PreviewPopupComponent implements OnInit {
         if (this.authenticationService.isShowForms) {
             this.pagination.campaignType = 'EVENT';
         }
+
+        if (this.router.url.indexOf("/home/emailtemplates/create") > -1) {
+            this.showEmbedLink = false;
+        }
+
+        this.pagination.filterKey = this.filter;
     }
 
     /************List Available Forms******************/

@@ -404,6 +404,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else if (this.campaign.campaignTypeInString == "LANDINGPAGE") {
                 this.campaignType = 'landingPage';
                 this.isLandingPageSwitch = true;
+            } else if (this.campaign.campaignTypeInString == "SURVEY") {
+                this.campaignType = 'survey';
+                this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
             }
             this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             this.getCampaignReplies(this.campaign);
@@ -676,6 +679,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.landingPagePagination.filterKey = "PRIVATE";
                 this.listLandingPages(this.landingPagePagination);
             } else {
+                if (this.campaignType == 'survey') {
+                    this.emailTemplatesPagination.campaignType = this.campaignType;
+                }
+
                 if (this.isOnlyPartner) {
                     this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
                 } else {
@@ -1133,7 +1140,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
 
     loadRegularOrVideoCoBrandedTemplates() {
-        if (this.campaignType == "regular") {
+        if (this.campaignType == "regular" || this.campaignType == "survey") {
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
             this.emailTemplatesPagination.pageIndex = 1;
             this.loadEmailTemplates(this.emailTemplatesPagination);
@@ -2117,6 +2124,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             campaignType = CampaignType.SMS;
         } else if ("landingPage" == this.campaignType) {
             campaignType = CampaignType.LANDINGPAGE;
+        }  else if ("survey" == this.campaignType) {
+            campaignType = CampaignType.SURVEY;
         }
         let country = $.trim($('#countryName option:selected').text());
 

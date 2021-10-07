@@ -1552,18 +1552,18 @@
                                                         <tr>
                                                             <td width="25%">
                                                                 <div class="icon-border">
-                                                                    <i *ngIf="campaignType == 'video' || campaignType == 'regular'" class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
+                                                                    <i *ngIf="campaignType == 'video' || campaignType == 'regular' || campaignType == 'survey'" class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
                                                                     <i *ngIf="campaignType == 'landingPage'" class="fa fa-wpforms fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
                                                                 <ng-container class="h4-text" *ngIf="campaignType == 'video'" translate>Email Template
                                                                 </ng-container>
-                                                                <ng-container class="h4-text" *ngIf="campaignType == 'regular'" translate>Email Template
+                                                                <ng-container class="h4-text" *ngIf="campaignType == 'regular' || campaignType == 'survey'" translate>Email Template
                                                                 </ng-container>
                                                                 <ng-container class="h4-text" *ngIf="campaignType == 'landingPage'" translate>Page
                                                                 </ng-container>
                                                             </td>
                                                             <td width="55%">
-                                                                <ng-container *ngIf="campaignType == 'video' || campaignType == 'regular'">
+                                                                <ng-container *ngIf="campaignType == 'video' || campaignType == 'regular' || campaignType == 'survey'">
                                                                     <a (click)="getTemplateById(emailTemplate)" title="{{emailTemplate.name}}">
                                                                         <ng-container
                                                                             *ngIf="emailTemplate.name?.length>50">
