@@ -441,7 +441,7 @@
                                     data-placement="top"
                                     *ngIf="assignLeads || !sharedLeads"
                                     title="{{actionsDescription.contact_list_saveAs}}"
-                                    (click)="saveAsNewList(contactList.id,contactList.name,contactList.publicList, contactList.alias)">
+                                    (click)="saveAsNewList(contactList)">
                                     <i class="fa fa-files-o"></i>
                                   </a> <a [class.disabled]="contactList.noOfContacts == 0 "
                                     *ngIf="assignLeads || !sharedLeads"
@@ -590,7 +590,7 @@
                           <a data-toggle="tooltip" data-placement="top"
                             *ngIf="assignLeads || (!sharedLeads)"
                             title="{{actionsDescription.contact_list_saveAs}}"
-                            (click)="saveAsNewList(contactList.id,contactList.name, contactList.publicList)"
+                            (click)="saveAsNewList(contactList)"
                             [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
                             data-rel="fancybox-button" style="left: 60%;width:11%;;"> <i class="fa fa-files-o" aria-hidden="true"
                               style="color: white;"></i>

@@ -1133,18 +1133,29 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         $.each(this.allselectedUsers, function(index, value: User) {
                             value.legalBasis = selectedLegalBasisOptions;
                         });
-                        this.contactService.saveContactList(this.allselectedUsers, listName, this.isPartner, isPublic, this.alias)
+                this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, listName, this.isPartner, isPublic,
+                                "CONTACT", "MANUAL", this.alias, false);
+                        this.contactService.saveContactList(this.userUserListWrapper)
                             .subscribe(
                             data => {
                                 data = data;
-                                this.contactCountLoad = true;
-                                this.navigateToManageContacts();
-                                this.allselectedUsers.length = 0;
-
-                                if (this.isPartner) {
-                                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_CREATE_SUCCESS, true);
+                                this.loading = false;
+                                if (data.access) {
+                                    if (data.statusCode == 401) {
+                                        this.saveAsError = data.message;
+                                    } else if (data.statusCode == 200) {
+                                        data = data;
+                                        this.contactCountLoad = true;
+                                        this.navigateToManageContacts();
+                                        this.allselectedUsers.length = 0;
+                                        if (this.isPartner) {
+                                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_CREATE_SUCCESS, true);
+                                        } else {
+                                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
+                                        }
+                                    }
                                 } else {
-                                    this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
+                                    this.authenticationService.forceToLogout();
                                 }
                             },
 
@@ -1860,15 +1871,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-    saveAsNewList( contactList: ContactList       //contactSelectedListId: number, contactListName: string, isPublic: boolean, alias : string) {
+    saveAsNewList( contactList: ContactList){
         try {
             this.saveAsTypeList = 'manage-contacts';
-            this.saveAsListName = contactListName + '_copy';
-            this.saveAsContactListId = contactSelectedListId;
-            this.alias = alias;
-            this.saveAsIsPublic = isPublic;
-            this.loadContactListsNames();
+            this.saveAsListName = contactList.name + '_copy';
             this.saveAsError = '';
+            this.contactListObject = new ContactList;
+            this.contactListObject.id = contactList.id;
+            this.contactListObject.isPartnerUserList = contactList.isPartnerUserList;
+            this.contactListObject.publicList = contactList.publicList;
+            this.contactListObject.contactType = contactList.contactType;
+            this.contactListObject.socialNetwork = contactList.socialNetwork;
+            this.contactListObject.alias = contactList.alias;
+            this.contactListObject.synchronisedList = contactList.synchronisedList;
+            this.contactListObject.moduleName = this.getModuleName();
+            if (this.module === 'contacts' || this.module === 'partners'){
+            	this.loadContactListsNames();
+            }
             $('#saveAsModal').modal('show');
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsNewList()");
@@ -1884,7 +1903,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     hasSaveAsAccess() {
-        if (this.assignLeads) {
+       if (this.assignLeads) {
             this.saveAsLeadsInputChecking();
         } else {
             try {
@@ -1900,7 +1919,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                             this.authenticationService.forceToLogout();
                         }
                     }
-                    );
+                   );
             } catch (error) {
                 this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsNewList()");
             }
@@ -1921,7 +1940,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         this.saveAsError = '';
                         this.validateLegalBasisOptions();
                         if (this.saveAsTypeList === 'manage-contacts') {
-                            this.saveExistingContactList(this.saveAsContactListId, this.saveAsListName, this.saveAsIsPublic);
+                        	this.contactListObject.name = this.saveAsListName;
+                            this.saveExistingContactList();
                             this.cleareDefaultConditions();
                         }
                         else if (this.saveAsTypeList === 'manage-all-contacts') {
@@ -1942,6 +1962,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		$('#saveAsModal').modal('hide');
 		this.saveAsListName = undefined;
 		this.saveAsTypeList = 'manage-contacts';
+		this.model.isPublic = true;
+		this.contactListObject = new ContactList;
 	}
 
     saveAsLeadsInputChecking() {
@@ -1950,11 +1972,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             const self = this;
             this.isValidLegalOptions = true;
             const inputName = name.toLowerCase().replace(/\s/g, '');
-            if (name !== "" && name.length < 250) {
+            if ($.inArray(inputName, self.names) > -1) {
+                this.saveAsError = 'This list name is already taken.';
+            } else if (name !== "" && name.length < 250) {
                 this.saveAsError = '';
                 this.validateLegalBasisOptions();
                 if (this.saveAsTypeList === 'manage-contacts') {
-                    this.saveAsNewLeadsList(this.saveAsContactListId, this.saveAsListName);
+                	this.contactListObject.name = this.saveAsListName;
+                    this.saveAsNewLeadsList();
                 }
                 else if (this.saveAsTypeList === 'manage-all-contacts') {
                     if (this.isValidLegalOptions) {
@@ -1969,16 +1994,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         }
 	}
 
-    saveAsNewLeadsList(contactSelectedListId: number, contactListName: string) {
+    saveAsNewLeadsList() {
     	this.loading = true;
 
-    	let contactListObject = new ContactList;
+    	/*let contactListObject = new ContactList;
     	contactListObject.name = contactListName;
     	contactListObject.id = contactSelectedListId;
     	contactListObject.isPartnerUserList = false;
-    	contactListObject.publicList = true;
+    	contactListObject.publicList = true;*/
 
-        this.contactService.saveAsSharedLeadsList(contactListObject)
+        this.contactService.saveAsNewList(this.contactListObject)
             .subscribe(
             data => {
                 data = data;
@@ -1987,6 +2012,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     if (data.statusCode == 401) {
                     	this.saveAsError = data.message;
                     } else if (data.statusCode == 200) {
+                    	$('#saveAsModal').modal('hide');
                     	this.cleareDefaultConditions();
                         this.customResponse = new CustomResponse('SUCCESS', data.message, true);
                         this.loadContactLists(this.pagination);
@@ -2004,47 +2030,33 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             )
     }
 
-	saveExistingContactList(contactSelectedListId: number, contactListName: string, isPublic: boolean) {
+	saveExistingContactList() {
 		try {
-			this.gettingAllUserspagination.maxResults = 500000;
-			this.gettingAllUserspagination.pageIndex = 1;
-			this.contactService.loadUsersOfContactList(contactSelectedListId, this.gettingAllUserspagination)
-				.subscribe(
-					(data: any) => {
-						console.log(data.listOfUsers);
-						this.contactListUsers = data.listOfUsers;
-						$('#saveAsModal').modal('hide');
-						this.saveAsListName = undefined;
-						this.saveAsTypeList = 'manage-contacts'
-					},
-					error => this.xtremandLogger.error(error),
-					() => {
-						this.xtremandLogger.info("MangeContactsComponent loadUsersOfContactList() finished")
-						this.saveListAsNewList(contactListName, isPublic);
-					}
-				)
+			$('#saveAsModal').modal('hide');
+            this.saveAsListName = undefined;
+            this.saveAsTypeList = 'manage-contacts';
+            this.saveListAsNewList();
 		} catch (error) {
 			this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsExistingList()");
 		}
 	}
 
-	saveListAsNewList(contactListName: string, isPublic: boolean) {
+	saveListAsNewList() {
 		try {
-			if (this.isPartner) {
-				isPublic = true;
-			}
-
-
-			this.contactService.saveContactList(this.contactListUsers, contactListName, this.isPartner, isPublic, this.alias)
+			this.contactService.saveAsNewList(this.contactListObject)
 				.subscribe(
 					data => {
-						data = data;
-						if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_SAVE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SAVE_SUCCESS, true);
-						}
-						this.loadContactLists(this.pagination);
+                        if (data.statusCode == 401) {
+                            this.saveAsError = data.message;
+                        } else if (data.statusCode == 200) {
+                            data = data;
+		                          if (this.isPartner) {
+		                              this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_SAVE_SUCCESS, true);
+		                          } else {
+		                              this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SAVE_SUCCESS, true);
+		                          }
+		                          this.loadContactLists(this.pagination);
+		                    }
 					},
 					(error: any) => {
 						if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
@@ -2516,6 +2528,34 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         localStorage.setItem('alias', socialContact.alias);
         window.location.href = "" + data.data.redirectUrl;
     }
+    
+    getModuleName() {
+        let moduleName: string = '';
+        if (this.module === 'leads') {
+            moduleName = "SHARE LEADS";
+        } else if (this.module === 'contacts') {
+            moduleName = "CONTACTS";
+        } else if (this.module === 'partners') {
+            moduleName = "PARTNERS";
+        }
+        return moduleName;
+    }
+    
+    getUserUserListWrapperObj(newUsers: Array<User>, contactListName: string, isPartner: boolean, isPublic: boolean,
+            contactType: string, socialnetwork: string, alias: string, synchronisedList: boolean) {
+            this.contactListObject = new ContactList();
+            this.contactListObject.name = contactListName;
+            this.contactListObject.isPartnerUserList = isPartner;
+            this.contactListObject.publicList = isPublic;
+            this.contactListObject.contactType = contactType;
+            this.contactListObject.socialNetwork = socialnetwork;
+            this.contactListObject.alias = alias;
+            this.contactListObject.synchronisedList = synchronisedList;
+            this.contactListObject.moduleName = this.getModuleName();
+            this.userUserListWrapper.users = newUsers;
+            this.userUserListWrapper.userList = this.contactListObject;
+            return this.userUserListWrapper;
+        }
 	
 	
 }

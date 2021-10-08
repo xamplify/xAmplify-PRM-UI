@@ -807,29 +807,38 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     oneAtTimeSaveAfterGotPermition() {
 
         if (this.assignLeads) {
-            this.contactListObject.contactType="CONTACT";
-            this.contactListObject.socialNetwork="MANUAL";
-            this.userUserListWrapper.users = this.newUsers;
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.newUsers, this.model.contactListName, this.isPartner, true,
+                    "CONTACT", "MANUAL", this.alias, false);
             this.saveAssignedLeadsList();
         } else {
 
             this.loading = true;
-            this.contactService.saveContactList(this.newUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.newUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                 data => {
                     if (data.access) {
                         data = data;
                         this.loading = false;
-                        this.selectedAddContactsOption = 8;
-                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
-                        this.contactService.successMessage = true;
-                        this.contactService.saveAsSuccessMessage = "add";
-                        if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage');
-							localStorage.removeItem('isZohoSynchronization');
-                        } else {
-                            this.router.navigateByUrl('home/partners/manage');
-							localStorage.removeItem('isZohoSynchronization');
+                        if ( data.statusCode === 401 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message , true );
+                            this.socialUsers=[];
+                        }else if ( data.statusCode === 402 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message + '<br>' + data.data, true );
+                            this.socialUsers=[];
+                        }else{
+                            this.selectedAddContactsOption = 8;
+                            this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                            this.contactService.successMessage = true;
+                            this.contactService.saveAsSuccessMessage = "add";
+                            if (this.isPartner == false) {
+                                this.router.navigateByUrl('/home/contacts/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            } else {
+                                this.router.navigateByUrl('home/partners/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            }
                         }
                     } else {
                         this.authenticationService.forceToLogout();
@@ -852,10 +861,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveAssignedLeadsList(){
         this.loading = true;
-        this.contactListObject.moduleName = this.getModuleName();
-        this.contactListObject.alias = this.salesforceListViewId;
-        this.userUserListWrapper.userList = this.contactListObject;
-
         this.contactService.saveAssignedLeadsList( this.userUserListWrapper)
         .subscribe(
         data => {
@@ -983,31 +988,40 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveClipBoardContactsAfterGotPermition() {
         if (this.assignLeads) {
-            this.contactListObject.contactType = "CONTACT";
-            this.contactListObject.socialNetwork = "MANUAL";
-            this.setLegalBasisOptions(this.clipboardUsers);
-            this.userUserListWrapper.users = this.clipboardUsers;
+        	 this.setLegalBasisOptions(this.clipboardUsers);
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.clipboardUsers, this.model.contactListName, this.isPartner, true,
+                    "CONTACT", "MANUAL", this.alias, false);
             this.saveAssignedLeadsList();
         } else {
             this.loading = true;
             this.xtremandLogger.info("update contacts #contactSelectedListId " + " data => " + JSON.stringify(this.clipboardUsers));
             this.setLegalBasisOptions(this.clipboardUsers);
-            this.contactService.saveContactList(this.clipboardUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.clipboardUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                 data => {
                     if (data.access) {
                         data = data;
                         this.loading = false;
-                        this.selectedAddContactsOption = 8;
-                        this.contactService.saveAsSuccessMessage = "add";
-                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
-                        this.disableOtherFuctionality = false;
-                        if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage');
-							localStorage.removeItem('isZohoSynchronization');
-                        } else {
-                            this.router.navigateByUrl('home/partners/manage');
-							localStorage.removeItem('isZohoSynchronization');
+                        if ( data.statusCode === 401 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message , true );
+                            this.socialUsers=[];
+                        }else if ( data.statusCode === 402 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message + '<br>' + data.data, true );
+                            this.socialUsers=[];
+                        }else{
+                            this.selectedAddContactsOption = 8;
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                            this.disableOtherFuctionality = false;
+                            if (this.isPartner == false) {
+                                this.router.navigateByUrl('/home/contacts/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            } else {
+                                this.router.navigateByUrl('home/partners/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            }
                         }
                     } else {
                         this.authenticationService.forceToLogout();
@@ -1114,30 +1128,39 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveCsvContactsWithPermission() {
            if (this.assignLeads) {
-            this.contactListObject.contactType = "CONTACT";
-            this.contactListObject.socialNetwork = "MANUAL";
-            this.setLegalBasisOptions(this.contacts);
-            this.userUserListWrapper.users = this.contacts;
+        	   this.setLegalBasisOptions(this.contacts);
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.contacts, this.model.contactListName, this.isPartner, true,
+                    "CONTACT", "MANUAL", this.alias, false);
             this.saveAssignedLeadsList();
         } else {
             this.loading = true;
             this.setLegalBasisOptions(this.contacts);
-            this.contactService.saveContactList(this.contacts, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.contacts, this.model.contactListName, this.isPartner, this.model.isPublic,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                 data => {
                     if (data.access) {
                         data = data;
                         this.loading = false;
-                        this.selectedAddContactsOption = 8;
-                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
-                        this.contactService.saveAsSuccessMessage = "add";
-                        this.uploadedCsvFileName = "";
-                        if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage');
-							localStorage.removeItem('isZohoSynchronization');
-                        } else {
-                            this.router.navigateByUrl('home/partners/manage');
-							localStorage.removeItem('isZohoSynchronization');
+                        if ( data.statusCode === 401 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message , true );
+                            this.socialUsers=[];
+                        }else if ( data.statusCode === 402 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message + '<br>' + data.data, true );
+                            this.socialUsers=[];
+                        }else{
+                            this.selectedAddContactsOption = 8;
+                            this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.uploadedCsvFileName = "";
+                            if (this.isPartner == false) {
+                                this.router.navigateByUrl('/home/contacts/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            } else {
+                                this.router.navigateByUrl('home/partners/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            }
                         }
                     } else {
                         this.authenticationService.forceToLogout();
@@ -1632,17 +1655,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveGoogleContactsWithPermission() {
            if (this.assignLeads) {
-            this.contactListObject = new ContactList;
-            this.contactListObject.name = this.model.contactListName;
-            this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactListObject.contactType = "CONTACT";
-            this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
-            this.contactListObject.publicList = true;
-            this.contactListObject.synchronisedList = true;
-            this.setSocialUsers(this.socialContact);
-            this.setLegalBasisOptions(this.socialUsers);
-
-            this.userUserListWrapper.users = this.socialUsers;
+        	 this.setSocialUsers(this.socialContact);
+             this.setLegalBasisOptions(this.socialUsers);
+        	 this.userUserListWrapper = this.getUserUserListWrapperObj(this.socialUsers, this.model.contactListName, this.isPartner, true,
+                     "CONTACT", "GOOGLE", this.alias, true);
             this.saveAssignedLeadsList();
         } else {
 
@@ -1711,12 +1727,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveGoogleSelectedContactsWithPermission() {
            if (this.assignLeads) {
-               this.contactListObject = new ContactList;
-               this.contactListObject.name = this.model.contactListName;
-               this.contactListObject.isPartnerUserList = this.isPartner;
-               this.contactListObject.contactType = "CONTACT";
-               this.contactListObject.socialNetwork = "MANUAL";
-               this.contactListObject.publicList = true;
+               this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
+                       "CONTACT", "MANUAL", this.alias, false);
                this.setLegalBasisOptions(this.allselectedUsers);
 
                this.userUserListWrapper.users = this.allselectedUsers;
@@ -1724,22 +1736,32 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                 data => {
                     if (data.access) {
                         this.loading = false;
-                        this.selectedAddContactsOption = 8;
-                        this.contactService.saveAsSuccessMessage = "add";
-                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
-                        if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage');
-							localStorage.removeItem('isZohoSynchronization');
-                        } else {
-                            this.router.navigateByUrl('home/partners/manage');
-							localStorage.removeItem('isZohoSynchronization');
+                        if ( data.statusCode === 401 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message , true );
+                            this.socialUsers=[];
+                        }else if ( data.statusCode === 402 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message + '<br>' + data.data, true );
+                            this.socialUsers=[];
+                        }else{
+                            this.selectedAddContactsOption = 8;
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                            if (this.isPartner == false) {
+                                this.router.navigateByUrl('/home/contacts/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            } else {
+                                this.router.navigateByUrl('home/partners/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            }
+                            this.contactService.successMessage = true;
                         }
-                        this.contactService.successMessage = true;
                     } else {
                         this.authenticationService.forceToLogout();
 						localStorage.removeItem('isZohoSynchronization');
@@ -2070,18 +2092,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveZohoContactsWithPermission() {
            if (this.assignLeads) {
-        	      this.contactListObject = new ContactList;
-                  this.contactListObject.name = this.model.contactListName;
-                  this.contactListObject.isPartnerUserList = this.isPartner;
-                  this.contactListObject.contactType = this.contactType;
-                  this.contactListObject.synchronisedList = true;
-                  this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
-                  this.contactListObject.publicList = true;
-                  this.setSocialUsers(this.socialContact);
-                  this.setLegalBasisOptions(this.socialUsers);
-
-                  this.userUserListWrapper.users = this.socialUsers;
-                  this.saveAssignedLeadsList();
+        	   this.setSocialUsers(this.socialContact);
+               this.setLegalBasisOptions(this.socialUsers);
+               this.userUserListWrapper = this.getUserUserListWrapperObj(this.socialUsers, this.model.contactListName, this.isPartner, true,
+                       this.contactType, "ZOHO", this.alias, true);
+              this.saveAssignedLeadsList();
         } else {
             this.loading = true;
             this.setLegalBasisOptions(this.socialContact.contacts);
@@ -2165,7 +2180,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                 data => {
                     if (data.access) {
@@ -2561,23 +2578,33 @@ salesForceVanityAuthentication() {
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                 data => {
                     if (data.access) {
                         this.loading = false;
                         data = data;
-                        this.selectedAddContactsOption = 8;
-                        this.contactService.saveAsSuccessMessage = "add";
-                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
-                        if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage');
-							localStorage.removeItem('isZohoSynchronization');
-                        } else {
-                            this.router.navigateByUrl('home/partners/manage');
-							localStorage.removeItem('isZohoSynchronization');
+                        if ( data.statusCode === 401 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message , true );
+                            this.socialUsers=[];
+                        }else if ( data.statusCode === 402 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message + '<br>' + data.data, true );
+                            this.socialUsers=[];
+                        }else{
+                            this.selectedAddContactsOption = 8;
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                            if (this.isPartner == false) {
+                                this.router.navigateByUrl('/home/contacts/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            } else {
+                                this.router.navigateByUrl('home/partners/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            }
+                            this.contactService.successMessage = true;
                         }
-                        this.contactService.successMessage = true;
                     } else {
                         this.authenticationService.forceToLogout();
 						localStorage.removeItem('isZohoSynchronization');
@@ -2626,18 +2653,11 @@ salesForceVanityAuthentication() {
 
     saveSalesForceContactsWithPermission() {
            if (this.assignLeads) {
-            this.contactListObject = new ContactList;
-            this.contactListObject.name = this.model.contactListName;
-            this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactListObject.contactType = this.contactType;
-            this.contactListObject.synchronisedList = true;
-            this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
-            this.contactListObject.publicList = true;
-            this.setSocialUsers(this.socialContact);
-            this.setLegalBasisOptions(this.socialUsers);
-
-            this.userUserListWrapper.users = this.socialUsers;
-            this.saveAssignedLeadsList();
+        	     this.setSocialUsers(this.socialContact);
+                 this.setLegalBasisOptions(this.socialUsers);
+                 this.userUserListWrapper = this.getUserUserListWrapperObj(this.socialUsers, this.model.contactListName, this.isPartner, true,
+                         this.contactType, "SALESFORCE", this.salesforceListViewId, true);
+                this.saveAssignedLeadsList();
         } else {
             this.loading = true;
             this.setLegalBasisOptions(this.socialContact.contacts);
@@ -3379,23 +3399,33 @@ vanityCheckingMarketoContactsAuthentication(){
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                 data => {
                     if (data.access) {
                         data = data;
                         this.loading = false;
-                        this.selectedAddContactsOption = 8;
-
-                        this.contactService.saveAsSuccessMessage = "add";
-                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
-                        if (this.isPartner == false) {
-                            this.router.navigateByUrl('/home/contacts/manage');
-							localStorage.removeItem('isZohoSynchronization');
+                        if (data.statusCode === 401) {
+                            this.customResponse = new CustomResponse('ERROR', data.message, true);
+                            this.socialUsers = [];
+                        } else if (data.statusCode === 402) {
+                            this.customResponse = new CustomResponse('ERROR', data.message + '<br>' + data.data, true);
+                            this.socialUsers = [];
                         } else {
-                            this.router.navigateByUrl('home/partners/manage');
-							localStorage.removeItem('isZohoSynchronization');
-                        }
+                            this.selectedAddContactsOption = 8;
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                            this.disableOtherFuctionality = false;
+                            if (this.isPartner == false) {
+                                this.router.navigateByUrl('/home/contacts/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            } else {
+                                this.router.navigateByUrl('home/partners/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            }
+                                }
                     } else {
                         this.authenticationService.forceToLogout();
 						localStorage.removeItem('isZohoSynchronization');
@@ -3953,16 +3983,32 @@ vanityCheckingMarketoContactsAuthentication(){
         } else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
-            this.contactService.saveContactList(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic, this.alias)
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.contactService.saveContactList(this.userUserListWrapper)
                 .subscribe(
                 data => {
                     if (data.access) {
                         this.loading = false;
-                        this.selectedAddContactsOption = 8;
-                        this.contactService.saveAsSuccessMessage = "add";
-                        this.xtremandLogger.info("update Contacts ListUsers:" + data);
-                        this.router.navigateByUrl('/home/contacts/manage');
-						localStorage.removeItem('isZohoSynchronization');
+                        if ( data.statusCode === 401 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message , true );
+                            this.socialUsers=[];
+                        }else if ( data.statusCode === 402 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message + '<br>' + data.data, true );
+                            this.socialUsers=[];
+                        }else{
+                            this.selectedAddContactsOption = 8;
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                            this.disableOtherFuctionality = false;
+                            if (this.isPartner == false) {
+                                this.router.navigateByUrl('/home/contacts/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            } else {
+                                this.router.navigateByUrl('home/partners/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            }
+                        }
                     } else {
                         this.authenticationService.forceToLogout();
 						localStorage.removeItem('isZohoSynchronization');
@@ -4287,6 +4333,22 @@ vanityCheckingMarketoContactsAuthentication(){
             moduleName = "PARTNERS";
         }
         return moduleName;
+    }
+    
+    getUserUserListWrapperObj(newUsers: Array<User>, contactListName: string, isPartner: boolean, isPublic: boolean,
+        contactType: string, socialnetwork: string, alias: string, synchronisedList: boolean) {
+        this.contactListObject = new ContactList();
+        this.contactListObject.name = contactListName;
+        this.contactListObject.isPartnerUserList = isPartner;
+        this.contactListObject.publicList = isPublic;
+        this.contactListObject.contactType = contactType;
+        this.contactListObject.socialNetwork = socialnetwork;
+        this.contactListObject.alias = alias;
+        this.contactListObject.synchronisedList = synchronisedList;
+        this.contactListObject.moduleName = this.getModuleName();
+        this.userUserListWrapper.users = newUsers;
+        this.userUserListWrapper.userList = this.contactListObject;
+        return this.userUserListWrapper;
     }
 
 }

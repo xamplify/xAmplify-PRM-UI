@@ -128,9 +128,12 @@ export class SaveAsComponent implements OnInit {
               this.contactListObject = new ContactList;
               this.contactListObject.name = name;
               this.contactListObject.isPartnerUserList = this.isPartner;
-              this.contactListObject.contactType = 'ASSIGNED_LEADS_LIST';
+              this.contactListObject.contactType = 'CONTACT';
               this.contactListObject.publicList = true;
               this.contactListObject.socialNetwork = 'MANUAL';
+              this.contactListObject.alias = null;
+              this.contactListObject.synchronisedList= false;
+              
               if (this.editContactsComponent.selectedContactListIds.length == 0) {
                   let listUsers = [];
                   listUsers = this.editContactsComponent.totalListUsers;

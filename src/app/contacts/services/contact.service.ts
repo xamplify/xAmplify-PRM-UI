@@ -213,17 +213,9 @@ export class ContactService {
             .catch( this.handleErrorDelete );
     }
 
-    saveContactList( users: Array<User>, contactListName: string, isPartner: boolean,isPublic:boolean, alias : string ): Observable<any> {
-        if(isPartner == false){
-            this.successMessage = true;
-        }
-
-        if(isPartner){
-        	isPublic = true;
-        }
-
+    saveContactList( userUserListWrapper : UserUserListWrapper ): Observable<any> {
         var requestoptions = new RequestOptions( {
-            body:  users,
+            body:  userUserListWrapper,
         })
         var headers = new Headers();
         headers.append( 'Content-Type', 'application/json' );
@@ -231,10 +223,10 @@ export class ContactService {
             headers: headers
         };
         //var url = this.contactsUrl + "save-userlist?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token + "&userListName="+ contactListName + "&isPartnerUserList="+isPartner ;
-        var url = this.contactsUrl + "save-userlist/"+this.authenticationService.getUserId()+"/"+encodeURIComponent(contactListName) +"/"+isPublic+"/"+ alias+"?access_token=" + this.authenticationService.access_token + "&isPartnerUserList="+isPartner ;
-        this.logger.info( users );
+        var url = this.contactsUrl + "save-userlist/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
+        this.logger.info( userUserListWrapper );
         return this._http.post( url, options, requestoptions )
-            .map( this.extractData )
+            .map(( response: any ) => response.json() )
             .catch( this.handleError );
     }
 
@@ -773,6 +765,23 @@ export class ContactService {
         return this._http.post( this.contactsUrl +contactListId+ "/list-shared-details/"+"?access_token=" + this.authenticationService.access_token, pagination)
         .map( this.extractData )
         .catch( this.handleError );
+    }
+    
+    saveAsNewList( contactListObject: ContactList ): Observable<any> {
+        var requestoptions = new RequestOptions( {
+            body:  contactListObject
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+    
+        var url = this.contactsUrl +  "/save-as-new-list/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token ;
+
+        return this._http.post( url, options, requestoptions )
+        .map(( response: any ) => response.json() )
+       .catch( this.handleError);
     }
 
 }
