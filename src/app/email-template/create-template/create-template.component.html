@@ -27,7 +27,7 @@
                           <ng-template #Other translate>Update</ng-template> Template</a>
                             </li>
                         </ul>                        
-                        <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'"></app-preview-popup>
+                        <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'" [buttonText]="'Show Surveys'"></app-preview-popup>
                         <app-merge-tags *ngIf="loadTemplate" [input]="mergeTagsInput"></app-merge-tags>
                         <div id="bee-plugin-container"></div>
                     </div>

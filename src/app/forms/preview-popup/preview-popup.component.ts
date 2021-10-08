@@ -44,6 +44,7 @@ export class PreviewPopupComponent implements OnInit {
     
     @Input() filter: any;
     showEmbedLink = true;
+    @Input() buttonText: string = "Show Forms";
 
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
@@ -56,14 +57,16 @@ export class PreviewPopupComponent implements OnInit {
         this.showDefaultForms = this.router.url.indexOf("/home/pages/saveAsDefault")>-1;
         if (this.router.url.indexOf("/home/emailtemplates/create") > -1 ||
             this.router.url.indexOf("/home/pages/add") > -1 || this.router.url.indexOf("/home/campaigns/create") > -1 
-            || this.router.url.indexOf("/home/campaigns/edit") > -1) {
+            || this.router.url.indexOf("/home/campaigns/edit") > -1 
+            || this.router.url.indexOf("/home/emailtemplates/edit") > -1) {
             this.showButton = true;
         }
         if (this.authenticationService.isShowForms) {
             this.pagination.campaignType = 'EVENT';
         }
 
-        if (this.router.url.indexOf("/home/emailtemplates/create") > -1) {
+        if (this.router.url.indexOf("/home/emailtemplates/create") > -1
+            || this.router.url.indexOf("/home/emailtemplates/edit") > -1) {
             this.showEmbedLink = false;
         }
 

@@ -1,5 +1,5 @@
 <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="show-forms-btn" id="right" (click)="showForms()">
-  Show Forms
+  {{buttonText}}
 </button>
 <!-- ----------------------List Available Forms------------------- -->
 <div class="modal fade right" id="forms-list" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false">

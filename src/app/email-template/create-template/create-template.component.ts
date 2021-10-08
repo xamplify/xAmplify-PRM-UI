@@ -289,8 +289,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                                         bee.start(jsonBody);
                                     } else {
                                         bee.start(template);
-                                    }
-                                    self.showForms = emailTemplateService.emailTemplate.surveyTemplate || emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
+                                    }                                    
                                     self.loadTemplate = true;
                                 });
                         });
