@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,OnDestroy } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 
@@ -8,7 +8,7 @@ declare var $: any;
 	templateUrl: './merge-tags.component.html',
 	styleUrls: ['./merge-tags.component.css']
 })
-export class MergeTagsComponent implements OnInit {
+export class MergeTagsComponent implements OnInit,OnDestroy  {
 
 	isEvent: boolean;
 	isCampaign: boolean;
@@ -44,6 +44,11 @@ export class MergeTagsComponent implements OnInit {
 		}
 
 	}
+
+	ngOnDestroy() {
+		$('#' + this.modalPopupId).modal('hide');
+	  }
+
 	showMergeTagsPopUp() {
 		$(".merge-tag-success-message").attr("style", "display:none");
 		$('#' + this.modalPopupId).modal('show');
