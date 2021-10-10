@@ -76,7 +76,6 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
                                     this.postingMessage = result.message;
                                 }else{
                                 this.postingMessage = "isGoogleAuth";;
-                                //var message = "isGoogleAuth";
                                 }
 							    this.postingMessageToParentWindow(this.postingMessage);
 							}else{
@@ -86,16 +85,24 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 						} else if (this.callbackName == 'salesforce') {
 							let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 							if (vanityUrlFilter == 'true') {
-								var message = "isSalesForceAuth";
-								this.postingMessageToParentWindow(message);
+							    if(result.statusCode == 402){
+                                    this.postingMessage = result.message;
+                                }else{
+                                this.postingMessage = "isSalesForceAuth";;
+                                }
+                                this.postingMessageToParentWindow(this.postingMessage);
 							}else{
 								this.contactService.socialProviderName = 'salesforce';
 							}
 						} else if (this.callbackName == 'zoho') {
 							let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 							if (vanityUrlFilter == 'true') {
-								var message = "isZohoAuth";
-								this.postingMessageToParentWindow(message);
+								   if(result.statusCode == 402){
+	                                    this.postingMessage = result.message;
+	                                }else{
+	                                this.postingMessage = "isZohoAuth";;
+	                                }
+	                                this.postingMessageToParentWindow(this.postingMessage);
 							}else{
 								this.contactService.socialProviderName = 'zoho';
 							}

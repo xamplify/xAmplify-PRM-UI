@@ -179,15 +179,16 @@ export class SaveAsComponent implements OnInit {
                   this.loading = false;
                   if (data.statusCode === 401) {
                       this.saveAsError = data.message;
-                      this.editContactsComponent.selectedContactForSave = [];
+                      //this.editContactsComponent.selectedContactForSave = [];
                   } else if (data.statusCode === 402) {
                       this.saveAsError = data.message;
-                      this.editContactsComponent.selectedContactForSave = [];
+                      //this.editContactsComponent.selectedContactForSave = [];
                   } else {
                       $('#saveAsModal').modal('hide');
                       this.saveAsError = '';
                       this.saveAsListName = '';
                       this.saveAsListName = undefined;
+                      this.editContactsComponent.selectedContactForSave = [];
                       this.router.navigateByUrl('/home/assignleads/manage')
                       this.contactService.saveAsSuccessMessage = "SUCCESS";
                       this.contactService.isLoadingList = false;
@@ -213,15 +214,11 @@ export class SaveAsComponent implements OnInit {
                 // this.isValidLegalOptions = true;
                 const names = this.referenceService.namesArray;
                 const inputName = this.saveAsListName.toLowerCase().replace( /\s/g, '' );
-                //this.validateLegalBasisOptions();
                    if ( inputName!=this.existingListName  && $.inArray( inputName, names ) > -1 ) {
                        this.saveAsError = 'This list name is already taken.';
                    } else {
                        if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
-                           //if(this.isValidLegalOptions){
                                this.updateContactListNameType(this.saveAsListName, this.model.isPublic );
-                          // }
-       
                        }
                        else if(this.saveAsListName === ""){  this.saveAsError = 'List Name is Required.';  }
                        else{ this.saveAsError = 'You have exceeded 250 characters!'; }

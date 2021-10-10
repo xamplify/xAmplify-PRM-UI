@@ -42,7 +42,6 @@ declare var swal, $, Papa: any;
     providers: [FileUtil, SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent, CallActionSwitch]
 })
 export class AddContactsComponent implements OnInit, OnDestroy {
-	//oauthValidationMessage : string ='';
     partnerEmailIds: string[] = [];
     userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 
@@ -2347,10 +2346,10 @@ salesForceVanityAuthentication() {
 			let providerName = 'salesforce';
 			this.contactService.salesforceLogin(currentModule)
 				.subscribe(
-					data => {
-						this.storeLogin = data;
+						response => {
+							let data = response.data;
 						console.log(data);
-						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+						if (response.statusCode==200) {
 							this.showModal();
 							console.log("AddContactComponent salesforce() Authentication Success");
 							this.checkingPopupValues();
@@ -2876,17 +2875,33 @@ salesForceVanityAuthentication() {
 		localStorage.removeItem('isZohoAuth');
 		localStorage.removeItem('validationMessage');
 		if (tempCheckGoogleAuth == 'yes' && !this.isPartner) {
-			this.router.navigate(['/home/contacts/add']);
+			 if (this.module === "contacts") {
+                 this.router.navigate(['/home/contacts/add']);
+             }else  if (this.module === "leads") {
+                 this.router.navigate(['/home/assignleads/add']);
+             }
 		}
 		else if (tempCheckSalesForceAuth == 'yes' && !this.isPartner) {
-			this.router.navigate(['/home/contacts/add']);
+			 if (this.module === "contacts") {
+                 this.router.navigate(['/home/contacts/add']);
+             }else  if (this.module === "leads") {
+                 this.router.navigate(['/home/assignleads/add']);
+             }
 		}
 		else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
-			this.router.navigate(['/home/contacts/add']);
+			 if (this.module === "contacts") {
+                 this.router.navigate(['/home/contacts/add']);
+             }else  if (this.module === "leads") {
+                 this.router.navigate(['/home/assignleads/add']);
+             }
 		}
-		else if (tempValidationMessage!=null && !this.isPartner) {
-			localStorage.setItem('validationMessage2', tempValidationMessage);
-			this.router.navigate(['/home/contacts/add']);
+		else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
+			localStorage.setItem('oauthCallbackValidationMessage', tempValidationMessage);
+			   if (this.module === "contacts") {
+                   this.router.navigate(['/home/contacts/add']);
+               }else  if (this.module === "leads") {
+                   this.router.navigate(['/home/assignleads/add']);
+               }
 		}
 		
 		
@@ -2896,33 +2911,35 @@ salesForceVanityAuthentication() {
         try {
             this.partnerEmails();
             this.socialContactImage();
-            this.hideModal();
+            //this.hideModal();
             if (!this.assignLeads) {
                 this.loadContactListsNames();
             }
 
          	if (localStorage.getItem('vanityUrlFilter')) {
 				localStorage.removeItem('vanityUrlFilter');
-				if (this.contactService.vanitySocialProviderName == 'google') {
-					let message : string =  '';
-					message = localStorage.getItem('validationMessage2');
-					if(this.contactService.oauthCallbackMessage!=null && this.contactService.oauthCallbackMessage.length > 0){
-						 this.customResponse = new CustomResponse('ERROR', message, true);
-					}else if(message!=null && message.length>0){
-						 this.customResponse = new CustomResponse('ERROR', message, true);
-					}else{
-					this.getGoogleContactsUsers();
-                    this.contactService.socialProviderName = "nothing";
-					}
-				} else if (this.contactService.vanitySocialProviderName == 'salesforce') {
-					this.showModal();
-					this.contactService.socialProviderName = "nothing";
-				} else if (this.contactService.vanitySocialProviderName == 'zoho' || this.socialContactType == "zoho") {
-					this.zohoShowModal();
-					this.contactService.socialProviderName = "nothing";
+                if (this.contactService.vanitySocialProviderName == 'google'
+                    || this.contactService.vanitySocialProviderName == 'salesforce'
+                    || this.contactService.vanitySocialProviderName == 'zoho') {
+                    let message: string = '';
+                    message = localStorage.getItem('oauthCallbackValidationMessage');
+                    localStorage.removeItem('oauthCallbackValidationMessage');
+                    if (message != null && message.length > 0) {
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+                    } else if (this.contactService.vanitySocialProviderName == 'google') {
+                        this.getGoogleContactsUsers();
+                        this.contactService.vanitySocialProviderName = "nothing";
+                    } else if (this.contactService.vanitySocialProviderName == 'salesforce') {
+                        this.showModal();
+                        console.log("AddContactComponent salesforce() Authentication Success");
+                        this.checkingPopupValues();
+                        this.contactService.vanitySocialProviderName = "nothing";
+                    } else if (this.contactService.vanitySocialProviderName == 'zoho' || this.socialContactType == "zoho") {
+                        this.zohoShowModal();
+                        this.contactService.vanitySocialProviderName = "nothing";
+                    }
 				}
-			}
-              else if (this.contactService.socialProviderName == 'google') {
+			}else if (this.contactService.socialProviderName == 'google') {
             	  if (this.contactService.oauthCallbackMessage.length > 0) {
                       this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
                   } else {

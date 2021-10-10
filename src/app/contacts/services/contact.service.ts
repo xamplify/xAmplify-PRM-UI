@@ -528,8 +528,8 @@ export class ContactService {
 		let loggedInThroughVanityUrl = localStorage.getItem('vanityUrlFilter');
 		if(loggedInThroughVanityUrl == 'true')
 		{
-			 this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) );
-			 return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) )
+			 this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'vanityUserAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) );
+			 return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'vanityUserAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) )
             .map( this.extractData )
             .catch( this.handleError );
 		}

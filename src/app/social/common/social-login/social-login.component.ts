@@ -26,10 +26,8 @@ export class SocialLoginComponent implements OnInit {
 			this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');
 		}
 	login(providerName: string) {
+		let currentModule = localStorage.getItem('vanityCurrentModule');
 		if (providerName == 'google' && this.isLoggedInVanityUrl == 'true') {
-			let currentModule = localStorage.getItem('vanityCurrentModule');
-			
-			
 			this.contactService.googleVanityLogin(currentModule)
 				.subscribe(
 					response => {
@@ -51,18 +49,14 @@ export class SocialLoginComponent implements OnInit {
 
 		}
 		else if (providerName == 'salesforce' && this.isLoggedInVanityUrl == 'true') {
-			let currentModule = "";
-			if (this.assignLeads) {
-				currentModule = 'leads'
-			} else {
-				currentModule = 'contacts'
-			}
 			this.contactService.salesforceVanityLogin(currentModule)
 				.subscribe(
-					data => {
-						localStorage.setItem("userAlias", data.userAlias)
-						localStorage.setItem("currentModule", data.module)
-						window.location.href = "" + data.redirectUrl;
+						response => {
+	                        this.storeLogin = response.data;
+	                        let data = response.data;
+	                        localStorage.setItem("userAlias", data.userAlias);
+	                        localStorage.setItem("currentModule", data.module);
+	                        window.location.href = "" + data.redirectUrl;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -72,18 +66,14 @@ export class SocialLoginComponent implements OnInit {
 		}
 		
 		else if (providerName == 'zoho' && this.isLoggedInVanityUrl == 'true') {
-			let currentModule = "";
-			if (this.assignLeads) {
-				currentModule = 'leads'
-			} else {
-				currentModule = 'contacts'
-			}
 			this.contactService.checkingZohoVanityAuthentication(currentModule)
 				.subscribe(
-					data => {
-						localStorage.setItem("userAlias", data.userAlias)
-						localStorage.setItem("currentModule", data.module)
-						window.location.href = "" + data.redirectUrl;
+						response => {
+	                        this.storeLogin = response.data;
+	                        let data = response.data;
+	                        localStorage.setItem("userAlias", data.userAlias);
+	                        localStorage.setItem("currentModule", data.module);
+	                        window.location.href = "" + data.redirectUrl;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);

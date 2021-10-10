@@ -614,21 +614,20 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.socialContact.alias = contactList.alias;
 		
 		if (contactList.socialNetwork == 'GOOGLE') {
-			this.googleContactsSynchronizationAuthentication(this.socialContact);
 			this.contactListIdForSyncLocal = contactList.id;
-			this.socialNetworkForSyncLocal = contactList.socialNetwork;
+            this.socialNetworkForSyncLocal = contactList.socialNetwork;
+			this.googleContactsSynchronizationAuthentication(this.socialContact);
 		}
 		else if (contactList.socialNetwork == 'SALESFORCE') {
-			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
 			this.contactListIdForSyncLocal = contactList.id;
-			this.socialNetworkForSyncLocal = contactList.socialNetwork;
+            this.socialNetworkForSyncLocal = contactList.socialNetwork;
+			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
 		}
 		
 		else if (contactList.socialNetwork == 'HUBSPOT') {
-			this.syncronizeContactList(this.socialContact);
 			this.contactListIdForSyncLocal = contactList.id;
-			this.socialNetworkForSyncLocal = contactList.socialNetwork;
-			
+            this.socialNetworkForSyncLocal = contactList.socialNetwork;
+			this.syncronizeContactList(this.socialContact);
 		}
 		else if (contactList.socialNetwork == 'ZOHO') {
 			this.zohoContactsSynchronizationAuthentication(this.socialContact);
@@ -2232,11 +2231,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+		let tempValidationMessage : string = '';
+        tempValidationMessage = localStorage.getItem('validationMessage');
 
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isZohoAuth');
+		localStorage.removeItem('validationMessage');
 
 		this.socialContact.contactListId = this.contactListIdForSyncLocal;
         this.socialContact.socialNetwork = this.socialNetworkForSyncLocal;
@@ -2247,7 +2249,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 
 		else if (tempCheckSalesForceAuth == 'yes' && !this.isPartner) {
-			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
+			this.syncronizeContactList( this.socialContact);
 			tempCheckSalesForceAuth = 'no';
 
 		}
@@ -2266,6 +2268,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				tempIsZohoSynchronization = 'no';
 			}
 		}
+		  else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
+			  swal.close();
+			  this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
+	        }
 	}
 
 	ngOnInit() {
@@ -2274,7 +2280,37 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	
 	callInitMethods(){
 	      try {
-              if (this.contactService.socialProviderName == 'google'
+
+	    	    /*if (this.loggedInThroughVanityUrl){
+	                if (this.socialNetworkForSyncLocal == 'google'
+	                    || this.socialNetworkForSyncLocal == 'salesforce'
+	                    || this.socialNetworkForSyncLocal == 'zoho') {
+	                    let message: string = '';
+	                    message = localStorage.getItem('oauthCallbackValidationMessage');
+	                    localStorage.removeItem('oauthCallbackValidationMessage');
+	                    if (message != null && message.length > 0) {
+	                        this.customResponse = new CustomResponse('ERROR', message, true);
+	                    } else if (this.contactService.oauthCallbackMessage != null && this.contactService.oauthCallbackMessage.length > 0) {
+	                        message = this.contactService.oauthCallbackMessage;
+	                        this.contactService.oauthCallbackMessage = '';
+	                        this.customResponse = new CustomResponse('ERROR', message, true);
+	                    }else{
+	                          //this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
+	                          //this.socialContact.contactListId = JSON.parse(localStorage.getItem('selectedContactListId'));
+	                          //this.socialContact.contactType = localStorage.getItem('contactType');
+	                          //this.socialContact.alias = localStorage.getItem('alias');
+	                          this.syncronizeContactList( this.socialContact);
+	                          localStorage.removeItem("currentPage");
+	                          localStorage.removeItem("currentModule");
+	                          localStorage.removeItem("selectedContactListId");
+	                          localStorage.removeItem("socialNetwork");
+	                          localStorage.removeItem("contactType");
+	                          localStorage.removeItem("alias");
+	                    }
+	                }
+	            }else */
+	            	
+	            	if (this.contactService.socialProviderName == 'google'
             	  || this.contactService.socialProviderName == 'salesforce'
                   || this.contactService.socialProviderName == 'zoho') {
             	  this.contactService.socialProviderName = "nothing";
@@ -2325,6 +2361,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	                }
 	                else if (e.data == 'isZohoAuth') {
 	                    localStorage.setItem('isZohoAuth', 'yes');
+	                }else if(e.data !=null && e.data.includes("You have already configured")){
+	                    localStorage.setItem('validationMessage', e.data);
 	                }
 
 	            }, false);
