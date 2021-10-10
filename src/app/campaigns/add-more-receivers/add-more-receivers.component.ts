@@ -1,4 +1,4 @@
-import { Component, OnInit,Renderer } from '@angular/core';
+import { Component, OnInit,Renderer, OnDestroy } from '@angular/core';
 import { Campaign } from '../models/campaign';
 import { CampaignService } from '../services/campaign.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -23,7 +23,8 @@ declare var swal, $: any;
   providers: [Pagination, HttpRequestLoader,Properties]
 
 })
-export class AddMoreReceiversComponent implements OnInit {
+export class AddMoreReceiversComponent implements OnInit,OnDestroy {
+   
 	loggedInUserId: number = 0;
 	vanityLoginDto : VanityLoginDto = new VanityLoginDto();
     listName: any;
@@ -78,6 +79,11 @@ export class AddMoreReceiversComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  ngOnDestroy(): void {
+    $('#new-list-modal').modal('hide');
+    $('#usersModal').modal('hide');
+}
   
   
   resetAllFields(){

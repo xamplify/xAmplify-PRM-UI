@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Campaign } from '../models/campaign';
 /**********Tag Input****************/
 import { TagInputComponent as SourceTagInput } from 'ngx-chips';
@@ -22,8 +22,8 @@ declare var swal, $: any;
     providers: [Properties]
 
 } )
-export class PublicEventEmailPopupComponent implements OnInit {
-
+export class PublicEventEmailPopupComponent implements OnInit,OnDestroy {
+    
     selectedCampaign: Campaign;
     subject = "";
     emailIds = [];
@@ -43,6 +43,11 @@ export class PublicEventEmailPopupComponent implements OnInit {
 
     ngOnInit() {
     }
+
+    ngOnDestroy(): void {
+        $( '#' + this.modalPopupId ).modal( 'hide' );
+    }
+
 
     showPopup( campaign: Campaign ) {
         this.selectedCampaign = campaign;

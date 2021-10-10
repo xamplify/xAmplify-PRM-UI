@@ -28,7 +28,7 @@
               <tbody>
                 <tr *ngFor="let user of pagination.pagedItems ;let i =index">
                   <td>
-                    <b>{{user?.companyName}}</b>
+                    <strong>{{user?.companyName}}</strong>
                   </td>
                   <td [ngClass]="[ user?.validEmail ? 'valid' : 'invalid']"
                     [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">

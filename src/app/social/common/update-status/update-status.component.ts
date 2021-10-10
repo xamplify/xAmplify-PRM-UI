@@ -1011,6 +1011,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.videoFileService.videoType = '';
 		$('#listVideosModal').modal('hide');
 		$('#contactsModal').modal('hide');
+		$('#manageAccountsModal').modal('hide');
+		$('#contactsModal').modal('hide');
+		$('#rssModal').modal('hide');
 	}
 
 	toggleSocialStatusProvider(socialStatusProvider: SocialStatusProvider) {

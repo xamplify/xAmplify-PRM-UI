@@ -878,7 +878,6 @@
                   <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
                     <app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
                     <select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
-                    <!-- <option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option> -->
                     <option [ngValue]="numberOfItemsPerPage[0]"> {{numberOfItemsPerPage[0].name}}
                     </option>
                     <option *ngIf="pagination.totalRecords>12" [ngValue]="numberOfItemsPerPage[1]">
@@ -1038,8 +1037,8 @@
               </form>
             </div>
             <div class="form-group">
-              <label class="col-sm-3 labal-css color-css" translate>Email subject<font style="color: red"> <strong>*</strong>
-              </font>
+              <label class="col-sm-3 labal-css color-css" translate>Email subject<span style="color: red"> <strong>*</strong>
+              </span>
               </label>
               <div class="col-sm-9">
                 <input type="text" id="subjectLine" placeholder="Cancel Event Subject Line" class="form-control" (input)="validateCancelEventButton()" [(ngModel)]="cancelEventSubjectLine" name="subjectLine" maxlength="200" />

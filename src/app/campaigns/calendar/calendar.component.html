@@ -3,13 +3,13 @@
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
-                <i class="fa fa-home"></i>
+                <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
-                <i class="fa fa-angle-right"></i>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
-            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
             <li>
-                <a (click)="goToManageCampaigns()">Manage Campaigns</a><i class="fa fa-angle-right"></i>
+                <a (click)="goToManageCampaigns()">Manage Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
                 <a>Calender View</a>
@@ -61,8 +61,7 @@
                 <br>
                 <span>{{campaign.campaignScheduleTimeInString}}</span>
                </ng-container>
-            <!-- <ng-container *ngIf="campaign.status === 'SAVE'; else launchTime">{{campaign.updatedTime |date:'mediumDate'}}, {{campaign.updatedTime | date:'shortTime'}}</ng-container>
-            <ng-template #launchTime>{{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime | date:'shortTime'}}</ng-template> -->
+            
         </h6>
     </div>
 </div>
