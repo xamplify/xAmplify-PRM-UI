@@ -2882,11 +2882,15 @@ salesForceVanityAuthentication() {
              }
 		}
 		else if (tempCheckSalesForceAuth == 'yes' && !this.isPartner) {
-			 if (this.module === "contacts") {
+			 /*if (this.module === "contacts") {
                  this.router.navigate(['/home/contacts/add']);
              }else  if (this.module === "leads") {
                  this.router.navigate(['/home/assignleads/add']);
-             }
+             }*/
+			   this.showModal();
+               console.log("AddContactComponent salesforce() Authentication Success");
+               this.checkingPopupValues();
+               this.contactService.vanitySocialProviderName = "nothing";
 		}
 		else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
 			 if (this.module === "contacts") {
@@ -2941,7 +2945,9 @@ salesForceVanityAuthentication() {
 				}
 			}else if (this.contactService.socialProviderName == 'google') {
             	  if (this.contactService.oauthCallbackMessage.length > 0) {
-                      this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
+            		  let message = this.contactService.oauthCallbackMessage;
+            		  this.contactService.oauthCallbackMessage = '';
+                      this.customResponse = new CustomResponse('ERROR', message, true);
                   } else {
                       this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
                       this.socialContact.contactType = localStorage.getItem('contactType');
@@ -2957,7 +2963,9 @@ salesForceVanityAuthentication() {
 			}
 			else if (this.contactService.socialProviderName == 'salesforce') {
                   if (this.contactService.oauthCallbackMessage.length > 0) {
-                      this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
+                	  let message = this.contactService.oauthCallbackMessage;
+                      this.contactService.oauthCallbackMessage = '';
+                      this.customResponse = new CustomResponse('ERROR', message, true);
                   } else {
                       this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
                       this.socialContact.contactType = localStorage.getItem('contactType');
@@ -2973,7 +2981,9 @@ salesForceVanityAuthentication() {
 			}
 			else if (this.contactService.socialProviderName == 'zoho' || this.socialContactType == "zoho") {
                 if (this.contactService.oauthCallbackMessage.length > 0) {
-                    this.customResponse = new CustomResponse('ERROR', this.contactService.oauthCallbackMessage, true);
+                	let message = this.contactService.oauthCallbackMessage;
+                    this.contactService.oauthCallbackMessage = '';
+                    this.customResponse = new CustomResponse('ERROR', message, true);
                 } else {
                     this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
                     this.socialContact.contactType = localStorage.getItem('contactType');
@@ -3028,6 +3038,7 @@ salesForceVanityAuthentication() {
         }
 		
 			window.addEventListener('message', function(e) {
+				window.removeEventListener('message', function(e){}, true);
 				console.log('received message:  ' + e.data, e);
 				
 				if (e.data == 'isGoogleAuth') {

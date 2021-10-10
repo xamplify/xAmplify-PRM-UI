@@ -52,6 +52,9 @@ export const routes: Routes = [
     { path: 'home/assignleads/google-callback', component: VanitySocialContactsCallbackComponent },
     { path: 'home/assignleads/zoho-callback', component: VanitySocialContactsCallbackComponent },
     { path: 'home/assignleads/salesforce-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'home/partners/google-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'home/partners/zoho-callback', component: VanitySocialContactsCallbackComponent },
+    { path: 'home/partners/salesforce-callback', component: VanitySocialContactsCallbackComponent },
     
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'expired', component: LogoutComponent },
