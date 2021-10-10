@@ -26,7 +26,7 @@ declare var swal, $: any;
   providers: [Pagination, HttpRequestLoader, ActionsDescription, SortOption],
 
 })
-export class FormsListViewUtilComponent implements OnInit {
+export class FormsListViewUtilComponent implements OnInit,OnDestroy {
     landingPagesRouterLink: string;
     onlyForms = false;
     form: Form = new Form();
@@ -112,9 +112,9 @@ export class FormsListViewUtilComponent implements OnInit {
             }
             
             this.listForms(this.pagination);
-
-
     }
+
+   
 
 
     listForms(pagination: Pagination) {
@@ -305,6 +305,7 @@ export class FormsListViewUtilComponent implements OnInit {
         this.message = "";
         this.form = new Form();
         $('#form-preview-modal').modal('hide');
+        $('#form-url-modal').modal('hide');
         swal.close();
     }
 

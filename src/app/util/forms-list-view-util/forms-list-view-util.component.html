@@ -33,7 +33,7 @@
                                             <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                         </span>
                                     </ng-container>
-                                    <div class="inputs" align="right" style="float: right">
+                                    <div class="inputs" style="float: right">
                                         <div style="float: left;">
                                             <select class="form-control" [(ngModel)]="sortOption.formsSortOption"
                                                 (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
@@ -49,7 +49,7 @@
                                                 <button class="glyphicon glyphicon-remove search-box-item-clear"
                                                     *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchForms();"></button>
                                                 <button type="submit" class="search-box-item-click" (click)="searchForms()">
-                                                    <i class="fa fa-search"></i></button>
+                                                    <i class="fa fa-search" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
                                         <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
@@ -66,12 +66,9 @@
                 <section *ngIf="isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive">
-                            <table class='table tgrid table-hover table-sm' id="manage-form-list-table" *ngIf="pagination.pagedItems?.length>0">
+                            <table class='table tgrid table-hover table-sm' id="manage-form-list-table" *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
                                 <thead>
                                     <tr>
-                                        <!-- <th class="visible-xs" colspan="1" style="width: 45%">Form</th>
-                                        <th class="visible-sm visible-md visible-lg" colspan="2" style="width: 35%">Form</th> -->
-
                                         <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
                                             <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',2)">
                                             </span>
@@ -178,16 +175,16 @@
                             </h4>
                             <div>
                                 <h6 title="{{form.categoryName}}">
-                                    Folder <b>{{form.categoryName | slice:0:17}}</b>
+                                    Folder <strong>{{form.categoryName | slice:0:17}}</strong>
                                     <span *ngIf="form.categoryName?.length>17">..</span>
                                 </h6>
                                 <h6>
-                                    Created On <b>
+                                    Created On <strong>
                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
-                                </b>
+                                </strong>
                                 </h6>
                                 <h6 title="{{form.createdName}}">
-                                    By <b>{{form.createdName | slice:0:17}}</b>
+                                    By <strong>{{form.createdName | slice:0:17}}</strong>
                                     <span *ngIf="form.createdName?.length>17">..</span>
                                 </h6>
                             </div>
@@ -199,40 +196,37 @@
                             <div class="bar">
                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
                                     (click)="edit(form.id)">
-                                    <i class="fa fa-pencil-square-o"></i>
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
-                                    <i class="fa fa-eye"></i>
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
-                                    <i class="fa fa-clipboard"></i>
+                                    <i class="fa fa-clipboard" aria-hidden="true"></i>
                                 </a>
                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
                                     <a class="cursor">
-                                        <i class="fa fa-line-chart"></i>
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
                                     </a>
                                     <span class="badge" id="notification-list">{{form.count}}</span>
-                                    <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
-                                        <img src="../assets/images/disabled-icon.png">
-                                    </a> -->
                                 </ng-container>
                                 <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                                     <ng-container *ngIf="form.count==0">
                                         <a class="cursor">
-                                            <i class="fa fa-line-chart"></i>
+                                            <i class="fa fa-line-chart" aria-hidden="true" ></i>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
                                     <ng-container *ngIf="form.count>0">
                                         <a data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-line-chart"></i>
+                                            <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
                                 </ng-container>
                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" (click)="confirmDelete(form)" data-toggle="tooltip"
                                     data-placement="top" title="Delete" class="delete">
-                                    <i class="fa fa-trash-o"></i>
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </div>
@@ -254,8 +248,8 @@
 
 
     <!-- ----------------------Copy Link Modal------------------- -->
-    <div class="modal right " id="form-url-modal" data-backdrop="static">
-        <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+    <div class="modal fade right" id="form-url-modal" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" style="width: 75%! important;right:0 !important">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close-circle" data-dismiss="modal">

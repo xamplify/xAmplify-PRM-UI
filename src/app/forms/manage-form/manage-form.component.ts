@@ -334,13 +334,14 @@ export class ManageFormComponent implements OnInit, OnDestroy {
       }
 
 
-    /**************Edit Form***********/
+    /**************Destroy***********/
     ngOnDestroy() {
         this.referenceService.isCreated = false;
         this.referenceService.isUpdated = false;
         this.message = "";
         this.form = new Form();
         $('#form-preview-modal').modal('hide');
+        $('#form-url-modal').modal('hide');
         swal.close();
     }
 
