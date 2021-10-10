@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -16,8 +16,8 @@ declare var $: any, swal: any;
   providers: [HttpRequestLoader, Properties]
 
 })
-export class PreviewUserListComponent implements OnInit {
-
+export class PreviewUserListComponent implements OnInit,OnDestroy {
+ 
   @Input()userListName:string;
   @Input() userListId:number;
   @Output() notifyParentComponent = new EventEmitter();
@@ -36,6 +36,11 @@ export class PreviewUserListComponent implements OnInit {
     }
     
   }
+
+  ngOnDestroy(): void {
+    this.closePopup();
+  }
+
 
   navigateUsers(event:any){
     this.pagination.pageIndex = event.page;

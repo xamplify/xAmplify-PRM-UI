@@ -1548,25 +1548,20 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     highlightRow(contactList: any, event: any) {
         let contactId = contactList.id;
         let count = contactList.count;
-        let isEmptyActiveMasterPartnerList = count==0 && contactList.name==this.properties.activeMasterPartnerList;
-        let isEmptyInActiveMasterPartnerList = count==0 && contactList.name==this.properties.inActiveMasterPartnerList;
-        if(isEmptyActiveMasterPartnerList || isEmptyInActiveMasterPartnerList){
-            this.refService.showSweetAlertErrorMessage('This list cannot be selected');
-            $('#' + contactId).prop("checked", false);
-        }else{
-            let isChecked = $('#' + contactId).is(':checked');
-            if (isChecked) {
-                $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
-                this.selectedContactListIds.push(contactId);
-                this.userListDTOObj.push(contactList);
-            } else {
-                $('#campaignContactListTable_' + contactId).removeClass('contact-list-selected');
-                this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
-                this.userListDTOObj = this.refService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
-            }
-            this.contactsUtility();
-            event.stopPropagation();
+       
+        let isChecked = $('#' + contactId).is(':checked');
+        if (isChecked) {
+            $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
+            this.selectedContactListIds.push(contactId);
+            this.userListDTOObj.push(contactList);
+        } else {
+            $('#campaignContactListTable_' + contactId).removeClass('contact-list-selected');
+            this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
+            this.userListDTOObj = this.refService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
         }
+        this.contactsUtility();
+        event.stopPropagation();
+        
         
     }
     highlightContactRow(contactList: any, event: any, count: number, isValid: boolean) {
@@ -2449,6 +2444,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         $('.hls-video').remove();
         $('#usersModal').modal('hide');
         $('#show_email_template_preivew').modal('hide');
+        $('#templateRetrieve').modal('hide');
+        $('#email_spam_check').modal('hide');
+        $('#filterPopup').modal('hide');
     }
 
     saveCampaignOnDestroy() {

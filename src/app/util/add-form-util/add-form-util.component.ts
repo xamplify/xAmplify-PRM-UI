@@ -438,6 +438,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           this.navigateBack();
       }
       $('#add-form-name-modal').modal('hide');
+      
   }
 
   unBlurDiv() {
@@ -1131,6 +1132,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       this.selectedForm = undefined;
       this.dragulaService.destroy('form-options');
       this.minimizeForm();
+      $('#add-form-name-modal').modal('hide');
+      $('#add-form-designs').modal('hide');
+      $('#add-form-fields').modal('hide');
+      $('#cropbackgroundImage').modal('hide');
+      $('#yourImages').modal('hide');
+      swal.close();
 
   }
 

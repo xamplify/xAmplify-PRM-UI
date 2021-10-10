@@ -88,6 +88,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.selectedFormTypeIndex = 0;
         this.pagination.filterKey = "All";
         if (this.router.url.endsWith('manage/')) {
+            this.onlyForms = this.router.url.indexOf('/lf')<0;
             this.setViewType('Folder-Grid');
         } else {
             this.campaignId = this.route.snapshot.params['alias'];
@@ -333,13 +334,14 @@ export class ManageFormComponent implements OnInit, OnDestroy {
       }
 
 
-    /**************Edit Form***********/
+    /**************Destroy***********/
     ngOnDestroy() {
         this.referenceService.isCreated = false;
         this.referenceService.isUpdated = false;
         this.message = "";
         this.form = new Form();
         $('#form-preview-modal').modal('hide');
+        $('#form-url-modal').modal('hide');
         swal.close();
     }
 

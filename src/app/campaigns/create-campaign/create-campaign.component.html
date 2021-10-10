@@ -2439,12 +2439,12 @@
         <ngx-loading [show]="loadingMarketo" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="modal-content rounded-0">
             <div class="modal-header">
-                <a class="close-circle" data-dismiss="modal" (click)="closeModal()" id="closeButton"><i
-                        class="fa fa-times"></i></a>
+                <a class="close-circle" data-dismiss="modal" (click)="closeModal()" id="closeButton">
+                    <i class="fa fa-times" aria-hidden="true"></i></a>
                 <h4 class="modal-title" id="templateRetrieve" translate>Marketo integration with xAmplify</h4>
             </div>
             <div>
-                <img src="assets/images/crm/Mark-amplify.png" style="margin: 30px 30% 0;width: 50%;text-align: center;">
+                <img src="assets/images/crm/Mark-amplify.png" style="margin: 30px 30% 0;width: 50%;text-align: center;" alt="">
             </div>
             <div class="modal-body" style="padding: 39px;">
                 <form class="form-horizontal" autocomplete="off">
@@ -2485,12 +2485,12 @@
     </div>
 </div>
 
-<div class="modal right fade" id="email_spam_check" *ngIf="emailTemplate">
+<div class="modal fade right" id="email_spam_check" *ngIf="emailTemplate" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg modal-template" style="width: 65% !important;right:0">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i
-                        class="fa fa-times"></i></button>
+                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+                    <i class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" translate>Email Spam Check</h4>
             </div>
             <div class="modal-body">

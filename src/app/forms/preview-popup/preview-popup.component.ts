@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -24,7 +24,7 @@ declare var swal, $: any;
     styleUrls: ['./preview-popup.component.css'],
     providers: [HttpRequestLoader, Pagination, SortOption, FormService] 
 })
-export class PreviewPopupComponent implements OnInit {
+export class PreviewPopupComponent implements OnInit,OnDestroy {
     form: Form = new Form();
     ngxloading = false;
     formError = false;
@@ -58,6 +58,11 @@ export class PreviewPopupComponent implements OnInit {
         if (this.authenticationService.isShowForms) {
             this.pagination.campaignType = 'EVENT';
         }
+    }
+
+    ngOnDestroy(){
+        $('#forms-list').modal('hide');
+        $('#form-preview-modal').modal('hide');
     }
 
     /************List Available Forms******************/
