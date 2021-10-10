@@ -324,6 +324,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         this.referenceService.isUpdated = false;
         this.message = "";
         this.landingPage = new LandingPage();
+        $('#landing-page-url-modal').modal('hide');
         swal.close();
     }
 
