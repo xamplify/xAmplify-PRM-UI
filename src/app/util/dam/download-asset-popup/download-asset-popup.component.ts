@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter, OnDestroy } from '@angular/core';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Ng2DeviceService } from 'ng2-device-detector';
@@ -16,7 +16,8 @@ declare var $:any,swal:any;
   styleUrls: ['./download-asset-popup.component.css'],
   providers: [Properties]
 })
-export class DownloadAssetPopupComponent implements OnInit {
+export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
+	
 
   @Input() asset:any;
   @Input() isPartnerView:boolean;
@@ -34,6 +35,10 @@ export class DownloadAssetPopupComponent implements OnInit {
   ngOnInit() {
 	  this.openPopup(this.asset);
   }
+
+  ngOnDestroy(): void {
+	this.hidePopup();
+}
 
   /***************Download*************/
 	openPopup(asset: any) {

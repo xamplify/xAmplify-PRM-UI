@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { DamService } from '../services/dam.service';
@@ -18,7 +18,8 @@ declare var $, swal: any;
 	styleUrls: ['./upload-asset.component.css'],
 	providers: [Properties]
 })
-export class UploadAssetComponent implements OnInit {
+export class UploadAssetComponent implements OnInit,OnDestroy {
+	
 	formLoader = false;
 	customResponse: CustomResponse = new CustomResponse();
 	damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
@@ -57,6 +58,10 @@ export class UploadAssetComponent implements OnInit {
 			this.getAssetDetailsById(this.id);
 			this.submitButtonText = "Update";
 		}
+	}
+
+	ngOnDestroy(): void {
+		$('#thumbnailImageModal').modal('hide');
 	}
 
 	getAssetDetailsById(selectedAssetId: number) {
