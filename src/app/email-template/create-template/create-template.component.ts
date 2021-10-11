@@ -341,7 +341,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             data => {
                 if (data.access) {
                     this.refService.stopLoader(this.httpRequestLoader);
-                    if (data.statusCode == 702) {                        
+                    if (data.statusCode == 702) { 
+                        swal.close();                       
                         if (!isOnDestroy) {
                             this.refService.isCreated = true;
                             this.navigateToManageSection();
@@ -349,7 +350,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                             this.emailTemplateService.goToManage();
                         }
                     } else if (data.statusCode == 500) {
-                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                        //this.customResponse = new CustomResponse('ERROR', data.message, true);
+                        $('#templateNameSpanError').text(data.message);
                     }                    
                 } else {
                     this.authenticationService.forceToLogout();
@@ -414,7 +416,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnInit() {        
+    ngOnInit() {  
+        alert("Hiii" + this.loadTemplate);
+            
     }
     ngOnDestroy() {
         this.emailTemplateService.isNewTemplate = false;
@@ -467,7 +471,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.draft = false;
         this.saveEmailTemplate(this.emailTemplate, this.emailTemplateService, this.loggedInUserId, false);
-        swal.close();
+        //swal.close();
     }
 
     createButton(text, cb) {

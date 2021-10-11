@@ -221,6 +221,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             this.campaignAccess.socialCampaign = campaignAccess.social;
             this.campaignAccess.eventCampaign = campaignAccess.event;
             this.campaignAccess.landingPageCampaign = campaignAccess.page;
+            this.campaignAccess.formBuilder = campaignAccess.form;
           },_error=>{
             this.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
             this.isloading = false;

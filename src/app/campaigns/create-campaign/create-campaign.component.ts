@@ -406,7 +406,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.isLandingPageSwitch = true;
             } else if (this.campaign.campaignTypeInString == "SURVEY") {
                 this.campaignType = 'survey';
-                this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+                this.emailTemplatesPagination.filterBy = "CampaignSurveyEmails";
             }
             this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             this.getCampaignReplies(this.campaign);
@@ -667,6 +667,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else if (this.campaignType == "emailTemplate") {
                 this.isLandingPage = true;
                 this.isLandingPageSwitch = false;
+            }
+
+            if (this.campaignType == "survey") {
+                this.emailTemplatesPagination.filterBy = "CampaignSurveyEmails";
             }
         }
         this.listCategories();
@@ -1140,8 +1144,12 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
 
     loadRegularOrVideoCoBrandedTemplates() {
-        if (this.campaignType == "regular" || this.campaignType == "survey") {
+        if (this.campaignType == "regular") {
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+            this.emailTemplatesPagination.pageIndex = 1;
+            this.loadEmailTemplates(this.emailTemplatesPagination);
+        } else if (this.campaignType == "survey") {
+            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.SURVEY_CO_BRANDING;
             this.emailTemplatesPagination.pageIndex = 1;
             this.loadEmailTemplates(this.emailTemplatesPagination);
         } else {

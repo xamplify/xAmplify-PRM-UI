@@ -516,7 +516,7 @@
                                 </div>
                                 <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
 
-                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage' || campaignType=='survey'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
 
                                 <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                             </div>
