@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -22,8 +22,8 @@ declare var $: any, swal: any;
   styleUrls: ['./manage-mdf-request-form.component.css','../mdf-html/mdf-html.component.css'],
   providers: [Pagination, HttpRequestLoader,Properties]
 })
-export class ManageMdfRequestFormComponent implements OnInit {
-
+export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
+   
   loggedInUserId: number = 0;
   pagination:Pagination = new Pagination();
   columns: Array<any> = new Array<any>();
@@ -56,8 +56,11 @@ export class ManageMdfRequestFormComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.loggedInUserId = this.authenticationService.getUserId();
     this.getCompanyId();
-    
   }
+    ngOnDestroy(): void {
+        this.hideRequestCommentModalPopup();
+    }
+
   getCompanyId() {
     if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
       this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
