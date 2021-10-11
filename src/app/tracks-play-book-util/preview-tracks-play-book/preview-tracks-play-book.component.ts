@@ -23,7 +23,7 @@ declare var $, swal: any;
   styleUrls: ['./preview-tracks-play-book.component.css'],
   providers: [HttpRequestLoader, TracksPlayBookUtilService, DamService]
 })
-export class PreviewTracksPlayBookComponent implements OnInit {
+export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   createdUserCompanyId: number = 0;
   slug: string = "";
   tracksPlayBook: TracksPlayBook = new TracksPlayBook();
@@ -74,6 +74,10 @@ export class PreviewTracksPlayBookComponent implements OnInit {
     this.slug = this.route.snapshot.params['slug'];
     this.getBySlug();
     this.setViewType("List");
+  }
+
+  ngOnDestroy() {
+    $('#asset-preview-modal').modal('hide');
   }
 
   getCompanyId() {
