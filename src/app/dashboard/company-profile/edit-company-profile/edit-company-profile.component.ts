@@ -1329,6 +1329,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
        if(this.upadatedUserId!=undefined &&this.upadatedUserId>0){
            this.getCompanyProfileByIdNgOnDestroy(this.upadatedUserId);
        }
+       $('#cropBgImage').modal('hide');
+       $('#cropLogoImage').modal('hide');
    }
    checkUser(){
        this.isLoading = true;
