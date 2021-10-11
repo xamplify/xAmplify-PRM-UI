@@ -25,7 +25,7 @@ declare var swal, $: any;
   styleUrls: ['./manage-tracks-play-book.component.css'],
   providers: [Pagination, HttpRequestLoader, SortOption],
 })
-export class ManageTracksPlayBookComponent implements OnInit {
+export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   pagination: Pagination = new Pagination();
   loggedInUserId = 0;
@@ -77,6 +77,7 @@ export class ManageTracksPlayBookComponent implements OnInit {
   ngOnDestroy() {
     this.referenceService.isCreated = false;
     this.referenceService.isUpdated = false;
+    swal.close();
   }
 
   showMessageOnTop(message: string) {

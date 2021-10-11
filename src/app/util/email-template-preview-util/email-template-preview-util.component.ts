@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 
-declare var $,swal:any;
+declare var $:any;
 @Component({
   selector: 'app-email-template-preview-util',
   templateUrl: './email-template-preview-util.component.html',
   styleUrls: ['./email-template-preview-util.component.css']
 })
-export class EmailTemplatePreviewUtilComponent implements OnInit {
+export class EmailTemplatePreviewUtilComponent implements OnInit,OnDestroy {
+  
   loadingEmailTemplate = false;
   emailTemplateName: any;
   htmlContent = "#modal-body-content";
@@ -17,6 +18,10 @@ export class EmailTemplatePreviewUtilComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  ngOnDestroy(): void {
+    $(this.modalId).modal('hide');
+   }
 
   previewEmailTemplate(emailTemplate:any){
     this.loadingEmailTemplate = true;

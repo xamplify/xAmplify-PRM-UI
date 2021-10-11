@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter, OnDestroy } from '@angular/core';
 import { MdfService } from '../services/mdf.service';
 /*****Common Imports**********************/
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -20,7 +20,8 @@ declare var $: any;
 	providers: [Properties]
 
 })
-export class AddMdfFundsModalPopupComponent implements OnInit {
+export class AddMdfFundsModalPopupComponent implements OnInit,OnDestroy {
+	
 
 	modalPopupLoader: boolean;
 	loggedInUserCompanyId: number = 0;
@@ -55,6 +56,10 @@ export class AddMdfFundsModalPopupComponent implements OnInit {
 			this.referenceService.showSweetAlertErrorMessage("Partnership does not exists");
 		}
 
+	}
+
+	ngOnDestroy(): void {
+		this.closeMdfAmountPopup();
 	}
 
 	getPartnerAndMdfAmountDetails() {

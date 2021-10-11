@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
@@ -28,7 +28,7 @@ declare var $, swal: any;
   styleUrls: ['./tracks-play-book-partner-analytics.component.css'],
   providers: [HttpRequestLoader, SortOption, Properties, FormService]
 })
-export class TracksPlayBookPartnerAnalyticsComponent implements OnInit {
+export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestroy {
 
   initLoader = false;
   loggedInUserId: number = 0;
@@ -77,6 +77,10 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit {
       this.goBack();
     }
     this.getPartnerAnalytics(this.pagination);
+  }
+
+  ngOnDestroy() {
+    $('#analytics-list').modal('hide');
   }
 
   getPartnerAnalytics(pagination: Pagination) {
