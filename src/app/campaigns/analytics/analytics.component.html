@@ -201,6 +201,13 @@
                   <span>Click for preview</span>
                 </div>
               </div>
+              <div class="actions-block override-actions" id="landing-page-icons">                
+                <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0" routerLink="/home/forms/csf/{{campaign.campaignId}}"
+                  data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Survey Forms Count">
+                  <i class="fa fa-wpforms" aria-hidden="true"></i>
+                  <span class="badge" id="notification">{{campaign.formsCount}}</span>
+                </a>                
+              </div>
             </a>
           </div>
 

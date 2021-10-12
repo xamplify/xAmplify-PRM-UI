@@ -57,6 +57,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     modulesDisplayType = new ModulesDisplayType();
     selectedFormTypeIndex = 0;
 
+    surveyCampaignId = 0;
+
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -95,6 +97,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.landingPageCampaignId = this.route.snapshot.params['landingPageCampaignId'];
             this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
             this.partnerId = this.route.snapshot.params['partnerId'];
+            this.surveyCampaignId = this.route.snapshot.params['surveyCampaignId'];
             if (this.categoryId>0 && (this.landingPageId==undefined||this.landingPageId==0)) {
                 this.pagination.categoryId = this.categoryId;
                 this.pagination.categoryType = 'f';
@@ -119,6 +122,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                 this.pagination.landingPageAlias = this.partnerLandingPageAlias;
                 this.pagination.partnerLandingPageForm = true;
                 this.landingPagesRouterLink = "/home/pages/partner";
+            } else if (this.surveyCampaignId > 0) {
+                this.pagination.campaignId = this.surveyCampaignId;
+                this.pagination.surveyCampaignForm = true;
+                this.pagination.partnerId = this.partnerId;
             } else {
                 this.onlyForms = true;
             }
