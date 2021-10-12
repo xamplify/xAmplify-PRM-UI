@@ -17,7 +17,8 @@ declare var  $: any;
   styleUrls: ['./landing-page-analytics-util.component.css'],
   providers: [Pagination,HttpRequestLoader,SortOption]
 })
-export class LandingPageAnalyticsUtilComponent implements OnInit {
+export class LandingPageAnalyticsUtilComponent implements OnInit,OnDestroy {
+   
 
     landingPageId: number = 0;
     pagination: Pagination;
@@ -36,6 +37,10 @@ export class LandingPageAnalyticsUtilComponent implements OnInit {
         this.pagination = this.map.get("pagination");
         this.listAnalytics( this.pagination,"");
         this.getViews();
+    }
+
+    ngOnDestroy(): void {
+        $('#country-views-modal').modal('hide');
     }
     
     getViews(){
