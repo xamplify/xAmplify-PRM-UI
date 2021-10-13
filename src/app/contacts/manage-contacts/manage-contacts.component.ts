@@ -354,7 +354,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.campaignLoader = true;
                 this.referenceService.loading(this.httpRequestLoader, true);
                 this.pagination.filterKey = 'isPartnerUserList';
-                this.pagination.filterValue = this.isPartner;
+				this.pagination.filterValue = this.isPartner;
+				if(this.checkingContactTypeName=="Contact"){
+					if(this.selectedFilterIndex==0){
+						pagination.filterBy = "MY-CONTACTS";
+					}else if(this.selectedFilterIndex==1){
+						pagination.filterBy = "FORM-LEADS";
+					}else if(this.selectedFilterIndex==2){
+						pagination.filterBy = "ALL";
+					}
+				}
                 if(this.sharedLeads){
                     pagination.sharedLeads = this.sharedLeads;
                     pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
