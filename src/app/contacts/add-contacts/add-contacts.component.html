@@ -312,7 +312,7 @@
 
 										<!-- Validation Messages -->
 										<div *ngIf="isValidContactName">
-											<p class="custom-error-message chagneText" translate>{{checkingContactTypeName}} List name already exists</p>
+											<p class="custom-error-message chagneText" translate>{{invalidContactNameError}}</p>
 										</div>
 										<div *ngIf="contactListNameError">
 											<p class="custom-error-message chagneText" translate>Please enter the {{checkingContactTypeName}} list name.</p>

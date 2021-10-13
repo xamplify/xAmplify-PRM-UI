@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild,OnDestroy } from '@angular/core';
 import { LandingPageService } from '../services/landing-page.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { LandingPage } from '../models/landing-page';
@@ -19,7 +19,7 @@ declare var swal, $: any;
   providers: [HttpRequestLoader],
 
 })
-export class PreviewLandingPageComponent implements OnInit {
+export class PreviewLandingPageComponent implements OnInit,OnDestroy {
     currentUrl: string = "";
     @ViewChild('saveGeoLocationAnalyticsComponent') saveGeoLocationAnalyticsComponent: SaveGeoLocationAnalyticsComponent;
     constructor( public landingPageService: LandingPageService, public authenticationService: AuthenticationService,
@@ -73,6 +73,10 @@ export class PreviewLandingPageComponent implements OnInit {
                 swal( "Please Contact Admin!", "Unable to load  page", "error" ); this.loading = false;
                 $( "#landing-page-preview-modal" ).modal( 'hide' );
             } );
+    }
+
+    ngOnDestroy(){
+        $('#landing-page-preview-modal').modal('hide');
     }
 
 }

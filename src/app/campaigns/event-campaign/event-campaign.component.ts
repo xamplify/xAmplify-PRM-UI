@@ -743,7 +743,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     searchContactList() {
         this.contactListsPagination.pageIndex = 1;
         this.contactListsPagination.searchKey = this.contactSearchInput;
-        if (this.contactListsPagination.searchKey != "") {
+        if (this.contactListsPagination.searchKey != undefined && this.contactListsPagination.searchKey != null 
+                && this.contactListsPagination.searchKey.trim() != "") {
             this.showExpandButton = true;
         } else {
             this.showExpandButton = false;

@@ -23,7 +23,7 @@ export const routes: Routes = [
     { path: "category/:alias/:categoryId/analytics", component: FormAnalyticsComponent},
     { path: ":partner/f/:formId/:partnerLandingPageAlias/analytics", component: FormAnalyticsComponent},
     { path: "lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
-    { path: ":alias/:campaignAlias/:partnerId/analytics", component: FormAnalyticsComponent},
+    { path: ":alias/:campaignAlias/:partnerId/analytics/cfa", component: FormAnalyticsComponent},
     {path: "cf/:alias",component:CampaignFormAnalyticsComponent},
     {path: "lf/:landingPageId",component:LandingPageFormsComponent},
     {path: "partner/lf/:partnerLandingPageAlias",component:LandingPageFormsComponent},

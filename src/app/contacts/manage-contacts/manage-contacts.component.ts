@@ -219,7 +219,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showExpandButton = false;
 	showShareListPopup : boolean = false;
 	isFormList = false;
-	
+	selectedFilterIndex = 0;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService) {
@@ -347,7 +347,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     loadContactLists(pagination: Pagination) {
-   
         if (this.assignLeads) {
         	this.loadAssignedLeadsLists(pagination);
         } else {
@@ -1593,10 +1592,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	search(searchType: string) {
 		this.searchContactType = searchType;
+		this.searchKey = $.trim(this.searchKey);
 		try {
 			this.resetResponse();
-			if (searchType == 'contactList') {		
-				if (this.searchKey != "") {
+			if (searchType == 'contactList') {	
+				if (this.searchKey != undefined && this.searchKey != null && this.searchKey != "") {
 					this.showExpandButton = true;
 					this.isListView = true;
 				} else {
@@ -1971,10 +1971,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 const name = this.saveAsListName;
                 const self = this;
                 this.isValidLegalOptions = true;
-                const inputName = name.toLowerCase().replace(/\s/g, '');
+				const inputName = $.trim(name.toLowerCase().replace(/\s/g, ''));
+				const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+				const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
                 if ($.inArray(inputName, self.names) > -1) {
                     this.saveAsError = 'This list name is already taken.';
-                } else {
+				}else if(inputName==activeMasterPartnerList || inputName==inActiveMasterPartnerList){
+					this.saveAsError = 'This list name cannot be added';
+				}else {
                     if (name !== "" && name.length < 250) {
                         this.saveAsError = '';
                         this.validateLegalBasisOptions();
@@ -2004,11 +2008,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     saveAsLeadsInputChecking() {
         try {
-            const name = this.saveAsListName;
+            const name =  $.trim(this.saveAsListName.toLowerCase().replace(/\s/g, ''));
             const self = this;
             this.isValidLegalOptions = true;
-            const inputName = name.toLowerCase().replace(/\s/g, '');
-            if (name !== "" && name.length < 250) {
+			const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+			const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+			if(name==activeMasterPartnerList || name==inActiveMasterPartnerList){
+				this.saveAsError = 'This list name cannot be added';
+			}else  if (name !== "" && name.length < 250) {
                 this.saveAsError = '';
                 this.validateLegalBasisOptions();
                 if (this.saveAsTypeList === 'manage-contacts') {
@@ -2019,9 +2026,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         this.saveSelectedUsers(name, this.selectedLegalBasisOptions, this.model.isPublic);
                     }
                 }
-            }
-            else if (name == "") { this.saveAsError = 'List Name is Required.'; }
-            else { this.saveAsError = 'You have exceeded 250 characters!'; }
+            } else if (name == "") { this.saveAsError = 'List Name is Required.'; }
+             else { this.saveAsError = 'You have exceeded 250 characters!'; }
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAs()");
         }
@@ -2325,8 +2331,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	            this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
 	            if (this.isPartner) {
 	                this.defaultPartnerList(this.authenticationService.getUserId());
-	            }
-
+				}
+				if(this.checkingContactTypeName=="Contact"){
+					this.pagination.filterBy = 'MY-CONTACTS';
+				}
 	            this.loadContactLists(this.pagination);
 	            this.contactsCount();
 	            this.loadContactListsNames();
@@ -2535,7 +2543,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     
     closeSharedDetailsPopup(){
     	$("#listSharedDetailsModal").modal().hide();
-    }
+	}
+	
+	filterContacts(filterType:string,index:number){
+		this.customResponse = new CustomResponse();
+		this.selectedFilterIndex = index;//This is to highlight the tab
+		this.pagination.pageIndex = 1;
+		this.pagination.filterBy = filterType;
+		this.loadContactLists(this.pagination);
+	}
 	
 	
 }

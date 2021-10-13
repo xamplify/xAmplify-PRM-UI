@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,Input } from '@angular/core';
+import { Component, OnInit, ViewChild,Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -27,7 +27,8 @@ declare var $, swal: any;
   styleUrls: ['./team-members-util.component.css'],
   providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties, RegularExpressions]
 })
-export class TeamMembersUtilComponent implements OnInit {
+export class TeamMembersUtilComponent implements OnInit,OnDestroy {
+  
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   addTeamMemberLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -95,6 +96,12 @@ export class TeamMembersUtilComponent implements OnInit {
   ngOnInit() {
     this.isTeamMemberModule = this.moduleName=='teamMember';
     this.findAll(this.pagination);
+  }
+
+  ngOnDestroy(): void {
+    $('#delete-team-member-popup').modal('hide');
+    $('#preview-team-member-popup').modal('hide');
+    swal.close();
   }
 
   findAll(pagination: Pagination) {

@@ -1,25 +1,34 @@
 <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
     <div class="page-bar">
         <ul class="page-breadcrumb">
-            <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
-                <i class="fa fa-angle-right"></i></li>
+            <li *ngIf="!authenticationService.isSuperAdmin()">
+                <i class="fa fa-home" aria-hidden="true"></i> 
+                   <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                   <i class="fa fa-angle-right" aria-hidden="true"></i></li>
             <li *ngIf="onlyForms">
-                <a [routerLink]="['/home/design/add']" translate>Create Design</a> <i class="fa fa-angle-right"></i>
+                <a [routerLink]="['/home/design/add']" translate>Create Design</a> 
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
 
-            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a><i class="fa fa-angle-right"></i></li>
+            <li *ngIf="authenticationService.isSuperAdmin()">
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i></li>
             <ng-container *ngIf="pagination.campaignForm">
                 <li>
-                    <a [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a><i class="fa fa-angle-right"></i>
+                    <a [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
             </ng-container>
 
             <ng-container *ngIf="pagination.landingPageCampaignForm">
                 <li>
-                    <a (click)="goToCampaignAnalytics()" translate >Campaign Analytics</a><i class="fa fa-angle-right"></i>
+                    <a (click)="goToCampaignAnalytics()" translate >Campaign Analytics</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
             </ng-container>
 
             <li *ngIf="!pagination.landingPageCampaignForm && !onlyForms">
-                <a routerLink="{{landingPagesRouterLink}}" translate>Manage Pages</a><i class="fa fa-angle-right"></i>
+                <a routerLink="{{landingPagesRouterLink}}" translate>Manage Pages</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <li style="color: #808080" translate>Manage Forms</li>
         </ul>
     </div>
@@ -72,7 +81,7 @@
                                             <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width"
                                                 data-toggle="tooltip" data-placement="bottom" title="Folder List View"
                                                 [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                                                <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" />
+                                                <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" />
                                             </span>
                                         </ng-container>
                     
@@ -115,7 +124,7 @@
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive">
-                            <table class='table tgrid table-hover table-sm' id="manage-form-list-table" *ngIf="pagination.pagedItems?.length>0">
+                            <table class='table tgrid table-hover table-sm' id="manage-form-list-table" *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
                                 <thead>
                                     <tr>
                                         <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
@@ -129,7 +138,8 @@
                                             <span class="gridHeader" translate>Form</span>
                                         </th>
 
-                                        <th class="hidden-xs text-center" translate>Created On</th>
+                                        <th scope="row" class="text-center" translate>Created On</th>
+                                        <th scope="row" class="text-center" translate>Updated On</th>
                                         <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width" translate>Actions</th>
                                         <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner" translate>Actions</th>
                                     </tr>
@@ -156,25 +166,32 @@
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
                                         </td>
-                                        <td class="hidden-xs text-center">
-                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
+                                        <td class="text-center">
+                                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.createdDateString">
                                             </app-timestamp>
+                                        </td>
+                                        <td *ngIf="form?.updatedDateString?.length>0" class="text-center">
+                                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.updatedDateString">
+                                            </app-timestamp>
+                                        </td>
+                                        <td *ngIf="form?.updatedDateString?.length==0" class="text-center">
+                                           -
                                         </td>
                                         <td id="actions-row">
                                             <div class="actions-block override-actions custom-width-icon">
                                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
                                                     (click)="edit(form.id)">
-                                                    <i class="fa fa-pencil-square-o"></i>
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
                                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
-                                                    <i class="fa fa-eye"></i>
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a>
                                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
-                                                    <i class="fa fa-clipboard"></i>
+                                                    <i class="fa fa-clipboard" aria-hidden="true"></i>
                                                 </a>
                                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
                                                     <a class="cursor">
-                                                        <i class="fa fa-line-chart"></i>
+                                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                         <span class="badge" id="notification">{{form.count}}</span>
                                                     </a>
                                                 </ng-container>
@@ -182,20 +199,20 @@
                                                     <!-------------Disable onclick if count==0   ----->
                                                     <ng-container *ngIf="form.count==0">
                                                         <a class="cursor">
-                                                            <i class="fa fa-line-chart"></i>
+                                                            <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                             <span class="badge" id="notification">{{form.count}}</span>
                                                         </a>
                                                     </ng-container>
                                                     <ng-container *ngIf="form.count>0">
                                                         <a data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip" data-placement="top" title="Form Analytics">
-                                                            <i class="fa fa-line-chart"></i>
+                                                            <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                             <span class="badge" id="notification">{{form.count}}</span>
                                                         </a>
                                                     </ng-container>
                                                 </ng-container>
                                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" id="template-delete" (click)="confirmDelete(form)"
                                                     data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="fa fa-trash-o"></i>
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                         </td>
@@ -217,16 +234,16 @@
                             </h4>
                             <div>
                                 <h6 title="{{form.categoryName}}" translate>
-                                    Folder <b>{{form.categoryName | slice:0:17}}</b>
+                                    Folder <strong>{{form.categoryName | slice:0:17}}</strong>
                                     <span *ngIf="form.categoryName?.length>17">..</span>
                                 </h6>
                                 <h6 translate>
-                                    Created On <b>
+                                    Created On <strong>
                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
-                                </b>
+                                </strong>
                                 </h6>
                                 <h6 title="{{form.createdName}}" translate>
-                                    By <b>{{form.createdName | slice:0:17}}</b>
+                                    By <strong>{{form.createdName | slice:0:17}}</strong>
                                     <span *ngIf="form.createdName?.length>17">..</span>
                                 </h6>
                             </div>
@@ -238,40 +255,37 @@
                             <div class="bar">
                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
                                     (click)="edit(form.id)">
-                                    <i class="fa fa-pencil-square-o"></i>
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
-                                    <i class="fa fa-eye"></i>
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
-                                    <i class="fa fa-clipboard"></i>
+                                    <i class="fa fa-clipboard" aria-hidden="true"></i>
                                 </a>
                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
                                     <a class="cursor">
-                                        <i class="fa fa-line-chart"></i>
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
                                     </a>
                                     <span class="badge" id="notification-list">{{form.count}}</span>
-                                    <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
-                                        <img src="../assets/images/disabled-icon.png">
-                                    </a> -->
                                 </ng-container>
                                 <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                                     <ng-container *ngIf="form.count==0">
                                         <a class="cursor">
-                                            <i class="fa fa-line-chart"></i>
+                                            <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
                                     <ng-container *ngIf="form.count>0">
                                         <a data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-line-chart"></i>
+                                            <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
                                 </ng-container>
                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" (click)="confirmDelete(form)" data-toggle="tooltip"
                                     data-placement="top" title="Delete" class="delete">
-                                    <i class="fa fa-trash-o"></i>
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </div>
@@ -293,8 +307,8 @@
 
 
     <!-- ----------------------Copy Link Modal------------------- -->
-    <div class="modal right " id="form-url-modal" data-backdrop="static">
-        <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+    <div class="modal fade right" id="form-url-modal" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" style="width: 75% !important;right:0 !important">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close-circle" data-dismiss="modal">

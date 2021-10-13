@@ -8,11 +8,25 @@
 }
 
 .img-grid-track {
-    height: 80px;
+    /* height: 80px;
     width: 145px;
     background: #f2f4f9;
     border: solid 1px #008fd5;
-    border-radius: 1px;
+    border-radius: 1px; */
+
+    max-height: 150px;
+    min-height: 150px;
+    height: 150px;
+    max-width: 100%;
+    overflow: hidden;
+    background-size: cover;
+    background-position: top;
+    margin: 0px;
+    border-radius: 4px 4px 0px 0px;
+    width: auto;
+    height: 100%;
+    width: 100%!important;
+    border: solid 1px #008fd5;
 }
 
 /* #actions-row {
@@ -159,4 +173,15 @@
 .tag-dots {
     font-size: 16px;
     margin: 0px 2px;
+}
+
+.grid-title {
+    text-align: left;
+    margin: 5px 0 5px 5px;
+    font-size: 16px;
+}
+
+.track-info-grid {
+    font-size: 12px;
+    margin: 5px 0 5px 5px;
 }

@@ -152,3 +152,7 @@ h3 {
     font-size: 12px;
     text-transform: uppercase;
 }
+
+.contact-filter-selected{
+	background-color: #6dcff6;
+}

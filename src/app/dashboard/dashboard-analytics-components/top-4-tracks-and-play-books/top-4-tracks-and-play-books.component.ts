@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, OnDestroy } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
@@ -18,7 +18,8 @@ declare var $:any, swal:any;
   styleUrls: ['./top-4-tracks-and-play-books.component.css'],
   providers: [Properties,TracksPlayBookUtilService]
 })
-export class Top4TracksAndPlayBooksComponent implements OnInit {
+export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
+  
 
   pagination:Pagination = new Pagination();
   headerTitle = "";
@@ -50,6 +51,10 @@ export class Top4TracksAndPlayBooksComponent implements OnInit {
     }
     this.listLearningTracks(this.pagination);
   }
+
+  ngOnDestroy(): void {
+    swal.close();
+   }
 
   
 

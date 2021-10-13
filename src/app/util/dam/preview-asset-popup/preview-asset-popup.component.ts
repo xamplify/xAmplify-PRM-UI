@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter, OnDestroy } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
@@ -10,7 +10,7 @@ declare var $,swal;
   templateUrl: './preview-asset-popup.component.html',
   styleUrls: ['./preview-asset-popup.component.css']
 })
-export class PreviewAssetPopupComponent implements OnInit {
+export class PreviewAssetPopupComponent implements OnInit,OnDestroy {
   imageLoading: boolean;
   assetPath: string;
   modalPopupLoader: boolean;
@@ -23,6 +23,10 @@ export class PreviewAssetPopupComponent implements OnInit {
   ngOnInit() {
 	this.preview(this.asset);
   }
+  ngOnDestroy(): void {
+	$("#asset-preview-modal").modal('hide');
+	this.hidePopup();
+}
 
   preview(asset:any){
 		this.imageLoading = false;

@@ -1681,6 +1681,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		$('.h-video').remove();
 		this.referenceService.defaulgVideoMethodCalled = false;
 		this.dragulaService.destroy('pipelineStagesDragula');
+		$('#cropProfileImage').modal('hide');
+		$('#addCategoryModalPopup').modal('hide');
+		$('#deleteCategoryModalPopup').modal('hide');
+		$('#addPipelineModalPopup').modal('hide');
+		$('#addExcludeUserPopupModal').modal('hide');
+		swal.close();
 	}
 
 configHubSpot() {

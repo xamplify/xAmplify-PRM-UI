@@ -2319,6 +2319,11 @@ checkParentAndRedistributedCampaignAccess(){
     $('#emailActionListModal').modal('hide');
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
+    $('#email_template_preivew').modal('hide');
+    $('#show_contact-list-info').modal('hide');
+    $('#scrModal').modal('hide');
+    $('#emailActionDetailsModal').modal('hide');
+    $('#leadFormModel').modal('hide');
   }
 
   showLandingPagePreview(campaign: Campaign) {
