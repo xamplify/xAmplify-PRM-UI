@@ -2480,7 +2480,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         	//this.router.navigate(['/home/partners/add']);
         }
         else if (tempCheckSalesForceAuth == 'yes' ) {
-        	//this.router.navigate(['/home/partners/add']);
         	 this.showModal();
              console.log("AddContactComponent salesforce() Authentication Success");
              this.checkingPopupValues();
@@ -2490,7 +2489,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
         	this.router.navigate(['/home/partners/add']);
         }else if (tempZohoAuth == 'yes') {
-            this.router.navigate(['/home/partners/add']);
+        	this.zohoShowModal();
+            this.checkingZohoPopupValues();
+            tempZohoAuth = 'no';
+            this.contactService.vanitySocialProviderName = "nothing";
         }
         else if (tempValidationMessage!=null && tempValidationMessage.length>0 && this.isPartner) {
         	swal.close();
@@ -3450,37 +3452,18 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		try {
 			this.selectedAddPartnerOption = 6;
 			if (this.loggedInThroughVanityUrl) {
-				// this.referenceService.showSweetAlertInfoMessage();
 				this.zohoVanityUrlAuthentication();
 			}
 			else {
-				this.zohoPopupLoader = true;
-				this.zohoErrorResponse = new CustomResponse();
-				let selectedOption = $("select.opts:visible option:selected ").val();
-				if (selectedOption == "DEFAULT") {
-					this.zohoErrorResponse = new CustomResponse('ERROR', 'Please select atleast one option', true);
-					this.zohoPopupLoader = false;
-				} else {
 					if (this.selectedAddPartnerOption == 6 && !this.disableOtherFuctionality) {
 						this.contactService.checkingZohoAuthentication(this.module)
 							.subscribe(
-								(data: any) => {
+								(response: any) => {
+									let data = response.data;
 									this.storeLogin = data;
-									if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-										let self = this;
-										self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
-
-										if (this.selectedZohoDropDown == "contact") {
-											this.zohoPopupLoader = false;
-											this.getZohoContactsUsingOAuth2();
-										}
-										if (this.selectedZohoDropDown == "lead") {
-											this.zohoPopupLoader = false;
-											this.getZohoLeadsUsingOAuth2();
-										}
-
+									if (response.statusCode==200) {
+										this.zohoShowModal();
 									} else {
-										this.zohoPopupLoader = false;
 										localStorage.setItem("userAlias", data.userAlias)
 										localStorage.setItem("currentModule", data.module);
 										window.location.href = "" + data.redirectUrl;
@@ -3488,15 +3471,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 									}
 								},
 								(error: any) => {
-									this.zohoPopupLoader = false;
 									this.referenceService.showSweetAlertServerErrorMessage();
 								},
 								() => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
 							)
 					}
-				}
-
-
 			}
 		} catch (error) {
 			this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
@@ -3505,63 +3484,48 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 
 	zohoVanityUrlAuthentication() {
-		this.zohoPopupLoader = true;
 		this.authenticationService.vanityURLEnabled == true;
 		this.contactService.vanitySocialProviderName = 'zoho';
-		this.zohoErrorResponse = new CustomResponse();
-		let selectedOption = $("select.opts:visible option:selected ").val();
-		if (selectedOption == "DEFAULT") {
-			this.zohoErrorResponse = new CustomResponse('ERROR', 'Please select atleast one option', true);
-			this.zohoPopupLoader = false;
-		}
-		else {
+		let providerName = 'zoho';
 			if (this.selectedAddPartnerOption == 6 && !this.disableOtherFuctionality) {
 				this.contactService.checkingZohoAuthentication(this.module)
 					.subscribe(
-						(data: any) => {
+						(response: any) => {
+							let data = response.data;
 							this.storeLogin = data;
-							if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-								let self = this;
-								self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
-								if (this.selectedZohoDropDown == "contact") {
-									this.zohoPopupLoader = false;
-									this.getZohoContactsUsingOAuth2();
-								}
-								if (this.selectedZohoDropDown == "lead") {
-									this.zohoPopupLoader = false;
-									this.getZohoLeadsUsingOAuth2();
-								}
-
+							if (response.statusCode == 200) {
+								this.zohoShowModal();
 							} else {
-								this.zohoPopupLoader = false;
 								localStorage.setItem("userAlias", data.userAlias)
 								localStorage.setItem("currentModule", data.module);
 								localStorage.setItem("statusCode", data.statusCode);
 								localStorage.setItem('vanityUrlFilter', 'true');
 								this.loggedInUserId = this.authenticationService.getUserId();
 								this.zohoCurrentUser = localStorage.getItem('currentUser');
+							    const encodedData = window.btoa(this.zohoCurrentUser);
+		                        const encodedUrl = window.btoa(data.redirectUrl);
+		                        let vanityUserId = JSON.parse(this.zohoCurrentUser)['userId'];
+								
+								let url = null;
+		                        if(data.redirectUrl){
+		                                url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/"+ null ;
 
-								let url = this.authenticationService.APP_URL + "e/" + this.providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.authenticationService.access_token + "/" + this.zohoCurrentUser + "/" + this.isPartner;
-								var x = screen.width / 2 - 700 / 2;
-								var y = screen.height / 2 - 450 / 2;
-								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
-
-
+		                        }else{
+		                                url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
+		                        }
+		                        
+		                        var x = screen.width / 2 - 700 / 2;
+		                        var y = screen.height / 2 - 450 / 2;
+		                        window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 							}
 						},
 						(error: any) => {
-							this.zohoPopupLoader = false;
 							this.referenceService.showSweetAlertServerErrorMessage();
 						},
 						() => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
 					)
 			}
-		}
-
 	}
-
-
-
 
 	getZohoContactsUsingOAuth2() {
 		this.socialPartners.socialNetwork = 'zoho';
@@ -3814,5 +3778,29 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     () => this.xtremandLogger.log("addContactComponent salesforceContacts() login finished.")
                 );
         //}
+    }
+	
+    onChangeZohoDropdown(event: Event) {
+        try {
+            this.contactType = event.target["value"];
+            this.socialPartners.contactType = event.target["value"];
+        } catch (error) {
+            this.xtremandLogger.error(error, "AddContactsComponent SalesforceContactsDropdown().")
+        }
+    }
+	
+    checkingZohoPopupValues() {
+        let self = this;
+        self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
+        if (this.selectedZohoDropDown == "DEFAULT") {
+            this.zohoErrorResponse = new CustomResponse('ERROR', 'Please select atleast one option', true);
+            this.zohoPopupLoader = false;
+        } else if (this.selectedZohoDropDown == "contact") {
+            this.zohoPopupLoader = false;
+            this.getZohoContactsUsingOAuth2();
+        } else if (this.selectedZohoDropDown == "lead") {
+            this.zohoPopupLoader = false;
+            this.getZohoLeadsUsingOAuth2();
+        }
     }
 }

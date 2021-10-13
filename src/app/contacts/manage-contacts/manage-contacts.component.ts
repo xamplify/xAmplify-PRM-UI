@@ -630,6 +630,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.syncronizeContactList(this.socialContact);
 		}
 		else if (contactList.socialNetwork == 'ZOHO') {
+			this.contactListIdForSyncLocal = contactList.id;
+            this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			this.zohoContactsSynchronizationAuthentication(this.socialContact);
 		}
 	}
@@ -2227,7 +2229,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	ngAfterViewChecked() {
 
-		let tempIsZohoSynchronization = localStorage.getItem('isZohoSynchronization');
+		let tempIsZohoSynchronization = localStorage.getItem('isZohoAuth');
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
@@ -2259,16 +2261,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 		
 		else if (tempIsZohoSynchronization == 'yes' && !this.isPartner) {
-			this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
-			this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
-			if (!this.isCalledZohoSycronization && this.contactListIdZoho != null) {
-				this.isCalledZohoSycronization = true;
-				this.iszohoAccessTokenExpired = false;
-				this.zohoContactsSynchronizationAuthentication(this.socialContact);
-				tempIsZohoSynchronization = 'no';
-			}
-		}
-		  else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
+			this.syncronizeContactList( this.socialContact);
+            tempCheckSalesForceAuth = 'no';
+		}else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
 			  swal.close();
 			  this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
 	        }
