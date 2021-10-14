@@ -7,7 +7,7 @@
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li>
-        <a routerLink="/home/forms/manage">Manage Forms</a>
+        <a routerLink="{{routerLink}}">Manage Forms</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li>
@@ -118,7 +118,7 @@
       </ng-container>
   
       <ng-container *ngIf="showTab === 'individual-responses'">         
-        <app-form-geo-analytics [alias]="alias"></app-form-geo-analytics> 
+        <app-form-geo-analytics [alias]="alias" [campaignId]="campaignId" [partnerId]="partnerId"></app-form-geo-analytics> 
       </ng-container>
     </ng-container>
     

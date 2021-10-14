@@ -25,6 +25,10 @@ export class SurveyAnalyticsComponent implements OnInit {
   showTab = "question-summarries";
   selectedFormSubmitId: number;
   detailedResponse = false;
+  campaignId: any;
+  partnerId: any;
+  routerLink: string;
+  campaignAlias: string;
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService, public router: Router,
@@ -32,12 +36,24 @@ export class SurveyAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.alias = this.route.snapshot.params['alias'];
+    this.campaignId = this.route.snapshot.params['campaignId'];
+    this.partnerId = this.route.snapshot.params['partnerId'];
+    if(this.campaignId != undefined && this.campaignId > 0){
+      if(this.partnerId != undefined && this.partnerId > 0){
+          this.routerLink = "/home/forms/csf/" + this.campaignId+"/"+this.partnerId;
+      }else{
+          this.routerLink = "/home/forms/csf/" + this.campaignId;
+      }
+    } else{
+      this.routerLink = "/home/forms/manage";
+    }
+
     this.getSurveyAnalytics();
   }
 
   getSurveyAnalytics() {
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.formService.getSurveyAnalytics(this.alias).subscribe(
+    this.formService.getSurveyAnalytics(this.alias, this.campaignId, this.partnerId).subscribe(
       (response: any) => {
           const data = response.data;          
           if (response.statusCode == 200) {
