@@ -2531,7 +2531,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						value.legalBasis = selectedLegalBasisOptions;
 					});
 					console.log(listUsers);
-					this.contactService.saveContactList(listUsers, name, this.isPartner, isPublic)
+					this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(listUsers, name, this.isPartner, isPublic,
+                            "CONTACT", "MANUAL", null, false);
+					this.contactService.saveContactList(this.userUserListWrapper)
 						.subscribe(
 							data => {
 								if (data.access) {
@@ -2573,7 +2575,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	                   }
 	                });
 	                this.selectedContactForSave = newArray;
-					this.contactService.saveContactList(this.selectedContactForSave, name, this.isPartner, isPublic)
+	                this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.selectedContactForSave, name, this.isPartner, isPublic,
+                            "CONTACT", "MANUAL", null, false);
+					this.contactService.saveContactList(this.userUserListWrapper)
 						.subscribe(
 							data => {
 								this.goToContactOrPartnerUrl();
