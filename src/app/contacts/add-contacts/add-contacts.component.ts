@@ -178,7 +178,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     //leadsPartnerEmail = "";
 	isLoggedInVanityUrl: any;
     public alias: any;
-	
+	invalidContactNameError = "";
+
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -250,18 +251,26 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     validateContactName( contactName: string ) {
         this.noOptionsClickError = false;
         this.contactListNameError = false;
-        let lowerCaseContactName = contactName.toLowerCase().replace( /\s/g, '' );
+        let lowerCaseContactName = $.trim(contactName.toLowerCase().replace( /\s/g, '' ));
+        const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+        const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
         var list = this.names;
         this.xtremandLogger.log( list );
-        if ( $.inArray( lowerCaseContactName, list ) > -1 ) {
+        if ($.inArray( lowerCaseContactName, list ) > -1 ) {
             this.isValidContactName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
-        } else {
+            this.invalidContactNameError = this.checkingContactTypeName+" List name already exists";
+        }else if(lowerCaseContactName==activeMasterPartnerList || lowerCaseContactName==inActiveMasterPartnerList){
+            this.isValidContactName = true;
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+            $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
+            this.invalidContactNameError = this.checkingContactTypeName+" List name cannot be added";
+        }else {
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "Black" );
             this.isValidContactName = false;
+            this.invalidContactNameError = "";
             this.validateLegalBasisOptions();
-           // $( "button#sample_editable_1_new" ).prop( 'disabled', false );
         }
     }
 

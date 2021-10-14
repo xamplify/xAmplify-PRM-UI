@@ -19,7 +19,8 @@ declare var  $,swal: any;
   styleUrls: ['./landing-page-analytics.component.css'],
   providers: [Pagination,HttpRequestLoader,SortOption]
 })
-export class LandingPageAnalyticsComponent implements OnInit {
+export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
+    
     daySort: { 'name': string; 'value': string; };
     landingPageId: number = 0;
     landingPageAlias:string = "";
@@ -101,6 +102,10 @@ export class LandingPageAnalyticsComponent implements OnInit {
             this.loadAnalytics();
         }
         
+    }
+
+    ngOnDestroy(): void {
+        $('#country-views-modal').modal('hide');
     }
 
     validateCampaignIdAndUserId(){

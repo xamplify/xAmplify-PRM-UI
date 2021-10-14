@@ -26,6 +26,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	menuItem: MenuItem = new MenuItem();
 	menuItemError = false;
 	contentDivs: Array<boolean> = new Array<boolean>();
+	prmContentDivs: Array<boolean> = new Array<boolean>();
 	isSuperAdmin = false;
 	roleName: Roles = new Roles();
 	emailtemplates: boolean;
@@ -75,26 +76,30 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.menuItem.companyProfileCreated = data.companyProfileCreated;
 					this.menuItem.accountDashboard = data.accountDashboard;
 					this.menuItem.partners = data.partners;
-					this.authenticationService.module.isPartner = data.partners;
+					module.isPartner = data.partners;
+					module.isOnlyPartnerCompany = data.onlyPartnerCompany;
+					module.showAddLeadsAndDealsOptionInTheDashboard = data.showAddLeadsAndDealsOptionsInDashboard;
 					this.setContentMenu(data, module);
 					this.menuItem.contacts = data.contacts;
 					this.menuItem.shareLeads = data.shareLeads;
 					this.menuItem.sharedLeads = data.sharedLeads;
 					this.menuItem.pagesAccessAsPartner = data.pagesAccessAsPartner;
 
-					this.setDesignMenu(data);
+					this.setDesignMenu(data,module);
 
 					this.menuItem.campaign = data.campaign;
 					this.menuItem.campaignAccessAsPartner = data.redistribute;
-					this.authenticationService.module.isCampaign = data.campaign || data.redistribute;
-					this.authenticationService.module.isReDistribution = data.redistribute;
-					this.authenticationService.module.hasLandingPageCampaignAccess = data.pageCampaign;
+					module.isCampaign = data.campaign || data.redistribute;
+					module.showCampaignOptionInManageVideos = data.campaign;
+					module.isReDistribution = data.redistribute;
+					module.hasLandingPageCampaignAccess = data.pageCampaign;
 
-					this.authenticationService.module.isStats = data.stats;
+					module.isStats = data.stats;
 
 					this.menuItem.opportunities = data.opportunities;
 					module.hasOpportunityRole = data.opportunities;
 					this.menuItem.opportunitiesAccessAsPartner = data.opportunitiesAccessAsPartner;
+					module.opportunitiesAccessAsPartner = data.opportunitiesAccessAsPartner;
 					this.authenticationService.enableLeads = data.opportunities;
 
 					this.menuItem.socialFeeds = data.rssFeeds;
@@ -132,7 +137,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 				},
 				() => {
 					this.loading = false;
-					this.authenticationService.module.contentLoader = false;
+					module.contentLoader = false;
 					this.authenticationService.leftSideMenuLoader = false;
 					this.menuItemError = false;
 				}
@@ -191,22 +196,26 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			this.contentDivs.push(module.damAccess || module.damAccessAsPartner);
 			this.contentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
 			this.contentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);
-			this.contentDivs.push();
 			const count = this.contentDivs.filter((value) => value).length;
 			module.contentDivsCount = count;
+			this.prmContentDivs.push(module.damAccess || module.damAccessAsPartner);
+			this.prmContentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
+			this.prmContentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);
+			module.prmContentDivsCount = this.prmContentDivs.filter((value) => value).length;
 		} else {
 			module.contentDivsCount = 0;
+			module.prmContentDivsCount = 0;
 		}
 	}
 
-	setDesignMenu(data: any) {
+	setDesignMenu(data: any,module:any) {
 		this.menuItem.design = data.design;
 		this.menuItem.emailTemplates = data.emailTemplates;
 		this.menuItem.forms = data.forms;
 		this.menuItem.pages = data.pages;
-		this.authenticationService.module.isEmailTemplate = data.emailTemplates;
-		this.authenticationService.module.hasFormAccess = data.forms;
-		this.authenticationService.module.hasLandingPageAccess = data.pages;
+		module.isEmailTemplate = data.emailTemplates;
+		module.hasFormAccess = data.forms;
+		module.hasLandingPageAccess = data.pages;
 		
 	}
 

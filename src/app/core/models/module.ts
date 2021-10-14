@@ -62,4 +62,10 @@ export class Module {
     allBoundSamlSettings = false;
 
     notifyPartners = false;
+    prmContentDivsCount = 0;
+
+    opportunitiesAccessAsPartner = false;
+    isOnlyPartnerCompany = false;
+    showAddLeadsAndDealsOptionInTheDashboard = false;
+    showCampaignOptionInManageVideos = false;
 }

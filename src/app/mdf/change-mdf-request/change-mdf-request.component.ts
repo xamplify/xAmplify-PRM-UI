@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, OnDestroy } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
@@ -20,8 +20,8 @@ declare var $: any;
   providers: [HttpRequestLoader,Properties]
 
 })
-export class ChangeMdfRequestComponent implements OnInit {
-
+export class ChangeMdfRequestComponent implements OnInit,OnDestroy {
+ 
   loggedInUserId: number=0;
   loading = false;
   customResponse: CustomResponse = new CustomResponse();
@@ -51,6 +51,11 @@ export class ChangeMdfRequestComponent implements OnInit {
     this.requestId = parseInt(this.route.snapshot.params['requestId']);
     this.getCompanyId();
   }
+
+  ngOnDestroy(): void {
+    $('#changeRequestModal').modal('hide');
+   }
+ 
 
   getCompanyId() {
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(

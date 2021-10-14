@@ -421,7 +421,7 @@
           images
         </div>
         <div style="position: relative; top: -5px;" *ngIf="fileSizeError" style="color:red">*File size should be less
-          than 12MB</div>
+          than 10MB</div>
         <div>
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }">
           </ngx-loading>
@@ -634,7 +634,7 @@
                         <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset, true)">
                           <i class="fa fa-eye" aria-hidden="true"></i>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="setSelectedAsset(asset)">
+                        <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="setSelectedAsset(asset); validateAssets(); validateAllSteps()">
                           <i class="fa fa-times remove-button" aria-hidden="true "></i>
                         </a>
                       </div>

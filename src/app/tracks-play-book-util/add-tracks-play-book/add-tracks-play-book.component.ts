@@ -37,7 +37,7 @@ declare var $, swal, CKEDITOR: any;
   styleUrls: ['./add-tracks-play-book.component.css'],
   providers: [HttpRequestLoader, Pagination, SortOption, FormService, RegularExpressions, DamService, ContactService]
 })
-export class AddTracksPlayBookComponent implements OnInit {
+export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   activeTabName: string = "";
   defaultTabClass = "col-block width";
@@ -212,6 +212,14 @@ export class AddTracksPlayBookComponent implements OnInit {
 
   ngOnDestroy() {
     this.dragulaService.destroy('assetsDragula');
+    $('#cropImage').modal('hide');
+    $('#media-asset-list').modal('hide');
+    $('#formsList').modal('hide');
+    $('#order-assets').modal('hide');
+    $('#quiz-list').modal('hide');
+    $('#form-preview-modal').modal('hide');
+    $('#asset-preview-modal').modal('hide');
+    $('#media-link-title').modal('hide');
   }
 
   goToManageSectionWithError() {

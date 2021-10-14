@@ -26,7 +26,7 @@ declare var swal, $: any;
   providers: [Pagination, HttpRequestLoader, ActionsDescription, SortOption],
 
 })
-export class FormsListViewUtilComponent implements OnInit {
+export class FormsListViewUtilComponent implements OnInit,OnDestroy {
     landingPagesRouterLink: string;
     onlyForms = false;
     form: Form = new Form();
@@ -112,9 +112,9 @@ export class FormsListViewUtilComponent implements OnInit {
             }
             
             this.listForms(this.pagination);
-
-
     }
+
+   
 
 
     listForms(pagination: Pagination) {
@@ -126,6 +126,12 @@ export class FormsListViewUtilComponent implements OnInit {
                 if (this.statusCode == 200) {
                     pagination.totalRecords = data.totalRecords;
                     this.sortOption.totalRecords = data.totalRecords;
+                    $.each(data.forms, function (_index, form:any) {
+                        form.createdDateString = new Date(form.createdDateString);
+                        if(form.updatedString!=undefined && $.trim(form.updatedString).length>0){
+                            form.updatedDateString = new Date(form.updatedDateString);
+                        }
+                    });
                     pagination = this.pagerService.getPagedItems(pagination, data.forms);
                 }
                 this.referenceService.loading(this.httpRequestLoader, false);
@@ -299,6 +305,7 @@ export class FormsListViewUtilComponent implements OnInit {
         this.message = "";
         this.form = new Form();
         $('#form-preview-modal').modal('hide');
+        $('#form-url-modal').modal('hide');
         swal.close();
     }
 

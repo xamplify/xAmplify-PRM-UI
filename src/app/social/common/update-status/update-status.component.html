@@ -76,8 +76,7 @@
                 </h5>
                 <ul style="margin-left: -23px; margin-bottom:5px">
                     <li>Supported image media types: JPG, PNG, GIF, WEBP</li>
-                    <li>Image Size
-                        <=3 MB</li>
+                    <li>Image Size <=3 MB</li>
                 </ul>
             </div>
 
@@ -161,7 +160,7 @@
                                     'fa-circle-o-notch fa-spin fa-3x fa-fw margin-bottom': customResponse.type === 0,
                                     'fa-check-circle-o': customResponse.type === 1,
                                     'fa-exclamation-circle': customResponse.type === 2,
-                                    'fa-times': customResponse.type === 3}"></i>
+                                    'fa-times': customResponse.type === 3}" aria-hidden="true"></i>
                             <span class="ml10 f-w-600">{{customResponse.statusText}}</span>
                             </h4>
                             <h5 *ngIf="isRedirectEnabled">You will be automatically redirected in a few seconds.</h5>   
@@ -179,13 +178,13 @@
                                 <i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
                             </div>
                             <div class="profile-image-box ml0">
-                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
+                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png" alt="">
                             </div>
                             <div class="profile-name">
                                 <h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
                                     class="heading-primary">
-                                    <b>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</b>
+                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</strong>
                                 </h5>
                                 <h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
                                     class="heading-primary">
@@ -218,8 +217,8 @@
                         <div class="profile-image-box" data-toggle="tooltip" data-placement="top" style="margin: 0 5px"
                             [attr.title]="socialStatusProvider.socialConnection.profileName ? socialStatusProvider.socialConnection.profileName :
                                 socialStatusProvider.socialConnection.firstName">
-                            <img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-                            <img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
+                            <img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+                            <img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png" alt="">
                         </div>
                         </ng-container>
                     </div>
@@ -237,16 +236,16 @@
                         </ng-container>
                         <ng-template #defaultProfile>
                             <div class="profile-image-box">
-                                <img class="profile-image" src="assets/images/social/avatar.png">
-                                <img class="profile-icon" src="assets/images/social/share-icon.png">
+                                <img class="profile-image" src="assets/images/social/avatar.png" alt="">
+                                <img class="profile-icon" src="assets/images/social/share-icon.png" alt="">
                             </div>
                         </ng-template>
                         <ng-template #socialProfile>
                             <div *ngIf = "socialStatus.socialStatusProvider" class="profile-image-box" data-toggle="tooltip" data-placement="top"
                                 [attr.title]="socialStatus.socialStatusProvider.socialConnection.profileName ? socialStatus.socialStatusProvider.socialConnection.profileName :
                                     socialStatus.socialStatusProvider.socialConnection.firstName">
-                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
+                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png" alt="">
                             </div>
                         </ng-template>
                     </div>
@@ -254,15 +253,16 @@
                         <textarea placeholder="What's happening?" rows="3" class="form-control form-group rounded-0 mb5"
                          [(ngModel)]="socialStatus.statusMessage" (input)="onKeyPress(socialStatus)"
                          [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
-                        <h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
+                        <h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)">
+                            <strong>{{280 - socialStatus.statusMessage.length}}</strong> character(s) left</h6>
 
                         <section class="" [hidden]="isSocialCampaign && alias">
                             <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
                                 <span (click)="removeItem(socialStatus, socialStatusContent)">
-                                    <i class="fa fa-times-circle"></i>
+                                    <i class="fa fa-times-circle" aria-hidden="true"></i>
                                 </span>
-                                <img async *ngIf="socialStatusContent.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
-                                <img async *ngIf="socialStatusContent.fileType === 'video'" src="{{socialStatusContent.filePath}}" (error)="videoUtilService.errorVideoHandler($event)">
+                                <img async *ngIf="socialStatusContent.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}" alt="">
+                                <img async *ngIf="socialStatusContent.fileType === 'video'" src="{{socialStatusContent.filePath}}" (error)="videoUtilService.errorVideoHandler($event)" alt="">
                             </div>
                         </section>
 
@@ -272,7 +272,7 @@
                                 <img  src="{{socialStatus.ogImage}}"                                      
                                      height="86" width="100%" alt="No Image Found">
                                 <label class="actions-group add-photos m0">
-                                        <i class="fa fa-cog ogImage-Gear-Icon" data-toggle="tooltip" data-placement="bottom" title="Click here to change the image"></i>
+                                        <i class="fa fa-cog ogImage-Gear-Icon" data-toggle="tooltip" data-placement="bottom" title="Click here to change the image" aria-hidden="true"></i>
                                         <input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" 
                                           class="file-input js-tooltip">
                                 </label>
@@ -310,8 +310,8 @@
                             <div class="update-status-profile col-xs-2 col-sm-1">
                                 <div class="profile-image-box" data-toggle="tooltip" data-placement="top"
                                     [attr.title]="ssp.socialConnection.profileName ? ssp.socialConnection.profileName : ssp.socialConnection.firstName">
-                                    <img class="profile-image" src="{{ssp.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-                                    <img class="profile-icon" src="assets/images/social/{{ssp.socialConnection.source}}.png">
+                                    <img class="profile-image" src="{{ssp.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+                                    <img class="profile-icon" src="assets/images/social/{{ssp.socialConnection.source}}.png" alt="">
                                 </div>
                             </div>
                             </div>
@@ -321,21 +321,21 @@
                                         [ngClass]="{'checked': socialStatus.selected, 'unchecked': !socialStatus.selected}">
                                         <div class="col-sm-4 col-xs-12 p0">
                                             <div class="profile-selected" (click)="socialStatus.selected = !socialStatus.selected;">
-                                                <i class="fa fa-square-o" *ngIf="!socialStatus.selected"></i>
-                                                <i class="fa fa-check-square" *ngIf="socialStatus.selected"></i>
+                                                <i class="fa fa-square-o" *ngIf="!socialStatus.selected" aria-hidden="true"></i>
+                                                <i class="fa fa-check-square" *ngIf="socialStatus.selected" aria-hidden="true"></i>
                                             </div>
                                             <div class="profile-image-box">
-                                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-                                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
+                                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+                                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png" alt="">
                                             </div>
                                             <div class="profile-name">
                                                 <h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
                                                     class="heading-primary">
-                                                    <b>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</b>
+                                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</strong>
                                                 </h5>
                                                 <h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
                                                     class="heading-primary">
-                                                    <b>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</b>
+                                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</strong>
                                                 </h5>
                                                 <h6 class="m0">
                                                     {{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
@@ -360,7 +360,7 @@
                                             <div class="status-media" [ngClass]="{'col-xs-4':socialStatus.statusMessage?.length > 0, 'col-xs-12': socialStatus.statusMessage?.length === 0}">
                                                 <ng-container *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
                                                     <div class="image-wrapper col-xs-6">
-                                                        <img class="img-responsive" async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
+                                                        <img class="img-responsive" async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}" alt="">
                                                         <video *ngIf="socialStatusContent.fileType == 'video'" width="160" height="80">
                                                             <source src="{{socialStatusContent.filePath}}" type="video/mp4">
                                                         </video>
@@ -380,7 +380,6 @@
                     <div class="form-group col-sm-3" id="form-calendar">
                         <label class="pull-left">Date</label>
                         <input type="text" class="form-control flatpickr" style="width:100%" placeholder="Select date" [(ngModel)]="scheduledTimeInString"/>
-                        <!--<i class="fa fa-calendar flatpickr"></i>-->
                     </div>
                     <div class="form-group col-sm-3">
                         <label class="pull-left">Country</label>
@@ -436,7 +435,7 @@
                                 <button type="button" class="btn btn-primary rounded-0 pull-right mr10" (click)="initializeSocialStatus()">Cancel</button>
                             <ng-container *ngIf="socialStatusList[0]?.socialStatusProvider.socialConnection.source !== 'LINKEDIN'">
                                 <button type="button" class="btn btn-danger rounded-0 pull-right mr10" (click)="deleteStatus(socialStatusList[0])">
-                                    <i class="fa fa-trash-o"></i> Delete
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                 </button>
                             </ng-container>
                         </span>
@@ -447,11 +446,6 @@
                 <div class="portlet-body clearfix p10">
                     <ng-container >
                         <div class="form-group m0 pull-right">
-                            <!--<h5 class="pr10 inline">Partner Contacts</h5>
-                            <switch [status]="socialCampaign.isPartner" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                             [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-                             (statusChange)="toggleContactLists()">
-                            </switch>-->
                         </div>
                     </ng-container>
 
@@ -480,15 +474,14 @@
                     <section *ngIf="contactListsPagination.pagedItems?.length > 0">
                         <ngx-loading [show]="contactListsPagination.isLoading"></ngx-loading>
                         <div class="table-responsive">
-                            <table class="table tgrid" id='contact-list-table'>
+                            <table class="table tgrid" id='contact-list-table' aria-describedby="">
                                 <thead>
                                     <tr>
-                                        <th style="width: 5%">Select</th>
-                                        <th>List Name</th>
-                                        <th>Created On</th>
-                                        <!-- <th>Recipients</th> -->
-                                        <th>Type</th>
-                                        <th>Preview</th>
+                                        <th scope="col" style="width: 5%">Select</th>
+                                        <th scope="col">List Name</th>
+                                        <th scope="col">Created On</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Preview</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -502,13 +495,8 @@
                                                 <span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
                                                 <span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
                                             </h5>
-                                            <!-- <h6 title="{{contactList.uploadedBy}}" style="margin: 5px 0;">
-                                                <span *ngIf="contactList.uploadedBy?.length<=50">By {{contactList.uploadedBy}}</span>
-                                                <span *ngIf="contactList.uploadedBy?.length>50">By {{contactList.uploadedBy | slice:0:50}}...</span>
-                                            </h6> -->
                                         </td>
                                         <td>{{contactList.createdDate | date:'mediumDate'}}</td>
-                                        <!-- <td> <h6 class='m0'>{{contactList.noOfContacts}}</h6> </td> -->
                                         <td *ngIf="!nurtureCampaign">
                                                 <span *ngIf="contactList.partnerUserList">partner</span>
                                                 <span *ngIf="!contactList.partnerUserList">contact</span>
@@ -517,7 +505,9 @@
                                             <span>{{contactList?.type}}</span>
                                         </td>
                                         <td class='m0'>
-                                            <a class="actions-block pull-left"><i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);"></i></a>
+                                            <a class="actions-block pull-left">
+                                                <i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);" aria-hidden="true"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -530,7 +520,6 @@
             </div>
             <div [hidden]="isSocialCampaign">
                 <div class="col-sm-12 dashboard-stat2">
-                    <!-- <ngx-loading [show]="loadingCalendar"></ngx-loading> -->
                     <div id='calendar' class="p10"></div>
                 </div>
             </div>
@@ -617,7 +606,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close-circle" (click)="closeListVideosModal();">
-                        <i class="fa fa-times"></i>
+                        <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
                     <h4 class="modal-title" id="listVideosModalLabel">List Of Videos</h4>
                 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { DamService } from '../services/dam.service';
@@ -18,7 +18,8 @@ declare var $, swal: any;
 	styleUrls: ['./upload-asset.component.css'],
 	providers: [Properties]
 })
-export class UploadAssetComponent implements OnInit {
+export class UploadAssetComponent implements OnInit,OnDestroy {
+	
 	formLoader = false;
 	customResponse: CustomResponse = new CustomResponse();
 	damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
@@ -59,6 +60,10 @@ export class UploadAssetComponent implements OnInit {
 		}
 	}
 
+	ngOnDestroy(): void {
+		$('#thumbnailImageModal').modal('hide');
+	}
+
 	getAssetDetailsById(selectedAssetId: number) {
 		this.formLoader = true;
 		this.initLoader = true;
@@ -89,7 +94,7 @@ export class UploadAssetComponent implements OnInit {
 			 files = event.target.files; 
 		}else if ( event.dataTransfer.files ) { 
 			files = event.dataTransfer.files;
-	 	}
+		 }
 		if (files.length > 0) {
 			this.formData.delete("uploadedFile");
 			this.uploadedAssetName  = "";
@@ -97,7 +102,9 @@ export class UploadAssetComponent implements OnInit {
 			let file = files[0];
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
-			if(sizeInKb>maxFileSizeInKb){
+			if(sizeInKb==0){
+				this.showAssetErrorMessage('Invalid File');
+			}else if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
 			}else{
 				this.formData.append("uploadedFile", file, file['name']);

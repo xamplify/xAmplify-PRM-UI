@@ -1151,7 +1151,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     searchContactList(){
         this.contactListPagination.pageIndex = 1;
         this.contactListPagination.searchKey = this.contactSearchInput;
-        if (this.contactListPagination.searchKey != "") {
+        if (this.contactListPagination.searchKey != undefined && this.contactListPagination.searchKey != null 
+                && this.contactListPagination.searchKey.trim() != "") {
             this.showExpandButton = true;
         } else {
             this.showExpandButton = false;

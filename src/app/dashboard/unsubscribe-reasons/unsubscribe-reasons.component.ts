@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild, OnDestroy } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -21,7 +21,8 @@ declare var $, swal,CKEDITOR: any;
   providers: [HttpRequestLoader, SortOption, Properties, CallActionSwitch]
 
 })
-export class UnsubscribeReasonsComponent implements OnInit {
+export class UnsubscribeReasonsComponent implements OnInit,OnDestroy {
+  
   unsubscribeReason: UnsubscribeReason = new UnsubscribeReason();
   unsubscribePageDetails:UnsubscribePageDetails = new UnsubscribePageDetails();
   customResponse: CustomResponse = new CustomResponse();
@@ -55,6 +56,11 @@ export class UnsubscribeReasonsComponent implements OnInit {
       extraPlugins:false
   };
     this.findAll(this.pagination);
+  }
+
+  ngOnDestroy(): void {
+    $('#unsubscribePagePopup').modal('hide');
+    swal.close();
   }
 
   findAll(pagination: Pagination) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter,OnDestroy } from '@angular/core';
 import { Category } from 'app/dashboard/models/category';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { UserService } from 'app/core/services/user.service';
@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ['./add-folder-modal-popup.component.css'],
   providers:[HttpRequestLoader]
 })
-export class AddFolderModalPopupComponent implements OnInit {
+export class AddFolderModalPopupComponent implements OnInit,OnDestroy {
   categoryNameErrorMessage = "";
   requiredMessage = "Required";
   duplicateLabelMessage = "Already exists";
@@ -30,6 +30,10 @@ export class AddFolderModalPopupComponent implements OnInit {
 
   ngOnInit() {
     
+  }
+
+  ngOnDestroy(){
+    $('#createFolderPopup').modal('hide');
   }
 
   openPopup(){

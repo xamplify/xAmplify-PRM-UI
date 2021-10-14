@@ -13,6 +13,7 @@ import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.c
 import { DamService } from '../../dam/services/dam.service';
 import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 declare var $, swal: any;
 
@@ -22,7 +23,7 @@ declare var $, swal: any;
   styleUrls: ['./preview-tracks-play-book.component.css'],
   providers: [HttpRequestLoader, TracksPlayBookUtilService, DamService]
 })
-export class PreviewTracksPlayBookComponent implements OnInit {
+export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   createdUserCompanyId: number = 0;
   slug: string = "";
   tracksPlayBook: TracksPlayBook = new TracksPlayBook();
@@ -44,7 +45,8 @@ export class PreviewTracksPlayBookComponent implements OnInit {
   fileTypes: Array<string> = ['doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx'];
   url: SafeResourceUrl;
   trackViewLoader: boolean = false;
-  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();;
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  modulesDisplayType = new ModulesDisplayType();
   @Input() showTracksPlayBook: boolean;
   @Input() showAsset: boolean;
   @Input() isCreatedUser: boolean;
@@ -52,6 +54,9 @@ export class PreviewTracksPlayBookComponent implements OnInit {
   @Output() notifyShowTracksPlayBook: EventEmitter<any>;
   @Output() notifyShowAsset: EventEmitter<any>;
   @Output() notifyCreatedUser: EventEmitter<any>;
+  videoFormats: Array<string> = ['webm', 'mkv', 'flv', 'flv', 'vob', 'ogv', 'ogg', 'drc', 'gif', 'gifv', 'mng', 'avi', 'mts', 'm2ts',
+    'ts', 'mov', 'qt', 'wmv', 'yuv', 'rm', 'rmvb', 'viv', 'asf', 'amv', 'mp4', 'm4p', 'm4v', 'mpg', 'mp2', 'mpeg', 'mpe', 'mpv', 'mpg',
+    'mpeg', 'm2v', 'm4v', 'svi', '3gp', '3g2', 'mxf', 'roq', 'nsv', 'flv', 'f4v', 'f4p', 'f4a', 'f4b'];
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -68,6 +73,11 @@ export class PreviewTracksPlayBookComponent implements OnInit {
     this.createdUserCompanyId = parseInt(this.route.snapshot.params['companyId']);
     this.slug = this.route.snapshot.params['slug'];
     this.getBySlug();
+    this.setViewType("List");
+  }
+
+  ngOnDestroy() {
+    $('#asset-preview-modal').modal('hide');
   }
 
   getCompanyId() {
@@ -307,6 +317,16 @@ export class PreviewTracksPlayBookComponent implements OnInit {
           this.referenceService.showServerError(this.httpRequestLoader);
           this.referenceService.stopLoader(this.httpRequestLoader);
         });
+    }
+  }
+
+  setViewType(viewType: string) {
+    if ("List" == viewType) {
+      this.modulesDisplayType.isListView = true;
+      this.modulesDisplayType.isGridView = false;
+    } else if ("Grid" == viewType) {
+      this.modulesDisplayType.isListView = false;
+      this.modulesDisplayType.isGridView = true;
     }
   }
 
