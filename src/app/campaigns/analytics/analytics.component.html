@@ -925,42 +925,37 @@
                                   <b>{{this.campaignReport.allPartnersYesCount}}</b>
                                   <span>Yes ( {{this.campaignReport.allPartnersAdditionalCount}} )</span>
                                 </h1>
-
+                      
                               </div>
                             </button>
                           </div>
-                          <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding"
-                            *ngIf="!campaign.publicEventCampaign">
-                            <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'"
-                              disabled="disabled">
+                          <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
+                            <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" disabled="disabled">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-times-circle fs30"></i>
                                 <h1 class="fs14">
                                   <b>{{this.campaignReport.allPartnersNoCount}}</b>
                                   <span>No</span>
                                 </h1>
-
+                      
                               </div>
                             </button>
                           </div>
-                          <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding"
-                            *ngIf="!campaign.publicEventCampaign">
-                            <button class="portlet light color1-invert crcb"
-                              (click)="goToAllPartnerRsvpDetails('MAYBE')" [class.selectedBox]="detailType === 'MAYBE'">
+                          <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
+                            <button class="portlet light color1-invert crcb" (click)="goToAllPartnerRsvpDetails('MAYBE')"
+                              [class.selectedBox]="detailType === 'MAYBE'">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-question-circle fs30"></i>
                                 <h1 class="fs14">
                                   <b>{{this.campaignReport.allPartnersMayBeCount}}</b>
                                   <span>Maybe</span>
                                 </h1>
-
+                      
                               </div>
                             </button>
                           </div>
-                          <div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader"
-                            class="col-xs-6 col-lg-3 rsvp_tile_padding">
-                            <button class="portlet light color1-invert crcb"
-                              [class.selectedBox]="detailType === 'TOTAL_PARTNER_LEADS'"
+                          <div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
+                            <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'TOTAL_PARTNER_LEADS'"
                               (click)="goToAllPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
                               [disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
                               <div class="portlet-body text-center">
@@ -969,7 +964,7 @@
                                   <b>{{campaignReport.totalPartnerLeadsCount}}</b>
                                   <span>Leads</span>
                                 </h1>
-
+                      
                               </div>
                             </button>
                           </div>
@@ -1150,6 +1145,11 @@
                                   <div class="actions-block override-actions" style="margin-right:100px;">
                                     <a data-rel="fancybox-button" title="User Level Campaign Analytics">
                                       <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>                                    
+                                    <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0" routerLink="/home/forms/csf/{{campaign.campaignId}}/{{item.userId}}"
+                                      data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Survey Forms Count">
+                                      <i class="fa fa-wpforms" aria-hidden="true"></i>
+                                      <span class="badge" id="notification">{{campaign.formsCount}}</span>
                                     </a>
                                   </div>
                                 </td>
