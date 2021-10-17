@@ -2895,7 +2895,6 @@ salesForceVanityAuthentication() {
 
 
 	ngAfterViewChecked() {
-
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
@@ -2908,17 +2907,14 @@ salesForceVanityAuthentication() {
 		localStorage.removeItem('isZohoAuth');
 		localStorage.removeItem('validationMessage');
 		if (tempCheckGoogleAuth == 'yes' && !this.isPartner) {
-			 if (this.module === "contacts") {
-                 this.router.navigate(['/home/contacts/add']);
-             }else  if (this.module === "leads") {
-                 this.router.navigate(['/home/assignleads/add']);
-             }
+			this.getGoogleContactsUsers();
+            this.contactService.vanitySocialProviderName = "nothing";
 		}
 		else if (tempCheckSalesForceAuth == 'yes' && !this.isPartner) {
-			   this.showModal();
-               console.log("AddContactComponent salesforce() Authentication Success");
-               this.checkingPopupValues();
-               this.contactService.vanitySocialProviderName = "nothing";
+		     this.showModal();
+             console.log("AddContactComponent salesforce() Authentication Success");
+             this.checkingPopupValues();
+             this.contactService.vanitySocialProviderName = "nothing";
 		}
 		  else if (tempZohoAuth == 'yes' && !this.isPartner) {
               this.zohoShowModal();
@@ -2933,12 +2929,8 @@ salesForceVanityAuthentication() {
              }
 		}
 		else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
-			localStorage.setItem('oauthCallbackValidationMessage', tempValidationMessage);
-			   if (this.module === "contacts") {
-                   this.router.navigate(['/home/contacts/add']);
-               }else  if (this.module === "leads") {
-                   this.router.navigate(['/home/assignleads/add']);
-               }
+			swal.close();
+            this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
 		}
 	}
 
@@ -2951,7 +2943,7 @@ salesForceVanityAuthentication() {
                 this.loadContactListsNames();
             }
 
-         	if (localStorage.getItem('vanityUrlFilter')) {
+         	/*if (localStorage.getItem('vanityUrlFilter')) {
 				localStorage.removeItem('vanityUrlFilter');
                 if (this.contactService.vanitySocialProviderName == 'google'
                     || this.contactService.vanitySocialProviderName == 'salesforce'
@@ -2974,7 +2966,9 @@ salesForceVanityAuthentication() {
                         this.contactService.vanitySocialProviderName = "nothing";
                     }
 				}
-			}else if (this.contactService.socialProviderName == 'google') {
+			}else */
+				
+				if (this.contactService.socialProviderName == 'google') {
             	  if (this.contactService.oauthCallbackMessage.length > 0) {
             		  let message = this.contactService.oauthCallbackMessage;
             		  this.contactService.oauthCallbackMessage = '';
