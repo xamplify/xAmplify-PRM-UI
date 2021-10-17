@@ -137,9 +137,12 @@ export class SaveAsComponent implements OnInit {
               this.contactListObject = new ContactList;
               this.contactListObject.name = name;
               this.contactListObject.isPartnerUserList = this.isPartner;
-              this.contactListObject.contactType = 'ASSIGNED_LEADS_LIST';
+              this.contactListObject.contactType = 'CONTACT';
               this.contactListObject.publicList = true;
               this.contactListObject.socialNetwork = 'MANUAL';
+              this.contactListObject.alias = null;
+              this.contactListObject.synchronisedList= false;
+              
               if (this.editContactsComponent.selectedContactListIds.length == 0) {
                   let listUsers = [];
                   listUsers = this.editContactsComponent.totalListUsers;
@@ -185,15 +188,16 @@ export class SaveAsComponent implements OnInit {
                   this.loading = false;
                   if (data.statusCode === 401) {
                       this.saveAsError = data.message;
-                      this.editContactsComponent.selectedContactForSave = [];
+                      //this.editContactsComponent.selectedContactForSave = [];
                   } else if (data.statusCode === 402) {
                       this.saveAsError = data.message;
-                      this.editContactsComponent.selectedContactForSave = [];
+                      //this.editContactsComponent.selectedContactForSave = [];
                   } else {
                       $('#saveAsModal').modal('hide');
                       this.saveAsError = '';
                       this.saveAsListName = '';
                       this.saveAsListName = undefined;
+                      this.editContactsComponent.selectedContactForSave = [];
                       this.router.navigateByUrl('/home/assignleads/manage')
                       this.contactService.saveAsSuccessMessage = "SUCCESS";
                       this.contactService.isLoadingList = false;

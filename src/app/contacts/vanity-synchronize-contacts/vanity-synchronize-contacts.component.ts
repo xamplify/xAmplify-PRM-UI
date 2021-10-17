@@ -27,15 +27,16 @@ export class VanitySynchronizeContactsComponent implements OnInit {
 		if (vanityCurrentModule != null && providerName == 'google') {
 			this.contactService.googleVanityLogin(vanityCurrentModule)
 				.subscribe(
-					data => {
-						this.storeLogin = data;
-						console.log(data);
-						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+						response => {
+							let data = response.data;
+	                        this.storeLogin = response.data;
+						    console.log(this.storeLogin);
+						if (response.statusCode==200) {
 							console.log("AddContactComponent googleContacts() Authentication Success");
 						} else {
 							localStorage.setItem("userAlias", data.userAlias);
 							localStorage.setItem("currentModule", data.module);
-							localStorage.setItem("statusCode", data.statusCode);
+							localStorage.setItem("statusCode", response.statusCode);
 							localStorage.setItem('vanityUrlFilter', 'true');
 							console.log(data.redirectUrl);
 							console.log(data.userAlias);
@@ -54,10 +55,11 @@ export class VanitySynchronizeContactsComponent implements OnInit {
 		}else if(vanityCurrentModule != null && providerName == 'salesforce'){
 				this.contactService.salesforceVanityLogin(vanityCurrentModule)
 				.subscribe(
-					data => {
-						this.storeLogin = data;
-						console.log(data);
-						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+						response => {
+                            let data = response.data;
+                            this.storeLogin = response.data;
+                            console.log(this.storeLogin);
+						if (response.statusCode==200) {
 							console.log("AddContactComponent salesforce() Authentication Success");
 						} else {
 							localStorage.setItem("userAlias", data.userAlias);
