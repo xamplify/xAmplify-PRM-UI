@@ -1,0 +1,38 @@
+<div class="page-content m10">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a (click)="goToAdminReport()">Admin Report</a>
+      </li>
+      <li>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <a>Edit Module Names</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="portlet light">
+		<div class="portlet-body clearfix">
+      <app-modal-popup-loader *ngIf="httpRequestLoader?.isLoading"></app-modal-popup-loader>
+      <section *ngIf="!httpRequestLoader?.isLoading">
+      <div class="table-responsive">
+        <table class='table tgrid' aria-describedby="edit-module-names-table">
+          <thead>
+            <tr>
+              <th scope="row" class="custom-center">Module Name</th>
+              <th scope="row" class="custom-center">Custom Name</th>
+            </tr>
+            </thead>
+            <tbody>
+               
+            </tbody>
+          </table>
+        </div>
+        <button  type="button" (click)="update()" class="btn green-haze pull-right">Update</button>
+      </section>
+    </div>
+  </div>
+
+</div>

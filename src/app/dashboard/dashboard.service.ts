@@ -600,6 +600,22 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    /****XNFR-84********/
+    findModulesByCompanyId(companyId:number) {
+        const url = this.moduleUrl + 'findModulesByCompanyId/'+companyId+'?access_token=' + this.authenticationService.access_token;
+        return this.utilGetMethodForModuleNames(url);
+    }
+
+    findCustomModuleNames(companyId:number) {
+        const url = this.moduleUrl + 'findModuleCustomNamesByCompanyId/'+companyId+'?access_token=' + this.authenticationService.access_token;
+        return this.utilGetMethodForModuleNames(url);
+    }
+
+    utilGetMethodForModuleNames(url:string){
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 
 }

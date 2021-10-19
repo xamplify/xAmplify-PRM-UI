@@ -71,6 +71,7 @@ import { VendorInvitationReportComponent } from './vendor-invitation-report/vend
 import { ManageTeamMemberGroupComponent } from './manage-team-member-group/manage-team-member-group.component';
 import { NotifyPartnersComponent } from './notify-partners/notify-partners.component';
 import { ShowPrmContentComponent } from './dashboard-analytics-components/show-prm-content/show-prm-content.component';
+import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -117,7 +118,8 @@ import { ShowPrmContentComponent } from './dashboard-analytics-components/show-p
         VendorInvitationReportComponent,
         ManageTeamMemberGroupComponent,
         NotifyPartnersComponent,
-        ShowPrmContentComponent
+        ShowPrmContentComponent,
+        EditModuleNameComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

@@ -406,7 +406,7 @@ public authenticationService: AuthenticationService, public router:Router) {
 
   editModuleNames(report:any){
     if(report && report.companyId && report.companyProfileName){
-        this.router.navigate(['/home/dashboard/editModuleNames/' + report.companyId]);
+        this.router.navigate(['/home/dashboard/edit-module-names/' + report.companyId]);
     }  
   }
 }
