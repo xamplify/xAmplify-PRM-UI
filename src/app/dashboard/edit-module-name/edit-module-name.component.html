@@ -11,6 +11,11 @@
         <a>Edit Module Names</a>
       </li>
     </ul>
+    <div class="mtfpx">
+      <a class="close-circle"  title="Go To Admin Report" (click)="goToAdminReport()">
+        <i class="fa fa-close" aria-hidden="true"></i>
+      </a>
+  </div>
   </div>
 
   <div class="portlet light">
@@ -18,19 +23,30 @@
       <app-modal-popup-loader *ngIf="httpRequestLoader?.isLoading"></app-modal-popup-loader>
       <section *ngIf="!httpRequestLoader?.isLoading">
       <div class="table-responsive">
+        <div class="alert alert-success" *ngIf="customResponse?.isVisible">
+            <strong>Name Updated Successfully</strong>
+        </div>
         <table class='table tgrid' aria-describedby="edit-module-names-table">
           <thead>
             <tr>
-              <th scope="row" class="custom-center">Module Name</th>
-              <th scope="row" class="custom-center">Custom Name</th>
+              <th scope="row">Module Name</th>
+              <th scope="row">Custom Name</th>
             </tr>
             </thead>
             <tbody>
-               
+              <tr>
+                <td>
+                  <strong>{{moduleCustomName?.moduleName}}</strong>
+                </td>
+               <td>
+                 <input class="form-control" maxlength="50" [(ngModel)]="moduleCustomName.customName" (input)="validateCustomName(moduleCustomName)">
+                 <span class="required" *ngIf="errorMessage.length>0">{{errorMessage}}</span>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
-        <button  type="button" (click)="update()" class="btn green-haze pull-right">Update</button>
+        <button [disabled]="disableButton" type="button" (click)="update()" class="btn green-haze pull-right">Update</button>
       </section>
     </div>
   </div>
