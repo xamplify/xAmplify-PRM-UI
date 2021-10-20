@@ -201,7 +201,7 @@
                     <div [className]="checkingContactTypeName=='Contact' ? 'colxs-12 col-sm-12 col-md-6':''">
                       <ul *ngIf="checkingContactTypeName=='Contact'" class="mix-filter">
                         <li class="filter" (click)="filterContacts('MY-CONTACTS',0)" [class.contact-filter-selected]="0 == selectedFilterIndex" translate>My Contacts</li>
-                        <li class="filter" (click)="filterContacts('FORM-LEADS',1)" [class.contact-filter-selected]="1 == selectedFilterIndex" translate>Form Leads</li>
+                        <li class="filter" (click)="filterContacts('FORM-LEADS',1)" [class.contact-filter-selected]="1 == selectedFilterIndex" translate>Form Contacts</li>
                         <li class="filter" (click)="filterContacts('ALL',2)" [class.contact-filter-selected]="2 == selectedFilterIndex" translate>All</li>
                       </ul> 
                       <ul class="page-breadcrumb" *ngIf="checkingContactTypeName!='Contact'">
@@ -390,7 +390,7 @@
                                 <h5 class="view-banner view-banner-green" *ngIf="!contactList?.partnerUserList && contactList?.formList"
                                   [hidden]="assignLeads">
                                   <span data-toggle="tooltip" data-placement="top"
-                                    title="This list is associated with a form." translate>Form Lead List</span>
+                                    title="This list is associated with a form." translate>Form Contact List</span>
                                 </h5>
                               </td>
                               <td class="hidden-xs" *ngIf="!assignLeads">
@@ -561,7 +561,7 @@
                               title="{{actionsDescription.contact_list_private}}"><b translate>Private</b></span>
 
                               <span *ngIf="contactList?.formList" data-toggle="tooltip" data-placement="top"
-                              title="{{actionsDescription.contact_list_private}}"><b translate>, Form Lead List</b></span>
+                              title="{{actionsDescription.contact_list_private}}"><b translate>, Form Contact List</b></span>
                           </h6>
                         </td>
                         <!--  -->
