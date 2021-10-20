@@ -2175,16 +2175,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveZohoSelectedContactsWithPermission() {
         if (this.assignLeads) {
-            this.contactListObject = new ContactList;
-            this.contactListObject.name = this.model.contactListName;
-            this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactListObject.contactType = "CONTACT";
-            this.contactListObject.socialNetwork = "MANUAL";
-            this.contactListObject.publicList = true;
-            this.setLegalBasisOptions(this.allselectedUsers);
-
-            this.userUserListWrapper.users = this.allselectedUsers;
-            this.saveAssignedLeadsList();
+        	  this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
+                      "CONTACT", "MANUAL", this.alias, false);
+              this.setLegalBasisOptions(this.allselectedUsers);
+              this.userUserListWrapper.users = this.allselectedUsers;
+              this.saveAssignedLeadsList();
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
@@ -2597,16 +2592,12 @@ salesForceVanityAuthentication() {
 
     saveSalesForceSelectedContactsWithPermission() {
            if (this.assignLeads) {
-        	     this.contactListObject = new ContactList;
-                 this.contactListObject.name = this.model.contactListName;
-                 this.contactListObject.isPartnerUserList = this.isPartner;
-                 this.contactListObject.contactType = "CONTACT";
-                 this.contactListObject.socialNetwork = "MANUAL";
-                 this.contactListObject.publicList = true;
+                 this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
+                         "CONTACT", "MANUAL", this.alias, false);
                  this.setLegalBasisOptions(this.allselectedUsers);
 
                  this.userUserListWrapper.users = this.allselectedUsers;
-                 this.saveAssignedLeadsList();
+                 this.saveAssignedLeadsList();               
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
