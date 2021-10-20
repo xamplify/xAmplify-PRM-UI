@@ -23,7 +23,7 @@
           <li *ngIf="menuItem?.partners" [ngClass]="{'active': location.path().includes('partners')}">
             <a href="javascript:;" (click)="openOrCloseTabs('partners')">
                 <i class="fa fa-handshake-o" aria-hidden="true"></i>
-                <span class="title" translate>Partners</span>
+                <span class="title" translate>{{customNamePartners}}</span>
                 <span class="arrow"></span>
                 <span class="selected"></span>
             </a>
@@ -31,13 +31,13 @@
               <li>
                   <a [routerLink]="['./partners/add']">
                       <i class="fa fa-users" aria-hidden="true"></i>
-                      <span class="title" translate>Onboarding Partners</span>
+                      <span class="title" translate>Onboarding {{customNamePartners}}</span>
                   </a>
               </li>
               <li>
                   <a [routerLink]="['./partners/manage']">
                       <i class="fa fa-list" aria-hidden="true"></i>
-                      <span class="title" translate>Manage Partners</span>
+                      <span class="title" translate>Manage {{customNamePartners}}</span>
                   </a>
               </li>
             </ul>

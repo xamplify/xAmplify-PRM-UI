@@ -1,3 +1,5 @@
+import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
+
 export class Module {
     isCampaign:boolean = false;
     isContact:boolean = false;
@@ -68,4 +70,7 @@ export class Module {
     isOnlyPartnerCompany = false;
     showAddLeadsAndDealsOptionInTheDashboard = false;
     showCampaignOptionInManageVideos = false;
+
+    moduleNames:Array<ModuleCustomName> = new Array<ModuleCustomName>();
+    partnerModule:ModuleCustomName = new ModuleCustomName();
 }

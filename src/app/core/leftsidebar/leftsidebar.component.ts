@@ -43,7 +43,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	sharedLeads: boolean;
 	lms: any;
 	playbook: boolean;
-	
+	customNamePartners = "Partners";
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
@@ -122,8 +122,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					module.isMarketing = roles.indexOf(this.roleName.marketingRole) > -1;
 					module.isVendorTier = roles.indexOf(this.roleName.vendorTierRole) > -1;
 					this.addZendeskScript(data);
-					
-					
+					/*****XNFR-84 **********/
+					if(data.moduleNames!=undefined && data.moduleNames.length>0){
+						module.moduleNames = data.moduleNames;
+						module.partnerModule = module.moduleNames[0];
+						this.customNamePartners = module.partnerModule.customName;
+					}
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
