@@ -1,4 +1,3 @@
-import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 
 export class Module {
     isCampaign:boolean = false;
@@ -71,6 +70,5 @@ export class Module {
     showAddLeadsAndDealsOptionInTheDashboard = false;
     showCampaignOptionInManageVideos = false;
 
-    moduleNames:Array<ModuleCustomName> = new Array<ModuleCustomName>();
-    partnerModule:ModuleCustomName = new ModuleCustomName();
+   
 }

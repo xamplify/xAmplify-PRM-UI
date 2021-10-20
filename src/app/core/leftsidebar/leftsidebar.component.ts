@@ -124,9 +124,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.addZendeskScript(data);
 					/*****XNFR-84 **********/
 					if(data.moduleNames!=undefined && data.moduleNames.length>0){
-						module.moduleNames = data.moduleNames;
-						module.partnerModule = module.moduleNames[0];
-						this.customNamePartners = module.partnerModule.customName;
+						this.authenticationService.moduleNames = data.moduleNames;
+						this.authenticationService.partnerModule = this.authenticationService.moduleNames[0];
+						this.customNamePartners = this.authenticationService.partnerModule.customName;
 					}
 				},
 				error => {

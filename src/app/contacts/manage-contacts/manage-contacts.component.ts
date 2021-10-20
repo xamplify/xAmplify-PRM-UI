@@ -257,7 +257,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         } else {
             this.isPartner = true;
             this.module = 'partners';
-            this.checkingContactTypeName = "Partner"
+            this.checkingContactTypeName = "Partner";
             this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Vertical (ASC)', 'value': 'vertical-ASC', 'for': 'contacts' });
@@ -281,7 +281,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.xtremandLogger.info("successmessageLoad" + this.contactService.successMessage)
 		if (this.contactService.saveAsSuccessMessage === "add" || this.contactService.successMessage === true || this.contactService.saveAsSuccessMessage === "SUCCESS") {
 			if (currentUrl.includes('home/partners')) {
-		        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_CREATE_SUCCESS, true);
+				let message = "Your "+this.authenticationService.partnerModule.customName+" List has been created successfully.";
+		        this.customResponse = new CustomResponse('SUCCESS', message, true);
 		      } else if (currentUrl.includes('home/contacts')){
 		        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
 		      }else {
@@ -1295,7 +1296,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						if(this.assignLeads){
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
 						}else if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+							let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been deleted successfully.";
+							this.customResponse = new CustomResponse('SUCCESS', message, true);
 						} else {
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
 						}

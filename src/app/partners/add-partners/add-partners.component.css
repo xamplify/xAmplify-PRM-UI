@@ -1,39 +1,93 @@
-@media screen and (min-width:601px){.modal-css{  width: 50% !important; right: 0 !important;}
-.salesforce{margin-top: -44px;text-align: center; }
-}
-@media screen and (max-width:600px){.modal-css {width: 100% !important; right: 0 !important;}
- .cloud-css{  left: 73px !important; }
- .salesforce{margin-top: -25px;text-align: center; }}
- @media only screen and (max-width: 992px) and (min-width: 601px) {
-  .cloud-css{  left: 130px !important; }
- }
- @media screen and (max-width:768px){
-  .cloud-items{ position: relative; font-size: 19px; top: -82px !important; left: 93px; }
-}
-.gray-color{position: relative; color: grey;}
-.cloud-items{
-  position: relative; font-size: 19px; top: -82px; left: 100px;
-}
-.white-space-transform{
-	   white-space: nowrap;
-}
-.mr8{
-	margin-right: 20px !important;
-}
-#customWidth{
-	width: 53%;
-}
-.danger{
-	color:red;
+@media screen and (min-width:601px) {
+	.modal-css {
+		width: 50% !important;
+		right: 0 !important;
+	}
+	.salesforce {
+		margin-top: -44px;
+		text-align: center;
+	}
 }
 
-.img-cloud{
+@media screen and (max-width:600px) {
+	.modal-css {
+		width: 100% !important;
+		right: 0 !important;
+	}
+	.cloud-css {
+		left: 73px !important;
+	}
+	.salesforce {
+		margin-top: -25px;
+		text-align: center;
+	}
+}
+
+@media only screen and (max-width: 992px) and (min-width: 601px) {
+	.cloud-css {
+		left: 130px !important;
+	}
+}
+
+@media screen and (max-width:768px) {
+	.cloud-items {
+		position: relative;
+		font-size: 19px;
+		top: -82px !important;
+		left: 93px;
+	}
+}
+
+.gray-color {
+	position: relative;
+	color: grey;
+}
+
+.cloud-items {
+	position: relative;
+	font-size: 19px;
+	top: -82px;
+	left: 100px;
+}
+
+.white-space-transform {
+	white-space: nowrap;
+}
+
+.mr8 {
+	margin-right: 20px !important;
+}
+
+#customWidth {
+	width: 53%;
+}
+
+.danger {
+	color: red;
+}
+
+.img-cloud {
 	width: 100% !important;
 	height: auto !important;
 }
 
-.popup-header-title-font { font-weight: 600;}
+.popup-header-title-font {
+	font-weight: 600;
+}
 
-.cwosn{
+.cwosn {
 	width: 161px;
+}
+
+#download-partners-csv {
+	margin-top: 2px;
+	float: right;
+}
+
+.cct {
+	display: block;
+	margin-top: 22px !important;
+	text-align: center;
+	font-size: 24px;
+	margin: 0 auto 10px
 }
