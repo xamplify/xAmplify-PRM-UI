@@ -3978,14 +3978,17 @@ vanityCheckingMarketoContactsAuthentication(){
                this.contactListObject = new ContactList;
                this.contactListObject.name = this.model.contactListName;
                this.contactListObject.isPartnerUserList = this.isPartner;
-               //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
                this.contactListObject.synchronisedList = true;
-               this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
+               this.contactListObject.socialNetwork = "HUBSPOT";
+               this.contactListObject.contactType  =  "CONTACT";
                this.contactListObject.publicList = true;
-               this.setSocialUsers(this.socialContact);
+               this.socialContact.moduleName = this.getModuleName();
+               this.contactListObject.externalListId = this.hubSpotSelectContactListOption;
+               this.setSocialUserObjs();
                this.setLegalBasisOptions(this.socialUsers);
 
                this.userUserListWrapper.users = this.socialUsers;
+               this.userUserListWrapper.userList = this.contactListObject;
                this.saveAssignedLeadsList();
         } else {
             this.loading = true;
@@ -4326,6 +4329,22 @@ vanityCheckingMarketoContactsAuthentication(){
 
         }
     }
+    
+   setSocialUserObjs() {
+        let contacts = this.socialContact.contacts;
+        for (var i = 0; i < this.socialContact.contacts.length; i++) {
+            let user = new User();
+            if (this.validateEmailAddress(contacts[i].email)) {
+                user.emailId = contacts[i].email.trim();
+                user.firstName = contacts[i].firstName;
+                user.lastName = contacts[i].lastName;
+                user.contactCompany = contacts[i].contactCompany;
+                this.socialUsers.push(user);
+            }
+
+        }
+    }
+   
     selectedSharePartner(event: any){
     	console.log(event);
     	this.sharedPartnerDetails = event;
