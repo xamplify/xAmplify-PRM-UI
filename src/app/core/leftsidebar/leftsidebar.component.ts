@@ -123,9 +123,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					module.isVendorTier = roles.indexOf(this.roleName.vendorTierRole) > -1;
 					this.addZendeskScript(data);
 					/*****XNFR-84 **********/
-					if(data.moduleNames!=undefined && data.moduleNames.length>0){
+					if(data.moduleNames!=undefined && data.moduleNames.length>0 && data.moduleNames!=null){
 						this.authenticationService.moduleNames = data.moduleNames;
 						this.authenticationService.partnerModule = this.authenticationService.moduleNames[0];
+						this.customNamePartners = this.authenticationService.partnerModule.customName;
+					}else{
+						this.authenticationService.partnerModule.customName = "Partners";
 						this.customNamePartners = this.authenticationService.partnerModule.customName;
 					}
 				},

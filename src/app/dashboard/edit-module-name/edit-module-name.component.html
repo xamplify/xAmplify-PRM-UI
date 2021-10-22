@@ -39,7 +39,7 @@
                   <strong>{{moduleCustomName?.moduleName}}</strong>
                 </td>
                <td>
-                 <input class="form-control" maxlength="50" [(ngModel)]="moduleCustomName.customName" (input)="validateCustomName(moduleCustomName)">
+                 <input class="form-control" maxlength="25" [(ngModel)]="moduleCustomName.customName" (input)="validateCustomName(moduleCustomName)">
                  <span class="required" *ngIf="errorMessage.length>0">{{errorMessage}}</span>
                 </td>
               </tr>
