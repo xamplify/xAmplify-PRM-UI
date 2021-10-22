@@ -434,6 +434,12 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+	 
+     vanityConfigHubSpot() {
+	        return this._http.get(this.authenticationService.REST_URL + 'hubspot/' + localStorage.getItem('vanityUserId') + "/authorize")
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    }
 
     checkingZohoSyncAuthentication() {
         return this._http.get( this.authenticationService.REST_URL + "zohoOauth/checkSyncAuthorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId())

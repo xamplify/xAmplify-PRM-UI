@@ -1691,15 +1691,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 configHubSpot() {
 		if (this.loggedInThroughVanityUrl) {
-		/*	let providerName = 'hubspot';
-			let hubSpotCurrentUser = localStorage.getItem('currentUser');
-			let vanityUserId = JSON.parse(hubSpotCurrentUser)['userId'];
-			let redirectURL = window.btoa(this.hubSpotRedirectURL);
-			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
-			this.referenceService.showSweetAlertInfoMessage();
+			let providerName = 'hubspot';
+			this.hubSpotCurrentUser = localStorage.getItem('currentUser');
+            const encodedData = window.btoa(this.hubSpotCurrentUser);
+            const encodedUrl = window.btoa(this.hubSpotRedirectURL);
+            let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
+            let url = null;
+            if(this.hubSpotRedirectURL){
+                    url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/"+ null ;
+
+            }else{
+                    url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
+            }
+            
+            var x = screen.width / 2 - 700 / 2;
+            var y = screen.height / 2 - 450 / 2;
+            window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 		}
 		else if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
 			window.location.href = this.hubSpotRedirectURL;

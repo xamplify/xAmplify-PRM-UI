@@ -3776,7 +3776,7 @@ vanityCheckingMarketoContactsAuthentication(){
 		if (this.selectedAddContactsOption == 8) {
 			this.hubSpotService.configHubSpot().subscribe(data => {
 				let response = data;
-				let providerName = 'salesforce'
+				let providerName = 'hubspot'
 				if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
 					this.xtremandLogger.info("isAuthorize true");
 					this.showHubSpotModal();
@@ -3786,7 +3786,6 @@ vanityCheckingMarketoContactsAuthentication(){
 						this.loggedInUserId = this.authenticationService.getUserId();
 						this.hubSpotCurrentUser = localStorage.getItem('currentUser');
 						let vanityUserId = JSON.parse(this.googleCurrentUser)['userId'];
-						//let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.hubSpotCurrentUser;
 						let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null ;
 
 						var x = screen.width / 2 - 700 / 2;
@@ -3916,9 +3915,11 @@ vanityCheckingMarketoContactsAuthentication(){
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             }
         }
             this.setPage( 1 );
