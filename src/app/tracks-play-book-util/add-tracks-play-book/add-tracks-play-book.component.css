@@ -454,7 +454,7 @@ label {
 .list__item .item__name {
     color: #505659;
     white-space: nowrap;
-    line-height: 1em;
+    line-height: 2em;
     font-size: 1.25rem;
 }
 
@@ -464,15 +464,15 @@ label {
     font-size: 11px;
 }
 
-.item__size,
+/* .item__size,
 .item__type {
-    display: inline-block
-}
+     display: inline-block 
+} */
 
 .item__size span {
     margin-right: .5rem;
     padding-right: .75rem;
-    border-right: 1px solid #ccc
+    /* border-right: 1px solid #ccc */
 }
 
 .item__name strong {
@@ -1036,4 +1036,15 @@ input.cmn-toggle-round-flat:checked+label:after {
     max-width: 100%;
     width: 100%;
     object-fit: contain;
+}
+
+.wrap-asset-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    color: #505659;
+    font-size: 1.25rem;
+    line-height: 1.5em;
+    padding: 2px 0px;
 }

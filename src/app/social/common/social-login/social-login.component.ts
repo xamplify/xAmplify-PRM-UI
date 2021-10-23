@@ -4,6 +4,7 @@ import { SocialService } from '../../services/social.service';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { HubSpotService } from '../../../core/services/hubspot.service';
 //import { AddContactsComponent } from 'app/contacts/add-contacts/add-contacts.component';
 
 
@@ -21,13 +22,14 @@ export class SocialLoginComponent implements OnInit {
 	public storeLogin: any;
 	isLoggedInVanityUrl: any;
 
-	constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService,
+	constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService, private hubSpotService: HubSpotService,
 		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService) {
 			this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');
 		}
 	login(providerName: string) {
-		let currentModule = localStorage.getItem('vanityCurrentModule');
+		
 		if (providerName == 'google' && this.isLoggedInVanityUrl == 'true') {
+			let currentModule = localStorage.getItem('vanityCurrentModule');
 			this.contactService.googleVanityLogin(currentModule)
 				.subscribe(
 					response => {
@@ -49,6 +51,7 @@ export class SocialLoginComponent implements OnInit {
 
 		}
 		else if (providerName == 'salesforce' && this.isLoggedInVanityUrl == 'true') {
+			let currentModule = localStorage.getItem('vanityCurrentModule');
 			this.contactService.salesforceVanityLogin(currentModule)
 				.subscribe(
 						response => {
@@ -66,6 +69,7 @@ export class SocialLoginComponent implements OnInit {
 		}
 		
 		else if (providerName == 'zoho' && this.isLoggedInVanityUrl == 'true') {
+			let currentModule = localStorage.getItem('vanityCurrentModule');
 			this.contactService.checkingZohoVanityAuthentication(currentModule)
 				.subscribe(
 						response => {
@@ -81,6 +85,16 @@ export class SocialLoginComponent implements OnInit {
 					() => this.xtremandLogger.log("addContactComponent salesforceContacts() login finished.")
 				);
 		}
+	      else if (providerName == 'hubspot' && this.isLoggedInVanityUrl == 'true') {
+	          this.contactService.vanityConfigHubSpot().subscribe(data => {
+	              let response = data;
+	              if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+	            	  window.location.href = "" + response.data.redirectUrl;
+	              }
+	          }, (error: any) => {
+	        	  this.xtremandLogger.error(error);
+	          }, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
+	        }
 
 		else {
 			this.socialService.login(providerName)

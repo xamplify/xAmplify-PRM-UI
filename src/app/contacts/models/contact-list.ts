@@ -33,4 +33,5 @@ export class ContactList {
     vendorCompanyProfileName : string;
     synchronisedList : boolean = false;
     moduleName : string;
+    externalListId : number;
 }
