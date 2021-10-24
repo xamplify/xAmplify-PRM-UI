@@ -58,10 +58,10 @@
        <div class="flex">
          <div  class="col-sm-6 col-xs-12 block">
             <div class="text-block">
-              <h1 style="color: #00B3B3;text-align: left" translate>Partners</h1>
+              <h1 title="{{authenticationService?.partnerModule?.customName}}" class="welcome-item-header" translate>{{authenticationService?.partnerModule?.customName}}</h1>
               <p class="left-side">{{welcome_text.contacts}}</p>
               <div class="text-left">
-                <button class="btn btn-xs color2 " [routerLink]="['/home/partners/add']" translate>Add partners</button>
+                <button class="btn btn-xs color2 " [routerLink]="['/home/partners/add']" translate>Add {{authenticationService?.partnerModule?.customName}}</button>
                 <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addPartnerCreateUrl, 'Partners')" translate>Tell me how</button>
               </div>
             </div>

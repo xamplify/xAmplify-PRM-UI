@@ -1665,7 +1665,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}else if(this.activeTabName == "notifyPartners"){
 			this.ngxloading = true;
 			this.showNotifyPartnersOption = false;
-			this.activeTabHeader = this.properties.notifyPartnersHeaderText;
 			let self = this;
 			setTimeout(()=>{                         
 				  self.showNotifyPartnersOption = true;
@@ -1686,7 +1685,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		$('#deleteCategoryModalPopup').modal('hide');
 		$('#addPipelineModalPopup').modal('hide');
 		$('#addExcludeUserPopupModal').modal('hide');
-		swal.close();
+		//swal.close();
 	}
 
 configHubSpot() {

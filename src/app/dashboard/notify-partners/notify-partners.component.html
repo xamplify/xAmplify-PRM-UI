@@ -5,10 +5,10 @@
   <div>
     <h4 class="bold-font-weight">Turn Email notifications on or off
     </h4>
-    <label class="bold-font">You have the ability to control email notifications to newly onboarded partners.</label>
+    <label class="bold-font">You have the ability to control email notifications to newly onboarded {{authenticationService?.partnerModule?.customName}}.</label>
   </div>
   <div>
-    <h5 class="bold-font-weight h5-custom-font">Send signup email notifications to your newly onboarded partners:
+    <h5 class="bold-font-weight h5-custom-font">Send signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}:
       <switch  [status]="notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption($event)">
     </switch>

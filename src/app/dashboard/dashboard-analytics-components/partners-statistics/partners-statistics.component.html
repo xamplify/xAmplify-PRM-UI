@@ -3,15 +3,17 @@
                 <div class="portlet light" style="min-height: 510px;">
                     <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
                         <div class="caption">
-                            <span class="caption-subject" translate>Parnters Statistics</span>
+                            <span class="caption-subject" translate>{{authenticationService?.partnerModule?.customName}} Statistics</span>
                         </div>
                         <div class="inputs" id="right">
                             <div class="portlet-input input-inline input-medium">
                               <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
                                 <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                                placeholder="Search for a Partner" (keypress)="activePartnerSearch($event.keyCode)">
+                                placeholder="Search Company Name" (keypress)="activePartnerSearch($event.keyCode)">
                                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="activePartnersSearchKey" (click)="activePartnersSearchKey='';searchActivePartnerAnalytics();"></button>
-                                <button type="submit" class="search-box-item-click" (click)="searchActivePartnerAnalytics()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                <button type="submit" class="search-box-item-click" (click)="searchActivePartnerAnalytics()">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -86,7 +88,7 @@
                             <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading" aria-describedby="redistributedCampaignsAndPartners">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Partner Company Name</th>
+                                    <th scope="col">{{authenticationService?.partnerModule?.customName}} Company Name</th>
                                     <th scope="col" class="text-center">Campaigns</th>
                                     <th scope="col" class="text-center">Type</th>
                                     </tr>
