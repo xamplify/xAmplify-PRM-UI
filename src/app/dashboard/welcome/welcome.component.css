@@ -244,9 +244,6 @@ h3 {
 }
 
 .welcome-item-header{
-	overflow: hidden;
-    text-overflow: ellipsis;
-	height: 50px;
 	color: #00B3B3;
 	text-align: left
 }

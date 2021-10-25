@@ -88,26 +88,26 @@
                       <td>
                         <app-timestamp [dateAndTime]="report.updatedTime"> </app-timestamp>
                       </td>
-                      <td class="inline-custom-width">
-                        <a data-toggle="tooltip" data-placement="top" title="Company profile details" (click)="getVendorCompanyProfile(report)"> 
+                      <td class="inline-custom-width" (click)="$event.stopPropagation();">
+                        <a title="Company profile details" (click)="getVendorCompanyProfile(report)"> 
                           <i class="fa fa-building-o" style="font-size: 20px;" aria-hidden="true"></i>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(report)"> 
+                        <a  title="My profile details" (click)="getVendorMyProfile(report)"> 
                           <i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
                         </a>
-						            <a data-toggle="tooltip" data-placement="top" title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
+						            <a  title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
                           <i class="fa fa fa-envelope" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report)"> 
+                        <a  title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report)"> 
                           <i class="fa fa fa-copy" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Activate/Deactivate" (click)="$event.stopPropagation();activateOrDeactivate(report)"> 
+                        <a  title="Activate/Deactivate" (click)="$event.stopPropagation();activateOrDeactivate(report)"> 
                             <i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Edit Modules" (click)="$event.stopPropagation();displayModuleAccess(report)"> 
+                        <a  title="Edit Modules" (click)="$event.stopPropagation();displayModuleAccess(report)"> 
                           <i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Edit Module Names" (click)="$event.stopPropagation();editModuleNames(report)"> 
+                        <a  title="Edit Module Names" (click)="$event.stopPropagation();editModuleNames(report)"> 
                           <i class="fa fa-font" style="font-size: 20px;" aria-hidden="true"></i>
                         </a>
                       </td>

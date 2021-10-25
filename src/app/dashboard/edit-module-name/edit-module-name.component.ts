@@ -79,12 +79,14 @@ export class EditModuleNameComponent implements OnInit {
   }
 
   update(){
+    $('#module-update-success').hide();
     this.referenceService.startLoader(this.httpRequestLoader);
     this.dashboardService.updateModuleName(this.moduleCustomName)
     .subscribe(
         response=>{
           this.customResponse = new CustomResponse('SUCCESS',response.message,true);
           this.referenceService.stopLoader(this.httpRequestLoader);
+          $('#module-update-success').show(300);
         },error=>{
           this.xtremandLogger.errorPage(error);
         }

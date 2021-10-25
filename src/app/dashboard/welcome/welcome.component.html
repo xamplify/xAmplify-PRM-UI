@@ -58,7 +58,10 @@
        <div class="flex">
          <div  class="col-sm-6 col-xs-12 block">
             <div class="text-block">
-              <h1 title="{{authenticationService?.partnerModule?.customName}}" class="welcome-item-header" translate>{{authenticationService?.partnerModule?.customName}}</h1>
+              <h1 title="{{authenticationService?.partnerModule?.customName}}" class="welcome-item-header" translate>
+                {{authenticationService?.partnerModule?.customName | slice:0:15}}
+                <span *ngIf="authenticationService?.partnerModule?.customName?.length>15">...</span>
+              </h1>
               <p class="left-side">{{welcome_text.contacts}}</p>
               <div class="text-left">
                 <button class="btn btn-xs color2 " [routerLink]="['/home/partners/add']" translate>Add {{authenticationService?.partnerModule?.customName}}</button>

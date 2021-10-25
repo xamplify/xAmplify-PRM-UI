@@ -21,9 +21,9 @@
   <div class="portlet light">
 		<div class="portlet-body clearfix">
       <app-modal-popup-loader *ngIf="httpRequestLoader?.isLoading"></app-modal-popup-loader>
-      <section *ngIf="!httpRequestLoader?.isLoading">
+      <section [hidden]="httpRequestLoader?.isLoading">
       <div class="table-responsive">
-        <div class="alert alert-success" *ngIf="customResponse?.isVisible">
+        <div class="alert alert-success display-none" id="module-update-success">
             <strong>Name Updated Successfully</strong>
         </div>
         <table class='table tgrid' aria-describedby="edit-module-names-table">

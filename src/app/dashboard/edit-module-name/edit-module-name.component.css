@@ -1,3 +1,11 @@
 .mtfpx{
     margin-top: 5px !important;
 }
+
+.display-none{
+    display: none;
+}
+
+.display-block{
+    display: block;
+}
