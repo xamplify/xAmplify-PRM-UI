@@ -166,15 +166,16 @@
         <div class="portlet light">
           <div class="portlet-title">
             <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase">Inactive partners</span>
+              <span class="caption-subject font-red-sunglo uppercase">Inactive {{authenticationService?.partnerModule?.customName}}</span>
             </div>
             <div class="inputs" align="right" style="float: right">
               <div class="portlet-input input-inline">
                 <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="Search for a Partner" (keypress)="inActivePartnersSearch($event.keyCode)">
+                    placeholder="Search" (keypress)="inActivePartnersSearch($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey" (click)="inActivePartnersSearchKey=''"></button>
-                  <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
+                  <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()">
+                    <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
               </div>
             </div>
@@ -182,11 +183,11 @@
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
-            <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0">
+            <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0" aria-describedby="">
               <thead>
-                <th class="center-aligned" style="width:50%">partners</th>
-                <th class="hidden-xs" style="text-align: left;">LAST REMINDER SENT</th>
-                <th style="text-align: left">Actions</th>
+                <th class="center-aligned" style="width:50%" scope="col">{{authenticationService?.partnerModule?.customName}}</th>
+                <th class="hidden-xs" style="text-align: left;" scope="col">LAST REMINDER SENT</th>
+                <th style="text-align: left" scope="col">Actions</th>
               </thead>
               <tbody>
                 <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
@@ -195,12 +196,12 @@
                   </td>
                   <td class="hidden-xs">
                     <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
-                    <h4 *ngIf="!item.time"><b>-</b></h4>
+                    <h4 *ngIf="!item.time"><strong>-</strong></h4>
                    </td>
                   <td (click)="sendPartnerReminder(item)">
                     <div class="actions-block float-none" >
                       <a data-toggle="tooltip" data-placement="left" title="Send reminder email">
-                        <i class="fa fa-envelope"></i>
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
                       </a>
                     </div>
                   </td>
@@ -222,7 +223,7 @@
         <div class="portlet light">
           <div class="portlet-title">
             <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase">Approve partners</span>
+              <span class="caption-subject font-red-sunglo uppercase">Approve {{authenticationService?.partnerModule?.customName}}</span>
             </div>
             <!-- <div class="inputs" align="right" style="float: right">
               <div class="portlet-input input-inline input-medium">
@@ -258,8 +259,8 @@
                     <button class="btn btn-default dropdown-toggle" [disabled]="item.invitationStatus === 'approved'" style="text-transform: capitalize"  type="button" data-toggle="dropdown">{{item.invitationStatus}}
     				<span class="caret"></span></button>
     				<ul class="dropdown-menu" style="left: 68px;"*ngIf="item.invitationStatus != 'approved'" >
-      					<li *ngIf="item.invitationStatus != 'approved'"><a (click)="requestText='Approve';approveAndDeclineRequest(item.partnerId, item.firstName)">Approve</a></li>
-     					 <li *ngIf="item.invitationStatus != 'declined'"><a (click)="requestText='Decline';approveAndDeclineRequest(item.partnerId, item.firstName)">Decline</a></li>
+      					<li *ngIf="item.invitationStatus != 'approved'"><a (click)="requestText='Approve';approveAndDeclineRequest(item.partnerId, item.firstName,authenticationService.partnerModule.customName)">Approve</a></li>
+     					 <li *ngIf="item.invitationStatus != 'declined'"><a (click)="requestText='Decline';approveAndDeclineRequest(item.partnerId, item.firstName,authenticationService.partnerModule.customName)">Decline</a></li>
     				</ul>
  				 </div>
                   <!--  <button type="submit" [disabled]="item.invitationStatus == 'approved'" class="btn green"
@@ -319,8 +320,8 @@
                         <input type="text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a Campaign"
                           (keypress)="searchPartnerCampaignKeyPress($event.keyCode,'through-partner')">
                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
-                        <button type="submit" class="search-box-item-click" (click)="searchPartnerCampaigns('through-partner')"><i
-                            class="fa fa-search"></i></button>
+                        <button type="submit" class="search-box-item-click" (click)="searchPartnerCampaigns('through-partner')">
+                          <i class="fa fa-search" aria-hidden="true"></i></button>
                       </div>
                     </div>
                   </div>
@@ -568,12 +569,10 @@
 	data-keyboard="false">
 	<div class="modal-dialog" role="document">
 	<div class="my-container">
-		<!-- <ngx-loading [show]="loading"
-			[config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
 	</div>
 		<div class="modal-content">
 			<div class="modal-header">
-				<a class="close-circle" (click)="closeRequestModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+				<a class="close-circle" (click)="closeRequestModal()" data-dismiss="modal"> <i class="fa fa-times" aria-hidden="true"></i></a>
 				<h4 class="modal-title left" id="myModalLabel" *ngIf="requestText == 'Approve'">Approve vendor request and send an email.</h4>
 				<h4 class="modal-title left" id="myModalLabel" *ngIf="requestText == 'Decline'">Decline vendor request and send an email.</h4>
 			</div>
