@@ -62,10 +62,19 @@
                      </div>
                    </div>
                    <div class="col-xs-12" style="margin: 2px -18px;"  *ngIf="authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()">
-                   <ul class="mix-filter" >
-                     <li class="filter" *ngFor="let videoType of videoTypes; let i = index;"
-                      (click)="getVideoTypes(videoType)" [class.selectedtype]="videoFileService.videoType === videoType.value">{{videoType.name | translate}}</li>
-                   </ul></div>
+                   <ul class="mix-filter">
+                   
+                      <li class="filter" (click)="getVideoTypes('myVideos')" [class.selectedtype]="videoFileService.videoType === 'myVideos'">
+                          My Videos
+                      </li>
+
+                      <li class="filter" (click)="getVideoTypes('partnerVideos')" [class.selectedtype]="videoFileService.videoType === 'partnerVideos'">
+                        {{authenticationService?.partnerModule?.customName}} Videos
+                    </li>
+                    
+                    </ul>
+                   
+                  </div>
                  </div>
                </div>
                <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView  && !referenceService.isPlayVideo"></app-grid-loader>
