@@ -253,20 +253,20 @@
                                                     <span style="cursor: pointer;color: #54a7e9;">
                                                         <i class="fa fa-question-circle" data-toggle="tooltip"
                                                             data-placement="top" aria-hidden="true"
-                                                            title="Enable your Partner's logo to be displayed in redistributed campaigns"
+                                                            title="Enable logo of your {{authenticationService?.partnerModule?.customName}} to be displayed in redistributed campaigns"
                                                             style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
                                                     </span>
                                                 </div>
                                             </div>
 
                                             <div class="form-group" *ngIf="!isOnlyPartner && campaignType!='sms' && (campaign.channelCampaign || (campaignType=='landingPage'  && channelCampaignFieldName != 'To Recipient')) ">
-                                                <label class="control-label col-sm-4" translate>Notify Partners ?</label>
+                                                <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                         (statusChange)="setPartnerEmailNotification($event)">
                                                     </switch>
                                                     <span style="cursor: pointer;color: #54a7e9;">
-														<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your partners about your campaign" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+														<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
 													</span>
 
                                                 </div>
@@ -749,7 +749,7 @@
                                                             <tr *ngIf="channelVideosPagination.totalRecords==0">
                                                                 <td colspan="5">
                                                                     <div class="alert alert-info">
-                                                                        <strong translate>No Partner videos found</strong>
+                                                                        <strong translate>No videos found</strong>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -1417,7 +1417,7 @@
                                                 <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
                                             </div>
                                             <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
-                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select  Page" translate>Next</button>
+                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select Page" translate>Next</button>
                                         </div>
                                     </form>
                                 </div>
@@ -1528,20 +1528,18 @@
                                                 <div class="table-responsive">
                                                     <table width="100%">
                                                         <tr>
-                                                            <td width="25%">
+                                                            <td style="width: 25%;">
                                                                 <div class="icon-border">
                                                                     <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
-                                                                <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor ||authenticationService.module.isVendorTier || authenticationService.module.isPrm">
-                                                                    <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
-                                                                        List Of {{authenticationService?.partnerModule?.customName}}</ng-container>
+                                                                <ng-container *ngIf="contactListTabName=='Partners'">
+                                                                    {{authenticationService?.partnerModule?.customName | translate}}
                                                                 </ng-container>
-                                                                <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor && !authenticationService.module.isVendorTier &&  !authenticationService.module.isPrm">
-                                                                    <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
-                                                                        List Of Contacts</ng-container>
+                                                                <ng-container *ngIf="contactListTabName!='Partners'">
+                                                                    {{authenticationService?.partnerModule?.customName}} & Recipients
                                                                 </ng-container>
                                                             </td>
-                                                            <td width="55%">
+                                                            <td style="width: 55%;">
                                                                 <ng-container *ngFor="let contactListName of selectedContactListNames;let i=index;">
                                                                     <div>
                                                                         <a *ngIf="i<2" title="{{contactListName}}">
@@ -1555,7 +1553,7 @@
                                                                 <a>
                                                                     <span *ngIf="selectedContactListIds?.length>2"
                                                                         (click)="resetActive($event, 40, 'step-4')">..</span>
-                                                                     <span *ngIf="selectedContactListIds?.length == 0" translate>0 contact lists </span>
+                                                                     <span *ngIf="selectedContactListIds?.length == 0" translate>0 lists </span>
                                                                 </a>
                                                                 <br>
                                                                 <ng-container *ngIf="emailReceiversCountError">
@@ -1696,7 +1694,7 @@
                                                                             <option [value]="22"
                                                                                 [selected]="reply.actionId ==22"
                                                                                 *ngIf="campaign.channelCampaign && campaignType=='regular'" translate>
-                                                                                Email is not redistributed by the partner
+                                                                                Email is not redistributed by {{authenticationService?.partnerModule?.customName}}
                                                                                 </option>
                                                                             <ng-container *ngIf="campaignType=='video'">
                                                                                 <option [value]="1"
