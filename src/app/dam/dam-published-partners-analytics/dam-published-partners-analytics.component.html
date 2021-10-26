@@ -16,7 +16,7 @@
           <i class="fa fa-angle-right" aria-hidden="true"></i>
        </li>
        <li><a translate (click)="goBack()">DAM</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
-       <li><a class="default-cursor" translate>Published Partners</a></li>
+       <li><a class="default-cursor" translate>Published {{authenticationService?.partnerModule?.customName}}</a></li>
     </ul>
      <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
       <i class="fa fa-times" aria-hidden="true"></i>
@@ -34,7 +34,7 @@
               <div class="portlet-title">
                  <div class="caption" translate>
                     <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
-                    Published Partners
+                    Published {{authenticationService?.partnerModule?.customName}}
                  </div>
                  <div class="inputs"  style="float: right; padding: 4px">
                     <div style="float: left; margin: 0 10px;">
@@ -46,7 +46,7 @@
                     </div>
                     <div class="portlet-input input-inline">
                        <div class="input-icon right">
-                          <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a partner" (keypress)="eventHandler($event.keyCode)">
+                          <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search.." (keypress)="eventHandler($event.keyCode)">
                           <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
                           <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
                        </div>
@@ -69,7 +69,7 @@
                           <table class='table tgrid' aria-describedby="published-partners-list">
                              <thead>
                                 <tr>
-                                   <th scope="col" translate >Partner Info</th>
+                                   <th scope="col" translate >{{authenticationService?.partnerModule?.customName}} Info</th>
                                    <th scope="col"  translate class="text-center">Views</th>
                                    <th scope="col" translate  class="text-center">Downloads</th>
                                    <th scope="col" translate class="text-center">ACTIONS</th>

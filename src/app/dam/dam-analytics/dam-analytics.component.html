@@ -20,7 +20,7 @@
           </li>
           <ng-container *ngIf="vendorView">
           <li>
-            <a (click)="goBack()" translate>Published Partners</a> 
+            <a (click)="goBack()" translate>Published {{authenticationService?.partnerModule?.customName}}</a> 
             <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
        </ng-container>
