@@ -111,3 +111,16 @@ text-align: center;
 .disabled{
   pointer-events: none;
 }
+
+@media screen and (max-width:600px){
+.mPannel{
+  padding-top: 1px;
+}
+
+.mrecipient{
+padding: 122px 140px!important;
+}
+.mvideoview{
+  left:175px!important;
+}
+}
