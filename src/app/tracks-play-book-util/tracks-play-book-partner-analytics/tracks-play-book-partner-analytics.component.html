@@ -20,7 +20,7 @@
                   <div class="portlet-input input-inline" style="margin-right: 15px;width: 180px;">
                     <div class="input-icon right" style="position: relative;right: -11px;">
                       <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
-                        [ngModelOptions]="{standalone: true}" placeholder="search..."
+                        [ngModelOptions]="{standalone: true}" placeholder="Search..."
                         (keypress)="eventHandler($event.keyCode)">
                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
                         (click)="sortOption.searchKey='';search();"></button>
@@ -48,7 +48,7 @@
               <thead>
                 <tr>
                   <th class="hidden-xs" style="width: 35%" id="border-bottom">
-                    <span class="gridHeader" translate>Partner</span>
+                    <span class="gridHeader" translate>{{authenticationService?.partnerModule?.customName}}</span>
                   </th>
                   <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" style="width: 35%" translate>
                     Progress</th>
