@@ -790,7 +790,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
     setVendorPartnersData() {
         this.contactListTabName = "Partners";
-        this.emptyContactListMessage = "No partner(s) found";
+        this.emptyContactListMessage = "No data found";
         this.contactListSelectMessage = "Select the partner list(s) to be used in this campaign";
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
@@ -806,9 +806,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
 
     setOrgAdminReceipients() {
-        this.contactListTabName = "Partners & Recipients";
+        this.contactListTabName = "P&R";
         this.contactListSelectMessage = "Select the partner(s) / recipient(s) to be used in this campaign";
-        this.emptyContactListMessage = "No partner(s) / recipient(s) found";
+        this.emptyContactListMessage = "No data found";
         this.showContactType = true;
         this.contactsPagination.filterValue = false;
         this.contactsPagination.filterKey = null;

@@ -72,7 +72,14 @@
                             <span>
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
-                            <h5 class="hidden-xs">{{contactListTabName | translate}}</h5>
+                            <h5 class="hidden-xs">
+                                <ng-container *ngIf="contactListTabName=='Partners'">
+                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                </ng-container>
+                                <ng-container *ngIf="contactListTabName!='Partners'">
+                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                </ng-container>
+                            </h5>
                         </div>
                     </div>
 
@@ -81,7 +88,14 @@
                             <span>
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
-                            <h5 class="hidden-xs">{{contactListTabName}}</h5>
+                            <h5 class="hidden-xs">
+                                <ng-container *ngIf="contactListTabName=='Partners'">
+                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                </ng-container>
+                                <ng-container *ngIf="contactListTabName!='Partners'">
+                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                </ng-container>
+                            </h5>
                         </div>
                     </div>
                     <div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
@@ -831,7 +845,14 @@
                                 </app-error-pages>
                                 <div [hidden]="campaignContact.httpRequestLoader.isLoading || campaignContact.httpRequestLoader.isServerError">
                                     <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
-                                        <div class="note-vid pull-left">{{contactListSelectMessage}}</div>
+                                        <div class="note-vid pull-left">
+                                            <ng-container *ngIf="contactListTabName=='Partners'">
+                                                Select List of {{authenticationService?.partnerModule?.customName}} to be used in this campaign
+                                            </ng-container>
+                                            <ng-container *ngIf="contactListTabName!='Partners'">
+                                                Select {{authenticationService?.partnerModule?.customName}} / Recipients to be used in this campaign
+                                            </ng-container>
+                                        </div>
                                         <div class="inputs" style="float: right;">
                                             <div style="float: left;">
                                                  <select class="form-control cc" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
@@ -874,7 +895,7 @@
                                                             <th scope="row" class="text-center">
                                                                 <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                             </th>
-                                                            <th class="hidden-xs" *ngIf="showExpandButton"></th>
+                                                            <th class="hidden-xs" *ngIf="showExpandButton" scope="col"></th>
                                                             <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
                                                                 <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'user_list_tb',2)"></span>
                                                                 <span class="gridHeader" translate>List Name</span>
@@ -935,14 +956,19 @@
                                                                             </h6> 
                                                                             <h6 *ngIf="contacts?.formList" class="view-banner view-banner-green" translate>
                                                                                 <span data-toggle="tooltip" data-placement="top"
-                                                                                    title="This list is associated with a form." translate>Form Lead List
+                                                                                    title="This list is associated with a form." translate>Form Contact List
                                                                                 </span>
                                                                             </h6>                                                                           
                                                                         </div>                                                                        
                                                                     </ng-container>
                                                                 </td>
                                                                 <td class="text-center" *ngIf="showContactType">
-                                                                    {{contacts?.listType}}                                                                                                                                        
+                                                                    <ng-container *ngIf="contacts?.listType=='Partners'">
+                                                                        {{authenticationService?.partnerModule?.customName}}
+                                                                    </ng-container>    
+                                                                    <ng-container *ngIf="contacts?.listType!='Partners'">
+                                                                        {{contacts?.listType}}
+                                                                    </ng-container>                                                                                                                                       
                                                                 </td>
                                                                 <td class="text-center sorting_1">
                                                                     <app-timestamp  [dateAndTime]="contacts?.displayTime">
@@ -1508,11 +1534,11 @@
                                                                 </div>
                                                                 <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor ||authenticationService.module.isVendorTier || authenticationService.module.isPrm">
                                                                     <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
-                                                                        Partner List(s)</ng-container>
+                                                                        List Of {{authenticationService?.partnerModule?.customName}}</ng-container>
                                                                 </ng-container>
                                                                 <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor && !authenticationService.module.isVendorTier &&  !authenticationService.module.isPrm">
                                                                     <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
-                                                                        Contact List(s)</ng-container>
+                                                                        List Of Contacts</ng-container>
                                                                 </ng-container>
                                                             </td>
                                                             <td width="55%">
