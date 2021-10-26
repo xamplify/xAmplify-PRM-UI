@@ -32,7 +32,7 @@
                            </div>
                            <div class="details">
                               <div class="number">{{tileData?.totalPartners}}</div>
-                              <div class="desc">Total Partners</div>
+                              <div class="desc">Total {{authenticationService?.partnerModule?.customName}}</div>
                            </div>
                            <span class="morePadding">
                         <a  translate="" ng-reflect-translate="" class="more hidden"> Detailed view 
@@ -127,11 +127,11 @@
                               <table class='table tgrid' aria-describedby="manage-mdf-fund-table">
                                  <thead>
                                     <tr>
-                                       <th translate>Partner Info</th>
-                                       <th  translate>MDF Account Balance</th>
-                                       <th  translate>Used Balance</th>
-                                       <th translate>Available Balance</th>
-                                       <th translate>ACTIONS</th>
+                                       <th translate scope="col">{{authenticationService?.partnerModule?.customName}} Info</th>
+                                       <th translate scope="col">MDF Account Balance</th>
+                                       <th translate scope="col">Used Balance</th>
+                                       <th translate scope="col">Available Balance</th>
+                                       <th translate scope="col">ACTIONS</th>
                                     </tr>
                                  </thead>
                                  <tbody>
