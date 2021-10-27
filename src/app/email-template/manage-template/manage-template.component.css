@@ -159,6 +159,16 @@ a.disabled {
     /* margin: 0 auto; */
 }
 
+.view-banner-green {
+    background-color: #60bb23;
+    color: white;
+    padding: 6px;
+    text-align: center;
+    width: 175px;
+    border-radius: 3px;
+    /* margin: 0 auto; */
+}
+
 .view-banner-draft {
     background-color: #f76c1a;
     color: white;

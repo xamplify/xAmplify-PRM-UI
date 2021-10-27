@@ -257,7 +257,8 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 				this.campaignAccess.videoCampaign = data.video;
 				this.campaignAccess.emailCampaign = data.regular;
 				this.campaignAccess.socialCampaign = data.social;
-				this.campaignAccess.eventCampaign = data.event
+				this.campaignAccess.eventCampaign = data.event;
+				this.campaignAccess.formBuilder = data.form;
 			});
 	}
 	getCompanyIdByUserId() {
@@ -404,6 +405,10 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 			this.pagination.emailTemplateType = EmailTemplateType.MARKETO;
 		} else if (type == "HUBSPOT") {
 			this.pagination.emailTemplateType = EmailTemplateType.HUBSPOT;
+		} else if (type == "SURVEY") {
+			this.pagination.emailTemplateType = EmailTemplateType.SURVEY;
+		} else if (type == "SURVEY_CO_BRANDING") {
+			this.pagination.emailTemplateType = EmailTemplateType.SURVEY_CO_BRANDING;
 		}
 		this.selectedTemplateTypeIndex = index;//This is to highlight the tab
 		this.pagination.pageIndex = 1;
@@ -411,6 +416,8 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 			this.pagination.filterBy = "VideoEmail";
 		} else if (!isVideoTemplate && this.selectedTemplateTypeIndex == 9) {
 			this.pagination.filterBy = 'EventEmail';
+		} else if (type == "SURVEY") {
+			this.pagination.filterBy = 'Survey';
 		} else if (!isVideoTemplate) {
 			this.pagination.filterBy = "RegularEmail";
 		}

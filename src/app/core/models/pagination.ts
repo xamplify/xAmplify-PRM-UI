@@ -82,4 +82,5 @@ export class Pagination {
 	page : number = 0;
 	excludeBeePdf : boolean = false;
 
+	surveyCampaignForm = false;
 }

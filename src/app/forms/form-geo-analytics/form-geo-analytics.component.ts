@@ -18,6 +18,8 @@ import { SortOption } from 'app/core/models/sort-option';
 export class FormGeoAnalyticsComponent implements OnInit {
 
   @Input() alias: any;
+  @Input() campaignId: any;
+  @Input() partnerId: any;
   pagination: Pagination = new Pagination();
   customResponse: CustomResponse = new CustomResponse();
   sortOption: SortOption = new SortOption();
@@ -31,6 +33,8 @@ export class FormGeoAnalyticsComponent implements OnInit {
     public logger: XtremandLogger) { }
 
   ngOnInit() {
+    this.pagination.campaignId = this.campaignId;
+    this.pagination.partnerId = this.partnerId;
     this.getGeoAnalytics(this.pagination);
   }
 
