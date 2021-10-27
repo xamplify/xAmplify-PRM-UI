@@ -29,4 +29,5 @@ export class CampaignAccess {
   excludeUsersOrDomains = false;
   chatSupport =false;
   allBoundSamlSettings = false;
+  surveyCampaign = false;
 }

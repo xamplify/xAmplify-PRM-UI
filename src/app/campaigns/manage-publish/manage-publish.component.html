@@ -155,7 +155,7 @@
                           <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/sms.png" alt="SMS Campaign">
                         </ng-container>
                         <ng-container *ngIf="campaign.campaignType.indexOf('SURVEY') > -1">
-                          <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Survey Campaign">
+                          <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/survey.png" alt="Survey Campaign">
                         </ng-container>
                         <br>
                         <h6 class="view-banner banner-top" *ngIf="campaign.launched && campaign.channelCampaign" translate>

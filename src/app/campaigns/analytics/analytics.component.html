@@ -201,7 +201,7 @@
                   <span>Click for preview</span>
                 </div>
               </div>
-              <div class="actions-block override-actions" id="landing-page-icons">                
+              <div class="actions-block override-actions" id="email-icons"> 
                 <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0" routerLink="/home/forms/csf/{{campaign.campaignId}}"
                   data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Survey Forms Count">
                   <i class="fa fa-wpforms" aria-hidden="true"></i>
@@ -1012,6 +1012,7 @@
                               <th id="table-header"
                                 *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
                                 User Level Campaign Analytics</th>
+                              <th id="table-header" *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0 && isChannelCampaign">Survey Count</th>
                               <th id="table-header" *ngIf="campaign.dipCampaign">
                                 Auto Responses
                               </th>
@@ -1034,7 +1035,7 @@
                                   <!-- here emailId coming as userMail -->
                                 </td>
                                 <td class="td-chart"
-                                  *ngIf="campaignType != 'VIDEO' && campaignType != 'REGULAR' || campaignType === 'SURVEY'">
+                                  *ngIf="campaignType != 'VIDEO' && campaignType != 'REGULAR' && campaignType != 'SURVEY'">
                                   <h6 title="{{campaign.campaignName}}">{{item.campaignName | slice: 0: 35}}
                                     <span *ngIf="campaign.campaignName?.length>35">...</span>
                                   </h6>
@@ -1142,17 +1143,22 @@
                                 </td>
                                 <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)" class="text-center"
                                   *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'|| campaignType === 'SURVEY'">
-                                  <div class="actions-block override-actions" style="margin-right:100px;">
-                                    <a data-rel="fancybox-button" title="User Level Campaign Analytics">
+                                  <div class="actions-block override-actions" style="margin-right:100px">
+                                    <a data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="User Level Campaign Analytics">
                                       <i class="fa fa-line-chart" aria-hidden="true"></i>
-                                    </a>                                    
-                                    <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0" routerLink="/home/forms/csf/{{campaign.campaignId}}/{{item.userId}}"
-                                      data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Survey Forms Count">
-                                      <i class="fa fa-wpforms" aria-hidden="true"></i>
-                                      <span class="badge" id="notification">{{campaign.formsCount}}</span>
                                     </a>
                                   </div>
                                 </td>
+                                <td class="text-center" *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0 && isChannelCampaign">
+                                    <div class="actions-block override-actions" id="landing-page-icons">
+                                      <a routerLink="/home/forms/csf/{{campaign.campaignId}}/{{item.userId}}"
+                                        data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
+                                        title="Survey Forms Count">
+                                        <i class="fa fa-wpforms"></i>
+                                        <span class="badge" id="notification">{{campaign.formsCount}}</span>
+                                      </a>
+                                    </div>
+                                  </td>
                                 <td *ngIf="campaign.dipCampaign">
                                   <!-- removed id="align-center" code -->
                                   <div class="actions-block" (click)="$event.stopPropagation()">

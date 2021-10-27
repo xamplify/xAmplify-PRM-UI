@@ -26,7 +26,7 @@
                                 <a translate><span *ngIf="emailTemplateService.isNewTemplate; else Other" translate>Create</span>
                           <ng-template #Other translate>Update</ng-template> Template</a>
                             </li>
-                        </ul>                        
+                        </ul>  
                         <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'" [buttonText]="'Show Surveys'"></app-preview-popup>
                         <app-merge-tags *ngIf="loadTemplate" [input]="mergeTagsInput"></app-merge-tags>
                         <div id="bee-plugin-container"></div>

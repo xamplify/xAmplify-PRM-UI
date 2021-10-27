@@ -3491,7 +3491,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         emailTemplate.userId = this.loggedInUserId;
         this.emailTemplateService.updateJsonAndHtmlBody(emailTemplate).subscribe(
             response => {
-                this.showTemplateUpdatedSuccessMessage();
+                if (response.statusCode == 200) {
+                    this.showTemplateUpdatedSuccessMessage();
+                } else if (response.statusCode == 500) {
+                    this.showUpdateTemplateErrorMessage(response.message);
+                }                
             }, error => {
                 this.showTemplateUpdateErrorMessage();
             }
@@ -3532,6 +3536,18 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.loading =false;
         this.templateMessageClass = "alert alert-danger";
         this.templateUpdateMessage = this.properties.serverErrorMessage;
+        this.showEditTemplateMessageDiv = true;
+    }
+
+    showUpdateTemplateErrorMessage(message: string){
+        this.loading =false;
+        this.templateMessageClass = "alert alert-danger";
+        if (message != undefined && message != null && message.trim().length > 0) {
+            this.templateUpdateMessage = message;
+        } else {
+            this.templateUpdateMessage = this.properties.serverErrorMessage;
+        }
+        
         this.showEditTemplateMessageDiv = true;
     }
 

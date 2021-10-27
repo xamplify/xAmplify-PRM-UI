@@ -341,8 +341,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             data => {
                 if (data.access) {
                     this.refService.stopLoader(this.httpRequestLoader);
-                    if (data.statusCode == 702) { 
-                        swal.close();                       
+                    if (data.statusCode == 702) {                                               
                         if (!isOnDestroy) {
                             this.refService.isCreated = true;
                             this.navigateToManageSection();
@@ -350,8 +349,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                             this.emailTemplateService.goToManage();
                         }
                     } else if (data.statusCode == 500) {
-                        //this.customResponse = new CustomResponse('ERROR', data.message, true);
-                        $('#templateNameSpanError').text(data.message);
+                        swal.close();
+                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                        //$('#templateNameSpanError').text(data.message);
                     }                    
                 } else {
                     this.authenticationService.forceToLogout();
@@ -377,17 +377,25 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         emailTemplate.user.userId = this.loggedInUserId;
         this.updateCompanyLogo(emailTemplate);
         emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
+        emailTemplate.surveyTemplate = emailTemplateService.emailTemplate.surveyTemplate;
+        emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
         emailTemplateService.update(emailTemplate).subscribe(
             data => {
                 if (data.access) {
                     this.refService.stopLoader(this.httpRequestLoader);
-                    if (!isOnDestroy) {
-                        this.refService.isUpdated = true;
-                        this.navigateToManageSection();
-
-                    } else {
-                        this.emailTemplateService.goToManage();
-                    }
+                    if (data.statusCode == 702) {
+                        if (!isOnDestroy) {
+                            this.refService.isUpdated = true;
+                            this.navigateToManageSection();
+    
+                        } else {
+                            this.emailTemplateService.goToManage();
+                        }
+                    } else if (data.statusCode == 500) {
+                        swal.close();
+                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                        //$('#templateNameSpanError').text(data.message);
+                    }                    
                 } else {
                     this.authenticationService.forceToLogout();
                 }
@@ -417,7 +425,252 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {  
-        alert("Hiii" + this.loadTemplate);
+        // let emailTemplateService = this.emailTemplateService;
+        // if (emailTemplateService.emailTemplate != undefined) {
+        //     this.mergeTagsInput['isEvent'] = emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
+        //     var names: any = [];
+        //     let self = this;
+        //     self.loggedInUserId = this.authenticationService.getUserId();
+        //     this.showForms = this.emailTemplateService.emailTemplate.surveyTemplate || this.emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
+
+        //     emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
+        //         (data: any) => {
+        //             names = data;
+        //         },
+        //         error => { this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error); },
+        //         () => this.logger.info("Finished getAvailableNames()"));
+
+        //     emailTemplateService.getAllCompanyProfileImages(self.loggedInUserId).subscribe(
+        //         (data: any) => {
+        //             self.companyProfileImages = data;
+        //         },
+        //         error => { this.logger.error("error in getAllCompanyProfileImages(" + self.loggedInUserId + ")", error); },
+        //         () => this.logger.info("Finished getAllCompanyProfileImages()"));
+
+
+        //     this.authenticationService.getCategoryNamesByUserId(self.loggedInUserId).subscribe(
+        //         (data: any) => {
+        //             self.categoryNames = data.data;
+        //         },
+        //         error => { this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error); },
+        //         () => this.logger.info("Finished getCategoryNamesByUserId()"));
+
+
+        //     var request = function (method, url, data, type, callback) {
+        //         var req = new XMLHttpRequest();
+        //         req.onreadystatechange = function () {
+        //             if (req.readyState === 4 && req.status === 200) {
+        //                 var response = JSON.parse(req.responseText);
+        //                 callback(response);
+        //             }else if (req.readyState === 4 && req.status !== 200) {
+        //                 self.refService.showSweetAlertErrorMessage("Please check your internet connection");
+        //             }
+        //         };
+        //         req.open(method, url, true);
+        //         if (data && type) {
+        //             if (type === 'multipart/form-data') {
+        //                 var formData = new FormData();
+        //                 for (var key in data) { formData.append(key, data[key]); }
+        //                 data = formData;
+        //             }
+        //             else { req.setRequestHeader('Content-type', type); }
+        //         }
+        //         req.send(data);
+        //     };
+
+        //     var title = "Add Template Name";
+        //     var templateName = "";
+        //     if (emailTemplateService.emailTemplate != undefined) {
+        //         var isDefaultTemplate = emailTemplateService.emailTemplate.defaultTemplate;
+        //         if (!isDefaultTemplate) {
+        //             templateName = emailTemplateService.emailTemplate.name;
+        //             title = "Update Template Name";
+        //         }
+        //     } else {
+        //         this.router.navigate(["/home/emailtemplates/select"]);
+        //     }
+
+        //     var save = function (jsonContent: string, htmlContent: string) {
+        //         self.emailTemplate = new EmailTemplate();
+        //         self.emailTemplate.body = htmlContent;
+        //         self.emailTemplate.jsonBody = jsonContent;
+        //         if (emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate) {
+        //             if (jsonContent.indexOf(self.videoGif) < 0) {
+        //                 swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
+        //                 return false;
+        //             }
+        //         }
+        //         if (emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate) {
+        //             if (jsonContent.indexOf(self.coBraningImage) < 0) {
+        //                 swal("", "Whoops! We're unable to save this template because you deleted the co-branding logo. You'll need to select a new email template and start over.", "error");
+        //                 return false;
+        //             }
+        //         }
+        //         if (!isDefaultTemplate) {
+        //             var buttons = $('<div>')
+        //                 .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+        //             var dropDown = '<div class="form-group">';
+        //             dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+        //             dropDown += '<select class="form-control" id="category-dropdown">';
+        //             $.each(self.categoryNames, function (_index: number, category: any) {
+        //                 let categoryId = category.id;
+        //                 if (self.emailTemplateService.emailTemplate.categoryId == categoryId) {
+        //                     dropDown += '<option value=' + category.id + ' selected>' + category.name + '</option>';
+        //                 } else {
+        //                     dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+        //                 }
+        //             });
+        //             dropDown += '</select>';
+        //             dropDown += '</div><br>';
+        //             buttons.append(dropDown);
+
+        //             buttons.append(self.createButton('Save As', function () {
+        //                 self.clickedButtonName = "SAVE_AS";
+        //                 self.saveTemplate();
+        //             })).append(self.createButton('Update', function () {
+        //                 self.clickedButtonName = "UPDATE";
+        //                 self.refService.startLoader(self.httpRequestLoader);
+        //                 swal.close();
+        //                 self.emailTemplate.draft = false;
+        //                 self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
+        //             })).append(self.createButton('Cancel', function () {
+        //                 self.clickedButtonName = "CANCEL";
+        //                 swal.close();
+        //                 console.log('Cancel');
+        //             }));
+
+
+        //             swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false });
+        //         } else {
+        //             var buttons = $('<div>')
+        //                 .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+        //             var dropDown = '<div class="form-group">';
+        //             dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+        //             dropDown += '<select class="form-control" id="category-dropdown">';
+        //             $.each(self.categoryNames, function (_index: number, category: any) {
+        //                 dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+        //             });
+        //             dropDown += '</select>';
+        //             dropDown += '</div><br>';
+        //             buttons.append(dropDown);
+
+        //             buttons.append(self.createButton('Save', function () {
+        //                 self.clickedButtonName = "SAVE";
+        //                 self.saveTemplate();
+        //             })).append(self.createButton('Cancel', function () {
+        //                 self.clickedButtonName = "CANCEL";
+        //                 swal.close();
+        //             }));
+        //             swal({
+        //                 title: title,
+        //                 html: buttons,
+        //                 showConfirmButton: false,
+        //                 showCancelButton: false
+        //             });
+        //         }
+        //         $('#templateNameId').on('input', function (event) {
+        //             let value = $.trim(event.target.value);
+        //             if (value.length > 0) {
+        //                 if (!(emailTemplateService.emailTemplate.defaultTemplate)) {
+        //                     if (names.indexOf(value.toLocaleLowerCase()) > -1 && emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
+        //                         $('#save,#update,#save-as').attr('disabled', 'disabled');
+        //                         $('#templateNameSpanError').text('Duplicate Name');
+        //                     } else if (value.toLocaleLowerCase() == emailTemplateService.emailTemplate.name.toLocaleLowerCase()) {
+        //                         $('#save,#save-as').attr('disabled', 'disabled');
+        //                     }
+        //                     else {
+        //                         $('#templateNameSpanError').empty();
+        //                         $('#save,#update,#save-as').removeAttr('disabled');
+        //                     }
+        //                 } else {
+        //                     if (names.indexOf(value.toLocaleLowerCase()) > -1) {
+        //                         $('#save,#update,#save-as').attr('disabled', 'disabled');
+        //                         $('#templateNameSpanError').text('Duplicate Name');
+        //                     } else {
+        //                         $('#templateNameSpanError').empty();
+        //                         $('#save,#update,#save-as').removeAttr('disabled');
+        //                     }
+        //                 }
+        //             } else {
+        //                 $('#save,#update,#save-as').attr('disabled', 'disabled');
+        //             }
+        //         });
+        //     };//End Of Save Method
+
+
+        //     let mergeTags = [];
+        //     let event = this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
+        //     mergeTags = this.refService.addMergeTags(mergeTags,false,event);
+        //     if (self.refService.companyId != undefined && self.refService.companyId > 0) {
+        //         var beeUserId = "bee-" + self.refService.companyId;
+        //         var roleHash = self.authenticationService.vendorRoleHash;
+        //         var beeConfig = {
+        //             uid: beeUserId,
+        //             container: 'bee-plugin-container',
+        //             autosave: 15,
+        //             //language: 'en-US',
+        //             language: this.authenticationService.beeLanguageCode,
+        //             mergeTags: mergeTags,
+        //             roleHash: roleHash,
+        //             onSave: function (jsonFile, htmlFile) {
+        //                 save(jsonFile, htmlFile);
+        //             },
+        //             onSaveAsTemplate: function (jsonFile) { // + thumbnail?
+        //                 //save('newsletter-template.json', jsonFile);
+        //             },
+        //             onAutoSave: function (jsonFile) { // + thumbnail?
+        //                 console.log(new Date().toISOString() + ' autosaving...');
+        //                 window.localStorage.setItem('newsletter.autosave', jsonFile);
+        //                 self.emailTemplate.jsonBody = jsonFile;
+        //                 self.isMinTimeOver = true;
+        //             },
+        //             onSend: function (htmlFile) {
+        //                 //write your send test function here
+        //                 console.log(htmlFile);
+        //             },
+        //             onError: function (errorMessage) {
+        //                 swal("", "Unable to load bee template:" + errorMessage, "error");
+        //             }
+        //         };
+
+        //         var bee = null;
+        //         request(
+        //             'POST',
+        //             'https://auth.getbee.io/apiauth',
+        //             'grant_type=password&client_id=' + this.authenticationService.clientId + '&client_secret=' + this.authenticationService.clientSecret + '',
+        //             'application/x-www-form-urlencoded',
+        //             function (token: any) {
+        //                 BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
+        //                     bee = beePluginInstance;
+        //                     request(
+        //                         'GET',
+        //                         'https://rsrc.getbee.io/api/templates/m-bee',
+        //                         null,
+        //                         null,
+        //                         function (template: any) {
+        //                             if (emailTemplateService.emailTemplate != undefined) {
+        //                                 var body = emailTemplateService.emailTemplate.jsonBody;
+        //                                 $.each(self.companyProfileImages, function (index, value) {
+        //                                     body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+        //                                 });
+        //                                 body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+        //                                 self.emailTemplate.jsonBody = body;
+        //                                 var jsonBody = JSON.parse(body);
+        //                                 bee.load(jsonBody);
+        //                                 bee.start(jsonBody);
+        //                             } else {
+        //                                 bee.start(template);
+        //                             }                                    
+        //                             self.loadTemplate = true;
+        //                         });
+        //                 });
+        //             });
+        //     } else {
+        //         swal("Please Contact Admin!", "No CompanyId Found", "error");
+        //     }
+        // } else {
+        //     this.location.back();//Navigating to previous router url
+        // }
             
     }
     ngOnDestroy() {
