@@ -790,8 +790,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
     setVendorPartnersData() {
         this.contactListTabName = "Partners";
-        this.emptyContactListMessage = "No data found";
-        this.contactListSelectMessage = "Select the partner list(s) to be used in this campaign";
+        this.emptyContactListMessage = "No records found";
+        this.contactListSelectMessage = "Select the list(s) to be used in this campaign";
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.showContactType = false;
@@ -799,8 +799,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             this.TO_PARTNER_MESSAGE = "To Partner: Share a private page";
             this.THROUGH_PARTNER_MESSAGE = "Through Partner: Share a public page";
         } else {
-            this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
-            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
+            this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your "+this.authenticationService.partnerModule.customName;
+            this.THROUGH_PARTNER_MESSAGE = "Through Partner: Send a campaign that your "+this.authenticationService.partnerModule.customName+" can redistribute";
 
         }
     }
@@ -808,7 +808,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     setOrgAdminReceipients() {
         this.contactListTabName = "P&R";
         this.contactListSelectMessage = "Select the partner(s) / recipient(s) to be used in this campaign";
-        this.emptyContactListMessage = "No data found";
+        this.emptyContactListMessage = "No records found";
         this.showContactType = true;
         this.contactsPagination.filterValue = false;
         this.contactsPagination.filterKey = null;
@@ -816,8 +816,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             this.TO_PARTNER_MESSAGE = "To Recipient: Share a private page";
             this.THROUGH_PARTNER_MESSAGE = "Through Partner: Share a public page";
         } else {
-            this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
-            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
+            this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your "+this.authenticationService.partnerModule.customName+"/ Contacts";
+            this.THROUGH_PARTNER_MESSAGE = "Through Partner: Send a campaign that your "+this.authenticationService.partnerModule.customName+" can redistribute";
 
         }
     }
