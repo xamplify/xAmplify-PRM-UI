@@ -2890,10 +2890,10 @@ checkParentAndRedistributedCampaignAccess(){
     let headers = [];
 
     if(this.campaignType=="REGULAR"){
-      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
+      headers = ['Campaign Name', 'Campaign Type', 'No of List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
                  'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','HardBounce', 'SoftBounce','Unsubscribe'];
     }else{
-      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
+      headers = ['Campaign Name', 'Campaign Type', 'No of List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
                  'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','Views','HardBounce', 'SoftBounce','Unsubscribe'];
     }
 

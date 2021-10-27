@@ -40,7 +40,7 @@
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
        <!--  <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b> -->
         <b *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</b>
-        <b *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify Partners is OFF)</b>
+        <b *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify {{authenticationService?.partnersModule?.customName}} is OFF)</b>
       </li>
       <li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
@@ -75,7 +75,7 @@
           <div class="alert alert-danger alert-dismissible" *ngIf="contactListDeleteError">
             <a (click)="contactListDeleteError = false" class="close" data-dismiss="alert"
               aria-label="close">&times;</a>
-            The contact list(s) associated with this campaign has been deleted.
+            The  list(s) associated with this campaign has been deleted.
           </div>
           <div class="alert alert-danger alert-dismissible cancel-alert-class" *ngIf="isCancelledEvent">
             <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -266,16 +266,15 @@
               <div class="camp-details">
                 <div class="camp-title"
                   *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor() && !isChannelCampaign); else other">
-                  Contact List Info</div>
+                  List Info</div>
                 <ng-template #other>
-                  <div class="camp-title">Partners List Info</div>
+                  <div class="camp-title">List Info</div>
                 </ng-template>
                 <div class="camp-number">
                   <strong class="m0">{{campaingContactLists?.length}}
                     <span
-                      *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else partnerlist">Contact
-                      Lists</span>
-                    <ng-template #partnerlist><span>Partner Lists</span></ng-template>
+                      *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else partnerlist">List(s)</span>
+                    <ng-template #partnerlist><span>List(s)</span></ng-template>
                   </strong>
                 </div>
                 <div class="camp-desc" >
@@ -456,7 +455,7 @@
                       <tbody>
                         <tr (click)="getPartnerCampaingRsvpDetails()">
                           <td>
-                            Your Partners
+                            Your {{authenticationService?.partnerModule?.customName}}
                           </td>
                           <td>
                             <h6>{{campaignReport.partnersTotalInvitiesCount}}</h6>
@@ -827,7 +826,7 @@
                       <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
                       <span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
                       <span *ngIf="campaignType==='REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
-                      <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">PARTNER REDISTRIBUTED CAMPAIGN
+                      <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">REDISTRIBUTED CAMPAIGN
                         ANALYTICS</span>
                       <span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
                     </span>
@@ -2607,9 +2606,8 @@
           (click)="clearPaginationValues()"><i class="fa fa-times"></i></button>
         <h4 class="modal-title" id="show_contact-list-info">
           <span
-            *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else other">Contact
-            List Info</span>
-          <ng-template #other><span>Partners List Info</span></ng-template>
+            *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else other">List Info</span>
+          <ng-template #other><span>List Info</span></ng-template>
         </h4>
       </div>
       <div class="modal-body">
@@ -2930,7 +2928,7 @@
               <span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
                 <span style="color:#fff!important;"><i aria-hidden="true" class="fa fa-user-secret"
                     style="font-size:20px!important" id="leads-info-font-size"></i>&nbsp;
-                  YOUR PARTNER LEAD DETAILS
+                    LEAD DETAILS
                   <span><b>( Total Lead count # {{campaignReport.yesPartnerLeadCount}}
                       <ng-container
                         *ngIf="campaignReport.yesPartnerLeadCount!=campaignReport.partnerLeadAdditionalCount">

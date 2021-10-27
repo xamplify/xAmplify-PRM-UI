@@ -1299,17 +1299,16 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }
       if(isOrgAdmin){
           if(this.campaign.channelCampaign){
-              this.contactType = "partner(s)";
-
-              this.tableHeader = "Partner Details";
+              this.contactType = this.authenticationService.partnerModule.customName;
+              this.tableHeader = this.authenticationService.partnerModule.customName+" Details";
               this.showContactType = false;
           }else{
               if(this.campaign.nurtureCampaign){
-                  this.contactType = " recipient(s)";
-                  this.tableHeader = "Recipient Details";
+                  this.contactType = " Recipients";
+                  this.tableHeader = "Recipients Details";
               }else{
-                  this.contactType = " partner / recipient (s)";
-                  this.tableHeader = "Partner/Recipient Details";
+                  this.contactType = this.authenticationService.partnerModule.customName+" / Recipients";
+                  this.tableHeader =  this.authenticationService.partnerModule.customName+" / Recipients Details";
 
               }
               this.showContactType = true;
@@ -1318,11 +1317,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }else if(isVendor|| this.authenticationService.isAddedByVendor){
 
         if(this.campaign.nurtureCampaign){
-          this.contactType = " recipient(s)";
-          this.tableHeader = "Recipient Details";
+          this.contactType = " Recipient(s)";
+          this.tableHeader = "Recipients Details";
         }else{
-          this.contactType = "partner(s)";
-          this.tableHeader = "Partner Details";
+          this.contactType = this.authenticationService.partnerModule.customName;
+          this.tableHeader = this.authenticationService.partnerModule.customName+" Details";
           this.showContactType = false;
         }
          
