@@ -190,4 +190,15 @@ cursor: default;
   max-width: 175px !important;
 }
 
+@media screen and (max-width:600px){
+  .mView{
+    bottom:4px;
+  }
+  .mRight{
+    right:23px!important;
+  }
+  .mHeight{
+    height:255px!important;
+  }
+}
 
