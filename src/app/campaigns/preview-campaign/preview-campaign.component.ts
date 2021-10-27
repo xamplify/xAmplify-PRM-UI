@@ -1121,6 +1121,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     ngOnDestroy(){
       $('#usersModal').modal('hide');
       $("#email_template_preivew").modal('hide');
+      $("#myModal").modal('hide');
+      $("#contactlist-preivew").modal('hide');
+      $("#calendarModal").modal('hide');
+      $("#saveAsModalcalendar").modal('hide');
+      $("#show-campaign-popup").modal('hide');
+
     }
 
     /*************************************************************Contact List***************************************************************************************/

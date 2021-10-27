@@ -28,6 +28,9 @@ export class Properties {
 
 	CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Your contact list has been synchronized successfully.";
 	CONTACT_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Contact List.";
+	
+	LEAD_LIST_SYNCHRONIZATION_SUCCESS = "Your lead list has been synchronized successfully.";
+    LEAD_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Lead List.";
 
 	CONTACTS_CREATE_SUCCESS = "Your contacts list have been created successfully.";
 	CONTACTS_CREATE_ERROR = "An error occured while creating your Contacts";
@@ -202,5 +205,8 @@ export class Properties {
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 
 	teamMemberGroups = 'Team Member Groups';
+
+	activeMasterPartnerList = 'Active Master Partner List';
+	inActiveMasterPartnerList= 'Inactive Master Partner List';
 }
 

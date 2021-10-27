@@ -585,3 +585,13 @@ label {
 .mcss{  padding-right: 0;}
 @media only screen and (max-width:600px) { .mcss{  padding: 0;} }
 .override-actions{ margin: 0 auto; display: table;float: none !important; }
+
+@media only screen and (max-width:600px){
+    .mPageBar{
+      margin-top: -6px;
+      margin-bottom: 10px;
+    }
+    .mSort{
+		top:-8px;
+	}
+  }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -16,7 +16,7 @@ declare var swal, $: any;
   styleUrls: ['./add-tags-util.component.css'],
   providers: [HttpRequestLoader, Pagination]
 })
-export class AddTagsUtilComponent implements OnInit {
+export class AddTagsUtilComponent implements OnInit, OnDestroy {
 
   tag: Tag = new Tag();
   //isAddTag = false;
@@ -62,6 +62,10 @@ export class AddTagsUtilComponent implements OnInit {
       }
     }
     $('#addTagModalPopup').modal('show');
+  }
+
+  ngOnDestroy() {
+    $('#addTagModalPopup').modal('hide');
   }
 
   closeTagModal() {

@@ -90,6 +90,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.selectedFormTypeIndex = 0;
         this.pagination.filterKey = "All";
         if (this.router.url.endsWith('manage/')) {
+            this.onlyForms = this.router.url.indexOf('/lf')<0;
             this.setViewType('Folder-Grid');
         } else {
             this.campaignId = this.route.snapshot.params['alias'];
@@ -165,8 +166,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                 if (this.statusCode == 200) {
                     pagination.totalRecords = data.totalRecords;
                     this.sortOption.totalRecords = data.totalRecords;
-                    $.each(data.forms, function (index, form) {
+                    $.each(data.forms, function (_index, form:any) {
                         form.createdDateString = new Date(form.createdDateString);
+                        if(form.updatedString!=undefined && $.trim(form.updatedString).length>0){
+                            form.updatedDateString = new Date(form.updatedDateString);
+                        }
                     });
                     pagination = this.pagerService.getPagedItems(pagination, data.forms);
                 }
@@ -337,13 +341,14 @@ export class ManageFormComponent implements OnInit, OnDestroy {
       }
 
 
-    /**************Edit Form***********/
+    /**************Destroy***********/
     ngOnDestroy() {
         this.referenceService.isCreated = false;
         this.referenceService.isUpdated = false;
         this.message = "";
         this.form = new Form();
         $('#form-preview-modal').modal('hide');
+        $('#form-url-modal').modal('hide');
         swal.close();
     }
 
@@ -352,7 +357,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.router.navigate(['/home/forms/' + form.alias + '/' + this.campaignId + '/analytics']);
         } else if (this.pagination.landingPageCampaignForm) {
             if (this.partnerId > 0) {
-                this.router.navigate(['/home/forms/' + form.alias + '/' + this.landingPageCampaignId + '/' + this.partnerId + '/analytics']);
+                this.router.navigate(['/home/forms/' + form.alias + '/' + this.landingPageCampaignId + '/' + this.partnerId + '/analytics/cfa']);
             } else {
                 this.router.navigate(['/home/forms/' + form.alias + '/' + this.landingPageCampaignId + '/analytics']);
             }

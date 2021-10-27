@@ -163,3 +163,13 @@ margin: 0 auto;
 .clhidden{
   display: none !important;
 }
+
+
+@media only screen and (max-width: 600px){
+  .btnVendor{
+    left: -18px;
+  }
+  .btnShare{
+    left: -20px;
+  }
+}

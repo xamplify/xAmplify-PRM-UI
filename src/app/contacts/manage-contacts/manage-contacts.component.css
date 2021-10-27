@@ -143,3 +143,16 @@ h3 {
 .child-table-xamp {
     background-color: #f1f1f1;
 }
+
+.mix-filter {
+    margin: 5px;
+}
+
+.mix-filter li {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.contact-filter-selected{
+	background-color: #6dcff6;
+}

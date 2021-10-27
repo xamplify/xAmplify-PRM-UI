@@ -187,3 +187,24 @@ background: #ffffff;
   right: -18px;
   }
   .override-actions{ margin: 0 auto; display: table;float: none !important; }
+
+  @media only screen and (max-width:600px){
+    .mPageBar{
+      margin-top: -6px;
+      margin-bottom: 10px;
+    }
+    .mList{
+      top: -10px;
+    }
+    .mSort{
+      top: -4px;
+      left: -5px;
+    }
+    .mSearch{
+      top: -4px;
+      left: -13px;
+    }
+    .mSrchWdth{
+      width: 107%;
+    }
+  }

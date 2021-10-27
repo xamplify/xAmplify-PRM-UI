@@ -219,7 +219,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showExpandButton = false;
 	showShareListPopup : boolean = false;
 	isFormList = false;
-	
+	selectedFilterIndex = 0;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService) {
@@ -238,6 +238,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		
 
         if (currentUrl.includes('home/sharedleads')) {
+        	this.module = 'sharedleads';
             this.isPartner = false;
             this.assignLeads = false;
             this.sharedLeads = true;
@@ -245,6 +246,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         } else if (currentUrl.includes('home/assignleads')) {
             this.isPartner = false;
             this.assignLeads = true;
+            this.module = 'leads';
             this.checkingContactTypeName = "Lead"
             this.sortOptions.push({ 'name': 'Assigned date (ASC)', 'value': 'assignedTime-ASC', 'for': 'shareLeadsList' });
             this.sortOptions.push({ 'name': 'Assigned date (DESC)', 'value': 'assignedTime-DESC', 'for': 'shareLeadsList' });
@@ -254,6 +256,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.checkingContactTypeName = "Contact"
         } else {
             this.isPartner = true;
+            this.module = 'partners';
             this.checkingContactTypeName = "Partner"
             this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
@@ -347,7 +350,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     loadContactLists(pagination: Pagination) {
-   
         if (this.assignLeads) {
         	this.loadAssignedLeadsLists(pagination);
         } else {
@@ -355,7 +357,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.campaignLoader = true;
                 this.referenceService.loading(this.httpRequestLoader, true);
                 this.pagination.filterKey = 'isPartnerUserList';
-                this.pagination.filterValue = this.isPartner;
+				this.pagination.filterValue = this.isPartner;
+				if(this.checkingContactTypeName=="Contact"){
+					if(this.selectedFilterIndex==0){
+						pagination.filterBy = "MY-CONTACTS";
+					}else if(this.selectedFilterIndex==1){
+						pagination.filterBy = "FORM-LEADS";
+					}else if(this.selectedFilterIndex==2){
+						pagination.filterBy = "ALL";
+					}
+				}
                 if(this.sharedLeads){
                     pagination.sharedLeads = this.sharedLeads;
                     pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
@@ -604,69 +615,59 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		window.URL.revokeObjectURL(url);
 	}
 
-	synchronizeContactList(contactListId: number, socialNetwork: string) {
-		if (socialNetwork == 'GOOGLE') {
-			this.googleContactsSynchronizationAuthentication(contactListId, socialNetwork);
-			this.contactListIdForSyncLocal = contactListId;
-			this.socialNetworkForSyncLocal = socialNetwork;
+	synchronizeContactList(contactList: ContactList) {
+		this.socialContact.contactType = contactList.contactType;
+		this.socialContact.contactListId = contactList.id;
+		this.socialContact.socialNetwork = contactList.socialNetwork;
+		this.socialContact.alias = contactList.alias;
+		
+		if (contactList.socialNetwork == 'GOOGLE') {
+			this.contactListIdForSyncLocal = contactList.id;
+            this.socialNetworkForSyncLocal = contactList.socialNetwork;
+			this.googleContactsSynchronizationAuthentication(this.socialContact);
 		}
-		else if (socialNetwork == 'SALESFORCE') {
-			this.salesforceContactsSynchronizationAuthentication(contactListId, socialNetwork);
-			this.contactListIdForSyncLocal = contactListId;
-			this.socialNetworkForSyncLocal = socialNetwork;
+		else if (contactList.socialNetwork == 'SALESFORCE') {
+			this.contactListIdForSyncLocal = contactList.id;
+            this.socialNetworkForSyncLocal = contactList.socialNetwork;
+			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
 		}
 		
-		else if (socialNetwork == 'HUBSPOT') {
-			this.syncronizeContactList(contactListId, socialNetwork);
-			this.contactListIdForSyncLocal = contactListId;
-			this.socialNetworkForSyncLocal = socialNetwork;
-			
+		else if (contactList.socialNetwork == 'HUBSPOT') {
+			this.contactListIdForSyncLocal = contactList.id;
+            this.socialNetworkForSyncLocal = contactList.socialNetwork;
+			this.syncronizeContactList(this.socialContact);
 		}
-		else if (socialNetwork == 'ZOHO') {
-			this.zohoContactsSynchronizationAuthentication(contactListId, socialNetwork);
+		else if (contactList.socialNetwork == 'ZOHO') {
+			this.contactListIdForSyncLocal = contactList.id;
+            this.socialNetworkForSyncLocal = contactList.socialNetwork;
+			this.zohoContactsSynchronizationAuthentication(this.socialContact);
 		}
 	}
 
 
-		googleContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+		googleContactsSynchronizationAuthentication(socialContact : SocialContact) {
 		try {
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-			if (this.contactLists != undefined) {
-				for (let i = 0; i < this.contactLists.length; i++) {
-					if (this.contactLists[i].id == contactListId) {
-						this.contactType = this.contactLists[i].contactType;
-					}
-				}
-			}
-			this.socialContact.contactType = this.contactType;
-			this.socialContact.socialNetwork = socialNetwork;
 			let providerName = 'google';
-			let currentModule = "";
-			if (this.assignLeads) {
-				currentModule = 'leads'
-			} else {
-				currentModule = 'contacts'
-			}
-			this.contactService.googleLogin(currentModule)
+			this.contactService.googleLogin(this.module)
 				.subscribe(
 					data => {
-						this.storeLogin = data;
 						console.log(data);
-						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-							console.log("AddContactComponent googleContacts() Authentication Success");
-							this.syncronizeContactList(contactListId, socialNetwork);
+						if (data.statusCode==200) {
+							console.log("ManageContactComponent googleContacts() Authentication Success");
+							this.syncronizeContactList(socialContact);
 						} else {
 							let currentUser = localStorage.getItem('currentUser');
 							let vanityUserId = JSON.parse(currentUser)['userId'];
 							if (this.loggedInThroughVanityUrl)
 							{
-								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + currentModule;
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + this.module;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 							} else 
 							{
-								window.location.href = "" + data.redirectUrl;
+								this.setLValuesToLocalStorageAndReditectToLoginPage(socialContact, data);
 							}
 						}
 					},
@@ -686,24 +687,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 
 
-	syncronizeContactList(contactListId: number, socialNetwork: string) {
+	syncronizeContactList(socialContact : SocialContact) {
 		try {
+			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 			this.resetResponse();
-			this.socialContact.socialNetwork = socialNetwork;
 			this.xtremandLogger.info("contactsSyncronize() socialNetWork" + this.socialContact.socialNetwork);
-			this.xtremandLogger.info("contactsSyncronize() ContactListId" + contactListId);
-			this.contactService.contactListSynchronization(contactListId, this.socialContact)
+			this.contactService.contactListSynchronization(socialContact.contactListId, socialContact)
 				.subscribe(
 					(data: any) => {
 						swal.close();
 						if (data.statusCode == 402) {
 							this.customResponse = new CustomResponse('INFO', data.message, true);
 						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true);
+							let successMessage = this.assignLeads?this.properties.LEAD_LIST_SYNCHRONIZATION_SUCCESS:this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS;
+							this.customResponse = new CustomResponse('SUCCESS', successMessage, true);
 							this.loadContactLists(this.pagination);
 							this.contactsCount();
 						}
-
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -715,99 +715,63 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.xtremandLogger.error(error, "ManageContactsComponent", "sychronizationList()");
 		}
 	}
-
-
-
 	
-	zohoContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+	zohoContactsSynchronizationAuthentication(socialContact : SocialContact) {
 		try {
 			this.resetResponse();
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-			if (this.contactLists != undefined) {
-				for (let i = 0; i < this.contactLists.length; i++) {
-					if (this.contactLists[i].id == contactListId) {
-						this.contactType = this.contactLists[i].contactType;
-					}
-				}
-			}
-			this.socialContact.socialNetwork = "ZOHO";
-			this.socialContact.contactType = this.contactType;
-			this.contactService.checkingZohoSyncAuthentication()
+			let providerName = 'zoho';
+			this.contactService.checkingZohoAuthentication(this.module)
 				.subscribe(
 					(data: any) => {
-						if (data.statusCode == 402)
-						{
-							swal.close();
-							this.iszohoAccessTokenExpired = true;
-							this.zohoExpiredAccessTokenMessage = data.message;
-							this.contactListIdZoho = contactListId;
-							this.contactListIdZoho = localStorage.setItem("contactListIdZoho", this.contactListIdZoho);
-							this.socialNetworkZoho = localStorage.setItem("socialNetworkZoho", socialNetwork);
-						}
-						else
-						{
-							this.syncronizeContactList(contactListId, socialNetwork);
-						}
+						  if (data.statusCode==200) {
+	                            this.syncronizeContactList(socialContact);
+	                        }else {
+	                            let currentUser = localStorage.getItem('currentUser');
+	                            let vanityUserId = JSON.parse(currentUser)['userId'];
+	                            if (this.loggedInThroughVanityUrl)
+	                            {
+	                                let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + this.module;
+	                                var x = screen.width / 2 - 700 / 2;
+	                                var y = screen.height / 2 - 450 / 2;
+	                                window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+	                            } else 
+	                            {
+	                            	this.setLValuesToLocalStorageAndReditectToLoginPage(socialContact, data);
+	                            }
+	                        }
 					},
 					(error: any) => {
-						var body = error['_body'];
-						if (body != "")
-						{
-							var response = JSON.parse(body);
-							if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!") {
-								this.customResponse = new CustomResponse('INFO', response.message, true);
-								//this.responseMessage = ['INFO', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!','show'];
-							} else {
-								this.xtremandLogger.errorPage(error);
-							}
-						} else {
-							this.xtremandLogger.errorPage(error);
-						}
-						console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+						this.xtremandLogger.error("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
 					},
-					() => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
+					() => this.xtremandLogger.info("ManageContactsComponent zohoContactsSynchronizationAuthentication() finished")
 				)
 		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "SynchronizationZohoList()");
+			this.xtremandLogger.error(error, "ManageContactsComponent", "zohoContactsSynchronizationAuthentication()");
 		}
 	}
 
-	salesforceContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+	salesforceContactsSynchronizationAuthentication(socialContact : SocialContact) {
 		try {
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 			this.xtremandLogger.info("socialContacts" + this.socialContact.socialNetwork);
-			for (let i = 0; i < this.contactLists.length; i++) {
-				if (this.contactLists[i].id == contactListId) {
-					this.alias = this.contactLists[i].alias;
-					this.contactType = this.contactLists[i].contactType;
-				}
-			}
-			this.socialContact.contactType = this.contactType;
-			this.socialContact.socialNetwork = socialNetwork;
-			let currentModule = "";
-			if (this.assignLeads) {
-				currentModule = 'leads'
-			} else {
-				currentModule = 'contacts'
-			}
 			let providerName = 'salesforce';
-			this.contactService.salesforceLogin(currentModule)
+			this.contactService.salesforceLogin(this.module)
 				.subscribe(
 					data => {
-						this.storeLogin = data;
-						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-							this.syncronizeContactList(contactListId, socialNetwork);
+						if (data.statusCode==200) {
+							this.syncronizeContactList(socialContact);
 						} else {
 							let currentUser = localStorage.getItem('currentUser');
 							let vanityUserId = JSON.parse(currentUser)['userId'];
 							if (this.loggedInThroughVanityUrl)
 							{
-								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + currentModule;
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.data.userAlias + "/" + this.module;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 							} else {
-								window.location.href = "" + data.redirectUrl;
+								this.setLValuesToLocalStorageAndReditectToLoginPage(socialContact, data);
 							}
 						}
 					},
@@ -826,36 +790,22 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 	
 	
-	hubSpotContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+	hubSpotContactsSynchronizationAuthentication(socialContact : SocialContact) {
 		try {
 			swal({ title: 'Synchronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 			this.xtremandLogger.info("socialContacts" + this.socialContact.socialNetwork);
-			for (let i = 0; i < this.contactLists.length; i++) {
-				if (this.contactLists[i].id == contactListId) {
-					this.alias = this.contactLists[i].alias;
-					this.contactType = this.contactLists[i].contactType;
-				}
-			}
-			this.socialContact.contactType = this.contactType;
-			this.socialContact.socialNetwork = socialNetwork;
-			let currentModule = "";
-			if (this.assignLeads) {
-				currentModule = 'leads'
-			} else {
-				currentModule = 'contacts'
-			}
 			let providerName = 'hubSpot';
-			this.contactService.hubSpotLogin(currentModule)
+			this.contactService.hubSpotLogin(this.module)
 				.subscribe(
 					data => {
 						this.storeLogin = data;
 						if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-							this.syncronizeContactList(contactListId, socialNetwork);
+							this.syncronizeContactList(socialContact);
 						} else {
 							let currentUser = localStorage.getItem('currentUser');
 							let vanityUserId = JSON.parse(currentUser)['userId'];
 							if (this.loggedInThroughVanityUrl) {
-								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + currentModule;
+								let url = this.authenticationService.APP_URL + "syn/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + this.module;
 								var x = screen.width / 2 - 700 / 2;
 								var y = screen.height / 2 - 450 / 2;
 								window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
@@ -1192,18 +1142,29 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         $.each(this.allselectedUsers, function(index, value: User) {
                             value.legalBasis = selectedLegalBasisOptions;
                         });
-                        this.contactService.saveContactList(this.allselectedUsers, listName, this.isPartner, isPublic)
+                this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, listName, this.isPartner, isPublic,
+                                "CONTACT", "MANUAL", this.alias, false);
+                        this.contactService.saveContactList(this.userUserListWrapper)
                             .subscribe(
                             data => {
                                 data = data;
-                                this.contactCountLoad = true;
-                                this.navigateToManageContacts();
-                                this.allselectedUsers.length = 0;
-
-                                if (this.isPartner) {
-                                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_CREATE_SUCCESS, true);
+                                this.loading = false;
+                                if (data.access) {
+                                    if (data.statusCode == 401) {
+                                        this.saveAsError = data.message;
+                                    } else if (data.statusCode == 200) {
+                                        data = data;
+                                        this.contactCountLoad = true;
+                                        this.navigateToManageContacts();
+                                        this.allselectedUsers.length = 0;
+                                        if (this.isPartner) {
+                                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_CREATE_SUCCESS, true);
+                                        } else {
+                                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
+                                        }
+                                    }
                                 } else {
-                                    this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
+                                    this.authenticationService.forceToLogout();
                                 }
                             },
 
@@ -1247,7 +1208,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         value.legalBasis = selectedLegalBasisOptions;
                     });
                     this.contactListObject.name = listName;
-                    this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
+                    this.contactListObject.contactType = "CONTACT";
                     this.contactListObject.socialNetwork = "MANUAL";
                     this.contactListObject.publicList = true;
                     this.userUserListWrapper.users = this.allselectedUsers;
@@ -1593,10 +1554,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	search(searchType: string) {
 		this.searchContactType = searchType;
+		this.searchKey = $.trim(this.searchKey);
 		try {
 			this.resetResponse();
-			if (searchType == 'contactList') {		
-				if (this.searchKey != "") {
+			if (searchType == 'contactList') {	
+				if (this.searchKey != undefined && this.searchKey != null && this.searchKey != "") {
 					this.showExpandButton = true;
 					this.isListView = true;
 				} else {
@@ -1919,14 +1881,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-    saveAsNewList(contactSelectedListId: number, contactListName: string, isPublic: boolean) {
+    saveAsNewList( contactList: ContactList){
         try {
             this.saveAsTypeList = 'manage-contacts';
-            this.saveAsListName = contactListName + '_copy';
-            this.saveAsContactListId = contactSelectedListId;
-            this.saveAsIsPublic = isPublic;
-            this.loadContactListsNames();
+            this.saveAsListName = contactList.name + '_copy';
             this.saveAsError = '';
+            this.contactListObject = new ContactList;
+            this.contactListObject.id = contactList.id;
+            this.contactListObject.isPartnerUserList = contactList.isPartnerUserList;
+            this.contactListObject.publicList = contactList.publicList;
+            this.contactListObject.contactType = contactList.contactType;
+            this.contactListObject.socialNetwork = contactList.socialNetwork;
+            this.contactListObject.alias = contactList.alias;
+            this.contactListObject.synchronisedList = contactList.synchronisedList;
+            this.contactListObject.moduleName = this.getModuleName();
+            if (this.module === 'contacts' || this.module === 'partners'){
+            	this.loadContactListsNames();
+            }
             $('#saveAsModal').modal('show');
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsNewList()");
@@ -1942,7 +1913,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     hasSaveAsAccess() {
-        if (this.assignLeads) {
+       if (this.assignLeads) {
             this.saveAsLeadsInputChecking();
         } else {
             try {
@@ -1958,7 +1929,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                             this.authenticationService.forceToLogout();
                         }
                     }
-                    );
+                   );
             } catch (error) {
                 this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsNewList()");
             }
@@ -1971,15 +1942,20 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 const name = this.saveAsListName;
                 const self = this;
                 this.isValidLegalOptions = true;
-                const inputName = name.toLowerCase().replace(/\s/g, '');
+				const inputName = $.trim(name.toLowerCase().replace(/\s/g, ''));
+				const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+				const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
                 if ($.inArray(inputName, self.names) > -1) {
                     this.saveAsError = 'This list name is already taken.';
-                } else {
+				}else if(inputName==activeMasterPartnerList || inputName==inActiveMasterPartnerList){
+					this.saveAsError = 'This list name cannot be added';
+				}else {
                     if (name !== "" && name.length < 250) {
                         this.saveAsError = '';
                         this.validateLegalBasisOptions();
                         if (this.saveAsTypeList === 'manage-contacts') {
-                            this.saveExistingContactList(this.saveAsContactListId, this.saveAsListName, this.saveAsIsPublic);
+                        	this.contactListObject.name = this.saveAsListName;
+                            this.saveExistingContactList();
                             this.cleareDefaultConditions();
                         }
                         else if (this.saveAsTypeList === 'manage-all-contacts') {
@@ -2000,45 +1976,48 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		$('#saveAsModal').modal('hide');
 		this.saveAsListName = undefined;
 		this.saveAsTypeList = 'manage-contacts';
+		this.model.isPublic = true;
+		this.contactListObject = new ContactList;
 	}
 
     saveAsLeadsInputChecking() {
         try {
-            const name = this.saveAsListName;
+            const name =  $.trim(this.saveAsListName.toLowerCase().replace(/\s/g, ''));
             const self = this;
             this.isValidLegalOptions = true;
-            const inputName = name.toLowerCase().replace(/\s/g, '');
-            if (name !== "" && name.length < 250) {
+			const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+			const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
+			if(name==activeMasterPartnerList || name==inActiveMasterPartnerList){
+				this.saveAsError = 'This list name cannot be added';
+			}else  if (name !== "" && name.length < 250) {
                 this.saveAsError = '';
                 this.validateLegalBasisOptions();
                 if (this.saveAsTypeList === 'manage-contacts') {
-                    this.saveAsNewLeadsList(this.saveAsContactListId, this.saveAsListName);
+                	this.contactListObject.name = this.saveAsListName;
+                    this.saveAsNewLeadsList();
                 }
                 else if (this.saveAsTypeList === 'manage-all-contacts') {
                     if (this.isValidLegalOptions) {
                         this.saveSelectedUsers(name, this.selectedLegalBasisOptions, this.model.isPublic);
                     }
                 }
-            }
-            else if (name == "") { this.saveAsError = 'List Name is Required.'; }
-            else { this.saveAsError = 'You have exceeded 250 characters!'; }
+            } else if (name == "") { this.saveAsError = 'List Name is Required.'; }
+             else { this.saveAsError = 'You have exceeded 250 characters!'; }
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAs()");
         }
 	}
 
-    saveAsNewLeadsList(contactSelectedListId: number, contactListName: string) {
+    saveAsNewLeadsList() {
     	this.loading = true;
 
-    	let contactListObject = new ContactList;
+    	/*let contactListObject = new ContactList;
     	contactListObject.name = contactListName;
     	contactListObject.id = contactSelectedListId;
     	contactListObject.isPartnerUserList = false;
-    	contactListObject.contactType = 'ASSIGNED_LEADS_LIST';
-    	contactListObject.publicList = true;
-    	contactListObject.socialNetwork = 'MANUAL';
+    	contactListObject.publicList = true;*/
 
-        this.contactService.saveAsSharedLeadsList(contactListObject)
+        this.contactService.saveAsNewList(this.contactListObject)
             .subscribe(
             data => {
                 data = data;
@@ -2047,6 +2026,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     if (data.statusCode == 401) {
                     	this.saveAsError = data.message;
                     } else if (data.statusCode == 200) {
+                    	$('#saveAsModal').modal('hide');
                     	this.cleareDefaultConditions();
                         this.customResponse = new CustomResponse('SUCCESS', data.message, true);
                         this.loadContactLists(this.pagination);
@@ -2064,47 +2044,33 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             )
     }
 
-	saveExistingContactList(contactSelectedListId: number, contactListName: string, isPublic: boolean) {
+	saveExistingContactList() {
 		try {
-			this.gettingAllUserspagination.maxResults = 500000;
-			this.gettingAllUserspagination.pageIndex = 1;
-			this.contactService.loadUsersOfContactList(contactSelectedListId, this.gettingAllUserspagination)
-				.subscribe(
-					(data: any) => {
-						console.log(data.listOfUsers);
-						this.contactListUsers = data.listOfUsers;
-						$('#saveAsModal').modal('hide');
-						this.saveAsListName = undefined;
-						this.saveAsTypeList = 'manage-contacts'
-					},
-					error => this.xtremandLogger.error(error),
-					() => {
-						this.xtremandLogger.info("MangeContactsComponent loadUsersOfContactList() finished")
-						this.saveListAsNewList(contactListName, isPublic);
-					}
-				)
+			$('#saveAsModal').modal('hide');
+            this.saveAsListName = undefined;
+            this.saveAsTypeList = 'manage-contacts';
+            this.saveListAsNewList();
 		} catch (error) {
 			this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsExistingList()");
 		}
 	}
 
-	saveListAsNewList(contactListName: string, isPublic: boolean) {
+	saveListAsNewList() {
 		try {
-			if (this.isPartner) {
-				isPublic = true;
-			}
-
-
-			this.contactService.saveContactList(this.contactListUsers, contactListName, this.isPartner, isPublic)
+			this.contactService.saveAsNewList(this.contactListObject)
 				.subscribe(
 					data => {
-						data = data;
-						if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_SAVE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SAVE_SUCCESS, true);
-						}
-						this.loadContactLists(this.pagination);
+                        if (data.statusCode == 401) {
+                            this.saveAsError = data.message;
+                        } else if (data.statusCode == 200) {
+                            data = data;
+		                          if (this.isPartner) {
+		                              this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_SAVE_SUCCESS, true);
+		                          } else {
+		                              this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SAVE_SUCCESS, true);
+		                          }
+		                          this.loadContactLists(this.pagination);
+		                    }
 					},
 					(error: any) => {
 						if (error._body.includes("email addresses in your contact list that aren't formatted properly")) {
@@ -2276,23 +2242,29 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	ngAfterViewChecked() {
 
-		let tempIsZohoSynchronization = localStorage.getItem('isZohoSynchronization');
+		let tempIsZohoSynchronization = localStorage.getItem('isZohoAuth');
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+		let tempValidationMessage : string = '';
+        tempValidationMessage = localStorage.getItem('validationMessage');
 
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isZohoAuth');
+		localStorage.removeItem('validationMessage');
 
+		this.socialContact.contactListId = this.contactListIdForSyncLocal;
+        this.socialContact.socialNetwork = this.socialNetworkForSyncLocal;
 		if (tempCheckGoogleAuth == 'yes' && !this.isPartner) {
-			this.googleContactsSynchronizationAuthentication(this.contactListIdForSyncLocal, this.socialNetworkForSyncLocal);
+			
+			this.googleContactsSynchronizationAuthentication(this.socialContact);
 			tempCheckGoogleAuth = 'no';
 		}
 
 		else if (tempCheckSalesForceAuth == 'yes' && !this.isPartner) {
-			this.salesforceContactsSynchronizationAuthentication(this.contactListIdForSyncLocal, this.socialNetworkForSyncLocal);
+			this.syncronizeContactList( this.socialContact);
 			tempCheckSalesForceAuth = 'no';
 
 		}
@@ -2302,15 +2274,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 		
 		else if (tempIsZohoSynchronization == 'yes' && !this.isPartner) {
-			this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
-			this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
-			if (!this.isCalledZohoSycronization && this.contactListIdZoho != null) {
-				this.isCalledZohoSycronization = true;
-				this.iszohoAccessTokenExpired = false;
-				this.zohoContactsSynchronizationAuthentication(this.contactListIdZoho, this.socialNetworkZoho);
-				tempIsZohoSynchronization = 'no';
-			}
-		}
+			this.syncronizeContactList( this.socialContact);
+            tempCheckSalesForceAuth = 'no';
+		}else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
+			  swal.close();
+			  this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
+	        }
 	}
 
 	ngOnInit() {
@@ -2319,14 +2288,68 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	
 	callInitMethods(){
 	      try {
+
+	    	    /*if (this.loggedInThroughVanityUrl){
+	                if (this.socialNetworkForSyncLocal == 'google'
+	                    || this.socialNetworkForSyncLocal == 'salesforce'
+	                    || this.socialNetworkForSyncLocal == 'zoho') {
+	                    let message: string = '';
+	                    message = localStorage.getItem('oauthCallbackValidationMessage');
+	                    localStorage.removeItem('oauthCallbackValidationMessage');
+	                    if (message != null && message.length > 0) {
+	                        this.customResponse = new CustomResponse('ERROR', message, true);
+	                    } else if (this.contactService.oauthCallbackMessage != null && this.contactService.oauthCallbackMessage.length > 0) {
+	                        message = this.contactService.oauthCallbackMessage;
+	                        this.contactService.oauthCallbackMessage = '';
+	                        this.customResponse = new CustomResponse('ERROR', message, true);
+	                    }else{
+	                          //this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
+	                          //this.socialContact.contactListId = JSON.parse(localStorage.getItem('selectedContactListId'));
+	                          //this.socialContact.contactType = localStorage.getItem('contactType');
+	                          //this.socialContact.alias = localStorage.getItem('alias');
+	                          this.syncronizeContactList( this.socialContact);
+	                          localStorage.removeItem("currentPage");
+	                          localStorage.removeItem("currentModule");
+	                          localStorage.removeItem("selectedContactListId");
+	                          localStorage.removeItem("socialNetwork");
+	                          localStorage.removeItem("contactType");
+	                          localStorage.removeItem("alias");
+	                    }
+	                }
+	            }else */
+	            	
+	            	if (this.contactService.socialProviderName == 'google'
+            	  || this.contactService.socialProviderName == 'salesforce'
+                  || this.contactService.socialProviderName == 'zoho') {
+            	  this.contactService.socialProviderName = "nothing";
+                  if (this.contactService.oauthCallbackMessage.length > 0) {
+                	  let oauthCallbackValidatonMessage = this.contactService.oauthCallbackMessage;
+                	  this.contactService.oauthCallbackMessage = "";
+                	  this.customResponse = new CustomResponse('ERROR', oauthCallbackValidatonMessage, true);
+                  } else {
+                	  this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
+                	  this.socialContact.contactListId = JSON.parse(localStorage.getItem('selectedContactListId'));
+                	  this.socialContact.contactType = localStorage.getItem('contactType');
+                	  this.socialContact.alias = localStorage.getItem('alias');
+                      this.syncronizeContactList( this.socialContact);
+                      localStorage.removeItem("currentPage");
+                      localStorage.removeItem("currentModule");
+                      localStorage.removeItem("selectedContactListId");
+                      localStorage.removeItem("socialNetwork");
+                      localStorage.removeItem("contactType");
+                      localStorage.removeItem("alias");
+                  }
+	    		}
 	            this.pagination.maxResults = 12;
 	            this.sharedDetailsPagination.pageIndex = 1;
 	            this.sharedDetailsPagination.maxResults = 12;
 	            this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
 	            if (this.isPartner) {
 	                this.defaultPartnerList(this.authenticationService.getUserId());
-	            }
-
+				}
+				if(this.checkingContactTypeName=="Contact"){
+					this.pagination.filterBy = 'MY-CONTACTS';
+				}
 	            this.loadContactLists(this.pagination);
 	            this.contactsCount();
 	            this.loadContactListsNames();
@@ -2348,6 +2371,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	                }
 	                else if (e.data == 'isZohoAuth') {
 	                    localStorage.setItem('isZohoAuth', 'yes');
+	                }else if(e.data !=null && e.data.includes("You have already configured")){
+	                    localStorage.setItem('validationMessage', e.data);
 	                }
 
 	            }, false);
@@ -2536,6 +2561,59 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     closeSharedDetailsPopup(){
     	$("#listSharedDetailsModal").modal().hide();
     }
+    
+    setLValuesToLocalStorageAndReditectToLoginPage(socialContact : SocialContact, data : any) {
+    	   if (this.assignLeads) {
+            localStorage.setItem('currentPage', 'manage-leads');
+        } else {
+            localStorage.setItem('currentPage', 'manage-contacts');
+        }
+        localStorage.setItem('socialNetwork', socialContact.socialNetwork);
+        localStorage.setItem('selectedContactListId', JSON.stringify(socialContact.contactListId));
+        localStorage.setItem("userAlias", data.data.userAlias);
+        localStorage.setItem("currentModule", data.data.module);
+        localStorage.setItem('contactType', socialContact.contactType);
+        localStorage.setItem('alias', socialContact.alias);
+        window.location.href = "" + data.data.redirectUrl;
+    }
+    
+    getModuleName() {
+        let moduleName: string = '';
+        if (this.module === 'leads') {
+            moduleName = "SHARE LEADS";
+        } else if (this.module === 'contacts') {
+            moduleName = "CONTACTS";
+        } else if (this.module === 'partners') {
+            moduleName = "PARTNERS";
+        }
+        return moduleName;
+    }
+    
+    getUserUserListWrapperObj(newUsers: Array<User>, contactListName: string, isPartner: boolean, isPublic: boolean,
+            contactType: string, socialnetwork: string, alias: string, synchronisedList: boolean) {
+            this.contactListObject = new ContactList();
+            this.contactListObject.name = contactListName;
+            this.contactListObject.isPartnerUserList = isPartner;
+            this.contactListObject.publicList = isPublic;
+            this.contactListObject.contactType = contactType;
+            this.contactListObject.socialNetwork = socialnetwork;
+            this.contactListObject.alias = alias;
+            this.contactListObject.synchronisedList = synchronisedList;
+            this.contactListObject.moduleName = this.getModuleName();
+            this.userUserListWrapper.users = newUsers;
+            this.userUserListWrapper.userList = this.contactListObject;
+            return this.userUserListWrapper;
+        }
+
+	
+	filterContacts(filterType:string,index:number){
+		this.customResponse = new CustomResponse();
+		this.selectedFilterIndex = index;//This is to highlight the tab
+		this.pagination.pageIndex = 1;
+		this.pagination.filterBy = filterType;
+		this.loadContactLists(this.pagination);
+	}
+
 	
 	
 }

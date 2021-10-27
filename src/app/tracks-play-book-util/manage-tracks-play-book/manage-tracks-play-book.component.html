@@ -185,7 +185,7 @@
                 <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
                     <div class="grid-box box-shadow">
                         <img class="img-grid-track " [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="{{learningTrack.title}}">
-                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}" style="float: none !important;" translate>
+                        <h4 class="ellipsis mt5 mb5 f-w-600 grid-title" title="{{learningTrack.title}}" style="float: none !important;overflow: hidden; padding-right: 3px;" translate>
                             {{learningTrack.title | slice:0:25}} <span *ngIf="learningTrack.title?.length>25">...</span><br><br>
                         </h4>
                         <div>
@@ -198,17 +198,17 @@
                                 <span *ngIf="learningTrack.progress == undefined">0%</span>
                                 <br>
                             </div>
-                            <h6 title="{{learningTrack.category.name}}" translate>
+                            <h6 class="track-info-grid" title="{{learningTrack.category.name}}" translate>
                                 Folder <strong>{{learningTrack.category.name | slice:0:17}}</strong>
                                 <span *ngIf="learningTrack.category.name?.length>17">..</span>
                             </h6>
-                            <h6 translate>
+                            <h6 class="track-info-grid" translate>
                                 Created On <strong>
                                     <app-timestamp [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
                                     </app-timestamp>
                                 </strong>
                             </h6>
-                            <h6 title="{{learningTrack.createdByName}}" translate>
+                            <h6 class="track-info-grid" title="{{learningTrack.createdByName}}" translate>
                                 By <strong>{{learningTrack.createdByName | slice:0:17}}</strong>
                                 <span *ngIf="learningTrack.createdByName?.length>17">..</span>
                             </h6>
@@ -216,7 +216,7 @@
                         <div class="ribbon">
                             <span style="background-color: #5cb85c;" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
                         </div>
-                        <div class="bar">
+                        <div class="bar" style="padding: 9px 3px;">
                             <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>

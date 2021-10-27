@@ -1544,8 +1544,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     getAllFilteredResults() {
         try {
             this.contactsPagination.pageIndex = 1;
-            this.contactsPagination.searchKey = this.recipientsSortOption.searchKey;
-            if (this.contactsPagination.searchKey != "") {
+            this.contactsPagination.searchKey = this.recipientsSortOption.searchKey.trim();
+            if (this.contactsPagination.searchKey != undefined && this.contactsPagination.searchKey != null 
+                && this.contactsPagination.searchKey.trim() != "") {
                 this.showExpandButton = true;
             } else {
                 this.showExpandButton = false;
@@ -1561,6 +1562,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
     highlightRow(contactList: any, event: any) {
         let contactId = contactList.id;
+        let count = contactList.count;
+       
         let isChecked = $('#' + contactId).is(':checked');
         if (isChecked) {
             $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
@@ -1573,12 +1576,14 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         }
         this.contactsUtility();
         event.stopPropagation();
+        
+        
     }
     highlightContactRow(contactList: any, event: any, count: number, isValid: boolean) {
         let contactId = contactList.id;
         if (isValid) {
             this.emptyContactsMessage = "";
-            if (count > 0) {
+             if (count > 0) {
                 let isChecked = $('#' + contactId).is(':checked');
                 if (isChecked) {
                     //Removing Highlighted Row
@@ -1596,7 +1601,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.contactsUtility();
                 event.stopPropagation();
             } else {
-                this.emptyContactsMessage = "Contacts are in progress";
+                this.emptyContactsMessage = "Users are in progress";
             }
 
         }
@@ -2456,6 +2461,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         $('.hls-video').remove();
         $('#usersModal').modal('hide');
         $('#show_email_template_preivew').modal('hide');
+        $('#templateRetrieve').modal('hide');
+        $('#email_spam_check').modal('hide');
+        $('#filterPopup').modal('hide');
     }
 
     saveCampaignOnDestroy() {

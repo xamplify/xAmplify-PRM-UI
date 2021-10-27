@@ -428,6 +428,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         swal.close();
         $('#saveAsModal').modal('hide');
         $('#campaignFilterModal').modal('hide');
+        $('#cancelEventModal').modal('hide');
+        $('#public-event-url-modal').modal('hide');
+        $('#public-event-url-modal').modal('hide');
     }
     openSaveAsModal(campaign: any) {
         $('#saveAsModal').modal('show');

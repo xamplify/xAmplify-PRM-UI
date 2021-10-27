@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
@@ -13,7 +13,8 @@ declare var $: any, swal: any;
 	styleUrls: ['./delete-assets.component.css'],
 	providers: [Properties]
 })
-export class DeleteAssetsComponent implements OnInit {
+export class DeleteAssetsComponent implements OnInit,OnDestroy {
+	
 	@Input() asset: any;
 	@Output() deleteAssetLoaderEmitter = new EventEmitter();
 	@Output() deleteAssetSuccessEmitter = new EventEmitter();
@@ -24,6 +25,9 @@ export class DeleteAssetsComponent implements OnInit {
 
 	ngOnInit() {
 		this.confirmDelete(this.asset);
+	}
+	ngOnDestroy(): void {
+		swal.close();
 	}
 
 	confirmDelete(asset: any) {

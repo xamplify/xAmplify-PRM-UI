@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter, OnDestroy } from '@angular/core';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Ng2DeviceService } from 'ng2-device-detector';
@@ -16,7 +16,8 @@ declare var $:any,swal:any;
   styleUrls: ['./download-asset-popup.component.css'],
   providers: [Properties]
 })
-export class DownloadAssetPopupComponent implements OnInit {
+export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
+	
 
   @Input() asset:any;
   @Input() isPartnerView:boolean;
@@ -34,6 +35,10 @@ export class DownloadAssetPopupComponent implements OnInit {
   ngOnInit() {
 	  this.openPopup(this.asset);
   }
+
+  ngOnDestroy(): void {
+	this.hidePopup();
+}
 
   /***************Download*************/
 	openPopup(asset: any) {
@@ -117,7 +122,6 @@ export class DownloadAssetPopupComponent implements OnInit {
 				self.downloadPdfForVendor(self, downloadUrl);
 			}
 			swal.close();
-			this.downloadAssetPopupEventEmitter.emit();
 		}, 1500);
 	}
 
@@ -125,6 +129,8 @@ export class DownloadAssetPopupComponent implements OnInit {
 		window.open(self.authenticationService.REST_URL + "dam/" + downloadUrl + "?access_token=" + self.authenticationService.access_token);
 		$('#downloadPdfModalPopup').modal('hide');
 		self.modalPopupLoader = false;
+		this.downloadAssetPopupEventEmitter.emit();
+
 	}
 
 	downloadForPartner() {
@@ -133,6 +139,7 @@ export class DownloadAssetPopupComponent implements OnInit {
 				let param = this.getLocationDetails(response, this.selectedPdfAlias);
 				let completeUrl = this.authenticationService.REST_URL + "dam/downloadp?access_token=" + this.authenticationService.access_token;
 				this.referenceService.post(param, completeUrl);
+				this.downloadAssetPopupEventEmitter.emit();
 			}, (_error: any) => {
 				this.xtremandLogger.error("Error In Fetching Location Details");
 			}

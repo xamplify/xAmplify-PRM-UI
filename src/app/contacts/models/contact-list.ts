@@ -31,4 +31,7 @@ export class ContactList {
     sharedLeads : boolean = false;
     vanityUrlFilter : boolean = false;
     vendorCompanyProfileName : string;
+    synchronisedList : boolean = false;
+    moduleName : string;
+    externalListId : number;
 }

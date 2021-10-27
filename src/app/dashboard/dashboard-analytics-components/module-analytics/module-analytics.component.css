@@ -24,3 +24,8 @@ a.disabled {
   margin-left: 0px !important;
   line-height: 100px !important;
 }
+
+.addLeadsDiv {
+  margin-bottom: 20px;
+  margin-top: 3px;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -20,7 +20,8 @@ declare var $: any, swal: any;
 	styleUrls: ['./partner-company-and-groups-modal-popup.component.css'],
 	providers: [HttpRequestLoader, SortOption, Properties, DamService]
 })
-export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
+export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDestroy {
+	
 
 	ngxLoading = false;
 	loggedInUserId: number = 0;
@@ -73,6 +74,10 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 			this.closePopup();
 		}
+	}
+
+	ngOnDestroy(): void {
+		this.closePopup();
 	}
 
 	openPopup() {
@@ -201,7 +206,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit {
 			pagination = this.utilService.sortOptionValues(sortOption.selectedDamPartnerDropDownOption, pagination);
 			this.findPartnerCompanies(pagination);
 		} else if (type == "partnerGroups") {
-			if (pagination.searchKey != "") {
+			if (pagination.searchKey != undefined && pagination.searchKey != null && pagination.searchKey.trim() != "") {
 				this.showExpandButton = true;
 			} else {
 				this.showExpandButton = false;

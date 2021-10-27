@@ -1,7 +1,7 @@
 <div class="page-content"
 	[class.ml0]="authenticationService.isSuperAdmin()">
 	<div>
-		<div class="page-bar">
+		<div class="page-bar mPageBar">
 			<ul class="page-breadcrumb">
 				<li *ngIf="!authenticationService.isSuperAdmin()">
 					<i class="fa fa-home" aria-hidden="true"></i>
@@ -42,7 +42,7 @@
 												<span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
 												<span class="btn btn-xs hidden-xs l-g-view"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
                     					</div>
-										<div class="col-sm-3 col-md-3 col-xs-12 p0">
+										<div class="col-sm-3 col-md-3 col-xs-12 p0 mSort">
 										<select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
 										<ng-container *ngFor="let sort of sortOptions; let i = index"> <option [ngValue]="sort">{{sort.name}}</option>
 										</ng-container>

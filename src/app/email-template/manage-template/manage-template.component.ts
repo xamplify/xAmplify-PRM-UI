@@ -430,8 +430,8 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 		this.refService.isUpdated = false;
 		this.message = "";
 		$('#show_email_template_preivew').modal('hide');
+		$('#email_spam_check').modal('hide');
 		swal.close();
-
 	}
 
 	getTemplateById(emailTemplate: EmailTemplate) {

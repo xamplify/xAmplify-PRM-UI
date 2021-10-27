@@ -371,7 +371,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	clearCustomResponse() { this.customResponse = new CustomResponse(); }
 	errorHandler(event: any) { event.target.src = 'assets/images/icon-user-default.png'; }
 	customConstructorCall() {
-		if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) { this.router.navigateByUrl(this.referenceService.homeRouter); }
+		if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {
+			this.router.navigateByUrl(this.referenceService.homeRouter);
+			}
 		try {
 			if (this.authenticationService.isSuperAdmin()) {
 				this.userData = this.authenticationService.venorMyProfileReport;
@@ -460,6 +462,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.getRoles();
 			this.addDefaultPipelineStages();
 			window.addEventListener('message', function(e) {
+				window.removeEventListener('message', function(e){}, true);
 				if (e.data == 'isHubSpotAuth') {
 					localStorage.setItem('isHubSpotAuth', 'yes');
 				}
@@ -1681,19 +1684,32 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		$('.h-video').remove();
 		this.referenceService.defaulgVideoMethodCalled = false;
 		this.dragulaService.destroy('pipelineStagesDragula');
+		$('#cropProfileImage').modal('hide');
+		$('#addCategoryModalPopup').modal('hide');
+		$('#deleteCategoryModalPopup').modal('hide');
+		$('#addPipelineModalPopup').modal('hide');
+		$('#addExcludeUserPopupModal').modal('hide');
+		swal.close();
 	}
 
 configHubSpot() {
 		if (this.loggedInThroughVanityUrl) {
-		/*	let providerName = 'hubspot';
-			let hubSpotCurrentUser = localStorage.getItem('currentUser');
-			let vanityUserId = JSON.parse(hubSpotCurrentUser)['userId'];
-			let redirectURL = window.btoa(this.hubSpotRedirectURL);
-			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
-			this.referenceService.showSweetAlertInfoMessage();
+			let providerName = 'hubspot';
+			this.hubSpotCurrentUser = localStorage.getItem('currentUser');
+            const encodedData = window.btoa(this.hubSpotCurrentUser);
+            const encodedUrl = window.btoa(this.hubSpotRedirectURL);
+            let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
+            let url = null;
+            if(this.hubSpotRedirectURL){
+                    url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/"+ null ;
+
+            }else{
+                    url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
+            }
+            
+            var x = screen.width / 2 - 700 / 2;
+            var y = screen.height / 2 - 450 / 2;
+            window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 		}
 		else if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
 			window.location.href = this.hubSpotRedirectURL;

@@ -52,6 +52,7 @@ export class ContactService {
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
 	hubSpotContactUrl = this.authenticationService.REST_URL + 'hubSpot';
+	oauthCallbackMessage : string = "";
     constructor( private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
         console.log( logger );
     }
@@ -212,17 +213,9 @@ export class ContactService {
             .catch( this.handleErrorDelete );
     }
 
-    saveContactList( users: Array<User>, contactListName: string, isPartner: boolean,isPublic:boolean ): Observable<any> {
-        if(isPartner == false){
-            this.successMessage = true;
-        }
-
-        if(isPartner){
-        	isPublic = true;
-        }
-
+    saveContactList( userUserListWrapper : UserUserListWrapper ): Observable<any> {
         var requestoptions = new RequestOptions( {
-            body:  users,
+            body:  userUserListWrapper,
         })
         var headers = new Headers();
         headers.append( 'Content-Type', 'application/json' );
@@ -230,10 +223,10 @@ export class ContactService {
             headers: headers
         };
         //var url = this.contactsUrl + "save-userlist?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token + "&userListName="+ contactListName + "&isPartnerUserList="+isPartner ;
-        var url = this.contactsUrl + "save-userlist/"+this.authenticationService.getUserId()+"/"+encodeURIComponent(contactListName) +"/"+isPublic+"?access_token=" + this.authenticationService.access_token + "&isPartnerUserList="+isPartner ;
-        this.logger.info( users );
+        var url = this.contactsUrl + "save-userlist/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
+        this.logger.info( userUserListWrapper );
         return this._http.post( url, options, requestoptions )
-            .map( this.extractData )
+            .map(( response: any ) => response.json() )
             .catch( this.handleError );
     }
 
@@ -441,6 +434,12 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+	 
+     vanityConfigHubSpot() {
+	        return this._http.get(this.authenticationService.REST_URL + 'hubspot/' + localStorage.getItem('vanityUserId') + "/authorize")
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    }
 
     checkingZohoSyncAuthentication() {
         return this._http.get( this.authenticationService.REST_URL + "zohoOauth/checkSyncAuthorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId())
@@ -524,7 +523,7 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    socialContactsCallback(queryParam: any): Observable<String> {
+    socialContactsCallback(queryParam: any): Observable<any> {
         /*let queryParam: string;
         this.activatedRoute.queryParams.subscribe(
             ( param: any ) => {
@@ -535,8 +534,8 @@ export class ContactService {
 		let loggedInThroughVanityUrl = localStorage.getItem('vanityUrlFilter');
 		if(loggedInThroughVanityUrl == 'true')
 		{
-			 this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) );
-			 return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) )
+			 this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'vanityUserAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) );
+			 return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'vanityUserAlias' )  + "&module=" + localStorage.getItem( 'vanityCurrentModule' ) )
             .map( this.extractData )
             .catch( this.handleError );
 		}
@@ -772,6 +771,23 @@ export class ContactService {
         return this._http.post( this.contactsUrl +contactListId+ "/list-shared-details/"+"?access_token=" + this.authenticationService.access_token, pagination)
         .map( this.extractData )
         .catch( this.handleError );
+    }
+    
+    saveAsNewList( contactListObject: ContactList ): Observable<any> {
+        var requestoptions = new RequestOptions( {
+            body:  contactListObject
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+    
+        var url = this.contactsUrl +  "/save-as-new-list/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token ;
+
+        return this._http.post( url, options, requestoptions )
+        .map(( response: any ) => response.json() )
+       .catch( this.handleError);
     }
 
 }

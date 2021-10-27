@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MdfService } from '../services/mdf.service';
 /*****Common Imports**********************/
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -13,11 +13,12 @@ import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { ErrorResponse } from 'app/util/models/error-response';
-declare var $: any;
+declare var $,swal: any;
 /********************************************************* */
 import { MdfPartnerDto } from '../models/mdf-partner-dto';
 import { MdfDetails } from '../models/mdf-details';
 import {MdfAmountType} from '../models/mdf-amount-type.enum';
+import { switchAll } from 'rxjs/operators';
 @Component({
   selector: 'app-manage-mdf-details',
   templateUrl: './manage-mdf-details.component.html',
@@ -25,7 +26,8 @@ import {MdfAmountType} from '../models/mdf-amount-type.enum';
   providers: [HttpRequestLoader, SortOption, Properties]
 
 })
-export class ManageMdfDetailsComponent implements OnInit {
+export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
+ 
 
   pagination: Pagination = new Pagination();
   modalPopupLoader: boolean;
@@ -54,6 +56,9 @@ export class ManageMdfDetailsComponent implements OnInit {
     this.tilesLoader = true;
     this.referenceService.loading(this.partnerListLoader, true);
     this.getCompanyId();
+  }
+  ngOnDestroy(): void {
+    swal.close();
   }
   stopLoaders() {
     this.loading = false;

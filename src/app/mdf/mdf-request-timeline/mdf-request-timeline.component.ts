@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
@@ -20,7 +20,8 @@ declare var $:any;
   styleUrls: ['./mdf-request-timeline.component.css','../mdf-html/mdf-html.component.css'],
   providers: [HttpRequestLoader, SortOption, Properties]
 })
-export class MdfRequestTimelineComponent implements OnInit {
+export class MdfRequestTimelineComponent implements OnInit,OnDestroy {
+  
   requestId:number = 0;
   role:string = "";
   loading = false;
@@ -61,6 +62,10 @@ export class MdfRequestTimelineComponent implements OnInit {
     }else{
       this.router.navigate(["/home/dashboard"]);
     }
+  }
+
+  ngOnDestroy(): void {
+    $('#uploadMdfDocumentsPopup').modal('hide');
   }
 
   getCompanyId() {

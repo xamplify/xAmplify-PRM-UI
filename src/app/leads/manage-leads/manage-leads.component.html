@@ -135,7 +135,7 @@
                         data-toggle="tooltip" [class.disabled]="listView" title="List View">
                         <i aria-hidden="true" class="fa fa-th-list p10"></i>
                       </span>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                      <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                         title="Campaign View" [class.disabled]="!listView" (click)="listView = false">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                       </span>

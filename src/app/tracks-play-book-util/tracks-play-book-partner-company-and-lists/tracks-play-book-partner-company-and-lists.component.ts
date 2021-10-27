@@ -131,7 +131,7 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 			pagination = this.utilService.sortOptionValues(sortOption.selectedDamPartnerDropDownOption, pagination);
 			this.findPartnerCompanies(pagination);
 		} else if (type == "partnerGroups") {
-			if (pagination.searchKey != "") {
+			if (pagination.searchKey != undefined && pagination.searchKey != null && pagination.searchKey.trim() != "") {
 				this.showExpandButton = true;
 			} else {
 				this.showExpandButton = false;

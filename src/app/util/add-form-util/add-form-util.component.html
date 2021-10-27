@@ -412,18 +412,12 @@
             </div>
         </div>
     </div>
-
-    <!-- <svg id="svg-filter">
-        <filter id="svg-blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="3"></feGaussianBlur>
-        </filter>
-    </svg> -->
     <app-preview-popup #previewPopUpComponent></app-preview-popup>
 </div>
 <!-- -End Of page-content -->
 
 <!--Modal Popup For Form Details------------>
-<div class="modal right fade" id="add-form-name-modal" data-backdrop="static">
+<div class="modal right fade" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -464,7 +458,7 @@
 
 
 <!--Modal Popup For Form Designs-->
-<div class="modal right fade" id="add-form-designs" data-backdrop="static">
+<div class="modal right fade" id="add-form-designs" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -783,7 +777,7 @@
 </div>
 
 <!--Modal Popup For Custom Fields------------>
-<div class="modal left fade" id="add-form-fields" data-backdrop="static">
+<div class="modal left fade" id="add-form-fields" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

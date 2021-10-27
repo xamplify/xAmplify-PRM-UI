@@ -3061,7 +3061,6 @@
               </span>
               <ul class="dropdown-menu pull-right">
                 <li><a (click)="downloadPartnerLeadList()"> Export To Excel </a>
-                  <!-- <a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadFunctionality()"> Export To Excel </a> -->
                 </li>
               </ul>
             </div>
@@ -3088,29 +3087,25 @@
                 <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
                 <h4 class="m5">Please wait while we process your request.</h4>
               </div>
-              <!-- <h4 style="font-weight: 500;">Your lead <b style="color:black">{{leadDetailType}}</b> details</h4> -->
               <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
               <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading && partnerLeadsFormHeaders?.length != 0">
                 <div class="table-responsive">
-                  <table class="table tgrid">
+                  <table class="table tgrid" aria-describedby="">
                     <thead>
                       <tr>
                         <ng-container *ngFor="let column of partnerLeadsFormHeaders;let i  = index">
                           <ng-container *ngIf="i<=3">
                             <th id="th-width" style="text-align:left">{{column}}
-                              <!-- <span class="required" *ngIf="column.required">*</span> -->
                             </th>
                           </ng-container>
                         </ng-container>
-                        <th></th>
+                        <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody *ngIf="partnerLeadsFormDetails?.length !== 0">
                       <ng-container *ngFor="let formDataRow of partnerLeadsFormDetails;let rowIndex = index">
                         <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
                           <ng-container *ngFor="let columnValue of partnerLeadsFormHeaders;let columnIndex = index">
-
-                            <!-- <td *ngIf="columnIndex<=3">{{formDataRow[columnValue]}}</td> -->
                             <td *ngIf="columnIndex<=3">
                               <ng-container *ngIf="columnValue=='RSVP Time'">
                                 <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
@@ -3126,30 +3121,31 @@
                             <a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
                               title="View More Columns" *ngIf="partnerLeadsFormHeaders.length>4">
                               <i class="fa"
-                                [ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"></i>
+                                [ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}" aria-hidden="true"></i>
                             </a>
                           </td>
                         </tr>
                         <tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
                           <td colspan="5">
                             <div class="table-responsive">
-                              <table id="expanded-table" class="table tgrid table-bordered">
-                                <tr *ngFor="let column of partnerLeadsFormHeaders;let i  = index;">
-                                  <th *ngIf="i>=4">
-                                    {{column}}<span class="required" *ngIf="column.required">*</span>
-                                  </th>
-                                  <td *ngIf="i>=4">
-                                    <ng-container *ngIf="column=='RSVP Time'">
-                                      <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
-                                        [dateAndTime]="formDataRow[column]"> </app-timestamp>
-                                      <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[column]}}</span>
-                                    </ng-container>
-                                    <ng-container *ngIf="column!='RSVP Time'">
-                                      <div [innerHtml]="formDataRow[column]"></div>
-                                    </ng-container>
-                                  </td>
-                                </tr>
-                              </table>
+
+                            <table id="expanded-table" class="table tgrid table-bordered" aria-describedby="">
+                              <tr *ngFor="let column of partnerLeadsFormHeaders;let i  = index;">
+                                <th *ngIf="i>=4" scope="col">
+                                  {{column}}<span class="required" *ngIf="column.required">*</span>
+                                </th>
+                                <td *ngIf="i>=4">
+                                  <ng-container *ngIf="column=='RSVP Time'">
+                                    <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
+                                      [dateAndTime]="formDataRow[column]"> </app-timestamp>
+                                    <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[column]}}</span>
+                                  </ng-container>
+                                  <ng-container *ngIf="column!='RSVP Time'">
+                                    <div [innerHtml]="formDataRow[column]"></div>
+                                  </ng-container>
+                                </td>
+                              </tr>
+                            </table>
                             </div>
                           </td>
                         </tr>
@@ -3158,9 +3154,6 @@
                   </table>
                 </div>
               </div>
-              <!-- <div *ngIf="leadsDetailPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-					<strong>No Data Found.</strong>
-				</div> -->
               <div *ngIf="partnerLeadsDetailPagination.pagedItems.length !== 0" class="pg8">
                 <app-pagination [pagination]="partnerLeadsDetailPagination"
                   (notifyParent)="partnerEventLeadsDetailsSetPage($event)"
@@ -3172,40 +3165,11 @@
             </div>
           </div>
         </div>
-
-
-
-        <!--  <app-form-analytics-util [importedObject]="inputObject" *ngIf="partnerLeadResponeStatus==200"></app-form-analytics-util> -->
-        <!--  	 <div class="alert alert-danger" *ngIf="partnerLeadResponeStatus==404">No leads found</div>
-		  </div>
-		   <app-list-loader *ngIf="partnerLeadInfoRequestLoader.isLoading"></app-list-loader> -->
       </div>
     </div>
   </div>
   <app-scroll-top></app-scroll-top>
 </div>
 
-<!-- <div class="modal right fade" id="partner-leads-info-modal">
-    <div class="modal-dialog modal-lg modal-template" style="right:0;min-width: 991px;">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-            <i class="fa fa-times"></i>
-          </button>
-          <h4 class="modal-title">Leads Info</h4>
-        </div>
-        <div class="modal-body">
-		  <div id="partner-lead-info-content" *ngIf="!partnerLeadInfoRequestLoader.isLoading">
-		 	 <app-form-analytics-util [importedObject]="inputObject" *ngIf="partnerLeadResponeStatus==200"></app-form-analytics-util>
-		 	 <div class="alert alert-danger" *ngIf="partnerLeadResponeStatus==404">No leads found</div>
-		  </div>
-		   <app-list-loader *ngIf="partnerLeadInfoRequestLoader.isLoading"></app-list-loader>
-		</div>
-        <div class="modal-footer">
-          <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
-        </div>
-      </div>
-    </div>
-  </div> -->
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 <app-clicked-urls-vendor-analytics #clickedUrlsVendorAnalyticsComponent></app-clicked-urls-vendor-analytics>

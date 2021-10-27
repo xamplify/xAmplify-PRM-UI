@@ -20,9 +20,12 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 	currentModule = '';
 	callbackName: string;
 	vanityUrlFilter: string;
+	postingMessage : string = '';
 
 
-	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger, private hubSpotService: HubSpotService, private integrationService: IntegrationService) {
+	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router,
+			private contactService: ContactService, public xtremandLogger: XtremandLogger, private hubSpotService: HubSpotService,
+			private integrationService: IntegrationService) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.currentModule = 'contacts';
@@ -60,15 +63,21 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 			this.contactService.socialContactsCallback(queryParam)
 				.subscribe(
 					result => {
+						if(result.statusCode == 402){
+							this.contactService.oauthCallbackMessage = result.message;
+						}
 						localStorage.removeItem("userAlias");
-						localStorage.removeItem("currentModule");
 						this.xtremandLogger.info("result: " + result);
 
 						if (this.callbackName == 'google') {
 							let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 							if (vanityUrlFilter == 'true') {
-								var message = "isGoogleAuth";
-								this.postingMessageToParentWindow(message);
+							    if(result.statusCode == 402){
+                                    this.postingMessage = result.message;
+                                }else{
+                                this.postingMessage = "isGoogleAuth";;
+                                }
+							    this.postingMessageToParentWindow(this.postingMessage);
 							}else{
 								this.contactService.socialProviderName = 'google';
 							}
@@ -76,26 +85,40 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 						} else if (this.callbackName == 'salesforce') {
 							let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 							if (vanityUrlFilter == 'true') {
-								var message = "isSalesForceAuth";
-								this.postingMessageToParentWindow(message);
+							    if(result.statusCode == 402){
+                                    this.postingMessage = result.message;
+                                }else{
+                                this.postingMessage = "isSalesForceAuth";;
+                                }
+                                this.postingMessageToParentWindow(this.postingMessage);
 							}else{
 								this.contactService.socialProviderName = 'salesforce';
 							}
 						} else if (this.callbackName == 'zoho') {
 							let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 							if (vanityUrlFilter == 'true') {
-								var message = "isZohoAuth";
-								this.postingMessageToParentWindow(message);
+								   if(result.statusCode == 402){
+	                                    this.postingMessage = result.message;
+	                                }else{
+	                                this.postingMessage = "isZohoAuth";;
+	                                }
+	                                this.postingMessageToParentWindow(this.postingMessage);
 							}else{
 								this.contactService.socialProviderName = 'zoho';
 							}
-						} if (this.currentModule === 'contacts') {
+						} 
+						
+						if (this.currentModule === 'contacts'  && localStorage.getItem('currentPage')==='manage-contacts') {
+                            this.router.navigate(['/home/contacts/manage']);
+                        }else if (this.currentModule === 'contacts' && localStorage.getItem('currentPage')==='add-contacts'){
 							this.router.navigate(['/home/contacts/add']);
-						} else if (this.currentModule === 'partners') {
+						}else if (this.currentModule === 'partners') {
 							this.router.navigate(['/home/partners']);
-						} else if (this.currentModule === 'leads') {
-							this.router.navigate(['/home/assignleads/add']);
-						}
+						} else if (this.currentModule === 'leads' && localStorage.getItem('currentPage')==='manage-leads'){
+							this.router.navigate(['/home/assignleads/manage']);
+						}else if (this.currentModule === 'leads' && localStorage.getItem('currentPage')==='add-leads'){
+                            this.router.navigate(['/home/assignleads/add']);
+                        }
 					},
 					error => {
 						localStorage.removeItem("userAlias");
@@ -128,53 +151,43 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 	}
 
 	integrationCallback(code: string, type: string) {
-		try {
-			let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-			if(vanityUrlFilter == undefined){
-							swal( {
-            text: 'Redirectng to Myprofile page...! Please Wait...It\'s processing',
-            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
-        });}
-			this.integrationService.handleCallbackByType(code, type)
-				.subscribe(
-					result => {
-						this.referenceService.integrationCallBackStatus = true;
-						this.xtremandLogger.info("Integration Callback :: " + result);
-						localStorage.removeItem("userAlias");
-						localStorage.removeItem("currentModule");
-						if (vanityUrlFilter == 'true' ) {
-						swal( {
-					            text: 'Closing the window...! Please Wait...',
-					            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
-					        });
-								var message = '';
-								if(type == 'hubspot'){
-									message = "isHubSpotAuth";
-								}
-								else{
-									message = "isSalesForceAuth";
-								}
-								this.postingMessageToParentWindow(message);
-						}
-						else{
-								swal.close();
-								this.router.navigate(['/home/dashboard/myprofile']);
-						}
-						// Commented below code by Swathi. Custom form creation should not be done here.
+        try {
+            this.integrationService.handleCallbackByType(code, type)
+                .subscribe(
+                    result => {
+                        this.referenceService.integrationCallBackStatus = true;
+                        this.xtremandLogger.info("Integration Callback :: " + result);
+                        localStorage.removeItem("userAlias");
+                        localStorage.removeItem("currentModule");
+                        let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
+                        if (vanityUrlFilter == 'true' ) {
+                                if(type == 'hubspot'){
+                                    this.postingMessage = "isHubSpotAuth";
+                                }
+                                else{
+                                    this.postingMessage = "isSalesForceAuth";
+                                }
+                                this.postingMessageToParentWindow(this.postingMessage);
+                        }
+                        else{
+                        	this.referenceService.integrationCallBackStatus = true;
+                            this.router.navigate(['/home/dashboard/myprofile']);
+                        }
+                        // Commented below code by Swathi. Custom form creation should not be done here.
                         /*if(type === "isalesforce"){
                             this.contactService.getSfFormFields().subscribe(result =>{
                                 console.log(result);
                             })
                         }*/
-					},
-					error => {
-						localStorage.removeItem("userAlias");
-						this.xtremandLogger.info(error)
-					});
-		} catch (error) {
-			this.xtremandLogger.error(error, "SocialCallbackcomponent()", "integrationCallback()");
-		}
-	}
+                    },
+                    error => {
+                        localStorage.removeItem("userAlias");
+                        this.xtremandLogger.info(error)
+                    });
+        } catch (error) {
+            this.xtremandLogger.error(error, "SocialCallbackcomponent()", "integrationCallback()");
+        }
+    }
 
 	postingMessageToParentWindow(message: string) {
 		let trargetWindow = window.opener;
@@ -203,7 +216,6 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 				});
 			this.xtremandLogger.info("Router URL :: " + this.router.url);
 			if (this.router.url.includes("hubspot-callback")) {
-				// this.hubSpotCallback(code);
 				this.integrationCallback(code, "hubspot");
 			} else if (this.router.url.includes("isalesforce-callback")) {
 				this.integrationCallback(code, "isalesforce");

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -16,16 +16,17 @@ import { UtilService } from 'app/core/services/util.service';
 import { DashboardAnalyticsDto } from '../models/dashboard-analytics-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { DealsService } from 'app/deals/services/deals.service';
 
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 @Component({
   selector: 'app-dashboard-analytics',
   templateUrl: './dashboard-analytics.component.html',
   styleUrls: ['./dashboard-analytics.component.css'],
-  providers: [Properties,HttpRequestLoader]
+  providers: [Properties,HttpRequestLoader, DealsService]
 
 })
-export class DashboardAnalyticsComponent implements OnInit {
+export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
   isOnlyUser = false;
   logedInCustomerCompanyName: any;
   userDefaultPage: UserDefaultPage = new UserDefaultPage();
@@ -55,6 +56,8 @@ export class DashboardAnalyticsComponent implements OnInit {
    emailStatisticsLoader:HttpRequestLoader = new HttpRequestLoader();
    dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
    hasCampaignRole: boolean;
+   showDealForm: boolean = false;
+   customResponse: CustomResponse = new CustomResponse();
 
   constructor(public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
@@ -80,6 +83,10 @@ export class DashboardAnalyticsComponent implements OnInit {
         this.getUserCampaignReport();
         this.xtremandLogger.log(this.authenticationService.getRoles());
     }
+  }
+
+  ngOnDestroy(){
+    $('#customizeCampaignModal').modal('hide');
   }
 
   getDefaultPage(userId: number) {
@@ -395,7 +402,18 @@ showCampaignDetails(campaign:any){
     this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
   }
 
+  showSubmitDealSuccess() {
+    this.showDealForm = false;
+    this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+  }
 
+  closeDealForm() {
+    this.showDealForm = false;
+  }
+
+  showSubmitLeadSuccess() {
+    this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+  }
 
 
 }

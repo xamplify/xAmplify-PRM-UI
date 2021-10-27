@@ -22,8 +22,8 @@ export class AssetGridViewActionsComponent implements OnInit {
   ngOnInit() {
   }
 
-  viewGirdHistory(asset){
-    this.referenceService.showSweetAlertInfoMessage();
+  viewGirdHistory(asset:any){
+    this.referenceService.goToRouter("/home/dam/history/"+asset.id);
   }
 
   addOrEdit(id:number){
@@ -72,13 +72,16 @@ export class AssetGridViewActionsComponent implements OnInit {
 
   /*******View Details (Partner) ********/
   viewDetails(asset:any){
-    this.referenceService.showSweetAlertInfoMessage();
+    this.referenceService.goToRouter('/home/dam/shared/view/'+asset.id);
   }
 
   /*******Delete Asset ********/
   confirmDelete(asset:any){
     this.assetGridViewActionsDeleteActionEmitter.emit(asset);
   }
+
+
+ 
 
   
 

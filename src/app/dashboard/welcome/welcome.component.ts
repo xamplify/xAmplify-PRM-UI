@@ -10,6 +10,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { CustomResponse } from '../../common/models/custom-response';
+import { DealsService } from 'app/deals/services/deals.service';
 
 declare var $:any;
 
@@ -17,7 +18,7 @@ declare var $:any;
     selector: 'app-welcome',
     templateUrl: './welcome.component.html',
     styleUrls: ['./welcome.component.css'],
-    providers: [Properties]
+    providers: [Properties, DealsService]
 })
 export class WelcomeComponent implements OnInit, OnDestroy {
 
@@ -68,6 +69,8 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     welcomePageItems: any;
     welcomePageItemsLoader = false;
     customResponse:CustomResponse = new CustomResponse();
+    showDealForm: boolean = false;
+    dealResponse:CustomResponse = new CustomResponse();
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
@@ -201,4 +204,12 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         );
     }
 
+    showSubmitDealSuccess() {
+      this.showDealForm = false;
+      this.dealResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    }
+  
+    closeDealForm() {
+      this.showDealForm = false;
+    }
 }
