@@ -1259,13 +1259,27 @@ a.disabled {
                       <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                     </div>
                     <ng-container *ngIf="authenticationService.isVendor() || authenticationService.isVendorPartner()">
-					  <span class="h4-text">List Of  {{authenticationService?.partnerModule?.customName}}</span>
+					  <span class="h4-text">
+						<ng-container *ngIf="contactListTabName=='Partners'">
+							{{authenticationService?.partnerModule?.customName | translate}}
+						</ng-container>
+						<ng-container *ngIf="contactListTabName!='Partners'">
+							{{authenticationService?.partnerModule?.customName}} & Recipients
+						</ng-container>
+					  </span>
                     </ng-container>
                     <ng-container *ngIf="authenticationService.isOnlyPartner()">
                       <span class="h4-text" *ngIf="!isPartnerUserList">Contact List(s)</span>
                     </ng-container>
                      <ng-container *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner())">
-                      <span class="h4-text">Recipients List(s)</span>
+                      <span class="h4-text">
+						<ng-container *ngIf="contactListTabName=='Partners'">
+							{{authenticationService?.partnerModule?.customName | translate}}
+						</ng-container>
+						<ng-container *ngIf="contactListTabName!='Partners'">
+							{{authenticationService?.partnerModule?.customName}} & Recipients
+						</ng-container>
+					  </span>
                     </ng-container>
 
                     </td>
@@ -1387,7 +1401,7 @@ a.disabled {
                     <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
                     <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
                     <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
-                    <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If partner has not shared event</option>
+                    <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If event is not shared by {{authenticationService?.partnerModule?.customName}}</option>
                     <option [value]="29" [selected]="reply.actionId ==29" *ngIf="!eventCampaign.publicEventCampaign">Send reminder if no response</option>
                     <option [value]="30" [selected]="reply.actionId ==30">Send reminder if responded YES</option>
                     <option [value]="25" [selected]="reply.actionId ==25"> Send email if RSVP Yes</option>
