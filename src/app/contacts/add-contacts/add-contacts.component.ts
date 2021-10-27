@@ -2913,11 +2913,9 @@ salesForceVanityAuthentication() {
               this.contactService.vanitySocialProviderName = "nothing";
        }
 		else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
-			 if (this.module === "contacts") {
-                 this.router.navigate(['/home/contacts/add']);
-             }else  if (this.module === "leads") {
-                 this.router.navigate(['/home/assignleads/add']);
-             }
+			this.showHubSpotModal();
+            tempCheckHubSpotAuth = 'no';
+            this.contactService.vanitySocialProviderName = "nothing";
 		}
 		else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
 			swal.close();
@@ -3785,7 +3783,7 @@ vanityCheckingMarketoContactsAuthentication(){
 					if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
 						this.loggedInUserId = this.authenticationService.getUserId();
 						this.hubSpotCurrentUser = localStorage.getItem('currentUser');
-						let vanityUserId = JSON.parse(this.googleCurrentUser)['userId'];
+						let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
 						let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null ;
 
 						var x = screen.width / 2 - 700 / 2;

@@ -167,9 +167,9 @@ margin: 0 auto;
 
 @media only screen and (max-width: 600px){
   .btnVendor{
-    left: -67px;
+    left: -18px;
   }
   .btnShare{
-    left: -69px;
+    left: -20px;
   }
 }

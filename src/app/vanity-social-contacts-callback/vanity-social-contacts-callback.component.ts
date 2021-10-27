@@ -170,8 +170,8 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
                                 this.postingMessageToParentWindow(this.postingMessage);
                         }
                         else{
-                                swal.close();
-                                this.router.navigate(['/home/dashboard/myprofile']);
+                        	this.referenceService.integrationCallBackStatus = true;
+                            this.router.navigate(['/home/dashboard/myprofile']);
                         }
                         // Commented below code by Swathi. Custom form creation should not be done here.
                         /*if(type === "isalesforce"){

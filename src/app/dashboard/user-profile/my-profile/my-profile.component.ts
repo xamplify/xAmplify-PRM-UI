@@ -371,7 +371,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	clearCustomResponse() { this.customResponse = new CustomResponse(); }
 	errorHandler(event: any) { event.target.src = 'assets/images/icon-user-default.png'; }
 	customConstructorCall() {
-		if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) { this.router.navigateByUrl(this.referenceService.homeRouter); }
+		if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {
+			this.router.navigateByUrl(this.referenceService.homeRouter);
+			}
 		try {
 			if (this.authenticationService.isSuperAdmin()) {
 				this.userData = this.authenticationService.venorMyProfileReport;
@@ -460,6 +462,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.getRoles();
 			this.addDefaultPipelineStages();
 			window.addEventListener('message', function(e) {
+				window.removeEventListener('message', function(e){}, true);
 				if (e.data == 'isHubSpotAuth') {
 					localStorage.setItem('isHubSpotAuth', 'yes');
 				}
