@@ -169,8 +169,15 @@ export class FormService {
             .catch( this.handleError );
     }
 
-    getSurveyAnalytics(alias:string){        
-        return this.http.get(this.URL+"survey/analytics/"+alias+"?access_token=" + this.authenticationService.access_token)
+    getSurveyAnalytics(alias:string, campaignId:number, partnerId:number){  
+        let url =  this.URL+"survey/analytics/"+alias;
+        if (campaignId != undefined && campaignId != null && campaignId > 0) {
+            url = url +"/"+ campaignId;
+            if (partnerId != undefined && partnerId != null && partnerId > 0) {
+                url = url +"/"+ partnerId;
+            }
+        }
+        return this.http.get(url+"?access_token=" + this.authenticationService.access_token)
             .map( this.extractData )
             .catch( this.handleError );
     }

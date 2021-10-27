@@ -42,4 +42,6 @@ export class EmailTemplate {
 	partnerCompanyLogoPath = "";
 	vendorCompanyId:number = 0;
 	userId:number = 0;
+	surveyTemplate: boolean;
+	surveyCoBrandingTemplate: boolean;
 }

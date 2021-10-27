@@ -9,6 +9,7 @@ import { LandingPageFormsComponent } from './landing-page-forms/landing-page-for
 import { CampaignLandingPageFormsComponent } from './campaign-landing-page-forms/campaign-landing-page-forms.component';
 import { SelectFormComponent } from './select-form/select-form.component';
 import { SurveyAnalyticsComponent } from './survey-analytics/survey-analytics.component';
+import { CampaignSurveyFormsComponent } from './campaign-survey-forms/campaign-survey-forms.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
@@ -19,6 +20,8 @@ export const routes: Routes = [
     { path: "manage/:categoryId", component: ManageFormComponent },
     { path: ":alias/analytics", component: FormAnalyticsComponent},
     { path: ":alias/survey/analytics", component: SurveyAnalyticsComponent},
+    { path: ":alias/:campaignId/survey/analytics", component: SurveyAnalyticsComponent},
+    { path: ":alias/:campaignId/:partnerId/survey/analytics", component: SurveyAnalyticsComponent},
     { path: ":alias/:campaignAlias/analytics", component: FormAnalyticsComponent},
     { path: "category/:alias/:categoryId/analytics", component: FormAnalyticsComponent},
     { path: ":partner/f/:formId/:partnerLandingPageAlias/analytics", component: FormAnalyticsComponent},
@@ -29,10 +32,12 @@ export const routes: Routes = [
     {path: "partner/lf/:partnerLandingPageAlias",component:LandingPageFormsComponent},
     {path: "clpf/:landingPageCampaignId",component:CampaignLandingPageFormsComponent},
     {path: "clpf/:landingPageCampaignId/:partnerId",component:CampaignLandingPageFormsComponent},
+    {path: "csf/:surveyCampaignId",component:CampaignSurveyFormsComponent},
+    {path: "csf/:surveyCampaignId/:partnerId",component:CampaignSurveyFormsComponent},
     {path: "category/:categoryId/lf/:landingPageId",component:LandingPageFormsComponent},
     { path: "category/:categoryId/lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
     { path: "select", component: SelectFormComponent},   
-
+    
 ];
 
 @NgModule( {

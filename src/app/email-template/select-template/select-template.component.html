@@ -32,6 +32,8 @@
                                     <li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading" translate>Upload Custom</li>
                                     <li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading" translate>Event</li>
                                     <li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading" translate>Event Co-Branding</li>
+                                    <li class="filter" (click)="showSurveyTemplates(13)" [class.emailtemplate-selected]="13 == selectedTemplateTypeIndex" *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading" translate>Survey</li>
+                                    <li class="filter" (click)="showSurveyTemplates(14)" [class.emailtemplate-selected]="14 == selectedTemplateTypeIndex" *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading" translate>Survey Co-Branding</li>                                    
                                     <li class="filter" (click)="getTemplatesFromMarketo()" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" translate>Marketo Templates</li>
                                     <li class="filter" (click)="getTemplatesFromHubSpot()" [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex" translate>HubSpot Templates</li>
                                     <li class="filter" style="display: none;" translate>Own Template</li>
