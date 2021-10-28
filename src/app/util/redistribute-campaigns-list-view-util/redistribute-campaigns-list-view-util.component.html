@@ -21,7 +21,7 @@
             <li class="filter"  (click)="filterCampaigns('social')" [class.active]="'social' == campaignType" *ngIf="campaignAccess.socialCampaign">Social
             </li>
             <li class="filter"  (click)="filterCampaigns('event')" [class.active]="'event' == campaignType" *ngIf="campaignAccess.eventCampaign">Event</li>
-            <li class="filter"  (click)="filterCampaigns('survey')" [class.active]="'event' == campaignType" *ngIf="campaignAccess.surveyCampaign">Survey</li>
+            <li class="filter"  (click)="filterCampaigns('survey')" [class.active]="'event' == campaignType" *ngIf="campaignAccess.survey">Survey</li>
             <li class="filter" style="display: none;">Own Template</li>
           </ul>
           <div class="page-toolbar col-xs-12 col-sm-12 col-md-6">
