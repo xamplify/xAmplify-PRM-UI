@@ -12,9 +12,9 @@
 					<div class="page-toolbar col-xs-12">
 						<div class="btn-group pull-right">
 							<ng-container class='m10'>
-								 <span	class="btn btn-xs l-g-view"	[class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')"> 
+								 <span	class="btn btn-xs l-g-view mView"	[class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')"> 
 									<i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp; 
-									<span class="btn btn-xs l-g-view margin-space" [class.disabled]="modulesDisplayType.isGridView"	data-toggle="tooltip" data-placement="bottom" title="Grid View"	(click)="setViewType('g')"> 
+									<span class="btn btn-xs l-g-view margin-space mView" [class.disabled]="modulesDisplayType.isGridView"	data-toggle="tooltip" data-placement="bottom" title="Grid View"	(click)="setViewType('g')"> 
 										<i class="fa fa-th-large p10" aria-hidden="true"></i>
 									</span>
 									 <!-- <ng-container>
@@ -34,12 +34,12 @@
 								</a>
 								<div style="float: left;">
 									<ng-container *ngIf="isPartnerView">
-										<select class="form-control"	[(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
+										<select class="form-control mRight"	[(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
 											<option	*ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
 										</select> 
 									</ng-container>
 									<ng-container *ngIf="!isPartnerView">
-										<select	class="form-control" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
+										<select	class="form-control mRight" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
 											<option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
 										</select> 
 									</ng-container>
@@ -258,7 +258,7 @@
 			<section *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading">
 				<div class="row" *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
 					<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
-						<div class="grid-box min-h default-cursor box-shadow">
+						<div class="grid-box min-h default-cursor box-shadow mHeight">
 							<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
 								alt="{{asset?.assetName}}">
 							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
