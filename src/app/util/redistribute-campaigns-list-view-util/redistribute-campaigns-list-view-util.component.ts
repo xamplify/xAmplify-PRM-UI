@@ -185,7 +185,7 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
             this.campaignAccess.socialCampaign = campaignAccess.social;
             this.campaignAccess.eventCampaign = campaignAccess.event;
             this.campaignAccess.landingPageCampaign = campaignAccess.page;
-            this.campaignAccess.surveyCampaign = campaignAccess.form;
+            this.campaignAccess.survey = campaignAccess.survey;
         },_error=>{
             this.referenceService.showSweetAlertErrorMessage("Unable to fetch campaign types");
             this.referenceService.stopLoader(this.httpRequestLoader);

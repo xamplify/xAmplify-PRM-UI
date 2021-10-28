@@ -28,7 +28,7 @@
                                 <li class="filter" (click)="filterCampaigns('SMS',5)" [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign">SMS
                                 </li>
                                 <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign">Page</li>
-                                <li class="filter" (click)="filterCampaigns('SURVEY',7)" [class.campaign-type-selected]="7 == selectedCampaignTypeIndex" *ngIf="campaignAccess.formBuilder">Survey</li>
+                                <li class="filter" (click)="filterCampaigns('SURVEY',7)" [class.campaign-type-selected]="7 == selectedCampaignTypeIndex" *ngIf="campaignAccess.survey">Survey</li>
                                 <li class="filter" style="display: none;">Own Template</li>
                                 </ul>
                             </div>
