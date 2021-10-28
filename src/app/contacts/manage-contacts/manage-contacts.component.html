@@ -236,7 +236,7 @@
                             <div class="input-icon right">
                               <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                                 (input)="searchKeyValue('contactList')" class="form-control"
-                                placeholder="Search for a list" (keypress)="eventHandler($event.keyCode)">
+                                placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contactList')">
                               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
                                 (click)="searchKey='';search('contactList')"></button>
                               <button type="submit" class="search-box-item-click" (click)="search('contactList')">
@@ -708,7 +708,7 @@
                         <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                           (input)="searchKeyValue('contacts')" class="form-control"
                           placeholder="Search for a {{checkingContactTypeName}}"
-                          (keypress)="eventHandler($event.keyCode)">
+                          (keypress)="eventHandler($event.keyCode, 'contacts')">
                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
                           (click)="searchKey='';search('contacts')"></button>
                         <button type="submit" class="search-box-item-click" (click)="search('contacts')">
