@@ -54,6 +54,7 @@
                                                 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form?.name}}">
                                                     {{form?.name | slice:0:25}} <span *ngIf="form?.name?.length>25">...</span>
                                                 </h4>
+                                                <br>
                                                 <h6 *ngIf="!showDefaultForms">
                                                     Created By <strong>{{form?.createdName}}</strong>
                                                 </h6>
@@ -77,9 +78,9 @@
                                                     </span>
                                                 </div>                                                
                                                 <div>
-                                                    <p class="success" id="copied-message-{{i}}" style="display: none;">
+                                                    <span class="success" id="copied-message-{{i}}" style="display: none;">
                                                         <strong>Link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
-                                                    </p>
+                                                    </span>
                                                 </div>                                                
                                             </td>                                            
                                             <td [hidden]="!showEmbedLink || authenticationService.isShowForms">
@@ -95,9 +96,9 @@
                                                     </span>
                                                 </div>                                                
                                                 <div>
-                                                    <p class="success" id="embed-copied-message-{{i}}" style="display:none;">
+                                                    <span class="success" id="embed-copied-message-{{i}}" style="display:none;">
                                                         <strong>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
-                                                    </p>
+                                                    </span>
                                                 </div>
                                             </td>                                            
                                             <td id="actions-row" style="text-align: center;  vertical-align: middle;">

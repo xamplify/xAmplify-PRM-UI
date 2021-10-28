@@ -2087,7 +2087,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(this.searchContactType); } }
+    eventHandler(keyCode: any, searchType: string) {
+        if (keyCode === 13) {
+            this.search(searchType);
+        }
+	}
 
 	sendMail(partnerId: number) {
 		this.emailNotificationCustomResponse = new CustomResponse();
