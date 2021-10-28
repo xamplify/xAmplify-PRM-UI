@@ -45,7 +45,7 @@
                   <li class="filter" (click)="filterCampaigns('SMS',5)" [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign" translate>SMS
                   </li>
                   <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign" translate>Page</li>
-                  <li class="filter" (click)="filterCampaigns('SURVEY',7)" [class.campaign-type-selected]="7 == selectedCampaignTypeIndex" *ngIf="campaignAccess.formBuilder" translate>Survey</li>
+                  <li class="filter" (click)="filterCampaigns('SURVEY',7)" [class.campaign-type-selected]="7 == selectedCampaignTypeIndex" *ngIf="campaignAccess.survey" translate>Survey</li>
                   <li class="filter" style="display: none;" translate>Own Template</li>
                 </ul>
                 <div class="page-toolbar col-xs-12 col-sm-12 col-md-7" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">

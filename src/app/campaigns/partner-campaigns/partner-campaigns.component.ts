@@ -216,6 +216,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.campaignAccess.socialCampaign = campaignAccess.social;
                 this.campaignAccess.eventCampaign = campaignAccess.event;
                 this.campaignAccess.landingPageCampaign = campaignAccess.page;
+                this.campaignAccess.survey = campaignAccess.survey;
                 this.companyId = this.referenceService.companyId;
                 this.isSpfConfigured();
             },_error=>{

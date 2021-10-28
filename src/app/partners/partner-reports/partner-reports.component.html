@@ -287,7 +287,9 @@
                 <li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == sortOption.selectedCampaignTypeIndex">Video</li>
                 <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == sortOption.selectedCampaignTypeIndex">Social</li>
                 <li class="filter" *ngIf="referenseService.eventCampaign || referenseService.eventCampaignTabAccess" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == sortOption.selectedCampaignTypeIndex">Event</li>
-             	<li class="filter" (click)="filterCampaigns('LANDINGPAGE',5)" [class.campaign-type-selected]="5 == sortOption.selectedCampaignTypeIndex" *ngIf="landingPage">Page</li>
+               <li class="filter" (click)="filterCampaigns('LANDINGPAGE',5)" [class.campaign-type-selected]="5 == sortOption.selectedCampaignTypeIndex" *ngIf="landingPage">Page</li>
+               <li class="filter" (click)="filterCampaigns('SURVEY',6)" [class.campaign-type-selected]="6 == sortOption.selectedCampaignTypeIndex" *ngIf="survey">Survey</li>
+
                 <li class="filter" style="display: none;">Own Template</li>
 
               </ul>
