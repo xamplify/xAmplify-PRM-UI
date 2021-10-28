@@ -14,7 +14,7 @@ export class CopyrightComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.v_companyName) {
-      this.properties.BOTTOM_MESSAGE = '&copy; 2020 ' + this.authService.v_companyName + '. All rights reserved.'
+      this.properties.BOTTOM_MESSAGE = this.properties.COPY_RIGHT_PREFIX + ' '+this.authService.v_companyName + '. All rights reserved.'
     }
   }
 }

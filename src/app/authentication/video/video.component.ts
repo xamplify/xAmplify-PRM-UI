@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Properties } from '../../common/models/properties';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { EnvService } from 'app/env.service';
 
 @Component({
   selector: 'app-video',
@@ -10,14 +11,19 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 })
 export class VideoComponent implements OnInit {
 
-  constructor(public properties: Properties, public authService: AuthenticationService) { }
+  constructor(public properties: Properties, public authService: AuthenticationService,public envService: EnvService) { }
 
   ngOnInit() {
     if (this.authService.vanityURLEnabled && this.authService.v_companyLogoImagePath) {
       this.properties.COMPANY_LOGO = this.authService.v_companyLogoImagePath;      
       this.properties.xamplify_router = this.authService.vanityURLink;
     }else{
-      this.authService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+      let hostUrl = this.envService.CLIENT_URL;
+      if("https://xamplify.co/"==hostUrl){
+        this.authService.v_companyBgImagePath = "assets/images/xAmplify-sandbox.png";
+      }else{
+        this.authService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+      }
     }
   }
 }
