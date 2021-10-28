@@ -11,6 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { DealsService } from 'app/deals/services/deals.service';
+import { EnvService } from 'app/env.service';
 
 declare var $:any;
 
@@ -71,13 +72,14 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     customResponse:CustomResponse = new CustomResponse();
     showDealForm: boolean = false;
     dealResponse:CustomResponse = new CustomResponse();
+    showSandboxText = false;
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
         private referenceService: ReferenceService,
         public properties: Properties, public xtremandLogger:XtremandLogger,
         public sanitizer:DomSanitizer, public videoFileService: VideoFileService,
-        private dashboardService:DashboardService
+        private dashboardService:DashboardService,public envService:EnvService
     ) {
        this.sourceType = this.authenticationService.getSource();
         this.dashboardReport = new DashboardReport();
@@ -95,6 +97,8 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         }else{
            this.contactOrPartnerLink =  "/home/contacts/manage";
         }
+        this.showSandboxText = ("https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled);
+
 
     }
     closeModal(event: any){
