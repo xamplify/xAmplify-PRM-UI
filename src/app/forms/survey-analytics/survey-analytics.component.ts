@@ -28,7 +28,7 @@ export class SurveyAnalyticsComponent implements OnInit {
   campaignId: any;
   partnerId: any;
   routerLink: string;
-  campaignAlias: string;
+  campaignAlias: string;  
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService, public router: Router,
@@ -38,7 +38,7 @@ export class SurveyAnalyticsComponent implements OnInit {
     this.alias = this.route.snapshot.params['alias'];
     this.campaignId = this.route.snapshot.params['campaignId'];
     this.partnerId = this.route.snapshot.params['partnerId'];
-    if(this.campaignId != undefined && this.campaignId > 0){
+    if(this.campaignId != undefined && this.campaignId > 0){      
       if(this.partnerId != undefined && this.partnerId > 0){
           this.routerLink = "/home/forms/csf/" + this.campaignId+"/"+this.partnerId;
       }else{

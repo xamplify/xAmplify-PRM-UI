@@ -26,6 +26,7 @@ export class FormGeoAnalyticsComponent implements OnInit {
   searchKey = "";
   detailedResponse = false;
   selectedFormSubmitId: number;
+  showUserInfo: boolean = false;
 
   constructor(public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public formService: FormService,
@@ -35,6 +36,9 @@ export class FormGeoAnalyticsComponent implements OnInit {
   ngOnInit() {
     this.pagination.campaignId = this.campaignId;
     this.pagination.partnerId = this.partnerId;
+    if(this.campaignId != undefined && this.campaignId > 0){
+      this.showUserInfo = true; 
+    }
     this.getGeoAnalytics(this.pagination);
   }
 
