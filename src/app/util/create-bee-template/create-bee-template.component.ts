@@ -115,8 +115,8 @@ export class CreateBeeTemplateComponent implements OnInit {
             BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
               bee = beePluginInstance;
               request(
-                'GET',
-                'https://rsrc.getbee.io/api/templates/m-bee',
+                self.authenticationService.beeRequestType,
+                self.authenticationService.beeHostApi,
                 null,
                 null,
                 function (template: any) {

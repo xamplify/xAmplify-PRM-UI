@@ -104,6 +104,8 @@ export class AuthenticationService {
   mdfAccessAsPartner = false;
   opportunitiesAccessAsPartner = false;
   unauthorized = false;
+  beeHostApi = "";
+  beeRequestType = "";
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -118,6 +120,8 @@ export class AuthenticationService {
 
     this.clientId = this.envService.clientId;
     this.clientSecret = this.envService.clientSecret;
+    this.beeHostApi = this.envService.beeHostApi;
+    this.beeRequestType = this.envService.beeRequestType;
     this.imagesHost = this.envService.imagesHost;
     this.vendorRoleHash = this.envService.vendorRoleHash;
     this.partnerRoleHash = this.envService.partnerRoleHash;

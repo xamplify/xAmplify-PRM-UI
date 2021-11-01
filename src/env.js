@@ -8,22 +8,22 @@
     // Setting this to false will disable console output
 
     /*************Local*******************************/
-   // window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
+    window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
    // window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
-   // window.__env.imagesHost = "https://aravind.com/vod/images/";
+    window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
 
     //USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
     /********************Production************************/
-    window.__env.CLIENT_URL = 'https://xamplify.io/', // xamplify client app server
-    window.__env.SERVER_URL = 'https://xamp.io/' // xamplify backend production server
-    window.__env.imagesHost = "https://xamp.io/vod/images/";
+    //window.__env.CLIENT_URL = 'https://xamplify.io/', // xamplify client app server
+   // window.__env.SERVER_URL = 'https://xamp.io/' // xamplify backend production server
+   // window.__env.imagesHost = "https://xamp.io/vod/images/";
 
 
     /*********************QA**********************/
-    window.__env.CLIENT_URL = 'https://xamplify.co/';
+   // window.__env.CLIENT_URL = 'https://xamplify.co/';
     window.__env.SERVER_URL =  'https://aravindu.com/';
-    window.__env.imagesHost = "https://aravindu.com/vod/images/";
+   // window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
     /*************************Release*******************************/
     //window.__env.CLIENT_URL ="https://release.xamplify.io/", // release xamplify client app server
@@ -37,6 +37,8 @@
     window.__env.vendorRoleHash = "xvendorrole";
     window.__env.partnerRoleHash = "xpartnerrole";
     window.__env.captchaSiteKey = "6LfGfb0ZAAAAAEsdwjFHjpcssfxfCjMsZ8rL6gEQ";
+    window.__env.beeHostApi = "https://bump.getbee.io/v1/api/to/2.0.0";
+    window.__env.beeRequestType = "PUT";
 
 /******Auto Reload Deployment Configurations */
 window.__env.reloadAfterDeployment = false;
