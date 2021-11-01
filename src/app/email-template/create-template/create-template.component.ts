@@ -269,8 +269,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
                             bee = beePluginInstance;
                             request(
-                                'GET',
-                                'https://rsrc.getbee.io/api/templates/m-bee',
+                                authenticationService.beeRequestType,
+                                authenticationService.beeHostApi,
                                 null,
                                 null,
                                 function (template: any) {

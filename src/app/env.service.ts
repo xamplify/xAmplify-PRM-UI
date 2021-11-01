@@ -23,6 +23,9 @@ export class EnvService {
   partnerRoleHash = "";
 
   captchaSiteKey = "6LfGfb0ZAAAAAEsdwjFHjpcssfxfCjMsZ8rL6gEQ";
+  beeHostApi = "https://bump.getbee.io/v1/api/to/2.0.0";
+  beeRequestType = "PUT";
+
 
   /******Auto Reload Configurations */
   reloadAfterDeployment = false;
