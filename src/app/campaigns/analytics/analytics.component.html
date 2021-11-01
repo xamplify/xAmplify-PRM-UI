@@ -1010,9 +1010,9 @@
                                 *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
                                 URLs Clicked Count</th>
                               <th id="table-header"
-                                *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
+                                *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">
                                 User Level Campaign Analytics</th>
-                              <th id="table-header" *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0 && isChannelCampaign">Survey Count</th>
+                              <th id="table-header" *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0 && isChannelCampaign">Survey Analytics</th>
                               <th id="table-header" *ngIf="campaign.dipCampaign">
                                 Auto Responses
                               </th>
@@ -1142,7 +1142,7 @@
                                   {{item.urlsClickedCount}}
                                 </td>
                                 <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)" class="text-center"
-                                  *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'|| campaignType === 'SURVEY'">
+                                  *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
                                   <div class="actions-block override-actions" style="margin-right:100px">
                                     <a data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="User Level Campaign Analytics">
                                       <i class="fa fa-line-chart" aria-hidden="true"></i>
