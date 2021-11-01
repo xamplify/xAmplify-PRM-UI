@@ -89,7 +89,7 @@
     
                                                                 <td *ngIf="showContactType">
                                                                     <ng-container *ngIf="contacts.partnerUserList">
-                                                                        Partners
+                                                                        {{authenticationService?.partnerModule?.customName}}
                                                                     </ng-container>
                                                                     <ng-container *ngIf="!contacts.partnerUserList">
                                                                         Contacts

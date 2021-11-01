@@ -34,8 +34,8 @@
           class="fa fa-angle-right"></i></li>
       <li *ngIf="campaignRouter==='notification'"><a
           [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
-      <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner
-          Analytics</a><i class="fa fa-angle-right"></i></li>
+      <li *ngIf="campaignRouter==='partnerAnalytics'">
+        <a [routerLink]="['/home/partners/analytics']">{{authenticationService?.partnerModule?.customName}} Analytics</a><i class="fa fa-angle-right"></i></li>
       <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
        <!--  <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b> -->
@@ -91,11 +91,11 @@
                 <i class="fa fa-envelope-open" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
-                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType != 'VIDEO' && campaignType != 'LANDINGPAGE'">{{campaignType}} CAMPAIGN (PARTNER)</div>
-                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType === 'VIDEO'">{{campaignType}} (PARTNER)</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType != 'VIDEO' && campaignType != 'LANDINGPAGE'">{{campaignType}} CAMPAIGN ({{authenticationService?.partnerModule?.customName}})</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType === 'VIDEO'">{{campaignType}} ({{authenticationService?.partnerModule?.customName}})</div>
                 <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType != 'LANDINGPAGE'">{{campaignType}}  CAMPAIGN</div>
                 <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN</div>
-                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN (PARTNER)</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN ({{authenticationService?.partnerModule?.customName}})</div>
                 <div class="camp-number">
                   <strong class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 12}}</strong>
                   <span *ngIf="campaign.campaignName?.length>17">...</span>
