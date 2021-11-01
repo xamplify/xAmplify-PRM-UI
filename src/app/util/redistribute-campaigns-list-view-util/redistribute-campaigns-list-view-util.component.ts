@@ -217,6 +217,8 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
         this.pagination.campaignType = "EVENT";
     }else if(this.campaignType=="page" || this.campaignType=="landingPage"){
         this.pagination.campaignType = "LANDINGPAGE";
+    }else if(this.campaignType=="survey"){
+        this.pagination.campaignType = "SURVEY";
     }else{
         this.pagination.campaignType = "NONE";
     }

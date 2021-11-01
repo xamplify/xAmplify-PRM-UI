@@ -44,6 +44,7 @@
               <li class="filter"  (click)="filterCampaigns('social')" [class.active]="'social' == campaignType" *ngIf="campaignAccess.socialCampaign" translate>Social
               </li>
               <li class="filter"  (click)="filterCampaigns('event')" [class.active]="'event' == campaignType" *ngIf="campaignAccess.eventCampaign"  translate>Event</li>
+              <li class="filter"  (click)="filterCampaigns('survey')" [class.active]="'survey' == campaignType" *ngIf="campaignAccess.survey"  translate>Survey</li>
               <li class="filter" style="display: none;" translate>Own Template</li>
             </ul>
             <div class="page-toolbar col-xs-12 col-sm-12 col-md-6"  *ngIf="!this.modulesDisplayType.isFolderGridView && !this.modulesDisplayType.isFolderListView">

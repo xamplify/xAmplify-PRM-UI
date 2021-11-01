@@ -119,6 +119,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
           pagination.campaignType = "EVENT";
         }else if(this.campaignType=="page" || this.campaignType=="landingPage"){
             pagination.campaignType = "LANDINGPAGE";
+        } else if(this.campaignType=="survey"){
+            pagination.campaignType = "SURVEY";
         }
         else{
             pagination.campaignType = "NONE";
