@@ -18,5 +18,5 @@ export class Roles {
   marketingRole = 'ROLE_MARKETING';
   vendorTierRole = 'ROLE_VENDOR_TIER';
   prmRole = 'ROLE_PRM';
-
+  shareLeadsRole = 'ROLE_SHARE_LEADS';
 }
