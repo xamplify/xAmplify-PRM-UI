@@ -16,15 +16,18 @@ export class EnvService {
      imagesHost = "https://aravindu.com/vod/images/";
 
   
-  clientId = "6639d69f-523f-44ca-b809-a00daa26b367";
-  clientSecret = "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
+  clientId = "";
+  clientSecret = "";
+
+  beeTemplateQAClientId = "";
+  beeTemplateQAClientSecret = "";
 
   vendorRoleHash = "";
   partnerRoleHash = "";
 
   captchaSiteKey = "6LfGfb0ZAAAAAEsdwjFHjpcssfxfCjMsZ8rL6gEQ";
-  beeHostApi = "https://bump.getbee.io/v1/api/to/2.0.0";
-  beeRequestType = "PUT";
+  beeHostApi = "";
+  beeRequestType = "GET";
 
 
   /******Auto Reload Configurations */
