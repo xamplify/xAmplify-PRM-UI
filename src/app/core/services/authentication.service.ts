@@ -106,6 +106,8 @@ export class AuthenticationService {
   unauthorized = false;
   beeHostApi = "";
   beeRequestType = "";
+  beePageClientId = "";
+  beePageClientSecret = "";
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -121,10 +123,14 @@ export class AuthenticationService {
       console.log("production keys are used");
       this.clientId = this.envService.clientId;
       this.clientSecret = this.envService.clientSecret;
+      this.beePageClientId = this.envService.beePageProdClientId;
+      this.beePageClientSecret = this.envService.beePageProdClientSecret;
     }else{
       console.log("dev keys are used");
       this.clientId = this.envService.beeTemplateQAClientId;
       this.clientSecret = this.envService.beeTemplateQAClientSecret;
+      this.beePageClientId = this.envService.beePageDevClientId;
+      this.beePageClientSecret = this.envService.beePageDevClientSecret;
     }
     
     this.beeHostApi = this.envService.beeHostApi;
