@@ -929,6 +929,7 @@
 												 contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate></th>
 												<th *ngIf="contactsByType.selectedCategory === 'invalid' && !sharedLeads">Actions</th>
 												<th *ngIf="!isPartner || contactsByType.selectedCategory =='invalid'"></th>
+												<th *ngIf="isPartner && contactsByType.selectedCategory =='unsubscribe'"></th>
 											</tr>
 										</thead>
 										<tbody>
