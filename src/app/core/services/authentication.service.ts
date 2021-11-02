@@ -117,9 +117,16 @@ export class AuthenticationService {
     }
     
     this.SHARE_URL = this.SERVER_URL + 'embed/';
-
-    this.clientId = this.envService.clientId;
-    this.clientSecret = this.envService.clientSecret;
+    if(this.SERVER_URL=="https://xamp.io/" && this.APP_URL=="https://xamplify.io/"){
+      console.log("production keys are used");
+      this.clientId = this.envService.clientId;
+      this.clientSecret = this.envService.clientSecret;
+    }else{
+      console.log("dev keys are used");
+      this.clientId = this.envService.beeTemplateQAClientId;
+      this.clientSecret = this.envService.beeTemplateQAClientSecret;
+    }
+    
     this.beeHostApi = this.envService.beeHostApi;
     this.beeRequestType = this.envService.beeRequestType;
     this.imagesHost = this.envService.imagesHost;
