@@ -36,6 +36,12 @@
     window.__env.beeTemplateQAClientSecret = "44NyVor7LZaHN3HsoVie1gdX2xSIrVlrqHPk4SDVNQQA7K6HG5YW";
     window.__env.beeHostApi = "https://rsrc.getbee.io/api/templates/m-bee";
     window.__env.beeRequestType = "GET";
+    window.__env.beePageDevClientId = "5de3522e-acca-480c-ba53-1e85abdc1871";
+    window.__env.beePageDevClientSecret = "YyZ9ysJLmJVAFjngC6Zbh85dKb0F9tgfRj52d1lBEjCdB7SLy3Y9";
+    /**********Production*******/
+    window.__env.beePageProdClientId = "b9d3b05d-748e-4481-8fc0-63d375048332";
+    window.__env.beePageProdClientSecret = "xwd1V6IXGx6kNX0QZ1t5niB7CGUrO4SQW46Qs9j4LyvmHePwG5o1";
+
 
 /******Auto Reload Deployment Configurations */
 window.__env.reloadAfterDeployment = false;

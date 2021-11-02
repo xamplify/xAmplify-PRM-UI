@@ -29,6 +29,13 @@ export class EnvService {
   beeHostApi = "";
   beeRequestType = "GET";
 
+  /*****Bee Page Credentials */
+  beePageDevClientId = "";
+  beePageDevClientSecret = "";
+
+  beePageProdClientId = "";
+  beePageProdClientSecret = "";
+
 
   /******Auto Reload Configurations */
   reloadAfterDeployment = false;
