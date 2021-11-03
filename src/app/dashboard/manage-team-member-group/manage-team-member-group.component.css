@@ -169,3 +169,10 @@
 .fstcw-tm{
     width: 563px !important;
 }
+
+
+@media screen and (max-width:600px){
+    .grid-box-team{
+        height: 285px!important;
+    }
+}
