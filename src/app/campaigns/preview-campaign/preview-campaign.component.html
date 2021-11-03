@@ -331,8 +331,8 @@
                                                        <h6 *ngIf="reply.actionId ==0"> <input type="text" style="width:100%;height: 22px;" disabled value="Email is not opened"></h6>
                                                        <h6 *ngIf="reply.actionId==13"><input type="text" style="width:100%;height: 22px;" disabled value="Email is opened"></h6>
                                                        <h6 *ngIf="reply.actionId ==16"><input type="text" disabled style="width:100%;height: 22px;" value="Send immediately after email is opened"></h6>
-                                                       <h6 *ngIf="reply.actionId ==22"><input type="text" style="width:100%;height: 22px;" disabled value="Send if partner email is not used"></h6>
-                                                       <h6 *ngIf="reply.actionId ==24"> <input type="text" style="width:100%;height: 22px;" disabled value="If partner has not shared event"></h6>
+                                                       <h6 *ngIf="reply.actionId ==22"><input type="text" style="width:100%;height: 22px;" disabled value="Send if {{authenticationService?.partnerModule?.customName}} email is not used"></h6>
+                                                       <h6 *ngIf="reply.actionId ==24"> <input type="text" style="width:100%;height: 22px;" disabled value="If {{authenticationService?.partnerModule?.customName}} has not shared event"></h6>
                                                        <h6 *ngIf="reply.actionId==29"><input type="text" style="width:100%;height: 22px;" disabled value="Send reminder if no response"></h6>
                                                        <h6 *ngIf="reply.actionId ==30"><input type="text" disabled style="width:100%;height: 22px;" value="Send reminder if responded YES"></h6>
                                                        <h6 *ngIf="reply.actionId ==25"><input type="text" style="width:100%;height: 22px;" disabled value="Send email if RSVP Yes"></h6>
@@ -574,7 +574,7 @@
           <i class="fa fa-files-o"></i>
           </a>
           <a *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip"
-          data-placement="auto" title="Preview & Delete Partner(s)">
+          data-placement="auto" title="Preview & Delete {{authenticationService?.partnerModule?.customName}}">
           <i class="fa fa-handshake-o" id="partner-icon"></i>
           </a>
        </ng-container>
@@ -632,7 +632,7 @@
              <i class="fa fa-times" aria-hidden="true"></i>
              </button>
              <h4 class="modal-title" id="contactlist-title" *ngIf="!campaign?.channelCampaign">select contact list</h4>
-             <h4 class="modal-title" id="contactlist-title" *ngIf="!campaign?.channelCampaign">select partner list</h4>
+             <h4 class="modal-title" id="contactlist-title" *ngIf="!campaign?.channelCampaign">select {{authenticationService?.partnerModule?.customName}} list</h4>
           </div>
           <div class="modal-body">
              <div id="contactlist-body">

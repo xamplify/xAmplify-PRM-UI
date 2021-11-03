@@ -9,6 +9,7 @@
   </div>
   <div>
     <h5 class="bold-font-weight h5-custom-font">Send signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}:
+      <br><br>
       <switch  [status]="notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption($event)">
     </switch>

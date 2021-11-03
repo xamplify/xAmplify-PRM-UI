@@ -205,7 +205,7 @@
                                   <span>DRAFT</span>
                               </div>
                               <div class="ribbon active" *ngIf="emailTemplate.type=='PARTNER'">
-                                  <span>PARTNER</span>
+                                  <span>{{authenticationService?.partnerModule?.customName}}</span>
                               </div>
                               <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                   <h6 title="{{emailTemplate.vendorName}}">

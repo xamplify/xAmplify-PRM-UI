@@ -189,10 +189,10 @@
 
                                             <div class="form-group" *ngIf="!isOnlyPartner">
                                                 <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}">
-                                                    <strong translate>Through Partner </strong>
+                                                    <strong translate>Through {{authenticationService?.partnerModule?.customName}} </strong>
                                                 </label>
                                                 <label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}" translate>
-                                                    Through Partner
+                                                    Through {{authenticationService?.partnerModule?.customName}}
                                                 </label>
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">

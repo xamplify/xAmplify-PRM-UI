@@ -205,7 +205,7 @@ a.disabled {
 							</div>
 							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
 								<span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!authenticationService.isAddedByVendor && !isVendor);else other" translate>To Recipients</span>
-								<ng-template #other><span translate>To Partner</span> </ng-template>
+								<ng-template #other><span translate>To {{authenticationService?.partnerModule?.customName}}</span> </ng-template>
               				</span>
 							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
 								<span style="cursor: pointer; color: #54a7e9;"
@@ -229,7 +229,7 @@ a.disabled {
 									(statusChange)="setCoBrandingLogo($event)"> </switch>
 								<span style="cursor: pointer; color: #54a7e9;"
 									data-toggle="tooltip" data-placement="top"
-									title="Enable your Partner's logo to be displayed in redistributed campaigns">
+									title="Enable your {{authenticationService?.partnerModule?.customName}}'s logo to be displayed in redistributed campaigns">
 									<i class="fa fa-question-circle" style="padding: 8px;" aria-hidden="true"></i>
 								</span>
 							</div>
