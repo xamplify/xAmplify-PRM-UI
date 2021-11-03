@@ -396,7 +396,7 @@
 
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
                                         <section class="pricing py-5" *ngIf="integrationTabIndex == 0">
-                                            <div class="row" style="background-color: white;">
+                                            <div class="row mWidth" style="background-color: white;">
                                                 <!-- Free Tier -->
                                                 <div class="col-lg-4" [class.disabled] = "isMarketoProcess" (click)="configmarketo()">
                                                     <div class="card mb-5 mb-lg-0">
@@ -614,8 +614,8 @@
                                                                                 </app-timestamp>
                                                                               </h5>
                                                                         </td>
-                                                                        <td>{{pipeline.stages.length}}</td>
-                                                                       <td>
+                                                                        <td class="mAlign">{{pipeline.stages.length}}</td>
+                                                                       <td class="mAlign">
                                                                             <div class="actions-block override-actions">                                                                                
                                                                                 <ng-container>
                                                                                     <a *ngIf="pipeline.canSync" data-toggle="tooltip" data-placement="top" title="Synchronize with Salesforce" (click)="syncPipeline(pipeline)">
