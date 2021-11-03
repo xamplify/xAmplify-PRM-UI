@@ -186,14 +186,15 @@
                                                     </select>
                                                 </div>
                                             </div>
-
+                                           
                                             <div class="form-group" *ngIf="!isOnlyPartner">
-                                                <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}">
-                                                    <strong translate>Through {{authenticationService?.partnerModule?.customName}} </strong>
+                                                 <!--Through Partner-->
+                                                <label class="control-label col-sm-4" data-toggle="tooltip" 
+                                                data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}">
+                                                    <strong *ngIf="campaign.channelCampaign" translate>Through {{authenticationService?.partnerModule?.customName}} </strong>
+                                                    <ng-container *ngIf="!campaign.channelCampaign">Through {{authenticationService?.partnerModule?.customName}}</ng-container>
                                                 </label>
-                                                <label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}" translate>
-                                                    Through {{authenticationService?.partnerModule?.customName}}
-                                                </label>
+                                                <!--Through Partner-->
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
@@ -202,9 +203,27 @@
                                                                     (statusChange)="setChannelCampaign($event)">
                                                                 </switch>
                                                             </div>
+                                                            <!--To Partner-->
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}"><strong>{{channelCampaignFieldName | translate}}</strong></label>
-                                                                <label *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">{{channelCampaignFieldName | translate}}</label>
+                                                                <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">
+                                                                    <strong>
+                                                                        <ng-container *ngIf="channelCampaignFieldName=='tp'">
+                                                                           To {{authenticationService?.partnerModule?.customName}}
+                                                                        </ng-container>
+                                                                        <ng-container *ngIf="channelCampaignFieldName=='tr'">
+                                                                            To Recipients
+                                                                        </ng-container>
+                                                                    </strong>
+                                                                </label>
+                                                                <label *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">
+                                                                    <ng-container *ngIf="channelCampaignFieldName=='tp'">
+                                                                        To {{authenticationService?.partnerModule?.customName}}
+                                                                     </ng-container>
+                                                                     <ng-container *ngIf="channelCampaignFieldName=='tr'">
+                                                                         To Recipients
+                                                                     </ng-container>
+                                                                </label>
+                                                                <!--To Partner-->
                                                                 <span style="cursor: pointer;color: #54a7e9;">
                                                                     <i class="fa fa-question-circle" data-html="true"
                                                                         data-toggle="tooltip" data-placement="bottom"
