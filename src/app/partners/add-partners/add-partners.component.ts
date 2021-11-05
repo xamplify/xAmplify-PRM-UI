@@ -1489,6 +1489,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						this.selectedAddPartnerOption = 3;
 						this.setSocialPage(1);
 						this.socialPartners.contacts = this.socialPartnerUsers;
+						this.customResponse.isVisible = false;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -2473,6 +2474,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         localStorage.removeItem('isHubSpotAuth');
         localStorage.removeItem('isZohoAuth');
         localStorage.removeItem('validationMessage');
+        this.customResponse.isVisible = false;
         if (tempCheckGoogleAuth == 'yes' ) {
         	this.getGoogleContactsUsers();
         	tempCheckGoogleAuth = 'no';
