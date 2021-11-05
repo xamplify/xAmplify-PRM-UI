@@ -37,7 +37,7 @@
     </div>
     <div class="row" *ngIf="statusCode==200">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="col-md-12">
+        <div class="col-md-12" *ngIf="!detailedResponse">
             <div class="portlet light clearfix" style="min-height: 644px;">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
@@ -196,6 +196,18 @@
                                                         <span class="badge" id="notification">{{form.count}}</span>
                                                     </a>
                                                 </ng-container>
+                                                <!-- <ng-container *ngIf="pagination.surveyCampaignForm">
+                                                    <ng-container *ngIf="form.formSubmitId == undefined">
+                                                        <a class="cursor" title="Survey not submitted" data-toggle="tooltip" data-placement="top">
+                                                            <i class="fa fa-wpforms" aria-hidden="true"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="form.formSubmitId != undefined && form.formSubmitId > 0">
+                                                        <a data-rel="fancybox-button" (click)="showDetailedResponse(form.formSubmitId)" title="View Survey Submision" data-toggle="tooltip" data-placement="top">
+                                                            <i class="fa fa-wpforms" aria-hidden="true"></i>
+                                                        </a>
+                                                    </ng-container>
+                                                </ng-container> -->
                                                 <ng-container *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
                                                     <!-------------Disable onclick if count==0   ----->
                                                     <ng-container *ngIf="form.count==0">
@@ -305,6 +317,9 @@
             </div>
             <!-- END PAGE CONTENT-->
         </div>
+        <ng-container *ngIf="detailedResponse">
+            <app-form-detail-response [formSubmitId]="selectedFormSubmitId" (notifyClose)="detailedResponse=false"></app-form-detail-response>
+        </ng-container>
     </div>
 
 
@@ -355,4 +370,8 @@
         </div>
     </div>
 
+    
+
 </div>
+
+

@@ -58,6 +58,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     selectedFormTypeIndex = 0;
 
     surveyCampaignId = 0;
+    selectedFormSubmitId = 0;
+    detailedResponse: boolean = false;
 
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -487,5 +489,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.pagination.filterKey = type;
         this.pagination.pageIndex = 1;
         this.listForms(this.pagination);
-      }
+    }
+
+    showDetailedResponse(formSubmitId: any) {
+        this.selectedFormSubmitId = formSubmitId;
+        this.detailedResponse = true;
+    }
 }
