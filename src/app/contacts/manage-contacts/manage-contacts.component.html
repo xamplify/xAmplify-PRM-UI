@@ -1146,7 +1146,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" translate>Close</button>
-        <button type="button" class="btn btn-primary" (click)="hasSaveAsAccess()" translate>Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="hasSaveAsAccess()" [disabled]="assignLeads && disableSave" translate>Save changes</button>
       </div>
     </div>
   </div>

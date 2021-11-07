@@ -123,6 +123,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	searchContactType = "";
 	contactListIdForSyncLocal: any;
 	socialNetworkForSyncLocal: any;	
+	disableSave : boolean =false;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
@@ -1917,6 +1918,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     hasSaveAsAccess() {
        if (this.assignLeads) {
+    	   this.disableSave = true;
             this.saveAsLeadsInputChecking();
         } else {
             try {
@@ -2014,12 +2016,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     saveAsNewLeadsList() {
     	this.loading = true;
 
-    	/*let contactListObject = new ContactList;
-    	contactListObject.name = contactListName;
-    	contactListObject.id = contactSelectedListId;
-    	contactListObject.isPartnerUserList = false;
-    	contactListObject.publicList = true;*/
-
         this.contactService.saveAsNewList(this.contactListObject)
             .subscribe(
             data => {
@@ -2027,8 +2023,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 this.loading = false;
                 if (data.access) {
                     if (data.statusCode == 401) {
+                    	this.disableSave = false;
                     	this.saveAsError = data.message;
                     } else if (data.statusCode == 200) {
+                    	this.disableSave = false;
                     	$('#saveAsModal').modal('hide');
                     	this.cleareDefaultConditions();
                         this.customResponse = new CustomResponse('SUCCESS', data.message, true);
