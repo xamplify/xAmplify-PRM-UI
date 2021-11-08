@@ -1,7 +1,7 @@
 <style>.selectedtype{ background:#00a6e8;}</style>
  <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
    <div>
-     <div class="page-bar">
+     <div class="page-bar mPageBar">
        <ul class="page-breadcrumb">
          <li *ngIf="!authenticationService.isSuperAdmin()">
            <i class="fa fa-home" aria-hidden="true"></i> 
@@ -35,14 +35,14 @@
                <div class="page-toolbar">
                  <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo" class="btn-group pull-right col-xs-12 p0" [ngClass]="{'margin-css':!authenticationService.isOrgAdminPartner() || !authenticationService.isVendorPartner()}">
                    <div class="inputs" align="right">
-                     <div style="padding:0" class="col-xs-12 col-sm-6 col-md-3">
+                     <div style="padding:0" class="col-xs-12 col-sm-6 col-md-3 mList">
                        <select class="form-control select-option" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
                           <option  [value]="0" translate>All Categories</option>
                           <option *ngFor="let category of categories" [ngValue]="category.id" [selected]="category.id==pagination.videoCategoryId">{{category.name}}</option>
                        </select>
                      </div>
                      <div class="col-xs-12 col-sm-6 col-md-3"></div>
-                     <div class="col-xs-6 col-sm-3 col-md-3 p0 flex">
+                     <div class="col-xs-6 col-sm-3 col-md-3 p0 flex mSort">
                        <ng-container class='m10'>
                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
                          <span class="btn btn-xs hidden-xs l-g-view m0"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
@@ -52,8 +52,8 @@
                          <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
                        </select>
                      </div>
-                     <div class="col-xs-6 col-sm-3 col-md-3 col-md-3" style="padding-right:0">
-                       <div class="input-icon right" style="cursor:pointer">
+                     <div class="col-xs-6 col-sm-3 col-md-3 col-md-3 mSearch" style="padding-right:0">
+                       <div class="input-icon right mSrchWdth" style="cursor:pointer">
                           <input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
                           placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode)">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchVideoTitelName()"></button>

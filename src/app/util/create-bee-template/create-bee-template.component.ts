@@ -115,8 +115,8 @@ export class CreateBeeTemplateComponent implements OnInit {
             BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
               bee = beePluginInstance;
               request(
-                'GET',
-                'https://rsrc.getbee.io/api/templates/m-bee',
+                self.authenticationService.beeRequestType,
+                self.authenticationService.beeHostApi,
                 null,
                 null,
                 function (template: any) {
@@ -153,9 +153,13 @@ export class CreateBeeTemplateComponent implements OnInit {
     this.emailTemplateService.updatePartnerTemplate(emailTemplate).
       subscribe(
         data => {
-          this.loading = false;
+          this.loading = false;          
           if (data.access) {
-            this.customResponse = new CustomResponse('SUCCESS', 'Template updated successfully', true);
+            if (data.statusCode === 200) {
+              this.customResponse = new CustomResponse('SUCCESS', 'Template updated successfully', true);
+            } else if (data.statusCode === 500) {
+              this.customResponse = new CustomResponse('ERROR', data.message, true);
+            }            
           } else {
             this.authenticationService.forceToLogout();
           }

@@ -847,5 +847,29 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         }
     }
 
+    showSurveyTemplates(index: number) {
+        try {
+            this.filteredEmailTemplates = new Array<EmailTemplate>();
+            this.selectedTemplateTypeIndex = index;
+            console.log(this.allEmailTemplates);
+            for (var i = 0; i < this.allEmailTemplates.length; i++) {
+                var isSurveyTemplate = false;
+                if (index == 13) {
+                    isSurveyTemplate = this.allEmailTemplates[i].surveyTemplate;
+                } else if (index == 14) {
+                    isSurveyTemplate = this.allEmailTemplates[i].surveyCoBrandingTemplate;
+                }                
+                if (isSurveyTemplate) {
+                    this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
+                }
+            }
+            this.logger.debug("Showing showSurveyTemplates size of" + this.filteredEmailTemplates.length);
+        } catch (error) {
+            var cause = "Error in showSurveyTemplates() in selectTemplatesComponent";
+            this.logger.error(cause + ":" + error);
+        }
+    }
+
+
     
 }

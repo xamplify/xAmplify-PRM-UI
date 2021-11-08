@@ -13,6 +13,9 @@
  }
  </style>
  <div class="page-content" *ngIf="!showDealForm">
+  <div *ngIf="showSandboxText" class="alert alert-info">
+    <strong>{{properties?.sandboxText}}</strong>
+  </div>
     <div class="page-bar p0" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
       <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
                'alert-danger': userDefaultPage.responseType == 'ERROR'}">

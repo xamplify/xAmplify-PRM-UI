@@ -39,7 +39,8 @@
       <table class="table tgrid" aria-describedby="form-analytics-table">
         <thead>
           <tr>
-            <th scope="row">#</th>						
+            <th scope="row">#</th>		
+            <th scope="row" *ngIf="showUserInfo">Name</th>				
             <th scope="row">Device Details</th>
             <th scope="row">IP Address</th>
             <th scope="row">Location</th>	
@@ -52,6 +53,7 @@
           <ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
             <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
               		<td>{{rowIndex+1}}</td>
+                  <td *ngIf="showUserInfo"><app-user-info [userInfo]="formDataRow?.user" [isCompanyInfo]="true"></app-user-info></td>
                   <td><span class="deviceType">{{formDataRow.deviceType}}</span><div><b>OS: </b>{{formDataRow.os}}</div></td>
                   <td>{{formDataRow.ipAddress}}</td>
                   <td>{{formDataRow.city}}, {{formDataRow.state}}<div><b>ZIP: </b>{{formDataRow.zip}}</div></td>

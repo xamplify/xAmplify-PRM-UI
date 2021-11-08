@@ -1,5 +1,5 @@
 <div class="page-content">
-	<div class="page-bar">
+	<div class="page-bar mPageBar">
 		<ul class="page-breadcrumb">
 			<li>
 				<i class="fa fa-home" aria-hidden="true"></i>
@@ -203,7 +203,7 @@
         <div class="col-xs-12 col-sm-6 pu0">
         <div class="col-xs-12 p0" >
 					<div [class.customDisableCss]='isDisable || isFileProgress || isSelectedVideo  || contentProcessing' (drop)="contentUpload($event)"
-				    class="well my-drop-zone"
+				    class="well my-drop-zone mtop"
 					 style="position: relative; cursor:pointer; margin-bottom:0" (click)="contentDropClick()">
            <input type="file" (change)="contentUpload($event)" multiple="multiple"
 						  style="opacity: 0.0; position: absolute;" title=" " id="content-upload">

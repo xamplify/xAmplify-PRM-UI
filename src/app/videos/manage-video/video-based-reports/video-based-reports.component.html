@@ -86,7 +86,7 @@
 					<span class="caption-subject font-green-sharp uppercase" translate>Minutes watched by RECIPIENT</span>
 					<span class="caption-helper"></span>
 				</div>
-				<div class="panel-title pull-right">
+				<div class="panel-title pull-right mPannel">
 					<span style="float:right; font-size: 13px;">
 						<select style="cursor: pointer" [(ngModel)]="minutesSort" (ngModelChange)="selectedSortByValue($event.value)">
 							<option *ngFor="let sort of sortMintuesDates" [ngValue]="sort"> {{sort.name}} </option>
@@ -121,7 +121,7 @@
 								</tr>
 							</ng-container>
             </tbody>
-            <span  style="position: absolute;padding: 122px 209px;" *ngIf="viewsMinutesData.length==0" translate>No data available</span>
+            <span class="mrecipient"  style="position: absolute;padding: 122px 209px;" *ngIf="viewsMinutesData.length==0" translate>No data available</span>
 					</table>
 				</div>
 			</div>
@@ -169,7 +169,7 @@
 			<div class="portlet-body" style="min-height: 308px">
 				<app-bar-chart *ngIf="viewsBarData?.views?.length>0" [viewsBarData]="viewsBarData" (notifyParent)="selectedCategoryValue($event)"></app-bar-chart>
         <div *ngIf="viewsBarData?.views?.length ==0" style="max-width: 100%;text-align: center;">
-						<span style="position: absolute;top: 195px;left: 220px;" translate>No data available</span>
+						<span class="mvideoview" style="position: absolute;top: 195px;left: 220px;" translate>No data available</span>
 					</div>
       </div>
 		</div>

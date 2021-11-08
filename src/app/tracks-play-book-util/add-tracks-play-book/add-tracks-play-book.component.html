@@ -320,7 +320,7 @@
                         </a> <a href="javascript:;"> </a>
                       </span>
                     </div>
-                    <div class="item__content">
+                    <div class="item__content" style="padding-top: 10px;">
                       <div class="flex-row">
                         <div class="item__last-modified">
                           <span>
@@ -328,11 +328,11 @@
                             </app-timestamp>
                           </span>
                         </div>
-                        <span class="item__name" data-toggle="tooltip" [title]="file.assetName">
-                          <strong>{{file.assetName | slice: 0: 8}}
-                            <span *ngIf="file.assetName?.length>8">...</span>
-                          </strong>
-                        </span>
+                        <div class="wrap-asset-name" style="-webkit-box-orient: vertical;">
+                          <span data-toggle="tooltip" [title]="file.assetName">
+                            <strong>{{file.assetName}}</strong>
+                          </span>
+                        </div>
                         <div class="item__size">
                           <span *ngIf="file.published">Published</span>
                         </div>

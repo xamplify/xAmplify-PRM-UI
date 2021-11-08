@@ -1,6 +1,6 @@
 <img *ngIf="userLocation.countryCode"
-	src="https://lipis.github.io/flag-icon-css/flags/4x3/{{userLocation.countryCode | lowercase}}.svg"
-	width="15px">
+	src="../assets/images/flags/{{userLocation.countryCode | lowercase}}.svg"
+	width="15px" alt="">
 {{userLocation.country}}
 <h5 class="m0" *ngIf="userLocation.country!=null">{{userLocation.city}}, {{userLocation.state}}</h5>
 <h5 class="m0" *ngIf="userLocation.country==null && userLocation.city==null && userLocation.state==null">{{userLocation.location}}</h5>

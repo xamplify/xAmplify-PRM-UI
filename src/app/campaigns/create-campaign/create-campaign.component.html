@@ -516,7 +516,7 @@
                                 </div>
                                 <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
 
-                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage' || campaignType=='survey'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
 
                                 <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                             </div>
@@ -935,7 +935,7 @@
                                                                             </h6> 
                                                                             <h6 *ngIf="contacts?.formList" class="view-banner view-banner-green" translate>
                                                                                 <span data-toggle="tooltip" data-placement="top"
-                                                                                    title="This list is associated with a form." translate>Form Lead List
+                                                                                    title="This list is associated with a form." translate>Form Contact List
                                                                                 </span>
                                                                             </h6>                                                                           
                                                                         </div>                                                                        
@@ -1489,6 +1489,9 @@
                                                                 <ng-container *ngIf="campaignType=='landingPage'">
                                                                     <img style="margin: 0 auto;height: 106px;" alt="Page Campaign" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
                                                                 </ng-container>
+                                                                <ng-container *ngIf="campaignType=='survey'">
+                                                                    <img style="margin: 0 auto;height: 106px;" alt="E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/survey.png">
+                                                                </ng-container>
                                                             </h4>
                                                         </div>
                                                     </div>
@@ -1554,18 +1557,18 @@
                                                         <tr>
                                                             <td width="25%">
                                                                 <div class="icon-border">
-                                                                    <i *ngIf="campaignType == 'video' || campaignType == 'regular'" class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
+                                                                    <i *ngIf="campaignType == 'video' || campaignType == 'regular' || campaignType == 'survey'" class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
                                                                     <i *ngIf="campaignType == 'landingPage'" class="fa fa-wpforms fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
                                                                 <ng-container class="h4-text" *ngIf="campaignType == 'video'" translate>Email Template
                                                                 </ng-container>
-                                                                <ng-container class="h4-text" *ngIf="campaignType == 'regular'" translate>Email Template
+                                                                <ng-container class="h4-text" *ngIf="campaignType == 'regular' || campaignType == 'survey'" translate>Email Template
                                                                 </ng-container>
                                                                 <ng-container class="h4-text" *ngIf="campaignType == 'landingPage'" translate>Page
                                                                 </ng-container>
                                                             </td>
                                                             <td width="55%">
-                                                                <ng-container *ngIf="campaignType == 'video' || campaignType == 'regular'">
+                                                                <ng-container *ngIf="campaignType == 'video' || campaignType == 'regular' || campaignType == 'survey'">
                                                                     <a (click)="getTemplateById(emailTemplate)" title="{{emailTemplate.name}}">
                                                                         <ng-container
                                                                             *ngIf="emailTemplate.name?.length>50">

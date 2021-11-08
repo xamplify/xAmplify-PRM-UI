@@ -79,6 +79,9 @@ export class VendorActivityAnalyticsComponent implements OnInit {
       baseUrl+= "social";
       this.router.navigate([baseUrl]);
 
+    } else if("Survey"==campaignType){
+      baseUrl+= "survey";
+      this.router.navigate([baseUrl]);
     }
 }
 

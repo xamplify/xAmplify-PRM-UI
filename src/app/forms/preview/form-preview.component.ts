@@ -139,7 +139,9 @@ export class FormPreviewComponent implements OnInit {
                   value.choices = value.checkBoxChoices;
               }
           });
-          } else {
+          } else if (response.statusCode === 409) {
+            this.formSubmitted = true;
+          }else {
             this.hasFormExists = false;
             this.addHeaderMessage("Oops! This form does not exists.", this.errorAlertClass);
           }

@@ -17,6 +17,7 @@ import { DashboardAnalyticsDto } from '../models/dashboard-analytics-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { DealsService } from 'app/deals/services/deals.service';
+import { EnvService } from 'app/env.service';
 
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 @Component({
@@ -58,14 +59,16 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    hasCampaignRole: boolean;
    showDealForm: boolean = false;
    customResponse: CustomResponse = new CustomResponse();
-
-  constructor(public authenticationService: AuthenticationService,public userService: UserService,
+   showSandboxText = false;
+  constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
     public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService) {
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-   }
+    this.showSandboxText = ("https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled);
+    
+}
 
   ngOnInit() {
     let companyProfileName = this.authenticationService.companyProfileName;

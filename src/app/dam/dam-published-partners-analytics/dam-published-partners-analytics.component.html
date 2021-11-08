@@ -37,7 +37,7 @@
                     Published Partners
                  </div>
                  <div class="inputs"  style="float: right; padding: 4px">
-                    <div style="float: left; margin: 0 10px;">
+                    <div  class="mSort" style="float: left; margin: 0 10px;">
                       <select class="form-control" [(ngModel)]="sortOption.publishedPartnerAnalyticsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                         <option *ngFor="let option of sortOption.publishedPartnerAnalyticsDropDown"
                             [ngValue]="option" translate>
@@ -99,7 +99,7 @@
                                 </ng-container>
                              </tbody>
                           </table>
-                        <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info">
+                        <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info mAlert">
                             <strong>No Data Found.</strong>
                         </div>
                        </div>

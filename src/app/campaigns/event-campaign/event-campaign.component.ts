@@ -245,7 +245,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     templateMessageClass = "";
     templateUpdateMessage = "";
     showEditTemplateMessageDiv = false;
-
+    TO_PARTNER_MESSAGE: string = "";
+    THROUGH_PARTNER_MESSAGE: string= "";
 
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
@@ -770,7 +771,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             contactListsPagination.channelCampaign = this.eventCampaign.channelCampaign;
         }
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor)) {
-            this.contactListsPagination.filterValue = false;
+        	this.contactListsPagination.filterValue = false;
             this.contactListsPagination.filterKey = null;
             this.showContactType = true;
             if (this.isEditCampaign) {
@@ -778,6 +779,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 this.contactListsPagination.filterKey = 'isPartnerUserList';
             }
         } else {
+        	this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
+            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
             if (this.reDistributeEvent || this.reDistributeEventManage) {
                 this.contactListsPagination.filterValue = false;
             } else {
@@ -813,10 +816,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             }
         }
 
-        if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) || this.authenticationService.superiorRole === 'OrgAdmin & Partner') {
+        if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) || this.authenticationService.superiorRole === 'OrgAdmin & Partner'
+        	|| this.authenticationService.superiorRole === 'OrgAdmin') {
             if (!this.eventCampaign.channelCampaign) {
                 this.contactListTabName = "Partners & Recipients";
             }
+            this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
+            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
         }
 
 

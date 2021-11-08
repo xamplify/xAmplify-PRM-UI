@@ -8,27 +8,22 @@
     // Setting this to false will disable console output
 
     /*************Local*******************************/
-   // window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
-   // window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
-   // window.__env.imagesHost = "https://aravind.com/vod/images/";
+    window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
+    window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
+    window.__env.imagesHost = "http://127.0.0.1:8887/images/";
 
 
     //USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
     /********************Production************************/
-    window.__env.CLIENT_URL = 'https://xamplify.io/', // xamplify client app server
-    window.__env.SERVER_URL = 'https://xamp.io/' // xamplify backend production server
-    window.__env.imagesHost = "https://xamp.io/vod/images/";
+   // window.__env.CLIENT_URL = 'https://xamplify.io/'; // xamplify client app server
+   // window.__env.SERVER_URL = 'https://xamp.io/'; // xamplify backend production server
+   // window.__env.imagesHost = "https://xamp.io/vod/images/";
 
 
     /*********************QA**********************/
-    window.__env.CLIENT_URL = 'https://xamplify.co/';
-    window.__env.SERVER_URL =  'https://aravindu.com/';
-    window.__env.imagesHost = "https://aravindu.com/vod/images/";
-
-    /*************************Release*******************************/
-    //window.__env.CLIENT_URL ="https://release.xamplify.io/", // release xamplify client app server
-    // window.__env.SERVER_URL =  "https://release.xamp.io/" // release xamplify backend production server
-    // window.__env.imagesHost = "https://release.xamp.io/vod/images/";
+   // window.__env.CLIENT_URL = 'https://xamplify.co/';
+    //window.__env.SERVER_URL =  'https://aravindu.com/';
+   // window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
 
 
@@ -37,6 +32,16 @@
     window.__env.vendorRoleHash = "xvendorrole";
     window.__env.partnerRoleHash = "xpartnerrole";
     window.__env.captchaSiteKey = "6LfGfb0ZAAAAAEsdwjFHjpcssfxfCjMsZ8rL6gEQ";
+    window.__env.beeTemplateQAClientId = "059b63c2-3a9b-4b8c-8a33-23b58422ba81";
+    window.__env.beeTemplateQAClientSecret = "44NyVor7LZaHN3HsoVie1gdX2xSIrVlrqHPk4SDVNQQA7K6HG5YW";
+    window.__env.beeHostApi = "https://rsrc.getbee.io/api/templates/m-bee";
+    window.__env.beeRequestType = "GET";
+    window.__env.beePageDevClientId = "5de3522e-acca-480c-ba53-1e85abdc1871";
+    window.__env.beePageDevClientSecret = "YyZ9ysJLmJVAFjngC6Zbh85dKb0F9tgfRj52d1lBEjCdB7SLy3Y9";
+    /**********Production*******/
+    window.__env.beePageProdClientId = "b9d3b05d-748e-4481-8fc0-63d375048332";
+    window.__env.beePageProdClientSecret = "xwd1V6IXGx6kNX0QZ1t5niB7CGUrO4SQW46Qs9j4LyvmHePwG5o1";
+
 
 /******Auto Reload Deployment Configurations */
 window.__env.reloadAfterDeployment = false;

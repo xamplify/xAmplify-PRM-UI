@@ -219,6 +219,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
         }
+        
+        if(urlType===this.assignLeadBaseUrl){
+            role = this.roles.shareLeadsRole;
+        }
 
         const isVendor =  roles.indexOf(this.roles.vendorRole)>-1 || roles.indexOf(this.roles.vendorTierRole)>-1 || roles.indexOf(this.roles.prmRole)>-1 ;
         const isPartner = roles.indexOf(this.roles.companyPartnerRole)>-1;

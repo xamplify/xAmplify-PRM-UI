@@ -173,12 +173,14 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.campaignService.getUserDetailsFromUserList(this.loggedInUserCompanyId,this.pagination.userId,this.userType).subscribe((result: any) => {
 		  this.tilesLoader = false;
 		  this.userDetails = result.data;
-		  let fullName = this.userDetails.fullName;
-		  let emailId = this.userDetails.emailId;
-		  if(fullName!=undefined && fullName!="" && fullName!=null){
-			this.circleAlphabet = fullName.slice(0,1);
-		  }else{
-			this.circleAlphabet = emailId.slice(0,1);
+		  if(this.userDetails!=undefined){
+			let fullName = this.userDetails.fullName;
+			let emailId = this.userDetails.emailId;
+			if(fullName!=undefined && fullName!="" && fullName!=null){
+			  this.circleAlphabet = fullName.slice(0,1);
+			}else{
+			  this.circleAlphabet = emailId.slice(0,1);
+			}
 		  }
 		}, error => {
 			this.showErrorPage(error);
