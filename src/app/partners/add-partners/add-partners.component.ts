@@ -946,7 +946,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						if (self.newPartnerUser.length == 0) {
-							self.customResponse = new CustomResponse('ERROR', "No partners found", true);
+							self.customResponse = new CustomResponse('ERROR', "No records found", true);
 							self.cancelPartners();
 						} else {
 							self.setSocialPage(1);
