@@ -62,7 +62,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
       }
       else {
           this.isPartner = true;
-          this.checkingContactTypeName = "Partner"
+          this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
       }
 
     }

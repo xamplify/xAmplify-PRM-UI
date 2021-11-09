@@ -69,17 +69,17 @@ export class Properties {
 	PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your partner list has been updated successfully and any selected campaigns have been launched.";
 
 	PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully.";
-	PARTNERS_CREATE_ERROR = "An error occured while creating your partner";
+	PARTNERS_CREATE_ERROR = "An error occured while creating";
 
 	PARTNERS_UPDATE_SUCCESS = "Your Partner has been updated successfully.";
-	PARTNERS_UPDATE_ERROR = "An error occured while updating your partner.";
+	PARTNERS_UPDATE_ERROR = "An error occured while updating";
 
 	PARTNERS_DELETE_SUCCESS = "Your Partner(s) have been deleted successfully.";
 	PARTNERS_LIST_DELETE_SUCCESS = 'Your Partner list has been deleted successfully.'
-	PARTNERS_DELETE_ERROR = "An error occured while deleting your partner.";
+	PARTNERS_DELETE_ERROR = "An error occured while deleting.";
 
 	PARTNERS_SAVE_SUCCESS = "Your Partner(s) have been saved successfully.";
-	PARTNERS_SAVE_ERROR = "An error occured while saving your partners.";
+	PARTNERS_SAVE_ERROR = "An error occured while saving.";
 	PARTNERS_EMAIL_VALIDATE_SUCCESS = "Selected Partner(s) have been validated successfully.";
 	LEADS_EMAIL_VALIDATE_SUCCESS = "Selected Lead(s) have been validated successfully.";
 

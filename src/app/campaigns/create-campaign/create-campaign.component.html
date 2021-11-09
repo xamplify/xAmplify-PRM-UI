@@ -72,7 +72,14 @@
                             <span>
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
-                            <h5 class="hidden-xs">{{contactListTabName | translate}}</h5>
+                            <h5 class="hidden-xs">
+                                <ng-container *ngIf="contactListTabName=='Partners'">
+                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                </ng-container>
+                                <ng-container *ngIf="contactListTabName!='Partners'">
+                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                </ng-container>
+                            </h5>
                         </div>
                     </div>
 
@@ -81,7 +88,14 @@
                             <span>
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
-                            <h5 class="hidden-xs">{{contactListTabName}}</h5>
+                            <h5 class="hidden-xs">
+                                <ng-container *ngIf="contactListTabName=='Partners'">
+                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                </ng-container>
+                                <ng-container *ngIf="contactListTabName!='Partners'">
+                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                </ng-container>
+                            </h5>
                         </div>
                     </div>
                     <div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
@@ -172,12 +186,15 @@
                                                     </select>
                                                 </div>
                                             </div>
-
+                                           
                                             <div class="form-group" *ngIf="!isOnlyPartner">
-                                                <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}"><strong translate>Through Partner
-                                                        </strong></label>
-                                                <label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}" translate>Through Partner
-                                                    </label>
+                                                 <!--Through Partner-->
+                                                <label class="control-label col-sm-4" data-toggle="tooltip" 
+                                                data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}">
+                                                    <strong *ngIf="campaign.channelCampaign" translate>Through {{authenticationService?.partnerModule?.customName}} </strong>
+                                                    <ng-container *ngIf="!campaign.channelCampaign">Through {{authenticationService?.partnerModule?.customName}}</ng-container>
+                                                </label>
+                                                <!--Through Partner-->
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
@@ -186,9 +203,27 @@
                                                                     (statusChange)="setChannelCampaign($event)">
                                                                 </switch>
                                                             </div>
+                                                            <!--To Partner-->
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}"><strong>{{channelCampaignFieldName | translate}}</strong></label>
-                                                                <label *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">{{channelCampaignFieldName | translate}}</label>
+                                                                <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">
+                                                                    <strong>
+                                                                        <ng-container *ngIf="channelCampaignFieldName=='tp'">
+                                                                           To {{authenticationService?.partnerModule?.customName}}
+                                                                        </ng-container>
+                                                                        <ng-container *ngIf="channelCampaignFieldName=='tr'">
+                                                                            To Recipients
+                                                                        </ng-container>
+                                                                    </strong>
+                                                                </label>
+                                                                <label *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">
+                                                                    <ng-container *ngIf="channelCampaignFieldName=='tp'">
+                                                                        To {{authenticationService?.partnerModule?.customName}}
+                                                                     </ng-container>
+                                                                     <ng-container *ngIf="channelCampaignFieldName=='tr'">
+                                                                         To Recipients
+                                                                     </ng-container>
+                                                                </label>
+                                                                <!--To Partner-->
                                                                 <span style="cursor: pointer;color: #54a7e9;">
                                                                     <i class="fa fa-question-circle" data-html="true"
                                                                         data-toggle="tooltip" data-placement="bottom"
@@ -239,20 +274,20 @@
                                                     <span style="cursor: pointer;color: #54a7e9;">
                                                         <i class="fa fa-question-circle" data-toggle="tooltip"
                                                             data-placement="top" aria-hidden="true"
-                                                            title="Enable your Partner's logo to be displayed in redistributed campaigns"
+                                                            title="Enable logo of your {{authenticationService?.partnerModule?.customName}} to be displayed in redistributed campaigns"
                                                             style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
                                                     </span>
                                                 </div>
                                             </div>
 
                                             <div class="form-group" *ngIf="!isOnlyPartner && campaignType!='sms' && (campaign.channelCampaign || (campaignType=='landingPage'  && channelCampaignFieldName != 'To Recipient')) ">
-                                                <label class="control-label col-sm-4" translate>Notify Partners ?</label>
+                                                <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                         (statusChange)="setPartnerEmailNotification($event)">
                                                     </switch>
                                                     <span style="cursor: pointer;color: #54a7e9;">
-														<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your partners about your campaign" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+														<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
 													</span>
 
                                                 </div>
@@ -735,7 +770,7 @@
                                                             <tr *ngIf="channelVideosPagination.totalRecords==0">
                                                                 <td colspan="5">
                                                                     <div class="alert alert-info">
-                                                                        <strong translate>No Partner videos found</strong>
+                                                                        <strong translate>No videos found</strong>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -831,7 +866,14 @@
                                 </app-error-pages>
                                 <div [hidden]="campaignContact.httpRequestLoader.isLoading || campaignContact.httpRequestLoader.isServerError">
                                     <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
-                                        <div class="note-vid pull-left">{{contactListSelectMessage}}</div>
+                                        <div class="note-vid pull-left">
+                                            <ng-container *ngIf="contactListTabName=='Partners'">
+                                                Select List of {{authenticationService?.partnerModule?.customName}} to be used in this campaign
+                                            </ng-container>
+                                            <ng-container *ngIf="contactListTabName!='Partners'">
+                                                Select {{authenticationService?.partnerModule?.customName}} / Recipients to be used in this campaign
+                                            </ng-container>
+                                        </div>
                                         <div class="inputs" style="float: right;">
                                             <div style="float: left;">
                                                  <select class="form-control cc" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
@@ -874,7 +916,7 @@
                                                             <th scope="row" class="text-center">
                                                                 <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                             </th>
-                                                            <th class="hidden-xs" *ngIf="showExpandButton"></th>
+                                                            <th class="hidden-xs" *ngIf="showExpandButton" scope="col"></th>
                                                             <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
                                                                 <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'user_list_tb',2)"></span>
                                                                 <span class="gridHeader" translate>List Name</span>
@@ -942,7 +984,12 @@
                                                                     </ng-container>
                                                                 </td>
                                                                 <td class="text-center" *ngIf="showContactType">
-                                                                    {{contacts?.listType}}                                                                                                                                        
+                                                                    <ng-container *ngIf="contacts?.listType=='Partners'">
+                                                                        {{authenticationService?.partnerModule?.customName}}
+                                                                    </ng-container>    
+                                                                    <ng-container *ngIf="contacts?.listType!='Partners'">
+                                                                        {{contacts?.listType}}
+                                                                    </ng-container>                                                                                                                                       
                                                                 </td>
                                                                 <td class="text-center sorting_1">
                                                                     <app-timestamp  [dateAndTime]="contacts?.displayTime">
@@ -1391,7 +1438,7 @@
                                                 <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
                                             </div>
                                             <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
-                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select  Page" translate>Next</button>
+                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select Page" translate>Next</button>
                                         </div>
                                     </form>
                                 </div>
@@ -1505,20 +1552,18 @@
                                                 <div class="table-responsive">
                                                     <table width="100%">
                                                         <tr>
-                                                            <td width="25%">
+                                                            <td style="width: 25%;">
                                                                 <div class="icon-border">
                                                                     <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
-                                                                <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor ||authenticationService.module.isVendorTier || authenticationService.module.isPrm">
-                                                                    <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
-                                                                        Partner List(s)</ng-container>
+                                                                <ng-container *ngIf="contactListTabName=='Partners'">
+                                                                    {{authenticationService?.partnerModule?.customName | translate}}
                                                                 </ng-container>
-                                                                <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor && !authenticationService.module.isVendorTier &&  !authenticationService.module.isPrm">
-                                                                    <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
-                                                                        Contact List(s)</ng-container>
+                                                                <ng-container *ngIf="contactListTabName!='Partners'">
+                                                                    {{authenticationService?.partnerModule?.customName}} & Recipients
                                                                 </ng-container>
                                                             </td>
-                                                            <td width="55%">
+                                                            <td style="width: 55%;">
                                                                 <ng-container *ngFor="let contactListName of selectedContactListNames;let i=index;">
                                                                     <div>
                                                                         <a *ngIf="i<2" title="{{contactListName}}">
@@ -1532,7 +1577,7 @@
                                                                 <a>
                                                                     <span *ngIf="selectedContactListIds?.length>2"
                                                                         (click)="resetActive($event, 40, 'step-4')">..</span>
-                                                                     <span *ngIf="selectedContactListIds?.length == 0" translate>0 contact lists </span>
+                                                                     <span *ngIf="selectedContactListIds?.length == 0" translate>0 lists </span>
                                                                 </a>
                                                                 <br>
                                                                 <ng-container *ngIf="emailReceiversCountError">
@@ -1673,7 +1718,7 @@
                                                                             <option [value]="22"
                                                                                 [selected]="reply.actionId ==22"
                                                                                 *ngIf="campaign.channelCampaign && campaignType=='regular'" translate>
-                                                                                Email is not redistributed by the partner
+                                                                                Email is not redistributed by {{authenticationService?.partnerModule?.customName}}
                                                                                 </option>
                                                                             <ng-container *ngIf="campaignType=='video'">
                                                                                 <option [value]="1"

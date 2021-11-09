@@ -12,7 +12,7 @@
          <li><a [routerLink]="['/home/campaigns/manage']">Manage
             Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li><a>Partners</a></li>
+         <li><a>{{authenticationService?.partnerModule?.customName}}</a></li>
       </ul>
    </div>
    <div class="row">
@@ -20,7 +20,7 @@
          <div class="portlet light">
             <div class="portlet-title">
                <div class="caption">
-                  <span class="caption-subject font-red-sunglo uppercase">Partners</span>
+                  <span class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
                </div>
                <div class="inputs" style="float: right">
                   <div style="float: left;">
@@ -52,15 +52,15 @@
                   </div>
                </div>
             </div>
-            <app-list-loader *ngIf="campaignPartnerLoader.isLoading"></app-list-loader>
             <app-response-message [customResponse]="partnerActionResponse"
             *ngIf="partnerActionResponse.isVisible"></app-response-message>
+            <app-list-loader *ngIf="campaignPartnerLoader.isLoading"></app-list-loader>
             <div class="portlet-body"
                *ngIf="!campaignPartnerLoader.isLoading && sortOption.totalRecords > 0 ">
                <table class="table tgrid" id="campaign-partner-table" aria-describedby="campaignPartnersTable">
                   <thead>
                      <tr>
-                        <th style="text-align: left" scope="row">Partner Details</th>
+                        <th style="text-align: left" scope="row">Details Of {{authenticationService?.partnerModule?.customName}}</th>
                         <th *ngIf="viewType=='plc'" scope="row" id="right-align">Actions</th>
                         <th *ngIf="viewType=='tda'" scope="row" id="right-align">#Download</th>
                         <th *ngIf="viewType=='teoa'" scope="row" id="right-align">#Opened</th>
@@ -154,7 +154,6 @@
                   </select>
                </div>
             </div>
-            <br><br><br>
             <div
                *ngIf="sortOption.totalRecords == 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
                class="alert alert-info">

@@ -1,6 +1,7 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import {AuthenticationService} from 'app/core/services/authentication.service';
 declare var Highcharts: any;
 
 @Component({
@@ -13,7 +14,7 @@ export class LeadsAndDealsBubbleChartComponent implements OnInit {
   @Input() moduleType:any;
   names: Array<any>;
   colors =['#d0e4f8','#d1d190','#dbdbdc','#ebb995','#e1efec','#b9acbb', '#c9a8ca','#d9c997','#d2e6f9','#f0cdfc'];
-  constructor(public dashboardService:DashboardService,public xtremandLogger:XtremandLogger) { }
+  constructor(public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
     this.getBubbleChartDataByType();

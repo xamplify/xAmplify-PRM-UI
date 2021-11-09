@@ -96,14 +96,13 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
     defaultBannerMessageValues() {
         this.showMessage = this.showUpdatevalue = false;
     }
-    getVideoTypes(videoType) {
+    getVideoTypes(value:string) {
         this.pagination.pageIndex = 1;
         this.videoFileService.categoryNumber = this.categoryNum = 0;
         this.pagination.searchKey = null;
         this.pagination.maxResults = 12;
         this.videoSort = this.sortVideos[0];
-        console.log(this.videoType);
-        this.videoFileService.videoType = videoType.value;
+        this.videoFileService.videoType = value;
         this.loadVideos(this.pagination);
     }
     mouseEnter(videoFile){
@@ -230,7 +229,6 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         try{
         this.referenceService.isPlayVideoLoading(true);
         this.videoFileService.videoViewBy = video.viewBy;
-        this.xtremandLogger.log('MangeVideoComponent playVideo:');
         this.videoFileService.getVideo(video.alias, video.viewBy)
             .subscribe((playVideoFile: SaveVideoFile) => {
               if(playVideoFile.access){

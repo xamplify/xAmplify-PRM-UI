@@ -29,3 +29,13 @@ a.disabled {
   margin-bottom: 20px;
   margin-top: 3px;
 }
+
+.custom-name-font{
+  font-size:11px !important;
+  font-weight: 500 !important;
+}
+
+.default-name-font{
+  font-size:14px !important;
+ 
+}

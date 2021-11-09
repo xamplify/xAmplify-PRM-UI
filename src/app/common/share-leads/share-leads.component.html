@@ -5,7 +5,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close-circle" data-dismiss="modal" (click)="shareLeadsModalClose()"><i class="fa fa-times"></i></button>
-      <h4 class="modal-title size-font" translate>Choose partner which you want to share</h4>
+      <h4 class="modal-title size-font" translate>Choose {{authenticationService?.partnerModule?.customName}} which you want to share</h4>
     </div>
     <div class="modal-body">
     
@@ -20,7 +20,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
                             </div>
                             <div class="portlet-input input-inline">
                                 <div class="input-icon right">
-                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
+                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
                                     <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
                                 </div>
@@ -33,7 +33,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
                       <thead>
                         <tr>
                            <th>Select</th>
-                          <th translate>PARTNER INFO</th>
+                          <th translate>{{authenticationService?.partnerModule?.customName}} INFO</th>
                           
                             <th  translate>VERTICAL</th>
                             <th translate>REGION</th>

@@ -51,17 +51,17 @@
           <div *ngIf="!isListLoading">
             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
             <div class="table-responsive" *ngIf="pagination.totalRecords">
-              <table class='table tgrid'>
+              <table class='table tgrid'  aria-describedby="">
                 <thead>
                   <tr>
-                    <th style="width: 20%;">NAME</th>
-                    <th class='text-center'>COMPANY</th>
-                    <th class='text-center'>ROLE</th>
-                    <th class='text-center'>STATUS</th>
-                    <th class='text-center'>REGISTRATION DATE</th>
-                    <th class='text-center'>LAST LOGIN</th>
-                    <th class='text-center'>UPDATED TIME</th>
-                    <th class="text-center">ACTIONS</th>
+                    <th style="width: 20%;" scope="col">NAME</th>
+                    <th class='text-center' scope="col">COMPANY</th>
+                    <th class='text-center' scope="col">ROLE</th>
+                    <th class='text-center' scope="col">STATUS</th>
+                    <th class='text-center' scope="col">REGISTRATION DATE</th>
+                    <th class='text-center' scope="col">LAST LOGIN</th>
+                    <th class='text-center' scope="col">UPDATED TIME</th>
+                    <th class="text-center" scope="col">ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -72,47 +72,44 @@
                         <app-user-info [userInfo]="report">
                         </app-user-info>
                       </td>
-                      <td align="center">{{report.companyName}}</td>
-                      <td align="center">
+                      <td>{{report.companyName}}</td>
+                      <td>
                         <span *ngIf="report.roleId==2">Org_Admin</span>
                         <span *ngIf="report.roleId==13">Vendor</span>
                         <span *ngIf="report.roleId==20">PRM</span>
                       </td>
-                      <td align="center">{{report.userStatus}}</td>
-                      <td align="center">
+                      <td>{{report.userStatus}}</td>
+                      <td>
                         <app-timestamp [dateAndTime]="report.dateReg"> </app-timestamp>
                       </td>
-                      <td align="center">
+                      <td>
                         <app-timestamp [dateAndTime]="report.dateLastLogin"> </app-timestamp>
                       </td>
-                      <td align="center">
+                      <td>
                         <app-timestamp [dateAndTime]="report.updatedTime"> </app-timestamp>
                       </td>
-                      <td align="center">
-                        <a data-toggle="tooltip" data-placement="top" title="Company profile details" (click)="getVendorCompanyProfile(report)"> 
-								<i class="fa fa-building-o" style="font-size: 20px;"></i></a>
-
-                        <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(report)"> 
-								<i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px"></i></a>
-								
-						<a data-toggle="tooltip" data-placement="top" title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
-								<i class="fa fa fa-envelope" style="font-size: 20px;margin-left:5px"></i></a>
-								
-						<a data-toggle="tooltip" data-placement="top" title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report)"> 
-							<i class="fa fa fa-copy" style="font-size: 20px;margin-left:5px"></i></a>
-
-
- 						 <a data-toggle="tooltip" data-placement="top" title="Activate/Deactivate" (click)="$event.stopPropagation();activateOrDeactivate(report)"> 
-								<i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i></a>
-
-                       <!--  <a data-toggle="tooltip" data-placement="top" title="Change Role" (click)="$event.stopPropagation();changeStatus(report)"> 
-								<i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px"></i></a> -->
-
-                        <!-- <a data-toggle="tooltip" data-placement="top" title="Change Access" (click)="$event.stopPropagation();getAccess(report)"> 
-                <i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px"></i></a> -->
-                
-                <a data-toggle="tooltip" data-placement="top" title="Edit Modules" (click)="$event.stopPropagation();displayModuleAccess(report)"> 
-                  <i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i></a>
+                      <td class="inline-custom-width" (click)="$event.stopPropagation();">
+                        <a title="Company profile details" (click)="getVendorCompanyProfile(report)"> 
+                          <i class="fa fa-building-o" style="font-size: 20px;" aria-hidden="true"></i>
+                        </a>
+                        <a  title="My profile details" (click)="getVendorMyProfile(report)"> 
+                          <i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                        </a>
+						            <a  title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
+                          <i class="fa fa fa-envelope" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                        </a>
+                        <a  title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report)"> 
+                          <i class="fa fa fa-copy" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                        </a>
+                        <a  title="Activate/Deactivate" (click)="$event.stopPropagation();activateOrDeactivate(report)"> 
+                            <i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                        </a>
+                        <a  title="Edit Modules" (click)="$event.stopPropagation();displayModuleAccess(report)"> 
+                          <i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                        </a>
+                        <a  title="Edit Module Names" (click)="$event.stopPropagation();editModuleNames(report)"> 
+                          <i class="fa fa-font" style="font-size: 20px;" aria-hidden="true"></i>
+                        </a>
                       </td>
                     </tr>
                   </ng-container>
@@ -137,15 +134,15 @@
         </div>
         <div class="portlet-body clearfix">
             <div class="table-responsive">
-              <table class='table tgrid'>
+              <table class='table tgrid' aria-describedby="">
                 <thead>
                   <tr>
-                    <th style="width: 20%;">NAME</th>
-                    <th>COMPANY</th>
-                    <th>STATUS</th>
-                    <th class='text-center'>REGISTRATION DATE</th>
-                    <th class='text-center'>LAST LOGIN</th>
-                    <th class='text-center'>UPDATED TIME</th>
+                    <th style="width: 20%;" scope="col">NAME</th>
+                    <th scope="col">COMPANY</th>
+                    <th scope="col">STATUS</th>
+                    <th class='text-center' scope="col">REGISTRATION DATE</th>
+                    <th class='text-center' scope="col">LAST LOGIN</th>
+                    <th class='text-center' scope="col">UPDATED TIME</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -158,13 +155,13 @@
                       </td>
                       <td>{{companyAndUserDetails?.companyName}}</td>
                       <td>{{companyAndUserDetails?.userStatus}}</td>
-                      <td align="center">
+                      <td>
                         <app-timestamp [dateAndTime]="companyAndUserDetails?.dateReg"> </app-timestamp>
                       </td>
-                      <td align="center">
+                      <td>
                         <app-timestamp [dateAndTime]="companyAndUserDetails?.dateLastLogin"> </app-timestamp>
                       </td>
-                      <td align="center">
+                      <td>
                         <app-timestamp [dateAndTime]="companyAndUserDetails?.updatedTime"> </app-timestamp>
                       </td>
                     </tr>
@@ -249,23 +246,21 @@
 <app-dynamic-email-content #dynamicEmailContentComponent></app-dynamic-email-content>
 
   <!-- ----------------------Copy Link Modal------------------- -->
-  <div class="modal right " id="user-alias-modal" data-backdrop="static">
+  <div class="modal fade right " id="user-alias-modal" data-backdrop="static">
     <div class="modal-dialog modal-lg" style="width: 75%;right:0">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close-circle" data-dismiss="modal">
-            <i class="fa fa-times"></i>
+            <i class="fa fa-times" aria-hidden="true"></i>
           </button>
           <h4 class="modal-title text-center">ACCOUNT LINK OF USER</h4>
         </div>
         <div class="modal-body">
           <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
           </app-response-message>
-          <!-- <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}axAa/{{userAlias}}" #userAliasId> -->
           <input type="text"  class="form-control" readonly="readonly" value="{{accessAccountVanityURL}}" #userAliasId>
         </div>
         <div class="modal-footer">
-          <!-- <a class="btn btn-info" href="{{authenticationService.APP_URL}}f/{{form.alias}}" target="blank">Open in new tab</a> -->
           <a class="btn btn-primary" (click)="copyAliasUrl(userAliasId)">Copy Link</a>
           <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
         </div>

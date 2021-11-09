@@ -778,10 +778,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         let isVendor = roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 || roles.indexOf(this.roleName.prmRole) > -1;
         let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
         if (isOrgAdmin) {
-            this.channelCampaignFieldName = "To Recipient";
+            this.channelCampaignFieldName = "tr";
             this.showMarketingAutomationOption = true;
         } else {
-            this.channelCampaignFieldName = "To Partner";
+            this.channelCampaignFieldName = "tp";
             this.showMarketingAutomationOption = false;
         }
         this.contactsPagination.channelCampaign = this.campaign.channelCampaign;
@@ -801,34 +801,33 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
     setVendorPartnersData() {
         this.contactListTabName = "Partners";
-        this.emptyContactListMessage = "No partner(s) found";
-        this.contactListSelectMessage = "Select the partner list(s) to be used in this campaign";
+        this.emptyContactListMessage = "No records found";
+        this.contactListSelectMessage = "Select the list(s) to be used in this campaign";
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.showContactType = false;
         if ('landingPage' == this.campaignType) {
-            this.TO_PARTNER_MESSAGE = "To Partner: Share a private page";
-            this.THROUGH_PARTNER_MESSAGE = "Through Partner: Share a public page";
+            this.TO_PARTNER_MESSAGE = "To "+this.authenticationService.partnerModule.customName+": Share a private page";
+            this.THROUGH_PARTNER_MESSAGE = "Through "+this.authenticationService.partnerModule.customName+": Share a public page";
         } else {
-            this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
-            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
-
+            this.TO_PARTNER_MESSAGE = "To "+this.authenticationService.partnerModule.customName+": Send a campaign intended just for your "+this.authenticationService.partnerModule.customName;
+            this.THROUGH_PARTNER_MESSAGE = "Through "+this.authenticationService.partnerModule.customName+": Send a campaign that your "+this.authenticationService.partnerModule.customName+" can redistribute";
         }
     }
 
     setOrgAdminReceipients() {
-        this.contactListTabName = "Partners & Recipients";
+        this.contactListTabName = "P&R";
         this.contactListSelectMessage = "Select the partner(s) / recipient(s) to be used in this campaign";
-        this.emptyContactListMessage = "No partner(s) / recipient(s) found";
+        this.emptyContactListMessage = "No records found";
         this.showContactType = true;
         this.contactsPagination.filterValue = false;
         this.contactsPagination.filterKey = null;
         if ('landingPage' == this.campaignType) {
             this.TO_PARTNER_MESSAGE = "To Recipient: Share a private page";
-            this.THROUGH_PARTNER_MESSAGE = "Through Partner: Share a public page";
+            this.THROUGH_PARTNER_MESSAGE = "Through "+this.authenticationService.partnerModule.customName+": Share a public page";
         } else {
-            this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
-            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
+            this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your "+this.authenticationService.partnerModule.customName+"/ Contacts";
+            this.THROUGH_PARTNER_MESSAGE = "Through "+this.authenticationService.partnerModule.customName+": Send a campaign that your "+this.authenticationService.partnerModule.customName+" can redistribute";
 
         }
     }
