@@ -9,3 +9,8 @@
 .selectedRow {
 	background-color:#a6d9f5;
 }
+
+.inline-custom-width{
+	display: inline-block;
+	width: 200px;
+}

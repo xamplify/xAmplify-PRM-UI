@@ -304,7 +304,7 @@
           <div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: 4px;" *ngIf="!isPreview">
             <fieldset *ngIf="propertiesComments?.length>0">
               <legend *ngIf="!isVendor && !isPreview">Add Your Comments</legend>
-              <legend *ngIf="isVendor">Partner Comments</legend>
+              <legend *ngIf="isVendor">{{authenticationService?.partnerModule?.customName}} Comments</legend>
               <div *ngFor="let property of propertiesComments;let i=index">
                 <div class="portlet light dashboard-stat2" *ngIf="property.propType == 'PROPERTY'">
                   <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">

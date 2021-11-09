@@ -1,0 +1,54 @@
+<div class="page-content m10">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a (click)="goToAdminReport()">Admin Report</a>
+      </li>
+      <li>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <a>Edit Module Names</a>
+      </li>
+    </ul>
+    <div class="mtfpx">
+      <a class="close-circle"  title="Go To Admin Report" (click)="goToAdminReport()">
+        <i class="fa fa-close" aria-hidden="true"></i>
+      </a>
+  </div>
+  </div>
+
+  <div class="portlet light">
+		<div class="portlet-body clearfix">
+      <app-modal-popup-loader *ngIf="httpRequestLoader?.isLoading"></app-modal-popup-loader>
+      <section [hidden]="httpRequestLoader?.isLoading">
+      <div class="table-responsive">
+        <div class="alert alert-success display-none" id="module-update-success">
+            <strong>Name Updated Successfully</strong>
+        </div>
+        <table class='table tgrid' aria-describedby="edit-module-names-table">
+          <thead>
+            <tr>
+              <th scope="row">Module Name</th>
+              <th scope="row">Custom Name</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>{{moduleCustomName?.moduleName}}</strong>
+                </td>
+               <td>
+                 <input class="form-control" maxlength="25" [(ngModel)]="moduleCustomName.customName" (input)="validateCustomName(moduleCustomName)">
+                 <span class="required" *ngIf="errorMessage.length>0">{{errorMessage}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button [disabled]="disableButton" type="button" (click)="update()" class="btn green-haze pull-right">Update</button>
+      </section>
+    </div>
+  </div>
+
+</div>

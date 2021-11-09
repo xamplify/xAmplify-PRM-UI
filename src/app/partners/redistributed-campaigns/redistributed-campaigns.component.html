@@ -128,7 +128,7 @@
                       <table [hidden]="redistributedCampaignsLoader.isLoading" class="table tgrid table-condensed redisbgcolor" aria-describedby="redistributed-campaigns">
                         <thead>
                           <tr>
-                            <th scope="row"  class="center-aligned" style="width: 24%">Partners</th>
+                            <th scope="row"  class="center-aligned" style="width: 24%">{{authenticationService?.partnerModule?.customName}}</th>
                             <th scope="row" class="center-aligned">Campaign Name</th>
                             <th scope="row" class="center">Total Recipients</th>
                             <th scope="row" class="center">Active Recipients</th>

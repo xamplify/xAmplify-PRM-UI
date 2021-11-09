@@ -303,7 +303,7 @@
 								 <table class='table tgrid table-hover table-sm' id="partnerList">
                                 <thead>
                                     <tr >
-                                        <th class="text-center" style="min-width: 200px;" translate>Partner</th>
+                                        <th class="text-center" style="min-width: 200px;" translate>{{authenticationService?.partnerModule?.customName}}</th>
                                         <th class="text-center" style="min-width: 200px;" translate>Total Publishes</th>
                                     </tr>
                                 </thead>
@@ -322,7 +322,7 @@
 										[hidden]="loading"></app-pagination>
 								</div>
 								<div *ngIf="analyticsPagination.pagedItems.length === 0" class="text-center">
-								This feed is not yet published by any partner.
+								This feed is not yet published by any {{authenticationService?.partnerModule?.customName}}.
 								</div>
 							</div>
 							<div class="modal-footer" style="border: none">
@@ -343,7 +343,7 @@
 									(click)="partnerAnalyticsModalClose()">
 									<i class="fa fa-times"></i>
 								</button>
-								<h4 class="modal-title size-font" translate>Feed Analytics for Partner</h4>
+								<h4 class="modal-title size-font" translate>Feed Analytics for {{authenticationService?.partnerModule?.customName}}</h4>
 							</div>
 							<div class="modal-body">
 

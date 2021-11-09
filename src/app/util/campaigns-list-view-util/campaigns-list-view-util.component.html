@@ -368,7 +368,7 @@
                        </td>
                       <td *ngIf="!campaign?.emailNotification && !campaign?.nurtureCampaign">
                         <div class="alert alert-info center-align">
-                          <strong>Notify Partners is Off, Detailed analytics for this campaign are not available</strong>
+                          <strong>Notify {{authenticationService?.partnerModule?.customName}} is Off, Detailed analytics for this campaign are not available</strong>
                         </div>
                       </td>
 					</ng-container>
@@ -544,7 +544,7 @@
                                                                 </li>
                                                                 <li *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && campaign.channelCampaign">
                                                                     <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button">
-                                                                        <i class="fa fa-handshake-o" style="width: 30px;" id="partner-icon"></i> Preview & Delete Partner(s)
+                                                                        <i class="fa fa-handshake-o" style="width: 30px;" id="partner-icon"></i> Preview & Delete {{authenticationService?.partnerModule?.customName}}
                                                                     </a>
                                                                 </li>
                                                             </ng-container>
@@ -702,7 +702,7 @@
                                                             </li>
                                                             <li *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign">
                                                                 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button">
-                                                                    <i class="fa fa-handshake-o" style="width: 30px; margin-right: 0px;" id="partner-icon"></i> Preview & Delete Partner(s)
+                                                                    <i class="fa fa-handshake-o" style="width: 30px; margin-right: 0px;" id="partner-icon" aria-hidden="true"></i> Preview & Delete {{authenticationService?.partnerModule?.customName}}
                                                                 </a>
                                                             </li>
                                                         </ng-container>

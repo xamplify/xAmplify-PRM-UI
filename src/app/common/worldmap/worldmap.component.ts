@@ -10,6 +10,7 @@ declare var Highcharts: any;
 export class WorldmapComponent implements OnInit {
   @Input() worldMapData: any;
   @Output() notifyParent: EventEmitter<any>;
+  @Input() partnerModuleName = "";
   worldmapMessage: string;
   titleName = 'Views';
 
@@ -78,8 +79,8 @@ export class WorldmapComponent implements OnInit {
 
   ngOnInit() {
     if(this.router.url.includes('home/partners/analytics')){
-     this.worldmapMessage = 'Check out where your Partners are located';
-     this.titleName = 'Partners';
+     this.worldmapMessage = 'Check out where your '+this.partnerModuleName+' are located';
+     this.titleName = this.partnerModuleName;
     } else if(this.router.url.includes('home/content/videos')){
       this.worldmapMessage = 'Check out where your videos are being watched';
     }else if(this.router.url.includes('home/pages')){

@@ -59,8 +59,9 @@ export class SaveAsComponent implements OnInit {
         this.module = 'leads';
         this.assignLeads = true;
     }else {
-      this.module = 'partners';
+      this.module = this.authenticationService.partnerModule.customName;
     }
+    
 
    }
 
@@ -270,7 +271,8 @@ export class SaveAsComponent implements OnInit {
                       if (this.assignLeads) {
                           this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.LEAD_LIST_NAME_UPDATE_SUCCESS, true);
                       } else if (this.isPartner) {
-                          this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.PARTNER_LIST_NAME_UPDATE_SUCCESS, true);
+                          let message = "Your "+this.authenticationService.partnerModule.customName+" list name has been updated successfully";
+                          this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', message, true);
                       } else {
                           this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
                       }
@@ -293,6 +295,9 @@ export class SaveAsComponent implements OnInit {
     }
 
   ngOnInit() {
+    if(this.listName=="Partner"){
+        this.listName = this.authenticationService.partnerModule.customName;
+    }
 	  this.existingListName = this.saveAsListName;
       this.fields = { text: 'name', value: 'id' };
       if(this.gdprInput!=undefined){

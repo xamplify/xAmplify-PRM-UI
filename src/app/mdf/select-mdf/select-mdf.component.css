@@ -3,7 +3,6 @@
 }
 
 .text {
-    text-align: center;
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
 }
@@ -119,4 +118,8 @@ h5 {
 .col-centered{
     float: none;
     margin: 0 auto;
+}
+
+.mltp{
+    margin-left: 15% !important;
 }

@@ -582,7 +582,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           this.parterService.approveVendorRequest( this.partnerId, this.vendoorInvitation )
               .subscribe(
               ( data: any ) => {
-                  data = data;
                   this.closeRequestModal();
                   if(data.statusCode == 200){
                       this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
@@ -639,7 +638,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           this.parterService.declineVendorRequest( this.partnerId, this.vendoorInvitation )
               .subscribe(
               ( data: any ) => {
-                  data = data;
                   this.closeRequestModal();
                   if(data.statusCode == 200){
                       this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
@@ -663,14 +661,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       } 
   }
   
-  approveAndDeclineRequest(partnerId: number, partnerFirstName: any){
+  approveAndDeclineRequest(partnerId: number, partnerFirstName: any,partnerModuleName:string){
       this.partnerId = partnerId;
       this.isShowCKeditor = true;
       CKEDITOR.config.height = '300px';
       CKEDITOR.config.baseFloatZIndex = 1E5;
       if(this.requestText == 'Approve'){
           this.vendoorInvitation.subject = "Welcome to my xAmplify Network"; 
-          this.vendoorInvitation.message = "Hi " + partnerFirstName + ",<br><br>" + "You are approved as a partner Now you can add contacts and redistribute the campaigns."
+          this.vendoorInvitation.message = "Hi " + partnerFirstName + ",<br><br>" + "You are approved as one of  "+partnerModuleName+" Now you can add contacts and redistribute the campaigns."
 
           + "<br><br>" + "Be sure to keep an eye out for future campaigns. And if you have any questions or would like to discuss this partnership in more detail, please feel free to contact me."
           + "<br><br>"

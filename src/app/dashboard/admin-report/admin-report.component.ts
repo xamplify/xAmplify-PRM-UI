@@ -403,4 +403,10 @@ public authenticationService: AuthenticationService, public router:Router) {
     }  
 
   /**************Recent Login Users***************/
+
+  editModuleNames(report:any){
+    if(report && report.companyId && report.companyProfileName){
+        this.router.navigate(['/home/dashboard/edit-module-names/' + report.companyId]);
+    }  
+  }
 }

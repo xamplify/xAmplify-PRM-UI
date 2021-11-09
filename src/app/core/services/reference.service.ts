@@ -1616,6 +1616,8 @@ export class ReferenceService {
 		this.pageContnetBgColor = "#fff"
 		httpRequestLoader.isHorizontalCss = true;
 		httpRequestLoader.isLoading = true;
+		httpRequestLoader.isServerError = false;
+		httpRequestLoader.message = "";
 	}
 
 	stopLoader(httpRequestLoader: HttpRequestLoader) {
@@ -2107,6 +2109,11 @@ export class ReferenceService {
 	goToPageNotFound(){
 		this.router.navigate(['/404']);
 	}
+
+	goToAccessDeniedPage(){
+		this.router.navigate(['/access-denied']);
+	}
+
 	goToDashboard(){
 		this.router.navigate(['/home/dashboard']);
 	}

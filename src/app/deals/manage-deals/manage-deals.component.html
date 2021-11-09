@@ -18,7 +18,7 @@
           <div class="col-xs-12 col-sm-6 col-lg-6 p0">
             <ul class="mix-filter p0 m0" style="float: right" *ngIf="!authenticationService.vanityURLEnabled && isCompanyPartner && isVendor && !allApisLoader">
               <li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
-            						margin-top: 5px;" *ngIf="isCompanyPartner" translate>Partner View </li>
+            						margin-top: 5px;" *ngIf="isCompanyPartner" translate>{{authenticationService?.partnerModule?.customName}} View </li>
               <li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
             						margin-top: 5px;" *ngIf=" isVendor && enableLeads" translate>Vendor View</li>
               <p class="filter" style="float: right;
@@ -383,7 +383,7 @@
                                         <div class="input-icon right" style="position: relative;right: -11px;">
                                           <input type="text" style="height:34px;" class="form-control"
                                             [(ngModel)]="partnerSortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                                            placeholder="Search for a Partner"
+                                            placeholder="Search for a {{authenticationService?.partnerModule?.customName}}"
                                             (keypress)="searchPartnersKeyPress($event.keyCode)">
                                           <button class="glyphicon glyphicon-remove search-box-item-clear"
                                             *ngIf="partnerSortOption.searchKey"
@@ -405,7 +405,7 @@
                                       <table class="table tgrid">
                                         <thead>
                                           <tr>
-                                            <th class="center-aligned">Partner</th>
+                                            <th class="center-aligned">{{authenticationService?.partnerModule?.customName}}</th>
                                             <th class="center">#Deals Count</th>
                                           </tr>
                                         </thead>
@@ -435,11 +435,11 @@
                                     <!-- End of 24 -->
                                     <div *ngIf="!partnerRequestLoader.isLoading && campaignPagination.totalRecords==0"
                                       class="alert alert-info">
-                                      <strong translate>No Partners Found.</strong>
+                                      <strong translate>No {{authenticationService?.partnerModule?.customName}} Found.</strong>
                                     </div>
                                   </div>
                                   <div *ngIf="!partnerRequestLoader.isLoading && partnerSortOption.totalRecords==0" class="alert alert-info">
-                                    <strong translate>No Partners Found.</strong>
+                                    <strong translate>No {{authenticationService?.partnerModule?.customName}} Found.</strong>
                                   </div>
                                 </div>
                               </div>
@@ -476,7 +476,7 @@
                 ;font-size: 18px;font-weight: 600">
                 Campaign: <span class="caption-subject font-red-sunglo uppercase" style="padding-left: 5px; padding-right: 15px;"
                   translate>{{selectedCampaignName}}</span>
-                  <span *ngIf="selectedPartnerCompanyName !== ''"> Partner: <span class="caption-subject font-red-sunglo uppercase" style="padding-left: 5px; padding-right: 15px;"
+                  <span *ngIf="selectedPartnerCompanyName !== ''"> {{authenticationService?.partnerModule?.customName}}: <span class="caption-subject font-red-sunglo uppercase" style="padding-left: 5px; padding-right: 15px;"
                     translate>{{selectedPartnerCompanyName}}</span></span>
                
               </div>

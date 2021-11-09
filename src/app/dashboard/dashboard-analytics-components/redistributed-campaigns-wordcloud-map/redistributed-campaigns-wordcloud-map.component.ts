@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
-
+import {AuthenticationService} from 'app/core/services/authentication.service';
 declare var Highcharts: any;
 @Component({
     selector: 'app-redistributed-campaigns-wordcloud-map',
@@ -14,7 +14,7 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
     wordCloudData: any;
 	loader = false;
 	statusCode = 200;
-    constructor(public properties:Properties,public dashboardService: DashboardService, public xtremandLogger: XtremandLogger) { }
+    constructor(public authenticationService:AuthenticationService,public properties:Properties,public dashboardService: DashboardService, public xtremandLogger: XtremandLogger) { }
 
     ngOnInit() {
         this.loader = true;
