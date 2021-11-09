@@ -36,13 +36,13 @@
           class="fa fa-angle-right"></i></li>
       <li *ngIf="campaignRouter==='notification'"><a
           [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
-      <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner
+      <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">{{authenticationService?.partnerModule?.customName}}
           Analytics</a><i class="fa fa-angle-right"></i></li>
       <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
         <!--  <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b> -->
         <b *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</b>
-        <b *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify Partners is OFF)</b>
+        <b *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify {{authenticationService?.partnerModule?.customName}} is OFF)</b>
       </li>
       <li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
@@ -98,15 +98,15 @@
               <div class="camp-details">
                 <div class="camp-title"
                   *ngIf="campaign.channelCampaign && campaignType != 'VIDEO' && campaignType != 'LANDINGPAGE'">
-                  {{campaignType}} CAMPAIGN (PARTNER)</div>
+                  {{campaignType}} CAMPAIGN ({{authenticationService?.partnerModule?.customName}})</div>
                 <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType === 'VIDEO'">{{campaignType}}
-                  (PARTNER)</div>
+                  ({{authenticationService?.partnerModule?.customName}})</div>
                 <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType != 'LANDINGPAGE'">
                   {{campaignType}} CAMPAIGN</div>
                 <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN
                 </div>
                 <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN
-                  (PARTNER)</div>
+                  ({{authenticationService?.partnerModule?.customName}})</div>
                 <div class="camp-number">
                   <strong class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 12}}</strong>
                   <span *ngIf="campaign.campaignName?.length>17">...</span>
@@ -288,14 +288,14 @@
                   *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor() && !isChannelCampaign); else other">
                   Contact List Info</div>
                 <ng-template #other>
-                  <div class="camp-title">Partners List Info</div>
+                  <div class="camp-title">{{authenticationService?.partnerModule?.customName}} List Info</div>
                 </ng-template>
                 <div class="camp-number">
                   <strong class="m0">{{campaingContactLists?.length}}
                     <span
                       *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else partnerlist">Contact
                       Lists</span>
-                    <ng-template #partnerlist><span>Partner Lists</span></ng-template>
+                    <ng-template #partnerlist><span>{{authenticationService?.partnerModule?.customName}} Lists</span></ng-template>
                   </strong>
                 </div>
                 <div class="camp-desc">
@@ -478,7 +478,7 @@
                       <tbody>
                         <tr (click)="getPartnerCampaingRsvpDetails()">
                           <td>
-                            Your Partners
+                            Your {{authenticationService?.partnerModule?.customName}}
                           </td>
                           <td>
                             <h6>{{campaignReport.partnersTotalInvitiesCount}}</h6>
@@ -856,7 +856,7 @@
                       <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
                       <span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
                       <span *ngIf="campaignType==='REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
-                      <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">PARTNER REDISTRIBUTED CAMPAIGN
+                      <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{authenticationService?.partnerModule?.customName} REDISTRIBUTED CAMPAIGN
                         ANALYTICS</span>
                       <span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
                       <span *ngIf="campaignType==='SURVEY'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
@@ -2692,7 +2692,7 @@
           <span
             *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else other">Contact
             List Info</span>
-          <ng-template #other><span>Partners List Info</span></ng-template>
+          <ng-template #other><span>{{authenticationService?.partnerModule?.customName}} List Info</span></ng-template>
         </h4>
       </div>
       <div class="modal-body">
@@ -3014,11 +3014,8 @@
 <!-- ---------------Partner Lead Analytics -->
 <div id="timeline-view" class="page-content" *ngIf="isShowPartnerLeads">
   <div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">
-    <!--  <h4 class="pull-left" style="padding-left: 10px;">Your Partner Lead Info</h4> -->
     <div class="col-xs-12 caption-subject font-red-sunglo p0">
       <div id="partner-lead-info-content">
-
-
         <div class="col-xs-12 p0">
           <div class="portlet-title col-xs-12"
             style="padding: 10px 0px 4px 0px; border-bottom: 1px solid #c5c5c5;    background-color: #3598dc;">
@@ -3026,7 +3023,7 @@
               <span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
                 <span style="color:#fff!important;"><i aria-hidden="true" class="fa fa-user-secret"
                     style="font-size:20px!important" id="leads-info-font-size"></i>&nbsp;
-                  YOUR PARTNER LEAD DETAILS
+                  YOUR {{authenticationService?.partnerModule?.customName}} LEAD DETAILS
                   <span><b>( Total Lead count # {{campaignReport.yesPartnerLeadCount}}
                       <ng-container
                         *ngIf="campaignReport.yesPartnerLeadCount!=campaignReport.partnerLeadAdditionalCount">
