@@ -107,6 +107,11 @@ export class AuthenticationService {
   unauthorized = false;
   moduleNames:Array<ModuleCustomName> = new Array<ModuleCustomName>();
   partnerModule:ModuleCustomName = new ModuleCustomName();
+ beeHostApi = "";
+  beeRequestType = "";
+  beePageClientId = "";
+  beePageClientSecret = "";
+
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -118,9 +123,22 @@ export class AuthenticationService {
     }
     
     this.SHARE_URL = this.SERVER_URL + 'embed/';
-
-    this.clientId = this.envService.clientId;
-    this.clientSecret = this.envService.clientSecret;
+    if(this.SERVER_URL=="https://xamp.io/" && this.APP_URL=="https://xamplify.io/"){
+      console.log("production keys are used");
+      this.clientId = this.envService.clientId;
+      this.clientSecret = this.envService.clientSecret;
+      this.beePageClientId = this.envService.beePageProdClientId;
+      this.beePageClientSecret = this.envService.beePageProdClientSecret;
+    }else{
+      console.log("dev keys are used");
+      this.clientId = this.envService.beeTemplateQAClientId;
+      this.clientSecret = this.envService.beeTemplateQAClientSecret;
+      this.beePageClientId = this.envService.beePageDevClientId;
+      this.beePageClientSecret = this.envService.beePageDevClientSecret;
+    }
+    
+    this.beeHostApi = this.envService.beeHostApi;
+    this.beeRequestType = this.envService.beeRequestType;
     this.imagesHost = this.envService.imagesHost;
     this.vendorRoleHash = this.envService.vendorRoleHash;
     this.partnerRoleHash = this.envService.partnerRoleHash;

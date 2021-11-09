@@ -1,4 +1,7 @@
 <div class="page-content" *ngIf="isOnlyUser && !showDealForm">
+    <div *ngIf="showSandboxText" class="alert alert-info">
+        <strong>{{properties?.sandboxText}}</strong>
+    </div>
     <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
         <div class="col-xs-12 col-sm-6 p0">
             <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
@@ -16,6 +19,9 @@
     </div>
 </div>
 <div class="page-content" *ngIf="!isOnlyUser && !showDealForm">    
+    <div *ngIf="showSandboxText" class="alert alert-info">
+        <strong>{{properties?.sandboxText}}</strong>
+    </div>
     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
     <ng-container *ngIf="!ngxLoading">

@@ -258,7 +258,7 @@
                             <div class="input-icon right">
                               <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                                 (input)="searchKeyValue('contactList')" class="form-control"
-                                placeholder="Search for a list" (keypress)="eventHandler($event.keyCode)">
+                                placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contactList')">
                               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
                                 (click)="searchKey='';search('contactList')"></button>
                               <button type="submit" class="search-box-item-click" (click)="search('contactList')">
@@ -329,17 +329,17 @@
                                 </div>
                               </td>
                               <td style="width: 10%;" class="hidden-xs">
-                                <img *ngIf="contactList.socialNetwork=='ZOHO'" src="{{properties?.zohoImage}}"
+                                <img *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList" src="{{properties?.zohoImage}}"
                                   alt="zoho" style="height: 70px;">
-                                <img *ngIf="contactList.socialNetwork=='GOOGLE'" src="{{properties?.googleImage}}"
+                                <img *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList" src="{{properties?.googleImage}}"
                                   alt="google" style="height: 70px;">
-                                <img *ngIf="contactList.socialNetwork=='SALESFORCE'"
+                                <img *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList"
                                   src="{{properties?.salesforceImage}}" alt="salesforce" style="height: 70px;"> <img
-                                  *ngIf="contactList.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}"
+                                  *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"
                                   alt="manual" style="height: 70px;">
-                                <img *ngIf="contactList.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}"
+                                <img *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList" src="{{properties?.hubspotImage}}"
                                   alt="manual" style="height: 70px;">
-                                <img *ngIf="contactList.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}"
+                                <img *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList" src="{{properties?.marketoImage}}"
                                   alt="manual" style="height: 70px;">
                                 <img
                                   *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))"
@@ -445,14 +445,15 @@
                               <td *ngIf="!authenticationService.isSuperAdmin()">
                                 <div class="actions-block override-actions" style="float:none !important;"
                                   *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)">
-                                  <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner())
-                                                    && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
+                                  <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
+                                  	|| (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
+                                     && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
                                     data-toggle="tooltip" data-placement="top"
                                     (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                                     title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share" aria-hidden="true"></i>
                                   </a> <a [class.disabled]="contactList.noOfContacts == 0 "
                                     *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isPartner || authenticationService.isPartner() ||
-                                                    (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
+                                           (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
                                     (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList);setListType(contactList.publicList)"
                                     data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_edit}}">
@@ -478,7 +479,7 @@
                                     *ngIf="(contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
                                     <a data-toggle="tooltip" data-placement="top"
                                       title="{{actionsDescription.contact_list_synchronize}}" 
-									                        [class.disabled]= "contactList.socialNetwork=='GOOGLE' && loggedInUserId != contactList.uploadedUserId"
+									  [class.disabled]= "(!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"                      
                                       *ngIf="hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier || authenticationService.vanityURLEnabled == true  || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
                                       (click)="synchronizeContactList(contactList)">
                                       <i class="fa fa-refresh" aria-hidden="true"></i>
@@ -487,8 +488,9 @@
                                   <!---XNFR-81----->
                                 <ng-container *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList">
                                     <a
-                                      *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId))
-                                                      && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!assignLeads && contactList.contactType!='ASSIGNED_LEADS_LIST') && !contactList.formList)"
+                                      *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
+                                      || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
+                                      && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
                                       (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
                                       title="{{actionsDescription.contact_list_delete}}">
                                       <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -525,12 +527,12 @@
                     *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
                     <div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
                       <div class="grid-box" id="contactListDiv_{{contactList.id}}">
-                        <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}"> 
-                          <img alt="" class="imageClassCss"  *ngIf="contactList.socialNetwork=='ZOHO'" src="{{properties?.zohoImage}}"> 
-                          <img alt=""  class="imageClassCss" *ngIf="contactList.socialNetwork=='GOOGLE'"   src="{{properties?.googleImage}}">
-                          <img class="imageClassCss" alt=""    *ngIf="contactList.socialNetwork=='SALESFORCE'" src="{{properties?.salesforceImage}}">
-                          <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='HUBSPOT'"  src="{{properties?.hubspotImage}}">
-                          <img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO'"  src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
+                        <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"> 
+                          <img alt="" class="imageClassCss"  *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList" src="{{properties?.zohoImage}}"> 
+                          <img alt=""  class="imageClassCss" *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList"   src="{{properties?.googleImage}}">
+                          <img class="imageClassCss" alt=""    *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList" src="{{properties?.salesforceImage}}">
+                          <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList"  src="{{properties?.hubspotImage}}">
+                          <img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"  src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
                         <div id="container"
                           *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
                           <h3 translate style="font-size: 14px;">
@@ -590,6 +592,7 @@
 
                               <span *ngIf="contactList?.formList" data-toggle="tooltip" data-placement="top"
                               title="{{actionsDescription.contact_list_private}}"><strong translate>, Form Contact List</strong></span>
+
                           </h6>
                         </td>
                         <!--  -->
@@ -603,7 +606,7 @@
                           </a>
                           <a style="width:11%;" [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
                             *ngIf="(hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isPartner() ||
-                                                (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList  && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
+                                   (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList  && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList);setListType(contactList.publicList)"
                             data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}"
                             data-rel="fancybox-button"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -636,7 +639,7 @@
                             *ngIf="(contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
                             <a data-toggle="tooltip" data-placement="top" 
                               title="{{actionsDescription.contact_list_synchronize}}"
-                              [class.disabled]="!contactList.emailValidationInd"
+                              [class.disabled]= "(!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"
                               *ngIf="hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
                               (click)="synchronizeContactList(contactList)"
                               data-rel="fancybox-button" style="left: 18%; top: -20px;width:11%;">
@@ -737,6 +740,7 @@
                           (input)="searchKeyValue('contacts')" class="form-control"
                           placeholder="Search"
                           (keypress)="eventHandler($event.keyCode)">
+
                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
                           (click)="searchKey='';search('contacts')"></button>
                         <button type="submit" class="search-box-item-click" (click)="search('contacts')">
@@ -1186,7 +1190,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" translate>Close</button>
-        <button type="button" class="btn btn-primary" (click)="hasSaveAsAccess()" translate>Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="hasSaveAsAccess()" [disabled]="assignLeads && disableSave" translate>Save changes</button>
       </div>
     </div>
   </div>

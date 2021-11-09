@@ -16,9 +16,37 @@ export class UserInfoComponent implements OnInit {
     @Input() isLeadInfo: boolean;
     @Input() isExclusion : boolean=false;
     backgroudColor: any;
+    highlightLetter: string = "*";
     constructor() { }
 
     ngOnInit() {
+        this.setBackgroundColor();
+        this.setHighlightLetter();        
+    }
+
+    setHighlightLetter() {
+        if (this.isPartnerInfo) {
+            if (this.userInfo.contactCompany != undefined && this.userInfo.contactCompany != null && this.userInfo.contactCompany.trim().length > 0) {
+                this.highlightLetter = this.userInfo.contactCompany.slice(0,1);
+            } else if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
+                this.highlightLetter = this.userInfo.emailId.slice(0,1);
+            }
+        } else if (this.isExclusion) {
+            if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
+                this.highlightLetter = this.userInfo.emailId.slice(0,1);
+            }
+        } else {
+            if (this.userInfo.firstName != undefined && this.userInfo.firstName != null && this.userInfo.firstName.trim().length > 0 ) {
+                this.highlightLetter = this.userInfo.firstName.slice(0,1);
+            } else if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
+                this.highlightLetter = this.userInfo.emailId.slice(0,1);
+            } else if (this.userInfo.email != undefined && this.userInfo.email != null && this.userInfo.email.trim().length > 0) {
+                this.highlightLetter = this.userInfo.email.slice(0,1);
+            }
+        }
+    }
+
+    setBackgroundColor() {
         if (  this.userInfo!=undefined &&  this.userInfo.firstName ) {
             const first = this.userInfo.firstName.charAt( 0 ).toLowerCase();
             if ( first === 'a' || first === 'f' || first === 'k' || first === 'p' || first === 'u' ) {

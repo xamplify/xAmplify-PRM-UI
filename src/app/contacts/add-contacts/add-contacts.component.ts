@@ -2175,16 +2175,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveZohoSelectedContactsWithPermission() {
         if (this.assignLeads) {
-            this.contactListObject = new ContactList;
-            this.contactListObject.name = this.model.contactListName;
-            this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactListObject.contactType = "CONTACT";
-            this.contactListObject.socialNetwork = "MANUAL";
-            this.contactListObject.publicList = true;
-            this.setLegalBasisOptions(this.allselectedUsers);
-
-            this.userUserListWrapper.users = this.allselectedUsers;
-            this.saveAssignedLeadsList();
+        	  this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
+                      "CONTACT", "MANUAL", this.alias, false);
+              this.setLegalBasisOptions(this.allselectedUsers);
+              this.userUserListWrapper.users = this.allselectedUsers;
+              this.saveAssignedLeadsList();
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
@@ -2597,16 +2592,12 @@ salesForceVanityAuthentication() {
 
     saveSalesForceSelectedContactsWithPermission() {
            if (this.assignLeads) {
-        	     this.contactListObject = new ContactList;
-                 this.contactListObject.name = this.model.contactListName;
-                 this.contactListObject.isPartnerUserList = this.isPartner;
-                 this.contactListObject.contactType = "CONTACT";
-                 this.contactListObject.socialNetwork = "MANUAL";
-                 this.contactListObject.publicList = true;
+                 this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
+                         "CONTACT", "MANUAL", this.alias, false);
                  this.setLegalBasisOptions(this.allselectedUsers);
 
                  this.userUserListWrapper.users = this.allselectedUsers;
-                 this.saveAssignedLeadsList();
+                 this.saveAssignedLeadsList();               
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
@@ -2922,11 +2913,9 @@ salesForceVanityAuthentication() {
               this.contactService.vanitySocialProviderName = "nothing";
        }
 		else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
-			 if (this.module === "contacts") {
-                 this.router.navigate(['/home/contacts/add']);
-             }else  if (this.module === "leads") {
-                 this.router.navigate(['/home/assignleads/add']);
-             }
+			this.showHubSpotModal();
+            tempCheckHubSpotAuth = 'no';
+            this.contactService.vanitySocialProviderName = "nothing";
 		}
 		else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
 			swal.close();
@@ -3785,7 +3774,7 @@ vanityCheckingMarketoContactsAuthentication(){
 		if (this.selectedAddContactsOption == 8) {
 			this.hubSpotService.configHubSpot().subscribe(data => {
 				let response = data;
-				let providerName = 'salesforce'
+				let providerName = 'hubspot'
 				if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
 					this.xtremandLogger.info("isAuthorize true");
 					this.showHubSpotModal();
@@ -3794,8 +3783,7 @@ vanityCheckingMarketoContactsAuthentication(){
 					if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
 						this.loggedInUserId = this.authenticationService.getUserId();
 						this.hubSpotCurrentUser = localStorage.getItem('currentUser');
-						let vanityUserId = JSON.parse(this.googleCurrentUser)['userId'];
-						//let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + this.loggedInUserId + "/" + window.location.hostname + "/" + this.hubSpotCurrentUser;
+						let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
 						let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null ;
 
 						var x = screen.width / 2 - 700 / 2;
@@ -3925,9 +3913,11 @@ vanityCheckingMarketoContactsAuthentication(){
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             }
         }
             this.setPage( 1 );
@@ -3978,14 +3968,17 @@ vanityCheckingMarketoContactsAuthentication(){
                this.contactListObject = new ContactList;
                this.contactListObject.name = this.model.contactListName;
                this.contactListObject.isPartnerUserList = this.isPartner;
-               //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
                this.contactListObject.synchronisedList = true;
-               this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
+               this.contactListObject.socialNetwork = "HUBSPOT";
+               this.contactListObject.contactType  =  "CONTACT";
                this.contactListObject.publicList = true;
-               this.setSocialUsers(this.socialContact);
+               this.socialContact.moduleName = this.getModuleName();
+               this.contactListObject.externalListId = this.hubSpotSelectContactListOption;
+               this.setSocialUserObjs();
                this.setLegalBasisOptions(this.socialUsers);
 
                this.userUserListWrapper.users = this.socialUsers;
+               this.userUserListWrapper.userList = this.contactListObject;
                this.saveAssignedLeadsList();
         } else {
             this.loading = true;
@@ -4023,14 +4016,9 @@ vanityCheckingMarketoContactsAuthentication(){
 
     saveHubSpotSelectedContactsWithPermission() {
         if (this.assignLeads) {
-            this.contactListObject = new ContactList;
-            this.contactListObject.name = this.model.contactListName;
-            this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactListObject.contactType = "CONTACT";
-            this.contactListObject.socialNetwork = "MANUAL";
-            this.contactListObject.publicList = true;
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
+                    "CONTACT", "MANUAL", this.alias, false);
             this.setLegalBasisOptions(this.allselectedUsers);
-
             this.userUserListWrapper.users = this.allselectedUsers;
             this.saveAssignedLeadsList();
         } else {
@@ -4326,6 +4314,22 @@ vanityCheckingMarketoContactsAuthentication(){
 
         }
     }
+    
+   setSocialUserObjs() {
+        let contacts = this.socialContact.contacts;
+        for (var i = 0; i < this.socialContact.contacts.length; i++) {
+            let user = new User();
+            if (this.validateEmailAddress(contacts[i].email)) {
+                user.emailId = contacts[i].email.trim();
+                user.firstName = contacts[i].firstName;
+                user.lastName = contacts[i].lastName;
+                user.contactCompany = contacts[i].contactCompany;
+                this.socialUsers.push(user);
+            }
+
+        }
+    }
+   
     selectedSharePartner(event: any){
     	console.log(event);
     	this.sharedPartnerDetails = event;

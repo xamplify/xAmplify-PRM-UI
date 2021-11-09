@@ -698,11 +698,28 @@ display: block;
 	padding: 0;
 }
 
+
 .cwotpx{
 	width:130px;
 }
 
+@media screen and (max-width:600px){
+	.mWidth{
+		margin: 0px;
+	}
+	.card{
+		margin:15px;
+	}
 
+	.mAlign{
+		text-align: end;
+	}
+	.actions-block i, .circled-number {
+		margin-top:1px;
+	}
+
+
+}
 
 
 

@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
   isLoggedInVanityUrl = false;  
+  signInText = "Sign In";
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
     this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (serverStoppedMessage != "") {
       this.setCustomeResponse("ERROR", serverStoppedMessage);
     }
+    "https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled ? this.signInText = "Sign In to Sandbox" :this.signInText = "Sign In";
   }
 
   public login() {

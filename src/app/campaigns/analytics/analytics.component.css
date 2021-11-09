@@ -890,3 +890,9 @@ fieldset {
   border-color: #fff !important;
 }
 
+#email-icons {
+	margin-top: 10px;
+	width: 125px;
+
+}
+

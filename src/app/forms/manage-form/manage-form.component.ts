@@ -57,6 +57,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     modulesDisplayType = new ModulesDisplayType();
     selectedFormTypeIndex = 0;
 
+    surveyCampaignId = 0;
+    selectedFormSubmitId = 0;
+    detailedResponse: boolean = false;
+
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -96,6 +100,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.landingPageCampaignId = this.route.snapshot.params['landingPageCampaignId'];
             this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
             this.partnerId = this.route.snapshot.params['partnerId'];
+            this.surveyCampaignId = this.route.snapshot.params['surveyCampaignId'];
             if (this.categoryId>0 && (this.landingPageId==undefined||this.landingPageId==0)) {
                 this.pagination.categoryId = this.categoryId;
                 this.pagination.categoryType = 'f';
@@ -120,6 +125,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                 this.pagination.landingPageAlias = this.partnerLandingPageAlias;
                 this.pagination.partnerLandingPageForm = true;
                 this.landingPagesRouterLink = "/home/pages/partner";
+            } else if (this.surveyCampaignId > 0) {
+                this.pagination.campaignId = this.surveyCampaignId;
+                this.pagination.surveyCampaignForm = true;
+                this.pagination.partnerId = this.partnerId;
             } else {
                 this.onlyForms = true;
             }
@@ -363,7 +372,13 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             }
         } else if (this.pagination.partnerLandingPageForm) {
             this.router.navigate(['/home/forms/partner/f/' + form.id + '/' + this.partnerLandingPageAlias + '/analytics']);
-        } else {
+        }  else if (this.pagination.surveyCampaignForm) {
+            if (this.partnerId > 0) {
+                this.router.navigate(['/home/forms/' + form.alias + '/' + this.surveyCampaignId + '/' + this.partnerId + '/survey/analytics']);
+            } else {
+                this.router.navigate(['/home/forms/' + form.alias + '/' + this.surveyCampaignId + '/survey/analytics']);
+            }
+        }else {
             if (form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
                 this.router.navigate(['/home/forms/' + form.alias + '/survey/analytics']);
             } else {
@@ -378,7 +393,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         }
     }
     goToCampaignAnalytics() {
-        this.router.navigate(['home/campaigns/' + this.landingPageCampaignId + '/details']);
+        let campaignId = this.landingPageCampaignId;
+        if (this.pagination.surveyCampaignForm) {
+            campaignId = this.surveyCampaignId;
+        }
+        this.router.navigate(['home/campaigns/' + campaignId + '/details']);
     }
 
     ngAfterViewInit() {
@@ -470,5 +489,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.pagination.filterKey = type;
         this.pagination.pageIndex = 1;
         this.listForms(this.pagination);
-      }
+    }
+
+    showDetailedResponse(formSubmitId: any) {
+        this.selectedFormSubmitId = formSubmitId;
+        this.detailedResponse = true;
+    }
 }

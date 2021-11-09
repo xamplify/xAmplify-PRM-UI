@@ -18,12 +18,15 @@ import { SortOption } from 'app/core/models/sort-option';
 export class FormGeoAnalyticsComponent implements OnInit {
 
   @Input() alias: any;
+  @Input() campaignId: any;
+  @Input() partnerId: any;
   pagination: Pagination = new Pagination();
   customResponse: CustomResponse = new CustomResponse();
   sortOption: SortOption = new SortOption();
   searchKey = "";
   detailedResponse = false;
   selectedFormSubmitId: number;
+  showUserInfo: boolean = false;
 
   constructor(public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public formService: FormService,
@@ -31,6 +34,11 @@ export class FormGeoAnalyticsComponent implements OnInit {
     public logger: XtremandLogger) { }
 
   ngOnInit() {
+    this.pagination.campaignId = this.campaignId;
+    this.pagination.partnerId = this.partnerId;
+    if(this.campaignId != undefined && this.campaignId > 0){
+      this.showUserInfo = true; 
+    }
     this.getGeoAnalytics(this.pagination);
   }
 

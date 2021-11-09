@@ -47,6 +47,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     categoryId: number = 0;
     manageRouterLink = "/home/emailtemplates/manage";
     mergeTagsInput: any = {};
+    showForms: boolean = false;
+
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, private route: ActivatedRoute) {
         this.categoryId = this.route.snapshot.params['categoryId'];
@@ -58,6 +60,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             var names: any = [];
             let self = this;
             self.loggedInUserId = this.authenticationService.getUserId();
+            this.showForms = this.emailTemplateService.emailTemplate.surveyTemplate || this.emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
 
             emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
                 (data: any) => {
@@ -133,7 +136,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                     }
                 }
                 if (!isDefaultTemplate) {
-                    var buttons = $('<div>')
+                    var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                         .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                     var dropDown = '<div class="form-group">';
                     dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
@@ -155,20 +158,17 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         self.saveTemplate();
                     })).append(self.createButton('Update', function () {
                         self.clickedButtonName = "UPDATE";
-                        self.refService.startLoader(self.httpRequestLoader);
-                        swal.close();
                         self.emailTemplate.draft = false;
                         self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
                     })).append(self.createButton('Cancel', function () {
                         self.clickedButtonName = "CANCEL";
                         swal.close();
-                        console.log('Cancel');
                     }));
 
 
                     swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false });
                 } else {
-                    var buttons = $('<div>')
+                    var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                         .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                     var dropDown = '<div class="form-group">';
                     dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
@@ -269,8 +269,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
                             bee = beePluginInstance;
                             request(
-                                'GET',
-                                'https://rsrc.getbee.io/api/templates/m-bee',
+                                authenticationService.beeRequestType,
+                                authenticationService.beeHostApi,
                                 null,
                                 null,
                                 function (template: any) {
@@ -286,7 +286,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                                         bee.start(jsonBody);
                                     } else {
                                         bee.start(template);
-                                    }
+                                    }                                    
                                     self.loadTemplate = true;
                                 });
                         });
@@ -300,6 +300,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     }//End Of Constructor
 
     saveEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, loggedInUserId: number, isOnDestroy: boolean) {
+        this.refService.goToTop();
+        $("#bee-save-buton-loader").addClass("button-loader"); 
         emailTemplate.user = new User();
         emailTemplate.user.userId = loggedInUserId;
         emailTemplate.userDefined = true;
@@ -312,8 +314,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
         emailTemplate.beeEventTemplate = emailTemplateService.emailTemplate.beeEventTemplate;
         emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
+        emailTemplate.surveyTemplate = emailTemplateService.emailTemplate.surveyTemplate;
+        emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
+
         emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
-        let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate || emailTemplate.beeEventCoBrandingTemplate;
+        let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate
+            || emailTemplate.beeEventCoBrandingTemplate || emailTemplate.surveyCoBrandingTemplate;
         if (emailTemplateService.emailTemplate.subject.indexOf('basic') > -1 && !isCoBrandingTemplate) {
             emailTemplate.type = EmailTemplateType.BASIC;
         } else if (emailTemplateService.emailTemplate.subject.indexOf('rich') > -1 && !isCoBrandingTemplate) {
@@ -326,33 +332,40 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             emailTemplate.type = EmailTemplateType.VIDEO_CO_BRANDING;
         } else if (emailTemplate.beeEventCoBrandingTemplate) {
             emailTemplate.type = EmailTemplateType.EVENT_CO_BRANDING;
+        } else if (emailTemplate.surveyCoBrandingTemplate) {
+            emailTemplate.type = EmailTemplateType.SURVEY_CO_BRANDING;
         }
         this.updateCompanyLogo(emailTemplate);
         emailTemplateService.save(emailTemplate).subscribe(
             data => {
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
-                    this.refService.stopLoader(this.httpRequestLoader);
-                    if (!isOnDestroy) {
-                        this.refService.isCreated = true;
-                        this.navigateToManageSection();
-                    } else {
-                        this.emailTemplateService.goToManage();
-                    }
+                    if (data.statusCode == 702) {                                               
+                        if (!isOnDestroy) {
+                            this.refService.isCreated = true;
+                            this.navigateToManageSection();
+                        } else {
+                            this.emailTemplateService.goToManage();
+                        }
+                    } else if (data.statusCode == 500) {
+                        swal.close();
+                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                    }                    
                 } else {
                     this.authenticationService.forceToLogout();
                 }
-
-
             },
             error => {
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 this.refService.stopLoader(this.httpRequestLoader);
                 this.logger.errorPage(error);
-            },
-            () => console.log("Email Template Saved")
+            }
         );
     }
 
     updateEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, isOnDestroy: boolean) {
+        this.refService.goToTop();
+        $("#bee-save-buton-loader").addClass("button-loader"); 
         let enteredEmailTemplateName = $.trim($('#templateNameId').val());
         if (enteredEmailTemplateName.length == 0) {
             emailTemplate.name = emailTemplateService.emailTemplate.name;
@@ -364,26 +377,31 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         emailTemplate.user.userId = this.loggedInUserId;
         this.updateCompanyLogo(emailTemplate);
         emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
+        emailTemplate.surveyTemplate = emailTemplateService.emailTemplate.surveyTemplate;
+        emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
         emailTemplateService.update(emailTemplate).subscribe(
             data => {
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
-                    this.refService.stopLoader(this.httpRequestLoader);
-                    if (!isOnDestroy) {
-                        this.refService.isUpdated = true;
-                        this.navigateToManageSection();
-
-                    } else {
-                        this.emailTemplateService.goToManage();
-                    }
+                    if (data.statusCode == 702 || data.statusCode == 703) {
+                        if (!isOnDestroy) {
+                            this.refService.isUpdated = true;
+                            this.navigateToManageSection();
+                        } else {
+                            this.emailTemplateService.goToManage();
+                        }
+                    } else if (data.statusCode == 500) {
+                        swal.close();
+                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                    }    
                 } else {
                     this.authenticationService.forceToLogout();
                 }
             },
             error => {
-                this.refService.stopLoader(this.httpRequestLoader);
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 this.logger.errorPage(error)
-            },
-            () => console.log("Email Template Updated")
+            }
         );
     }
 
@@ -403,8 +421,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnInit() {
-    }
+    ngOnInit() {  }
     ngOnDestroy() {
         this.emailTemplateService.isNewTemplate = false;
         swal.close();
@@ -453,10 +470,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
 
 
     saveTemplate() {
-        this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.draft = false;
         this.saveEmailTemplate(this.emailTemplate, this.emailTemplateService, this.loggedInUserId, false);
-        swal.close();
     }
 
     createButton(text, cb) {

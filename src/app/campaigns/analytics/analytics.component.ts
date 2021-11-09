@@ -223,7 +223,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     try {
       this.loading = true;
 
-     if(this.campaignType === 'REGULAR' || this.campaignType === 'VIDEO'){
+     if(this.campaignType === 'REGULAR' || this.campaignType === 'VIDEO' || this.campaignType === 'SURVEY'){
         pagination.campaignType = this.campaignType;
      }
 
@@ -1114,6 +1114,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
                 this.campaignType = 'SMS';
               } else if (campaignType.includes('LANDINGPAGE')) {
                 this.campaignType = 'LANDINGPAGE';
+              } else if (campaignType.includes('SURVEY')) {
+                this.campaignType = 'SURVEY';
               }
               else {
                 this.campaignType = 'REGULAR';

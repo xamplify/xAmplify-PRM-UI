@@ -2,8 +2,9 @@
 export class Properties {
 
 	/*App Info*/
-	COMPANY_LOGO = 'assets/images/xamplify-logo.png'
-	BOTTOM_MESSAGE = '&copy; 2018 xAmplify. All rights reserved.'
+	COMPANY_LOGO = 'assets/images/xamplify-logo.png';
+	COPY_RIGHT_PREFIX = '&copy; '+new Date().getFullYear();
+	BOTTOM_MESSAGE = this.COPY_RIGHT_PREFIX+' xAmplify. All rights reserved.'
 	APP_WEBSITE = 'xAmplify';
 	APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
 	APP_Xamplify_URL = "https://xamplify.io";
@@ -208,5 +209,8 @@ export class Properties {
 
 	activeMasterPartnerList = 'Active Master Partner List';
 	inActiveMasterPartnerList= 'Inactive Master Partner List';
+
+	sandboxText = "The xAmplify Sandbox instance is ideal for safely designing, loading, updating, and testing all modules of the platform. The xAmplify Sandbox instance type can be used only for testing or user acceptance testing.";
+
 }
 

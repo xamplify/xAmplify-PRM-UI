@@ -18,6 +18,7 @@ import { SelectFormComponent } from './select-form/select-form.component';
 import { SurveyAnalyticsComponent } from './survey-analytics/survey-analytics.component';
 import { FormGeoAnalyticsComponent } from './form-geo-analytics/form-geo-analytics.component';
 import { FormDetailResponseComponent } from './form-detail-response/form-detail-response.component';
+import { CampaignSurveyFormsComponent } from './campaign-survey-forms/campaign-survey-forms.component';
 
 
 
@@ -25,7 +26,7 @@ import { FormDetailResponseComponent } from './form-detail-response/form-detail-
     imports: [
         CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule,CKEditorModule
     ],
-    declarations: [AddFormComponent, ManageFormComponent, CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent, SelectFormComponent, SurveyAnalyticsComponent, FormGeoAnalyticsComponent, FormDetailResponseComponent],
+    declarations: [AddFormComponent, ManageFormComponent, CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent, SelectFormComponent, SurveyAnalyticsComponent, FormGeoAnalyticsComponent, FormDetailResponseComponent, CampaignSurveyFormsComponent],
     providers: [FormService]
 } )
 export class FormsModule { }

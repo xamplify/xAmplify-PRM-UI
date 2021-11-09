@@ -185,6 +185,7 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
             this.campaignAccess.socialCampaign = campaignAccess.social;
             this.campaignAccess.eventCampaign = campaignAccess.event;
             this.campaignAccess.landingPageCampaign = campaignAccess.page;
+            this.campaignAccess.survey = campaignAccess.survey;
         },_error=>{
             this.referenceService.showSweetAlertErrorMessage("Unable to fetch campaign types");
             this.referenceService.stopLoader(this.httpRequestLoader);
@@ -216,6 +217,8 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
         this.pagination.campaignType = "EVENT";
     }else if(this.campaignType=="page" || this.campaignType=="landingPage"){
         this.pagination.campaignType = "LANDINGPAGE";
+    }else if(this.campaignType=="survey"){
+        this.pagination.campaignType = "SURVEY";
     }else{
         this.pagination.campaignType = "NONE";
     }

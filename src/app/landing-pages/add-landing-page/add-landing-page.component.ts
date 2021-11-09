@@ -296,14 +296,14 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                             request(
                                 'POST',
                                 'https://auth.getbee.io/apiauth',
-                                'grant_type=password&client_id=' + environment.clientId + '&client_secret=' + environment.clientSecret + '',
+                                'grant_type=password&client_id=' + authenticationService.beePageClientId + '&client_secret=' + authenticationService.beePageClientSecret + '',
                                 'application/x-www-form-urlencoded',
                                 function (token: any) {
                                     BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
                                         bee = beePluginInstance;
                                         request(
-                                            'GET',
-                                            'https://rsrc.getbee.io/api/templates/m-bee',
+                                            authenticationService.beeRequestType,
+                                            authenticationService.beeHostApi,
                                             null,
                                             null,
                                             function (template: any) {

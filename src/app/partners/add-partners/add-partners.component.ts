@@ -1488,6 +1488,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						this.selectedAddPartnerOption = 3;
 						this.setSocialPage(1);
 						this.socialPartners.contacts = this.socialPartnerUsers;
+						this.customResponse.isVisible = false;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -2473,6 +2474,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         localStorage.removeItem('isHubSpotAuth');
         localStorage.removeItem('isZohoAuth');
         localStorage.removeItem('validationMessage');
+        this.customResponse.isVisible = false;
         if (tempCheckGoogleAuth == 'yes' ) {
         	this.getGoogleContactsUsers();
         	tempCheckGoogleAuth = 'no';
@@ -2486,8 +2488,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
              tempCheckSalesForceAuth = 'no';
              this.contactService.vanitySocialProviderName = "nothing";
         }
-        else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
-        	this.router.navigate(['/home/partners/add']);
+        else if (tempCheckHubSpotAuth == 'yes' ) {
+        	this.showHubSpotModal();
+        	tempCheckHubSpotAuth = 'no';
+            this.contactService.vanitySocialProviderName = "nothing";
         }else if (tempZohoAuth == 'yes') {
         	this.zohoShowModal();
             this.checkingZohoPopupValues();
@@ -3050,7 +3054,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	checkingHubSpotContactsAuthentication() {
 		if (this.loggedInThroughVanityUrl) {
-			this.referenceService.showSweetAlertInfoMessage();
+			this.hubSpotVanityAuthentication()
 		} else {
 			if (this.selectedAddPartnerOption == 5) {
 				this.hubSpotService.configHubSpot().subscribe(data => {
@@ -3072,6 +3076,33 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 
 	}
+	
+	   hubSpotVanityAuthentication() {
+        this.contactService.vanitySocialProviderName = 'hubspot';
+        this.hubSpotService.configHubSpot().subscribe(data => {
+            let response = data;
+            let providerName = 'hubspot'
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.xtremandLogger.info("isAuthorize true");
+                this.showHubSpotModal();
+            }
+            else {
+                if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                    this.loggedInUserId = this.authenticationService.getUserId();
+                    this.hubSpotCurrentUser = localStorage.getItem('currentUser');
+                    let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
+                    let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null;
+
+                    var x = screen.width / 2 - 700 / 2;
+                    var y = screen.height / 2 - 450 / 2;
+                    window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,addressbar=noresizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+
+                }
+            }
+        }, (error: any) => {
+            this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
+        }, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
+	    }
 
 	showHubSpotModal() {
 		$('#ContactHubSpotModal').modal('show');
@@ -3236,6 +3267,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 					$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+					$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+					$('#salesforceGear').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				}
 			}
 			this.setSocialPage(1);

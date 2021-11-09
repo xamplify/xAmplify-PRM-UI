@@ -53,6 +53,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	hasContactRole: boolean = false;
 	hasPartnersRole : boolean = false;
+	hasShareLeadsRole : boolean = false;
 	loggedInUserId = 0;
 	hasAllAccess = false;
 	contactListUsers = [];
@@ -122,6 +123,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	searchContactType = "";
 	contactListIdForSyncLocal: any;
 	socialNetworkForSyncLocal: any;	
+	disableSave : boolean =false;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
@@ -324,6 +326,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		console.log("ContactRole" + this.hasContactRole);
 		
 		this.hasPartnersRole = this.referenceService.hasRole(this.referenceService.roles.partnersRole);
+		
+		this.hasShareLeadsRole = this.referenceService.hasRole(this.referenceService.roles.shareLeadsRole);
 
 		this.hasAllAccess = this.referenceService.hasAllAccess();
 		//this.loggedInUserId = this.authenticationService.getUserId();
@@ -1917,6 +1921,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     hasSaveAsAccess() {
        if (this.assignLeads) {
+    	   this.disableSave = true;
             this.saveAsLeadsInputChecking();
         } else {
             try {
@@ -2019,8 +2024,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 this.loading = false;
                 if (data.access) {
                     if (data.statusCode == 401) {
+                    	this.disableSave = false;
                     	this.saveAsError = data.message;
                     } else if (data.statusCode == 200) {
+                    	this.disableSave = false;
                     	$('#saveAsModal').modal('hide');
                     	this.cleareDefaultConditions();
                         this.customResponse = new CustomResponse('SUCCESS', data.message, true);
@@ -2082,7 +2089,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(this.searchContactType); } }
+    eventHandler(keyCode: any, searchType: string) {
+        if (keyCode === 13) {
+            this.search(searchType);
+        }
+	}
 
 	sendMail(partnerId: number) {
 		this.emailNotificationCustomResponse = new CustomResponse();

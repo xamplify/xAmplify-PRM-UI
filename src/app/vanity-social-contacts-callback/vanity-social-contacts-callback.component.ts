@@ -151,53 +151,43 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 	}
 
 	integrationCallback(code: string, type: string) {
-		try {
-			let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
-			if(vanityUrlFilter == undefined){
-							swal( {
-            text: 'Redirectng to Myprofile page...! Please Wait...It\'s processing',
-            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
-        });}
-			this.integrationService.handleCallbackByType(code, type)
-				.subscribe(
-					result => {
-						this.referenceService.integrationCallBackStatus = true;
-						this.xtremandLogger.info("Integration Callback :: " + result);
-						localStorage.removeItem("userAlias");
-						localStorage.removeItem("currentModule");
-						if (vanityUrlFilter == 'true' ) {
-						swal( {
-					            text: 'Closing the window...! Please Wait...',
-					            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
-					        });
-								var message = '';
-								if(type == 'hubspot'){
-									message = "isHubSpotAuth";
-								}
-								else{
-									message = "isSalesForceAuth";
-								}
-								this.postingMessageToParentWindow(message);
-						}
-						else{
-								swal.close();
-								this.router.navigate(['/home/dashboard/myprofile']);
-						}
-						// Commented below code by Swathi. Custom form creation should not be done here.
+        try {
+            this.integrationService.handleCallbackByType(code, type)
+                .subscribe(
+                    result => {
+                        this.referenceService.integrationCallBackStatus = true;
+                        this.xtremandLogger.info("Integration Callback :: " + result);
+                        localStorage.removeItem("userAlias");
+                        localStorage.removeItem("currentModule");
+                        let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
+                        if (vanityUrlFilter == 'true' ) {
+                                if(type == 'hubspot'){
+                                    this.postingMessage = "isHubSpotAuth";
+                                }
+                                else{
+                                    this.postingMessage = "isSalesForceAuth";
+                                }
+                                this.postingMessageToParentWindow(this.postingMessage);
+                        }
+                        else{
+                        	this.referenceService.integrationCallBackStatus = true;
+                            this.router.navigate(['/home/dashboard/myprofile']);
+                        }
+                        // Commented below code by Swathi. Custom form creation should not be done here.
                         /*if(type === "isalesforce"){
                             this.contactService.getSfFormFields().subscribe(result =>{
                                 console.log(result);
                             })
                         }*/
-					},
-					error => {
-						localStorage.removeItem("userAlias");
-						this.xtremandLogger.info(error)
-					});
-		} catch (error) {
-			this.xtremandLogger.error(error, "SocialCallbackcomponent()", "integrationCallback()");
-		}
-	}
+                    },
+                    error => {
+                        localStorage.removeItem("userAlias");
+                        this.xtremandLogger.info(error)
+                    });
+        } catch (error) {
+            this.xtremandLogger.error(error, "SocialCallbackcomponent()", "integrationCallback()");
+        }
+    }
 
 	postingMessageToParentWindow(message: string) {
 		let trargetWindow = window.opener;

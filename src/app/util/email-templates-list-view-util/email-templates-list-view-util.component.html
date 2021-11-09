@@ -9,21 +9,41 @@
                   <div class="row">
                       <div class="colxs-12 col-sm-12 col-md-6">
                           <div *ngIf="!isOnlyPartner">
-                              <ul class="mix-filter">
-                                  <li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex">All</li>
-                                  <li class="filter" (click)="filterTemplates('EMAIL',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Email</li>
-                                  <li class="filter" (click)="filterTemplates('VIDEO',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
-                                  <li class="filter" (click)="filterTemplates('UPLOADED',false,5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded</li>
-                                  <li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign">Email Co-Branding
-                                  </li>
-                                  <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',false,8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video Co-Branding
-                                  </li>
-                                  <li class="filter" (click)="filterTemplates('EVENT',false,9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign">Event
-                                  </li>
-                                  <li class="filter" (click)="filterTemplates('EVENT_CO_BRANDING',false,10)" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex">Event Co-Branding
-                                  </li>
-                                  <li class="filter" style="display: none;">Own Template</li>
-                              </ul>
+                            <ul class="mix-filter">
+                                <li class="filter" (click)="filterTemplates('NONE',false,0)"
+                                    [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex">All</li>
+                                <li class="filter" (click)="filterTemplates('EMAIL',false,2)"
+                                    [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Email</li>
+                                <li class="filter" (click)="filterTemplates('VIDEO',true,4)"
+                                    [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
+                                
+                                <li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)"
+                                    [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign">Email
+                                    Co-Branding
+                                </li>
+                                <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',false,8)"
+                                    [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video
+                                    Co-Branding
+                                </li>
+                                <li class="filter" (click)="filterTemplates('UPLOADED',false,5)"
+                                    [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex">Uploaded</li>
+                                <li class="filter" (click)="filterTemplates('EVENT',false,9)"
+                                    [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex"
+                                    *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign">Event
+                                </li>
+                                <li class="filter" (click)="filterTemplates('EVENT_CO_BRANDING',false,10)"
+                                    *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign"
+                                    [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex">Event Co-Branding
+                                </li>
+                                <li class="filter" (click)="filterTemplates('SURVEY',false,11)"
+                                    [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" *ngIf="campaignAccess.formBuilder" translate>
+                                    Survey
+                                </li>
+                                <li class="filter" (click)="filterTemplates('SURVEY_CO_BRANDING',false,12)" *ngIf="campaignAccess.formBuilder"
+                                    [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex" translate>Survey Co-Branding
+                                </li>
+                                <li class="filter" style="display: none;">Own Template</li>
+                            </ul>
                           </div>
                       </div>
 

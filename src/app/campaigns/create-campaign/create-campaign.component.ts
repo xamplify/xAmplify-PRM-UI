@@ -404,6 +404,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else if (this.campaign.campaignTypeInString == "LANDINGPAGE") {
                 this.campaignType = 'landingPage';
                 this.isLandingPageSwitch = true;
+            } else if (this.campaign.campaignTypeInString == "SURVEY") {
+                this.campaignType = 'survey';
+                this.emailTemplatesPagination.filterBy = "CampaignSurveyEmails";
             }
             this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             this.getCampaignReplies(this.campaign);
@@ -665,6 +668,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.isLandingPage = true;
                 this.isLandingPageSwitch = false;
             }
+
+            if (this.campaignType == "survey") {
+                this.emailTemplatesPagination.filterBy = "CampaignSurveyEmails";
+            }
         }
         this.listCategories();
         this.validateLaunchForm();
@@ -676,6 +683,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.landingPagePagination.filterKey = "PRIVATE";
                 this.listLandingPages(this.landingPagePagination);
             } else {
+                if (this.campaignType == 'survey') {
+                    this.emailTemplatesPagination.campaignType = this.campaignType;
+                }
+
                 if (this.isOnlyPartner) {
                     this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
                 } else {
@@ -1134,6 +1145,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     loadRegularOrVideoCoBrandedTemplates() {
         if (this.campaignType == "regular") {
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+            this.emailTemplatesPagination.pageIndex = 1;
+            this.loadEmailTemplates(this.emailTemplatesPagination);
+        } else if (this.campaignType == "survey") {
+            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.SURVEY_CO_BRANDING;
             this.emailTemplatesPagination.pageIndex = 1;
             this.loadEmailTemplates(this.emailTemplatesPagination);
         } else {
@@ -2121,6 +2136,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             campaignType = CampaignType.SMS;
         } else if ("landingPage" == this.campaignType) {
             campaignType = CampaignType.LANDINGPAGE;
+        }  else if ("survey" == this.campaignType) {
+            campaignType = CampaignType.SURVEY;
         }
         let country = $.trim($('#countryName option:selected').text());
 
@@ -3481,7 +3498,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         emailTemplate.userId = this.loggedInUserId;
         this.emailTemplateService.updateJsonAndHtmlBody(emailTemplate).subscribe(
             response => {
-                this.showTemplateUpdatedSuccessMessage();
+                if (response.statusCode == 200) {
+                    this.showTemplateUpdatedSuccessMessage();
+                } else if (response.statusCode == 500) {
+                    this.showUpdateTemplateErrorMessage(response.message);
+                }                
             }, error => {
                 this.showTemplateUpdateErrorMessage();
             }
@@ -3522,6 +3543,18 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.loading =false;
         this.templateMessageClass = "alert alert-danger";
         this.templateUpdateMessage = this.properties.serverErrorMessage;
+        this.showEditTemplateMessageDiv = true;
+    }
+
+    showUpdateTemplateErrorMessage(message: string){
+        this.loading =false;
+        this.templateMessageClass = "alert alert-danger";
+        if (message != undefined && message != null && message.trim().length > 0) {
+            this.templateUpdateMessage = message;
+        } else {
+            this.templateUpdateMessage = this.properties.serverErrorMessage;
+        }
+        
         this.showEditTemplateMessageDiv = true;
     }
 

@@ -78,8 +78,7 @@
 								</div>	
 								<div class="page-breadcrumb">
 									<span class="view-banner view-banner-green" *ngIf="isFormList" style="margin-left: 25px;">
-										<span data-toggle="tooltip" data-placement="top" title="This list is associated with a form." translate>Form Lead
-											List</span>
+										<span data-toggle="tooltip" data-placement="top" title="This list is associated with a form." translate>Form Contact List</span>
 									</span>
 								</div>						
 							</div>
@@ -958,9 +957,10 @@
 												<th class="text-center hidden-xs" *ngIf="contactsByType.selectedCategory !== 'invalid' && (gdprStatus || isPartner)" scope="col"></th>
 												<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate scope="col">Reason</th>
 												<th class="text-center" *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||  
-												 contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate scope="col"></th>
-												<th *ngIf="contactsByType.selectedCategory === 'invalid' && !sharedLeads" scope="col">Actions</th>
-												<th *ngIf="!isPartner || contactsByType.selectedCategory =='invalid'" scope="col"></th>
+												 contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate></th>
+												<th *ngIf="contactsByType.selectedCategory === 'invalid' && !sharedLeads">Actions</th>
+												<th *ngIf="!isPartner || contactsByType.selectedCategory =='invalid'"></th>
+												<th *ngIf="isPartner && contactsByType.selectedCategory =='unsubscribe'"></th>
 											</tr>
 										</thead>
 										<tbody>

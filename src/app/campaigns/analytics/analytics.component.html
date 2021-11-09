@@ -20,13 +20,15 @@
 <app-detail-view *ngIf="showRsvpDetails" [campaignReport]="campaignReport" [detailType]="rsvpResposeType"
   [campaignType]="campaignType" [campaign]="campaign" [details]="rsvpDetailsList"></app-detail-view>
 <ngx-loading [show]="loading" [config]="{fullScreenBackdrop:true , backdropBorderRadius: '14px' }"></ngx-loading>
+
 <div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails && !isShowPartnerLeads"
   [class.ml0]="authenticationService.isSuperAdmin()">
   <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
     <ul class="page-breadcrumb">
       <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a
           [routerLink]="referenceService.homeRouter">Home</a>
-        <i class="fa fa-angle-right"></i></li>
+        <i class="fa fa-angle-right"></i>
+      </li>
       <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a
           [routerLink]="['/home/dashboard/admin-report']">Admin
           Report</a><i class="fa fa-angle-right"></i></li>
@@ -34,18 +36,18 @@
           class="fa fa-angle-right"></i></li>
       <li *ngIf="campaignRouter==='notification'"><a
           [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
-      <li *ngIf="campaignRouter==='partnerAnalytics'">
-        <a [routerLink]="['/home/partners/analytics']">{{authenticationService?.partnerModule?.customName}} Analytics</a><i class="fa fa-angle-right"></i></li>
+      <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">Partner
+          Analytics</a><i class="fa fa-angle-right"></i></li>
       <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-       <!--  <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b> -->
+        <!--  <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b> -->
         <b *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</b>
-        <b *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify {{authenticationService?.partnersModule?.customName}} is OFF)</b>
+        <b *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify Partners is OFF)</b>
       </li>
       <li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-       <!--  <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b> -->
-        </li>
+        <!--  <b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b> -->
+      </li>
     </ul>
     <button routerLink="/home/campaigns/{{campaign.campaignId}}/checkin"
       *ngIf="campaignType=='EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" class="btn btn-primary"
@@ -54,7 +56,8 @@
       <img src="assets/images/attendees.png" id="custom-width-button">
     </button>
 
-    <a class="close-circle" *ngIf="campaignType!='EVENT' && campaignType!='SOCIAL' && !isDataShare && !mainLoader" id="check-in-css" (click)="downloadReport()">
+    <a class="close-circle" *ngIf="campaignType!='EVENT' && campaignType!='SOCIAL' && !isDataShare && !mainLoader"
+      id="check-in-css" (click)="downloadReport()">
       <i class="fa fa-download" aria-hidden="true"></i>
     </a>
 
@@ -62,6 +65,7 @@
 
     <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
   </div>
+
   <div class="portlet light clearfix" *ngIf="!isShowPartnerLeads">
     <div class="portlet-body">
       <div *ngIf="hasClientError && !mainLoader" class="client-error">Something went wrong, Please refresh the page
@@ -75,27 +79,34 @@
           <div class="alert alert-danger alert-dismissible" *ngIf="contactListDeleteError">
             <a (click)="contactListDeleteError = false" class="close" data-dismiss="alert"
               aria-label="close">&times;</a>
-            The  list(s) associated with this campaign has been deleted.
+            The contact list(s) associated with this campaign has been deleted.
           </div>
           <div class="alert alert-danger alert-dismissible cancel-alert-class" *ngIf="isCancelledEvent">
             <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
             The event has been cancelled.
           </div>
 
+          <!-- ****************campaign info**************** -->
           <div class="pl10 pr10 col-xs-12"
-                                [ngClass]="{'col-sm-3': campaignType === 'VIDEO', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-6': campaignType === 'SOCIAL'}"
-            *ngIf="campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE' || campaignType === 'VIDEO' || campaignType === 'SOCIAL' ">
+            [ngClass]="{'col-sm-3': campaignType === 'VIDEO', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE' || campaignType === 'SURVEY'), 'col-sm-6': campaignType === 'SOCIAL'}"
+            *ngIf="campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE' || campaignType === 'VIDEO' || campaignType === 'SOCIAL' || campaignType === 'SURVEY' ">
             <a class="dashboard-stat dashboard-stat-lighter yellow-gold forbidden" style="display: flex"
               [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
               <div class="visual">
                 <i class="fa fa-envelope-open" aria-hidden="true"></i>
               </div>
               <div class="camp-details">
-                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType != 'VIDEO' && campaignType != 'LANDINGPAGE'">{{campaignType}} CAMPAIGN ({{authenticationService?.partnerModule?.customName}})</div>
-                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType === 'VIDEO'">{{campaignType}} ({{authenticationService?.partnerModule?.customName}})</div>
-                <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType != 'LANDINGPAGE'">{{campaignType}}  CAMPAIGN</div>
-                <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN</div>
-                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN ({{authenticationService?.partnerModule?.customName}})</div>
+                <div class="camp-title"
+                  *ngIf="campaign.channelCampaign && campaignType != 'VIDEO' && campaignType != 'LANDINGPAGE'">
+                  {{campaignType}} CAMPAIGN (PARTNER)</div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType === 'VIDEO'">{{campaignType}}
+                  (PARTNER)</div>
+                <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType != 'LANDINGPAGE'">
+                  {{campaignType}} CAMPAIGN</div>
+                <div class="camp-title" *ngIf="!campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN
+                </div>
+                <div class="camp-title" *ngIf="campaign.channelCampaign && campaignType == 'LANDINGPAGE'">PAGE CAMPAIGN
+                  (PARTNER)</div>
                 <div class="camp-number">
                   <strong class="m0" title={{campaign.campaignName}}>{{campaign.campaignName | slice: 0: 12}}</strong>
                   <span *ngIf="campaign.campaignName?.length>17">...</span>
@@ -107,7 +118,7 @@
             </a>
           </div>
 
-
+          <!-- ****************video info**************** -->
           <div class="pl10 pr10 col-xs-12"
             [ngClass]="{'col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}"
             *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
@@ -119,17 +130,18 @@
               <div class="camp-details">
                 <div class="camp-title ">Video Info</div>
                 <div class="camp-number">
-                  <strong class="m0"
-                    title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title | slice: 0: 12}}</strong>
+                  <strong class="m0" title={{campaign.campaignVideoFile.title}}>{{campaign.campaignVideoFile.title |
+                    slice: 0: 12}}</strong>
                   <span *ngIf="campaign.campaignVideoFile.title?.length>17">...</span>
                 </div>
-                <div class="camp-desc" >
+                <div class="camp-desc">
                   <span>Click for preview</span>
                 </div>
               </div>
             </a>
           </div>
 
+          <!-- ****************video not found info**************** -->
           <div class="pl10 pr10 col-xs-12 blur" [ngClass]="{'col-sm-4': campaignType === 'VIDEO'}"
             *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId==0">
             <a class="dashboard-stat dashboard-stat-lighter purple-soft blur" style="display: flex">
@@ -148,7 +160,9 @@
             </a>
           </div>
 
-          <div class="pl10 pr10 col-xs-12" *ngIf="campaignType === 'EVENT'" [ngClass]="{'col-sm-4': campaignType === 'EVENT'}">
+          <!-- ****************Event campaign info**************** -->
+          <div class="pl10 pr10 col-xs-12" *ngIf="campaignType === 'EVENT'"
+            [ngClass]="{'col-sm-4': campaignType === 'EVENT'}">
             <a class="dashboard-stat dashboard-stat-lighter red-soft forbidden" style="display: flex;">
               <div class="visual">
                 <i class="fa fa-bullhorn" aria-hidden="true"></i>
@@ -166,9 +180,10 @@
             </a>
           </div>
 
+          <!-- ****************Email template info**************** -->
           <div class="pl10 pr10 col-xs-12"
-            [ngClass]="{'col-sm-3': campaignType === 'VIDEO' ,'col-sm-4': campaignType === 'REGULAR' || campaignType === 'EVENT','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
-            *ngIf="(campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'EVENT') && campaign.selectedEmailTemplateId>0">
+            [ngClass]="{'col-sm-3': campaignType === 'VIDEO' ,'col-sm-4': campaignType === 'REGULAR' || campaignType === 'EVENT'  || campaignType === 'SURVEY','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
+            *ngIf="(campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'EVENT'  || campaignType === 'SURVEY') && campaign.selectedEmailTemplateId>0">
             <a class="dashboard-stat dashboard-stat-lighter blue-soft" style="display: flex"
               (click)="showEmailTemplatePreview(campaign.emailTemplate)"
               [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
@@ -178,16 +193,25 @@
               <div class="camp-details">
                 <div class="camp-title">Email Info</div>
                 <div class="camp-number">
-                  <strong class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0: 12}}</strong>
+                  <strong class="m0" title={{campaign.emailTemplate.name}}>{{campaign.emailTemplate.name | slice: 0:
+                    12}}</strong>
                   <span *ngIf="campaign.emailTemplate.name?.length>12">...</span>
                 </div>
-                <div class="camp-desc" >
+                <div class="camp-desc">
                   <span>Click for preview</span>
                 </div>
+              </div>
+              <div class="actions-block override-actions" id="email-icons"> 
+                <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0" routerLink="/home/forms/csf/{{campaign.campaignId}}"
+                  data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Survey Forms Count">
+                  <i class="fa fa-wpforms" aria-hidden="true"></i>
+                  <span class="badge" id="notification">{{campaign.formsCount}}</span>
+                </a>                
               </div>
             </a>
           </div>
 
+          <!-- ****************Page info**************** -->
           <div class="pl10 pr10 col-xs-12"
             [ngClass]="{'col-sm-4': campaignType === 'LANDINGPAGE','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
             *ngIf="(campaignType === 'LANDINGPAGE') && campaign.landingPageId>0">
@@ -200,7 +224,7 @@
                 <div class="camp-title">Page Info</div>
                 <div class="camp-number">
                   <strong class="m0" title={{campaign.landingPage.name}}>{{campaign.landingPage.name
-									| slice: 0: 12}}</strong> <span *ngIf="campaign.landingPage.name?.length>12">...</span>
+                    | slice: 0: 12}}</strong> <span *ngIf="campaign.landingPage.name?.length>12">...</span>
                 </div>
                 <div class="camp-desc" *ngIf="isDataShare" (click)="showLandingPagePreview(campaign)">
                   <span>Click for preview</span>
@@ -231,12 +255,9 @@
             </a>
           </div>
 
-
-
-
-
+          <!-- ****************Email template not found info**************** -->
           <div [hidden]="campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'" class="pl10 pr10 col-xs-6 blur"
-            [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'REGULAR'}"
+            [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'REGULAR' || campaignType === 'SURVEY'}"
             *ngIf="campaign.selectedEmailTemplateId == 0">
             <a class="dashboard-stat dashboard-stat-lighter blue-soft" style="cursor: default; display: flex">
               <div class="visual">
@@ -254,10 +275,9 @@
             </a>
           </div>
 
-
-
+          <!-- ****************contact list info**************** -->
           <div class="pl10 pr10 col-xs-12"
-            [ngClass]="{'col-sm-3': campaignType === 'VIDEO', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE' || campaignType === 'EVENT'), 'col-sm-6': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+            [ngClass]="{'col-sm-3': campaignType === 'VIDEO', 'col-sm-4': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE' || campaignType === 'EVENT' || campaignType === 'SURVEY'), 'col-sm-6': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
             <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()"
               [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
               <div class="visual">
@@ -266,18 +286,19 @@
               <div class="camp-details">
                 <div class="camp-title"
                   *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor() && !isChannelCampaign); else other">
-                  List Info</div>
+                  Contact List Info</div>
                 <ng-template #other>
-                  <div class="camp-title">List Info</div>
+                  <div class="camp-title">Partners List Info</div>
                 </ng-template>
                 <div class="camp-number">
                   <strong class="m0">{{campaingContactLists?.length}}
                     <span
-                      *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else partnerlist">List(s)</span>
-                    <ng-template #partnerlist><span>List(s)</span></ng-template>
+                      *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else partnerlist">Contact
+                      Lists</span>
+                    <ng-template #partnerlist><span>Partner Lists</span></ng-template>
                   </strong>
                 </div>
-                <div class="camp-desc" >
+                <div class="camp-desc">
                   <span>Click for details</span>
                 </div>
               </div>
@@ -285,6 +306,7 @@
           </div>
 
         </div>
+
         <section *ngIf="campaignType === 'EVENT'" [hidden]="mainLoader">
           <fieldset class="m10">
             <div class="col-xs-12 caption-subject font-red-sunglo">
@@ -371,8 +393,8 @@
                   </div>
                 </button>
               </div>
-              <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign"
-                [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}" >
+              <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding"
+                *ngIf="!campaign.publicEventCampaign" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
                 <button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE');searchKey=''"
                   [disabled]="campaignReport.totalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
                   <div class="portlet-body text-center">
@@ -444,7 +466,8 @@
                           <th style="font-size: 12px; font-weight: 500;">EMAIL OPENED</th>
                           <th style="font-size: 12px; font-weight: 500;">YES</th>
                           <th style="font-size: 12px; font-weight: 500;" *ngIf="!campaign.publicEventCampaign">NO</th>
-                          <th style="font-size: 12px; font-weight: 500;" *ngIf="!campaign.publicEventCampaign">MAYBE</th>
+                          <th style="font-size: 12px; font-weight: 500;" *ngIf="!campaign.publicEventCampaign">MAYBE
+                          </th>
                           <th style="font-size: 12px; font-weight: 500;">NOT YET</th>
                           <th style="font-size: 12px; font-weight: 500;">ATTENDEES <br>
                             <h6 class="m0" style="font-size:9px"><b>(
@@ -455,7 +478,7 @@
                       <tbody>
                         <tr (click)="getPartnerCampaingRsvpDetails()">
                           <td>
-                            Your {{authenticationService?.partnerModule?.customName}}
+                            Your Partners
                           </td>
                           <td>
                             <h6>{{campaignReport.partnersTotalInvitiesCount}}</h6>
@@ -488,23 +511,10 @@
           </div>
         </section>
 
-
-        <!-- <section *ngIf="campaignType === 'EVENT' && isChannelCampaign" [hidden]="mainLoader">
-	<fieldset class="m10">
-		<div class="col-xs-12 caption-subject font-red-sunglo">
-		<h4 class="pull-left">Your Partners Response</h4>
-		</div>
-
-	</fieldset>
-	</section> -->
-
-
-
         <section *ngIf="campaignType !== 'EVENT'">
-
           <div class="col-xs-12 col-sm-12 p-5x emails-info"
             [hidden]="mainLoader || hasClientError || !campaign.emailNotification">
-<!--             <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" >
+            <!--             <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" >
               <button class="portlet light color1-invert crcb lt-blue-c" (click)="sentEmailModal()"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -517,9 +527,10 @@
                 </div>
               </button>
             </div> -->
-              <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
-                *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'">
-              <button class="portlet light color1-invert crcb lt-blue-c" (click)="emailActionDetails(campaign.campaignId, 'recipients', emailActionDetailsPagination)"
+            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
+              *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE' || campaignType === 'SURVEY'">
+              <button class="portlet light color1-invert crcb lt-blue-c"
+                (click)="emailActionDetails(campaign.campaignId, 'recipients', emailActionDetailsPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 [disabled]="campaignReport.totalRecipients < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
@@ -531,8 +542,10 @@
                 </div>
               </button>
             </div>
-               <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"  *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">
-              <button class="portlet light color1-invert crcb lt-green-c" (click)="emailActionDetails(campaign.campaignId, 'sent', emailActionDetailsPagination)"
+            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
+              *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
+              <button class="portlet light color1-invert crcb lt-green-c"
+                (click)="emailActionDetails(campaign.campaignId, 'sent', emailActionDetailsPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
@@ -544,11 +557,13 @@
                 </div>
               </button>
             </div>
-              <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
+            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
+              *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-              <button class="portlet light color1-invert crcb tk-blue-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}" 
-              (click)="emailActionDetails(campaign.campaignId, 'deliverability', emailActionDetailsPagination)"
-              [disabled]="campaignReport.deliveredCount < 1  || !isPartnerEnabledAnalyticsAccess" > 
+              <button class="portlet light color1-invert crcb tk-blue-c"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                (click)="emailActionDetails(campaign.campaignId, 'deliverability', emailActionDetailsPagination)"
+                [disabled]="campaignReport.deliveredCount < 1  || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope"></i>
                   <h1>
@@ -560,7 +575,8 @@
             </div>
             <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-              <button class="portlet light color1-invert crcb vlt-blue-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+              <button class="portlet light color1-invert crcb vlt-blue-c"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
                 [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
@@ -572,11 +588,13 @@
                 </div>
               </button>
             </div>
-               <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
+            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
+              *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-              <button class="portlet light color1-invert crcb pure-blue-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
-                 (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
-                 [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
+              <button class="portlet light color1-invert crcb pure-blue-c"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
+                [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-open-o"></i>
                   <h1>
@@ -592,7 +610,7 @@
               <!----This is For Vendor/Partner------->
               <ng-container *ngIf="!isNavigatedThroughAnalytics">
                 <button class="portlet light color1-invert crcb black-blue-c"
-                (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
+                  (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
                   [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.emailClickedCount < 1">
                   <div class="portlet-body text-center">
                     <i class="fa fa-globe"></i>
@@ -605,7 +623,8 @@
               </ng-container>
               <!----This is For DataShare Vendor Analytics------->
               <ng-container *ngIf="isNavigatedThroughAnalytics">
-                <button class="portlet light color1-invert crcb black-blue-c" (click)="showClickedUrlsForVendor(campaign.campaignId)"
+                <button class="portlet light color1-invert crcb black-blue-c"
+                  (click)="showClickedUrlsForVendor(campaign.campaignId)"
                   [disabled]="campaignReport.dataShareClickedUrlsCountForVendor < 1">
                   <div class="portlet-body text-center">
                     <i class="fa fa-globe"></i>
@@ -617,11 +636,12 @@
                 </button>
               </ng-container>
             </div>
-             <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
+            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
+              *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-              <button class="portlet light color1-invert crcb y-b-c"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
-                 (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
-                 [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess" > 
+              <button class="portlet light color1-invert crcb y-b-c" [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
+                [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-open"></i>
                   <h1>
@@ -631,7 +651,8 @@
                 </div>
               </button>
             </div>
-            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError" *ngIf="campaignType === 'SOCIAL'">
+            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
+              *ngIf="campaignType === 'SOCIAL'">
               <button class="portlet light color1-invert crcb g-b-c" data-toggle="modal" data-target="#scrModal"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 [disabled]="redistributedAccounts.size < 1 || !isDataShare">
@@ -644,10 +665,10 @@
                 </div>
               </button>
             </div>
-            <div [hidden]="mainLoader || hasClientError" class="col-xs-6 col-sm-2 col-md-2 col-lg-2 p-5x" *ngIf="campaignType === 'VIDEO'"
-              [ngClass]="{'forbidden' :!isDataShare ?true:null}">
+            <div [hidden]="mainLoader || hasClientError" class="col-xs-6 col-sm-2 col-md-2 col-lg-2 p-5x"
+              *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb b-b-c"
-              (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
+                (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 [disabled]="campaignReport.usersWatchCount < 1 || !isDataShare">
                 <div class="portlet-body text-center">
@@ -659,10 +680,12 @@
                 </div>
               </button>
             </div>
-              <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
-              >
-              <button class="portlet light color1-invert crcb r-b-c" (click)="emailActionDetails(campaign.campaignId, 'hardbounce', emailActionDetailsPagination)"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.hardBounce < 1 || !isPartnerEnabledAnalyticsAccess">
+            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
+              *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
+              <button class="portlet light color1-invert crcb r-b-c"
+                (click)="emailActionDetails(campaign.campaignId, 'hardbounce', emailActionDetailsPagination)"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [disabled]="campaignReport.hardBounce < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-ban"></i>
                   <h1>
@@ -672,10 +695,12 @@
                 </div>
               </button>
             </div>
-              <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
-              >
-              <button class="portlet light color1-invert crcb h-r-c" (click)="emailActionDetails(campaign.campaignId, 'softbounce', emailActionDetailsPagination)"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.softBounce < 1 || !isPartnerEnabledAnalyticsAccess">
+            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
+              *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
+              <button class="portlet light color1-invert crcb h-r-c"
+                (click)="emailActionDetails(campaign.campaignId, 'softbounce', emailActionDetailsPagination)"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [disabled]="campaignReport.softBounce < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-trash-o"></i>
                   <h1>
@@ -685,10 +710,12 @@
                 </div>
               </button>
             </div>
-              <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'"
-              >
-              <button class="portlet light color1-invert crcb r-r-c" (click)="emailActionDetails(campaign.campaignId, 'unsubscribe', emailActionDetailsPagination)"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}" [disabled]="campaignReport.unsubscribed < 1 || !isPartnerEnabledAnalyticsAccess">
+            <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
+              *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
+              <button class="portlet light color1-invert crcb r-r-c"
+                (click)="emailActionDetails(campaign.campaignId, 'unsubscribe', emailActionDetailsPagination)"
+                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [disabled]="campaignReport.unsubscribed < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-user-times"></i>
                   <h1>
@@ -766,22 +793,24 @@
                       (click)="campaignViewsDonut('life-time')">
                       <app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount"
                         [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
-                      <h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount
-												| number : '1.0-2'}}%</h2>
+                      <h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">
+                        {{campaignReport.lifetimeViewsCount*100/campaignReport.emailSentCount
+                        | number : '1.0-2'}}%</h2>
                       <h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount===0">0%
                       </h2>
                       <h6 class="percentage-text">Viewed</h6>
                     </section>
                     <h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">Lifetime</h5>
                   </div>
-                  <div class="col-xs-12 col-sm-4 col-lg-4 text-center"  style="padding-top: 36px;"
+                  <div class="col-xs-12 col-sm-4 col-lg-4 text-center" style="padding-top: 36px;"
                     [class.disabled]="campaignReport.thisMonthViewsCount < 1 || (!isDataShare) ? true : null"
                     (click)="campaignViewsDonut('current-month')">
                     <section class="percentage-circle" style="cursor: pointer">
                       <app-donut-chart [percentageValue]="campaignReport.thisMonthViewsCount"
                         [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
-                      <h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount
-												| number : '1.0-2'}}%</h2>
+                      <h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">
+                        {{campaignReport.thisMonthViewsCount*100/campaignReport.emailSentCount
+                        | number : '1.0-2'}}%</h2>
                       <h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount===0">0%
                       </h2>
                       <h6 class="percentage-text">Viewed</h6>
@@ -789,13 +818,14 @@
                     <h5 style="text-align: center; color: #00a6e8; margin-top: 3.5em;">This Month
                     </h5>
                   </div>
-                  <div class="col-xs-12 col-sm-4 col-lg-4 text-center"  style="padding-top: 36px;"
+                  <div class="col-xs-12 col-sm-4 col-lg-4 text-center" style="padding-top: 36px;"
                     [class.disabled]="(campaignReport.todayViewsCount < 1  || !isDataShare)? true : null">
                     <section class="percentage-circle" style="cursor: pointer" (click)="campaignViewsDonut('today')">
                       <app-donut-chart [percentageValue]="campaignReport.todayViewsCount"
                         [totalValue]="campaignReport.emailSentCount"> </app-donut-chart>
-                      <h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">{{campaignReport.todayViewsCount*100/campaignReport.emailSentCount
-												| number : '1.0-2'}}%</h2>
+                      <h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount!==0">
+                        {{campaignReport.todayViewsCount*100/campaignReport.emailSentCount
+                        | number : '1.0-2'}}%</h2>
                       <h2 class="percentage-value" style="font-size: 23px;" *ngIf="campaignReport.emailSentCount===0">0%
                       </h2>
                       <h6 class="percentage-text">Viewed</h6>
@@ -826,23 +856,27 @@
                       <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
                       <span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
                       <span *ngIf="campaignType==='REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
-                      <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">REDISTRIBUTED CAMPAIGN
+                      <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">PARTNER REDISTRIBUTED CAMPAIGN
                         ANALYTICS</span>
                       <span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
+                      <span *ngIf="campaignType==='SURVEY'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
                     </span>
                   </div>
-                  <div class="col-xs-5 col-sm-2" style="margin-top: -7px;padding-left:0px;" *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
+                  <div class="col-xs-5 col-sm-2" style="margin-top: -7px;padding-left:0px;"
+                    *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR' || campaignType === 'SURVEY'">
                     <div class="btn-group pull-right" style="cursor:pointer; color: #7d8c98">
                       <div class="">
                         <select class="form-control" [(ngModel)]="selectedCampaignSortedOption"
-                        (ngModelChange)="campaignViewSortBy($event)">
-                          <option *ngFor="let sortOption of campaignViewsSortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
+                          (ngModelChange)="campaignViewSortBy($event)">
+                          <option *ngFor="let sortOption of campaignViewsSortByDropDown" [ngValue]="sortOption">
+                            {{sortOption.name}}</option>
                         </select>
                       </div>
                     </div>
                   </div>
-                  <div class="col-xs-5" [ngClass]="{'col-sm-4': campaignType !== 'VIDEO' && campaignType !== 'REGULAR', 'col-sm-2': campaignType === 'VIDEO' || campaignType === 'REGULAR' }"
-                  style="margin-top: -7px;padding-right: 0px;padding-left:0px;">
+                  <div class="col-xs-5"
+                    [ngClass]="{'col-sm-4': campaignType !== 'VIDEO' && campaignType !== 'REGULAR' && campaignType !== 'SURVEY', 'col-sm-2': campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY' }"
+                    style="margin-top: -7px;padding-right: 0px;padding-left:0px;">
                     <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                       class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                     <button class="search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()">
@@ -852,14 +886,15 @@
                       <i class="fa fa-search" style="padding: 4px; color: black !important" aria-hidden="true"></i>
                     </button>
                   </div>
-                  <div *ngIf="'LANDINGPAGE'!=campaignType" [class.disabled]="campaignViewsPagination.pagedItems?.length == 0"
+                  <div *ngIf="'LANDINGPAGE'!=campaignType"
+                    [class.disabled]="campaignViewsPagination.pagedItems?.length == 0"
                     class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
                     <span class="dropdown-toggle" data-toggle="dropdown"
                       style="box-shadow:none;margin-top: 14px; float:right;display: inline-flex;">
                       <i class="fa fa-cog" style="font-size:20px; margin-right:5px" aria-hidden="true"></i>
                       <i class="fa fa-angle-down" style="font-size:14px; float:right" aria-hidden="true"></i>
                     </span>
-                    <ul class="dropdown-menu pull-right" style="right: 20px !important" >
+                    <ul class="dropdown-menu pull-right" style="right: 20px !important">
                       <li>
                         <a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadFunctionality()">
                           Export To Excel </a>
@@ -883,33 +918,31 @@
                           <div class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign"></div>
                           <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
                             <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'"
-                              (click)="goToAllPartnerRsvpDetails('YES')" >
+                              (click)="goToAllPartnerRsvpDetails('YES')">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-check-circle fs30"></i>
                                 <h1 class="fs14">
                                   <b>{{this.campaignReport.allPartnersYesCount}}</b>
                                   <span>Yes ( {{this.campaignReport.allPartnersAdditionalCount}} )</span>
                                 </h1>
-
+                      
                               </div>
                             </button>
                           </div>
                           <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
-                            <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'"
-                              disabled="disabled">
+                            <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" disabled="disabled">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-times-circle fs30"></i>
                                 <h1 class="fs14">
                                   <b>{{this.campaignReport.allPartnersNoCount}}</b>
                                   <span>No</span>
                                 </h1>
-
+                      
                               </div>
                             </button>
                           </div>
                           <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
-                            <button class="portlet light color1-invert crcb"
-                            (click)="goToAllPartnerRsvpDetails('MAYBE')"
+                            <button class="portlet light color1-invert crcb" (click)="goToAllPartnerRsvpDetails('MAYBE')"
                               [class.selectedBox]="detailType === 'MAYBE'">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-question-circle fs30"></i>
@@ -917,14 +950,12 @@
                                   <b>{{this.campaignReport.allPartnersMayBeCount}}</b>
                                   <span>Maybe</span>
                                 </h1>
-
+                      
                               </div>
                             </button>
                           </div>
-                          <div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader"
-                            class="col-xs-6 col-lg-3 rsvp_tile_padding">
-                            <button class="portlet light color1-invert crcb"
-                              [class.selectedBox]="detailType === 'TOTAL_PARTNER_LEADS'"
+                          <div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
+                            <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'TOTAL_PARTNER_LEADS'"
                               (click)="goToAllPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
                               [disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
                               <div class="portlet-body text-center">
@@ -933,7 +964,7 @@
                                   <b>{{campaignReport.totalPartnerLeadsCount}}</b>
                                   <span>Leads</span>
                                 </h1>
-
+                      
                               </div>
                             </button>
                           </div>
@@ -944,15 +975,21 @@
                           <thead>
                             <tr>
                               <th id="table-header" style="width: 25%;text-align:left">Name</th>
-                              <th id="table-header" *ngIf="campaignType != 'VIDEO' && campaignType != 'REGULAR'">Campaign Name</th>
+                              <th id="table-header"
+                                *ngIf="campaignType != 'VIDEO' && campaignType != 'REGULAR'  && campaignType !== 'SURVEY'">
+                                Campaign Name</th>
                               <!-- <th id="table-header" *ngIf="campaignType === 'VIDEO'">Time Spent</th> -->
                               <!-- 	<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">Redistribution Time</th> -->
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">invites</th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Email opened
                               </th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Yes</th>
-                              <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign" >No</th>
-                              <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">MayBe</th>
+                              <th id="table-header"
+                                *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">No
+                              </th>
+                              <th id="table-header"
+                                *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">
+                                MayBe</th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response
                                 Type</th>
@@ -963,13 +1000,19 @@
                                 View</th>
                               <th id="table-header" *ngIf="campaignType!=='EVENT'">
                                 <span *ngIf="campaignType==='VIDEO'">Views</span>
-                                <span *ngIf="campaignType==='REGULAR' || campaignType==='LANDINGPAGE'">Email
+                                <span
+                                  *ngIf="campaignType==='REGULAR' || campaignType==='LANDINGPAGE' || campaignType === 'SURVEY'">Email
                                   Opened</span>
                                 <span *ngIf="campaignType==='SOCIAL'">Redistributed</span>
                               </th>
                               <th id="table-header" *ngIf="campaignType === 'VIDEO'">Email Opened</th>
-                              <th id="table-header" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">URLs Clicked Count</th>
-                              <th id="table-header" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">User Level Campaign Analytics</th>
+                              <th id="table-header"
+                                *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
+                                URLs Clicked Count</th>
+                              <th id="table-header"
+                                *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">
+                                User Level Campaign Analytics</th>
+                              <th id="table-header" *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0 && isChannelCampaign">Survey Analytics</th>
                               <th id="table-header" *ngIf="campaign.dipCampaign">
                                 Auto Responses
                               </th>
@@ -986,11 +1029,13 @@
                             <ng-container *ngFor="let item of campaignViewsPagination.pagedItems;let i=index">
                               <tr (click)="userTimeline(item);" title="Click here to see all campaigns analytics">
                                 <td>
-                                   <i title="This user is unsubscribed"  *ngIf="item?.unsubscribedUser" class="fa fa-flag" id="unsubscribed-flag" aria-hidden="true"></i>
+                                  <i title="This user is unsubscribed" *ngIf="item?.unsubscribedUser" class="fa fa-flag"
+                                    id="unsubscribed-flag" aria-hidden="true"></i>
                                   <app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
                                   <!-- here emailId coming as userMail -->
                                 </td>
-                                <td class="td-chart" *ngIf="campaignType != 'VIDEO' && campaignType != 'REGULAR'">
+                                <td class="td-chart"
+                                  *ngIf="campaignType != 'VIDEO' && campaignType != 'REGULAR' && campaignType != 'SURVEY'">
                                   <h6 title="{{campaign.campaignName}}">{{item.campaignName | slice: 0: 35}}
                                     <span *ngIf="campaign.campaignName?.length>35">...</span>
                                   </h6>
@@ -1003,9 +1048,11 @@
                                   {{item.rsvpMap.emailOpenedCount}}</td>
                                 <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">
                                   {{item.rsvpMap.YES}}</td>
-                                <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">
+                                <td class="text-center"
+                                  *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">
                                   {{item.rsvpMap.NO}}</td>
-                                <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">
+                                <td class="text-center"
+                                  *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">
                                   {{item.rsvpMap.MAYBE}}</td>
                                 <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">
                                   {{item.rsvpMap.notYetResponded}}</td>
@@ -1033,16 +1080,18 @@
                                   </h6>
                                 </td>
                                 <td class="text-center" *ngIf="campaignType==='VIDEO'">
-                                      {{item.viewsCount}}</td>
+                                  {{item.viewsCount}}</td>
 
                                 <td class="td-chart" *ngIf="campaignType!=='EVENT'">
                                   <div class="progress" *ngIf="campaignType !== 'SOCIAL'">
                                     <div class="progress-bar progress-bar-success"
                                       [ngClass]="{'special-progress-bar' : item.viewsCount === 0 }" role="progressbar"
                                       [style.width.%]="(item.viewsCount/maxViewsValue)*100">
-                                      <span *ngIf="campaignType !== 'REGULAR' && campaignType !== 'VIDEO'">{{item.viewsCount}}</span>
-                                       <span *ngIf="campaignType === 'VIDEO'">{{item.emailOpenedCount}}</span>
-                                      <span *ngIf="campaignType === 'REGULAR'">{{item.emailOpenedCount}}</span>
+                                      <span
+                                        *ngIf="campaignType !== 'REGULAR' && campaignType !== 'VIDEO' && campaignType !== 'SURVEY'">{{item.viewsCount}}</span>
+                                      <span *ngIf="campaignType === 'VIDEO'">{{item.emailOpenedCount}}</span>
+                                      <span
+                                        *ngIf="campaignType === 'REGULAR'|| campaignType === 'SURVEY'">{{item.emailOpenedCount}}</span>
                                     </div>
                                   </div>
                                   <ng-container *ngIf="campaignType == 'SOCIAL'">
@@ -1088,16 +1137,28 @@
                                     </ng-container>
                                   </ng-container>
                                 </td>
-                                 <td class="text-center" *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
+                                <td class="text-center"
+                                  *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'|| campaignType === 'SURVEY'">
                                   {{item.urlsClickedCount}}
-                                 </td>
-                                 <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)" class="text-center" *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
-	                                <div class="actions-block override-actions" style="margin-right:100px;">
-	                                <a data-rel="fancybox-button" title="User Level Campaign Analytics">
-	                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
-	                                   </a>
-	                                </div>
-                                 </td>
+                                </td>
+                                <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)" class="text-center"
+                                  *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
+                                  <div class="actions-block override-actions" style="margin-right:100px">
+                                    <a data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="User Level Campaign Analytics">
+                                      <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    </a>
+                                  </div>
+                                </td>
+                                <td class="text-center" *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0 && isChannelCampaign">
+                                    <div class="actions-block override-actions" id="landing-page-icons">
+                                      <a routerLink="/home/forms/csf/{{campaign.campaignId}}/{{item.userId}}"
+                                        data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
+                                        title="Survey Forms Count">
+                                        <i class="fa fa-wpforms"></i>
+                                        <span class="badge" id="notification">{{campaign.formsCount}}</span>
+                                      </a>
+                                    </div>
+                                  </td>
                                 <td *ngIf="campaign.dipCampaign">
                                   <!-- removed id="align-center" code -->
                                   <div class="actions-block" (click)="$event.stopPropagation()">
@@ -1116,7 +1177,8 @@
                                 <td class="text-center"
                                   *ngIf="campaignType==='EVENT' && isChannelCampaign && campaign.publicEventCampaign">
                                   <!-- removed this previous methods viewPartnerLeads(item);$event.stopPropagation(); -->
-                                  <span (click)="getPartnerLeadsCount(item.userId);$event.stopPropagation(); leadsSearchKey=''"><b><i
+                                  <span
+                                    (click)="getPartnerLeadsCount(item.userId);$event.stopPropagation(); leadsSearchKey=''"><b><i
                                         class="fa fa-user-secret" aria-hidden="true" id="leads-info-font-size"></i>
                                       <span class="badge badge-default"
                                         style="background-color: #00a6e8 !important;margin-top: -36px; margin-left: -8px;">{{item.totalLeadsCount}}</span>
@@ -1156,61 +1218,62 @@
                                 <td [attr.colspan]="colspanValue">
                                   <!--   <td *ngIf="campaignType == 'EVENT'" colspan="10"> -->
                                   <div class="table-responsive">
-                                  <table class="table tgrid table-condensed" id="autoresponse-analytics">
-                                    <thead>
-                                      <tr>
-                                        <th class="center-aligned">Auto Response Type</th>
-                                        <th class="center-aligned">Subject</th>
-                                        <th class="center-aligned">Reply In X Days</th>
-                                        <th class="center-aligned">Reply Time</th>
-                                        <th class="center-aligned">Sent Time</th>
-                                        <th class="center-aligned">Opened Time</th>
-                                        <th class="center-aligned">URLS CLICKED COUNT</th>
-                                        <th class="center-aligned">CLICKED URLS</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <app-auto-response-loader *ngIf="autoResponeAnalyticsLoader.isLoading">
-                                      </app-auto-response-loader>
-                                      <ng-container *ngIf="!autoResponeAnalyticsLoader.isLoading">
-                                        <tr
-                                          *ngFor="let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;let i=index">
-                                          <td class="center-aligned">{{autoResponseAnalytics.autoResponseType}}</td>
-                                          <td class="center-aligned">{{autoResponseAnalytics.subject}}</td>
-                                          <td class="center-aligned">{{autoResponseAnalytics.replyInDays}}</td>
-                                          <td class="center-aligned">{{autoResponseAnalytics.replyTimeString}}</td>
-                                          <td class="center-aligned">
-                                            <app-timestamp *ngIf="!referenceService.isSafariBrowser()"
-                                              [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.displayTime">
-                                            </app-timestamp>
-                                            <span
-                                              *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.displayTime}}</span>
-                                          </td>
-                                          <td class="center-aligned"
-                                            *ngIf="autoResponseAnalytics.openedTimeUtcString!='-'">
-                                            <app-timestamp *ngIf="!referenceService.isSafariBrowser()"
-                                              [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.openedTime">
-                                            </app-timestamp>
-                                            <span
-                                              *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.openedTime}}</span>
-                                          </td>
-                                          <td class="center-aligned"
-                                            *ngIf="autoResponseAnalytics.openedTimeUtcString=='-'">
-                                            -
-                                          </td>
-                                          <td class="center-aligned">{{autoResponseAnalytics.urlClickCount}}</td>
-                                          <td class="center-aligned">
-                                            <table>
-                                              <tr *ngFor="let clickedUrls of autoResponseAnalytics.clickedUrls?.split(',')">
-                                                <td style="padding:5px">{{clickedUrls}}</td>
-                                              </tr>
-                                            </table>
-                                          </td>
+                                    <table class="table tgrid table-condensed" id="autoresponse-analytics">
+                                      <thead>
+                                        <tr>
+                                          <th class="center-aligned">Auto Response Type</th>
+                                          <th class="center-aligned">Subject</th>
+                                          <th class="center-aligned">Reply In X Days</th>
+                                          <th class="center-aligned">Reply Time</th>
+                                          <th class="center-aligned">Sent Time</th>
+                                          <th class="center-aligned">Opened Time</th>
+                                          <th class="center-aligned">URLS CLICKED COUNT</th>
+                                          <th class="center-aligned">CLICKED URLS</th>
                                         </tr>
-                                      </ng-container>
-                                    </tbody>
-                                  </table>
-                                </div>
+                                      </thead>
+                                      <tbody>
+                                        <app-auto-response-loader *ngIf="autoResponeAnalyticsLoader.isLoading">
+                                        </app-auto-response-loader>
+                                        <ng-container *ngIf="!autoResponeAnalyticsLoader.isLoading">
+                                          <tr
+                                            *ngFor="let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;let i=index">
+                                            <td class="center-aligned">{{autoResponseAnalytics.autoResponseType}}</td>
+                                            <td class="center-aligned">{{autoResponseAnalytics.subject}}</td>
+                                            <td class="center-aligned">{{autoResponseAnalytics.replyInDays}}</td>
+                                            <td class="center-aligned">{{autoResponseAnalytics.replyTimeString}}</td>
+                                            <td class="center-aligned">
+                                              <app-timestamp *ngIf="!referenceService.isSafariBrowser()"
+                                                [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.displayTime">
+                                              </app-timestamp>
+                                              <span
+                                                *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.displayTime}}</span>
+                                            </td>
+                                            <td class="center-aligned"
+                                              *ngIf="autoResponseAnalytics.openedTimeUtcString!='-'">
+                                              <app-timestamp *ngIf="!referenceService.isSafariBrowser()"
+                                                [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.openedTime">
+                                              </app-timestamp>
+                                              <span
+                                                *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.openedTime}}</span>
+                                            </td>
+                                            <td class="center-aligned"
+                                              *ngIf="autoResponseAnalytics.openedTimeUtcString=='-'">
+                                              -
+                                            </td>
+                                            <td class="center-aligned">{{autoResponseAnalytics.urlClickCount}}</td>
+                                            <td class="center-aligned">
+                                              <table>
+                                                <tr
+                                                  *ngFor="let clickedUrls of autoResponseAnalytics.clickedUrls?.split(',')">
+                                                  <td style="padding:5px">{{clickedUrls}}</td>
+                                                </tr>
+                                              </table>
+                                            </td>
+                                          </tr>
+                                        </ng-container>
+                                      </tbody>
+                                    </table>
+                                  </div>
                                   <div *ngIf="autoResponseAnalyticsPagination.pagedItems.length !== 0">
                                     <app-pagination [pagination]="autoResponseAnalyticsPagination"
                                       (notifyParent)="setAutoResponsesPage($event,item)"
@@ -1230,15 +1293,14 @@
                   </div>
                 </div>
               </div>
-              
+
             </div>
           </div>
         </div>
-
-
       </ng-template>
     </div>
   </div>
+
   <div style="color: #31bdf2; background: white;padding: 0px;"
     *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
     <div class="col-xs-12 p0">
@@ -1365,14 +1427,14 @@
                           <!-- <td *ngIf="columnIndex<=3">{{formDataRow[columnValue]}}</td> -->
                           <td *ngIf="columnIndex<=3">
                             <ng-container *ngIf="columnValue=='RSVP Time'">
-                                    <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
-                                      [dateAndTime]="formDataRow[columnValue]"> </app-timestamp>
-                                    <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[columnValue]}}</span>
-                                  </ng-container>
-                                  <ng-container *ngIf="columnValue!='RSVP Time'">
-                                    <div [innerHtml]="formDataRow[columnValue]"></div>
-                                  </ng-container>
-                                 </td>
+                              <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
+                                [dateAndTime]="formDataRow[columnValue]"> </app-timestamp>
+                              <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[columnValue]}}</span>
+                            </ng-container>
+                            <ng-container *ngIf="columnValue!='RSVP Time'">
+                              <div [innerHtml]="formDataRow[columnValue]"></div>
+                            </ng-container>
+                          </td>
 
                         </ng-container>
                         <td>
@@ -1386,23 +1448,23 @@
                       <tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
                         <td colspan="5">
                           <div class="table-responsive">
-                          <table id="expanded-table" class="table tgrid table-bordered">
-                            <tr *ngFor="let column of leadsFormHeaders;let i  = index;">
-                              <th *ngIf="i>=4">
-                                {{column}}<span class="required" *ngIf="column.required">*</span>
-                              </th>
-                              <td *ngIf="i>=4">
-                                <ng-container *ngIf="column=='RSVP Time'">
-                                  <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
-                                    [dateAndTime]="formDataRow[column]"> </app-timestamp>
-                                  <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[column]}}</span>
-                                </ng-container>
-                                <ng-container *ngIf="column!='RSVP Time'">
-                                  <div [innerHtml]="formDataRow[column]"></div>
-                                </ng-container>
-                              </td>
-                            </tr>
-                          </table>
+                            <table id="expanded-table" class="table tgrid table-bordered">
+                              <tr *ngFor="let column of leadsFormHeaders;let i  = index;">
+                                <th *ngIf="i>=4">
+                                  {{column}}<span class="required" *ngIf="column.required">*</span>
+                                </th>
+                                <td *ngIf="i>=4">
+                                  <ng-container *ngIf="column=='RSVP Time'">
+                                    <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
+                                      [dateAndTime]="formDataRow[column]"> </app-timestamp>
+                                    <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[column]}}</span>
+                                  </ng-container>
+                                  <ng-container *ngIf="column!='RSVP Time'">
+                                    <div [innerHtml]="formDataRow[column]"></div>
+                                  </ng-container>
+                                </td>
+                              </tr>
+                            </table>
                           </div>
                         </td>
                       </tr>
@@ -1464,20 +1526,22 @@
               <div class="col-xs-12" *ngIf="rsvpDetailType !== 'partnerRsvp'">
                 <span class="btn btn-sm btn-primary pull-right" style="cursor:default;"
                   title="{{campaign.campaignName}}">{{campaign.campaignName
-									| slice:0:20}} <span *ngIf="campaign.campaignName?.length>20">...</span></span>
+                  | slice:0:20}} <span *ngIf="campaign.campaignName?.length>20">...</span></span>
                 <h4 class="m0" title="{{campaignReport.selectedPartnerFirstName}}">
                   {{campaignReport.selectedPartnerFirstName | slice:0:20}}
-                  <span *ngIf="campaignReport.selectedPartnerFirstName?.length>20">...</span></h4>
+                  <span *ngIf="campaignReport.selectedPartnerFirstName?.length>20">...</span>
+                </h4>
                 <!-- <h4 class="m0" title="{{campaignReport.selectedPartnerLastName}}">{{campaignReport.selectedPartnerLastName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerLastName?.length>20">...</span></h4> -->
                 <h4 class="m0" title="{{campaignReport.selectedPartnerEmailId}}">
                   {{campaignReport.selectedPartnerEmailId | slice:0:24}}
-                  <span *ngIf="campaignReport.selectedPartnerEmailId?.length>24">...</span></h4>
+                  <span *ngIf="campaignReport.selectedPartnerEmailId?.length>24">...</span>
+                </h4>
                 <h5 class="text-info" style="margin-bottom: 0;">{{campaign.launchTime | date: 'fullDate'}}</h5>
               </div>
               <div class="col-xs-12" *ngIf="rsvpDetailType === 'partnerRsvp'">
                 <span class="btn btn-sm btn-primary pull-right" style="cursor:default;"
                   title="{{campaign.campaignName}}">{{campaign.campaignName
-									| slice:0:40}} <span *ngIf="campaign.campaignName?.length>40">...</span></span>
+                  | slice:0:40}} <span *ngIf="campaign.campaignName?.length>40">...</span></span>
                 <h4 class="m0">Your Campaign Response</h4>
                 <!-- <h4>Response</h4> -->
                 <h5 class="text-info" style="margin-bottom: 0;">{{campaign.launchTime | date: 'fullDate'}}</h5>
@@ -1488,7 +1552,8 @@
       </div>
       <div class="col-xs-12 emails-info" id='values' [hidden]="mainLoader">
 
-        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
+        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding"
+          *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
           <button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpInvitiesDetails()"
             [class.selectedBox]="rsvpResposeType === 'invities'"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -1504,7 +1569,8 @@
           </button>
         </div>
 
-        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
+        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding"
+          *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
           <button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()"
             [class.selectedBox]="rsvpResposeType === 'email open'"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -1533,7 +1599,8 @@
             </div>
           </button>
         </div>
-        <div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
+        <div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding"
+          *ngIf="!campaign.publicEventCampaign">
           <button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NO'"
             (click)="resetRsvpPagination();getRsvpDetails('NO')"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -1547,7 +1614,8 @@
             </div>
           </button>
         </div>
-        <div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
+        <div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding"
+          *ngIf="!campaign.publicEventCampaign">
           <button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'MAYBE'"
             (click)="resetRsvpPagination();getRsvpDetails('MAYBE')"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -1561,7 +1629,8 @@
             </div>
           </button>
         </div>
-        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
+        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding"
+          *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
           <button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NOTYET'"
             (click)="resetRsvpPagination();getRsvpDetails('NOTYET')"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -1577,8 +1646,7 @@
         </div>
         <div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
           <button class="portlet light color1-invert crcb"
-            [class.selectedBox]="rsvpResposeType === 'TOTAL_PARTNER_LEADS'"
-            (click)="setCondition()"
+            [class.selectedBox]="rsvpResposeType === 'TOTAL_PARTNER_LEADS'" (click)="setCondition()"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
             [disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
             <div class="portlet-body text-center">
@@ -1641,59 +1709,61 @@
             </div>
             <ng-container *ngIf="rsvpDetailsList?.length != 0">
               <div class="table-responsive">
-              <table class="table tgrid">
-                <thead>
-                  <tr>
-                    <th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
-                    <th style="font-size: 12px; font-weight: 500;"
-                      *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span
-                        [hidden]="rsvpResposeType === 'email not open'">MESSAGE</span></th>
-                    <th style="font-size: 12px; font-weight: 500;"
-                      *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">CAMPAIGN
-                      NAME</th>
-                    <th style="font-size: 12px; font-weight: 500;"
-                      *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">SUBJECT</th>
-                    <th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType != 'invities'"><span
-                        [hidden]="rsvpResposeType === 'email not open'">RSVP
-                        Date</span></th>
-                    <th style="font-size: 12px; font-weight: 500;"
-                      *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span
-                        [hidden]="rsvpResposeType === 'email not open'">GUESTS
-                        <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> --></span></th>
-                    <th class="text-center-css" *ngIf="!isCancelledEvent && rsvpResposeType === 'email not open'">
-                      Reminder</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of rsvpDetailsList">
-                    <td>
-                      <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
-                    </td>
-                    <td *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">
-                      <span [hidden]="rsvpResposeType === 'email not open'">
-                        <h6>{{item.message}}</h6>
-                        <h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
-                      </span>
-                    </td>
-                    <td *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">{{item.campaignName}}
-                    </td>
-                    <td class="text-center" *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">
-                      {{item.subject}}</td>
-                    <td *ngIf="rsvpResposeType != 'invities'">
-                      <h6 *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">
-                        {{item.responseTime | date: 'short'}}</h6>
-                      <h6 *ngIf="rsvpResposeType === 'email open'">{{item.time | date: 'short'}}</h6>
-                    </td>
-                    <td class="center" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">
-                      {{item.additionalCount}}</td>
-                    <td class="text-center" *ngIf="rsvpResposeType === 'email not open' && isCancelledEvent === false"
-                      style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
-                        <i class="fa fa-bell-o" aria-hidden="true"></i>
-                      </a> </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                <table class="table tgrid">
+                  <thead>
+                    <tr>
+                      <th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
+                      <th style="font-size: 12px; font-weight: 500;"
+                        *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span
+                          [hidden]="rsvpResposeType === 'email not open'">MESSAGE</span></th>
+                      <th style="font-size: 12px; font-weight: 500;"
+                        *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">CAMPAIGN
+                        NAME</th>
+                      <th style="font-size: 12px; font-weight: 500;"
+                        *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">SUBJECT</th>
+                      <th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType != 'invities'"><span
+                          [hidden]="rsvpResposeType === 'email not open'">RSVP
+                          Date</span></th>
+                      <th style="font-size: 12px; font-weight: 500;"
+                        *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span
+                          [hidden]="rsvpResposeType === 'email not open'">GUESTS
+                          <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> -->
+                        </span></th>
+                      <th class="text-center-css" *ngIf="!isCancelledEvent && rsvpResposeType === 'email not open'">
+                        Reminder</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of rsvpDetailsList">
+                      <td>
+                        <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
+                      </td>
+                      <td *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">
+                        <span [hidden]="rsvpResposeType === 'email not open'">
+                          <h6>{{item.message}}</h6>
+                          <h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
+                        </span>
+                      </td>
+                      <td *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">
+                        {{item.campaignName}}
+                      </td>
+                      <td class="text-center" *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">
+                        {{item.subject}}</td>
+                      <td *ngIf="rsvpResposeType != 'invities'">
+                        <h6 *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">
+                          {{item.responseTime | date: 'short'}}</h6>
+                        <h6 *ngIf="rsvpResposeType === 'email open'">{{item.time | date: 'short'}}</h6>
+                      </td>
+                      <td class="center" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">
+                        {{item.additionalCount}}</td>
+                      <td class="text-center" *ngIf="rsvpResposeType === 'email not open' && isCancelledEvent === false"
+                        style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
+                          <i class="fa fa-bell-o" aria-hidden="true"></i>
+                        </a> </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </ng-container>
             <app-pagination *ngIf="rsvpDetailAnalyticsPagination.pagedItems.length !== 0"
               [pagination]="rsvpDetailAnalyticsPagination" class="pg8" [type]="rsvpResposeType"
@@ -1704,6 +1774,7 @@
     </div>
   </div>
 </section>
+
 <section *ngIf="!isChannelCampaign || campaignType != 'EVENT'">
   <div id="timeline-view" class="page-content" *ngIf="isTimeLineView "
     [class.ml0]="authenticationService.isSuperAdmin()">
@@ -1742,20 +1813,20 @@
           <div data-animation="slideInUp">
             <div class="row mb10">
               <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
-             <ng-container *ngIf="!disabled">
-              <span   *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
-                <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
+              <ng-container *ngIf="!disabled">
+                <span *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
+                  <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
+                    class="btn btn-success">{{dealButtonText}}</button>
+                </span>
+              </ng-container>
+              <ng-container *ngIf="disabled">
+                <button title="This campaign has been deleted by your vendor.You can't register a lead"
+                  style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
                   class="btn btn-success">{{dealButtonText}}</button>
-              </span>
-            </ng-container>
-            <ng-container *ngIf="disabled">
-              <button title="This campaign has been deleted by your vendor.You can't register a lead"
-              style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
-               class="btn btn-success">{{dealButtonText}}</button>
-            </ng-container>
+              </ng-container>
 
-              <h5 class="f-w-600 mt10 mb0"><span
-                  *ngIf="selectedRow?.firstName">{{selectedRow.firstName | slice:0:20}}</span>
+              <h5 class="f-w-600 mt10 mb0"><span *ngIf="selectedRow?.firstName">{{selectedRow.firstName |
+                  slice:0:20}}</span>
                 <span *ngIf="selectedRow.firstName?.length>20">..</span>
                 &nbsp;
                 <span *ngIf="selectedRow?.lastName">{{selectedRow.lastName | slice:0:20}}</span>
@@ -1787,7 +1858,7 @@
                   </a>
                 </div>
                 <div class="col-sm-3 col-xs-6"
-                  [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE' ">
+                  [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE' || campaignType === 'SURVEY'">
                   <a class="text-center">
                     <div><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></div>
                     <div>Views</div>
@@ -1798,7 +1869,7 @@
                   </a>
                 </div>
                 <div class="col-sm-3 col-xs-6"
-                  [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE'">
+                  [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE'|| campaignType === 'SURVEY'">
                   <a class="text-center">
                     <div><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></div>
                     <div>Time Spent</div>
@@ -1869,16 +1940,19 @@
                     </span>
                     <span *ngIf="emailLog.actionId == 14 && campaign.campaignVideoFile">Clicked <span class="f-w-600"
                         title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title
-												| slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> video GIF</span>
-                    <span *ngIf="emailLog.actionId == 15 && emailLog.url?.length>0 && emailLog.url!='Clicked on View in browser'">
+                        | slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> video
+                      GIF</span>
+                    <span
+                      *ngIf="emailLog.actionId == 15 && emailLog.url?.length>0 && emailLog.url!='Clicked on View in browser'">
                       Clicked on the URL
                       <span class="f-w-600">
-                        <a href="{{emailLog.url}}" target="_blank"
-                          title="{{emailLog.url}}">{{emailLog.url | slice:0:30}}
-                        <span *ngIf="emailLog.url?.length>30">...</span></a>
+                        <a href="{{emailLog.url}}" target="_blank" title="{{emailLog.url}}">{{emailLog.url |
+                          slice:0:30}}
+                          <span *ngIf="emailLog.url?.length>30">...</span></a>
                       </span>
                     </span>
-                    <span *ngIf="emailLog.actionId == 15 && emailLog.url?.length>0 && emailLog.url=='Clicked on View in browser'">
+                    <span
+                      *ngIf="emailLog.actionId == 15 && emailLog.url?.length>0 && emailLog.url=='Clicked on View in browser'">
                       <span class="f-w-600">
                         <a href="javascript:void(0);" title="{{emailLog.url}}">{{emailLog.url}}
                         </a>
@@ -1922,41 +1996,44 @@
   <div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
     <div class="modal-content">
       <div class="modal-header col-xs-12">
-       <div class="col-xs-12 col-sm-12 col-lg-12 p0">
-         <div class="col-xs-11 col-sm-10 col-lg-10 visible-xs p0">
-          <h4 class="modal-title" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
-         </div>
-        <div class="col-xs-1 col-sm-2 col-lg-2 pull-right p0">
-          <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+        <div class="col-xs-12 col-sm-12 col-lg-12 p0">
+          <div class="col-xs-11 col-sm-10 col-lg-10 visible-xs p0">
+            <h4 class="modal-title" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
+          </div>
+          <div class="col-xs-1 col-sm-2 col-lg-2 pull-right p0">
+            <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i
+                class="fa fa-times"></i></a>
+          </div>
+        </div>
+        <div class='col-xs-12 col-sm-12 col-lg-12' style="padding: 10px 0px 0px 0px;">
+          <div class="col-xs-6 col-sm-8 col-lg-8 p0 hidden-xs">
+            <h4 class="modal-title" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
+          </div>
+          <div class='col-xs-10 col-sm-3 col-lg-3'>
+            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+              placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+            <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
+              <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+            </button>
+            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
+                style="color:black !important"></i></button>
+          </div>
+          <div class='col-xs-2 col-sm-1 col-lg-1 p0'>
+            <div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
+              <span class="dropdown-toggle" data-toggle="dropdown"
+                style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
+                <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
+                  style="font-size:14px; float:right"></i>
+              </span>
+              <ul class="dropdown-menu pull-right" style="right: 15px!important;">
+                <li><a id="delete_button"
+                    (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType )"> Export To Excel </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-      <div class='col-xs-12 col-sm-12 col-lg-12' style="padding: 10px 0px 0px 0px;">
-        <div class="col-xs-6 col-sm-8 col-lg-8 p0 hidden-xs">
-          <h4 class="modal-title" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
-         </div>
-        <div class='col-xs-10 col-sm-3 col-lg-3'>
-          <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-            placeholder="Search " (keypress)="eventHandler($event.keyCode)">
-          <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
-            <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
-          </button>
-          <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
-              style="color:black !important"></i></button>
-        </div>
-        <div class='col-xs-2 col-sm-1 col-lg-1 p0'>
-        <div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
-          <span class="dropdown-toggle" data-toggle="dropdown"
-            style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
-            <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
-              style="font-size:14px; float:right"></i>
-          </span>
-          <ul class="dropdown-menu pull-right" style="right: 15px!important;">
-            <li><a id="delete_button" (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType )"> Export To Excel </a></li>
-          </ul>
-        </div>
-        </div>
-      </div>
-    </div>
       <div class="modal-body">
         <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
           <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
@@ -1971,50 +2048,50 @@
                 No results found.
               </div>
               <div class="table-responsive">
-              <table class="table tgrid" *ngIf="campaignReport.usersWatchList?.length != 0">
-                <thead>
-                  <tr>
-                    <th style="font-size: 12px; font-weight: 500;">NAME</th>
-                    <th style="font-size: 12px; font-weight: 500;">START DURATION</th>
-                    <th style="font-size: 12px; font-weight: 500;">STOP DURATION</th>
-                    <!-- 	<th style="font-size: 12px; font-weight: 500;">IP ADDRESS</th> -->
-                    <th style="font-size: 12px; font-weight: 500;">LOCATION</th>
-                    <th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of campaignReport.usersWatchList">
-                    <td>
-                      <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
-                    </td>
-                    <td>
-                      <h6>
-                        <!-- {{item.startTime | date: 'short'}} -->
-                        <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [dateAndTime]="item.startTime">
-                        </app-timestamp>
-                        <span *ngIf="referenceService.isSafariBrowser()">{{item.startTime}}</span>
-                      </h6>
-                    </td>
-                    <td>
-                      <h6>
-                        <!-- {{item.endTime | date: 'short'}} -->
-                        <app-timestamp [dateAndTime]="item.endTime"> </app-timestamp>
-                      </h6>
-                    </td>
-                    <!-- <td>
+                <table class="table tgrid" *ngIf="campaignReport.usersWatchList?.length != 0">
+                  <thead>
+                    <tr>
+                      <th style="font-size: 12px; font-weight: 500;">NAME</th>
+                      <th style="font-size: 12px; font-weight: 500;">START DURATION</th>
+                      <th style="font-size: 12px; font-weight: 500;">STOP DURATION</th>
+                      <!-- 	<th style="font-size: 12px; font-weight: 500;">IP ADDRESS</th> -->
+                      <th style="font-size: 12px; font-weight: 500;">LOCATION</th>
+                      <th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of campaignReport.usersWatchList">
+                      <td>
+                        <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
+                      </td>
+                      <td>
+                        <h6>
+                          <!-- {{item.startTime | date: 'short'}} -->
+                          <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [dateAndTime]="item.startTime">
+                          </app-timestamp>
+                          <span *ngIf="referenceService.isSafariBrowser()">{{item.startTime}}</span>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6>
+                          <!-- {{item.endTime | date: 'short'}} -->
+                          <app-timestamp [dateAndTime]="item.endTime"> </app-timestamp>
+                        </h6>
+                      </td>
+                      <!-- <td>
 										<h6>{{item.ipAddress}}</h6>
 									</td> -->
-                    <td class="center">
-                      <app-location [userLocation]="item"> </app-location>
-                    </td>
-                    <!-- <td><h6>{{item.deviceType}}, {{item.os}}</h6></td> -->
-                    <td class="center">
-                      <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                      <td class="center">
+                        <app-location [userLocation]="item"> </app-location>
+                      </td>
+                      <!-- <td><h6>{{item.deviceType}}, {{item.os}}</h6></td> -->
+                      <td class="center">
+                        <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </ng-container>
           </div>
           <!--pager here  -->
@@ -2036,58 +2113,60 @@
     <div class="modal-content">
       <div class="modal-header col-xs-12">
         <div class="col-xs-12 col-sm-12 col-lg-12 p0">
-        <div class="col-xs-10 col-sm-10 col-lg-10 p0 visible-xs">
-        <h4 class="modal-title" id="emailActionListModalLabel"
-          *ngIf="campaignReport.emailActionType === 'open'">Emails opened
-          by recipients</h4>
-        <h4 class="modal-title" id="emailActionListModalLabel"
-          *ngIf="campaignReport.emailActionType === 'click'">Recipients
-          who clicked a URL</h4>
-        </div>
-        <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
-         <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-        </div>
-        </div>
-      <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px;">
-        <div class="col-xs-4 col-sm-4 col-lg-4 hidden-xs">
-          <!-- <div class="col-xs-10 col-sm-10 col-lg-10"> -->
-        <h4 class="modal-title" id="emailActionListModalLabel"
-          *ngIf="campaignReport.emailActionType === 'open'">Emails opened
-          by recipients</h4>
-        <h4 class="modal-title" id="emailActionListModalLabel"
-          *ngIf="campaignReport.emailActionType === 'click'">Recipients
-          who clicked a URL</h4>
-        <!-- </div> -->
-        </div>
-        <div class='col-xs-4 col-sm-4 col-lg-4' style="padding: 0px 15px 0px 0px;">
-          <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-            placeholder="Search " (keypress)="eventHandler($event.keyCode)">
-          <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
-            <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
-          </button>
-          <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
-              style="color:black !important"></i></button>
-        </div>
-        <div class="col-xs-5 col-sm-2 col-lg-2 p0">
-        <div class="btn-group pull-right" style="cursor:pointer; color: #7d8c98">
-          <div class="">
-            <select class="form-control" [(ngModel)]="selectedSortedOption"
-              (ngModelChange)="getSortedResult(campaign.campaignId,$event)">
-              <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
-            </select>
+          <div class="col-xs-10 col-sm-10 col-lg-10 p0 visible-xs">
+            <h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">
+              Emails opened
+              by recipients</h4>
+            <h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">
+              Recipients
+              who clicked a URL</h4>
           </div>
+          <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
+            <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i
+                class="fa fa-times"></i></a>
           </div>
         </div>
-        <div class="col-xs-2 col-sm-2 col-lg-2">
-          <span class="dropdown-toggle" data-toggle="dropdown"
-            style="box-shadow:none;margin-top: 8px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
-            <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
-              style="font-size:14px; float:right"></i>
-          </span>
-          <ul class="dropdown-menu pull-right">
-            <li><a id="delete_button" (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType )"> Export To Excel </a></li>
-          </ul>
-        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px;">
+          <div class="col-xs-4 col-sm-4 col-lg-4 hidden-xs">
+            <!-- <div class="col-xs-10 col-sm-10 col-lg-10"> -->
+            <h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">
+              Emails opened
+              by recipients</h4>
+            <h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">
+              Recipients
+              who clicked a URL</h4>
+            <!-- </div> -->
+          </div>
+          <div class='col-xs-4 col-sm-4 col-lg-4' style="padding: 0px 15px 0px 0px;">
+            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+              placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+            <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
+              <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+            </button>
+            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
+                style="color:black !important"></i></button>
+          </div>
+          <div class="col-xs-5 col-sm-2 col-lg-2 p0">
+            <div class="btn-group pull-right" style="cursor:pointer; color: #7d8c98">
+              <div class="">
+                <select class="form-control" [(ngModel)]="selectedSortedOption"
+                  (ngModelChange)="getSortedResult(campaign.campaignId,$event)">
+                  <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-2 col-sm-2 col-lg-2">
+            <span class="dropdown-toggle" data-toggle="dropdown"
+              style="box-shadow:none;margin-top: 8px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
+              <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
+                style="font-size:14px; float:right"></i>
+            </span>
+            <ul class="dropdown-menu pull-right">
+              <li><a id="delete_button" (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType )">
+                  Export To Excel </a></li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="modal-body">
@@ -2107,94 +2186,94 @@
                 No results found.
               </div>
               <div class="table-responsive">
-              <table class="table tgrid" *ngIf="campaignReport.emailLogs?.length != 0">
-                <thead>
-                  <tr>
-                    <th style="width:40%">NAME</th>
-                    <th style="width:33%" *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
-                    <th style="width:33%" *ngIf="campaignReport.emailActionType === 'click'">Most Recent URL</th>
-                    <th style="width:27%;">Latest Time</th>
-                    <th></th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let item of campaignReport.emailLogs">
+                <table class="table tgrid" *ngIf="campaignReport.emailLogs?.length != 0">
+                  <thead>
                     <tr>
-                      <td>
-                        <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
-                      </td>
-                      <td *ngIf="campaignReport.emailActionType === 'open'">
-                        <h6 title="{{item.subject}}">
-                          {{item.subject | slice:0:40}}
-                          <span *ngIf="item.subject?.length > 40">...</span>
-                        </h6>
-                      </td>
-                      <td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
-                        <h6>{{item.url | slice:0:40}} <span *ngIf="item.url?.length > 40">...</span></h6>
-                      </td>
-                      <td *ngIf="campaignReport.emailActionType === 'click' && item.url == null">
-                        <h6>Clicked on the video thumbnail</h6>
-                      </td>
-                      <td>
-                        <span>
-                          <h6 style="text-align: center;">
-                            <!-- {{item.time | date: 'short'}} -->
-                            <app-timestamp [dateAndTime]="item.time">
-                            </app-timestamp>
+                      <th style="width:40%">NAME</th>
+                      <th style="width:33%" *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
+                      <th style="width:33%" *ngIf="campaignReport.emailActionType === 'click'">Most Recent URL</th>
+                      <th style="width:27%;">Latest Time</th>
+                      <th></th>
 
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let item of campaignReport.emailLogs">
+                      <tr>
+                        <td>
+                          <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
+                        </td>
+                        <td *ngIf="campaignReport.emailActionType === 'open'">
+                          <h6 title="{{item.subject}}">
+                            {{item.subject | slice:0:40}}
+                            <span *ngIf="item.subject?.length > 40">...</span>
                           </h6>
-                        </span>
+                        </td>
+                        <td *ngIf="campaignReport.emailActionType === 'click' && item.url != null">
+                          <h6>{{item.url | slice:0:40}} <span *ngIf="item.url?.length > 40">...</span></h6>
+                        </td>
+                        <td *ngIf="campaignReport.emailActionType === 'click' && item.url == null">
+                          <h6>Clicked on the video thumbnail</h6>
+                        </td>
+                        <td>
+                          <span>
+                            <h6 style="text-align: center;">
+                              <!-- {{item.time | date: 'short'}} -->
+                              <app-timestamp [dateAndTime]="item.time">
+                              </app-timestamp>
 
-                      </td>
-                      <td>
-                      <span data-toggle="tooltip" data-placement="left" title="View History"
-                              style="text-align: center;position: relative;" class="actions-block"
-                              *ngIf="item.emailActionCount > 1">
-                              <a
-                                (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
-                                <i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
-                              </a>
-                            </span>
-                    </td>
-                    </tr>
-                    <tr [ngClass]="{'hidden': !item.isExpand}">
-                      <td colspan="4">
-                        <table class="table tgrid table-condensed" *ngIf="item.emailLogHistory">
-                          <thead>
-                            <tr>
-                              <th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
-                              <th *ngIf="campaignReport.emailActionType === 'click'">URL</th>
-                              <th colspan="2">Opened At</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let emailLog of item.emailLogHistory">
-                              <td *ngIf="campaignReport.emailActionType === 'open'" [title]="emailLog.subject">
-                                <h6>{{emailLog.subject | slice:0:40}}
-                                  <span *ngIf="emailLog.subject?.length > 40">...</span>
-                                </h6>
+                            </h6>
+                          </span>
 
-                              </td>
-                              <td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url != null">
-                                <h6>{{emailLog.url}} <span *ngIf="emailLog.url?.length > 40">...</span></h6>
-                              </td>
-                              <td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url == null">
-                                <h6>Clicked on the video thumbnail</h6>
-                              </td>
-                              <td style="text-align: center;">
-                                <app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
+                        </td>
+                        <td>
+                          <span data-toggle="tooltip" data-placement="left" title="View History"
+                            style="text-align: center;position: relative;" class="actions-block"
+                            *ngIf="item.emailActionCount > 1">
+                            <a
+                              (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
+                              <i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
+                            </a>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr [ngClass]="{'hidden': !item.isExpand}">
+                        <td colspan="4">
+                          <table class="table tgrid table-condensed" *ngIf="item.emailLogHistory">
+                            <thead>
+                              <tr>
+                                <th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
+                                <th *ngIf="campaignReport.emailActionType === 'click'">URL</th>
+                                <th colspan="2">Opened At</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let emailLog of item.emailLogHistory">
+                                <td *ngIf="campaignReport.emailActionType === 'open'" [title]="emailLog.subject">
+                                  <h6>{{emailLog.subject | slice:0:40}}
+                                    <span *ngIf="emailLog.subject?.length > 40">...</span>
+                                  </h6>
 
-                  </ng-container>
-                </tbody>
-              </table>
-            </div>
+                                </td>
+                                <td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url != null">
+                                  <h6>{{emailLog.url}} <span *ngIf="emailLog.url?.length > 40">...</span></h6>
+                                </td>
+                                <td *ngIf="campaignReport.emailActionType === 'click' && emailLog.url == null">
+                                  <h6>Clicked on the video thumbnail</h6>
+                                </td>
+                                <td style="text-align: center;">
+                                  <app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
             </ng-container>
           </div>
           <div>
@@ -2207,8 +2286,6 @@
     </div>
   </div>
 </div>
-
-
 
 <!-- RSVP showing details modal -->
 <!-- <div class="modal fade" id="rsvpDetailsModal" tabindex="-1" role="dialog" aria-labelledby="emailSentListModalLabel" data-backdrop="static"
@@ -2272,38 +2349,39 @@
     <div class="modal-content">
       <div class="modal-header col-xs-12">
         <div class="col-xs-12 col-sm-12 col-lg-12 p0">
-        <div class="col-xs-10 col-sm-10  col-lg-10 p0 visible-xs">
-         <h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
+          <div class="col-xs-10 col-sm-10  col-lg-10 p0 visible-xs">
+            <h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
+          </div>
+          <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
+            <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i
+                class="fa fa-times"></i></a>
+          </div>
         </div>
-         <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
-          <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-        </div>
-        </div>
-      <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
-        <div class="col-xs-6 col-sm-6 col-lg-6 hidden-xs">
-          <h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
-        </div>
-        <div class='col-xs-10 col-sm-5 col-lg-5'>
-          <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-            placeholder="Search " (keypress)="eventHandler($event.keyCode)">
-          <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
-            <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
-          </button>
-          <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
-              style="color:black !important"></i></button>
-        </div>
-        <div class="col-xs-2 col-sm-1 col-lg-1 p0">
-         <div class="btn-group" style="cursor:pointer; color: #7d8c98">
-          <span class="dropdown-toggle" data-toggle="dropdown"
-            style="box-shadow:none; position: absolute; display: inline-flex;">
-            <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
-              style="font-size:14px;"></i>
-          </span>
-          <ul class="dropdown-menu pull-right" style="margin-top:30px; right: -38px !important;">
-            <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
-          </ul>
-        </div>
-        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
+          <div class="col-xs-6 col-sm-6 col-lg-6 hidden-xs">
+            <h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
+          </div>
+          <div class='col-xs-10 col-sm-5 col-lg-5'>
+            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+              placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+            <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
+              <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+            </button>
+            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
+                style="color:black !important"></i></button>
+          </div>
+          <div class="col-xs-2 col-sm-1 col-lg-1 p0">
+            <div class="btn-group" style="cursor:pointer; color: #7d8c98">
+              <span class="dropdown-toggle" data-toggle="dropdown"
+                style="box-shadow:none; position: absolute; display: inline-flex;">
+                <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
+                  style="font-size:14px;"></i>
+              </span>
+              <ul class="dropdown-menu pull-right" style="margin-top:30px; right: -38px !important;">
+                <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-body">
@@ -2321,34 +2399,34 @@
                 No results found.
               </div>
               <div class="table-responsive">
-              <table class="table tgrid" *ngIf="sentEmailOpenPagination.pagedItems?.length != 0">
-                <thead>
-                  <tr>
-                    <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
-                    <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
-                    <th style="font-size: 12px; font-weight: 500;">SENT TIME</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of sentEmailOpenPagination.pagedItems">
-                    <td>
-                      <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
-                    </td>
-                    <td>
-                      <h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
-                        <span *ngIf="campaign.campaignName?.length>30">...</span>
-                      </h6>
-                      <h4 *ngIf="item.campaignName==null">-</h4>
-                    </td>
-                    <td>
-                      <h6>
-                        <app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
-                      </h6>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                <table class="table tgrid" *ngIf="sentEmailOpenPagination.pagedItems?.length != 0">
+                  <thead>
+                    <tr>
+                      <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
+                      <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
+                      <th style="font-size: 12px; font-weight: 500;">SENT TIME</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of sentEmailOpenPagination.pagedItems">
+                      <td>
+                        <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
+                      </td>
+                      <td>
+                        <h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
+                          <span *ngIf="campaign.campaignName?.length>30">...</span>
+                        </h6>
+                        <h4 *ngIf="item.campaignName==null">-</h4>
+                      </td>
+                      <td>
+                        <h6>
+                          <app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
+                        </h6>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </ng-container>
             <div>
               <app-pagination class="pg8" [pagination]="sentEmailOpenPagination"
@@ -2368,48 +2446,53 @@
     <div class="modal-content">
       <div class="modal-header col-xs-12">
         <div class="col-xs-12 col-sm-12 col-lg-12 p0">
-        <div class="col-xs-10 col-sm-10 col-lg-10 p0 visible-xs">
-          <h4 class="modal-title" style="text-align: left">
-           <span *ngIf="donultModelpopupTitle ==='current-month'">This Month's</span>
-           <span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
-           <span *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today's</span>
-            Views</h4>
-        </div>
-        <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
-         <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-        </div>
-       </div>
-
-       <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px;">
-         <div class="col-xs-10 col-sm-8 col-lg-8 p0 hidden-xs">
-          <h4 class="modal-title" style="text-align: left">
-           <span *ngIf="donultModelpopupTitle ==='current-month'">This Month's</span>
-           <span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
-           <span *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today's</span>
-            Views</h4>
-        </div>
-        <div class='col-xs-8 col-sm-3 col-lg-3'>
-          <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-            placeholder="Search " (keypress)="eventHandler($event.keyCode)">
-          <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
-            <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
-          </button>
-          <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
-              style="color:black !important"></i></button>
+          <div class="col-xs-10 col-sm-10 col-lg-10 p0 visible-xs">
+            <h4 class="modal-title" style="text-align: left">
+              <span *ngIf="donultModelpopupTitle ==='current-month'">This Month's</span>
+              <span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
+              <span
+                *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today's</span>
+              Views
+            </h4>
+          </div>
+          <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
+            <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i
+                class="fa fa-times"></i></a>
+          </div>
         </div>
 
-        <div class="col-xs-2 col-sm-1 col-lg-1 p0">
-        <div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
-          <span class="dropdown-toggle" data-toggle="dropdown"
-            style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
-            <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
-              style="font-size:14px; float:right"></i>
-          </span>
-          <ul class="dropdown-menu pull-right" style="right: 15px !important">
-            <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
-          </ul>
-         </div>
-         </div>
+        <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px;">
+          <div class="col-xs-10 col-sm-8 col-lg-8 p0 hidden-xs">
+            <h4 class="modal-title" style="text-align: left">
+              <span *ngIf="donultModelpopupTitle ==='current-month'">This Month's</span>
+              <span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
+              <span
+                *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today's</span>
+              Views
+            </h4>
+          </div>
+          <div class='col-xs-8 col-sm-3 col-lg-3'>
+            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+              placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+            <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
+              <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+            </button>
+            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
+                style="color:black !important"></i></button>
+          </div>
+
+          <div class="col-xs-2 col-sm-1 col-lg-1 p0">
+            <div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
+              <span class="dropdown-toggle" data-toggle="dropdown"
+                style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
+                <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
+                  style="font-size:14px; float:right"></i>
+              </span>
+              <ul class="dropdown-menu pull-right" style="right: 15px !important">
+                <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
+              </ul>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -2427,40 +2510,40 @@
               No results found.
             </div>
             <div class="table-responsive">
-            <table class="table tgrid" *ngIf="donutCampaignViews?.length != 0">
-              <thead>
-                <tr>
-                  <th style="font-size: 12px; font-weight: 500;">NAME</th>
-                  <!-- <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th> -->
-                  <th style="font-size: 12px; font-weight: 500;">LOCATION</th>
-                  <th style="font-size: 12px; font-weight: 500;">DATE</th>
-                  <th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
-                  <th style="font-size: 12px; font-weight: 500;">VIEWS</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of donutCampaignViews">
-                  <td>
-                    <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
-                  </td>
-                  <td style="text-align: center">
-                    <app-location [userLocation]="item"> </app-location>
-                  </td>
-                  <td>
-                    <h6>
-                      <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
-                    </h6>
-                  </td>
-                  <td class="center">
-                    <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
-                  </td>
-                  <td>
-                    <h6>{{item.viewsCount }}</h6>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              <table class="table tgrid" *ngIf="donutCampaignViews?.length != 0">
+                <thead>
+                  <tr>
+                    <th style="font-size: 12px; font-weight: 500;">NAME</th>
+                    <!-- <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th> -->
+                    <th style="font-size: 12px; font-weight: 500;">LOCATION</th>
+                    <th style="font-size: 12px; font-weight: 500;">DATE</th>
+                    <th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
+                    <th style="font-size: 12px; font-weight: 500;">VIEWS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of donutCampaignViews">
+                    <td>
+                      <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
+                    </td>
+                    <td style="text-align: center">
+                      <app-location [userLocation]="item"> </app-location>
+                    </td>
+                    <td>
+                      <h6>
+                        <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                      </h6>
+                    </td>
+                    <td class="center">
+                      <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
+                    </td>
+                    <td>
+                      <h6>{{item.viewsCount }}</h6>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </ng-container>
           <div>
             <app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination"
@@ -2479,40 +2562,41 @@
   <div class="modal-dialog modal-css" role="document" style="right:0">
     <div class="modal-content">
       <div class="modal-header col-xs-12">
-      <div class="col-xs-12 col-sm-12 col-lg-12 p0">
-        <div class="col-xs-11 col-sm-2 col-lg-2 p0 visible-xs">
-         <h4 class="m0">People Who Have Watched Your Video</h4>
+        <div class="col-xs-12 col-sm-12 col-lg-12 p0">
+          <div class="col-xs-11 col-sm-2 col-lg-2 p0 visible-xs">
+            <h4 class="m0">People Who Have Watched Your Video</h4>
+          </div>
+          <div class="col-xs-1 col-sm-2 col-lg-2 p0 pull-right">
+            <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i
+                class="fa fa-times"></i></a>
+          </div>
         </div>
-        <div class="col-xs-1 col-sm-2 col-lg-2 p0 pull-right">
-          <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-        </div>
-      </div>
-       <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
-        <div class="col-xs-6 col-sm-8 col-lg-8 p0 hidden-xs">
-         <h4>People Who Have Watched Your Video</h4>
-        </div>
-        <div class='col-xs-8 col-sm-3 col-lg-3'>
-          <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-            placeholder="Search " (keypress)="eventHandler($event.keyCode)">
-          <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
-            <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
-          </button>
-          <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
-              style="color:black !important"></i></button>
-        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
+          <div class="col-xs-6 col-sm-8 col-lg-8 p0 hidden-xs">
+            <h4>People Who Have Watched Your Video</h4>
+          </div>
+          <div class='col-xs-8 col-sm-3 col-lg-3'>
+            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+              placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+            <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
+              <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+            </button>
+            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
+                style="color:black !important"></i></button>
+          </div>
 
-      <div class="col-xs-2 col-sm-1 col-lg-1 p0">
-        <div class="btn-group" style="cursor:pointer; color: #7d8c98">
-          <span class="dropdown-toggle" data-toggle="dropdown"
-            style="box-shadow:none; position: absolute;display: inline-flex;">
-            <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
-              style="font-size:14px;"></i>
-          </span>
-          <ul class="dropdown-menu pull-right" style="margin-top:30px; right: -38px;">
-            <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
-          </ul>
-        </div>
-        </div>
+          <div class="col-xs-2 col-sm-1 col-lg-1 p0">
+            <div class="btn-group" style="cursor:pointer; color: #7d8c98">
+              <span class="dropdown-toggle" data-toggle="dropdown"
+                style="box-shadow:none; position: absolute;display: inline-flex;">
+                <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
+                  style="font-size:14px;"></i>
+              </span>
+              <ul class="dropdown-menu pull-right" style="margin-top:30px; right: -38px;">
+                <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
+              </ul>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -2529,35 +2613,35 @@
               No results found.
             </div>
             <div class="table-responsive">
-            <table class="table tgrid" *ngIf="worldMapUserData?.length != 0">
-              <thead>
-                <tr>
-                  <th class="headerCss center">NAME</th>
-                  <th class="headerCss center">DATE & TIME</th>
-                  <th class="headerCss center">DEVICE</th>
-                  <th class="headerCss center">LOCATION</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let emailClicked of worldMapUserData;let i = index">
-                  <td>
-                    <app-user-info [userInfo]="emailClicked" [isCompanyInfo]="true"> </app-user-info>
-                  </td>
-                  <td style="text-align: center">
-                    <h5>
-                      <app-timestamp [dateAndTime]="emailClicked.time"> </app-timestamp>
-                    </h5>
-                  </td>
-                  <td style="text-align: center">
-                    <app-platform [deviceTypeOs]="false" [userPlatform]="emailClicked"> </app-platform>
-                  </td>
-                  <td style="text-align: center">
-                    <app-location [userLocation]="emailClicked"> </app-location>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              <table class="table tgrid" *ngIf="worldMapUserData?.length != 0">
+                <thead>
+                  <tr>
+                    <th class="headerCss center">NAME</th>
+                    <th class="headerCss center">DATE & TIME</th>
+                    <th class="headerCss center">DEVICE</th>
+                    <th class="headerCss center">LOCATION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let emailClicked of worldMapUserData;let i = index">
+                    <td>
+                      <app-user-info [userInfo]="emailClicked" [isCompanyInfo]="true"> </app-user-info>
+                    </td>
+                    <td style="text-align: center">
+                      <h5>
+                        <app-timestamp [dateAndTime]="emailClicked.time"> </app-timestamp>
+                      </h5>
+                    </td>
+                    <td style="text-align: center">
+                      <app-platform [deviceTypeOs]="false" [userPlatform]="emailClicked"> </app-platform>
+                    </td>
+                    <td style="text-align: center">
+                      <app-location [userLocation]="emailClicked"> </app-location>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </ng-container>
           <div>
             <app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination"
@@ -2606,51 +2690,52 @@
           (click)="clearPaginationValues()"><i class="fa fa-times"></i></button>
         <h4 class="modal-title" id="show_contact-list-info">
           <span
-            *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else other">List Info</span>
-          <ng-template #other><span>List Info</span></ng-template>
+            *ngIf="isNavigatedThroughAnalytics || (!authenticationService.isVendor()  && !isChannelCampaign); else other">Contact
+            List Info</span>
+          <ng-template #other><span>Partners List Info</span></ng-template>
         </h4>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-md-4">
             <div class="table-responsive">
-            <table class="table tgrid">
-              <thead>
-                <th class="center">List name</th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of campaingContactLists">
-                  <td class="center" (click)="getSelectedListOfContacts(item.id)" [title]="item.name"
-                    [ngStyle]="{'background-color':contactListId === item.id ? 'lightblue' : '' }">{{item.name
-										| slice:0:26}} <span *ngIf="item.name?.length>26 ">...</span></td>
-                </tr>
-              </tbody>
-            </table>
+              <table class="table tgrid">
+                <thead>
+                  <th class="center">List name</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of campaingContactLists">
+                    <td class="center" (click)="getSelectedListOfContacts(item.id)" [title]="item.name"
+                      [ngStyle]="{'background-color':contactListId === item.id ? 'lightblue' : '' }">{{item.name
+                      | slice:0:26}} <span *ngIf="item.name?.length>26 ">...</span></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <div class="col-md-8">
             <div class="table-responsive">
-            <table class="table tgrid">
-              <thead>
-                <th class="center">Email Id</th>
-                <th class="center">First Name</th>
-                <th class="center">Last Name</th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of campaingContactListValues">
-                  <td class="center">{{item.emailId}}</td>
-                  <td class="center">
-                    <span *ngIf="item.firstName; else empty"> {{item.firstName}} </span>
-                    <ng-template #empty>-</ng-template>
-                  </td>
-                  <td class="center">
-                    <span *ngIf="item.lastName; else lastName"> {{item.lastName}} </span>
-                    <ng-template #lastName>-</ng-template>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              <table class="table tgrid">
+                <thead>
+                  <th class="center">Email Id</th>
+                  <th class="center">First Name</th>
+                  <th class="center">Last Name</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of campaingContactListValues">
+                    <td class="center">{{item.emailId}}</td>
+                    <td class="center">
+                      <span *ngIf="item.firstName; else empty"> {{item.firstName}} </span>
+                      <ng-template #empty>-</ng-template>
+                    </td>
+                    <td class="center">
+                      <span *ngIf="item.lastName; else lastName"> {{item.lastName}} </span>
+                      <ng-template #lastName>-</ng-template>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <div>
               <app-pagination class="pg8" *ngIf="contactListInfoPagination.pagedItems?.length>0"
                 [pagination]="contactListInfoPagination" [type]="'contactListInfo'" (notifyParent)="setPage($event)"
@@ -2665,6 +2750,7 @@
     </div>
   </div>
 </div>
+
 <!-- Social Campaign Redistribute Modal -->
 <div class="modal fade right" id="scrModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -2676,61 +2762,63 @@
       </div>
       <div class="modal-body">
         <div class="table-responsive">
-        <table class="table tgrid">
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Social Accounts</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
-              <ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
-                <tr>
-                  <ng-container *ngFor="let item of campaignViews">
-                    <ng-container *ngIf="socialStatus.userId === item.userId">
-                      <td>
-                        <app-user-info [userInfo]="item"> </app-user-info>
-                      </td>
-                      <td>
-                        <div class="social-profile"
-                          [ngStyle]="{'background-image': 'url(' + socialStatus.socialStatusProvider.socialConnection.profileImage + ')'}"
-                          data-toggle="tooltip" data-placement="top"
-                          title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}">
-                          <ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'TWITTER'">
-                            <img class="img-circle"
-                              alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
-                              src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
-                          </ng-container>
-                          <ng-container
-                            *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-                            <img class="img-circle"
-                              alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
-                              src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
-                          </ng-container>
-                          <ng-container
-                            *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
-                            <img class="img-circle"
-                              alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
-                              src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
-                          </ng-container>
-                          <ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'GOOGLE'">
-                            <img class="img-circle"
-                              alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
-                              src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
-                          </ng-container>
-                        </div>
-                      </td>
+          <table class="table tgrid">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Social Accounts</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
+                <ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+                  <tr>
+                    <ng-container *ngFor="let item of campaignViews">
+                      <ng-container *ngIf="socialStatus.userId === item.userId">
+                        <td>
+                          <app-user-info [userInfo]="item"> </app-user-info>
+                        </td>
+                        <td>
+                          <div class="social-profile"
+                            [ngStyle]="{'background-image': 'url(' + socialStatus.socialStatusProvider.socialConnection.profileImage + ')'}"
+                            data-toggle="tooltip" data-placement="top"
+                            title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}">
+                            <ng-container
+                              *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'TWITTER'">
+                              <img class="img-circle"
+                                alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
+                            </ng-container>
+                            <ng-container
+                              *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+                              <img class="img-circle"
+                                alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
+                            </ng-container>
+                            <ng-container
+                              *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+                              <img class="img-circle"
+                                alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
+                            </ng-container>
+                            <ng-container
+                              *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'GOOGLE'">
+                              <img class="img-circle"
+                                alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
+                            </ng-container>
+                          </div>
+                        </td>
+                      </ng-container>
                     </ng-container>
-                  </ng-container>
-                </tr>
+                  </tr>
+                </ng-container>
               </ng-container>
-            </ng-container>
 
 
 
 
-            <!--<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+              <!--<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
 					<tr>
 					<ng-container *ngFor="let item of campaignViews">
 					<ng-container *ngIf="socialStatus.userId === item.userId">
@@ -2760,8 +2848,8 @@
 					</ng-container>
 					</tr>
 				</ng-container>-->
-          </tbody>
-        </table>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="modal-footer">
@@ -2778,43 +2866,52 @@
     <div class="modal-content">
       <div class="modal-header col-xs-12">
         <div class="col-xs-12 col-sm-12 col-lg-12 p0">
-        <div class="col-xs-10 col-sm-10  col-lg-10 p0 visible-xs">
-         <h4 class="modal-title" id="emailSentListModalLabel"> Email contacts Details</h4>
+          <div class="col-xs-10 col-sm-10  col-lg-10 p0 visible-xs">
+            <h4 class="modal-title" id="emailSentListModalLabel"> Email contacts Details</h4>
+          </div>
+          <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
+            <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i
+                class="fa fa-times"></i></a>
+          </div>
         </div>
-         <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
-          <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-        </div>
-        </div>
-      <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
-        <div class="col-xs-6 col-sm-6 col-lg-6 hidden-xs">
-          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'recipients'">Total Recipients</h4>
-          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'hardbounce'">Hard-Bounce Emails Details</h4>
-          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'softbounce'"> Soft-Bounce Emails Details</h4>
-          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'unsubscribe'">Unsubscribed Users Details</h4>
-          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'sent'">Sent Emails Details</h4>
-          <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'deliverability'">Delivered Emails Details</h4>
-        </div>
-        <div class='col-xs-10 col-sm-5 col-lg-5'>
-          <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-            placeholder="Search " (keypress)="eventHandler($event.keyCode)">
-          <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
-            <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
-          </button>
-          <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
-              style="color:black !important"></i></button>
-        </div>
-        <div class="col-xs-2 col-sm-1 col-lg-1 p0">
-         <div class="btn-group" style="cursor:pointer; color: #7d8c98">
-          <span class="dropdown-toggle" data-toggle="dropdown"
-            style="box-shadow:none; position: absolute; display: inline-flex;">
-            <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
-              style="font-size:14px;"></i>
-          </span>
-          <ul class="dropdown-menu pull-right" style="margin-top:30px; right: -38px !important;">
-            <li><a id="delete_button" (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType )"> Export To Excel </a></li>
-          </ul>
-        </div>
-        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
+          <div class="col-xs-6 col-sm-6 col-lg-6 hidden-xs">
+            <h4 class="modal-title" id="emailSentListModalLabel"
+              *ngIf="campaignReport.emailActionType === 'recipients'">Total Recipients</h4>
+            <h4 class="modal-title" id="emailSentListModalLabel"
+              *ngIf="campaignReport.emailActionType === 'hardbounce'">Hard-Bounce Emails Details</h4>
+            <h4 class="modal-title" id="emailSentListModalLabel"
+              *ngIf="campaignReport.emailActionType === 'softbounce'"> Soft-Bounce Emails Details</h4>
+            <h4 class="modal-title" id="emailSentListModalLabel"
+              *ngIf="campaignReport.emailActionType === 'unsubscribe'">Unsubscribed Users Details</h4>
+            <h4 class="modal-title" id="emailSentListModalLabel" *ngIf="campaignReport.emailActionType === 'sent'">Sent
+              Emails Details</h4>
+            <h4 class="modal-title" id="emailSentListModalLabel"
+              *ngIf="campaignReport.emailActionType === 'deliverability'">Delivered Emails Details</h4>
+          </div>
+          <div class='col-xs-10 col-sm-5 col-lg-5'>
+            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+              placeholder="Search " (keypress)="eventHandler($event.keyCode)">
+            <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
+              <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+            </button>
+            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
+                style="color:black !important"></i></button>
+          </div>
+          <div class="col-xs-2 col-sm-1 col-lg-1 p0">
+            <div class="btn-group" style="cursor:pointer; color: #7d8c98">
+              <span class="dropdown-toggle" data-toggle="dropdown"
+                style="box-shadow:none; position: absolute; display: inline-flex;">
+                <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
+                  style="font-size:14px;"></i>
+              </span>
+              <ul class="dropdown-menu pull-right" style="margin-top:30px; right: -38px !important;">
+                <li><a id="delete_button"
+                    (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType )"> Export To Excel </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-body clearfix">
@@ -2827,52 +2924,53 @@
           <div class="table-responsive">
             <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
             <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
-              <div class="alert alert-info alert-dismissible" *ngIf="emailActionDetailsPagination.pagedItems?.length == 0">
+              <div class="alert alert-info alert-dismissible"
+                *ngIf="emailActionDetailsPagination.pagedItems?.length == 0">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 No results found.
               </div>
               <div class="table-responsive">
-              <table class="table tgrid" *ngIf="emailActionDetailsPagination.pagedItems?.length != 0">
-                <thead>
-                  <tr>
-                    <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
-                    <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>  
-                     <th style="font-size: 12px; font-weight: 500;" *ngIf="campaignReport.emailActionType === 'sent'">SENT TIME</th>                   
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of emailActionDetailsPagination.pagedItems">
-                    <td>
-                      <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
-                    </td>
-                    <td>
-                      <h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
-                        <span *ngIf="campaign.campaignName?.length>30">...</span>
-                      </h6>
-                      <h4 *ngIf="item.campaignName==null">-</h4>
-                    </td>
-                    <td *ngIf="campaignReport.emailActionType === 'sent'">
-                     <h6>
-                        <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
-                      </h6>                   
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                <table class="table tgrid" *ngIf="emailActionDetailsPagination.pagedItems?.length != 0">
+                  <thead>
+                    <tr>
+                      <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
+                      <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
+                      <th style="font-size: 12px; font-weight: 500;" *ngIf="campaignReport.emailActionType === 'sent'">
+                        SENT TIME</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of emailActionDetailsPagination.pagedItems">
+                      <td>
+                        <app-user-info [userInfo]="item" [isCompanyInfo]="true"> </app-user-info>
+                      </td>
+                      <td>
+                        <h6 title="{{item.campaignName}}">{{item.campaignName | slice:0:30}}
+                          <span *ngIf="campaign.campaignName?.length>30">...</span>
+                        </h6>
+                        <h4 *ngIf="item.campaignName==null">-</h4>
+                      </td>
+                      <td *ngIf="campaignReport.emailActionType === 'sent'">
+                        <h6>
+                          <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                        </h6>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </ng-container>
-            </div>
-            <div>
-              <app-pagination class="pg8" [pagination]="emailActionDetailsPagination"
-                *ngIf="emailActionDetailsPagination.pagedItems?.length > 0" [type]="'emailActionDetails'"
-                (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-            </div>
+          </div>
+          <div>
+            <app-pagination class="pg8" [pagination]="emailActionDetailsPagination"
+              *ngIf="emailActionDetailsPagination.pagedItems?.length > 0" [type]="'emailActionDetails'"
+              (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 
 <!-- --_Deal Registration -->
 <!-- <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -2890,10 +2988,10 @@
 </div> -->
 
 <ng-container *ngIf="isDealRegistration && !isDealPreview">
-  <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId" [campaignName]="campaign.campaignName" [actionType]="leadActionType"
-  (notifyOtherComponent)="showTimeLineView()"></app-add-lead>
+  <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"
+    [campaignName]="campaign.campaignName" [actionType]="leadActionType" (notifyOtherComponent)="showTimeLineView()">
+  </app-add-lead>
 </ng-container>
-
 
 <!-- --Lead Registration -->
 <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -2928,7 +3026,7 @@
               <span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
                 <span style="color:#fff!important;"><i aria-hidden="true" class="fa fa-user-secret"
                     style="font-size:20px!important" id="leads-info-font-size"></i>&nbsp;
-                    LEAD DETAILS
+                  YOUR PARTNER LEAD DETAILS
                   <span><b>( Total Lead count # {{campaignReport.yesPartnerLeadCount}}
                       <ng-container
                         *ngIf="campaignReport.yesPartnerLeadCount!=campaignReport.partnerLeadAdditionalCount">
@@ -2948,7 +3046,8 @@
                 (click)="leadsSearchKey=''; leadDetailsSearch()">
                 <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
               </button>
-              <button type="submit" class="search-box-item-click" style="right: 1px" (click)="leadType = 'partnerLeads' ;leadDetailsSearch()">
+              <button type="submit" class="search-box-item-click" style="right: 1px"
+                (click)="leadType = 'partnerLeads' ;leadDetailsSearch()">
                 <i class="fa fa-search" style="padding: 4px; color: black !important"></i>
               </button>
             </div>
@@ -3008,15 +3107,15 @@
                         <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
                           <ng-container *ngFor="let columnValue of partnerLeadsFormHeaders;let columnIndex = index">
                             <td *ngIf="columnIndex<=3">
-                            <ng-container *ngIf="columnValue=='RSVP Time'">
-                                    <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
-                                      [dateAndTime]="formDataRow[columnValue]"> </app-timestamp>
-                                    <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[columnValue]}}</span>
-                                  </ng-container>
-                                  <ng-container *ngIf="columnValue!='RSVP Time'">
-                                    <div [innerHtml]="formDataRow[columnValue]"></div>
-                                  </ng-container>
-                                 </td>
+                              <ng-container *ngIf="columnValue=='RSVP Time'">
+                                <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
+                                  [dateAndTime]="formDataRow[columnValue]"> </app-timestamp>
+                                <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[columnValue]}}</span>
+                              </ng-container>
+                              <ng-container *ngIf="columnValue!='RSVP Time'">
+                                <div [innerHtml]="formDataRow[columnValue]"></div>
+                              </ng-container>
+                            </td>
                           </ng-container>
                           <td>
                             <a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
@@ -3029,6 +3128,7 @@
                         <tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
                           <td colspan="5">
                             <div class="table-responsive">
+
                             <table id="expanded-table" class="table tgrid table-bordered" aria-describedby="">
                               <tr *ngFor="let column of partnerLeadsFormHeaders;let i  = index;">
                                 <th *ngIf="i>=4" scope="col">
@@ -3070,7 +3170,6 @@
   </div>
   <app-scroll-top></app-scroll-top>
 </div>
-
 
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 <app-clicked-urls-vendor-analytics #clickedUrlsVendorAnalyticsComponent></app-clicked-urls-vendor-analytics>
