@@ -202,3 +202,14 @@ cursor: default;
   }
 }
 
+.tag {
+  font-size: 12px;
+  background-color: #00a6e8;
+  color: white;
+  padding: 4px;
+  text-align: center;
+  margin: 2px 2px 2px 0px;
+  border-radius: 20px;
+  padding: 5px 10px;
+  display: inline;
+}

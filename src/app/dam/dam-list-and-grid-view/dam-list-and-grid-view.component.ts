@@ -177,6 +177,18 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				this.assets = data.assets;
 				$.each(data.assets, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.createdDateInUTCString);
+					let toolTipTagNames: string = "";
+					asset.tagNames.sort();
+					$.each(asset.tagNames, function (index, tagName) {
+						if (index > 1) {
+							if (toolTipTagNames.length > 0) {
+								toolTipTagNames = toolTipTagNames + ", " + tagName;
+							} else {
+								toolTipTagNames = tagName;
+							}
+						}
+					});
+					asset.toolTipTagNames = toolTipTagNames;
 				});
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
@@ -195,6 +207,18 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				pagination.totalRecords = data.totalRecords;
 				$.each(data.list, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.publishedTimeInUTCString);
+					let toolTipTagNames: string = "";
+					asset.tagNames.sort();
+					$.each(asset.tagNames, function (index, tagName) {
+						if (index > 1) {
+							if (toolTipTagNames.length > 0) {
+								toolTipTagNames = toolTipTagNames + ", " + tagName;
+							} else {
+								toolTipTagNames = tagName;
+							}
+						}
+					});
+					asset.toolTipTagNames = toolTipTagNames;
 				});
 				pagination = this.pagerService.getPagedItems(pagination, data.list);
 			}

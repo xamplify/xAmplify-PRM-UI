@@ -6,6 +6,7 @@ export class DamUploadPostDto {
     thumbnailPath:string = "";
     assetPath:string = "";
     beeTemplate=false;
+    tagIds:Array<number> = new Array<number>();
 
     validFile = false;
     validName = false;

@@ -339,6 +339,24 @@
                         <div class="item__type">
                           <span>{{file.assetType}}</span>
                         </div>
+                        <div style="padding-top: 10px;">
+                          <ng-container *ngIf="file.tagNames?.length > 0">
+                            <div class="tag" title="{{file.tagNames[0]}}">
+                              <ng-container *ngIf="file.tagNames?.length == 1">{{file.tagNames[0]}}
+                              </ng-container>
+                              <ng-container *ngIf="file.tagNames?.length > 1">{{file.tagNames[0] | slice:0:5}} <span
+                                  *ngIf="file.tagNames[0]?.length>5">..</span>
+                              </ng-container>
+                            </div>
+                            <ng-container *ngIf="file.tagNames.length > 1">
+                              <div class="tag" title="{{file.tagNames[1]}}">
+                                {{file.tagNames[1] | slice:0:5}} <span *ngIf="file.tagNames[1]?.length>5">..</span>
+                              </div>
+                            </ng-container>
+                            <span *ngIf="file.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
+                              title="{{file.toolTipTagNames}}">...</span>
+                          </ng-container>
+                        </div>
                         <div class="item__actions">
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="preview"
                               (click)="$event.stopPropagation();assetPreview(file, false)" style="left: 10px;">
