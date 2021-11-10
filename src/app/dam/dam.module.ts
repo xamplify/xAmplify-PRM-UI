@@ -15,9 +15,11 @@ import { DamPublishedPartnersAnalyticsComponent } from './dam-published-partners
 import { SelectUploadTypeComponent } from './select-upload-type/select-upload-type.component';
 import { ShowHistoryComponent } from './show-history/show-history.component';
 import { ViewDamComponent } from './view-dam/view-dam.component';
+import { CKEditorModule } from 'ng2-ckeditor';
+
 @NgModule({
   imports: [
-    CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule
+    CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule, CKEditorModule
   ],
   declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent],
   providers: [DamService]

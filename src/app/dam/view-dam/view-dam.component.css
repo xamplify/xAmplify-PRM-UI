@@ -8,3 +8,7 @@
 .mhtpx{
     min-height: 200px !important;
 }
+
+.desc-break {
+    word-break: break-word;
+}

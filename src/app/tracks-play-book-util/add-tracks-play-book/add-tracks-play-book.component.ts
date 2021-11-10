@@ -442,6 +442,18 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         this.assetSortOption.totalRecords = data.totalRecords;
         $.each(data.assets, function (_index: number, asset: any) {
           asset.displayTime = new Date(asset.createdDateInUTCString);
+          let toolTipTagNames: string = "";
+          asset.tagNames.sort();
+          $.each(asset.tagNames, function (index, tagName) {
+            if (index > 1) {
+              if (toolTipTagNames.length > 0) {
+                toolTipTagNames = toolTipTagNames + ", " + tagName;
+              } else {
+                toolTipTagNames = tagName;
+              }
+            }
+          });
+          asset.toolTipTagNames = toolTipTagNames;
         });
         pagination = this.pagerService.getPagedItems(pagination, data.assets);
       }
