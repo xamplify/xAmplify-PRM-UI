@@ -110,6 +110,15 @@
                       <label class="control-label col-sm-4 p0">Data Share</label>
                       <div class="col-sm-8">
                         <switch  [status]="campaign?.dataShare" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                            (statusChange)="setDataShare($event)">
+                        </switch>
+                      </div>
+                    </div>  
+                    <br><br>
+                    <div class="form-group" *ngIf="campaign?.dataShare">
+                      <label class="control-label col-sm-4 p0">Detailed Analytics</label>
+                      <div class="col-sm-8">
+                        <switch  [status]="campaign?.detailedAnalyticsShared" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                             (statusChange)="shareAnalytics($event)">
                         </switch>
                       </div>

@@ -407,8 +407,15 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaign.videoPlayed = event;
     }
 
-    shareAnalytics(event:any){
+    setDataShare(event:any){
         this.campaign.dataShare = event;
+        if(!event){
+            this.campaign.detailedAnalyticsShared = event;
+        }
+    }
+
+    shareAnalytics(event:any){
+        this.campaign.detailedAnalyticsShared = event;
     }
 
     /*************************************************************Campaign Details***************************************************************************************/
