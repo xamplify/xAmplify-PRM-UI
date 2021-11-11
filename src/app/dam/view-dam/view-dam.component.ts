@@ -10,6 +10,7 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
 import { UtilService } from '../../core/services/util.service';
 import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
+import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 
 declare var $: any;
 
@@ -30,7 +31,7 @@ export class ViewDamComponent implements OnInit {
   download = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
-    public utilService:UtilService,public deviceService: Ng2DeviceService) { }
+    public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.assetId = parseInt(this.activatedRoute.snapshot.params['assetId']);

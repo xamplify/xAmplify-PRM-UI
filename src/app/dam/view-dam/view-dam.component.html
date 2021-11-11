@@ -49,8 +49,7 @@
 										*ngIf="assetDetailsViewDto?.assetName?.length>50">..</span>
 								</h2>
 								<br>
-								<div>
-									{{assetDetailsViewDto?.description}} <br>
+								<div [innerHTML]="assetDetailsViewDto?.description" class="desc-break"> <br>
 								</div>
 							</div>
 						</div>

@@ -10,7 +10,7 @@
                         <div class="col-md-12 col-lg-12"
                             style="border-bottom: 2px solid #cac8c8;padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: #008fd5;border-top-left-radius: 5px;border-top-right-radius: 5px;">
                             <div class="row">
-                                <div class="col-md-6 col-lg-6" style="padding: 3px 17px; width: 95%;">
+                                <div class="col-md-6 col-lg-6 track-title" title="{{tracksPlayBook.title}}" >
                                     <a class="title padding_bottom"
                                         style="font-size: 15px; padding-top: 10px;">{{tracksPlayBook.title}}</a>
 
@@ -83,8 +83,7 @@
                                                         </h4>
                                                     </div>
                                                 </div>
-                                                <div class="description-scroll">
-                                                    {{assetDetails?.description}}
+                                                <div class="description-scroll" [innerHTML]="assetDetails?.description">
                                                     <br>
                                                 </div>
                                             </div>

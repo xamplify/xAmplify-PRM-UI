@@ -1117,6 +1117,21 @@ export class CampaignService {
         .map(this.extractData) .catch(this.handleError);
     }
 
+    findDataShareOption(parentCampaignId:number){
+        let url = this.URL + "campaign/findDataShareOption/"+parentCampaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    findUserLevelCampaignAnalyticsOption(campaignId:number){
+        let userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/findUserLevelCampaignAnalyticsOption/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         return body || {};

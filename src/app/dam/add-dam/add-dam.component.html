@@ -40,7 +40,7 @@
     <div class="modal-dialog modal-css" role="document">
       <!-- Modal content-->
       <div class="modal-content">
-        <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <ngx-loading [show]="modalPopupLoader && !isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <div class="modal-header">
               <a class="close-circle" (click)="hidePopup()">
                 <i class="fa fa-times" aria-hidden="true"></i></a>
@@ -64,12 +64,88 @@
                          </div>
                      </div>
                      <div class="col-md-12 col-lg-12 ">
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" translate>Description <span class="required">*</span></label>
-                            <div class="col-sm-8">
-                              <textarea class="form-control" rows="7" (input)="validateForm('description')"  placeholder="Description" maxlength="5000" [(ngModel)]="damPostDto.description"  [ngModelOptions]="{standalone: true}"></textarea>
-                            </div>
+                        <span class="required" *ngIf="!damPostDto.validDescription && descriptionErrorMessage?.length > 0"
+                          style="position: absolute;margin: auto 25%;">{{descriptionErrorMessage}}</span>
+                        <div class="form-group" style="padding-top: 20px;">
+                          <label class="control-label col-sm-3" translate>Description <span class="required">*</span></label>
+                          <div class="col-sm-8">
+                            <!-- <textarea class="form-control" rows="7" (input)="validateForm('description')"  placeholder="Description" maxlength="5000" [(ngModel)]="damPostDto.description"  [ngModelOptions]="{standalone: true}"></textarea> -->
+                            <ckeditor #ckeditor [(ngModel)]="damPostDto.description" [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
+                              (ready)="onReady($event)" debounce="500" maxlength="5000" (change)="getCkEditorData();validateForm('description')"
+                              (input)="getCkEditorData();validateForm('description')">
+                            </ckeditor>
+                          </div>
                         </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                      <div class="form-group">
+                        <label class="control-label col-sm-3" translate>Tags
+                        </label>
+                        <div class="col-sm-8 inline" style="padding: 5px 8px 0px 16px;">
+                          <ngx-loading [show]="tagsLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+                          <div class="portlet light" style="width: 100%;padding: 5px !important;">
+                            <div class="portlet-title tabbable-line " style="margin-bottom: 0px !important;">
+                              <div class="inline" style="float: right;">
+                                <div class="input-icon left" style="padding-bottom: 5px;">
+                                  <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
+                                    placeholder="Search..." class="form-control" (keypress)="tagEventHandler($event.keyCode);"
+                                    style="padding: 6px 12px;">
+                                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
+                                    (click)="tagSearchKey='';searchTags();"></button>
+                                  <button type="submit" class="search-box-item-click email-search" (click)="searchTags()">
+                                    <i class="fa fa-search cesf-xamp"></i></button>
+                                </div>
+                                <div style="padding-left: 10px;">
+                                  <button type="button" class="btn btn-primary add-btn" (click)="addTag()">
+                                    <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i></button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="scroller">
+                              <table class="table table-bordered no-footer tags-table" id="tags_list">
+                                <tbody>
+                                  <tr role="row" *ngFor="let tag of tagsListFirstColumn;let i = index"
+                                    style="vertical-align: middle;padding: 0px;">
+                                    <td style="padding: 5px;vertical-align: middle; width: 50%;"
+                                      (click)="updateSelectedTags(tag,$event.target.checked)">
+                                      <div class="col-sm-2 col-sm-offset-2">
+                                        <label class="form-check-label inline">
+                                          <input type="checkbox" class="form-check-input "
+                                            [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tag.id)>-1">
+                                        </label>
+                                      </div>
+                                      <div class="col-sm-5" style="padding-left: 0px !important; width: 60%;" title="{{tag?.tagName}}">
+                                        <div class="btn btn-primary text-wrap" style="padding: 4px 10px;border-radius: 2px !important;">
+                                          {{tag.tagName}}</div>
+                                      </div>
+                                    </td>
+                                    <td style="padding: 5px;vertical-align: middle; width: 50%;"
+                                      (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)">
+                                      <div class="col-sm-2 col-sm-offset-2">
+                                        <label class="form-check-label inline">
+                                          <input *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]" type="checkbox"
+                                            class="form-check-input "
+                                            [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
+                                        </label>
+                                      </div>
+                                      <div class="col-sm-5" style="padding-left: 5px !important; width: 60%;" title="{{tagsListSecondColumn[i]?.tagName}}">
+                                        <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]" class="btn btn-primary text-wrap"
+                                          style="padding: 4px 10px;border-radius: 2px !important;">
+                                          {{tagsListSecondColumn[i].tagName}}</div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <div
+                                *ngIf="(tagsListFirstColumn == undefined || 1 > tagsListFirstColumn.length) && (tagsListSecondColumn == undefined || 1 > tagsListSecondColumn.length)"
+                                class="alert alert-info">
+                                <strong>No Tags Found.</strong>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
               </div>
                 </div>
@@ -85,4 +161,9 @@
   </div>
  </div>
  
+ <!-- ADD TAG POPUP -->
+<div *ngIf="openAddTagPopup">
+  <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
+  </app-add-tags-util>
+</div>
  
