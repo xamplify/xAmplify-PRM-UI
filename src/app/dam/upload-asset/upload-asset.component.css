@@ -184,3 +184,15 @@ width:150%;
   text-overflow: ellipsis;
   width: 100%;
 }
+
+@media screen and (max-width:600px){
+  .mScroll{
+    overflow-x: auto;
+  }
+  .mThumbwidth{
+    width: fit-content;
+  }
+  .mWidth{
+    width:250%;
+  }
+}

@@ -37,7 +37,7 @@
   </div>
   <div class="row">
     <div class="col-md-12 col-lg-12">
-      <div class="portlet light">
+      <div class="portlet light mScroll">
         <div class="portlet-title">
           <div class="caption" translate>
             {{headerText}}
@@ -182,7 +182,7 @@
                                             </label> -->
                             <div>
                               <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload Thumbnail </strong></span>
-                              <div class="asset-thumbnail-div-sm" (click)="browseThumbnail()">
+                              <div class="asset-thumbnail-div-sm mThumbwidth" (click)="browseThumbnail()">
                                 <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)"
                                   style="opacity: 0.0; position: absolute;">
                                 <span *ngIf="showDefaultLogo && !croppedImage">
@@ -202,7 +202,7 @@
                                   &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
                                     style="font-size:25px;padding-top:10px"></i></a>
                               </div>
-                              <div class="col-xs-12 p0 top10px">
+                              <div class="col-xs-12 p0 top10px mWidth">
                                 <div class="col-xs-12 message-content">
                                   <ul>
                                     <li translate>Maximum file size is 10 MB.</li>
