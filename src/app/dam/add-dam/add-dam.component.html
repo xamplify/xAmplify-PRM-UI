@@ -90,9 +90,9 @@
                                   <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
                                     placeholder="Search..." class="form-control" (keypress)="tagEventHandler($event.keyCode);"
                                     style="padding: 6px 12px;">
-                                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
+                                  <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
                                     (click)="tagSearchKey='';searchTags();"></button>
-                                  <button type="submit" class="search-box-item-click email-search" (click)="searchTags()">
+                                  <button type="button" class="search-box-item-click email-search" (click)="searchTags()">
                                     <i class="fa fa-search cesf-xamp"></i></button>
                                 </div>
                                 <div style="padding-left: 10px;">
