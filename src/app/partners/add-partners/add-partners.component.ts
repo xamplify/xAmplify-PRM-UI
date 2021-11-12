@@ -206,6 +206,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	public googleCurrentUser: any;
     public hubSpotCurrentUser: any;
     public salesForceCurrentUser: any;
+	teamMemberGroups: Array<any> = new Array<any>();
 	
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -606,6 +607,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.authenticationService.findNotifyPartnersOption(this.companyId).subscribe(
 			response=>{
 				this.iteratePartnersAndAssignContactsCount(response.data);
+				/********XNFR-85********/
+				let teamMemberGroups = response.map['teamMemberGroups'];
+				this.teamMemberGroups = teamMemberGroups;
 			},error=>{
 				this.iteratePartnersAndAssignContactsCount(false);
 			});
@@ -617,6 +621,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		$.each(this.newPartnerUser, function(_index: number, partner: any) {
 			partner.contactsLimit = 1;
+			partner.teamMemberGroupId = 0;
 			partner.notifyPartners = notifyPartners;
 		});
 		this.processingPartnersLoader = false;
@@ -640,17 +645,32 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$(".modal-body").animate({ scrollTop: 0 }, 'slow');
 		this.contactAndMdfPopupResponse = new CustomResponse();
 		let errorCount = 0;
+		let teamMemberGroupErrorCount = 0;
 		$.each(this.newPartnerUser, function(index: number, partner: any) {
 			let contactsLimit = partner.contactsLimit;
 			if (contactsLimit < 1) {
 				errorCount++;
 				$('#contact-count-' + index).css('background-color', 'red');
+			}else{
+				if(errorCount>0){
+					errorCount--;
+				}
+				$('#contact-count-' + index).css('background-color', '#e9eef2');
+			}
+			let teamMemberGroupId = partner.teamMemberGroupId;
+			if(teamMemberGroupId==0){
+				teamMemberGroupErrorCount++;
+				$('#team-member-group-error-count-' + index).css('background-color', 'red');
+			}else{
+				if(teamMemberGroupErrorCount>0){
+					teamMemberGroupErrorCount--;
+				}
+				$('#team-member-group-error-count-' + index).css('background-color', '#e9eef2');
 			}
 		});
-		if (errorCount > 0) {
-			this.contactAndMdfPopupResponse = new CustomResponse('ERROR', 'Minimum 1 contact should be assigned to each partner', true);
+		if (errorCount > 0 || teamMemberGroupErrorCount>0) {
 			this.processingPartnersLoader = false;
-		} else {
+		} else if(errorCount<=0 && teamMemberGroupErrorCount<=0) {
 			this.validatePartnership();
 		}
 	}
@@ -669,9 +689,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				} else {
 					let emailIds = "";
 					$.each(data.data, function(index: number, emailId: string) {
-						emailIds += (index + 1) + "." + emailId + "<br><br>";
+						emailIds += (index + 1) + "." + emailId + "\n";
 					});
-					let updatedMessage = data.message + "<br><br>" + emailIds;
+					let updatedMessage = data.message + "\n" + emailIds;
 					this.contactAndMdfPopupResponse = new CustomResponse('ERROR', updatedMessage, true);
 				}
 			}, (error: any) => {
@@ -3835,5 +3855,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.zohoPopupLoader = false;
             this.getZohoLeadsUsingOAuth2();
         }
-    }
+	}
+	
+	/********XNFR-85********/
+
+	previewModules(teamMemberGroupId:number){
+			alert("I will see preview");
+	}
 }

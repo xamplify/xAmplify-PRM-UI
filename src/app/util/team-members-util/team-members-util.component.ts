@@ -661,7 +661,6 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
         response=>{
           this.loading = false;
           team.enableOption = response.data;
-          console.log(team);
         },_error=>{
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
