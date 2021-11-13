@@ -7,37 +7,37 @@
 			</li>
 		<li>
 			<a (click)="refresh()" translate> Manage 
-				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
           		<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</a>
 		</li>
 		<li>
 			<a (click)="backToEditContacts()" translate>
 				<i	class="fa fa-angle-right" aria-hidden="true"></i>Edit 
-				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
           		<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</a>
 		</li>
 		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right" aria-hidden="true">
 		</i>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">{{contactsByType.selectedCategory}}
-			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 			<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 		</span>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'" translate>Unregistered 
-			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
           		<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 		</span>
 		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Unsubscribed 
-			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 			<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 		   </span>
 		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'" translate>Registered 
-			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 			<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 		   </span>
 		   <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>Undeliverable 
-			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 			<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 		   </span>
 		</li>
@@ -211,7 +211,7 @@
 								<div class="portlet-title">
 									<div class="caption" translate>
 										<i class="fa fa-edit" aria-hidden="true"></i>List of 
-										<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+										<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 									</div>
 
@@ -833,7 +833,7 @@
 							style="padding: 15px 10px 12px;"
 							*ngIf="invalidDeleteSuccessMessage">
 							<strong translate>Success!</strong> your 
-							<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+							<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 							<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 							has
 							been deleted successfully.
@@ -1202,7 +1202,7 @@
 
 			<div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
 			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
-			  By onboarding a partner you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  By onboarding a {{authenticationService?.partnerModule?.customName}} you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 			  <br>
 			</div>
 
@@ -1260,12 +1260,12 @@
                                 <th scope="row" translate>Entity Info</th>
                                 <th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts
                                      <span id="tooltip-helper">
-                                        <i class="fa fa-question-circle" aria-hidden="true" title="Assign number of contacts to each partner (Minimum 1)"></i>
+                                        <i class="fa fa-question-circle" aria-hidden="true" title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)"></i>
                                     </span>
 								</th>
 								<th scope="row" translate>Sign up Notification
                                     <span id="tooltip-helper">
-                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded partners"></i>
+                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                 </th>
                             </tr>
@@ -1280,7 +1280,7 @@
                                     <td *ngIf="authenticationService.contactsCount" class="contact-count error" id="contact-count-{{i}}">
                                         <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
 									</td>
-									<td *ngIf="showNotifyPartnerOption" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available as this partner is already part of Master Partner List':''">
+									<td *ngIf="showNotifyPartnerOption" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available as this {{authenticationService?.partnerModule?.customName} is already part of Master Partner List':''">
 										<switch [status]="partner.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                                         	[size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)" [disabled]="partner?.disableNotifyPartnersOption">
                                         </switch>
