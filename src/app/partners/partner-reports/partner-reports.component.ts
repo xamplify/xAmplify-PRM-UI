@@ -410,7 +410,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
                if(response.approvePartnerList.length === 0){
-                   this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
+                   this.customResponse = new CustomResponse( 'INFO','No records found', true );
                }
                for ( var i in response.approvePartnerList) {
                    response.approvePartnerList[i].contactCompany = response.approvePartnerList[i].partnerCompanyName;
@@ -429,13 +429,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       if(this.authenticationService.isSuperAdmin()){
           pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
       }
-      console.log(pagination);
       this.parterService.getInActivePartnersAnalytics(pagination).subscribe(
               (response: any) => {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
                if(response.inactivePartnerList.length === 0){
-                   this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
+                   this.customResponse = new CustomResponse( 'INFO','No records found', true );
                }else {
                    this.customResponse = new CustomResponse();
                }

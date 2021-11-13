@@ -1440,7 +1440,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	getGoogleContactsUsers() {
 		try {
-			let message = 'Retrieving '+this.authenticationService.partnerModule.customName+' from google...! Please Wait...It\'s processing';
+			let partnerModuleCustomName = localStorage.getItem('partnerModuleCustomName');
+			let message = 'Retrieving '+partnerModuleCustomName+' from google...! Please Wait...It\'s processing';
 			swal({
 				text: message,
 				allowOutsideClick: false, 

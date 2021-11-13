@@ -127,9 +127,11 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 						this.authenticationService.moduleNames = data.moduleNames;
 						this.authenticationService.partnerModule = this.authenticationService.moduleNames[0];
 						this.customNamePartners = this.authenticationService.partnerModule.customName;
+						localStorage.setItem('partnerModuleCustomName',this.customNamePartners);
 					}else{
 						this.authenticationService.partnerModule.customName = "Partners";
 						this.customNamePartners = this.authenticationService.partnerModule.customName;
+						localStorage.setItem('partnerModuleCustomName',this.customNamePartners);
 					}
 				},
 				error => {
