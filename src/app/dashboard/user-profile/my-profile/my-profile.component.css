@@ -717,6 +717,9 @@ display: block;
 	.actions-block i, .circled-number {
 		margin-top:1px;
 	}
+	.mScroll{
+		overflow-x: auto;
+	}
 
 
 }

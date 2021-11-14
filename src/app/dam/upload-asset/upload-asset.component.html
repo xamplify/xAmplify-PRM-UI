@@ -37,7 +37,7 @@
   </div>
   <div class="row">
     <div class="col-md-12 col-lg-12">
-      <div class="portlet light">
+      <div class="portlet light mScroll">
         <div class="portlet-title">
           <div class="caption" translate>
             {{headerText}}
@@ -117,9 +117,9 @@
                                         <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
                                           placeholder="Search..." class="form-control" (keypress)="tagEventHandler($event.keyCode);"
                                           style="padding: 6px 12px;">
-                                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
+                                        <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
                                           (click)="tagSearchKey='';searchTags();"></button>
-                                        <button type="submit" class="search-box-item-click email-search" (click)="searchTags()">
+                                        <button type="button" class="search-box-item-click email-search" (click)="searchTags()">
                                           <i class="fa fa-search cesf-xamp"></i></button>
                                       </div>
                                       <div style="padding-left: 10px;">
@@ -182,7 +182,7 @@
                                             </label> -->
                             <div>
                               <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload Thumbnail </strong></span>
-                              <div class="asset-thumbnail-div-sm" (click)="browseThumbnail()">
+                              <div class="asset-thumbnail-div-sm mThumbwidth" (click)="browseThumbnail()">
                                 <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)"
                                   style="opacity: 0.0; position: absolute;">
                                 <span *ngIf="showDefaultLogo && !croppedImage">
@@ -202,7 +202,7 @@
                                   &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
                                     style="font-size:25px;padding-top:10px"></i></a>
                               </div>
-                              <div class="col-xs-12 p0 top10px">
+                              <div class="col-xs-12 p0 top10px mWidth">
                                 <div class="col-xs-12 message-content">
                                   <ul>
                                     <li translate>Maximum file size is 10 MB.</li>
