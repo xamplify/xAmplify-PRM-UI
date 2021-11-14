@@ -278,6 +278,14 @@ export class FormPreviewComponent implements OnInit {
     this.referenceService.goToTop();
     this.validForm = true;
     const formLabelDtos = this.form.formLabelDTOs;
+    let self = this.form;
+    if (this.form.disableEmail) {
+      let emailLabels = formLabelDtos.filter((item) => (item.labelType === "email"));
+      $.each(emailLabels, function (_index: number, field: ColumnInfo) {
+        field.value = self.emailId;
+      });
+    }
+    
     const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length === 0));
     const invalidEmailIdsFieldsCount = formLabelDtos.filter((item) => (item.divClass == 'error')).length;
     if (requiredFormLabels.length > 0 || invalidEmailIdsFieldsCount > 0) {

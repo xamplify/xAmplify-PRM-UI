@@ -50,4 +50,6 @@ export class Form {
     saveAsDefaultForm = false;
     formSubType:FormSubType = FormSubType.REGULAR;
     isSurvey = false;
+    disableEmail = false;
+    emailId:string = "";
 }
