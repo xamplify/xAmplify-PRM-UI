@@ -62,7 +62,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
   customResponse: CustomResponse = new CustomResponse();
   vendoorInvitation: VendorInvitation = new VendorInvitation();
   worldMapLoader = false;
-   survey: boolean =false;
+  survey: boolean =false;
+  throughPartnerCampaignsTabName: string = "Through Partner Campaigns";
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption,
@@ -713,6 +714,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       if(this.loggedInUserId>0){
         this.partnerReportData();
         this.goToActivePartnersDiv();
+        if(localStorage!=undefined){
+            this.throughPartnerCampaignsTabName = "Through "+localStorage.getItem('partnerModuleCustomName')+" Campaigns";
+        }
     }else{
         this.router.navigate(['home/dashboard']);
     }

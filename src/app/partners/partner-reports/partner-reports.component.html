@@ -69,8 +69,10 @@
                 </div>
                 <div class="details">
                   <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc" style="font-size:13px">
-                    <span></span>Through {{authenticationService?.partnerModule?.customName}} Campaigns</div>
+                  <div class="desc" style="font-size:13px" title="{{throughPartnerCampaignsTabName}}">
+                    {{throughPartnerCampaignsTabName | slice:0:20}}
+                    <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
+                  </div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a class="more" (click)="goToThroughPartnersDiv()"> Detailed view 
