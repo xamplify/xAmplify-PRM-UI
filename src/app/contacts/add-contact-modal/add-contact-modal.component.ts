@@ -46,6 +46,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     termsAndConditionStatus: boolean = true;
     gdprStatus:boolean = true;
     validLimit = false;
+    teamMemberGroups:Array<any> = new Array<any>();
+    loading = false;
+    validTeamMemberGroupId: boolean;
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
@@ -63,6 +66,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
       else {
           this.isPartner = true;
           this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
+        
       }
 
     }
@@ -176,47 +180,15 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     validteContactsCount(contactsLimit:number){
         this.validLimit = contactsLimit>0;
-
     }
 
-/*    geoLocation(){
-        try{
-        this.videoFileService.getJSONLocation()
-        .subscribe(
-        (data: any) => {
-            this.locationCountry = data.country;
-            if ( !this.isUpdateUser || this.addContactuser.country == undefined ) {
-                this.addContactuser.country = data.country;
-            }
-
-            if ( !this.isUpdateUser || this.addContactuser.mobileNumber == undefined ) {
-                for ( let i = 0; i < this.countryNames.countriesMobileCodes.length; i++ ) {
-                    if ( data.countryCode == this.countryNames.countriesMobileCodes[i].code ) {
-                        this.addContactuser.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
-                        break;
-                    }
-                }
-            }
-
-        } )
-        } catch ( error ) {
-            console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
-        }
-    }*/
-
+    validateTeamMemberGroupId(teamMemberGroupId:any){
+        this.validTeamMemberGroupId = teamMemberGroupId>0;
+    }
 
     ngOnInit() {
        try{
-        //this.geoLocation();
         this.addContactuser.country = this.countryNames.countries[0];
-        /*if(this.isPartner){
-            this.checkingContactTypeName = "Partner";
-        }else if(this.isAssignLeads){
-        	this.checkingContactTypeName = "Lead";
-        }else{
-            this.checkingContactTypeName = "Contact";
-        }*/
-
         if ( this.isUpdateUser ) {
             this.checkingForEmail = true;
             this.addContactuser.userId = this.contactDetails.id;
@@ -240,18 +212,16 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
             this.validLimit = this.contactDetails.contactsLimit>0;
             this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
-           /* if ( this.addContactuser.mobileNumber == undefined ) {
-                //this.addContactuser.mobileNumber = "+1";
-                this.geoLocation()
-            }*/
+            
             if ( this.isPartner || this.isAssignLeads ) {
                 if ( this.addContactuser.contactCompany !== undefined && this.addContactuser.contactCompany !== '') {
                     this.isCompanyDetails = true;
                 } else {
                     this.isCompanyDetails = false;
                 }
+                /*******XNFR-85*******/
+                this.findTeamMemberGroups();
             }
-
         }
         if ( this.addContactuser.country == undefined ) {
             //this.geoLocation();
@@ -270,6 +240,23 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
        } catch ( error ) {
            console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
        }
+    }
+
+    findTeamMemberGroups(){
+        if(this.isPartner){
+            this.addContactuser.teamMemberGroupId = this.contactDetails.teamMemberGroupId;
+            this.validTeamMemberGroupId = this.addContactuser.teamMemberGroupId>0;
+            this.loading = true;
+            this.authenticationService.findAllTeamMemberGroupIdsAndNames(true).
+            subscribe(
+                response=>{
+                    this.teamMemberGroups = response.data;
+                    this.loading = false;
+                },error=>{
+                    this.loading = false;
+                }
+            );
+        }
     }
 
     ngAfterViewInit(){

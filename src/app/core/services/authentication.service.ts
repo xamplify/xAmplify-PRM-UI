@@ -827,6 +827,15 @@ updateNotifyPartnersOption(companyId:number,status:boolean){
       .map(this.extractData)
       .catch(this.handleError);
 }
+
+/**********Team Member Groups***************/
+findAllTeamMemberGroupIdsAndNames(addDefaultOption:boolean){
+  let userId = this.getUserId();
+		var url = this.REST_URL + "teamMemberGroup/findAllGroupIdsAndNames/"+userId+"/"+addDefaultOption+"?access_token=" + this.access_token;
+		return this.http.get(url)
+			.map(this.extractData)
+			.catch(this.handleError);
+}
   
   
 }
