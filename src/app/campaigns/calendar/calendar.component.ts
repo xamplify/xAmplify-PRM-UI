@@ -174,7 +174,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
         }else if ('LANDINGPAGE' === campaignType) {  str += '<i class="fa fa-wpforms"></i>';
         }else if ('VIDEO' === campaignType) {  str += '<i class="fa fa-video-camera"></i>';
         } else if ('SOCIAL' === campaignType) { str += '<i class="fa fa-share-alt"></i>';
-        } else if ('EVENT' === campaignType) {  str += '<i class="fa fa-calendar"></i>'; }
+        } else if ('EVENT' === campaignType) {  str += '<i class="fa fa-calendar"></i>'; 
+        } else if ('SURVEY' === campaignType) {  str += '<i class="fa fa-wpforms"></i>';
+        }
         element.find('.fc-right-block').after($(`<div id = ${event.id} class="fc-left-block col-xs-1 p0"> ${str} </div>`));
         $(element).popover({
           container: 'body',
