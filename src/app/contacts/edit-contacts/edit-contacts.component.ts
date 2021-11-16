@@ -2754,7 +2754,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	downloadEmptyCsv() {
 		if (this.isPartner) {
-			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
+			window.location.href = this.authenticationService.REST_URL+"userlists/download-default-list/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
 		} else {
 			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
 		}

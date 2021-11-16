@@ -308,9 +308,11 @@
                                 On</span></th>
                             <th scope="col" class="hidden-xs" translate [hidden]="!assignLeads"><span
                                 [hidden]="!assignLeads">Date</span></th>
-                            <th scope="col" class="text-center hidden-xs" translate>
-                              Total <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
-                              <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span> 
+                            <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName=='Partner'">
+                                Total
+                            </th>
+                             <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName!='Partner'">
+                                Total <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span> 
                             </th>
                             <th scope="col" class="text-center" style="width:27%" *ngIf="!authenticationService.isSuperAdmin()"
                               translate>Actions</th>

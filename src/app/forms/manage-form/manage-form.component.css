@@ -136,3 +136,9 @@ cursor: default;
 .form-selected{
   background-color: #6dcff6;
 }
+
+@media screen and (max-width:600px){
+  .mPad{
+      padding: 5px;
+  }
+}

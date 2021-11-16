@@ -58,7 +58,7 @@
                                             <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
                                         </div>
                                         <div class="vertical-center">
-                                            <div class="panel panel-info" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
+                                            <div class="panel panel-info mWid" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
                                                 <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                                     <div class="panel-title">{{form.name}}</div>
                                                 </div>
@@ -419,7 +419,7 @@
 <!--Modal Popup For Form Details------------>
 <div class="modal right fade" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content mPad">
             <div class="modal-header">
                 <button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
                     <i class="fa fa-times" aria-hidden="true"></i>
@@ -460,7 +460,7 @@
 <!--Modal Popup For Form Designs-->
 <div class="modal right fade" id="add-form-designs" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content mPad">
             <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
                 <button type="button" *ngIf="form.isFormButtonValueValid&&form.isValidFormSubmissionUrl && form.isValidColorCode" class="close-circle" (click)="closeFormDesignModal()">
@@ -779,7 +779,7 @@
 <!--Modal Popup For Custom Fields------------>
 <div class="modal left fade" id="add-form-fields" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content mPad">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closeFormFieldsModal()">
                     <i class="fa fa-times" aria-hidden="true"></i>
