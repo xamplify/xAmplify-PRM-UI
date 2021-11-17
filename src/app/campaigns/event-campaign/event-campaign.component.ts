@@ -779,8 +779,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 this.contactListsPagination.filterKey = 'isPartnerUserList';
             }
         } else {
-        	this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
-            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
+        	this.TO_PARTNER_MESSAGE = "To "+this.authenticationService.partnerModule.customName+": Send a campaign intended just for your"+this.authenticationService.partnerModule.customName;
+            this.THROUGH_PARTNER_MESSAGE = "Through "+this.authenticationService.partnerModule.customName+": Send a campaign that your "+this.authenticationService.partnerModule.customName+" can redistribute";
             if (this.reDistributeEvent || this.reDistributeEventManage) {
                 this.contactListsPagination.filterValue = false;
             } else {
@@ -819,10 +819,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if (this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) || this.authenticationService.superiorRole === 'OrgAdmin & Partner'
         	|| this.authenticationService.superiorRole === 'OrgAdmin') {
             if (!this.eventCampaign.channelCampaign) {
-                this.contactListTabName = "Partners & Recipients";
+                this.contactListTabName = this.authenticationService.partnerModule.customName+" & Recipients";
             }
-            this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
-            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
+            this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your "+this.authenticationService.partnerModule.customName+"/ Contacts";
+            this.THROUGH_PARTNER_MESSAGE = "Through "+this.authenticationService.partnerModule.customName+": Send a campaign that your "+this.authenticationService.partnerModule.customName+" can redistribute";
+
         }
 
 
