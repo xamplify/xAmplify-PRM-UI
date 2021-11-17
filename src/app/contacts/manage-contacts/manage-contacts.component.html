@@ -12,7 +12,7 @@
       <li>
         <a (click)="navigateToManageContacts()" translate>
           Manage 
-          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
           <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
         </a> 
           <i class="fa fa-angle-right" *ngIf="! showListOfContactList" aria-hidden="true"></i>
@@ -20,29 +20,29 @@
       <li
         *ngIf="!showListOfContactList && contactsByType.selectedCategory != 'all' && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'">
         <span class="capitalize" translate>{{contactsByType.selectedCategory}}
-          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
           <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
         </span>
       </li>
       <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'all'">
         <span class="capitalize" translate>All
-          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
           <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
         </span>
       </li>
       <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'non-active'">
         <span class="capitalize" translate>Unregistered 
-          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
           <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
         </span></li>
       <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'unsubscribe'">
         <span class="capitalize"  translate>Unsubscribed 
-          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
           <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
         </span></li>
       <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'invalid'">
         <span class="capitalize" translate>
-          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s</span>
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
           <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
         </span></li>
     </ul>
@@ -364,7 +364,7 @@
                                     <span class="mb0"
                                       *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
                                       translate>
-                                      Total <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s:</span>
+                                      Total <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
                                       <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span>  
                                       {{contactList.noOfContacts}}</span>
                                     <span
@@ -567,11 +567,11 @@
                         <h6 class="mt10 mb0"
                           *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
                           translate>Total 
-                          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s:</span>
+                          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
                           <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span>  {{contactList.noOfContacts}}
                         </h6>
                         <h6 *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))"
-                          translate> Total <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s:</span>
+                          translate> Total <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
                                 <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span> 
                                 <strong>-</strong>
                         </h6>
@@ -771,22 +771,22 @@
                        <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'
                           && contactsByType.selectedCategory !='invalid'"translate>
                           {{contactsByType.selectedCategory}} 
-                          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s List</span>
+                          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} List</span>
                           <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
                       </span>
                          <span class="capitalize" *ngIf="contactsByType.selectedCategory =='non-active'" translate>
                             Unregistered 
-                            <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s List</span>
+                            <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} List</span>
                             <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
                       </span>
                       <span class="capitalize" *ngIf="contactsByType.selectedCategory =='active'" translate>
                         Registered 
-                        <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s List</span>
+                        <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} List</span>
                         <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
                       </span>
                      <span class="capitalize" *ngIf="contactsByType.selectedCategory =='invalid'" translate>
                         Undeliverable 
-                        <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}s List</span>
+                        <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} List</span>
                         <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
                      </span>
                     </div>
