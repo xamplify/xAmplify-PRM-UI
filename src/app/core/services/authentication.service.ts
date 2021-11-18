@@ -836,6 +836,13 @@ findAllTeamMemberGroupIdsAndNames(addDefaultOption:boolean){
 			.map(this.extractData)
 			.catch(this.handleError);
 }
+
+findAllTeamMembersByGroupId(pagination:Pagination){
+		var url = this.REST_URL + "teamMember/findAllTeamMembersByGroupId?access_token=" + this.access_token;
+		return this.http.post(url,pagination)
+			.map(this.extractData)
+			.catch(this.handleError);
+}
   
   
 }
