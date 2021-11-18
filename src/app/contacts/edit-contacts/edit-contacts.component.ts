@@ -2826,6 +2826,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								let message = "Your "+customMessage+" has been updated successfully.";
                                 this.customResponse = new CustomResponse('SUCCESS', message, true);
                             }
+                            this.updateContactUser = false;
+                            this.isUpdateUser = false;
                             this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
                         } else {
                             this.authenticationService.forceToLogout();

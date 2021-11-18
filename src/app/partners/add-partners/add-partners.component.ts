@@ -1931,6 +1931,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
 					(error: any) => {
@@ -2004,6 +2005,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
 					(error: any) => {
@@ -2476,7 +2478,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         localStorage.removeItem('isHubSpotAuth');
         localStorage.removeItem('isZohoAuth');
         localStorage.removeItem('validationMessage');
-        this.customResponse.isVisible = false;
         if (tempCheckGoogleAuth == 'yes' ) {
         	this.getGoogleContactsUsers();
         	tempCheckGoogleAuth = 'no';
@@ -3274,6 +3275,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 			}
 			this.setSocialPage(1);
+			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 9;
 			console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);
 		}
@@ -3695,6 +3697,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		this.selectedAddPartnerOption = 6;
 		this.setSocialPage(1);
+		this.customResponse.isVisible = false;
 		swal.close();
 	}
 

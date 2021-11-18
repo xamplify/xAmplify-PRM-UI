@@ -2832,8 +2832,9 @@ salesForceVanityAuthentication() {
                         $( "#zohoGear" ).hide();
                         this.zohoImageBlur = true;
                     }
-                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
                     $( '#settingSocialNetwork' ).modal( 'hide' );
+                    this.selectedAddContactsOption = 2;
+                    this.customResponse = new CustomResponse('SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true);
                 },
                 ( error: any ) => {
                     if ( error.search( 'Please Launch or Delete those campaigns first' ) != -1 ) {
@@ -2852,6 +2853,7 @@ salesForceVanityAuthentication() {
                     this.xtremandLogger.info( "deleted completed" );
                 }
                 );
+            this.xtremandLogger.info( "social account removed completed" );
         } catch ( error ) {
             this.xtremandLogger.error( error, "AddContactsComponent unlinkSocialContacts()." )
         }
@@ -2925,6 +2927,7 @@ salesForceVanityAuthentication() {
 
     ngOnInit() {
         try {
+        	//this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
             this.partnerEmails();
             this.socialContactImage();
             //this.hideModal();
