@@ -246,7 +246,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         pagination.campaignType = this.campaignType;
         this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
           .subscribe(data => {
-            this.listCampaignViewsDataInsert(data, data.totalRecords);
+            this.listCampaignViewsDataInsert(data.data, data.totalRecords);
           },
             error => console.log(error),
             () => {
@@ -468,7 +468,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
         this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
           .subscribe(data => {
-            this.campaignBarViews = data;
+            this.campaignBarViews = data.data;
             this.campaignBarViewsDataInsert();
           },
             error => console.log(error),
