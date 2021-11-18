@@ -1262,7 +1262,7 @@
                                     </td>
                                     <td id="team-member-group-error-count-{{i}}">
                                         <div class="input-group">
-                                        <select class="form-control" [(ngModel)]="partner.teamMemberGroupId">
+                                        <select class="form-control" [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembers($event)">
                                           <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                                                  {{teamMemberGroup?.name}}
                                         </option> 
@@ -1285,6 +1285,57 @@
             <div class="modal-footer">
                 <button type="submit" class="btn green-haze"  (click)="validatePartners()" translate>Save</button>
                 <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!---Team Members PopUp (XNFR-85)---->
+<div class="modal fade right" id="teamMembersPreviewPopup" tabindex="-1" role="dialog" aria-labelledby="teamMembersPreviewPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog full-width-modal-popup" role="document">
+        <div class="modal-content">
+            <div class="modal-header" >
+                <button type="button" class="close-circle" (click)="closeTeamMembersPreviewPopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title popup-header-title-font text-center" translate>Team Members</h4>
+            </div>
+            <div class="modal-body">
+                <app-modal-popup-loader *ngIf="teamMembersPopUpLoader"></app-modal-popup-loader>
+                <div class="table-responsive" *ngIf="!teamMembersPopUpLoader">
+                    <table *ngIf="teamMembersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color" id="teamMembersPreviewTable" aria-describedby="teamMembersPreviewTable">
+                        <thead>
+                            <tr>
+                                <th scope="row" class="text-center">
+                                 <input type="checkbox"  [(ngModel)]="isTeamMemberHeaderCheckBoxChecked">
+                               </th>
+                                <th scope="row">Entity Info</th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index">
+                                <tr id="teamMember-row-{{i}}">
+                                    <td class="text-center">
+                                        <input type="checkbox" id="{{teamMember.userId}}">
+                                     </td>
+                                    <td>
+                                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
+                                        </app-user-info>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End of 24 -->
+                <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersPopUpLoader" class="alert alert-info text-center">
+                    <strong>No Records Found</strong>
+                 </div>
+            <br>
+            </div>
+            <div class="modal-footer" *ngIf="!teamMembersPopUpLoader">
+                <button *ngIf="teamMembersPagination.totalRecords>0" type="submit" class="btn green-haze"  (click)="addTeamMemberIds()" translate>Proceed</button>
+                <button type="submit" class="btn btn-default" (click)="closeTeamMembersPreviewPopup()" translate>Close</button>
             </div>
         </div>
     </div>

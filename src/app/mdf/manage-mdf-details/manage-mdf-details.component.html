@@ -18,6 +18,7 @@
          <button class="add-button-xamplify" id="right" (click)="editMdfForm()" translate>Edit MDF Form</button>
      </div>
    </div>
+   <!---Tiles----->
    <div class="row">
       <div class="col-md-12 col-lg-12">
          <div class="portlet light" style=" height:163px;">
@@ -91,6 +92,7 @@
          </div>
       </div>
    </div>
+   <!---Manage MDF Details----->
    <div class="row">
       <div class="portlet box">
          <div class="clearfix">
@@ -122,6 +124,15 @@
                   <div class="portlet-body table-responsive" style="overflow: hidden;">
                      <app-list-loader *ngIf="partnerListLoader.isLoading"></app-list-loader>
                      <div class="clearfix" *ngIf="!partnerListLoader.isLoading">
+                        <!---Filter-->
+                        <div class="tg-filter">
+                           <ul class="mix-filter">
+                               <li class="filter" (click)="showAllForms('All',0)" [class.filter-box-selected]="0 == selectedFilterIndex"
+                                   translate>All</li> 
+                               <li class="filter" (click)="showAllForms('Regular',1)"
+                                   [class.filter-box-selected]="1 == selectedFilterIndex" translate>Team Member Group</li>
+                           </ul>
+                       </div>
                         <div class="col-xs-12" style="padding: 10px 0;">
                            <div class="table-responsive">
                               <table class='table tgrid' aria-describedby="manage-mdf-fund-table">

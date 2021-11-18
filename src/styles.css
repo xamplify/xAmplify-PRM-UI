@@ -1103,3 +1103,9 @@ b, strong {
 .pre-wrap-next-line{
 	white-space: pre-wrap;
 }
+.filter-box-selected{
+	background-color: #6dcff6 !important;
+}
+.hash-table-color{
+	background-color: #f1f1f1;
+}

@@ -103,7 +103,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	isEmailExist: boolean = false;
 	isCompanyDetails = false;
 	allPartnersPagination: Pagination = new Pagination();
-	teamMemberPagination: Pagination = new Pagination();
 	contactAssociatedCampaignPagination: Pagination = new Pagination();
 	pageSize: number = 12;
 	contactListAssociatedCampaignsList: any;
@@ -205,9 +204,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	showNotifyPartnerOption = false;
 	public googleCurrentUser: any;
     public hubSpotCurrentUser: any;
-    public salesForceCurrentUser: any;
+	public salesForceCurrentUser: any;
+	/***XNFR-85**** */
 	teamMemberGroups: Array<any> = new Array<any>();
-	
+	teamMembers:Array<any> = new Array<any>();
+	teamMembersPopUpLoader = false;
+	teamMembersPagination = new Pagination();
+	isTeamMemberHeaderCheckBoxChecked = false;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -3858,8 +3861,34 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 	
 	/********XNFR-85********/
-
 	previewModules(teamMemberGroupId:number){
 			alert("I will see preview");
+	}
+
+	getTeamMembers(teamMemberGroupId:number){
+		this.teamMembersPagination = new Pagination();
+		this.teamMembersPopUpLoader = true;
+		$('#teamMembersPreviewPopup').modal('show');
+		this.teamMembersPagination.categoryId = teamMemberGroupId;
+		this.authenticationService.findAllTeamMembersByGroupId(this.teamMembersPagination).
+		subscribe(
+			response=>{
+			let data = response.data;
+			this.teamMembersPagination.totalRecords = data.totalRecords;
+			this.teamMembersPagination = this.pagerService.getPagedItems(this.teamMembersPagination, data.list);
+			this.teamMembersPopUpLoader = false;
+			},error=>{
+				this.teamMembersPopUpLoader = false;
+			}
+		);
+	}
+	closeTeamMembersPreviewPopup(){
+		$('#teamMembersPreviewPopup').modal('hide');
+		this.teamMembers = new Array<any>();
+		this.teamMembersPagination = new Pagination();
+	}
+
+	addTeamMemberIds(){
+
 	}
 }
