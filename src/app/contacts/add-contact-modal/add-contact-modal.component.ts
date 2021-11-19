@@ -9,6 +9,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { EditContactsComponent } from '../../contacts/edit-contacts/edit-contacts.component';
 
 declare var $: any;
 
@@ -46,7 +47,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     termsAndConditionStatus: boolean = true;
     gdprStatus:boolean = true;
     validLimit = false;
-    constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
+    constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router, public editContactsComponent : EditContactsComponent,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
 
@@ -74,6 +75,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         $( 'body' ).removeClass( 'modal-open' );
         $( '.modal-backdrop fade in' ).remove();
         $( ".modal-backdrop in" ).css( "display", "none" );
+        this.editContactsComponent.updateContactUser = false;
+        this.editContactsComponent.isUpdateUser = false;
         this.contactService.isContactModalPopup = false;
     }
 
