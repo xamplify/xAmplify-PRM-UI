@@ -88,6 +88,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.setDesignMenu(data,module);
 
 					this.menuItem.campaign = data.campaign;
+					this.authenticationService.module.createCampaign = data.campaign;
 					this.menuItem.campaignAccessAsPartner = data.redistribute;
 					module.isCampaign = data.campaign || data.redistribute;
 					module.showCampaignOptionInManageVideos = data.campaign;

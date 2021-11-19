@@ -69,6 +69,7 @@ export class Module {
     isOnlyPartnerCompany = false;
     showAddLeadsAndDealsOptionInTheDashboard = false;
     showCampaignOptionInManageVideos = false;
+    createCampaign = false;
 
    
 }
