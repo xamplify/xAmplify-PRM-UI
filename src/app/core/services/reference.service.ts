@@ -2168,6 +2168,7 @@ export class ReferenceService {
 		return array.filter(item => item !== itemToRemove);
 	}
 
+	/*******CheckBox Code**********/
 	highlightRowOnRowCick(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any, parnterGroupsHeaderCheckBox: string, selectedCheckBoxValue: any, event: any) {
 		trId = trId + "-" + selectedCheckBoxValue;
 		let isChecked = $('#' + selectedCheckBoxValue).is(':checked');
@@ -2192,6 +2193,7 @@ export class ReferenceService {
 
 	highlightRowByCheckBox(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any, parnterGroupsHeaderCheckBox: string, checkBoxValue: any, event: any) {
 		let isChecked = $('#' + checkBoxValue).is(':checked');
+		alert(isChecked);
 		if (isChecked) {
 			$(trId).addClass('row-selected');
 			selectedCheckBoxIds.push(checkBoxValue);
@@ -2225,7 +2227,8 @@ export class ReferenceService {
 		event.stopPropagation();
 		return selectedCheckBoxIds;
 	}
-
+	/*******CheckBox Code**********/
+	
 	addMergeTags(mergeTags:any,isCampaign:boolean,isEvent:boolean){
 		mergeTags.push({ name: 'First Name', value: '{{firstName}}' });
 		mergeTags.push({ name: 'Last Name', value: '{{lastName}}' });

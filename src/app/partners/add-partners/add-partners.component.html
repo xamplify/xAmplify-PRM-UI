@@ -1260,6 +1260,7 @@
                                         [size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)">
                                         </switch>
                                     </td>
+                                   <!--- (XNFR-85) ----->
                                     <td id="team-member-group-error-count-{{i}}">
                                         <div class="input-group">
                                         <select class="form-control" [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembers($event)">
@@ -1268,10 +1269,15 @@
                                         </option> 
                                         </select>
                                         <span class="input-group-btn">
-                                          <button [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(partner.teamMemberGroupId)">
+                                          <button title="Preview Modules" [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(partner.teamMemberGroupId)">
                                             <i class="fa fa-eye white" aria-hidden="true"></i>
                                           </button>
                                         </span>
+                                        <span class="input-group-btn">
+                                            <button title="Preview Team Members"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner.teamMemberGroupId)">
+                                              <i class="fa fa-users white" aria-hidden="true"></i>
+                                            </button>
+                                          </span>
                                       </div>
                                       </td>
                                 </tr>
@@ -1301,22 +1307,27 @@
                 <h4 class="modal-title popup-header-title-font text-center" translate>Team Members</h4>
             </div>
             <div class="modal-body">
-                <app-modal-popup-loader *ngIf="teamMembersPopUpLoader"></app-modal-popup-loader>
-                <div class="table-responsive" *ngIf="!teamMembersPopUpLoader">
-                    <table *ngIf="teamMembersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color" id="teamMembersPreviewTable" aria-describedby="teamMembersPreviewTable">
+                <app-list-loader *ngIf="teamMembersLoader.isLoading"></app-list-loader>
+                <div class="table-responsive" *ngIf="!teamMembersLoader.isLoading">
+                    <table *ngIf="teamMembersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color"
+                         id="{{partnerModuleTeamMembersTableId}}" aria-describedby="teamMembersPreviewTable">
                         <thead>
                             <tr>
                                 <th scope="row" class="text-center">
-                                 <input type="checkbox"  [(ngModel)]="isTeamMemberHeaderCheckBoxChecked">
+                                 <input type="checkbox"  [(ngModel)]="isTeamMemberHeaderCheckBoxChecked" id="{{partnerGroupTeamMemberheaderCheckBoxId}}"
+                                  (change)="selectOrUnselectAllTeamMembersOfTheCurrentPage($event)">
                                </th>
                                 <th scope="row">Entity Info</th>
                               </tr>
                         </thead>
                         <tbody>
                             <ng-container *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index">
-                                <tr id="teamMember-row-{{i}}">
+                                <tr id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="selectedTeamMemberIds.indexOf(teamMember.userId)>-1"
+                                    (click)="highlightTeamMemberOnRowClick(teamMember.userId,$event)">
                                     <td class="text-center">
-                                        <input type="checkbox" id="{{teamMember.userId}}">
+                                        <input type="checkbox" id="{{teamMember.userId}}" [checked]="selectedTeamMemberIds.indexOf(teamMember.userId)>-1"
+                                            name="{{partnerModuleTeamMemberCheckBoxName}}[]" value="{{teamMember.userId}}"
+                                            (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.userId,$event);">
                                      </td>
                                     <td>
                                         <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
@@ -1328,14 +1339,18 @@
                     </table>
                 </div>
                 <!-- End of 24 -->
-                <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersPopUpLoader" class="alert alert-info text-center">
+                <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info text-center">
                     <strong>No Records Found</strong>
+                 </div>
+                 <div *ngIf="teamMembersPagination.pagedItems.length !== 0" class="pg8" [hidden]="teamMembersLoader.isLoading">
+                    <app-pagination [pagination]="teamMembersPagination" (notifyParent)="navigatePartnerModuleTeamMembers($event)"
+                       (notifyParentDropDown)="findPartnerModuleTeamMembers($event)">
+                    </app-pagination>
                  </div>
             <br>
             </div>
-            <div class="modal-footer" *ngIf="!teamMembersPopUpLoader">
-                <button *ngIf="teamMembersPagination.totalRecords>0" type="submit" class="btn green-haze"  (click)="addTeamMemberIds()" translate>Proceed</button>
-                <button type="submit" class="btn btn-default" (click)="closeTeamMembersPreviewPopup()" translate>Close</button>
+            <div class="modal-footer" *ngIf="!teamMembersLoader.isLoading">
+                <button *ngIf="teamMembersPagination.totalRecords>0" type="submit" class="btn green-haze"  (click)="closeTeamMembersPreviewPopup()" translate>Proceed</button>
             </div>
         </div>
     </div>

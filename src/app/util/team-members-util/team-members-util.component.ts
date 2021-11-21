@@ -597,6 +597,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
 				let headersRow = this.fileUtil
 					.getHeaderArray(csvRecordsArray);
         let headers = headersRow[0].split(',');
+        console.log(headers);
 				if (this.validateHeaders(headers)) {
           this.csvRecords = this.fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
           if (this.csvRecords.length > 1) {

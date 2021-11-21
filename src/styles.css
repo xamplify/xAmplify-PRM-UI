@@ -1109,3 +1109,8 @@ b, strong {
 .hash-table-color{
 	background-color: #f1f1f1;
 }
+.table tr.row-selected td {
+    background-color: #00a6e847 !important;
+    color: white;
+}
+
