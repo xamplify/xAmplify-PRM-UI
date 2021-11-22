@@ -222,7 +222,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
 	sharedLeads : boolean = false;
 	showNotifyPartnerOption = false;
-
+	hasPartnersRole : boolean = false;
+    hasShareLeadsRole : boolean = false;
+	
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -279,6 +281,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.users = new Array<User>();
 		this.notifyParent = new EventEmitter<User>();
 		this.hasContactRole = this.refService.hasRole(this.refService.roles.contactsRole);
+		this.hasPartnersRole = this.refService.hasRole(this.refService.roles.partnersRole);
+        this.hasShareLeadsRole = this.refService.hasRole(this.refService.roles.shareLeadsRole);
 
 		this.hasAllAccess = this.refService.hasAllAccess();
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -2426,6 +2430,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	addContactModalOpen() {
 		this.addContactuser = new User();
 		this.isUpdateUser = false;
+		this.updateContactUser = false;
 		this.contactAllDetails = [];
 		this.contactService.isContactModalPopup = true;
 	}
