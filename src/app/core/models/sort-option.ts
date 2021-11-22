@@ -45,7 +45,7 @@ export class SortOption {
 		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
 		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
 		{ 'name': 'Download Count (DESC)', 'value': 'download-DESC' },
-		{ 'name': 'Downlad Count (ASC)', 'value': 'downloads-ASC' },
+		{ 'name': 'Download Count (ASC)', 'value': 'downloads-ASC' },
 	];
 
 	leadPartnersSortDropDown = [
@@ -210,7 +210,7 @@ export class SortOption {
 		{ 'name': 'View Count (DESC)', 'value': 'viewCount-DESC' },
 		{ 'name': 'View Count (ASC)', 'value': 'viewCount-ASC' },
 		{ 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' },
-		{ 'name': 'Downlad Count (ASC)', 'value': 'downloadCount-ASC' }
+		{ 'name': 'Download Count (ASC)', 'value': 'downloadCount-ASC' }
 	];
 
 	mdfVendorsSortDropDownOptions = [
