@@ -82,3 +82,25 @@ img.active {
 .refresh-margin{
     margin-right: -5px !important;
 }
+
+@media screen and (max-width:600px){
+    .mheight{
+    height: 350px !important;
+    }
+    .mleft{
+        padding-left: 30px!important;;
+    }
+    .mBottom{
+        bottom:14px!important;;
+    }
+    .mtop{
+        top:-5px!important;;
+    }
+    .mMargin{
+        margin: 5px 10px!important;
+    }
+
+    .mWidth{
+        width:85.666667%!important;
+    }
+}

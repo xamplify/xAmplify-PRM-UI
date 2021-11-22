@@ -5,7 +5,7 @@
            <button *ngIf="!ngxLoading" type="button" class="close-circle" (click)="closePopup()">
            <i class="fa fa-times" aria-hidden="true"></i>
            </button>
-           <h4 class="modal-title text-center">Publish To Partners/Partner Lists</h4>
+           <h4 class="modal-title text-center">Publish To {{authenticationService?.partnerModule?.customName}}/List of {{authenticationService?.partnerModule?.customName}}</h4>
         </div>
         <div class="modal-body">
          <div class="thank-you-pop" *ngIf="sendSuccess">
@@ -31,10 +31,10 @@
                         <div class="panel-heading" id="company-and-group-tabs">
                            <ul class="nav nav-tabs">
                               <li id="partners-li" >
-                                 <a class="partnersC" title="Click to see partner companies" href="#partners" data-toggle="tab" (click)="findPartnerCompanies(pagination)">Partners</a>
+                                 <a class="partnersC" title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners" data-toggle="tab" (click)="findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}</a>
                               </li>
                               <li id="partnerGroups-li">
-                                 <a class="partnerGroupsC" title="Click to see partner lists"   href="#partnerGroups" data-toggle="tab"  (click)="findPartnerGroups(partnerGroupsPagination)">Partner Lists</a>
+                                 <a class="partnerGroupsC" title="Click to see List of {{authenticationService?.partnerModule?.customName}}"   href="#partnerGroups" data-toggle="tab"  (click)="findPartnerGroups(partnerGroupsPagination)">List of {{authenticationService?.partnerModule?.customName}}</a>
                               </li>
                            </ul>
                         </div>
@@ -50,10 +50,10 @@
                                                          <div class="alert alert-success left-float" *ngIf="selectedPartnershipIds?.length>0">
                                                             <strong>
                                                                <ng-container *ngIf="selectedPartnershipIds?.length==1">
-                                                                  {{selectedPartnershipIds?.length}} partner company is selected
+                                                                  {{selectedPartnershipIds?.length}} company is selected
                                                                </ng-container>
                                                                <ng-container *ngIf="selectedPartnershipIds?.length>1">
-                                                                  {{selectedPartnershipIds?.length}} partner companies are selected
+                                                                  {{selectedPartnershipIds?.length}} companies are selected
                                                                </ng-container>
                                                                </strong>
                                                          </div>
@@ -61,7 +61,7 @@
                                                             <div class="inputs float-right" style="display: inline-flex;">
                                                                <div class="portlet-input input-inline" id="search-div">
                                                                   <div class="input-icon right" id="icon">
-                                                                     <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
+                                                                     <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..." (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
                                                                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
                                                                      <button type="submit" class="search-box-item-click" (click)="searchPartners()">
                                                                      <i class="fa fa-search" aria-hidden="true"></i>
@@ -84,7 +84,7 @@
                                                       <tr>
                                                          <th scope="col"></th>
                                                          <th scope="col">Company Logo</th>
-                                                         <th scope="col" class="text-center">Partner Company Name</th>
+                                                         <th scope="col" class="text-center">Company Name</th>
                                                          <th scope="col">Created Time</th>
                                                       </tr>
                                                    </thead>
@@ -186,10 +186,10 @@
                                                 <div class="alert alert-success left-float" *ngIf="selectedPartnerGroupIds?.length>0">
                                                    <strong>
                                                       <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
-                                                         {{selectedPartnerGroupIds?.length}} partner list is selected
+                                                         {{selectedPartnerGroupIds?.length}} list is selected
                                                       </ng-container>
                                                       <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
-                                                         {{selectedPartnerGroupIds?.length}} partner lists are selected
+                                                         {{selectedPartnerGroupIds?.length}} lists are selected
                                                       </ng-container>
                                                    </strong>
                                                 </div>

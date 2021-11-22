@@ -259,15 +259,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         } else {
             this.isPartner = true;
             this.module = 'partners';
-            this.checkingContactTypeName = "Partner"
+            this.checkingContactTypeName = "Partner";
             this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Vertical (ASC)', 'value': 'vertical-ASC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Vertical (DESC)', 'value': 'vertical-DESC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Region (ASC)', 'value': 'region-ASC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Region (DESC)', 'value': 'region-DESC', 'for': 'contacts' });
-            this.sortOptions.push({ 'name': 'Partner type (ASC)', 'value': 'partnerType-ASC', 'for': 'contacts' });
-            this.sortOptions.push({ 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Type (ASC)', 'value': 'partnerType-ASC', 'for': 'contacts' });
+            this.sortOptions.push({ 'name': 'Type (DESC)', 'value': 'partnerType-DESC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Category (ASC)', 'value': 'category-ASC', 'for': 'contacts' });
             this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC', 'for': 'contacts' });
 		}
@@ -283,7 +283,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.xtremandLogger.info("successmessageLoad" + this.contactService.successMessage)
 		if (this.contactService.saveAsSuccessMessage === "add" || this.contactService.successMessage === true || this.contactService.saveAsSuccessMessage === "SUCCESS") {
 			if (currentUrl.includes('home/partners')) {
-		        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_CREATE_SUCCESS, true);
+				let message = "Your "+this.authenticationService.partnerModule.customName+" List has been created successfully.";
+		        this.customResponse = new CustomResponse('SUCCESS', message, true);
 		      } else if (currentUrl.includes('home/contacts')){
 		        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
 		      }else {
@@ -302,16 +303,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 		if (this.contactService.deleteUserSucessMessage === true) {
 			if (this.isPartner) {
-				this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
+				let message = "Your "+this.authenticationService.partnerModule.customName+" list has been deleted successfully.";
+				this.customResponse = new CustomResponse('SUCCESS', message, true);
 			} else {
 				this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
 			}
 			this.xtremandLogger.info(" delete Success Message in manage contact pape");
 		}
-		
 		if (this.contactService.addUserSuccessMessage === true) {
 		     if (this.isPartner) {
-	                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
+					let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been saved successfully."+"<br><br>";;
+	                this.customResponse = new CustomResponse('SUCCESS', message, true);
 	            } else {
 	                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
 	            }
@@ -502,12 +504,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.contactsCount();
 							$('#contactListDiv_' + contactListId).remove();
 							this.loadContactLists(this.pagination);
-							//this.responseMessage = ['SUCCESS', 'your contact List has been deleted successfully.','show'];
-							// this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
                             if (this.assignLeads){
                             	 this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_DELETE_SUCCESS, true);
                             } else if (this.isPartner) {
-                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
+								let message = "Your "+this.authenticationService.partnerModule.customName+" list has been deleted successfully.";
+                                this.customResponse = new CustomResponse('SUCCESS', message, true);
                             } else {
                                 this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
 							}
@@ -871,7 +872,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 if (this.assignLeads) {
 	                   this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_DELETE_SUCCESS, true);
 	               } else if (this.isPartner) {
-                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
+					let message = "Your "+this.authenticationService.partnerModule.customName+" list has been deleted successfully.";
+                    this.customResponse = new CustomResponse('SUCCESS', message, true);
                 } else {
 					if (this.contactService.isEmptyFormList === true) {
 						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_UPDATE_SUCCESS, true);
@@ -1151,18 +1153,18 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         this.contactService.saveContactList(this.userUserListWrapper)
                             .subscribe(
                             data => {
-                                data = data;
                                 this.loading = false;
                                 if (data.access) {
                                     if (data.statusCode == 401) {
                                         this.saveAsError = data.message;
                                     } else if (data.statusCode == 200) {
-                                        data = data;
                                         this.contactCountLoad = true;
                                         this.navigateToManageContacts();
                                         this.allselectedUsers.length = 0;
                                         if (this.isPartner) {
-                                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_CREATE_SUCCESS, true);
+											let customMessage = this.authenticationService.partnerModule.customName;
+											let message = "Your "+customMessage+" list has been created successfully and we are processing your "+customMessage+" list";
+                                            this.customResponse = new CustomResponse('SUCCESS', message, true);
                                         } else {
                                             this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
                                         }
@@ -1299,7 +1301,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						if(this.assignLeads){
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
 						}else if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+							let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been deleted successfully.";
+							this.customResponse = new CustomResponse('SUCCESS', message, true);
 						} else {
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
 						}
@@ -1366,7 +1369,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				.subscribe(
 					data => {
 						if (data.access) {
-							data = data;
 							this.loading = false;
 							this.xtremandLogger.log(data);
 							console.log("update Contacts ListUsers:" + data);
@@ -1376,7 +1378,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                             if (this.assignLeads) {
                                 this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_EMAIL_VALIDATE_SUCCESS, true);
                             } else if (this.isPartner) {
-                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+								let message = "Selected "+this.authenticationService.partnerModule.customName+"(s) have been validated successfully.";
+                                this.customResponse = new CustomResponse('SUCCESS', message, true);
                             } else {
                                 this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
                             }
@@ -1766,7 +1769,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         let access = response.access;
                         if (access) {
                             this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
-                            //	this.downloadContactTypeList();
                         } else {
                             this.authenticationService.forceToLogout();
                         }
@@ -1781,19 +1783,20 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	downloadContactTypeList() {
 		try {
+			let csvNameSuffix = this.checkingContactTypeName=="Partner" ? this.authenticationService.partnerModule.customName:this.checkingContactTypeName;
 			if (this.contactsByType.selectedCategory === 'all') {
-				this.logListName = 'All_' + this.checkingContactTypeName + 's_list.csv';
+				this.logListName = 'All_' + csvNameSuffix + 's_list.csv';
 			}
 			else if (this.contactsByType.selectedCategory === 'active') {
-				this.logListName = 'All_Active_' + this.checkingContactTypeName + 's_list.csv';
+				this.logListName = 'All_Active_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'non-active') {
-				this.logListName = 'All_Inactive_' + this.checkingContactTypeName + 's_list.csv';
+				this.logListName = 'All_Inactive_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'invalid') {
-				this.logListName = 'All_Invalid_' + this.checkingContactTypeName + 's_list.csv';
+				this.logListName = 'All_Invalid_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
-				this.logListName = 'All_Unsubscribed_' + this.checkingContactTypeName + 's_list.csv';
+				this.logListName = 'All_Unsubscribed_' + csvNameSuffix + 's_list.csv';
 			}else if (this.contactsByType.selectedCategory === 'valid') {
-                this.logListName = 'All_Valid_' + this.checkingContactTypeName + 's_list.csv';
+                this.logListName = 'All_Valid_' + csvNameSuffix + 's_list.csv';
             }
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
@@ -1809,11 +1812,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"State": this.contactsByType.listOfAllContacts[i].state,
 						"Country": this.contactsByType.listOfAllContacts[i].country,
 						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
-						  "Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
-						  "Total Campaigns": this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
-						  "Active Campaigns": this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
-						  "Email Opend": this.contactsByType.listOfAllContacts[i].emailOpenedCount,
-						  "Clicked Urls": this.contactsByType.listOfAllContacts[i].clickedUrlsCount,
+						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
+						"Total Campaigns": this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
+						"Active Campaigns": this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
+						"Email Opend": this.contactsByType.listOfAllContacts[i].emailOpenedCount,
+						"Clicked Urls": this.contactsByType.listOfAllContacts[i].clickedUrlsCount,
 					}
 					this.downloadDataList.push(object);
 				}else{
@@ -2015,11 +2018,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     saveAsNewLeadsList() {
     	this.loading = true;
-
         this.contactService.saveAsNewList(this.contactListObject)
             .subscribe(
             data => {
-                data = data;
                 this.loading = false;
                 if (data.access) {
                     if (data.statusCode == 401) {
@@ -2064,9 +2065,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         if (data.statusCode == 401) {
                             this.saveAsError = data.message;
                         } else if (data.statusCode == 200) {
-                            data = data;
 		                          if (this.isPartner) {
-		                              this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_SAVE_SUCCESS, true);
+									  let message = "Your "+this.authenticationService.partnerModule.customName+" list has been saved successfully";
+		                              this.customResponse = new CustomResponse('SUCCESS',message, true);
 		                          } else {
 		                              this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SAVE_SUCCESS, true);
 		                          }
@@ -2126,9 +2127,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.activateUnsubscribedUser(selectContactId)
 				.subscribe(
 					data => {
-						console.log(data);
 						if (data == "User is successfully resubscribed") {
-							swal(this.checkingContactTypeName + ' re-subscribed successfully');
+							let message = this.checkingContactTypeName=='Partner' ? this.authenticationService.partnerModule.customName : this.checkingContactTypeName;
+							swal(message + ' re-subscribed successfully');
 							this.listContactsByType(this.contactsByType.selectedCategory);
 						}
 					},

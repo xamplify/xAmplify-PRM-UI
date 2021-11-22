@@ -30,4 +30,5 @@ export class CampaignAccess {
   chatSupport =false;
   allBoundSamlSettings = false;
   survey  = false;
+  dataShare = false;
 }

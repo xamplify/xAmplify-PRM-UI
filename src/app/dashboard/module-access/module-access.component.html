@@ -96,157 +96,152 @@
 								<td>
 									<select class="form-control" id="roleId" [(ngModel)]="roleId" (change)="setModulesByRole()">
 										<option value="13" [selected]="roleId ==13">Vendor</option>
-										<option value="19" [selected]="roleId ==19">Vendor-Tier</option>
 										<option value="18" [selected]="roleId ==18">Marketing</option>
 										<option value="2" [selected]="roleId ==2">Org Admin</option>
 										<option value="20" [selected]="roleId ==20">Prm</option>
 									</select>
 							</tr>
-							<!-- <tr>
-								<th scope="row">Select source as ALLBOUND</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.allBoundSource"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr> -->
 							<ng-container *ngIf="roleId!=20">
 								<tr>
-									<th scope="row">Sales Enablement</th>
+									<th scope="row">Sales Enablement (View In Browser In Create Campaign)</th>
 									<td><input  type="checkbox"
 											[(ngModel)]="campaignAccess.salesEnablement"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
-							<tr>
+								<tr>
+									<th scope="row">Data Share</th>
+									<td><input  type="checkbox"
+											[(ngModel)]="campaignAccess.dataShare"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
 								<th scope="row">Email Campaign</th>
 								<td><input  type="checkbox"
 										[(ngModel)]="campaignAccess.emailCampaign"
 										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Video Campaign</th>
-								<td><input type="checkbox"
-										[(ngModel)]="campaignAccess.videoCampaign"
+								</tr>
+								<tr>
+									<th scope="row">Video Campaign</th>
+									<td><input type="checkbox"
+											[(ngModel)]="campaignAccess.videoCampaign"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Social Campaign</th>
+									<td><input type="checkbox"
+											[(ngModel)]="campaignAccess.socialCampaign"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Event Campaign</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Survey Campaign</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.survey"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Form Builder</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.formBuilder"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Page</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPage"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Page Campaign</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr *ngIf="roleId!=19">
+									<th scope="row">Share Leads</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.shareLeads"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="col">Partner Template Opened Tracking Analytics</th>
+									<td><input type="checkbox"
+										[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
 										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Social Campaign</th>
-								<td><input type="checkbox"
-										[(ngModel)]="campaignAccess.socialCampaign"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Event Campaign</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Survey Campaign</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.survey"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Form Builder</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.formBuilder"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Page</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPage"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Page Campaign</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr *ngIf="roleId!=19">
-								<th scope="row">Share Leads</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.shareLeads"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="col">Partner Template Opened Tracking Analytics</th>
-								<td><input type="checkbox"
-									[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
-									[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-						</ng-container>
-							<tr>
-								<th scope="row">Leads (Opportunities)</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.leads"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Login As Team Member</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Vanity URL</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">MDF</th>
-								<td>
-									<p *ngIf="companyAndUserDetails?.defaultMdfFormAvaible" style="color: green;">
-										<i class="fa fa-check" aria-hidden="true"></i> &nbsp; <strong>{{companyAndUserDetails?.message}}</strong>
-									</p>
-
-									<p *ngIf="!companyAndUserDetails?.defaultMdfFormAvaible" style="color: red;">
-										<i class="fa fa-close" aria-hidden="true"></i> &nbsp; <strong>{{companyAndUserDetails?.message}}</strong>
-									</p>
-
-									<input type="checkbox" [(ngModel)]="campaignAccess.mdf"
-										[ngModelOptions]="{standalone: true}">
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">Social Feeds</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Dashboard Type</th>
-								<td>
-									<select  class="form-control" id="dashboardType" (change)="selectDashboardType()">
-										<option value="DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DASHBOARD'">Dashboard</option>
-										<option value="ADVANCED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='ADVANCED_DASHBOARD'">Advanced Dashboard</option>
-										<option value="DETAILED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DETAILED_DASHBOARD'">Detailed Dashboard ( Dashboard + Detailed Dashboard)</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">DAM</th>
-								<td>
-								<input type="checkbox" [(ngModel)]="campaignAccess.dam" id="damCheckBox"
-										[ngModelOptions]="{standalone: true}" (click)="updateLmsAndPlaybooks()"></td>
-							</tr>
-							<ng-container *ngIf="campaignAccess?.dam">
-							<tr>
-								<th scope="row">LMS</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.lms"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">PlayBooks</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.playbooks"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
+								</tr>
 							</ng-container>
-							<tr>
-								<th scope="row">Exclude Users/Domains</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.excludeUsersOrDomains"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">Chat Support</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
-							<tr>
-								<th scope="row">AllBound Saml Settings</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.allBoundSamlSettings"
-										[ngModelOptions]="{standalone: true}"></td>
-							</tr>
+								<tr>
+									<th scope="row">Leads (Opportunities)</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.leads"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Login As Team Member</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Vanity URL</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">MDF</th>
+									<td>
+										<p *ngIf="companyAndUserDetails?.defaultMdfFormAvaible" style="color: green;">
+											<i class="fa fa-check" aria-hidden="true"></i> &nbsp; <strong>{{companyAndUserDetails?.message}}</strong>
+										</p>
+
+										<p *ngIf="!companyAndUserDetails?.defaultMdfFormAvaible" style="color: red;">
+											<i class="fa fa-close" aria-hidden="true"></i> &nbsp; <strong>{{companyAndUserDetails?.message}}</strong>
+										</p>
+
+										<input type="checkbox" [(ngModel)]="campaignAccess.mdf"
+											[ngModelOptions]="{standalone: true}">
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">Social Feeds</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Dashboard Type</th>
+									<td>
+										<select  class="form-control" id="dashboardType" (change)="selectDashboardType()">
+											<option value="DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DASHBOARD'">Dashboard</option>
+											<option value="ADVANCED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='ADVANCED_DASHBOARD'">Advanced Dashboard</option>
+											<option value="DETAILED_DASHBOARD" [selected]="campaignAccess?.dashboardTypeInString=='DETAILED_DASHBOARD'">Detailed Dashboard ( Dashboard + Detailed Dashboard)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">DAM</th>
+									<td>
+									<input type="checkbox" [(ngModel)]="campaignAccess.dam" id="damCheckBox"
+											[ngModelOptions]="{standalone: true}" (click)="updateLmsAndPlaybooks()"></td>
+								</tr>
+								<ng-container *ngIf="campaignAccess?.dam">
+								<tr>
+									<th scope="row">LMS</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.lms"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">PlayBooks</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.playbooks"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								</ng-container>
+								<tr>
+									<th scope="row">Exclude Users/Domains</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.excludeUsersOrDomains"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">Chat Support</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
+											[ngModelOptions]="{standalone: true}"></td>
+								</tr>
 						</tbody>
 					</table>
 				</div>

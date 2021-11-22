@@ -22,6 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
 import {UnsubscribePageDetails} from 'app/dashboard/models/unsubscribe-page-details';
+import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 
 @Injectable()
 export class AuthenticationService {
@@ -104,10 +105,13 @@ export class AuthenticationService {
   mdfAccessAsPartner = false;
   opportunitiesAccessAsPartner = false;
   unauthorized = false;
-  beeHostApi = "";
+  moduleNames:Array<ModuleCustomName> = new Array<ModuleCustomName>();
+  partnerModule:ModuleCustomName = new ModuleCustomName();
+ beeHostApi = "";
   beeRequestType = "";
   beePageClientId = "";
   beePageClientSecret = "";
+
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -552,6 +556,7 @@ export class AuthenticationService {
     module.isOnlyPartnerCompany = false;
     module.showAddLeadsAndDealsOptionInTheDashboard = false;
     module.showCampaignOptionInManageVideos = false;
+    module.createCampaign = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;

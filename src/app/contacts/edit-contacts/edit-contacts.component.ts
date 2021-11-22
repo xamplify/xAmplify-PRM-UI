@@ -222,7 +222,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
 	sharedLeads : boolean = false;
 	showNotifyPartnerOption = false;
-
+	hasPartnersRole : boolean = false;
+    hasShareLeadsRole : boolean = false;
+	
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -265,8 +267,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.sortOptions.push({ 'name': 'Vertical (DESC)', 'value': 'vertical-DESC' });
             this.sortOptions.push({ 'name': 'Region (ASC)', 'value': 'region-ASC' });
             this.sortOptions.push({ 'name': 'Region (DESC)', 'value': 'region-DESC' });
-            this.sortOptions.push({ 'name': 'Partner type (ASC)', 'value': 'partnerType-ASC' });
-            this.sortOptions.push({ 'name': 'Partner type (DESC)', 'value': 'partnerType-DESC' });
+            this.sortOptions.push({ 'name': 'Type (ASC)', 'value': 'partnerType-ASC' });
+            this.sortOptions.push({ 'name': 'Type (DESC)', 'value': 'partnerType-DESC' });
             this.sortOptions.push({ 'name': 'Category (ASC)', 'value': 'category-ASC' });
             this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC' });
 
@@ -279,6 +281,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.users = new Array<User>();
 		this.notifyParent = new EventEmitter<User>();
 		this.hasContactRole = this.refService.hasRole(this.refService.roles.contactsRole);
+		this.hasPartnersRole = this.refService.hasRole(this.refService.roles.partnersRole);
+        this.hasShareLeadsRole = this.refService.hasRole(this.refService.roles.shareLeadsRole);
 
 		this.hasAllAccess = this.refService.hasAllAccess();
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -463,7 +467,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	validatePartnerCsvHeaders(headers) {
-		return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "PARTNETTYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
+		return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "TYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
 	}
 
 	validateContactsCsvHeaders(headers) {
@@ -743,7 +747,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	showSuccessMessage(data: any) {
-		let message = this.properties.PARTNERS_SAVE_SUCCESS + "<br><br>";
+		let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been saved successfully."+"<br><br>";;
 		let invalidEmailIds = data.invalidEmailIds;
 		if (invalidEmailIds != undefined && invalidEmailIds.length > 0) {
 			let allEmailIds = "";
@@ -1009,7 +1013,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								}else if (!this.isPartner) {
 									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
 								} else {
-									this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+									let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been deleted successfully";
+									this.customResponse = new CustomResponse('SUCCESS', message, true);
 								}
 								$.each(this.selectedContactListIds, function(index: number, value: any) {
 									$('#row_' + value).remove();
@@ -2016,7 +2021,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             if (this.assignLeads) {
                                 this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_EMAIL_VALIDATE_SUCCESS, true);
                             } else if (this.isPartner) {
-                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+								let message = "Selected "+this.authenticationService.partnerModule.customName+"(s) have been validated successfully.";
+                                this.customResponse = new CustomResponse('SUCCESS', message, true);
                             } else {
                                 this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
 							}
@@ -2042,17 +2048,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				.subscribe(
 					(data: any) => {
 						if (data.access) {
-							data = data;
-							console.log("update invalidContacts ListUsers:" + data);
 							$.each(this.selectedInvalidContactIds, function(index: number, value: any) {
 								$('#row_' + value).remove();
 								console.log(index + "value" + value);
 							});
-							//this.invalidDeleteSuccessMessage = true;
 							if(this.assignLeads){
 	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
 	                        }else if (this.isPartner) {
-	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+								let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been deleted successfully.";
+	                            this.customResponse = new CustomResponse('SUCCESS', message, true);
 	                        } else {
 	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
 	                        }
@@ -2112,26 +2116,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				.subscribe(
 					(data: any) => {
 						if (data.access) {
-							data = data;
 							if (data.statusCode == 201) {
-								/*this.contactsByType.allContactsCount = data.allcontacts;
-								this.contactsByType.invalidContactsCount = data.invalidUsers;
-								this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
-								this.contactsByType.activeContactsCount = data.activecontacts;
-								this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
-								this.allUsers = this.contactsByType.allContactsCount;
-								console.log("update Contacts ListUsers:" + data);*/
 								if(this.assignLeads){
 									this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_DELETE_SUCCESS, true);
 								}else if (!this.isPartner) {
 									this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
 								} else {
-									this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+									let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been deleted successfully.";
+									this.customResponse = new CustomResponse('SUCCESS', message, true);
 								}
-
 								this.selectedContactListIds = [];
 								this.isHeaderCheckBoxChecked = false;
-
 								this.checkingLoadContactsCount = true
 								this.editContactListLoadAllUsers(this.contactListId, this.pagination);
 								this.contactsCount(this.selectedContactListId);
@@ -2205,12 +2200,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactIds.push(this.contactUsersId)
 		this.xtremandLogger.info("contactListId in sweetAlert() " + this.contactIds);
 		let message = '';
+		let partnerModuleCustomName = this.authenticationService.partnerModule.customName;
 		if(this.assignLeads){
 			message = "The lead(s) will be deleted and this action can't be undone.";
 		}else if (this.isPartner && this.isDefaultPartnerList) {
-			message = 'The partner(s) will be deleted from this and all other Partner lists.';
+			message = 'The '+partnerModuleCustomName+'(s) will be deleted from this and all other '+partnerModuleCustomName+' lists.';
 		} else if (this.isPartner && !this.isDefaultPartnerList) {
-			message = 'This will only delete the partner(s) from this list. To remove the partner(s) completely from your account, please delete the record(s) from the Master List.';
+			message = 'This will only delete the '+partnerModuleCustomName+'(s) from this list. To remove the '+partnerModuleCustomName+'(s) completely from your account, please delete the record(s) from the Master List.';
 		} else {
 			message = "The contact(s) will be deleted and this action can't be undone.";
 		}
@@ -2227,7 +2223,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			confirmButtonText: 'Yes, delete it!'
 
 		}).then(function(myData: any) {
-			console.log("ManageContacts showAlert then()" + myData);
 			self.removeContactListUsers1(contactId);
 		}, function(dismiss: any) {
 			console.log('you clicked on option' + dismiss);
@@ -2435,6 +2430,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	addContactModalOpen() {
 		this.addContactuser = new User();
 		this.isUpdateUser = false;
+		this.updateContactUser = false;
 		this.contactAllDetails = [];
 		this.contactService.isContactModalPopup = true;
 	}
@@ -2763,7 +2759,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	downloadEmptyCsv() {
 		if (this.isPartner) {
-			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
+			window.location.href = this.authenticationService.REST_URL+"userlists/download-default-list/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
 		} else {
 			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
 		}
@@ -2831,8 +2827,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             } else if (!this.isPartner) {
                                 this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
                             } else {
-                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
+								let customMessage = this.authenticationService.partnerModule.customName;
+								let message = "Your "+customMessage+" has been updated successfully.";
+                                this.customResponse = new CustomResponse('SUCCESS', message, true);
                             }
+                            this.updateContactUser = false;
+                            this.isUpdateUser = false;
                             this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
                         } else {
                             this.authenticationService.forceToLogout();
@@ -2903,10 +2903,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactService.updateContactListName(object)
 				.subscribe(
 					(data: any) => {
-						console.log(data);
 						this.selectedContactListName = newContactListName;
 						if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_NAME_UPDATE_SUCCESS, true);
+							let message = "Your "+this.authenticationService.partnerModule.customName+" list name has been updated successfully.";
+							this.customResponse = new CustomResponse('SUCCESS', message, true);
 						} else {
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
 						}
@@ -3119,7 +3119,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	closeModal(event) {
 		if (event == "Emails Send Successfully") {
 			if (this.isPartner) {
-				this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true);
+				let message = "Your "+this.authenticationService.partnerModule.customName+" list has been updated successfully and any selected campaigns have been launched.";
+				this.customResponse = new CustomResponse('SUCCESS',message, true);
 			} else {
 				this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true);
 			}

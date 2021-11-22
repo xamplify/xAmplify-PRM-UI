@@ -113,12 +113,12 @@
                     </div>
 
                     <div class="col-sm-7 col-xs-12 margin-top-folder" *ngIf="!alias">
-                        <h5 class="pr10 font-red-sunglo inline" [ngClass]="{'f-w-600': socialCampaign.channelCampaign}">Through Partner</h5>
+                        <h5 class="pr10 font-red-sunglo inline" [ngClass]="{'f-w-600': socialCampaign.channelCampaign}">Through {{authenticationService?.partnerModule?.customName}}</h5>
                                 <switch [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                     [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
                                     (statusChange)="socialCampaign.channelCampaign = !socialCampaign.channelCampaign">
                                 </switch>
-                                <h5 class="pl10  font-red-sunglo inline" [ngClass]="{'f-w-600': !socialCampaign.channelCampaign}">To Partner</h5>
+                                <h5 class="pl10  font-red-sunglo inline" [ngClass]="{'f-w-600': !socialCampaign.channelCampaign}">To {{authenticationService?.partnerModule?.customName}}</h5>
                     </div>
 
 
@@ -498,7 +498,7 @@
                                         </td>
                                         <td>{{contactList.createdDate | date:'mediumDate'}}</td>
                                         <td *ngIf="!nurtureCampaign">
-                                                <span *ngIf="contactList.partnerUserList">partner</span>
+                                                <span *ngIf="contactList.partnerUserList">{{authenticationService?.partnerModule?.customName}}</span>
                                                 <span *ngIf="!contactList.partnerUserList">contact</span>
                                         </td>
                                         <td *ngIf="nurtureCampaign">

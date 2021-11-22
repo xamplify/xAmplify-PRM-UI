@@ -50,14 +50,19 @@
     </div>
     <div class="page-bar">
         <ul class="page-breadcrumb">
-            <li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
-                <i class="fa fa-angle-right"></i></li>
-            <li><a translate>Onboarding Partners</a></li>
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i> 
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+                <a translate>Onboarding {{authenticationService?.partnerModule?.customName}}</a>
+            </li>
         </ul>
-        <div align="right" style="margin-top: 2px;" class="hidden-xs">
+        <div id="download-partners-csv"  class="hidden-xs">
             <a (click)="downloadEmptyCsv()">
                 <button type="button" class="btn green" download style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-					Download Partner CSV Template<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+					Download CSV Template<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
 				</button>
             </a>
         </div>
@@ -68,31 +73,32 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
                         <div class="portlet light add-options">
-                            <div class="portlet-title" translate> How would you like to add your Partners?</div>
+                            <div class="portlet-title" translate> How would you like to add your {{authenticationService?.partnerModule?.customName}}?</div>
                             <div class="portlet-body">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <button class="btn-primary btn-block" id="addContacts" (click)="addPartnerModalOpen()" [disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5 || disableOtherFuctionality">
-											<i class="fa fa-user-plus"></i>
+											<i class="fa fa-user-plus" aria-hidden="true"></i>
 											<span translate>One at a Time</span>
 										</button>
                                     </div>
                                     <ng-container *ngIf="!referenceService.isMobileScreenSize()">
                                         <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
                                             <button class="btn-success btn-block" id="copyFromClipBoard" (click)="copyFromClipboard()" [disabled]="selectedAddPartnerOption != 5">
-											<i class="fa fa-users"></i>
+											<i class="fa fa-users" aria-hidden="true"></i>
 											<span translate>Copy list from clipboard</span>
 										</button>
                                         </div>
                                         <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
                                             <div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px; border-radius: 3px !important;" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
-                                                <i style="display:block; margin-top: 22px !important; text-align: center; font-size:24px; margin:0 auto 10px" class="fa fa-file-excel-o"></i>
+                                                <i class="fa fa-file-excel-o cct" aria-hidden="true"></i>
                                                 <span style="display:block; font-size:12px; text-align:center" translate>Upload a CSV</span>
                                                 <input type="file" ng2FileSelect [uploader]="uploader" title=" " (click)="input.value = null" (change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
                                             </div>
                                             <div style="margin-top: 5px;">
                                                 <a (click)="downloadEmptyCsv()">
-                                                    <i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i><b translate>&nbsp;Download File</b>
+                                                    <i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i>
+                                                    <strong translate>&nbsp;Download File</strong>
                                                 </a>
                                             </div>
                                         </div>
@@ -109,78 +115,65 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
                         <div class="portlet light cloud-services" style="padding-bottom: 30px !important;">
-                            <div class="portlet-title" translate>Import Partners from the cloud:</div>
+                            <div class="portlet-title" translate>Import {{authenticationService?.partnerModule?.customName}} from the cloud:</div>
                             <div class="portlet-body">
                                 <div class="row">
 
                                     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
                                         <a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" style="background-color: white" (click)="salesforceContacts()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}" src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Salesforce account"
-                                                height="86" width="90">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}" src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Salesforce account"
+                                                height="86" width="90" alt="">
                                         </a>
                                         <a *ngIf="sfImageBlur" id="salesforceContact_button" style="background-color: white" (click)="salesforceContacts()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}" src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Salesforce account"
-                                                height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/sf.png';">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}" src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Salesforce account"
+                                                height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';"
+                                                 onmouseout="this.src='assets/images/crm/sf.png';" alt="">
                                         </a>
                                         <div id="salesforceGear" style="position: absolute" id="salesforceGear" *ngIf="sfImageNormal">
                                             <a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Salesforce')">
                                                 <i id="SgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
                                             </a>
                                         </div>
-                                        <!-- 	<div style="position: relative" *ngIf="!sfImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="salesforceContacts()">
-                    <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
-										</a>
-									</div> -->
-                                        <!-- <div style="padding-bottom: 22px;"></div> -->
                                     </div>
                                     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
                                         <a *ngIf="googleImageBlur" id="googleContact_button" style="background-color: white" (click)="googleContacts()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Google account"
-                                                height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/google.png';">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Google account"
+                                                height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/google.png';" alt="">
                                         </a>
                                         <a id="googleContact_buttonNormal" *ngIf="googleImageNormal" style="background-color: white" (click)="googleContacts()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Google account"
-                                                height="86" width="90">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Google account"
+                                                height="86" width="90" alt="">
                                         </a>
                                         <div id="GoogleGear" style="position: absolute" *ngIf="googleImageNormal">
                                             <a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Google')">
                                                 <i id="GgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
                                             </a>
                                         </div>
-                                        <!-- <div style="position: relative" *ngIf="!googleImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="googleContacts()">
-                     <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
-										</a>
-									</div> -->
                                     </div>
                                     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
                                         <a *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Zoho account"
-                                                height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/Zoho.png';">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Zoho account"
+                                                height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" 
+                                                onmouseout="this.src='assets/images/crm/Zoho.png';" alt="">
                                         </a>
                                         <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white" (click)="checkingZohoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Zoho account"
-                                                height="86" width="90">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Zoho account"
+                                                height="86" width="90" alt="">
                                         </a>
                                         <div id="zohoGear" style="position: absolute" *ngIf="zohoImageNormal">
                                             <a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Zoho')">
                                                 <i id="ZgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
                                             </a>
                                         </div>
-                                        <!-- <div style="position: relative" *ngIf="!zohoImageNormal">
-										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="checkingZohoContactsAuthentication()">
-                                        <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
-										</a>
-									</div> -->
                                     </div>
                                     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
                                         <a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png" class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your Marketo account"
-                                                height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png" class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Marketo account"
+                                                height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';"
+                                                 onmouseout="this.src='assets/images/crm/marketo.png';" alt="">
                                         </a>
                                         <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png" class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your Marketo account"
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png" class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Marketo account"
                                                 height="86" width="90">
                                         </a>
                                         <!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
@@ -198,11 +191,11 @@
                                     <!-- Hubspot -->
                                     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
                                         <a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 9">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png" class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your HubSpot account"
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png" class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HubSpot account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/hubspot.png';">
                                         </a>
                                         <a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 9">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png" class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your HubSpot account"
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png" class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HubSpot account"
                                                 height="86" width="90">
                                         </a>
                                         <!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
@@ -262,9 +255,9 @@
             </ul>
         </div>
         <div class="col-xs-12 p0" *ngIf="referenceService.isMobileScreenSize()">
-            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
+            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
-            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
         </div>
         <div class="col-xs-12" style="padding: 0 0 10px 0">
             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -433,7 +426,7 @@
                         <button class="btn btn-default" type="button" style="background-color: #26a69a; color: white" (click)="clipboardShowPreview()" translate>VERIFY DATA</button>
                     </div>
                     <div class="col-xs-12">
-                        <textarea id="copyFromclipTextArea" class="textareaNumber" [(ngModel)]="clipboardTextareaText" placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone"
+                        <textarea id="copyFromclipTextArea" class="textareaNumber" [(ngModel)]="clipboardTextareaText" placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                             [ngModelOptions]="{standalone: true}" style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;" required="required">
 									</textarea>
                     </div>
@@ -452,7 +445,7 @@
                 <div class="portlet box blue" *ngIf="newPartnerUser?.length != 0">
                     <div class="portlet-title">
                         <div class="caption" translate> 
-                            <i class="fa fa-edit" style="font-size: 19px;"></i>Partners Preview
+                            <i class="fa fa-edit" style="font-size: 19px;"></i>{{authenticationService?.partnerModule?.customName}} Preview
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -470,7 +463,7 @@
                                                 <!-- <th>JOB TITLE</th> -->
                                                 <th class="hidden-xs" translate>VERTICAL</th>
                                                 <th class="hidden-xs" translate>REGION</th>
-                                                <th class="hidden-xs" translate>PARTNER TYPE</th>
+                                                <th class="hidden-xs" translate>TYPE</th>
                                                 <th class="hidden-xs" translate>CATEGORY</th>
                                                 <th class='hidden-xs hidden-sm text-center' translate>ADDRESS</th>
                                                 <!-- <th class='text-center'>MORE</th> -->
@@ -570,7 +563,7 @@
                 <div class="portlet box blue">
                     <div class="portlet-title">
                         <div class="caption" translate> 
-                            <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>List of Partners
+                            <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>List of {{authenticationService?.partnerModule?.customName}}
                         </div>
                         <div class="inputs" align="right" style="float: right; padding: 4px" *ngIf="!referenceService.isMobileScreenSize()">
                             <div style="float: left; margin: 0 10px;">
@@ -582,9 +575,11 @@
                             </div>
                             <div class="portlet-input input-inline">
                                 <div class="input-icon right">
-                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
+                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
-                                    <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
+                                    <button type="submit" class="search-box-item-click" (click)="search()">
+                                        <i class="fa fa-search" style="color:black !important" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -599,7 +594,7 @@
                                     <div class="loader" style="position: relative; top: -3px; left: -5px; width: 25px; height: 27px;"></div>
                                     <h4 translate>Please wait while we process your request</h4>
                                 </div>
-                                <div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList" class="alert alert-info alert-dismissable">No Partners found.
+                                <div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList" class="alert alert-info alert-dismissable">No {{authenticationService?.partnerModule?.customName}} found.
                                 </div>
                                 <div class="table-responsive">
                                     <table class='table tgrid' aria-describedby="">
@@ -652,10 +647,10 @@
                                                                 <i class="fa fa-envelope" *ngIf="contact.notifyPartners && !contact.signedUp" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="{{actionsDescription.partner_reSendMail}}"></i>
                                                                 <i class="fa fa-envelope" style="color:#ff0000" *ngIf="!contact.notifyPartners" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
                                                             </a>
-                                                            <a id="edit_{{i}}" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_edit}}" (click)="editUserDetails(contact)">
+                                                            <a id="edit_{{i}}" data-toggle="tooltip" data-placement="bottom" title="Edit {{authenticationService?.partnerModule?.customName}}" (click)="editUserDetails(contact)">
                                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                             </a>
-                                                            <a id="delete_{{i}}" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_delete}}" (click)="deleteUserShowAlert(contact.id)">
+                                                            <a id="delete_{{i}}" data-toggle="tooltip" data-placement="bottom" title="Delete {{authenticationService?.partnerModule?.customName}}" (click)="deleteUserShowAlert(contact.id)">
                                                                 <i class="fa fa-trash-o" style="color:#ff0000" aria-hidden="true"></i>
                                                             </a>
                                                             <ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
@@ -683,7 +678,7 @@
                                                                     <td>{{contact.region}}</td>
                                                                 </tr>
                                                                 <tr class="hidden-sm hidden-md hidden-lg">
-                                                                    <td class='pt10 pb10 bold' translate>Partner Type:</td>
+                                                                    <td class='pt10 pb10 bold' translate>Type:</td>
                                                                     <td>{{contact.partnerType}}</td>
                                                                 </tr>
                                                                 <tr class="hidden-sm hidden-md hidden-lg">
@@ -1116,8 +1111,7 @@
                 </div>
                 <div class="form-group" style="margin-top: 15px;">
                     <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked translate>
-                    <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
-                    By onboarding a partner you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()" translate>Privacy Policy</a>
+                    By onboarding a {{authenticationService?.partnerModule?.customName}} you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()" translate>Privacy Policy</a>
                     . Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()" translate>GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
                     <br>
                 </div>
@@ -1193,12 +1187,12 @@
             <div class="modal-body">
                 <div>
                     <h4 class="modal-title f-w-600" translate>
-                         All imported partners will automatically receive an invitation to join our xAmplify network.</h4>
+                         All imported {{authenticationService?.partnerModule?.customName}} will automatically receive an invitation to join our xAmplify network.</h4>
                 </div>
                 <div class="form-group" style="margin-top: 15px;">
                     <input type="checkbox" [(ngModel)]="cloudPartnersModalCheckBox" [ngModelOptions]="{standalone: true}" name="cloudPartnersModalCheckBoxTC"  checked translate>
                     <font style="color: red;">*</font>
-                    I acknowledge that these partners will gain access to campaigns and related materials shared via xAmplify.
+                    I acknowledge that these {{authenticationService?.partnerModule?.customName}} will gain access to campaigns and related materials shared via xAmplify.
                    	<br>
                 </div>
             </div>
@@ -1222,7 +1216,7 @@
                 <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
                 </ng-container>
                 <ng-container *ngIf="authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
-                    <h4 class="modal-title popup-header-title-font" translate>Partners</h4>
+                    <h4 class="modal-title popup-header-title-font" translate>{{authenticationService?.partnerModule?.customName}}</h4>
                 </ng-container>
             </div>
             <div class="modal-body">
@@ -1236,12 +1230,12 @@
                                 <th scope="row" translate>Entity Info</th>
                                 <th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts
                                      <span id="tooltip-helper">
-                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Assign number of contacts to each partner (Minimum 1)"></i>
+                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)"></i>
                                     </span>
                                 </th>
                                 <th scope="row" translate>Sign up Notification
                                     <span id="tooltip-helper">
-                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded partners"></i>
+                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                 </th>
                             </tr>

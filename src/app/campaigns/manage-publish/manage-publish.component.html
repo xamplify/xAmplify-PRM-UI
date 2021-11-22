@@ -28,11 +28,11 @@
     </div>
     <ng-container *ngIf="!addWorkflows">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mSlide">
           <div class="tabbable tabbable-custom tabbable-noborder">
             <div class="tab-content">
               <div class="page-bar m10">
-                <ul class="mix-filter col-xs-12 col-sm-12 col-md-5 p0 m0" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="display: inline-flex">
+                <ul class="mix-filter col-xs-12 col-sm-12 col-md-5 p0 m0 mWid" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="display: inline-flex">
                   <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
                   <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign" translate>
                   Email</li>
@@ -49,7 +49,7 @@
                   <li class="filter" style="display: none;" translate>Own Template</li>
                 </ul>
                 <div class="page-toolbar col-xs-12 col-sm-12 col-md-7" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                  <div class="row btn-group pull-right">
+                  <div class="row btn-group pull-right mPad">
                     <div class="col-xs-2 col-sm-4 col-md-5 p0">
                       <div style="float: right">
                         <ng-container class='m10'>
@@ -400,7 +400,7 @@
                       </td>
                       <td *ngIf="!campaign?.emailNotification && !campaign?.nurtureCampaign">
                         <div class="alert alert-info center-align">
-                          <strong>Notify Partners is Off, Detailed analytics for this campaign are not available</strong>
+                          <strong>Notify {{authenticationService?.partnerModule?.customName}} is Off, Detailed analytics for this campaign are not available</strong>
                         </div>
                       </td>
 					            </ng-container>
@@ -483,7 +483,7 @@
                                   </li>
                                   <li *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && campaign.channelCampaign">
                                     <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button" translate>
-                                    <i class="fa fa-handshake-o" style="width: 30px;" id="partner-icon" aria-hidden="true"></i> Preview & Delete Partner(s)
+                                    <i class="fa fa-handshake-o" style="width: 30px;" id="partner-icon" aria-hidden="true"></i> Preview & Delete {{authenticationService?.partnerModule?.customName}}
                                     </a>
                                   </li>
                                 </ng-container>
@@ -636,7 +636,7 @@
                                   </li>
                                   <li *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign">
                                     <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button" translate>
-                                    <i class="fa fa-handshake-o" style="width: 30px; margin-right: 0px;" id="partner-icon" aria-hidden="true"></i> Preview & Delete Partner(s)
+                                    <i class="fa fa-handshake-o" style="width: 30px; margin-right: 0px;" id="partner-icon" aria-hidden="true"></i> Preview & Delete {{authenticationService?.partnerModule?.customName}}
                                     </a>
                                   </li>
                                 </ng-container>

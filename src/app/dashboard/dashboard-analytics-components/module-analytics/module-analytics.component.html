@@ -13,7 +13,7 @@
   </div>
   <div class="details">
     <div class="number">{{dto.count}}</div>
-    <div class="desc">{{dto.moduleName | translate}}</div>
+    <div title="{{dto?.moduleName}}" [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font':'desc default-name-font'">{{dto.moduleName | translate}}</div>
   </div>
   <span class="morePadding">
     <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view 

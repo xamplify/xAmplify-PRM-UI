@@ -1,16 +1,17 @@
+
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { SaveVideoFile } from '../videos/models/save-video-file';
 import { Pagination } from '../core/models/pagination';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-
 import { AuthenticationService } from '../core/services/authentication.service';
 import { SocialConnection } from '../social/models/social-connection';
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 import { Pipeline } from './models/pipeline';
+import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 
 @Injectable()
 export class DashboardService {
@@ -596,6 +597,34 @@ export class DashboardService {
     /****XNFR-2********/
     upgradeAsVendor(partnerId:number){
         const url = this.superAdminUrl + "upgradeAsVendor"+"/"+partnerId+'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    /****XNFR-84********/
+    findModulesByCompanyId(companyId:number) {
+        const url = this.moduleUrl + 'findModulesByCompanyId/'+companyId+'?access_token=' + this.authenticationService.access_token;
+        return this.utilGetMethodForModuleNames(url);
+    }
+    /****XNFR-84********/
+    findCustomModuleNames(companyId:number) {
+        const url = this.moduleUrl + 'findModuleCustomNamesByCompanyId/'+companyId+'?access_token=' + this.authenticationService.access_token;
+        return this.utilGetMethodForModuleNames(url);
+    }
+    /****XNFR-84********/
+    findPartnerModuleByCompanyId(companyId:number) {
+        const url = this.moduleUrl + 'findPartnerModuleByCompanyId/'+companyId+'?access_token=' + this.authenticationService.access_token;
+        return this.utilGetMethodForModuleNames(url);
+    }
+    /****XNFR-84********/
+    updateModuleName(moduleCustomName:ModuleCustomName){
+        const url = this.moduleUrl + 'updateModuleName?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,moduleCustomName)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    utilGetMethodForModuleNames(url:string){
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

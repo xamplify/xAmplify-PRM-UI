@@ -57,3 +57,16 @@
   background: rgba(0,0,0,0.75) url(../../../assets/images/loading.gif) no-repeat center center;
   z-index: 10000;
 }
+
+@media screen and (max-width:600px){
+  .mScroll{
+    overflow-x: auto;
+  }
+  .mWidth{
+    width: 96%;
+  }
+  .mPad{
+    width: 150%;
+    margin-left: -40px;
+  }
+}

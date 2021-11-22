@@ -115,3 +115,12 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .cwosn{
 	width: 161px;
 }
+
+@media screen and (max-width:600px){
+	.mWidth{
+		width: 15.666667%!important;
+	}
+	.mWidthSort{
+		width: 75.333333%!important;
+	}
+}

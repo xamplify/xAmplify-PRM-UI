@@ -5,7 +5,7 @@
            <button *ngIf="!ngxLoading" type="button" class="close-circle" (click)="closePopup()">
            <i class="fa fa-times" aria-hidden="true"></i>
            </button>
-           <h4 class="modal-title text-center">Share List To Partners</h4>
+           <h4 class="modal-title text-center">Share List To {{authenticationService?.partnerModule?.customName}}</h4>
         </div>
         <div class="modal-body">
          <div class="thank-you-pop" *ngIf="sendSuccess">
@@ -30,10 +30,10 @@
                                                          <div class="alert alert-success left-float" *ngIf="selectedPartnershipIds?.length>0">
                                                             <strong>
                                                                <ng-container *ngIf="selectedPartnershipIds?.length==1">
-                                                                  {{selectedPartnershipIds?.length}} partner company is selected
+                                                                  {{selectedPartnershipIds?.length}} company is selected
                                                                </ng-container>
                                                                <ng-container *ngIf="selectedPartnershipIds?.length>1">
-                                                                  {{selectedPartnershipIds?.length}} partner companies are selected
+                                                                  {{selectedPartnershipIds?.length}} companies are selected
                                                                </ng-container>
                                                                </strong>
                                                          </div>
@@ -64,7 +64,7 @@
                                                       <tr>
                                                          <th scope="col"></th>
                                                          <th scope="col">Company Logo</th>
-                                                         <th scope="col" class="text-center">Partner Company Name</th>
+                                                         <th scope="col" class="text-center">{{authenticationService?.partnerModule?.customName}} Company Name</th>
                                                          <th scope="col">Created Time</th>
                                                       </tr>
                                                    </thead>

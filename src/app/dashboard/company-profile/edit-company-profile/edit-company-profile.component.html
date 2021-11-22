@@ -232,7 +232,6 @@
 												<td style="width: 50%;">
 													<select class="form-control" id="selectedRole" (change)="setModulesByRole()">
 														<option value="13">Vendor</option>
-														<option value="19">Vendor-Tier</option>
 														<option value="18">Marketing</option>
 														<option value="2">Org Admin</option>
 														<option value="20">PRM</option>
@@ -240,15 +239,15 @@
 											</tr>
 											<ng-container *ngIf="!prm">
 												<tr>
-													<th scope="col">Select source as ALLBOUND</th>
+													<th scope="col">Sales Enablement (View In Browser In Create Campaign)</th>
 													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.allBoundSource"
+														[(ngModel)]="campaignAccess.salesEnablement"
 														[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<tr>
-													<th scope="col">Sales Enablement</th>
+													<th scope="col">Data Share</th>
 													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.salesEnablement"
+														[(ngModel)]="campaignAccess.dataShare"
 														[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 												<tr>
@@ -370,11 +369,6 @@
 										<tr>
 											<th scope="row">Chat Support</th>
 											<td><input type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
-													[ngModelOptions]="{standalone: true}"></td>
-										</tr>
-										<tr>
-											<th scope="row">AllBound Saml Settings</th>
-											<td><input type="checkbox" [(ngModel)]="campaignAccess.allBoundSamlSettings"
 													[ngModelOptions]="{standalone: true}"></td>
 										</tr>
 										</table>

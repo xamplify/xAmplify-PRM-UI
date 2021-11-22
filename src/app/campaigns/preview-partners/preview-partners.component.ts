@@ -99,7 +99,7 @@ export class PreviewPartnersComponent implements OnInit {
         let self = this;
         swal( {
             title: 'Are you sure?',
-            text: "This will remove the partner(s) from your list and cannot be undone.",
+            text: "This will remove "+this.authenticationService.partnerModule.customName+" from your list and cannot be undone.",
             type: 'warning',
             showCancelButton: true,
             swalConfirmButtonColor: '#54a7e9',
@@ -168,9 +168,14 @@ export class PreviewPartnersComponent implements OnInit {
         this.getAllFilteredResults(this.partnersPagination);
     }
 
-    searchOnKeyPress(keyCode:any){if (keyCode === 13) {  this.search(); }}
+    searchOnKeyPress(keyCode:any){
+        if (keyCode === 13) { 
+            this.search();
+        }
+    }
 
     search(){
+        this.partnerActionResponse = new CustomResponse();
         this.getAllFilteredResults(this.partnersPagination);
     }
     

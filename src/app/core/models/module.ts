@@ -1,3 +1,4 @@
+
 export class Module {
     isCampaign:boolean = false;
     isContact:boolean = false;
@@ -68,4 +69,7 @@ export class Module {
     isOnlyPartnerCompany = false;
     showAddLeadsAndDealsOptionInTheDashboard = false;
     showCampaignOptionInManageVideos = false;
+    createCampaign = false;
+
+   
 }

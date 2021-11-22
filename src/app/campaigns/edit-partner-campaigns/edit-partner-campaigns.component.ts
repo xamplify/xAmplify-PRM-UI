@@ -190,6 +190,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     showExpandButton = false; 
     expandedUserList: any;
     mergeTagsInput:any = {};
+    dataShare: boolean;
 
 
     constructor(private renderer: Renderer,private router: Router,
@@ -316,7 +317,20 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.onSelect(this.campaign.countryId);
             }
         }
-        this.referenceService.stopLoader(this.httpRequestLoader);
+        this.findDataShareOption();
+    }
+
+    findDataShareOption(){
+        this.ngxloading = true;
+        this.campaignService.findDataShareOption(this.campaign.parentCampaignId).subscribe(
+            response=>{
+                this.dataShare = response.data;
+                this.ngxloading = false;
+            },error=>{
+                this.dataShare = false;
+                this.ngxloading = false;
+            }
+        );
     }
 
 
@@ -393,8 +407,15 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaign.videoPlayed = event;
     }
 
-    shareAnalytics(event:any){
+    setDataShare(event:any){
         this.campaign.dataShare = event;
+        if(!event){
+            this.campaign.detailedAnalyticsShared = event;
+        }
+    }
+
+    shareAnalytics(event:any){
+        this.campaign.detailedAnalyticsShared = event;
     }
 
     /*************************************************************Campaign Details***************************************************************************************/

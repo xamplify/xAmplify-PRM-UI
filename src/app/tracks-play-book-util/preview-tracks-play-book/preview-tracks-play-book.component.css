@@ -270,6 +270,7 @@ body {
     margin-left: 10px; 
     overflow-y: auto; 
     height: 145px;
+    word-break: break-word;
 }
 
 .overlay-icon {
@@ -425,4 +426,13 @@ body {
 
 .no-float {
     float: none;
+}
+
+.track-title {
+    padding: 3px 17px;
+    width: 95%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #fff;
 }

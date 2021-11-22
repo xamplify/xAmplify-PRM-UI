@@ -62,10 +62,14 @@ a.disabled {
 				<div class="col-block" style="width: 25%" [class.disabled]="recipientsTabClass === 'disableRecipientsTab'" (click)="resetTabs('recipients')" [ngClass]="{'col-block-complete': recipientsTabClass === 'recipientsTabComplate', ' ': recipientsTabClass === 'enableRecipientsTab','col-block-active': recipientsTab, 'col-block-disable': recipientsTabClass === 'disableRecipientsTab'}">
 					<div class="cenetered-block">
 						<span> <i class="fa fa-users" aria-hidden="true"></i>
-						</span>
-						<!-- Recipients -->
-									<h5 class="hidden-xs" >
-						<h5 translate>{{contactListTabName }}</h5>
+						</span><!-- Recipients -->
+						<h5 class="hidden-xs">
+							<ng-container *ngIf="contactListTabName=='Partners'">
+								{{authenticationService?.partnerModule?.customName | translate}}
+							</ng-container>
+							<ng-container *ngIf="contactListTabName!='Partners'">
+								{{authenticationService?.partnerModule?.customName}} & Recipients
+							</ng-container>
 						</h5>
 					</div>
 				</div>
@@ -186,7 +190,7 @@ a.disabled {
 						</div>
 						<div class="form-group"
 							*ngIf="!authenticationService.isOnlyPartner()">
-							<span for="Throughpartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }" translate>Through Partner
+							<span for="Throughpartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }" translate>Through {{authenticationService?.partnerModule?.customName}}
 								</span>
 							<div class="col-sm-2">
 								<switch [status]="eventCampaign.channelCampaign"
@@ -201,7 +205,7 @@ a.disabled {
 							</div>
 							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
 								<span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!authenticationService.isAddedByVendor && !isVendor);else other" translate>To Recipients</span>
-								<ng-template #other><span translate>To Partner</span> </ng-template>
+								<ng-template #other><span translate>To {{authenticationService?.partnerModule?.customName}}</span> </ng-template>
               				</span>
 							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
 								<span style="cursor: pointer; color: #54a7e9;"
@@ -225,7 +229,7 @@ a.disabled {
 									(statusChange)="setCoBrandingLogo($event)"> </switch>
 								<span style="cursor: pointer; color: #54a7e9;"
 									data-toggle="tooltip" data-placement="top"
-									title="Enable your Partner's logo to be displayed in redistributed campaigns">
+									title="Enable your {{authenticationService?.partnerModule?.customName}}'s logo to be displayed in redistributed campaigns">
 									<i class="fa fa-question-circle" style="padding: 8px;" aria-hidden="true"></i>
 								</span>
 							</div>
@@ -848,7 +852,7 @@ a.disabled {
 												<button type="submit" class="search-box-item-click" style="padding: 4px !important;"
 													(click)="searchContactList()">
 													<i class="fa fa-search"
-														style="font-size: 16px !important; padding: 5px !important;"></i>
+														style="font-size: 16px !important; padding: 5px !important;" aria-hidden="true"></i>
 												</button>
 											</div>
 										</div>
@@ -993,7 +997,7 @@ a.disabled {
 			
 															<td class='text-center m0'
 																*ngIf="!reDistributeEvent&&!reDistributeEventManage">
-																<ng-container *ngIf="contactList.partnerList"> Partners
+																<ng-container *ngIf="contactList.partnerList"> {{authenticationService?.partnerModule?.customName}}
 																</ng-container>
 																<ng-container *ngIf="!contactList.partnerList"> Contacts
 																</ng-container>
@@ -1079,12 +1083,12 @@ a.disabled {
                   <button class="glyphicon glyphicon-remove search-box-item-clear"	style="padding: 5px;" *ngIf="emailTemplateSearchInput"
                     (click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
                   <button type="submit" class="search-box-item-click email-search"	(click)="searchEmailTemplate()">
-                    <i class="fa fa-search"	style="font-size: 16px !important; padding: 5px !important;"></i>
+                    <i class="fa fa-search"	style="font-size: 16px !important; padding: 5px !important;" aria-hidden="true"></i>
                   </button>
 				</div>
 				<button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
-					<i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"></i>
-					<i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"></i>
+					<i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
+					<i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
 				</button>
                 </div>
 
@@ -1255,13 +1259,27 @@ a.disabled {
                       <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                     </div>
                     <ng-container *ngIf="authenticationService.isVendor() || authenticationService.isVendorPartner()">
-                      <span class="h4-text">Partner List(s)</span>
+					  <span class="h4-text">
+						<ng-container *ngIf="contactListTabName=='Partners'">
+							{{authenticationService?.partnerModule?.customName | translate}}
+						</ng-container>
+						<ng-container *ngIf="contactListTabName!='Partners'">
+							{{authenticationService?.partnerModule?.customName}} & Recipients
+						</ng-container>
+					  </span>
                     </ng-container>
                     <ng-container *ngIf="authenticationService.isOnlyPartner()">
                       <span class="h4-text" *ngIf="!isPartnerUserList">Contact List(s)</span>
                     </ng-container>
                      <ng-container *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner())">
-                      <span class="h4-text">Recipients List(s)</span>
+                      <span class="h4-text">
+						<ng-container *ngIf="contactListTabName=='Partners'">
+							{{authenticationService?.partnerModule?.customName | translate}}
+						</ng-container>
+						<ng-container *ngIf="contactListTabName!='Partners'">
+							{{authenticationService?.partnerModule?.customName}} & Recipients
+						</ng-container>
+					  </span>
                     </ng-container>
 
                     </td>
@@ -1383,7 +1401,7 @@ a.disabled {
                     <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
                     <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
                     <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
-                    <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If partner has not shared event</option>
+                    <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If event is not shared by {{authenticationService?.partnerModule?.customName}}</option>
                     <option [value]="29" [selected]="reply.actionId ==29" *ngIf="!eventCampaign.publicEventCampaign">Send reminder if no response</option>
                     <option [value]="30" [selected]="reply.actionId ==30">Send reminder if responded YES</option>
                     <option [value]="25" [selected]="reply.actionId ==25"> Send email if RSVP Yes</option>
@@ -1426,7 +1444,7 @@ a.disabled {
                   <div class="col-xs-12">
                     <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
                       <div  style="margin-left: 1px;">
-                        <label style="cursor: default;" for="days" id="reply-message-{{reply.divId}}">Message <b style="color: red">*</b>
+                        <label style="cursor: default;" for="days" id="reply-message-{{reply.divId}}">Message <strong style="color: red">*</strong>
                         </label>
                       </div>
                       <div [class.disabled]="isPreviewEvent? '' : null">

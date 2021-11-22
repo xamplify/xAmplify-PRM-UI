@@ -18,7 +18,7 @@
         <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
           <div class="input-icon right" style="position: relative;right: -11px;">
             <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-              placeholder="Search for a Partner" (keypress)="searchPartnersKeyPress($event.keyCode)">
+              placeholder="Search for a {{authenticationService?.partnerModule?.customName}}" (keypress)="searchPartnersKeyPress($event.keyCode)">
             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
             <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i class="fa fa-search"></i></button>
           </div>
@@ -34,7 +34,7 @@
       <table class="table tgrid">
         <thead>
           <tr>
-            <th class="center-aligned">Partner</th>
+            <th class="center-aligned">{{authenticationService?.partnerModule?.customName}}</th>
             <th class="center" *ngIf="isCampaignByLeads" >#Leads Count</th>
             <th class="center" *ngIf="!isCampaignByLeads" >#Deals Count</th>
           </tr>

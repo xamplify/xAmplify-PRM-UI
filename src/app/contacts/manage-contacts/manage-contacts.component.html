@@ -9,23 +9,42 @@
           [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
           <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
-      <li><a (click)="navigateToManageContacts()" translate>
-          Manage {{checkingContactTypeName}}s</a> 
+      <li>
+        <a (click)="navigateToManageContacts()" translate>
+          Manage 
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+        </a> 
           <i class="fa fa-angle-right" *ngIf="! showListOfContactList" aria-hidden="true"></i>
       </li>
       <li
         *ngIf="!showListOfContactList && contactsByType.selectedCategory != 'all' && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'">
         <span class="capitalize" translate>{{contactsByType.selectedCategory}}
-          {{checkingContactTypeName}}s</span>
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+        </span>
       </li>
-      <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'all'"><span class="capitalize"
-          translate>All {{checkingContactTypeName}}s</span></li>
-      <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span class="capitalize"
-          translate>Unregistered {{checkingContactTypeName}}s</span></li>
-      <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'unsubscribe'"><span class="capitalize"
-          translate>Unsubscribed {{checkingContactTypeName}}s</span></li>
-      <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'invalid'"><span class="capitalize"
-          translate>Undeliverable {{checkingContactTypeName}}s</span></li>
+      <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'all'">
+        <span class="capitalize" translate>All
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+        </span>
+      </li>
+      <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'non-active'">
+        <span class="capitalize" translate>Unregistered 
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+        </span></li>
+      <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'unsubscribe'">
+        <span class="capitalize"  translate>Unsubscribed 
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+        </span></li>
+      <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'invalid'">
+        <span class="capitalize" translate>
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+        </span></li>
     </ul>
   </div>
   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -205,7 +224,10 @@
                         <li class="filter" (click)="filterContacts('ALL',2)" [class.contact-filter-selected]="2 == selectedFilterIndex" translate>All</li>
                       </ul> 
                       <ul class="page-breadcrumb" *ngIf="checkingContactTypeName!='Contact'">
-                        <li style="font-size: 16px; color: #888888" translate>
+                        <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
+                          Your {{authenticationService?.partnerModule?.customName}} Lists
+                        </li>
+                        <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
                           Your {{checkingContactTypeName}} Lists
                         </li>
                       </ul>
@@ -286,8 +308,11 @@
                                 On</span></th>
                             <th scope="col" class="hidden-xs" translate [hidden]="!assignLeads"><span
                                 [hidden]="!assignLeads">Date</span></th>
-                            <th scope="col" class="text-center hidden-xs" translate>
-                              Total {{checkingContactTypeName}}s
+                            <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName=='Partner'">
+                                Total
+                            </th>
+                             <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName!='Partner'">
+                                Total <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span> 
                             </th>
                             <th scope="col" class="text-center" style="width:27%" *ngIf="!authenticationService.isSuperAdmin()"
                               translate>Actions</th>
@@ -339,7 +364,8 @@
                                     <span class="mb0"
                                       *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
                                       translate>
-                                      Total {{checkingContactTypeName}}s:
+                                      Total <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
+                                      <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span>  
                                       {{contactList.noOfContacts}}</span>
                                     <span
                                       *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
@@ -370,7 +396,7 @@
                                     Assigned</span>
                                 </h5>
                                   <h6 title="{{contactList.partnerCompanyName}}" *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner" style="text-align:center" translate>
-                                  Shared To: <b>{{contactList.partnerCompanyName | slice:0:7}}</b>
+                                  Shared To: <strong>{{contactList.partnerCompanyName | slice:0:7}}</strong>
                                  <span *ngIf="contactList.partnerCompanyName?.length>7">...</span>
                                 </h6>
                       
@@ -540,11 +566,15 @@
                         </h6>
                         <h6 class="mt10 mb0"
                           *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
-                          translate>Total {{checkingContactTypeName}}s: {{contactList.noOfContacts}}
+                          translate>Total 
+                          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
+                          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span>  {{contactList.noOfContacts}}
                         </h6>
-                        <h6
-                          *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))"
-                          translate> Total {{checkingContactTypeName}}s <b>-</b></h6>
+                        <h6 *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))"
+                          translate> Total <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
+                                <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span> 
+                                <strong>-</strong>
+                        </h6>
                         <h6 class="mt10 mb0" translate>
                           Created date: 
                           <app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
@@ -558,12 +588,13 @@
                           <h6 class="mt10 mb0 ellipsis"  translate>
                             Type:
                             <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
-                              title="{{actionsDescription.contact_list_public}}"><b translate>Public</b></span>
+                              title="{{actionsDescription.contact_list_public}}"><strong translate>Public</strong></span>
                             <span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"
-                              title="{{actionsDescription.contact_list_private}}"><b translate>Private</b></span>
+                              title="{{actionsDescription.contact_list_private}}"><strong translate>Private</strong></span>
 
                               <span *ngIf="contactList?.formList" data-toggle="tooltip" data-placement="top"
-                              title="{{actionsDescription.contact_list_private}}"><b translate>, Form Contact List</b></span>
+                              title="{{actionsDescription.contact_list_private}}"><strong translate>, Form Contact List</strong></span>
+
                           </h6>
                         </td>
                         <!--  -->
@@ -620,8 +651,9 @@
                           <!---XNFR-81----->
                           <ng-container *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList">
                             <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList" style="width:11%;"
-                            *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember|| authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId)
-                                                || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
+                            *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
+                                      || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
+                                      && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
                             (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
                             title="{{actionsDescription.contact_list_delete}}" data-rel="fancybox-button" lang="{{contactList.id}}"> <i
                               class="fa fa-trash-o" aria-hidden="true"></i>
@@ -709,8 +741,9 @@
                       <div class="input-icon right">
                         <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                           (input)="searchKeyValue('contacts')" class="form-control"
-                          placeholder="Search for a {{checkingContactTypeName}}"
-                          (keypress)="eventHandler($event.keyCode, 'contacts')">
+                          placeholder="Search"
+                          (keypress)="eventHandler($event.keyCode)">
+
                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
                           (click)="searchKey='';search('contacts')"></button>
                         <button type="submit" class="search-box-item-click" (click)="search('contacts')">
@@ -735,20 +768,32 @@
                 <div class="portlet box blue" *ngIf="contactsByType.contacts?.length > 0">
                   <div class="portlet-title">
                     <div class="caption">
-                      <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i> <span class="capitalize"
-                        *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active' && contactsByType.selectedCategory !='invalid'"
-                        translate>
-                        {{contactsByType.selectedCategory}} {{checkingContactTypeName}}s List</span> <span
-                        class="capitalize" *ngIf="contactsByType.selectedCategory =='non-active'" translate>
-                        Unregistered {{checkingContactTypeName}}s List</span>
+                      <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
+                       <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'
+                          && contactsByType.selectedCategory !='invalid'"translate>
+                          {{contactsByType.selectedCategory}} 
+                          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} List</span>
+                          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
+                      </span>
+                         <span class="capitalize" *ngIf="contactsByType.selectedCategory =='non-active'" translate>
+                            Unregistered 
+                            <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} List</span>
+                            <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
+                      </span>
                       <span class="capitalize" *ngIf="contactsByType.selectedCategory =='active'" translate>
-                        Registered {{checkingContactTypeName}}s List</span> <span class="capitalize"
-                        *ngIf="contactsByType.selectedCategory =='invalid'" translate>
-                        Undeliverable {{checkingContactTypeName}}s List</span>
+                        Registered 
+                        <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} List</span>
+                        <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
+                      </span>
+                     <span class="capitalize" *ngIf="contactsByType.selectedCategory =='invalid'" translate>
+                        Undeliverable 
+                        <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} List</span>
+                        <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
+                     </span>
                     </div>
                     <div class="btn-group pull-right" style="margin-top: 4px; color: #000000;" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
-                 authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
-                  authenticationService.isOrgAdminPartner()) && !sharedLeads">
+                          authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
+                          authenticationService.isOrgAdminPartner()) && !sharedLeads">
                       <span class="dropdown-toggle" data-toggle="dropdown"
                         style="color: #FFF; box-shadow: none; margin-top: 8px; float: right;">
                         <i class="fa fa-cog" style="font-size: 20px; margin-right: 5px" aria-hidden="true"></i><i class="fa fa-angle-down"
@@ -1105,7 +1150,9 @@
   <div class="modal-dialog modal-copy" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title f-w-600" id="saveAsModalLabel">{{checkingContactTypeName}}
+        <h4 class="modal-title f-w-600" id="saveAsModalLabel">
+          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
           List Name
         </h4>
         <button type="button" class="close-circle" data-dismiss="modal" style="position: relative; top: -24px;">
@@ -1175,7 +1222,7 @@
         </div>
       <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
         <div class="col-xs-6 col-sm-6 col-lg-6 hidden-xs">
-          <h4 class="modal-title" id="sharedListModalLabel"> <b>List has shared with the following partners:</b> </h4>
+          <h4 class="modal-title" id="sharedListModalLabel"> <strong>List has shared with the following {{authenticationService?.partnerModule?.customName}}:</strong> </h4>
         </div>
         </div>
       </div>

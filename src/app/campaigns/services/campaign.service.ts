@@ -581,9 +581,9 @@ export class CampaignService {
             .map(( response: any ) => response );
     }
     
-    downRegularVideoCampaignViews( campaignId: number, campaignType: string, publicEventCampaign:boolean): Observable<Response> {
+    downRegularVideoCampaignViews( campaignId: number, campaignType: string, publicEventCampaign:boolean, interactiveViews:boolean): Observable<Response> {
         this.logger.info( campaignId );
-        return this.http.get( this.URL + "campaign/" + campaignId + "/" +campaignType + "/"+ publicEventCampaign +"/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.URL + "campaign/" + campaignId + "/" +campaignType + "/"+ publicEventCampaign + "/"+ interactiveViews +"/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
             .map(( response: any ) => response );
     }
     
@@ -1115,6 +1115,21 @@ export class CampaignService {
     showRegisterLeadButton(campaignId:number){
         return this.http.get(this.URL + "/campaign/showRegisterLeadButton/" + campaignId + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token)
         .map(this.extractData) .catch(this.handleError);
+    }
+
+    findDataShareOption(parentCampaignId:number){
+        let url = this.URL + "campaign/findDataShareOption/"+parentCampaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    findUserLevelCampaignAnalyticsOption(campaignId:number){
+        let userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/findUserLevelCampaignAnalyticsOption/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     private extractData(res: Response) {

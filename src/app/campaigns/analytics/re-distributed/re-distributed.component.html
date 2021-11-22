@@ -14,7 +14,7 @@
           <i class="fa fa-angle-right" aria-hidden="true"></i>
       	</li>
       <li>
-        <a>Partner Campaigns</a>
+        <a>Redistributed Campaigns</a>
       </li>
     </ul>
   </div>
@@ -23,7 +23,7 @@
             <div class="portlet light">
               <div class="portlet-title">
                 <div class="caption">
-                  <span class="caption-subject font-red-sunglo uppercase"> Partner Campaign Details</span>
+                  <span class="caption-subject font-red-sunglo uppercase">Redistributed Campaigns</span>
                 </div>
              	<div class="inputs" align="right" style="float: right">
             	<div class="portlet-input input-inline input-small">
@@ -38,13 +38,13 @@
               </div>
                <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
               <div class="portlet-body"  *ngIf="!httpRequestLoader.isLoading">
-                <table class="table tgrid">
+                <table class="table tgrid" aria-describedby="">
                   <thead>
                   <tr>
-                    <th style="float: left;margin-left: 70px;">Partners</th>
-                    <th class="center-aligned">Campaign Name</th>
-                     <th class="center-aligned">Redistributed On</th>
-                    <th class="center">Analytics</th>
+                    <th class="first-th-partners" scope="col">{{authenticationService?.partnerModule?.customName}}</th>
+                    <th class="center-aligned" scope="col">Campaign Name</th>
+                     <th class="center-aligned" scope="col">Redistributed On</th>
+                    <th class="center" scope="col">Analytics</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -56,16 +56,13 @@
                        </td>
                       <td>
                       <div class="actions-block override-actions" id="left-float">
-                       <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(item)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
-							<i class="fa fa-line-chart"></i>
-						</a>
-						<a routerLink="/home/forms/cf/{{item.campaignId}}" *ngIf="item.formsCount>0 && item.campaignType.indexOf('EVENT')<0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
-							<i class="fa fa-wpforms"></i>
-							 <span class="badge" id="notification">{{item.formsCount}}</span>
-						</a>
-						<!--  <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!item.dataShare">
-                        	<img src="../assets/images/disabled-icon.png">
-                     	</a> -->
+                        <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(item)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                        </a>
+                        <a routerLink="/home/forms/cf/{{item.campaignId}}" *ngIf="item.formsCount>0 && item.campaignType.indexOf('EVENT')<0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+                          <i class="fa fa-wpforms" aria-hidden="true"></i>
+                          <span class="badge" id="notification">{{item.formsCount}}</span>
+                        </a>
                      	</div>
                       </td>
                     </tr>

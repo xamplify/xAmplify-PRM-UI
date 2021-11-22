@@ -193,6 +193,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   registerLeadButtonError = false;
   leadActionType = "add";
   leadId = 0;
+  showUserLevelCampaignAnalytics = false;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -222,7 +223,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   listCampaignViews(campaignId: number, pagination: Pagination) {
     try {
       this.loading = true;
-
      if(this.campaignType === 'REGULAR' || this.campaignType === 'VIDEO' || this.campaignType === 'SURVEY'){
         pagination.campaignType = this.campaignType;
      }
@@ -241,28 +241,42 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       } else {
         this.downloadTypeName = 'sentEmails';
       }
-
-      //if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
       if (this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess) {
         pagination.campaignId = campaignId;
         pagination.campaignType = this.campaignType;
-
         this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
           .subscribe(data => {
-            this.listCampaignViewsDataInsert(data, data.totalRecords);
-          },
-            error => console.log(error),
-            () => console.log('listCampaignInteractiveViews(): called'))
-      } else {
-        this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign, this.isSmsServiceAnalytics)
-          .subscribe(data => {
-            console.log(data);
             this.listCampaignViewsDataInsert(data.data, data.totalRecords);
           },
             error => console.log(error),
-            () => console.log('listCampaignViews(); called'))
+            () => {
+              this.findUserLevelCampaignAnalyticsOption(campaignId);
+            });
+      } else {
+        this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign, this.isSmsServiceAnalytics)
+          .subscribe(data => {
+            this.listCampaignViewsDataInsert(data.data, data.totalRecords);
+          },
+            error => {console.log(error)},
+            () => {
+              this.findUserLevelCampaignAnalyticsOption(campaignId);
+            }
+        )
       }
     } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
+
+  findUserLevelCampaignAnalyticsOption(campaignId:number){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.campaignService.findUserLevelCampaignAnalyticsOption(campaignId).subscribe(
+      response=>{
+        this.showUserLevelCampaignAnalytics = response.data;
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },error=>{
+        this.showUserLevelCampaignAnalytics = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }
+    );
   }
 
   listCampaignViewsDataInsert(campaignviews: any, totalRecords:number) {
@@ -454,7 +468,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
         this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
           .subscribe(data => {
-            this.campaignBarViews = data;
+            this.campaignBarViews = data.data;
             this.campaignBarViewsDataInsert();
           },
             error => console.log(error),
@@ -1085,7 +1099,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             this.loading = false;
           },
           error => {
-            console.log(error);
             error = error.json();
             this.customResponse = new CustomResponse('ERROR', error.message, true);
             this.loading = false;
@@ -1097,8 +1110,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
                 this.campaignType = 'VIDEO';
                 this.getCountryWiseCampaignViews(campaignId);
                 this.getCampaignViewsReportDurationWise(campaignId);
-                //this.getCampaignWatchedUsersCount(campaignId);
-               // this.campaignWatchedUsersListCount(campaignId);
               } else if (campaignType.includes('SOCIAL')) {
                 this.campaignType = 'SOCIAL';
                 this.getSocialCampaignByCampaignId(campaignId);
@@ -1123,7 +1134,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             }
             if (this.campaignType != 'SMS') {
             	 this.getCampaignHighLevelAnalytics(this.campaignId);
-              //this.getEmailSentCount(this.campaignId);
             } else {
               this.getSmsSentCount(this.campaignId);
               this.getSmsSentSuccessCount(this.campaignId);
@@ -1133,7 +1143,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
               this.exportingObject['eventCampaign'] = true;
               this.exportingObject['campaignAlias'] = this.campaignId;
               this.exportingObject['formAlias'] = this.campaign.formAlias;
-              //this.exportingObject['title'] = this.leadInfoTitle;
               this.exportingObject['isPublicEventLeads'] = true;
               this.exportingObject['totalLeads'] = true;
               this.exportingObject['totalAttendees'] = false;
@@ -1740,7 +1749,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   listTotalCampaignViews(campaignId: number) {
 	  try {
 	      //this.isLeadListDownloadProcessing = true;
-	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.campaign.publicEventCampaign)
+	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.campaign.publicEventCampaign,
+	    		  this.campaign.detailedAnalyticsShared)
 	        .subscribe(
 	          data => {
 	          this.downloadFile(data, 'campaignviews', campaignId);
@@ -2295,9 +2305,6 @@ checkParentAndRedistributedCampaignAccess(){
         this.usersWatchListPagination.pageIndex = 1;
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.getCampaignById(this.campaignId);
-        //this.getCampaignHighLevelAnalytics(this.campaignId);
-        //this.listCampaignViews(this.campaignId, this.campaignViewsPagination);
-        //this.getEmailLogCountByCampaign(this.campaignId);
         this.pagination.pageIndex = 1;
         if (this.isTimeLineView === true) {
           this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
@@ -2892,10 +2899,10 @@ checkParentAndRedistributedCampaignAccess(){
     let headers = [];
 
     if(this.campaignType=="REGULAR"){
-      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
+      headers = ['Campaign Name', 'Campaign Type', 'No of List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
                  'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','HardBounce', 'SoftBounce','Unsubscribe'];
     }else{
-      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
+      headers = ['Campaign Name', 'Campaign Type', 'No of List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
                  'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','Views','HardBounce', 'SoftBounce','Unsubscribe'];
     }
 
@@ -2955,13 +2962,15 @@ checkParentAndRedistributedCampaignAccess(){
   }
 
 goToCampaignAnaltyics(item:any){
-  this.loading = true;
-  let prefixUrl = "/home/campaigns/user-campaigns/";
-  let suffixUrl =  item.userId+"/b"+"/"+item.campaignId;
-  if(this.campaign.channelCampaign){
-    this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
-  }else{
-    this.referenceService.goToRouter(prefixUrl + "/c/" + suffixUrl);
+  if(this.showUserLevelCampaignAnalytics){
+    this.loading = true;
+    let prefixUrl = "/home/campaigns/user-campaigns/";
+    let suffixUrl =  item.userId+"/b"+"/"+item.campaignId;
+    if(this.campaign.channelCampaign){
+      this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
+    }else{
+      this.referenceService.goToRouter(prefixUrl + "/c/" + suffixUrl);
+    }
   }
 }
 

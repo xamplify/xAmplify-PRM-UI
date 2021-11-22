@@ -207,7 +207,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     public hubSpotCurrentUser: any;
     public salesForceCurrentUser: any;
 	
-	
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -361,7 +360,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	downloadEmptyCsv() {
-		window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
+		window.location.href = this.authenticationService.REST_URL+"userlists/download-default-list/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
+
 	}
 
 	setPage(event: any) {
@@ -433,7 +433,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			if (!isDuplicate && !this.isEmailExist) {
 				this.saveValidEmails();
 			} else if (this.isEmailExist) {
-				this.customResponse = new CustomResponse('ERROR', "These partner(s) are already added " + this.existedEmailIds, true);
+				let message = "These "+ this.authenticationService.partnerModule.customName+ "(s) are already added "+this.existedEmailIds;
+				this.customResponse = new CustomResponse('ERROR', message, true);
 			} else {
 				this.dublicateEmailId = true;
 			}
@@ -563,7 +564,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					this.customResponse = new CustomResponse('ERROR', "Company Details is required", true);
 				}
 			} else {
-				this.customResponse = new CustomResponse('ERROR', "You are not allowed to add teamMember(s) or yourself as a partner", true);
+				let message = " You are not allowed to add teamMember(s) or yourself as a "+this.authenticationService.partnerModule.customName;
+				this.customResponse = new CustomResponse('ERROR', message, true);
 				if (this.selectedAddPartnerOption == 1) {
 					this.cancelPartners();
 				}
@@ -693,7 +695,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					if (data.access) {
 						this.loading = false;
 						this.selectedAddPartnerOption = 5;
-						this.xtremandLogger.info("update partner ListUsers:" + data);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -703,7 +704,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						this.clipBoard = false;
 						this.cancelPartners();
 						if (data.statusCode == 200) {
-							let message = this.properties.PARTNERS_SAVE_SUCCESS + "<br><br>";
+							let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been saved successfully" + "<br><br>";
 							let invalidEmailIds = data.invalidEmailIds;
 							if (invalidEmailIds != undefined && invalidEmailIds.length > 0) {
 								let allEmailIds = "";
@@ -946,7 +947,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						if (self.newPartnerUser.length == 0) {
-							self.customResponse = new CustomResponse('ERROR', "No partners found", true);
+							self.customResponse = new CustomResponse('ERROR', "No records found", true);
 							self.cancelPartners();
 						} else {
 							self.setSocialPage(1);
@@ -974,7 +975,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 
 	validateHeaders(headers) {
-		return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "PARTNETTYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
+		return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "TYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
 	}
 
 	copyFromClipboard() {
@@ -1240,9 +1241,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				.subscribe(
 					(data: any) => {
 						if (data.access) {
-							data = data;
-							console.log("update Contacts ListUsers:" + data);
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+							let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been deleted successfully";
+							this.customResponse = new CustomResponse('SUCCESS', message, true);
 							this.loadPartnerList(this.pagination);
 						} else {
 							this.authenticationService.forceToLogout();
@@ -1293,9 +1293,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				.subscribe(
 					(data: any) => {
 						if (data.access) {
-							console.log(data);
-							//this.setResponseDetails( 'SUCCESS', 'your Partner has been updated successfully' );
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
+							let message = "Your "+this.authenticationService.partnerModule.customName+" has been updated successfully.";
+							this.customResponse = new CustomResponse('SUCCESS', message, true);
 							this.loadPartnerList(this.pagination);
 						} else {
 							this.authenticationService.forceToLogout();
@@ -1376,8 +1375,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				var items = $.grep(this.selectedContactListIds, function(element) {
 					return $.inArray(element, contactIds) !== -1;
 				});
-				this.xtremandLogger.log("partner Ids" + contactIds);
-				this.xtremandLogger.log("Selected partner Ids" + this.selectedContactListIds);
 				if (items.length == this.pager.pageSize || items.length == this.getGoogleConatacts.length || items.length == this.pagedItems.length) {
 					this.isHeaderCheckBoxChecked = true;
 				} else {
@@ -1444,9 +1441,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	getGoogleContactsUsers() {
 		try {
+			let partnerModuleCustomName = localStorage.getItem('partnerModuleCustomName');
+			let message = 'Retrieving '+partnerModuleCustomName+' from google...! Please Wait...It\'s processing';
 			swal({
-				text: 'Retrieving partners from google...! Please Wait...It\'s processing',
-				allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+				text: message,
+				allowOutsideClick: false, 
+				showConfirmButton: false, 
+				imageUrl: 'assets/images/loader.gif'
 			});
 			this.contactService.socialProviderName = 'google';
 			this.socialPartners.socialNetwork = "GOOGLE";
@@ -1930,6 +1931,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
 					(error: any) => {
@@ -2003,6 +2005,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
 					(error: any) => {
@@ -2390,7 +2393,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	closeModal(event) {
 		if (event === "Emails Send Successfully") {
-			this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS, true);
+			let message = "Your "+this.authenticationService.partnerModule.customName+" list has been updated successfully and any selected campaigns have been launched";
+			this.customResponse = new CustomResponse('SUCCESS', message, true);
 		}
 
 		if (event === "users are unSubscribed for emails") {
@@ -2398,7 +2402,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 
 		if (event === "user has unSubscribed for emails") {
-			this.customResponse = new CustomResponse('ERROR', "The partner has unsubscribed for receiving the campaign emails.", true);
+			this.customResponse = new CustomResponse('ERROR', "The "+this.authenticationService.partnerModule.customName+" has unsubscribed for receiving the campaign emails.", true);
 		}
 
 		if (event === "Emails Sending failed") {
@@ -2413,7 +2417,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     saveAsChange(showGDPR: boolean) {
 
         if (this.editContactComponent.selectedContactForSave.length === 0) {
-        	this.customResponse = new CustomResponse('ERROR', "Please select atleast one partner to create the list", true);
+        	this.customResponse = new CustomResponse('ERROR', "Please select atleast one "+this.authenticationService.partnerModule.customName+" to create the list", true);
 
         } else {
             this.hasAccess().subscribe(
@@ -2474,7 +2478,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         localStorage.removeItem('isHubSpotAuth');
         localStorage.removeItem('isZohoAuth');
         localStorage.removeItem('validationMessage');
-        this.customResponse.isVisible = false;
         if (tempCheckGoogleAuth == 'yes' ) {
         	this.getGoogleContactsUsers();
         	tempCheckGoogleAuth = 'no';
@@ -3272,6 +3275,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 			}
 			this.setSocialPage(1);
+			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 9;
 			console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);
 		}
@@ -3322,8 +3326,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				.subscribe(
 					(data: any) => {
 						if (data.access) {
-							console.log("update Partner ListUsers:" + data);
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+							let message = "Your "+this.authenticationService.partnerModule.customName+"(s) have been deleted successfully";
+							this.customResponse = new CustomResponse('SUCCESS', message, true);
 							this.loadPartnerList(this.pagination);
 							this.editContactComponent.selectedContactListIds.length = 0;
 						} else {
@@ -3693,6 +3697,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		this.selectedAddPartnerOption = 6;
 		this.setSocialPage(1);
+		this.customResponse.isVisible = false;
 		swal.close();
 	}
 

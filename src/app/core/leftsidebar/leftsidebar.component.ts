@@ -43,7 +43,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	sharedLeads: boolean;
 	lms: any;
 	playbook: boolean;
-	
+	customNamePartners = "Partners";
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
@@ -88,6 +88,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.setDesignMenu(data,module);
 
 					this.menuItem.campaign = data.campaign;
+					this.authenticationService.module.createCampaign = data.campaign;
 					this.menuItem.campaignAccessAsPartner = data.redistribute;
 					module.isCampaign = data.campaign || data.redistribute;
 					module.showCampaignOptionInManageVideos = data.campaign;
@@ -122,8 +123,17 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					module.isMarketing = roles.indexOf(this.roleName.marketingRole) > -1;
 					module.isVendorTier = roles.indexOf(this.roleName.vendorTierRole) > -1;
 					this.addZendeskScript(data);
-					
-					
+					/*****XNFR-84 **********/
+					if(data.moduleNames!=undefined && data.moduleNames.length>0 && data.moduleNames!=null){
+						this.authenticationService.moduleNames = data.moduleNames;
+						this.authenticationService.partnerModule = this.authenticationService.moduleNames[0];
+						this.customNamePartners = this.authenticationService.partnerModule.customName;
+						localStorage.setItem('partnerModuleCustomName',this.customNamePartners);
+					}else{
+						this.authenticationService.partnerModule.customName = "Partners";
+						this.customNamePartners = this.authenticationService.partnerModule.customName;
+						localStorage.setItem('partnerModuleCustomName',this.customNamePartners);
+					}
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);

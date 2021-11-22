@@ -62,7 +62,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
   customResponse: CustomResponse = new CustomResponse();
   vendoorInvitation: VendorInvitation = new VendorInvitation();
   worldMapLoader = false;
-   survey: boolean =false;
+  survey: boolean =false;
+  throughPartnerCampaignsTabName: string = "Through Partner Campaigns";
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption,
@@ -410,7 +411,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
                if(response.approvePartnerList.length === 0){
-                   this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
+                   this.customResponse = new CustomResponse( 'INFO','No records found', true );
                }
                for ( var i in response.approvePartnerList) {
                    response.approvePartnerList[i].contactCompany = response.approvePartnerList[i].partnerCompanyName;
@@ -429,13 +430,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       if(this.authenticationService.isSuperAdmin()){
           pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
       }
-      console.log(pagination);
       this.parterService.getInActivePartnersAnalytics(pagination).subscribe(
               (response: any) => {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
                if(response.inactivePartnerList.length === 0){
-                   this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
+                   this.customResponse = new CustomResponse( 'INFO','No records found', true );
                }else {
                    this.customResponse = new CustomResponse();
                }
@@ -582,7 +582,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           this.parterService.approveVendorRequest( this.partnerId, this.vendoorInvitation )
               .subscribe(
               ( data: any ) => {
-                  data = data;
                   this.closeRequestModal();
                   if(data.statusCode == 200){
                       this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
@@ -639,7 +638,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           this.parterService.declineVendorRequest( this.partnerId, this.vendoorInvitation )
               .subscribe(
               ( data: any ) => {
-                  data = data;
                   this.closeRequestModal();
                   if(data.statusCode == 200){
                       this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
@@ -663,14 +661,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       } 
   }
   
-  approveAndDeclineRequest(partnerId: number, partnerFirstName: any){
+  approveAndDeclineRequest(partnerId: number, partnerFirstName: any,partnerModuleName:string){
       this.partnerId = partnerId;
       this.isShowCKeditor = true;
       CKEDITOR.config.height = '300px';
       CKEDITOR.config.baseFloatZIndex = 1E5;
       if(this.requestText == 'Approve'){
           this.vendoorInvitation.subject = "Welcome to my xAmplify Network"; 
-          this.vendoorInvitation.message = "Hi " + partnerFirstName + ",<br><br>" + "You are approved as a partner Now you can add contacts and redistribute the campaigns."
+          this.vendoorInvitation.message = "Hi " + partnerFirstName + ",<br><br>" + "You are approved as one of  "+partnerModuleName+" Now you can add contacts and redistribute the campaigns."
 
           + "<br><br>" + "Be sure to keep an eye out for future campaigns. And if you have any questions or would like to discuss this partnership in more detail, please feel free to contact me."
           + "<br><br>"
@@ -716,6 +714,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       if(this.loggedInUserId>0){
         this.partnerReportData();
         this.goToActivePartnersDiv();
+        if(localStorage!=undefined){
+            this.throughPartnerCampaignsTabName = "Through "+localStorage.getItem('partnerModuleCustomName')+" Campaigns";
+        }
     }else{
         this.router.navigate(['home/dashboard']);
     }

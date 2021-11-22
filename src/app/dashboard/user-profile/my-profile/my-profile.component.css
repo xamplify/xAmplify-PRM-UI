@@ -698,6 +698,11 @@ display: block;
 	padding: 0;
 }
 
+
+.cwotpx{
+	width:130px;
+}
+
 @media screen and (max-width:600px){
 	.mWidth{
 		margin: 0px;
@@ -712,6 +717,10 @@ display: block;
 	.actions-block i, .circled-number {
 		margin-top:1px;
 	}
+	.mScroll{
+		overflow-x: auto;
+	}
+
 
 }
 

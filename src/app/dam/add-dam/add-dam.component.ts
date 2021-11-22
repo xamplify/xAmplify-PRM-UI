@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpClient } from "@angular/common/http";
@@ -9,15 +9,20 @@ import { Properties } from '../../common/models/properties';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+import { Pagination } from '../../core/models/pagination';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { Tag } from 'app/dashboard/models/tag'
+import { UserService } from '../../core/services/user.service';
 
-declare var $: any;
+declare var $, CKEDITOR: any;
 @Component({
   selector: 'app-add-dam',
   templateUrl: './add-dam.component.html',
   styleUrls: ['./add-dam.component.css'],
-  providers: [Properties]
+  providers: [Properties, Pagination, HttpRequestLoader]
 })
-export class AddDamComponent implements OnInit {
+export class AddDamComponent implements OnInit, OnDestroy {
+
   ngxloading = false;
   jsonBody: any;
   damPostDto: DamPostDto = new DamPostDto();
@@ -38,7 +43,19 @@ export class AddDamComponent implements OnInit {
   isValidName = false;
   isValidDescription = false;
   beeContainerInput = {};
-  constructor(private xtremandLogger: XtremandLogger, public router: Router, private route: ActivatedRoute, public properties: Properties, private damService: DamService, private authenticationService: AuthenticationService, public referenceService: ReferenceService, private httpClient: HttpClient) {
+  tags: Array<Tag> = new Array<Tag>();
+	tagFirstColumnEndIndex: number = 0;
+	tagsListFirstColumn: Array<Tag> = new Array<Tag>();
+	tagsListSecondColumn: Array<Tag> = new Array<Tag>();
+	tagSearchKey: string = "";
+	tagsLoader: HttpRequestLoader = new HttpRequestLoader();
+  openAddTagPopup: boolean = false;
+	ckeConfig: any;
+	@ViewChild("ckeditor") ckeditor: any;
+  isCkeditorLoaded: boolean = false;
+  descriptionErrorMessage: string;
+
+  constructor(private xtremandLogger: XtremandLogger, public router: Router, private route: ActivatedRoute, public properties: Properties, private damService: DamService, private authenticationService: AuthenticationService, public referenceService: ReferenceService, private httpClient: HttpClient, public userService: UserService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -68,6 +85,11 @@ export class AddDamComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    $('#addAssetDetailsPopup').modal('hide');
+    this.openAddTagPopup = false;
+  }
+
   goToManageSectionWithError() {
     this.referenceService.showSweetAlertErrorMessage("Invalid Id");
     this.referenceService.goToRouter("/home/dam");
@@ -92,6 +114,11 @@ export class AddDamComponent implements OnInit {
           this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
           this.beeContainerInput['vendorCompanyLogoPath'] = this.vendorCompanyLogoPath;
           this.beeContainerInput['partnerCompanyLogoPath'] = this.partnerCompanyLogoPath;
+          if(dam.tagIds == undefined){
+            this.damPostDto.tagIds = new Array<number>();
+          } else {
+            this.damPostDto.tagIds = dam.tagIds;
+          }
         } else {
           this.goToManageSectionWithError();
         }
@@ -125,6 +152,7 @@ export class AddDamComponent implements OnInit {
     this.damPostDto.jsonBody = event.jsonContent;
     this.damPostDto.htmlBody = event.htmlContent;
     if(!this.isPartnerView){
+      this.listTags(new Pagination());
       $('#addAssetDetailsPopup').modal('show');
       this.ngxloading = false;
     }else{
@@ -152,7 +180,8 @@ export class AddDamComponent implements OnInit {
     if(columnName=="name"){
       this.isValidName = $.trim(this.damPostDto.name)!=undefined && $.trim(this.damPostDto.name).length>0;
     }else if(columnName=="description"){
-      this.isValidDescription = $.trim(this.damPostDto.description)!=undefined && $.trim(this.damPostDto.description).length>0;
+      this.isValidDescription = $.trim(this.damPostDto.description)!=undefined && $.trim(this.damPostDto.description).length>0 && $.trim(this.damPostDto.description).length < 5000;
+      this.updateDescriptionErrorMessage();
     }
     this.validateFields();
   }
@@ -161,8 +190,16 @@ export class AddDamComponent implements OnInit {
     this.validForm = this.isValidName && this.isValidDescription;
   }
 
-
+  updateDescriptionErrorMessage(){
+		if($.trim(this.damPostDto.description).length < 5000){
+			this.descriptionErrorMessage = "";
+		} else {
+			this.descriptionErrorMessage = "Description can't exceed 5000 characters.";
+		}
+  }
+  
   saveOrUpdate(saveAs:boolean) {
+    this.getCkEditorData();
     this.nameErrorMessage = "";
     this.customResponse = new CustomResponse();
     this.modalPopupLoader = true;
@@ -222,5 +259,89 @@ export class AddDamComponent implements OnInit {
 		this.ngxloading = true;
 		this.referenceService.goToRouter("home/dam/select");
 	}
+
+   /*****************List Tags*******************/
+ listTags(pagination: Pagination) {
+  pagination.userId = this.loggedInUserId;
+  pagination.maxResults = 0;
+  let self = this;
+  this.referenceService.startLoader(this.tagsLoader);
+  this.userService.getTags(pagination)
+    .subscribe(
+      response => {
+        const data = response.data;
+        this.tags = data.tags;
+        let length = this.tags.length;
+        if ((length % 2) == 0) {
+          this.tagFirstColumnEndIndex = length / 2;
+          this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex);
+          this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex);
+        } else {
+          this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
+          this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex + 1);
+          this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex + 1);
+        }
+        this.referenceService.stopLoader(this.tagsLoader);
+      },
+      (error: any) => {
+        this.customResponse = this.referenceService.showServerErrorResponse(this.tagsLoader);
+        this.referenceService.stopLoader(this.tagsLoader);
+      },
+      () => this.xtremandLogger.info('Finished listTags()')
+    );
+}
+
+searchTags() {
+  let pagination: Pagination = new Pagination();
+  pagination.searchKey = this.tagSearchKey;
+  this.listTags(pagination);
+}
+
+tagEventHandler(keyCode: any) { if (keyCode === 13) { this.searchTags(); } }
+
+updateSelectedTags(tag: Tag, checked: boolean) {
+  let index = this.damPostDto.tagIds.indexOf(tag.id);
+  if (checked == undefined) {
+    if (index > -1) {
+      this.damPostDto.tagIds.splice(index, 1);
+    } else {
+      this.damPostDto.tagIds.push(tag.id);
+    }
+  } else if (checked) {
+    this.damPostDto.tagIds.push(tag.id);
+  } else {
+    this.damPostDto.tagIds.splice(index, 1);
+  }
+  console.log(this.damPostDto.tagIds)
+}
+
+addTag() {
+  this.openAddTagPopup = true;
+}
+
+resetTagValues(message: any) {
+  this.openAddTagPopup = false;
+  this.showSuccessMessage(message);
+  this.listTags(new Pagination());
+}
+
+showSuccessMessage(message: any) {
+  if (message != undefined) {
+    this.customResponse = new CustomResponse('SUCCESS', message, true);
+  }
+}
+
+onReady(event: any) {
+  this.isCkeditorLoaded = true;
+}
+
+getCkEditorData() {
+  if(CKEDITOR!=undefined){
+  for (var instanceName in CKEDITOR.instances) {
+    CKEDITOR.instances[instanceName].updateElement();
+    this.damPostDto.description = CKEDITOR.instances[instanceName].getData();
+  }
+  }
+}
 
 }

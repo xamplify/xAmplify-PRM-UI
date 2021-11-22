@@ -13,15 +13,15 @@
  </div>
  <div class="row">
    <div class="col-md-12 col-lg-12">
-      <div class="portlet light" style="height:198px;">
+      <div class="portlet light mheight" style="height:198px;">
          <a *ngIf="!tilesLoader" class="close-circle refresh-margin" (click)="getActiveAndTotalCampaignsCount()" aria-hidden="true">
             <i class="fa fa-refresh" aria-hidden="true"></i>
         </a>
          <div class="row" style="margin-top: 20px;">
             <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
-            <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+            <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12 mleft" style="padding-left: 24px;padding-right: 30px;">
                <div class="row">
-                  <div  id="vendor-details-tile" class="{{tileClass}}">
+                  <div  id="vendor-details-tile" class="{{tileClass}} mBottom mWidth">
                      <div class="row">
                          <div class="flex margin-flex">
                              <span class='profile'>
@@ -45,7 +45,7 @@
                              </div>
                      </div>
                   </div>
-                  <div title="{{totalCampaignsCount}}" class="{{tileClass}}">
+                  <div title="{{totalCampaignsCount}}" class="{{tileClass}} mtop mWidth">
                      <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                         <div class="visual">
                            <i aria-hidden="true" class=""></i>
@@ -60,7 +60,7 @@
                      </span>
                      </a>
                   </div>
-                  <div title="{{activeCampaignsCount}}" class="{{tileClass}}">
+                  <div title="{{activeCampaignsCount}}" class="{{tileClass}} mWidth">
                      <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                         <div class="visual">
                            <i aria-hidden="true" class=""></i>
@@ -94,7 +94,7 @@
                     Campaigns
                  </div>
                  <div class="inputs"  style="float: right; padding: 4px">
-                    <div style="float: left; margin: 0 10px;">
+                    <div class="mMargin" style="float: left; margin: 0 10px;">
                       <select class="form-control" [(ngModel)]="sortOption.userLevelCampaignAnalyticsSortOption" (ngModelChange)="sortBy($event)">
                         <option *ngFor="let option of sortOption.userLevelCampaignAnalyticsSortDropDownOptions"
                             [ngValue]="option" translate>

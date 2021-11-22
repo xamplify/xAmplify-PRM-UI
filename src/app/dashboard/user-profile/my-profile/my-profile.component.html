@@ -126,7 +126,7 @@
                                 <a (click)="activateTab('templates');clearCustomResponse()" translate>
                                      Your Templates </a>
                             </li>
-                            <li *ngIf="authenticationService.lmsAccess" [ngClass]="{'active': activeTabName == 'tags'}">
+                            <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess" [ngClass]="{'active': activeTabName == 'tags'}">
                                 <a (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
@@ -217,7 +217,8 @@
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                    <span class="caption-subject font-blue-madison bold">{{activeTabHeader | translate}}</span>
+                                    <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">Onboarding configurations of your {{authenticationService?.partnerModule?.customName | translate}}</span>
+                                    <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate}}</span>
                                 </div>
                             </div>
                             <div class="portlet-body clearfix">
@@ -584,7 +585,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-xs-12 p0" style="padding-top: 10px !important;">
+                                                        <div class="col-xs-12 p0 mScroll" style="padding-top: 10px !important;">
                                                             <table class='table tgrid' id="pipeline-list">
                                                                 <thead>
                                                                     <tr>
@@ -914,7 +915,7 @@
                                         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                         <ng-container *ngIf="!httpRequestLoader.isLoading">
                                             <div class="table-responsive">
-                                                <table class='table tgrid table-hover table-sm' id="category-list" *ngIf="categoryPagination.pagedItems?.length>0">
+                                                <table class='table tgrid table-hover table-sm' id="category-list" *ngIf="categoryPagination.pagedItems?.length>0" aria-describedby="">
                                                     <thead>
                                                         <tr>
                                                             <th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
@@ -948,7 +949,7 @@
                                                                 <span>{{category.count}}</span>
                                                             </td>
                                                             <td>
-                                                                <div class="actions-block override-actions">
+                                                                <div class="actions-block override-actions cwotpx">
                                                                     <ng-container *ngIf="category.defaultCategory">
                                                                         <a data-placement="top" class="disabled-event" title="Default Folder Can't Be Edited">
                                                                             <i class="fa fa-pencil-square-o disabled-event" aria-hidden="true"></i>

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { UtilService } from 'app/core/services/util.service';
 import { Properties } from 'app/common/models/properties';
-
+import {AuthenticationService} from 'app/core/services/authentication.service';
 declare var Highcharts: any;
 
 @Component({
@@ -23,7 +23,7 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 	partnerContactsAnalyticsCount: any;
 	partnerContactsAnalyticsCountLoader = false;
 	partnerContactsAnalyticsCountStatusCode = 200;
-	constructor(public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService, public utilService: UtilService) {
+	constructor(public authenticationService:AuthenticationService,public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService, public utilService: UtilService) {
 	}
 	ngOnInit() {
 		this.getPartnerContactsCount();
@@ -74,7 +74,7 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 				exporting: { enabled: false },
 				tooltip: {
 					formatter: function() {
-						return 'Partner Company Name: <b>' + this.point.name + '</b><br>Contacts: <b>' + this.point.value + '</b>';
+						return 'Company Name: <b>' + this.point.name + '</b><br>Contacts: <b>' + this.point.value + '</b>';
 					}
 				},
 				plotOptions: {

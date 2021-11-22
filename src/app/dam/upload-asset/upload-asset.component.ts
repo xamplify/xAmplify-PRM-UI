@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { DamService } from '../services/dam.service';
@@ -9,14 +9,18 @@ import { ReferenceService } from "app/core/services/reference.service";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
 import { UtilService } from 'app/core/services/util.service';
+import { Pagination } from '../../core/models/pagination';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { Tag } from 'app/dashboard/models/tag'
+import { UserService } from '../../core/services/user.service';
 
-declare var $, swal: any;
+declare var $, swal, CKEDITOR: any;
 
 @Component({
 	selector: 'app-upload-asset',
 	templateUrl: './upload-asset.component.html',
 	styleUrls: ['./upload-asset.component.css'],
-	providers: [Properties]
+	providers: [Properties, Pagination, HttpRequestLoader]
 })
 export class UploadAssetComponent implements OnInit,OnDestroy {
 	
@@ -48,7 +52,20 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	showDefaultLogo = false;
 	uploadedThumbnailName = "";
 	initLoader = false;
-	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) { }
+	loggedInUserId = 0;
+	tags: Array<Tag> = new Array<Tag>();
+	tagFirstColumnEndIndex: number = 0;
+	tagsListFirstColumn: Array<Tag> = new Array<Tag>();
+	tagsListSecondColumn: Array<Tag> = new Array<Tag>();
+	tagSearchKey: string = "";
+	tagsLoader: HttpRequestLoader = new HttpRequestLoader();
+	openAddTagPopup: boolean = false;
+	name = 'ng2-ckeditor';
+	ckeConfig: any;
+	@ViewChild("ckeditor") ckeditor: any;
+	isCkeditorLoaded = false;
+
+	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService) { }
 	ngOnInit() {
 		this.isAdd = this.router.url.indexOf('/upload') > -1;
 		this.showDefaultLogo = this.isAdd;
@@ -58,10 +75,13 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			this.getAssetDetailsById(this.id);
 			this.submitButtonText = "Update";
 		}
+		this.loggedInUserId = this.authenticationService.getUserId();
+		this.listTags(new Pagination());
 	}
 
 	ngOnDestroy(): void {
 		$('#thumbnailImageModal').modal('hide');
+		this.openAddTagPopup = false;
 	}
 
 	getAssetDetailsById(selectedAssetId: number) {
@@ -72,6 +92,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				(result: any) => {
 					if(result.statusCode==200){
 						this.damUploadPostDto = result.data;
+						if(this.damUploadPostDto.tagIds == undefined){
+							this.damUploadPostDto.tagIds = new Array<number>();
+						}
 						this.validateForm('assetName');
 						this.validateForm('description');
 						this.formLoader = false;
@@ -224,7 +247,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if (columnName == "assetName") {
 			this.damUploadPostDto.validName = $.trim(this.damUploadPostDto.assetName) != undefined && $.trim(this.damUploadPostDto.assetName).length > 0;
 		} else if (columnName == "description") {
-			this.damUploadPostDto.validDescription = $.trim(this.damUploadPostDto.description) != undefined && $.trim(this.damUploadPostDto.description).length > 0;
+			this.damUploadPostDto.validDescription = $.trim(this.damUploadPostDto.description) != undefined && $.trim(this.damUploadPostDto.description).length > 0 && $.trim(this.damUploadPostDto.description).length < 5000;
+			this.updateDescriptionErrorMessage();
 		}
 		this.validateAllFields();
 	}
@@ -238,8 +262,16 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		}
 	}
 
+	updateDescriptionErrorMessage(){
+		if($.trim(this.damUploadPostDto.description).length < 5000){
+			this.descriptionErrorMessage = "";
+		} else {
+			this.descriptionErrorMessage = "Description can't exceed 5000 characters.";
+		}
+	}
 
 	uploadOrUpdate() {
+		this.getCkEditorData();
 		this.referenceService.goToTop();
 		if(this.isAdd){
 			this.referenceService.showSweetAlertProcessingLoader('Upload is in progress...');
@@ -317,6 +349,87 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		}
 	}
 
+ /*****************List Tags*******************/
+ listTags(pagination: Pagination) {
+    pagination.userId = this.loggedInUserId;
+    pagination.maxResults = 0;
+    let self = this;
+    this.referenceService.startLoader(this.tagsLoader);
+    this.userService.getTags(pagination)
+      .subscribe(
+        response => {
+          const data = response.data;
+          this.tags = data.tags;
+          let length = this.tags.length;
+          if ((length % 2) == 0) {
+            this.tagFirstColumnEndIndex = length / 2;
+            this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex);
+            this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex);
+          } else {
+            this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
+            this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex + 1);
+            this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex + 1);
+          }
+          this.referenceService.stopLoader(this.tagsLoader);
+        },
+        (error: any) => {
+          this.customResponse = this.referenceService.showServerErrorResponse(this.tagsLoader);
+          this.referenceService.stopLoader(this.tagsLoader);
+        },
+        () => this.xtremandLogger.info('Finished listTags()')
+      );
+  }
 
+  searchTags() {
+    let pagination: Pagination = new Pagination();
+    pagination.searchKey = this.tagSearchKey;
+    this.listTags(pagination);
+  }
 
+  tagEventHandler(keyCode: any) { if (keyCode === 13) { this.searchTags(); } }
+
+  updateSelectedTags(tag: Tag, checked: boolean) {
+    let index = this.damUploadPostDto.tagIds.indexOf(tag.id);
+    if (checked == undefined) {
+      if (index > -1) {
+        this.damUploadPostDto.tagIds.splice(index, 1);
+      } else {
+        this.damUploadPostDto.tagIds.push(tag.id);
+      }
+    } else if (checked) {
+      this.damUploadPostDto.tagIds.push(tag.id);
+    } else {
+      this.damUploadPostDto.tagIds.splice(index, 1);
+    }
+    console.log(this.damUploadPostDto.tagIds)
+  }
+
+  addTag() {
+    this.openAddTagPopup = true;
+  }
+
+  resetTagValues(message: any) {
+    this.openAddTagPopup = false;
+    this.showSuccessMessage(message);
+    this.listTags(new Pagination());
+  }
+
+  showSuccessMessage(message: any) {
+    if (message != undefined) {
+      this.customResponse = new CustomResponse('SUCCESS', message, true);
+    }
+  }
+
+  onReady(event: any) {
+    this.isCkeditorLoaded = true;
+  }
+
+  getCkEditorData() {
+    if(CKEDITOR!=undefined){
+		for (var instanceName in CKEDITOR.instances) {
+			CKEDITOR.instances[instanceName].updateElement();
+			this.damUploadPostDto.description = CKEDITOR.instances[instanceName].getData();
+		}
+	  }
+  }
 }

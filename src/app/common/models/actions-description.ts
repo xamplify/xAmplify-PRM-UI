@@ -17,8 +17,8 @@ export class ActionsDescription {
     leads_list_share = 'Share leads list'
 
    /* FOR PARTNERS*/
-    partner_edit = 'Edit partner';
-    partner_delete = 'Delete partner';
+    partner_edit = 'Edit';
+    partner_delete = 'Delete';
     partner_reSendMail = 'Resend registration email';
     send_campaigns = 'Share Campaigns';
     campaigns_emails = 'Send Campaigns';
@@ -42,8 +42,8 @@ export class ActionsDescription {
     campaign_preview = 'View campaign';
     campaign_report = 'Campaign based reports';
     campaign_copy = 'Copy campaign';
-    campaign_preview_partner = 'Preview & Delete partner(s)'
-    campaign_delete_partner = 'Delete partner';
+    campaign_preview_partner = 'Preview & Delete'
+    campaign_delete_partner = 'Delete';
 
     /* GLOBAL */
     listView = 'List View';

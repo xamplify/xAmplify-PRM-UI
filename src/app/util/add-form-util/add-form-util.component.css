@@ -1536,3 +1536,21 @@ div.switch5>input.switch:focus~label:before {
 .label-text {
     width: 95%;
 }
+
+
+@media screen and (max-width:600px){
+    .mPad{
+        padding-left: 30px;
+    }
+    .mWid{
+    width: 175%;
+    margin-left: -50px;
+    }
+}
+
+@media screen and (width:565px){
+    .mWid{
+        width: 100%;
+        margin-left: 0px;
+        }
+}    

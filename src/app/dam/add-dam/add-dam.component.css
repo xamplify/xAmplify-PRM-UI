@@ -16,3 +16,24 @@
 .cmr{
   margin-right: 70px;
 }
+
+.inline {
+  display: inline-flex;
+}
+
+.tags-table tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.scroller {
+  height: 125px;
+  padding: 5px;
+  overflow: auto;
+}
+
+.text-wrap{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}

@@ -5,22 +5,40 @@
 			<a [routerLink]="refService.homeRouter" translate>Home</a>
 			 <i	class="fa fa-angle-right" aria-hidden="true"></i>
 			</li>
-		<li><a (click)="refresh()" translate> Manage {{checkingContactTypeName}}s
-				</a></li>
+		<li>
+			<a (click)="refresh()" translate> Manage 
+				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          		<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+			</a>
+		</li>
 		<li>
 			<a (click)="backToEditContacts()" translate>
-				<i	class="fa fa-angle-right" aria-hidden="true"> </i>Edit {{checkingContactTypeName}}s</a></li>
+				<i	class="fa fa-angle-right" aria-hidden="true"></i>Edit 
+				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          		<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+			</a>
+		</li>
 		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right" aria-hidden="true">
 		</i>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">{{contactsByType.selectedCategory}}
-		   {{checkingContactTypeName}}s</span>
-		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'" translate>Unregistered {{checkingContactTypeName}}s
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+			<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+		</span>
+		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'" translate>Unregistered 
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+          		<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+		</span>
+		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Unsubscribed 
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+			<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 		   </span>
-		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Unsubscribed {{checkingContactTypeName}}s
+		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'" translate>Registered 
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+			<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 		   </span>
-		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'" translate>Registered {{checkingContactTypeName}}s
-		   </span>
-		   <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>Undeliverable {{checkingContactTypeName}}s
+		   <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>Undeliverable 
+			<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+			<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 		   </span>
 		</li>
 	</ul>
@@ -44,7 +62,7 @@
 							<div>
 								<div class="page-breadcrumb">
 									<span>
-										<span *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList" data-toggle="tooltip" data-placement="top" title="Edit {{checkingContactTypeName}} list Name"
+										<span *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList" data-toggle="tooltip" data-placement="top" title="Edit list Name"
 											style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;" (click)="editListName()">
 											<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
@@ -77,7 +95,7 @@
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.allContactsCount}}</div>
-											<div class="desc" style="font-size:20px; color: #FFFFFF;" translate>All <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px; color: #FFFFFF;" translate>All</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #3480b5; color: white" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -108,16 +126,15 @@
 										(click)="showingContactDetails('active')"
 										[disabled]="contactsByType.activeContactsCount == 0">
 										<div class="visual">
-											<!-- <i class="fa fa-eye"></i> -->
 											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'active' ? '#white' : '#ccc' }"
-               										 *ngIf="contactsByType.selectedCategory == 'active'" ></i>
+               										 *ngIf="contactsByType.selectedCategory == 'active'" aria-hidden="true"></i>
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.activeContactsCount}}</div>
-											<div class="desc" style="font-size:20px; color: #FFFFFF;" translate>Registered <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px; color: #FFFFFF;" translate>Registered</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
 												</a>
 												</span>
 									</button>
@@ -127,16 +144,15 @@
 										(click)="showingContactDetails('non-active')"
 										[disabled]="contactsByType.inactiveContactsCount == 0">
 										<div class="visual">
-											<!-- <i class="fa fa-eye-slash"></i> -->
 											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'non-active' ? '#white' : '#ccc' }"
-               										 *ngIf="contactsByType.selectedCategory == 'non-active'" ></i>
+               										 *ngIf="contactsByType.selectedCategory == 'non-active'" aria-hidden="true"></i>
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-											<div class="desc" style="font-size:20px" translate>Unregistered <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px" translate>Unregistered</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
+														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
 												</a>
 												</span>
 									</button>
@@ -146,18 +162,18 @@
 										(click)="showingContactDetails('invalid')"
 										[disabled]="contactsByType.invalidContactsCount == 0">
 										<div class="visual">
-											<!-- <i class="fa fa-user-times"></i> -->
 											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'invalid' ? '#white' : '#ccc' }"
-               										 *ngIf="contactsByType.selectedCategory == 'invalid'" ></i>
+               										 *ngIf="contactsByType.selectedCategory == 'invalid'" aria-hidden="true"></i>
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.invalidContactsCount}}</div>
-											<div class="desc" style="font-size:20px" translate>Undeliverable <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px" translate>Undeliverable</div>
 										</div>
-										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
-														Detailed view <i class="m-icon-swapright m-icon-white"></i>
-												</a>
-												</span>
+										<span class="morePadding"> 
+											<a class="more" style="text-align: left;" translate>
+												Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
+											</a>
+											</span>
 									</button>
 								</div>
 								<div class="col-xs-6 col-sm-2 col-lg-2" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
@@ -165,16 +181,12 @@
 										(click)="showingContactDetails('unsubscribe')"
 										[disabled]="contactsByType.unsubscribedContactsCount == 0">
 										<div class="visual">
-
-											<!-- <i class="fa fa-times"></i> -->
-
 											<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribe' ? '#white' : '#ccc' }"
-               										 *ngIf="contactsByType.selectedCategory == 'unsubscribe'" ></i>
+               										 *ngIf="contactsByType.selectedCategory == 'unsubscribe'" aria-hidden="true"></i>
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-											<div class="desc" style="font-size:20px" translate>Unsubscribed
-												<!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px" translate>Unsubscribed</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -198,7 +210,9 @@
 							<div class="portlet box blue">
 								<div class="portlet-title">
 									<div class="caption" translate>
-										<i class="fa fa-edit" aria-hidden="true"></i>List of {{checkingContactTypeName}}s
+										<i class="fa fa-edit" aria-hidden="true"></i>List of 
+										<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 									</div>
 
 									<div class="color-grey" style="margin-top:4px" *ngIf="!sharedLeads">
@@ -279,7 +293,7 @@
 												</div>
 											</ng-container>
 											<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-top: 10px;">
-												<div class="col-xs-2 col-md-2 col-sm-2" style="width: 47.66666667%;">
+												<div class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
 													<div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: right; cursor: pointer;"
 														data-toggle="modal" data-target="#filterModal">
 														<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
@@ -291,7 +305,7 @@
 															class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
 													</div>
 												</div>
-												<div class="col-xs-10 col-md-10 col-sm-10 p0" style="width: 52.33333333%;">
+												<div class="col-xs-10 col-md-10 col-sm-10 p0 mWidthSort" style="width: 52.33333333%;">
 													<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8">
 														<div class="inputs" align="right" style="float: right">
 															<div class="inputs" align="right" style="float: right;display: inline-flex;">
@@ -306,12 +320,12 @@
 																<div class="portlet-input input-inline">
 																	<div class="input-icon right">
 																		<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-																			class="form-control" placeholder="Search for a {{checkingContactTypeName}}"
+																			class="form-control" placeholder="Search"
 																			(keypress)="eventHandler($event.keyCode)">
 																		<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
 																			(click)="searchKey='';search('contactList')"></button>
 																		<button type="submit" class="search-box-item-click" (click)="search('contactList')">
-																			<i class="fa fa-search"></i>
+																			<i class="fa fa-search" aria-hidden="true"></i>
 																		</button>
 										
 																	</div>
@@ -429,7 +443,7 @@
 						           	</textarea>
 						           	<textarea *ngIf="isPartner" id="copyFromclipTextArea" class="textareaNumber"
 							[(ngModel)]="clipboardTextareaText"
-							placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone"
+							placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
 							[ngModelOptions]="{standalone: true}"
 							style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
 							required="required">
@@ -459,7 +473,7 @@
 					<div class="col-xs-12">
 						<textarea id="copyFromclipTextArea" class="textareaNumber"
 							[(ngModel)]="clipboardTextareaText"
-							placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone"
+							placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
 							[ngModelOptions]="{standalone: true}"
 							style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
 							required="required">
@@ -631,8 +645,8 @@
 														<!-- <th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
-														<th class="text-center hidden-xs" *ngIf="gdprStatus || isPartner"></th>
-														<th class="text-center" *ngIf="isPartner"></th>
+														<th class="text-center " *ngIf="gdprStatus || isPartner"></th>
+														<th class="text-center hidden-xs" *ngIf="isPartner"></th>
 														<!-- <th class='text-center'>MORE</th> -->
 														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard && !sharedLeads" translate>ACTIONS</th>
 														</tr>
@@ -755,11 +769,10 @@
 															</td>
 															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard && !sharedLeads">
 															<div class="actions-block override-actions" style="width:170px" >
-															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)" *ngIf= "(!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)">
+															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "(!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																 </a>
-
-																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)"
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
 																 *ngIf= "selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))">
 																	<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
@@ -819,7 +832,10 @@
 						<div class="alert alert-success alert-dismissable col-xs-12"
 							style="padding: 15px 10px 12px;"
 							*ngIf="invalidDeleteSuccessMessage">
-							<strong translate>Success!</strong> your {{checkingContactTypeName}}s has
+							<strong translate>Success!</strong> your 
+							<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+							<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+							has
 							been deleted successfully.
 						</div>
 					</div>
@@ -830,13 +846,28 @@
 							<div class="portlet-title">
 								<div class="caption">
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
-										{{checkingContactTypeName}} List</span>
+										<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span> 
+										List
+									</span>
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'" translate>
-										Unregistered {{checkingContactTypeName}} List</span>
+										Unregistered 
+										<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span> 
+										List
+									</span>
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'" translate>
-										Registered {{checkingContactTypeName}} List</span>
+										Registered 
+										<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span> 
+										List
+									</span>
 										<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>
-										Undeliverable {{checkingContactTypeName}} List</span>
+										Undeliverable 
+										<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span> 
+										List
+									</span>
 								</div>
 								<div class="btn-group pull-right" *ngIf="!sharedLeads"
 									style="margin-top: 4px; color: #000000;">
@@ -889,9 +920,9 @@
 													 <input type="text"
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
-														class="form-control" placeholder="Search for a {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
+														class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
 														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search('contacts')"></button>
-														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
+														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search" aria-hidden="true"></i></button>
 												</div>
 											</div>
 										</div>
@@ -905,26 +936,26 @@
 									<app-loader [model]="httpRequestLoader.isHorizontalCss"
 										*ngIf="httpRequestLoader.isLoading"></app-loader>
 									<table class='table tgrid' id="sample_editable_1" style="overflow: hidden;"
-										*ngIf="!httpRequestLoader.isLoading">
+										*ngIf="!httpRequestLoader.isLoading" aria-describedby="">
 										<thead>
 											<tr>
 												<th style="text-align: center;"
-													*ngIf="contactsByType.selectedCategory == 'invalid'"><input
+													*ngIf="contactsByType.selectedCategory == 'invalid'" scope="col"><input
 													type="checkbox" name="all"
 													[(ngModel)]="isInvalidHeaderCheckBoxChecked"
 													(change)="checkAllInvalidContacts($event)" class=""
 													id="checkAllExistingInvalidContacts" /></th>
-												<th style="width: 25%" *ngIf="isPartner" translate>Entity info</th>
-												<th style="width: 25%" *ngIf="!isPartner" translate>NAME</th>
-												<th *ngIf="contactsByType.selectedCategory == 'invalid' && !isPartner" translate>EMAIL CATEGORY</th>
-												<th *ngIf="isPartner" translate>VERTICAL</th>
-												<th *ngIf="isPartner" translate>REGION</th>
-												<th *ngIf="isPartner" translate>TYPE</th>
-												<th *ngIf="isPartner" translate>CATEGORY</th>
-												<th class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
-												<th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
-												<th class="text-center hidden-xs" *ngIf="contactsByType.selectedCategory !== 'invalid' && (gdprStatus || isPartner)"></th>
-												<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Reason</th>
+												<th style="width: 25%" *ngIf="isPartner" translate scope="col">Entity info</th>
+												<th style="width: 25%" *ngIf="!isPartner" translate scope="col">NAME</th>
+												<th *ngIf="contactsByType.selectedCategory == 'invalid' && !isPartner" translate scope="col">EMAIL CATEGORY</th>
+												<th *ngIf="isPartner" translate scope="col">VERTICAL</th>
+												<th *ngIf="isPartner" translate scope="col">REGION</th>
+												<th *ngIf="isPartner" translate scope="col">TYPE</th>
+												<th *ngIf="isPartner" translate scope="col">CATEGORY</th>
+												<th class="hidden-xs" *ngIf="!isPartner" translate scope="col">Job Title</th>
+												<th class="text-center hidden-xs"  *ngIf="!isPartner" translate scope="col">ADDRESS</th>
+												<th class="text-center hidden-xs" *ngIf="contactsByType.selectedCategory !== 'invalid' && (gdprStatus || isPartner)" scope="col"></th>
+												<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate scope="col">Reason</th>
 												<th class="text-center" *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||  
 												 contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate></th>
 												<th *ngIf="contactsByType.selectedCategory === 'invalid' && !sharedLeads">Actions</th>
@@ -1171,7 +1202,7 @@
 
 			<div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
 			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
-			  By onboarding a partner you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  By onboarding a {{authenticationService?.partnerModule?.customName}} you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 			  <br>
 			</div>
 
@@ -1229,12 +1260,12 @@
                                 <th scope="row" translate>Entity Info</th>
                                 <th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts
                                      <span id="tooltip-helper">
-                                        <i class="fa fa-question-circle" aria-hidden="true" title="Assign number of contacts to each partner (Minimum 1)"></i>
+                                        <i class="fa fa-question-circle" aria-hidden="true" title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)"></i>
                                     </span>
 								</th>
 								<th scope="row" translate>Sign up Notification
                                     <span id="tooltip-helper">
-                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded partners"></i>
+                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                 </th>
                             </tr>
@@ -1249,7 +1280,7 @@
                                     <td *ngIf="authenticationService.contactsCount" class="contact-count error" id="contact-count-{{i}}">
                                         <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
 									</td>
-									<td *ngIf="showNotifyPartnerOption" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available as this partner is already part of Master Partner List':''">
+									<td *ngIf="showNotifyPartnerOption" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available as this {{authenticationService?.partnerModule?.customName} is already part of Master Partner List':''">
 										<switch [status]="partner.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                                         	[size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)" [disabled]="partner?.disableNotifyPartnersOption">
                                         </switch>
