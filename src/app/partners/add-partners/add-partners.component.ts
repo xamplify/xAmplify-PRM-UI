@@ -211,7 +211,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	teamMembersPopUpLoader = false;
 	teamMembersPagination = new Pagination();
 	public teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
-
+	public showModulesPopup = false;
+	public teamMemberGroupId = 0;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -3863,7 +3864,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	/********XNFR-85********/
 	previewModules(teamMemberGroupId: number) {
-		alert("I will see preview");
+		this.teamMemberGroupId = teamMemberGroupId;
+		this.showModulesPopup = true;
 	}
 
 	getTeamMembers(teamMemberGroupId: number) {
@@ -3926,5 +3928,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	selectOrUnselectAllTeamMembersOfTheCurrentPage(event: any) {
 		this.selectedTeamMemberIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage(this.partnerModuleTeamMembersTrId, this.partnerModuleTeamMembersTableId, this.partnerModuleTeamMemberCheckBoxName, this.selectedTeamMemberIds, this.teamMembersPagination, event);
 		console.log(this.selectedTeamMemberIds);
+	}
+
+	hideModulesPreviewPopUp(){
+		this.showModulesPopup = false;
+		this.teamMemberGroupId = 0;
 	}
 }
