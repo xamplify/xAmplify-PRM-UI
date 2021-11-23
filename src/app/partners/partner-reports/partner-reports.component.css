@@ -135,4 +135,13 @@ cursor: default;
 	}
 }
 
+@media screen and (max-width:600px){
+.mAlign{
+	text-align: center!important;
+}
+.mTop{
+	margin: -6px 0 0 0!important;
+}
+}
+
 
