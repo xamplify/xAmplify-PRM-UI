@@ -41,8 +41,8 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         "campaigns": "Easily automate your audience's digital journey.",
         "templates": "Design beautiful, responsive email  templates that communicate effectively.",
         "socialMedia": "Up your social game and coordinate your message across all of your social media accounts.",
-        "analytics": "Manage, monitor, and measure various aspects of your campaigns and your partners.",
-        "teamMember": "Add team members to make content and campaign management a group effort"
+        "analytics": "Manage, monitor, and measure various aspects of your campaigns.",
+        "teamMember": "Add team members to make content and campaign management a group effort."
     };
 
     partner_welcome_text = {
@@ -109,7 +109,10 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     showHowToVideo(url, title){
       // this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
       let videoInfo: any;
-      if(title.includes('Partners')){ videoInfo =  this.welcome_text.contacts; }
+      if(title.includes('Partners')){ 
+        title = this.authenticationService.partnerModule.customName;
+        videoInfo =  this.welcome_text.contacts;
+       }
       if(title.includes('Videos')){ videoInfo =  this.welcome_text.videos; }
       if(title.includes('Contacts')){ videoInfo =  this.welcome_text.contacts; }
       if(title.includes('Templates')){ videoInfo =  this.welcome_text.templates; }
@@ -122,7 +125,15 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }
     getVideo(shortnerUrlAlias: string) {
       this.videoFileService.getVideoByShortenerUrlAliasXamplify(shortnerUrlAlias)
-            .subscribe((result:any)=>{  this.videoFile = result; });
+            .subscribe((result:any)=>{  
+              this.videoFile = result;
+              if(this.videoFile!=undefined){
+                let description = this.videoFile.description;
+                if("How to Add partners and create list demo"==description){
+                  this.videoFile.description = "How to Add "+this.authenticationService.partnerModule.customName+" and create list demo";
+                }
+              }
+             });
      }
     getDefaultPage(userId: number) {
       try{
