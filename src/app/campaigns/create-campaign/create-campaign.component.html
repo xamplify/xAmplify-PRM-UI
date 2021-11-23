@@ -876,13 +876,13 @@
                                         </div>
                                         <div class="inputs" style="float: right;">
                                             <div style="float: left;">
-                                                 <select class="form-control cc" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
+                                                 <select class="form-control cc mTopSort" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
                                                     (ngModelChange)="sortRecipientsList($event)">                                                    
                                                     <option  *ngFor="let option of recipientsSortOption.campaignRecipientsDropDownOptions"
                                                         [ngValue]="option">{{option.name}}</option>
                                                 </select> 
                                             </div>
-                                            <div class="portlet-input input-inline" style="position: relative;top: -6px;">
+                                            <div class="portlet-input input-inline mAlign " style="position: relative;top: -6px;">
                                                 <div class="input-icon right">
                                                     <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
                                                     <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="recipientsSortOption.searchKey" (click)="recipientsSortOption.searchKey='';searchContactList()"></button>
@@ -2422,11 +2422,11 @@
                                 </div>
 
                                 <div class="portlet-title border-none">
-                                    <div class="col-xs-12 center-block">
-                                        <button type="button" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
-                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
-                                        <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
-                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green" (click)="spamCheck()" style="width: 10em;" translate>Spam check</button>
+                                    <div class="col-xs-12 center-block mTop">
+                                        <button type="button" class="btn btn-default mBtnAlign" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
+                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
+                                        <button type="submit" class="btn green mBtnAlign" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
+                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="spamCheck()" style="width: 10em;" translate>Spam check</button>
                                     </div>
                                 </div>
                             </div>

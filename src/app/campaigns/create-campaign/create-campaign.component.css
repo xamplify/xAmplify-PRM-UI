@@ -2018,6 +2018,10 @@ legend {
     margin-left: 2px;
 }
 
+
+
+
+
 .img-class-list{
 	height: 80px;
     width: 80px;
@@ -2063,4 +2067,25 @@ legend {
 
 .zeropx{
     margin-top: 0px;
+}
+
+
+@media screen and (max-width:600px){
+    .mTopSort{
+        top: 14px;
+    }
+    .mAlign{
+        top: -20px!important;
+        left: 167px!important;
+    }
+    .list__item{
+        width: 100%!important;
+    }
+
+    .mTop{
+        top:10px;
+    }
+    .mBtnAlign{
+        margin: 5px;
+    }
 }
