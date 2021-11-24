@@ -1224,7 +1224,7 @@
                     <strong class="pre-wrap-next-line">{{contactAndMdfPopupResponse?.responseMessage}}</strong>               </div>
                 <app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
                 <div class="table-responsive" *ngIf="!processingPartnersLoader">
-                    <table class="table tgrid table-hover table-sm e9eef2" id="assignContactAndTable" aria-describedby="assignContactAndTable">
+                    <table class="table tgrid table-hover table-sm beige" id="assignContactAndTable" aria-describedby="assignContactAndTable">
                         <thead>
                             <tr>
                                 <th scope="row" translate>Entity Info</th>
@@ -1263,7 +1263,7 @@
                                    <!--- (XNFR-85) ----->
                                     <td id="team-member-group-error-count-{{i}}">
                                         <div class="input-group">
-                                        <select class="form-control" [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembers($event)">
+                                        <select id="partner-tm-group-{{i}}" class="form-control" [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembersByGroupId(partner,i)">
                                           <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
                                                  {{teamMemberGroup?.name}}
                                         </option> 
@@ -1274,11 +1274,14 @@
                                           </button>
                                         </span>
                                         <span class="input-group-btn">
-                                            <button title="Preview Team Members"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner.teamMemberGroupId)">
+                                            <button title="Preview Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
                                               <i class="fa fa-users white" aria-hidden="true"></i>
                                             </button>
                                           </span>
-                                      </div>
+                                        </div>
+                                        <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0">
+                                            <strong>Selected Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong>
+                                        </span>
                                       </td>
                                 </tr>
                             </ng-container>
@@ -1301,33 +1304,30 @@
     <div class="modal-dialog full-width-modal-popup" role="document">
         <div class="modal-content">
             <div class="modal-header" >
-                <button type="button" class="close-circle" (click)="closeTeamMembersPreviewPopup()">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
                 <h4 class="modal-title popup-header-title-font text-center" translate>Team Members</h4>
             </div>
             <div class="modal-body">
                 <app-list-loader *ngIf="teamMembersLoader.isLoading"></app-list-loader>
                 <div class="table-responsive" *ngIf="!teamMembersLoader.isLoading">
                     <table *ngIf="teamMembersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color"
-                         id="{{partnerModuleTeamMembersTableId}}" aria-describedby="teamMembersPreviewTable">
+                         id="{{partnerModuleTeamMembersTableId}}-{{currentPartner?.index}}" aria-describedby="teamMembersPreviewTable">
                         <thead>
                             <tr>
                                 <th scope="row" class="text-center">
-                                 <input type="checkbox"  [(ngModel)]="isTeamMemberHeaderCheckBoxChecked" id="{{partnerGroupTeamMemberheaderCheckBoxId}}"
-                                  (change)="selectOrUnselectAllTeamMembersOfTheCurrentPage($event)">
+                                 <input type="checkbox"  [(ngModel)]="currentPartner.isTeamMemberHeaderCheckBoxChecked" id="{{partnerGroupTeamMemberheaderCheckBoxId}}-{{currentPartner?.index}}"
+                                  (change)="selectOrUnselectAllTeamMembersOfTheCurrentPage($event,currentPartner)">
                                </th>
                                 <th scope="row">Entity Info</th>
                               </tr>
                         </thead>
                         <tbody>
                             <ng-container *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index">
-                                <tr id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="selectedTeamMemberIds.indexOf(teamMember.userId)>-1"
-                                    (click)="highlightTeamMemberOnRowClick(teamMember.userId,$event)">
+                                <tr id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.userId)>-1"
+                                    (click)="highlightTeamMemberOnRowClick(teamMember.userId,$event,currentPartner)">
                                     <td class="text-center">
-                                        <input type="checkbox" id="{{teamMember.userId}}" [checked]="selectedTeamMemberIds.indexOf(teamMember.userId)>-1"
-                                            name="{{partnerModuleTeamMemberCheckBoxName}}[]" value="{{teamMember.userId}}"
-                                            (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.userId,$event);">
+                                        <input type="checkbox" id="{{teamMember.userId}}" [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.userId)>-1"
+                                            name="{{partnerModuleTeamMemberCheckBoxName}}-{{currentPartner?.index}}[]" value="{{teamMember.userId}}"
+                                            (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.userId,$event,currentPartner);">
                                      </td>
                                     <td>
                                         <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
@@ -1343,14 +1343,14 @@
                     <strong>No Records Found</strong>
                  </div>
                  <div *ngIf="teamMembersPagination.pagedItems.length !== 0" class="pg8" [hidden]="teamMembersLoader.isLoading">
-                    <app-pagination [pagination]="teamMembersPagination" (notifyParent)="navigatePartnerModuleTeamMembers($event)"
-                       (notifyParentDropDown)="findPartnerModuleTeamMembers($event)">
+                    <app-pagination [pagination]="teamMembersPagination" (notifyParent)="navigatePartnerModuleTeamMembers($event,currentPartner)"
+                       (notifyParentDropDown)="findPartnerModuleTeamMembers($event,currentPartner)">
                     </app-pagination>
                  </div>
             <br>
             </div>
             <div class="modal-footer" *ngIf="!teamMembersLoader.isLoading">
-                <button *ngIf="teamMembersPagination.totalRecords>0" type="submit" class="btn green-haze"  (click)="closeTeamMembersPreviewPopup()" translate>Proceed</button>
+                <button type="submit" class="btn green-haze"  (click)="closeTeamMembersPreviewPopup()" translate>Proceed</button>
             </div>
         </div>
     </div>

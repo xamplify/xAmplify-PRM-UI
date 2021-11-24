@@ -627,6 +627,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$.each(this.newPartnerUser, function (_index: number, partner: any) {
 			partner.contactsLimit = 1;
 			partner.teamMemberGroupId = 0;
+			partner.isTeamMemberHeaderCheckBoxChecked = false;
+			partner.selectedTeamMemberIds = [];
 			partner.notifyPartners = notifyPartners;
 		});
 		this.processingPartnersLoader = false;
@@ -3749,16 +3751,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.contactService.socialProviderName = 'google';
 		this.contactService.vanitySocialProviderName = 'google';
 		this.xtremandLogger.info("socialContacts" + this.socialPartners.socialNetwork);
-		let currentModule = "";
 		let providerName = 'google';
 		this.contactService.googleLogin('partners')
 			.subscribe(
 				response => {
 					let data = response.data;
 					this.storeLogin = data;
-					console.log(data);
 					if (response.statusCode == 200) {
-						console.log("AddContactComponent googleContacts() Authentication Success");
 						this.getGoogleContactsUsers();
 						this.xtremandLogger.info("called getGoogle contacts method:");
 					} else {
@@ -3770,7 +3769,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						console.log(data.userAlias);
 						this.googleCurrentUser = localStorage.getItem('currentUser');
 						const encodedData = window.btoa(this.googleCurrentUser);
-						const encodedUrl = window.btoa(data.redirectUrl);
 						let vanityUserId = JSON.parse(this.googleCurrentUser)['userId'];
 						let url = null;
 						if (data.redirectUrl) {
@@ -3863,20 +3861,42 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	/********XNFR-85********/
+	currentPartner:any;
 	previewModules(teamMemberGroupId: number) {
 		this.teamMemberGroupId = teamMemberGroupId;
 		this.showModulesPopup = true;
 	}
 
-	getTeamMembers(teamMemberGroupId: number) {
-		this.teamMembersPagination = new Pagination();
-		this.referenceService.startLoader(this.teamMembersLoader);
-		$('#teamMembersPreviewPopup').modal('show');
-		this.teamMembersPagination.categoryId = teamMemberGroupId;
-		this.findPartnerModuleTeamMembers(this.teamMembersPagination);
+	getTeamMembersByGroupId(partner:any,index:number){
+		this.processingPartnersLoader = true;
+		let teamMemberGroupId = partner.teamMemberGroupId;
+		if (teamMemberGroupId == 0) {
+			$('#team-member-group-error-count-' + index).css('background-color', 'red');
+		} else {
+			$('#team-member-group-error-count-' + index).css('background-color', '#e9eef2');
+		}
+		if(partner['selectedTeamMemberIds'].length>0){
+			partner['selectedTeamMemberIds'] = [];
+			this.referenceService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
+		}else{
+			this.getTeamMembers(partner,index);
+		}
+		this.processingPartnersLoader = false;
 	}
 
-	findPartnerModuleTeamMembers(pagination: Pagination) {
+	getTeamMembers(partner:any,index:number) {
+		if(partner.teamMemberGroupId>0){
+			this.currentPartner = partner;
+			this.currentPartner.index = index;
+			this.teamMembersPagination = new Pagination();
+			this.referenceService.startLoader(this.teamMembersLoader);
+			$('#teamMembersPreviewPopup').modal('show');
+			this.teamMembersPagination.categoryId = partner.teamMemberGroupId;
+			this.findPartnerModuleTeamMembers(this.teamMembersPagination,partner);
+		}
+	}
+
+	findPartnerModuleTeamMembers(pagination: Pagination,partner:any) {
 		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.teamMembersLoader);
 		this.authenticationService.findAllTeamMembersByGroupId(pagination).
@@ -3887,21 +3907,23 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					pagination = this.pagerService.getPagedItems(pagination, data.list);
 					/*******Header checkbox will be chcked when navigating through page numbers*****/
 					let teamMemberIds = pagination.pagedItems.map(function (a) { return a.userId; });
-					let items = $.grep(this.selectedTeamMemberIds, function (element: any) {
+					let items = $.grep(partner.selectedTeamMemberIds, function (element: any) {
 						return $.inArray(element, teamMemberIds) !== -1;
 					});
-					this.isTeamMemberHeaderCheckBoxChecked = (items.length == teamMemberIds.length && teamMemberIds.length > 0);
+					partner['isTeamMemberHeaderCheckBoxChecked'] = (items.length == teamMemberIds.length && teamMemberIds.length > 0);
 					this.referenceService.stopLoader(this.teamMembersLoader);
+					this.processingPartnersLoader = false;
 				}, error => {
 					this.referenceService.stopLoader(this.teamMembersLoader);
+					this.processingPartnersLoader = false;
 				}
 			);
 	}
 
-	navigatePartnerModuleTeamMembers(event: any) {
+	navigatePartnerModuleTeamMembers(event: any,partner:any) {
 		this.referenceService.goToTop();
 		this.teamMembersPagination.pageIndex = event.page;
-		this.findPartnerModuleTeamMembers(this.teamMembersPagination);
+		this.findPartnerModuleTeamMembers(this.teamMembersPagination,partner);
 	}
 	closeTeamMembersPreviewPopup() {
 		$('#teamMembersPreviewPopup').modal('hide');
@@ -3910,24 +3932,39 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	/*************CheckBox**********************/
-	isTeamMemberHeaderCheckBoxChecked = false;
-	selectedTeamMemberIds: any[] = [];
 	partnerGroupTeamMemberheaderCheckBoxId = "parnterModuleTeamMembersHeaderCheckBox";
 	partnerModuleTeamMembersTrId = "partner-module-teamMember-tr";
 	partnerModuleTeamMembersTableId = "partner-module-team-members-table";
 	partnerModuleTeamMemberCheckBoxName = "partnerModuleTeamMembersCheckBox";
 
-	highlightTeamMemberOnRowClick(teamMemberId: any, event: any) {
-		this.referenceService.highlightRowOnRowCick(this.partnerModuleTeamMembersTrId, this.partnerModuleTeamMembersTableId, this.partnerModuleTeamMemberCheckBoxName, this.selectedTeamMemberIds, this.partnerGroupTeamMemberheaderCheckBoxId, teamMemberId, event);
+	highlightTeamMemberOnRowClick(teamMemberId: any, event: any,partner:any) {
+		this.referenceService.highlightRowOnRowCick(this.partnerModuleTeamMembersTrId+"-"+partner.index, this.partnerModuleTeamMembersTableId+"-"+partner.index, 
+		this.partnerModuleTeamMemberCheckBoxName+"-"+partner.index, partner.selectedTeamMemberIds, this.partnerGroupTeamMemberheaderCheckBoxId+"-"+partner.index, 
+		teamMemberId, event);
+		this.toggleDropDownStatus(partner);
+		
 	}
 
-	highlightTeamMemberRowOnCheckBoxClick(teamMemberId: any, event: any) {
-		this.referenceService.highlightRowByCheckBox(this.partnerModuleTeamMembersTrId, this.partnerModuleTeamMembersTableId, this.partnerModuleTeamMemberCheckBoxName, this.selectedTeamMemberIds, this.partnerGroupTeamMemberheaderCheckBoxId, teamMemberId, event);
+	highlightTeamMemberRowOnCheckBoxClick(teamMemberId: any, event: any,partner:any) {
+		this.referenceService.highlightRowByCheckBox(this.partnerModuleTeamMembersTrId+"-"+partner.index, this.partnerModuleTeamMembersTableId+"-"+partner.index, 
+		this.partnerModuleTeamMemberCheckBoxName+"-"+partner.index, partner.selectedTeamMemberIds, this.partnerGroupTeamMemberheaderCheckBoxId+"-"+partner.index, 
+		teamMemberId, event);
+		this.toggleDropDownStatus(partner);
 	}
 
-	selectOrUnselectAllTeamMembersOfTheCurrentPage(event: any) {
-		this.selectedTeamMemberIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage(this.partnerModuleTeamMembersTrId, this.partnerModuleTeamMembersTableId, this.partnerModuleTeamMemberCheckBoxName, this.selectedTeamMemberIds, this.teamMembersPagination, event);
-		console.log(this.selectedTeamMemberIds);
+	selectOrUnselectAllTeamMembersOfTheCurrentPage(event: any,partner:any) {
+		partner.selectedTeamMemberIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage(this.partnerModuleTeamMembersTrId+"-"+partner.index, 
+		this.partnerModuleTeamMembersTableId+"-"+partner.index, this.partnerModuleTeamMemberCheckBoxName+"-"+partner.index, partner.selectedTeamMemberIds, 
+		this.teamMembersPagination, event);
+		this.toggleDropDownStatus(partner);
+	}
+
+	toggleDropDownStatus(partner:any){
+		if(partner.selectedTeamMemberIds.length>0){
+			$("#partner-tm-group-"+partner.index).prop("disabled", true);
+		}else{
+			$("#partner-tm-group-"+partner.index).prop("disabled", false);
+		}
 	}
 
 	hideModulesPreviewPopUp(){
