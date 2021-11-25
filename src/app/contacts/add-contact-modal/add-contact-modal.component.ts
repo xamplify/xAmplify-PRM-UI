@@ -49,6 +49,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     teamMemberGroups:Array<any> = new Array<any>();
     loading = false;
     validTeamMemberGroupId: boolean;
+    showModulesPopup = false;
+    teamMemberGroupId = 0;
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
@@ -257,6 +259,17 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 }
             );
         }
+    }
+
+    /**********XNFR-85************ */
+    previewModules(teamMemberGroupId){
+        this.showModulesPopup = true;
+        this.teamMemberGroupId = teamMemberGroupId;
+    }
+
+    hideModulesPreviewPopUp(){
+        this.showModulesPopup = false;
+		this.teamMemberGroupId = 0;
     }
 
     ngAfterViewInit(){

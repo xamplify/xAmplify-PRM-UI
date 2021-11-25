@@ -643,6 +643,10 @@
                                                     </td>
                                                     <td>
                                                         <div class="actions-block override-actions">
+                                                            <!---Team Member Group (XNFR-85)----->
+                                                            <a id="team-member-group_{{i}}"  (click)="openTeamMemberGroupPopup(contact)">
+                                                                <i class="fa fa-users"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Assign Team Member Group"></i>
+                                                            </a>
                                                             <a id="envolope_{{i}}" *ngIf="!contact.signedUp || !contact.notifyPartners"  (click)="sendMail(contact.id)">
                                                                 <i class="fa fa-envelope" *ngIf="contact.notifyPartners && !contact.signedUp" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="{{actionsDescription.partner_reSendMail}}"></i>
                                                                 <i class="fa fa-envelope" style="color:#ff0000" *ngIf="!contact.notifyPartners" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
@@ -1221,7 +1225,8 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible"> 
-                    <strong class="pre-wrap-next-line">{{contactAndMdfPopupResponse?.responseMessage}}</strong>               </div>
+                    <strong class="pre-wrap-next-line">{{contactAndMdfPopupResponse?.responseMessage}}</strong>
+                </div>
                 <app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
                 <div class="table-responsive" *ngIf="!processingPartnersLoader">
                     <table class="table tgrid table-hover table-sm beige" id="assignContactAndTable" aria-describedby="assignContactAndTable">
