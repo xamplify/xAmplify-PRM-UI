@@ -12,6 +12,9 @@ export class DatePickerComponent implements OnInit {
 	@Output() dataFieldChange: EventEmitter<any> = new EventEmitter();
 	@Input() isFromForm: boolean;
 	@Input() isFromMdfCredit: boolean;
+	@Input() isFromDownload: any = false;
+	@Input() minDate: any;
+	@Input() maxDate: any;
 	constructor() { }
 
 	ngOnInit() {
@@ -28,6 +31,24 @@ export class DatePickerComponent implements OnInit {
 				minDate: new Date()
 			});
 			this.customPlaceHolder = "MM/DD/YYYY";
+		} else if (this.isFromDownload != undefined && this.isFromDownload) {			
+			if (this.maxDate == undefined || this.maxDate == null || this.maxDate != "") {
+				this.maxDate = new Date();
+			}
+			let self = this;
+			flatpickr('.flatpickr', {
+				enableTime: false,
+				dateFormat: 'Y-m-d',
+				minDate: self.minDate,
+				maxDate: self.maxDate,
+			});
+			this.customPlaceHolder = "YYYY-MM-DD";
+		}  else {
+			flatpickr('.flatpickr', {
+				enableTime: false,
+				dateFormat: 'm-d-Y',
+			});
+			this.customPlaceHolder = "MM-DD-YYYY";
 		}
 	}
 
