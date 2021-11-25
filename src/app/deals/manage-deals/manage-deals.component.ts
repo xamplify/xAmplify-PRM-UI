@@ -65,6 +65,11 @@ export class ManageDealsComponent implements OnInit {
   selectedDeal: Deal;
   isCommentSection = false;
   selectedCampaign: any;
+  showDownloadFilterOption: boolean = false;
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  showDateFilters: boolean = false;
+  downloadFilterResponse: CustomResponse = new CustomResponse();
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -655,6 +660,11 @@ export class ManageDealsComponent implements OnInit {
     } else if (this.isPartnerVersion) {
       userType = "p";
     }
+
+    let searchKey = "";  
+    if (this.dealsPagination.searchKey != null && this.dealsPagination.searchKey != undefined) {
+      searchKey = this.dealsPagination.searchKey;
+    }
     const url = this.authenticationService.REST_URL + "deal/download/"
       + fileName + ".csv?access_token=" + this.authenticationService.access_token;
 
@@ -698,9 +708,73 @@ export class ManageDealsComponent implements OnInit {
     mapInput.setAttribute("value", vendorCompanyProfileName);
     mapForm.appendChild(mapInput);
 
+    // searchKey
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "searchKey";
+    mapInput.setAttribute("value", searchKey);
+    mapForm.appendChild(mapInput);
+
+    // fromDate
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "fromDate";
+    mapInput.setAttribute("value", this.fromDateFilter);
+    mapForm.appendChild(mapInput);
+
+    // toDate
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "toDate";
+    mapInput.setAttribute("value", this.toDateFilter);
+    mapForm.appendChild(mapInput);
+
     document.body.appendChild(mapForm);
     mapForm.submit();
   
+    this.closeFilterOptionForDownload();
+  }
+
+  showFilterOptionForDownload() {
+    this.showDownloadFilterOption = !this.showDownloadFilterOption;
+    this.showDateFilters = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+  }
+
+  closeFilterOptionForDownload() {
+    this.showDownloadFilterOption = false;
+    this.showDateFilters = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = ""; 
+  }
+
+  enableOrDisableDateFilters(event: any) {
+    if (event.target.checked) {
+      this.showDateFilters = true;
+    } else {
+      this.showDateFilters = false;
+    }
+  }
+
+  validateDateFilters() {
+    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+      var fromDate = Date.parse(this.fromDateFilter);
+      if (this.toDateFilter != undefined && this.toDateFilter != "") {
+        var toDate = Date.parse(this.toDateFilter);
+        if (fromDate <= toDate) {
+          this.downloadDeals();
+        } else {
+          this.downloadFilterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }
+      } else {
+        this.downloadFilterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      }
+    } else {
+      this.downloadFilterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    }
+
+    
   }
 
 }

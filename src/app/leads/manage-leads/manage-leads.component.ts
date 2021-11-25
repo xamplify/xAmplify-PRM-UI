@@ -67,6 +67,11 @@ export class ManageLeadsComponent implements OnInit {
   selectedLead: Lead;
   isCommentSection = false;
   selectedCampaign: any;
+  showDownloadFilterOption: boolean = false;
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  showDateFilters: boolean = false;
+  downloadFilterResponse: CustomResponse = new CustomResponse();
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -724,10 +729,10 @@ export class ManageLeadsComponent implements OnInit {
       fileName = type + "-leads"
     }
 
-    let searchKey = "";
+    let searchKey = "";  
     if (this.leadsPagination.searchKey != null && this.leadsPagination.searchKey != undefined) {
       searchKey = this.leadsPagination.searchKey;
-    }
+    }   
 
     let userType = "";
     if (this.isVendorVersion) {
@@ -739,9 +744,6 @@ export class ManageLeadsComponent implements OnInit {
     if (this.leadsPagination.vendorCompanyProfileName != undefined && this.leadsPagination.vendorCompanyProfileName != null) {
       vendorCompanyProfileName = this.leadsPagination.vendorCompanyProfileName;
     }
-
-    let fromDate = "";
-    let toDate = "";
 
     // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
     //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
@@ -800,20 +802,63 @@ export class ManageLeadsComponent implements OnInit {
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
     mapInput.name = "fromDate";
-    mapInput.setAttribute("value", fromDate);
+    mapInput.setAttribute("value", this.fromDateFilter);
     mapForm.appendChild(mapInput);
 
     // toDate
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
     mapInput.name = "toDate";
-    mapInput.setAttribute("value", toDate);
+    mapInput.setAttribute("value", this.toDateFilter);
     mapForm.appendChild(mapInput);
 
     document.body.appendChild(mapForm);
     mapForm.submit();
     //window.location.assign(url);
 
+    this.closeFilterOptionForDownload();
+  }
+
+  showFilterOptionForDownload() {
+    this.showDownloadFilterOption = !this.showDownloadFilterOption;
+    this.showDateFilters = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+  }
+
+  closeFilterOptionForDownload() {
+    this.showDownloadFilterOption = false;
+    this.showDateFilters = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = ""; 
+  }
+
+  enableOrDisableDateFilters(event: any) {
+    if (event.target.checked) {
+      this.showDateFilters = true;
+    } else {
+      this.showDateFilters = false;
+    }
+  }
+
+  validateDateFilters() {
+    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+      var fromDate = Date.parse(this.fromDateFilter);
+      if (this.toDateFilter != undefined && this.toDateFilter != "") {
+        var toDate = Date.parse(this.toDateFilter);
+        if (fromDate <= toDate) {
+          this.downloadLeads();
+        } else {
+          this.downloadFilterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }
+      } else {
+        this.downloadFilterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      }
+    } else {
+      this.downloadFilterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    }
+
+    
   }
 
 }
