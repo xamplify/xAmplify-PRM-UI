@@ -82,7 +82,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         </div>
         <!-----XNFR-85-------->
         <div class="form-group">
-          <label class="control-label col-xs-2 col-sm-2" for="name"style="color: blue">
+          <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue;">
             <span class="star"> *</span>
           </label>
           <div class="form-group col-xs-7 col-sm-7">
@@ -98,7 +98,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
               <button title="Preview Modules" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(addContactuser.teamMemberGroupId)">
                 <i class="fa fa-eye white" aria-hidden="true"></i>
               </button>
-              <button  title="Preview Team Members" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx" type="button" tabindex="-1" (click)="previewModules(addContactuser)">
+              <button  title="Preview Team Members" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx" type="button" tabindex="-1" (click)="previewTeamMembers()">
                 <i class="fa fa-users white" aria-hidden="true"></i>
               </button>
             </span>
@@ -245,3 +245,4 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 </div>
 </div>
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
+<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="addContactuser" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>

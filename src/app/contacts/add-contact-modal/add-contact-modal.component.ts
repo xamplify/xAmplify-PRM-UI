@@ -51,6 +51,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     validTeamMemberGroupId: boolean;
     showModulesPopup = false;
     teamMemberGroupId = 0;
+    showTeamMembers = false;
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
@@ -261,9 +262,20 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     }
 
     /**********XNFR-85************ */
-    previewModules(teamMemberGroupId){
+    previewModules(teamMemberGroupId:number){
         this.showModulesPopup = true;
         this.teamMemberGroupId = teamMemberGroupId;
+    }
+
+    previewTeamMembers(){
+        this.addContactuser['index'] = 0;
+        this.showTeamMembers = true;
+    }
+
+    receiveTeamMemberIdsEntity(partner:any){
+        this.addContactuser = partner;console.log(partner);
+		this.addContactuser.selectedTeamMembersCount = partner['selectedTeamMemberIds'].length;
+		this.showTeamMembers = false;
     }
 
     hideModulesPreviewPopUp(){

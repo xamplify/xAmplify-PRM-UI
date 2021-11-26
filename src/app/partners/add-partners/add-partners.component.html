@@ -1304,63 +1304,7 @@
     </div>
 </div>
 
-<!---Team Members PopUp (XNFR-85)---->
-<div class="modal fade right" id="teamMembersPreviewPopup" tabindex="-1" role="dialog" aria-labelledby="teamMembersPreviewPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog full-width-modal-popup" role="document">
-        <div class="modal-content">
-            <div class="modal-header" >
-                <h4 class="modal-title popup-header-title-font text-center" translate>Team Members</h4>
-            </div>
-            <div class="modal-body">
-                <app-list-loader *ngIf="teamMembersLoader.isLoading"></app-list-loader>
-                <div class="table-responsive" *ngIf="!teamMembersLoader.isLoading">
-                    <table *ngIf="teamMembersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color"
-                         id="{{partnerModuleTeamMembersTableId}}-{{currentPartner?.index}}" aria-describedby="teamMembersPreviewTable">
-                        <thead>
-                            <tr>
-                                <th scope="row" class="text-center">
-                                 <input type="checkbox"  [(ngModel)]="currentPartner.isTeamMemberHeaderCheckBoxChecked" id="{{partnerGroupTeamMemberheaderCheckBoxId}}-{{currentPartner?.index}}"
-                                  (change)="selectOrUnselectAllTeamMembersOfTheCurrentPage($event,currentPartner)">
-                               </th>
-                                <th scope="row">Entity Info</th>
-                              </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index">
-                                <tr id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.userId)>-1"
-                                    (click)="highlightTeamMemberOnRowClick(teamMember.userId,$event,currentPartner)">
-                                    <td class="text-center">
-                                        <input type="checkbox" id="{{teamMember.userId}}" [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.userId)>-1"
-                                            name="{{partnerModuleTeamMemberCheckBoxName}}-{{currentPartner?.index}}[]" value="{{teamMember.userId}}"
-                                            (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.userId,$event,currentPartner);">
-                                     </td>
-                                    <td>
-                                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
-                                        </app-user-info>
-                                    </td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- End of 24 -->
-                <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info text-center">
-                    <strong>No Records Found</strong>
-                 </div>
-                 <div *ngIf="teamMembersPagination.pagedItems.length !== 0" class="pg8" [hidden]="teamMembersLoader.isLoading">
-                    <app-pagination [pagination]="teamMembersPagination" (notifyParent)="navigatePartnerModuleTeamMembers($event,currentPartner)"
-                       (notifyParentDropDown)="findPartnerModuleTeamMembers($event,currentPartner)">
-                    </app-pagination>
-                 </div>
-            <br>
-            </div>
-            <div class="modal-footer" *ngIf="!teamMembersLoader.isLoading">
-                <button type="submit" class="btn green-haze"  (click)="closeTeamMembersPreviewPopup()" translate>Proceed</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="currentPartner" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
 <!-- Group Preview Popup  (XNFR-85)-->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
 <!-- End of  Group Preview Popup -->
