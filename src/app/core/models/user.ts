@@ -54,4 +54,5 @@ export class User {
     notifyPartners = false;
     disableNotifyPartnersOption = false;
     teamMemberGroupId = 0;
+    selectedTeamMembersCount = 0;
 }

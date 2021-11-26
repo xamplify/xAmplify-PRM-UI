@@ -214,7 +214,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
             this.validLimit = this.contactDetails.contactsLimit>0;
             this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
-            
             if ( this.isPartner || this.isAssignLeads ) {
                 if ( this.addContactuser.contactCompany !== undefined && this.addContactuser.contactCompany !== '') {
                     this.isCompanyDetails = true;
@@ -223,6 +222,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 }
                 /*******XNFR-85*******/
                 this.findTeamMemberGroups();
+                this.addContactuser.selectedTeamMembersCount = this.contactDetails['selectedTeamMembersCount'];
             }
         }
         if ( this.addContactuser.country == undefined ) {
@@ -231,7 +231,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
         /**************Show Legal Basis Content*******************/
         this.fields = { text: 'name', value: 'id' };
-        console.log(this.gdprInput)
         if(this.gdprInput!=undefined){
             this.legalBasisOptions = this.gdprInput.legalBasisOptions;
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
@@ -246,9 +245,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     findTeamMemberGroups(){
         if(this.isPartner){
+            this.loading = true;
             this.addContactuser.teamMemberGroupId = this.contactDetails.teamMemberGroupId;
             this.validTeamMemberGroupId = this.addContactuser.teamMemberGroupId>0;
-            this.loading = true;
             this.authenticationService.findAllTeamMemberGroupIdsAndNames(true).
             subscribe(
                 response=>{
