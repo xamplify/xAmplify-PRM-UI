@@ -22,3 +22,9 @@
 .campaign-type-selected {
 	background-color: #6dcff6;
 }
+
+.downloadFilterBox{
+    border: 1px solid #8a8282c4;
+    padding: 10px;
+    margin: 10px;
+}

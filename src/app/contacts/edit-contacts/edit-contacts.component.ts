@@ -1914,7 +1914,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		if (event.type == 'contacts') {
 			this.pagination.pageIndex = event.page;
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-		}
+		} else if (this.currentContactType == "all_contacts") {
+            this.pagination.searchKey = this.searchKey;
+            this.pagination.pageIndex = 1;
+            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+        }
 		else {
 			this.contactsByType.pagination.pageIndex = event.page;
 			this.listOfSelectedContactListByType(event.type);
@@ -1927,7 +1931,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	backToEditContacts() {
-		this.setPage(1);
+		this.currentContactType = "all_contacts";
 		this.searchKey = null;
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.maxResults = 12;
@@ -1944,6 +1948,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
 		this.contactsByType.selectedCategory = null;
+		this.setPage(1);
 	}
 
 	checkAllInvalidContacts(ev: any) {
