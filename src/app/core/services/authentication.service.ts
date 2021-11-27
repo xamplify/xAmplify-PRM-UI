@@ -843,6 +843,13 @@ findAllTeamMembersByGroupId(pagination:Pagination){
 			.map(this.extractData)
 			.catch(this.handleError);
 }
+
+findSelectedTeamMemberIds(partnershipId:number){
+  var url = this.REST_URL + "teamMemberGroup/findSelectedTeamMemberIds/"+partnershipId+"?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
   
   
 }

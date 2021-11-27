@@ -2193,7 +2193,6 @@ export class ReferenceService {
 
 	highlightRowByCheckBox(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any, parnterGroupsHeaderCheckBox: string, checkBoxValue: any, event: any) {
 		let isChecked = $('#' + checkBoxValue).is(':checked');
-		alert(isChecked);
 		if (isChecked) {
 			$(trId).addClass('row-selected');
 			selectedCheckBoxIds.push(checkBoxValue);
@@ -2284,6 +2283,11 @@ export class ReferenceService {
 		mergeTags = this.addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags);
 		mergeTags = this.addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags);
 		return mergeTags;
+	}
+
+	disableDropDownById(dropDownId:string,color:boolean){
+		$("#"+dropDownId).prop("disabled", true);
+		$("#"+dropDownId).css("color", "darkgray");
 	}
 
 

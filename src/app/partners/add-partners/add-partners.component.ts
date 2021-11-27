@@ -3900,8 +3900,17 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 	receiveTeamMemberIdsEntity(partner: any) {
 		this.currentPartner = partner;
+		this.toggleDropDownStatus(partner);
 		this.showTeamMembers = false;
 	}
+
+	toggleDropDownStatus(partner: any) {
+    if (partner.selectedTeamMemberIds.length > 0) {
+      $("#partner-tm-group-" + partner.index).prop("disabled", true);
+    } else {
+      $("#partner-tm-group-" + partner.index).prop("disabled", false);
+    }
+  }
 
 
 }

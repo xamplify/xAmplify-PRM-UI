@@ -86,11 +86,10 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <span class="star"> *</span>
           </label>
           <div class="form-group col-xs-7 col-sm-7">
-            <select class="form-control" style="border: none;" (ngModelChange)="validateTeamMemberGroupId($event)"
+            <select class="form-control" id="sel-partner-tm" (ngModelChange)="validateTeamMemberGroupId($event)"
               [(ngModel)]="addContactuser.teamMemberGroupId" [ngModelOptions]="{standalone: true}" placeholder="Select Team Member Group">
               <option *ngFor="let teamMemberGroup of teamMemberGroups" [value]="teamMemberGroup.id">{{teamMemberGroup.name}}</option>
             </select>
-            <div class="textCss"></div>
             <p class="active-status"><strong translate>Selected Team Members: {{addContactuser?.selectedTeamMembersCount}}</strong></p>
           </div>
           <div class="form-group col-xs-4 col-sm-4">

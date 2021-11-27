@@ -47,3 +47,9 @@ display: block;
 .right-twelevepx{
 	right: -12px;
 }
+
+.disable-dropdown{
+	pointer-events: none;
+	cursor: default;
+	background: lightgray;
+}

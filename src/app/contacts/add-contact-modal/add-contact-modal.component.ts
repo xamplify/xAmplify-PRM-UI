@@ -185,9 +185,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         this.validLimit = contactsLimit>0;
     }
 
-    validateTeamMemberGroupId(teamMemberGroupId:any){
-        this.validTeamMemberGroupId = teamMemberGroupId>0;
-    }
+    
 
     ngOnInit() {
        try{
@@ -223,11 +221,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
                 }
                 /*******XNFR-85*******/
                 this.findTeamMemberGroups();
-                this.addContactuser.selectedTeamMembersCount = this.contactDetails['selectedTeamMembersCount'];
+                
             }
         }
         if ( this.addContactuser.country == undefined ) {
-            //this.geoLocation();
             this.addContactuser.country = this.countryNames.countries[0];
         }
         /**************Show Legal Basis Content*******************/
@@ -238,21 +235,25 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.gdprStatus = this.gdprInput.gdprStatus;
         }
         $( '#addContactModal' ).modal( 'show' );
-
+        
        } catch ( error ) {
            console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
        }
     }
-
+    /**********XNFR-85************ */
     findTeamMemberGroups(){
         if(this.isPartner){
             this.loading = true;
+            this.addContactuser.selectedTeamMembersCount = this.contactDetails['selectedTeamMembersCount'];
+            this.addContactuser.partnershipId = this.contactDetails.partnershipId;
             this.addContactuser.teamMemberGroupId = this.contactDetails.teamMemberGroupId;
+            this.addContactuser.selectedTeamMemberIds = this.contactDetails['selectedTeamMemberIds'];
             this.validTeamMemberGroupId = this.addContactuser.teamMemberGroupId>0;
             this.authenticationService.findAllTeamMemberGroupIdsAndNames(true).
             subscribe(
                 response=>{
                     this.teamMemberGroups = response.data;
+                    this.enableOrDisableTeamMemberGroupDropDown();
                     this.loading = false;
                 },error=>{
                     this.loading = false;
@@ -261,7 +262,14 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
     }
 
-    /**********XNFR-85************ */
+
+    validateTeamMemberGroupId(teamMemberGroupId:any){
+        this.validTeamMemberGroupId = teamMemberGroupId>0;
+        if(this.validTeamMemberGroupId){
+            this.previewTeamMembers();
+        }
+    }
+
     previewModules(teamMemberGroupId:number){
         this.showModulesPopup = true;
         this.teamMemberGroupId = teamMemberGroupId;
@@ -273,9 +281,19 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     }
 
     receiveTeamMemberIdsEntity(partner:any){
-        this.addContactuser = partner;console.log(partner);
-		this.addContactuser.selectedTeamMembersCount = partner['selectedTeamMemberIds'].length;
-		this.showTeamMembers = false;
+        this.addContactuser = partner;
+        this.addContactuser.selectedTeamMembersCount = partner['selectedTeamMemberIds'].length;
+        this.enableOrDisableTeamMemberGroupDropDown();
+        this.showTeamMembers = false;
+        
+    }
+
+    enableOrDisableTeamMemberGroupDropDown(){
+        if(this.addContactuser.selectedTeamMembersCount>0){
+            $('#sel-partner-tm').addClass("disable-dropdown");
+        }else{
+            $('#sel-partner-tm').removeClass("disable-dropdown");
+        }
     }
 
     hideModulesPreviewPopUp(){

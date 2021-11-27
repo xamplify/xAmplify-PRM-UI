@@ -7,6 +7,9 @@
             <div class="modal-body">
                 <app-list-loader *ngIf="teamMembersLoader.isLoading"></app-list-loader>
                 <div class="table-responsive" *ngIf="!teamMembersLoader.isLoading">
+                    <div *ngIf="currentPartner?.selectedTeamMemberIds  && teamMembersPagination.totalRecords>0" class="alert alert-success text-center">
+                        <strong>Selected Team Members: {{currentPartner?.selectedTeamMemberIds?.length}}</strong>
+                     </div>
                     <table *ngIf="teamMembersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color"
                          id="{{partnerModuleTeamMembersTableId}}-{{currentPartner?.index}}" aria-describedby="teamMembersPreviewTable">
                         <thead>
@@ -48,6 +51,7 @@
             <br>
             </div>
             <div class="modal-footer" *ngIf="!teamMembersLoader.isLoading">
+                <button type="submit" [disabled]="currentPartner?.selectedTeamMemberIds?.length==0" class="btn btn-danger"  (click)="removeAllSelectedTeamMembers()" translate>Clear All</button>
                 <button type="submit" class="btn green-haze"  (click)="closeTeamMembersPreviewPopup()" translate>Proceed</button>
             </div>
         </div>
