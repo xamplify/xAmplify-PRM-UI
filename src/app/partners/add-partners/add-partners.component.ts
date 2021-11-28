@@ -1311,9 +1311,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			if (event.country === "Select Country") {
 				event.country = null;
 			}
-
 			this.editUser.user = event;
-			// $( "#addPartnerModal .close" ).click()
 			this.addPartnerModalClose();
 			this.contactService.updateContactListUser(this.partnerListId, this.editUser)
 				.subscribe(
@@ -1335,7 +1333,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	editUserDetails(contactDetails: any) {
-
 		this.updatePartnerUser = true;
 		this.partnerAllDetails = contactDetails;
 		this.contactService.isContactModalPopup = true;

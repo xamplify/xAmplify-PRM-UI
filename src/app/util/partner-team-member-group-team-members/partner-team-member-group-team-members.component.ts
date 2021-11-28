@@ -68,7 +68,7 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
           pagination.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, data.list);
           /*******Header checkbox will be chcked when navigating through page numbers*****/
-          let teamMemberIds = pagination.pagedItems.map(function (a) { return a.userId; });
+          let teamMemberIds = pagination.pagedItems.map(function (a) { return a.id; });
           let items = $.grep(partner.selectedTeamMemberIds, function (element: any) {
             return $.inArray(element, teamMemberIds) !== -1;
           });

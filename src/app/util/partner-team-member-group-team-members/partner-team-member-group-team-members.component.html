@@ -8,7 +8,7 @@
                 <app-list-loader *ngIf="teamMembersLoader.isLoading"></app-list-loader>
                 <div class="table-responsive" *ngIf="!teamMembersLoader.isLoading">
                     <div *ngIf="currentPartner?.selectedTeamMemberIds  && teamMembersPagination.totalRecords>0" class="alert alert-success text-center">
-                        <strong>Selected Team Members: {{currentPartner?.selectedTeamMemberIds?.length}}</strong>
+                        <strong>Selected Team Members:{{currentPartner?.selectedTeamMemberIds}} {{currentPartner?.selectedTeamMemberIds?.length}}</strong>
                      </div>
                     <table *ngIf="teamMembersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color"
                          id="{{partnerModuleTeamMembersTableId}}-{{currentPartner?.index}}" aria-describedby="teamMembersPreviewTable">
@@ -23,12 +23,12 @@
                         </thead>
                         <tbody>
                             <ng-container *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index">
-                                <tr id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.userId)>-1"
-                                    (click)="highlightTeamMemberOnRowClick(teamMember.userId,$event,currentPartner)">
+                                <tr id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
+                                    (click)="highlightTeamMemberOnRowClick(teamMember.id,$event,currentPartner)">
                                     <td class="text-center">
-                                        <input type="checkbox" id="{{teamMember.userId}}" [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.userId)>-1"
-                                            name="{{partnerModuleTeamMemberCheckBoxName}}-{{currentPartner?.index}}[]" value="{{teamMember.userId}}"
-                                            (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.userId,$event,currentPartner);">
+                                        <input type="checkbox" id="{{teamMember.id}}" [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
+                                            name="{{partnerModuleTeamMemberCheckBoxName}}-{{currentPartner?.index}}[]" value="{{teamMember.id}}"
+                                            (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.id,$event,currentPartner);">
                                      </td>
                                     <td>
                                         <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
