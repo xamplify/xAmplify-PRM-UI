@@ -127,10 +127,10 @@
                         <!---Filter-->
                         <div class="tg-filter">
                            <ul class="mix-filter">
-                               <li class="filter" (click)="showAllForms('All',0)" [class.filter-box-selected]="0 == selectedFilterIndex"
+                               <li class="filter" (click)="filterPartners(0)" [class.filter-box-selected]="0 == selectedFilterIndex"
                                    translate>All</li> 
-                               <li class="filter" (click)="showAllForms('Regular',1)"
-                                   [class.filter-box-selected]="1 == selectedFilterIndex" translate>Team Member Group</li>
+                               <li class="filter" (click)="filterPartners(1)"
+                                   [class.filter-box-selected]="1 == selectedFilterIndex" translate>My Partners</li>
                            </ul>
                        </div>
                         <div class="col-xs-12" style="padding: 10px 0;">

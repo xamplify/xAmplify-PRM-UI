@@ -47,7 +47,7 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
   errorFieldNames:Array<string> = new Array<string>();
   showMdfAmountPopup = false;
   partnershipId:number = 0;
-  selectedFilterIndex = 1;
+  selectedFilterIndex = 0;
   constructor(private utilService: UtilService, public sortOption: SortOption, public partnerListLoader: HttpRequestLoader, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -86,6 +86,7 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
           if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
             this.getTilesInfo();
             this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
+            this.pagination.userId = this.loggedInUserId;
             this.listPartners(this.pagination);
           }
         }
@@ -193,6 +194,12 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
   goToSelectMdfPage(){
     this.loading = true;
     this.referenceService.goToRouter('/home/mdf/select');
+  }
+
+  filterPartners(index:number){
+    this.pagination.partnerTeamMemberGroupFilter = index==1;
+    this.selectedFilterIndex = index;
+    this.listPartners(this.pagination);
   }
 
 }
