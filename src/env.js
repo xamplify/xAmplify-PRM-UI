@@ -51,11 +51,6 @@ window.__env.versionFilePath = '../assets/config-files/version.json';
 window.__env.updatedVersionMessage = 'New Update Is Available';
 window.__env.loaderGif = 'assets/images/xamplify-icon.gif';
 
-
-    //
-
-
-
     // Whether or not to enable debug mode
     window.__env.enableDebug = false;
 }(this));
