@@ -82,7 +82,7 @@
         <div class="inputs zero-padding-display-inline">
             <div class="portlet-input input-inline input-small tmutttpx">
                 <div class="input-icon right">
-                    <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a team member" (keypress)="eventHandler($event.keyCode)">
+                    <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchTeamMembers()"></button>
                     <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
                       <i class="fa fa-search" aria-hidden="true"></i>
@@ -124,7 +124,7 @@
           <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}" class="list-team-member-class">
             <td>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
-              <span class="active-status">
+              <span [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'">
                 <strong>Total {{authenticationService?.partnerModule?.customName}}: {{teamMember?.partnersCount}}</strong>
               </span>
             </td>

@@ -90,8 +90,8 @@ export class MdfService {
     return formOption;
   }
 
-  getVendorMdfAmountTilesInfo(vendorCompanyId: number) {
-    return this.http.get(this.URL + "getVendorMdfAmountTilesInfo/" + vendorCompanyId + "?access_token=" + this.authenticationService.access_token)
+  getVendorMdfAmountTilesInfo(vendorCompanyId: number,applyFilter:boolean) {
+    return this.http.get(this.URL + "getVendorMdfAmountTilesInfo/" + vendorCompanyId +"/"+this.authenticationService.getUserId()+"/"+applyFilter+"?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
 }

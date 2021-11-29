@@ -48,6 +48,7 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
   showMdfAmountPopup = false;
   partnershipId:number = 0;
   selectedFilterIndex = 0;
+  showPartners = false;
   constructor(private utilService: UtilService, public sortOption: SortOption, public partnerListLoader: HttpRequestLoader, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -57,7 +58,21 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
     this.tilesLoader = true;
     this.referenceService.loading(this.partnerListLoader, true);
     this.getCompanyId();
+    this.showPartnersFilterOption();
   }
+  showPartnersFilterOption(){
+    this.loading = true;
+    this.authenticationService.showPartnersFilter().subscribe(
+      response=>{
+        this.showPartners = response.data;
+        this.loading = false;
+      },error=>{
+        this.showPartners = false;
+        this.loading = false;
+      }
+    )
+  }
+
   ngOnDestroy(): void {
     swal.close();
   }
@@ -84,7 +99,7 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
         },
         () => {
           if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
-            this.getTilesInfo();
+            this.getTilesInfo(this.selectedFilterIndex==1);
             this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
             this.pagination.userId = this.loggedInUserId;
             this.listPartners(this.pagination);
@@ -98,9 +113,9 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
     }
 
   }
-  getTilesInfo() {
+  getTilesInfo(applyFilter:boolean) {
     this.tilesLoader = true;
-    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId).subscribe((result: any) => {
+    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId,applyFilter).subscribe((result: any) => {
       this.tilesLoader = false;
       this.tileData = result.data;
     }, error => {
@@ -187,7 +202,7 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
   updateListAfterAddingAmount(){
     this.resetValues();
     this.pagination.pageIndex = 1;
-    this.getTilesInfo();
+    this.getTilesInfo(this.selectedFilterIndex==1);
     this.listPartners(this.pagination);
   }
 
@@ -200,6 +215,7 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
     this.pagination.partnerTeamMemberGroupFilter = index==1;
     this.selectedFilterIndex = index;
     this.listPartners(this.pagination);
+    this.getTilesInfo(this.pagination.partnerTeamMemberGroupFilter);
   }
 
 }

@@ -125,7 +125,7 @@
                      <app-list-loader *ngIf="partnerListLoader.isLoading"></app-list-loader>
                      <div class="clearfix" *ngIf="!partnerListLoader.isLoading">
                         <!---Filter-->
-                        <div class="tg-filter">
+                        <div class="tg-filter" *ngIf="showPartners">
                            <ul class="mix-filter">
                                <li class="filter" (click)="filterPartners(0)" [class.filter-box-selected]="0 == selectedFilterIndex"
                                    translate>All</li> 

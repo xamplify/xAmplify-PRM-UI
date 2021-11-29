@@ -850,6 +850,13 @@ findSelectedTeamMemberIds(partnershipId:number){
     .map(this.extractData)
     .catch(this.handleError);
 }
+
+showPartnersFilter(){
+  var url = this.REST_URL + "admin/showPartnersFilter/"+this.getUserId()+"?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
   
   
 }
