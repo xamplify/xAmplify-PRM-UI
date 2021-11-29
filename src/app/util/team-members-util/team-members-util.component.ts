@@ -754,7 +754,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
     this.loading = false;
     let statusCode = JSON.parse(error['status']);
     let message = this.properties.serverErrorMessage;
-    if (statusCode == 409) {
+    if (statusCode == 409 || statusCode == 400) {
       let errorResponse = JSON.parse(error['_body']);
       message = errorResponse['message'];
     }
