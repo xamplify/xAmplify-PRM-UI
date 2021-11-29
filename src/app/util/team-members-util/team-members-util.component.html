@@ -124,6 +124,9 @@
           <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}" class="list-team-member-class">
             <td>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
+              <span class="active-status">
+                <strong>Total {{authenticationService?.partnerModule?.customName}}: {{teamMember?.partnersCount}}</strong>
+              </span>
             </td>
             <!---Assigned Group-->
             <td *ngIf="isTeamMemberModule" id="group-min-td">
