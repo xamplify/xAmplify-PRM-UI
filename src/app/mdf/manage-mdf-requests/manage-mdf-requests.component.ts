@@ -50,6 +50,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   showMdfFormAnalyticsForVendorView = false;
   vanityLogin = false;
   countLoader = 3;
+  /******XNFR-85******/
   constructor(private utilService: UtilService, public sortOption: SortOption, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,private route:ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.vanityLoginDto.userId = this.loggedInUserId; 
@@ -114,7 +115,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
               this.listVendors(this.pagination);
             }
           }else{
-            this.getTilesInfoForVendor();
+            this.getTilesInfoForVendor(false);
             this.showMdfFormAnalyticsForVendorView = true;
             this.vendorCompanyId = this.loggedInUserCompanyId;
           }
@@ -189,8 +190,8 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchVendors(); } }
   /********************Pagaination&Search Code*****************/
 
-  getTilesInfoForVendor() {
-    this.mdfService.getMdfRequestTilesInfoForVendors(this.loggedInUserCompanyId).subscribe((result: any) => {
+  getTilesInfoForVendor(filter:boolean) {
+    this.mdfService.getMdfRequestTilesInfoForVendors(this.loggedInUserCompanyId,filter).subscribe((result: any) => {
       this.tilesLoader = false;
       this.loading = false;
       this.mdfRequestTiles = result.data;
@@ -233,6 +234,10 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   goToSelectMdfPage(){
     this.loading = true;
     this.referenceService.goToRouter('/home/mdf/select');
+  }
+
+  getTeamMemberFilter(event:any){
+    this.getTilesInfoForVendor(event==1);
   }
 
 

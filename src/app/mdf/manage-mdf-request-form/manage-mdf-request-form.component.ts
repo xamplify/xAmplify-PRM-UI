@@ -1,4 +1,4 @@
-import { Component, OnInit,Input, OnDestroy } from '@angular/core';
+import { Component, OnInit,Input, OnDestroy,EventEmitter,Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -32,6 +32,7 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
   @Input() vendorCompanyId:number;
   @Input() partnerView:boolean;
   @Input() partnershipId:number;
+  @Output() mdfRequestFormEventEmitter = new EventEmitter();
   formName: string="";
   statusCode:number = 0; 
   customResponse:CustomResponse = new CustomResponse();
@@ -278,6 +279,7 @@ filterPartners(index:number){
     this.pagination.partnerTeamMemberGroupFilter = index==1;
     this.selectedFilterIndex = index;
     this.listSubmittedData(this.pagination);
+    this.mdfRequestFormEventEmitter.emit(index);
 }
 
 }
