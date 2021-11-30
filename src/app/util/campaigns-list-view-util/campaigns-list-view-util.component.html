@@ -609,7 +609,7 @@
                                                 <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
                                             </ng-container>
                                             <ng-container *ngIf="campaign.campaignType.indexOf('SURVEY') > -1">
-                                                <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Survey Campaign">
+                                                <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/survey.png" alt="Survey Campaign">
                                             </ng-container>                                            
                                         </td>
                                         <td>
@@ -816,7 +816,7 @@
                                         <i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1"
                                             class="fa fa-wpforms" aria-hidden="true"></i>
                                         <i *ngIf="campaign.campaignType.indexOf('SURVEY') > -1"
-                                                class="fa fa-wpforms" aria-hidden="true"></i>
+                                                class="fas fa-poll-h" aria-hidden="true"></i>
                                     </span>
                                 </div>
                                 <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">

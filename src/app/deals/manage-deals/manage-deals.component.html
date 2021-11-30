@@ -372,9 +372,10 @@
                               style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                             <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.png"
                               style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                            <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 "
-                              src="assets/images/landing-page.png" style="height: 50px;"
-                              alt="{{campaign.campaignType}} Campaign">
+                            <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.png"
+                             style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                            <img *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 " src="assets/images/survey.png" 
+                              style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                           </td>
                           <td>
                             <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaign}}">
