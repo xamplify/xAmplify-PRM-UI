@@ -137,6 +137,14 @@ cursor: default;
   background-color: #6dcff6;
 }
 
+.ellipsis {
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  float: left !important;
+  overflow: hidden !important;
+}
+
 @media screen and (max-width:600px){
   .mPad{
       padding: 5px;

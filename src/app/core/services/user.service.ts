@@ -382,6 +382,12 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    getTagsSearchTagName(pagination: Pagination) {
+        return this.http.post(this.authenticationService.REST_URL + "tag/getTagsByCompanyId/tag-name-search?access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     saveOrUpdateTag(tag: any) {
         let url = this.TAG_URL + "save";
         if (tag.id > 0) {
