@@ -40,7 +40,7 @@ export class MdfStatisticsComponent implements OnInit {
 
   }
   getTilesInfo() {
-    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId).subscribe((result: any) => {
+    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId,false).subscribe((result: any) => {
       this.mdfStatsLoader = false;
       this.mdfData = result.data;
     }, error => {

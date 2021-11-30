@@ -124,7 +124,7 @@
                   <div class="portlet-body table-responsive" style="overflow: hidden;">
                      <app-list-loader *ngIf="partnerListLoader.isLoading"></app-list-loader>
                      <div class="clearfix" *ngIf="!partnerListLoader.isLoading">
-                        <!---Filter-->
+                        <!---Filter (XNFR-85)-->
                         <div class="tg-filter" *ngIf="showPartners">
                            <ul class="mix-filter">
                                <li class="filter" (click)="filterPartners(0)" [class.filter-box-selected]="0 == selectedFilterIndex"

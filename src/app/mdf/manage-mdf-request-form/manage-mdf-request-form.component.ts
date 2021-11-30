@@ -45,6 +45,8 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
   comments:Array<any> = new Array<any>();
   invalidComment: boolean;
   loggedInUserCompanyId: any;
+  showPartners: boolean;
+  selectedFilterIndex = 0;
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService,private mdfService:MdfService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -56,6 +58,19 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
     this.customResponse = new CustomResponse();
     this.loggedInUserId = this.authenticationService.getUserId();
     this.getCompanyId();
+    this.showPartnersFilterOption();
+  }
+  showPartnersFilterOption(){
+    this.loading = true;
+    this.authenticationService.showPartnersFilter().subscribe(
+      response=>{
+        this.showPartners = response.data;
+        this.loading = false;
+      },error=>{
+        this.showPartners = false;
+        this.loading = false;
+      }
+    )
   }
     ngOnDestroy(): void {
         this.hideRequestCommentModalPopup();
@@ -257,6 +272,12 @@ stopLoaders(){
 gotoBottom(){
     $("#comments-div").animate({ scrollTop: $('#comments-div').prop("scrollHeight")}, 1000);
     
+}
+
+filterPartners(index:number){
+    this.pagination.partnerTeamMemberGroupFilter = index==1;
+    this.selectedFilterIndex = index;
+    this.listSubmittedData(this.pagination);
 }
 
 }
