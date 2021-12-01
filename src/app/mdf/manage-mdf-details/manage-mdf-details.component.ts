@@ -18,7 +18,6 @@ declare var $,swal: any;
 import { MdfPartnerDto } from '../models/mdf-partner-dto';
 import { MdfDetails } from '../models/mdf-details';
 import {MdfAmountType} from '../models/mdf-amount-type.enum';
-import { switchAll } from 'rxjs/operators';
 @Component({
   selector: 'app-manage-mdf-details',
   templateUrl: './manage-mdf-details.component.html',
@@ -47,9 +46,7 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
   errorFieldNames:Array<string> = new Array<string>();
   showMdfAmountPopup = false;
   partnershipId:number = 0;
-  /****XNFR-85****/
   selectedFilterIndex = 0;
-  showPartners = false;
   constructor(private utilService: UtilService, public sortOption: SortOption, public partnerListLoader: HttpRequestLoader, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -59,21 +56,8 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
     this.tilesLoader = true;
     this.referenceService.loading(this.partnerListLoader, true);
     this.getCompanyId();
-    /****XNFR-85****/
-    this.showPartnersFilterOption();
   }
-  showPartnersFilterOption(){
-    this.loading = true;
-    this.authenticationService.showPartnersFilter().subscribe(
-      response=>{
-        this.showPartners = response.data;
-        this.loading = false;
-      },error=>{
-        this.showPartners = false;
-        this.loading = false;
-      }
-    )
-  }
+ 
 
   ngOnDestroy(): void {
     swal.close();
@@ -213,7 +197,8 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
     this.referenceService.goToRouter('/home/mdf/select');
   }
 
-  filterPartners(index:number){
+
+  getSelectedIndex(index:number){
     this.pagination.partnerTeamMemberGroupFilter = index==1;
     this.selectedFilterIndex = index;
     this.listPartners(this.pagination);

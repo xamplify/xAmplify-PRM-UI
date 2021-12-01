@@ -122,20 +122,13 @@
                      </div>
                   </div>
                   <div class="portlet-body table-responsive" style="overflow: hidden;">
-                     <app-list-loader *ngIf="partnerListLoader.isLoading"></app-list-loader>
-                     <div class="clearfix" *ngIf="!partnerListLoader.isLoading">
+                     <app-list-loader [hidden]="!partnerListLoader.isLoading"></app-list-loader>
+                     <div class="clearfix" [hidden]="partnerListLoader.isLoading">
                         <!---Filter (XNFR-85)-->
-                        <div class="tg-filter" *ngIf="showPartners">
-                           <ul class="mix-filter">
-                               <li class="filter" (click)="filterPartners(0)" [class.filter-box-selected]="0 == selectedFilterIndex"
-                                   translate>All</li> 
-                               <li class="filter" (click)="filterPartners(1)"
-                                   [class.filter-box-selected]="1 == selectedFilterIndex" translate>My Partners</li>
-                           </ul>
-                       </div>
+                       <app-team-member-filter-option (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                         <div class="col-xs-12" style="padding: 10px 0;">
                            <div class="table-responsive">
-                              <table class='table tgrid' aria-describedby="manage-mdf-fund-table">
+                              <table class="table tgrid" aria-describedby="manage-mdf-fund-table">
                                  <thead>
                                     <tr>
                                        <th translate scope="col">{{authenticationService?.partnerModule?.customName}} Info</th>

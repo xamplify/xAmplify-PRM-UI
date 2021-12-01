@@ -1,0 +1,9 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="tg-filter" *ngIf="showPartners">
+  <ul class="mix-filter">
+    <li class="filter" (click)="applyFilter(0)" [class.filter-box-selected]="0 == selectedFilterIndex" translate>All
+    </li>
+    <li class="filter" (click)="applyFilter(1)" [class.filter-box-selected]="1 == selectedFilterIndex" translate>My
+      {{authenticationService?.partnerModule?.customName}}</li>
+  </ul>
+</div>

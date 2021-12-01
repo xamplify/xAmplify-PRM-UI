@@ -59,19 +59,6 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
     this.customResponse = new CustomResponse();
     this.loggedInUserId = this.authenticationService.getUserId();
     this.getCompanyId();
-    this.showPartnersFilterOption();
-  }
-  showPartnersFilterOption(){
-    this.loading = true;
-    this.authenticationService.showPartnersFilter().subscribe(
-      response=>{
-        this.showPartners = response.data;
-        this.loading = false;
-      },error=>{
-        this.showPartners = false;
-        this.loading = false;
-      }
-    )
   }
     ngOnDestroy(): void {
         this.hideRequestCommentModalPopup();
@@ -275,11 +262,11 @@ gotoBottom(){
     
 }
 
-filterPartners(index:number){
-    this.pagination.partnerTeamMemberGroupFilter = index==1;
-    this.selectedFilterIndex = index;
-    this.listSubmittedData(this.pagination);
-    this.mdfRequestFormEventEmitter.emit(index);
+getSelectedIndex(index:number){
+  this.pagination.partnerTeamMemberGroupFilter = index==1;
+  this.selectedFilterIndex = index;
+  this.listSubmittedData(this.pagination);
+  this.mdfRequestFormEventEmitter.emit(index);
 }
 
 }
