@@ -66,7 +66,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   ];
   formTitle = "Add Form Details";
   form: Form = new Form();
-  formNameClass = "valid-form-name";
+  formNameClass = "valid-form-name form-name-wrap";
   columnInfos: Array<ColumnInfo> = new Array<ColumnInfo>();
   columnInfo: ColumnInfo = new ColumnInfo();
   selectedColumn: ColumnInfo = new ColumnInfo();
@@ -497,7 +497,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       $('#formNameDiv').removeClass(this.formErrorClass);
       $('#formNameDiv').addClass(this.defaultFormClass);
       this.form.isValid = true;
-      this.formNameClass = "valid-form-name";
+      this.formNameClass = "valid-form-name form-name-wrap";
   }
 
   highlightByLength(length: number) {
@@ -973,7 +973,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       this.form.isValid = false;
       $('#formNameDiv').addClass(this.formErrorClass);
       this.formNameErrorMessage = errorMessage;
-      this.formNameClass = "invalid-form-name";
+      this.formNameClass = "invalid-form-name form-name-wrap";
   }
 
 

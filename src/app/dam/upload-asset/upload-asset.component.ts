@@ -282,6 +282,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.clearErrors();
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
+		console.log(this.damUploadPostDto);
 		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
 			(result: any) => {
 				swal.close();
@@ -355,7 +356,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     pagination.maxResults = 0;
     let self = this;
     this.referenceService.startLoader(this.tagsLoader);
-    this.userService.getTags(pagination)
+    this.userService.getTagsSearchTagName(pagination)
       .subscribe(
         response => {
           const data = response.data;

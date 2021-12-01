@@ -122,6 +122,11 @@
      font-weight: 600;
  }
 
+ 
+.form-name-wrap {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 
  @media screen and (max-width:600px){
    

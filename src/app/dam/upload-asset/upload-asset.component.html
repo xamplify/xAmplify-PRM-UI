@@ -53,7 +53,7 @@
         <app-modal-popup-loader [hidden]="!formLoader"></app-modal-popup-loader>
         <ng-container *ngIf="!previewItems">
           <div [hidden]="formLoader" class="row" style="margin-top: 20px;">
-            <form role="form" class="form-horizontal form-bordered form-label-stripped">
+            <div class="form-horizontal form-bordered form-label-stripped">
               <div class="portlet box">
                 <div class="">
                   <div class="col-md-12 col-lg-12">
@@ -109,7 +109,6 @@
                               <label class="control-label col-sm-2" translate>Tags
                               </label>
                               <div class="col-sm-10 inline">
-                                <ngx-loading [show]="tagsLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                                 <div class="portlet light" style="width: 100%;padding: 5px !important;">
                                   <div class="portlet-title tabbable-line " style="margin-bottom: 0px !important;">
                                     <div class="inline" style="float: right;">
@@ -247,7 +246,7 @@
           <button class="btn btn-default" id="right" style="margin-right: 7px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
           <button [disabled]="!isValidForm"  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadOrUpdate()" translate>{{submitButtonText}}</button>
           </div>
-          </form>
+        </div>
       </div>
       </ng-container>
       <ng-container *ngIf="previewItems">

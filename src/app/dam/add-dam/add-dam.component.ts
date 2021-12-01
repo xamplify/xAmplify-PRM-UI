@@ -266,7 +266,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   pagination.maxResults = 0;
   let self = this;
   this.referenceService.startLoader(this.tagsLoader);
-  this.userService.getTags(pagination)
+  this.userService.getTagsSearchTagName(pagination)
     .subscribe(
       response => {
         const data = response.data;

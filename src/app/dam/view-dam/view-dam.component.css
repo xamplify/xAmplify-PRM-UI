@@ -12,3 +12,8 @@
 .desc-break {
     word-break: break-word;
 }
+
+.text-wrap {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
