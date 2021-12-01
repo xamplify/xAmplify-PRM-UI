@@ -67,11 +67,11 @@ export class ManageLeadsComponent implements OnInit {
   selectedLead: Lead;
   isCommentSection = false;
   selectedCampaign: any;
-  showDownloadFilterOption: boolean = false;
+  showFilterOption: boolean = false;
   fromDateFilter: any = "";
   toDateFilter: any = "";
-  showDateFilters: boolean = false;
-  downloadFilterResponse: CustomResponse = new CustomResponse();
+  filterResponse: CustomResponse = new CustomResponse(); 
+  filterMode: boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -802,43 +802,50 @@ export class ManageLeadsComponent implements OnInit {
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
     mapInput.name = "fromDate";
-    mapInput.setAttribute("value", this.fromDateFilter);
+    mapInput.setAttribute("value", this.leadsPagination.fromDateFilterString);
     mapForm.appendChild(mapInput);
 
     // toDate
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
     mapInput.name = "toDate";
-    mapInput.setAttribute("value", this.toDateFilter);
+    mapInput.setAttribute("value", this.leadsPagination.toDateFilterString);
     mapForm.appendChild(mapInput);
 
     document.body.appendChild(mapForm);
     mapForm.submit();
     //window.location.assign(url);
 
-    this.closeFilterOptionForDownload();
   }
 
-  showFilterOptionForDownload() {
-    this.showDownloadFilterOption = !this.showDownloadFilterOption;
-    this.showDateFilters = false;
+  toggleFilterOption() {
+    this.showFilterOption = !this.showFilterOption;    
     this.fromDateFilter = "";
     this.toDateFilter = "";
+    if (!this.showFilterOption) {
+      this.leadsPagination.fromDateFilterString = "";
+      this.leadsPagination.toDateFilterString = "";
+      if (this.filterMode) {
+        this.leadsPagination.pageIndex = 1;
+        this.listLeads(this.leadsPagination);
+        this.filterMode = false;
+      }      
+    } else {
+      this.filterMode = false;
+    }
   }
 
-  closeFilterOptionForDownload() {
-    this.showDownloadFilterOption = false;
-    this.showDateFilters = false;
+  closeFilterOption() {
+    this.showFilterOption = false;
     this.fromDateFilter = "";
     this.toDateFilter = ""; 
-  }
-
-  enableOrDisableDateFilters(event: any) {
-    if (event.target.checked) {
-      this.showDateFilters = true;
-    } else {
-      this.showDateFilters = false;
-    }
+    this.leadsPagination.fromDateFilterString = "";
+    this.leadsPagination.toDateFilterString = "";
+    if (this.filterMode) {
+      this.leadsPagination.pageIndex = 1;
+      this.listLeads(this.leadsPagination);
+      this.filterMode = false;
+    }    
   }
 
   validateDateFilters() {
@@ -847,18 +854,29 @@ export class ManageLeadsComponent implements OnInit {
       if (this.toDateFilter != undefined && this.toDateFilter != "") {
         var toDate = Date.parse(this.toDateFilter);
         if (fromDate <= toDate) {
-          this.downloadLeads();
+          this.leadsPagination.fromDateFilterString = this.fromDateFilter;
+          this.leadsPagination.toDateFilterString = this.toDateFilter;
+          this.filterMode = true;
+          this.listLeads(this.leadsPagination);
         } else {
-          this.downloadFilterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
         }
       } else {
-        this.downloadFilterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
       }
     } else {
-      this.downloadFilterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    }
+      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    }    
+  }
 
-    
+  setListView() {
+    this.listView = true;
+    this.closeFilterOption();
+  }
+
+  setCampaignView() {
+    this.listView = false;
+    this.closeFilterOption();
   }
 
 }

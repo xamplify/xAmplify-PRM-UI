@@ -113,16 +113,16 @@
                 <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
                   <div class="btn-group pull-right">
                     <ng-container class='m10'>
-                      <span data-placement="bottom" (click)="listView = true" class="btn btn-xs hidden-xs l-g-view"
+                      <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
                         data-toggle="tooltip" [class.disabled]="listView" title="List View">
                         <i aria-hidden="true" class="fa fa-th-list p10"></i>
                       </span>
                       <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                        title="Campaign View" [class.disabled]="!listView" (click)="listView = false">
+                        title="Campaign View" [class.disabled]="!listView" (click)="setCampaignView()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                       </span>
                       <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                      title="Download" [class.disabled]="dealsSortOption.totalRecords == 0" (click)="showFilterOptionForDownload()">
+                      title="Download" [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
                       <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                     </span>
                     </ng-container>
@@ -131,8 +131,8 @@
                         <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
                       </button>
                     </a>
-                    <div class="inputs" align="right" style="float: right">
-                      <div class="portlet-input input-inline" style="display: table-cell;">
+                    <div class="inputs" align="right" style="float: right; display: inline-flex;">
+                      <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
                         <div class="input-icon right" style="position: relative;right: -11px;">
                           <input type="text" class="form-control" [(ngModel)]="dealsSortOption.searchKey"
                             [ngModelOptions]="{standalone: true}" placeholder="Search"
@@ -144,6 +144,10 @@
                           </button>
                         </div>
                       </div>
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Filter"
+                          *ngIf="listView" (click)="toggleFilterOption()">
+                          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -151,30 +155,21 @@
               <div class="row" id="box" *ngIf="httpRequestLoader.isServerError" translate>
                 Please contact admin for 'Deals'
               </div>
-              <div class="row" *ngIf="showDownloadFilterOption">
+              <div class="row" *ngIf="showFilterOption">
                 <div class="col-xs-12 col-sm-12">
                   <div class="portlet light m10">
                     <div class="portlet-title">
-                      <div class="caption" translate>
-                        <input type="checkbox" name="enableFilter" class="form-check-input" (click)="enableOrDisableDateFilters($event)">
-                        Apply Filter
-                        <button type="button" class="btn green ml10" [disabled]="" (click)="downloadDeals()" *ngIf="!showDateFilters"
-                          translate>Download All</button>                        
-                      </div>
-                      <button type="button" class="close-circle pull-right" (click)="closeFilterOptionForDownload()">
+                      <div class="caption" translate>Apply Filter</div>
+                      <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                       </button>
                     </div>                                       
                     <div class="portlet box">
-                      <app-response-message class="pg8" [customResponse]="downloadFilterResponse" *ngIf="downloadFilterResponse.isVisible">
+                      <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
                       </app-response-message> 
                       <form role="form" class="form-horizontal form-bordered form-label-stripped">
                         <div class="form-group">
-                          <div class="col-sm-12 " *ngIf="!showDateFilters">
-                            Click on above checkbox to apply date filter on download
-                            or simply click on Download All button to download all Deals at a time.
-                          </div>
-                          <div class="form-inline col-sm-12 " *ngIf="showDateFilters">
+                          <div class="form-inline col-sm-12 ">
                             <div class="form-group col-sm-4">
                               <label class="control-label">From Date
                                 <span class="required">*</span>
@@ -191,7 +186,7 @@
                             </div>
                             <div class="form-group col-sm-4">
                               <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
-                                translate>Download</button>
+                                translate>Filter</button>
                             </div>
                           </div>
                         </div>
