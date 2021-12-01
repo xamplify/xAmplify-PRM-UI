@@ -166,7 +166,7 @@ a.disabled {
 
 
 						<div class="form-group">
-							<label class="col-sm-3 labal-css color-css" translate>Subject Line
+							<label class="col-sm-3 col-xs-12 labal-css color-css" translate>Subject Line
 								 <font style="color: red"> <strong>*</strong></font>
 							</label>
 							<div class="col-sm-9">
@@ -190,9 +190,9 @@ a.disabled {
 						</div>
 						<div class="form-group"
 							*ngIf="!authenticationService.isOnlyPartner()">
-							<span for="Throughpartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }" translate>Through {{authenticationService?.partnerModule?.customName}}
+							<span for="Throughpartner" class="col-sm-3 col-xs-5 mThroughLabel labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }" translate>Through {{authenticationService?.partnerModule?.customName}}
 								</span>
-							<div class="col-sm-2">
+							<div class="col-sm-2 mSwitch">
 								<switch [status]="eventCampaign.channelCampaign"
 									[onText]="callActionSwitch.onTextValue"
 									[offText]="callActionSwitch.onTextValue"
@@ -203,11 +203,11 @@ a.disabled {
 									(statusChange)="switchStatusChange()">
 								</switch>
 							</div>
-							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
+							<span for="toPartner" class="col-sm-3 col-xs-3 labal-css color-css mToLabel" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
 								<span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!authenticationService.isAddedByVendor && !isVendor);else other" translate>To Recipients</span>
 								<ng-template #other><span translate>To {{authenticationService?.partnerModule?.customName}}</span> </ng-template>
               				</span>
-							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
+							<div class="col-sm-3 mLabel" style="padding: 0; margin-top: 5px;">
 								<span style="cursor: pointer; color: #54a7e9;"
 									data-html="true" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}} <br> {{THROUGH_PARTNER_MESSAGE}}">
 									<i class="fa fa-question-circle" aria-hidden="true"></i>
@@ -356,7 +356,7 @@ a.disabled {
 									<div class="col-sm-12 text-danger" style="padding: 0"
 										*ngIf="eventError.eventStartTimeError && !isPreviewEvent">{{datePassedError}}</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-sm-6 mPadTop">
 									<input type="text" id="enDatePicker"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 										[disabled]="eventCampaign.campaignEventTimes[0].allDay"
@@ -397,7 +397,7 @@ a.disabled {
 										<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
 									</select>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-sm-6 mPadTop">
                   <select [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
                   class="form-control" style="width: 100%" (change)="setEventTimeZone()"
                   [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}"
@@ -482,14 +482,14 @@ a.disabled {
 								</div>
 
 								<div class="col-sm-offset-3 col-sm-9 pt10">
-									<div class="col-sm-6" style="padding-left: 0px">
+									<div class="col-sm-6 mPadCity" style="padding-left: 0px">
 										<input type="text"
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" id="city" placeholder="City"
 											[(ngModel)]="eventCampaign.campaignLocation.city"
 											[ngModelOptions]="{standalone: true}">
 									</div>
-									<div class="col-sm-6" style="padding-right: 0px">
+									<div class="col-sm-6 mPadState" style="padding-right: 0px">
 										<input type="text"
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" id="state" placeholder="State"
@@ -498,14 +498,14 @@ a.disabled {
 									</div>
 								</div>
 								<div class="col-sm-offset-3 col-sm-9 pt10">
-									<div class="col-sm-6" style="padding-left: 0px">
+									<div class="col-sm-6 mPadZip" style="padding-left: 0px">
 										<input type="text"
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" id="zip" placeholder="Zip" maxlength="10"
 											[(ngModel)]="eventCampaign.campaignLocation.zip"
 											[ngModelOptions]="{standalone: true}">
 									</div>
-									<div class="col-sm-6" style="padding-right: 0px">
+									<div class="col-sm-6 mPadCity" style="padding-right: 0px">
 										<select
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" style="width: 100%; cursor: pointer;"
