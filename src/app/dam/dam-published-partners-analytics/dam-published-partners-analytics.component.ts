@@ -91,6 +91,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
       if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0 && this.statusCode == 200) {
         this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
         this.pagination.formId = this.damId;
+        this.pagination.userId = this.loggedInUserId;
         this.listPartners(this.pagination);
       }
     });
