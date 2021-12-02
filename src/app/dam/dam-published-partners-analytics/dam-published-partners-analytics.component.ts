@@ -12,7 +12,6 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
-declare var $, swal: any;
 
 @Component({
   selector: 'app-dam-published-partners-analytics',
@@ -21,18 +20,18 @@ declare var $, swal: any;
   providers: [HttpRequestLoader, SortOption, Properties]
 })
 export class DamPublishedPartnersAnalyticsComponent implements OnInit {
-	
+
   loading = false;
   loggedInUserId: number = 0;
   pagination: Pagination = new Pagination();
   customResponse: CustomResponse = new CustomResponse();
   loggedInUserCompanyId: any;
-  listLoader:HttpRequestLoader = new HttpRequestLoader();
-  damId:number = 0;
+  listLoader: HttpRequestLoader = new HttpRequestLoader();
+  damId: number = 0;
   selectedAssetName: any;
   initLoader = false;
-  statusCode=200;
-   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+  statusCode = 200;
+  constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -72,24 +71,24 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
 
   }
 
-  getAssetDetailsById(){
+  getAssetDetailsById() {
     this.loading = true;
     this.referenceService.loading(this.listLoader, true);
     this.damService.getAssetDetailsById(this.damId).subscribe((result: any) => {
       this.statusCode = result.statusCode;
-      if(this.statusCode==200){
+      if (this.statusCode == 200) {
         let data = result.data;
         this.selectedAssetName = data.assetName;
-      }else{
+      } else {
         this.referenceService.goToPageNotFound();
       }
-      
+
     }, error => {
       this.loading = false;
       this.xtremandLogger.log(error);
       this.xtremandLogger.errorPage(error);
-    }, ()=>{
-      if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0 && this.statusCode==200) {
+    }, () => {
+      if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0 && this.statusCode == 200) {
         this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
         this.pagination.formId = this.damId;
         this.listPartners(this.pagination);
@@ -106,7 +105,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
         let data = result.data;
         pagination.totalRecords = data.totalRecords;
         pagination = this.pagerService.getPagedItems(pagination, data.list);
-      }else{
+      } else {
         this.referenceService.goToPageNotFound();
       }
       this.loading = false;
@@ -156,19 +155,23 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   }
 
 
-goBack(){
-  this.loading = true;
-	this.referenceService.goToRouter("/home/dam/manage");
-}
+  goBack() {
+    this.loading = true;
+    this.referenceService.goToRouter("/home/dam/manage");
+  }
 
-refreshPage(){
-	this.listPartners(this.pagination);
-}
+  refreshPage() {
+    this.listPartners(this.pagination);
+  }
 
-viewDetailedAnalytics(partner:any){
-  this.loading = true;
-  this.referenceService.goToRouter("/home/dam/vda/"+this.damId+"/"+partner.damPartnerId+"/"+partner.userId);
-}
+  viewDetailedAnalytics(partner: any) {
+    this.loading = true;
+    this.referenceService.goToRouter("/home/dam/vda/" + this.damId + "/" + partner.damPartnerId + "/" + partner.userId);
+  }
 
+  getSelectedIndex(index: any) {
+    this.pagination.partnerTeamMemberGroupFilter = index == 1;
+    this.listPartners(this.pagination);
+  }
 
 }
