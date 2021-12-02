@@ -1280,7 +1280,7 @@
                                     <td *ngIf="authenticationService.contactsCount" class="contact-count error" id="contact-count-{{i}}">
                                         <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
 									</td>
-									<td *ngIf="showNotifyPartnerOption" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available as this {{authenticationService?.partnerModule?.customName} is already part of Master Partner List':''">
+									<td *ngIf="showNotifyPartnerOption" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available.Because it is already part of Master List':''">
 										<switch [status]="partner.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                                         	[size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)" [disabled]="partner?.disableNotifyPartnersOption">
                                         </switch>
