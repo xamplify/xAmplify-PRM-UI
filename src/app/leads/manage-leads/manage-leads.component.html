@@ -181,7 +181,8 @@
                   </div>
                 </div>
               </div>
-              <div class="row" *ngIf="showFilterOption">
+              <!-- -------------------- Apply Filters Box-------------------- -->
+              <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 <div class="col-xs-12 col-sm-12">
                   <div class="portlet light m10">
                     <div class="portlet-title">

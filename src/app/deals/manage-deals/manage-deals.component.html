@@ -155,7 +155,7 @@
               <div class="row" id="box" *ngIf="httpRequestLoader.isServerError" translate>
                 Please contact admin for 'Deals'
               </div>
-              <div class="row" *ngIf="showFilterOption">
+              <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 <div class="col-xs-12 col-sm-12">
                   <div class="portlet light m10">
                     <div class="portlet-title">
