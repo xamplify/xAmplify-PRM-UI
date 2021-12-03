@@ -1246,7 +1246,7 @@
 					<h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
 					</ng-container>
 					<ng-container *ngIf="authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
-						<h4 class="modal-title popup-header-title-font" translate>Partners</h4>
+						<h4 class="modal-title popup-header-title-font" translate>{{this.authenticationService?.partnerModule?.customName}}</h4>
 					</ng-container>
             </div>
             <div class="modal-body">
