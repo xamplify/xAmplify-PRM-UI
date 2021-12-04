@@ -59,6 +59,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 	selectedPartnerGroupId:number=0;
 	showExpandButton = false; 
     expandedUserList: any;
+	selectedFilterIndex: number = 0;
 
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
@@ -166,6 +167,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		pagination.campaignId = this.inputId;
+		pagination.userId = this.loggedInUserId;
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;
@@ -391,6 +393,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		}else{
 			this.selectedPartnerGroupIds = [];
 			this.isParnterGroupHeaderCheckBoxChecked = false;
+			$('#parnterGroupsHeaderCheckBox').prop('checked',false);
 			this.disableOrEnablePartnerCompaniesTab();
 		}
 	}
@@ -601,5 +604,13 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 			this.expandedUserList = userList;			
 		}
 	}
+
+	/******XNFR-85**************/
+	getSelectedIndex(index:number){
+		this.pagination.partnerTeamMemberGroupFilter = index==1;
+		this.selectedFilterIndex = index;
+		this.findPartnerCompanies(this.pagination);
+	  }
+	
 
 }
