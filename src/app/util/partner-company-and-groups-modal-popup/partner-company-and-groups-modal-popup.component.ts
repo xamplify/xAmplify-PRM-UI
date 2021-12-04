@@ -109,13 +109,11 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 				this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 				this.closePopup();
 			},()=>{
-				this.modalPopupLoader = false;
 				if(this.isPublishedToPartnerGroup){
 					this.findPublishedPartnerGroupIdsByInputId();
 				}else{
 					this.findPublishedPartnershipIdsByInputId();
 					this.findPublishedPartnerIds();
-
 				}
 			}
 		);
@@ -183,8 +181,10 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 			});
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
 			this.referenceService.stopLoader(this.httpRequestLoader);
+			this.modalPopupLoader = false;
 		}, _error => {
 			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+			this.modalPopupLoader = false;
 		}, () => {
 
 		});
@@ -542,6 +542,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 			});
 			this.isParnterGroupHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
 			this.referenceService.stopLoader(this.httpRequestLoader);
+			this.modalPopupLoader = false;
 		}, _error => {
 			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
 		}, () => {
@@ -613,8 +614,8 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 
 	/******XNFR-85**************/
 	getSelectedIndex(index:number){
-		this.pagination.partnerTeamMemberGroupFilter = index==1;
 		this.selectedFilterIndex = index;
+		this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
 		this.findPartnerCompanies(this.pagination);
 	  }
 	

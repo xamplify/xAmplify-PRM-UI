@@ -84,4 +84,5 @@ export class Pagination {
 
 	surveyCampaignForm = false;
 	partnerTeamMemberGroupFilter = false;
+	callPaginationComponent = false;
 }

@@ -2290,6 +2290,13 @@ export class ReferenceService {
 		$("#"+dropDownId).css("color", "darkgray");
 	}
 
+	setTeamMemberFilterForPagination(pagination:Pagination,index:number){
+		pagination.partnerTeamMemberGroupFilter = index==1;
+		pagination.pageIndex = 1;
+		pagination.maxResults = 12;
+		return pagination;
+	}
+
 
 
 }
