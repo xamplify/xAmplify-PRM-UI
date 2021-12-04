@@ -58,9 +58,11 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 	selectedPartnerGroupName = "";
 	selectedPartnerGroupId:number=0;
 	showExpandButton = false; 
-    expandedUserList: any;
+	expandedUserList: any;
+	/***XNFR-85*****/
 	selectedFilterIndex: number = 0;
-
+	showFilter = true;
+	selectedTab = 1;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -95,9 +97,13 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 				if(this.isPublishedToPartnerGroup){
 					$('#partnerGroups-li').addClass('active');
 					$('#partnerGroups').addClass('tab-pane fade in active');
+					this.showFilter = false;
+					this.selectedTab = 2;
 				}else{
 					$('#partners-li').addClass('active');
 					$('#partners').addClass('tab-pane fade in active');
+					this.showFilter = true;
+					this.selectedTab = 1;
 				}
 			},error=>{
 				this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
