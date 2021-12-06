@@ -36,7 +36,11 @@ export class ManageCampaignLeadsComponent implements OnInit {
   leadsSortOption: SortOption = new SortOption();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadsResponse: CustomResponse = new CustomResponse();
-
+  showFilterOption: boolean = false;
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  filterResponse: CustomResponse = new CustomResponse(); 
+  filterMode: boolean = false;
 
   constructor(public authenticationService: AuthenticationService,
     private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -56,6 +60,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   }
 
   listCampaignLeads(pagination: Pagination) { 
+    this.referenceService.loading(this.httpRequestLoader, true);
     pagination.userId = this.loggedInUserId;   
     pagination.campaignId = this.campaignId;
     pagination.partnerCompanyId = this.partnerCompanyId;
@@ -161,5 +166,155 @@ export class ManageCampaignLeadsComponent implements OnInit {
  showComments(deal: any) {
   this.showCommentsPopUp.emit(deal);
  }
+
+ downloadLeads() {
+  let type = this.leadsPagination.filterKey;
+  let fileName = "";
+  if (type == null || type == undefined || type == "") {
+    type = "all";
+    fileName = "leads"
+  } else {
+    fileName = type + "-leads"
+  }
+
+  let searchKey = "";  
+  if (this.leadsPagination.searchKey != null && this.leadsPagination.searchKey != undefined) {
+    searchKey = this.leadsPagination.searchKey;
+  }   
+
+  let userType = "";
+  if (this.isVendorVersion) {
+    userType = "v";
+  } else if (this.isPartnerVersion) {
+    userType = "p";
+  }
+  let vendorCompanyProfileName = null;
+  if (this.leadsPagination.vendorCompanyProfileName != undefined && this.leadsPagination.vendorCompanyProfileName != null) {
+    vendorCompanyProfileName = this.leadsPagination.vendorCompanyProfileName;
+  }
+
+  // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
+  //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
+
+  const url = this.authenticationService.REST_URL + "lead/download/"
+    + fileName + ".csv?access_token=" + this.authenticationService.access_token;
+
+  var mapForm = document.createElement("form");
+  //mapForm.target = "_blank";
+  mapForm.method = "POST";
+  mapForm.action = url;
+
+  // userType
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "userType";
+  mapInput.setAttribute("value", userType);
+  mapForm.appendChild(mapInput);
+
+  // type
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "type";
+  mapInput.setAttribute("value", type);
+  mapForm.appendChild(mapInput);
+
+  // loggedInUserId
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "userId";
+  mapInput.setAttribute("value", this.loggedInUserId + "");
+  mapForm.appendChild(mapInput);
+
+  // vanityUrlFilter
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "vanityUrlFilter";
+  mapInput.setAttribute("value", this.leadsPagination.vanityUrlFilter + "");
+  mapForm.appendChild(mapInput);
+
+  // vendorCompanyProfileName
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "vendorCompanyProfileName";
+  mapInput.setAttribute("value", vendorCompanyProfileName);
+  mapForm.appendChild(mapInput);
+
+  // searchKey
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "searchKey";
+  mapInput.setAttribute("value", searchKey);
+  mapForm.appendChild(mapInput);
+
+  // fromDate
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "fromDate";
+  mapInput.setAttribute("value", this.leadsPagination.fromDateFilterString);
+  mapForm.appendChild(mapInput);
+
+  // toDate
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "toDate";
+  mapInput.setAttribute("value", this.leadsPagination.toDateFilterString);
+  mapForm.appendChild(mapInput);
+
+  document.body.appendChild(mapForm);
+  mapForm.submit();
+  //window.location.assign(url);
+
+}
+
+toggleFilterOption() {
+  this.showFilterOption = !this.showFilterOption;    
+  this.fromDateFilter = "";
+  this.toDateFilter = "";
+  if (!this.showFilterOption) {
+    this.leadsPagination.fromDateFilterString = "";
+    this.leadsPagination.toDateFilterString = "";
+    if (this.filterMode) {
+      this.leadsPagination.pageIndex = 1;
+      this.listCampaignLeads(this.leadsPagination);
+      this.filterMode = false;
+    }      
+  } else {
+    this.filterMode = false;
+  }
+}
+
+closeFilterOption() {
+  this.showFilterOption = false;
+  this.fromDateFilter = "";
+  this.toDateFilter = ""; 
+  this.leadsPagination.fromDateFilterString = "";
+  this.leadsPagination.toDateFilterString = "";
+  if (this.filterMode) {
+    this.leadsPagination.pageIndex = 1;
+    this.listCampaignLeads(this.leadsPagination);
+    this.filterMode = false;
+  }    
+}
+
+validateDateFilters() {
+  if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+    var fromDate = Date.parse(this.fromDateFilter);
+    if (this.toDateFilter != undefined && this.toDateFilter != "") {
+      var toDate = Date.parse(this.toDateFilter);
+      if (fromDate <= toDate) {
+        this.leadsPagination.fromDateFilterString = this.fromDateFilter;
+        this.leadsPagination.toDateFilterString = this.toDateFilter;
+        this.filterMode = true;
+        this.listCampaignLeads(this.leadsPagination);
+      } else {
+        this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+      }
+    } else {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+    }
+  } else {
+    this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+  }    
+}
 
 }

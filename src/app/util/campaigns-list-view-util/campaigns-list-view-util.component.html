@@ -130,16 +130,14 @@
                                             <label class="control-label">From Date
                                                 <span class="required">*</span>
                                             </label>
-                                            <app-date-picker [(dataField)]="fromDateFilter" [isFromDownload]='true'
-                                                [maxDate]="toDateFilter">
+                                            <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                                             </app-date-picker>
                                         </div>
                                         <div class="form-group col-sm-4">
                                             <label class="control-label">To Date
                                                 <span class="required">*</span>
                                             </label>
-                                            <app-date-picker [(dataField)]="toDateFilter" [isFromDownload]='true'
-                                                [minDate]="fromDateFilter">
+                                            <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                             </app-date-picker>
                                         </div>
                                         <div class="form-group col-sm-4">
