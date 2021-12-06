@@ -205,8 +205,8 @@
     </tr>
       </table>
     </div>
-    <!-- -----------Pagination-------------- -->
-    <div [hidden]="pagination.totalRecords==0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
+    <!-- -----------Pagination---------------->
+    <div *ngIf="pagination.totalRecords!=0  && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
         <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
       </div>
   </div>

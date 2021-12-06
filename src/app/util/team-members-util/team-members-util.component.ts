@@ -177,7 +177,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
 
   /**************Search TeamMembers***************/
   searchTeamMembers() {
-    this.pagination.pageIndex = 1;
+    this.referenceService.setTeamMemberFilterForPagination(this.pagination,0);
     this.findAll(this.pagination);
   }
   /**************Pagination TeamMembers***************/
