@@ -418,4 +418,37 @@ a.icons-link:hover {
     padding-right: 0px;
     padding-bottom: 8px;
   }
+  .mEventPad{
+    padding: 0px;
+  }
+  .mEventSearch{
+    width: 50%;
+    position: inherit!important;
+    float: right;
+    padding-bottom: 15px;
+  }
+  .mGridHeight{
+    height: 170px;
+  }
+  .mGridPad{
+    padding-left:2px!important ;
+  }
+  .list__item[_ngcontent-c8] .item__content[_ngcontent-c8], .list__item[_ngcontent-c8] .item__select-box-wrapper[_ngcontent-c8] {
+    width: 42%;
+}
+.mEventLaunchHeight{
+  height: 126px;
+}
+.mEventLaunchWidth{
+  width:85%;
+}
+.mEventDaysHeight{
+  height:75px!important;
+}
+.mEventSpamPopUp{
+  width:100%!important;
+}
+.mEventPadTemplate{
+  padding-bottom: 10px!important;
+}
 }

@@ -830,9 +830,9 @@ a.disabled {
 								<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer"
 									style="padding:10px">
 									<div class="note-vid pull-left">{{contactListSelectMessage}}</div>
-									<div class="inputs" style="float: right;">
-										<div style="float: left;" *ngIf="!reDistributeEvent && !reDistributeEventManage">
-											<select class="form-control cc"
+									<div class="inputs" style="float: right;padding-bottom: 5px;">
+										<div style="float: left;padding-right: 5px;" *ngIf="!reDistributeEvent && !reDistributeEventManage">
+											<select class="form-control mEventPad"
 												[(ngModel)]="recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption"
 												(ngModelChange)="sortRecipientsList($event)">
 												<option
@@ -840,7 +840,7 @@ a.disabled {
 													[ngValue]="option">{{option.name}}</option>
 											</select>
 										</div>
-										<div class="portlet-input input-inline" style="position: relative;top: -6px;">
+										<div class="portlet-input input-inline mEventSearch" style="top: -6px;">
 											<div class="input-icon right">
 												<input type="text" [(ngModel)]="contactSearchInput"
 													[ngModelOptions]="{standalone: true}" class="form-control"
@@ -1155,7 +1155,7 @@ a.disabled {
                   <ul class="content__list"
 										*ngFor="let emailTemplate of campaignEmailTemplates;let i =index">
 										<li *ngIf="emailTemplateId != emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign?.emailTemplate?.id === emailTemplate?.id">
-											<div class="flex-row">
+											<div class="flex-row mGridHeight">
 												<div class="item__select-box-wrapper">
 													<span class="select-box"> <label> <input
 															(click)="eventCampaign.emailTemplate = emailTemplate;" class=""
@@ -1170,7 +1170,7 @@ a.disabled {
 													</a> <a href="javascript:;"> </a>
 													</span>
 												</div>
-												<div class="item__content">
+												<div class="item__content mGridPad">
 													<div class="flex-row">
 														<span class="item__name"
 															[title]="emailTemplate.name"><strong>{{emailTemplate.name | slice:0:18}}
@@ -1371,11 +1371,11 @@ a.disabled {
            </div>
             <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
             <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reDistributeEventManage && reply.id">
-              <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}" style="display:block">
-                <div class="col-xs-6">
+              <div class="portlet-title custom-change-css mEventLaunchHeight" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}" style="display:block">
+                <div class="col-xs-12 col-sm-6">
                   <h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-12 col-sm-6 mEventLaunchWidth">
                 <div class="pull-right">
                 <label class="switch-choose" style="color:#fff" *ngIf="!reDistributeEvent && !reDistributeEventManage && !eventCampaign.nurtureCampaign">Choose Template</label>
                 <switch class="switch-choose" [hidden]="reDistributeEvent || reDistributeEventManage || eventCampaign.nurtureCampaign" [disabled]="isPreviewEvent" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
@@ -1395,7 +1395,7 @@ a.disabled {
                 <form class="role add-reply" id="form-{{reply.divId}}">
                   <div class="col-xs-12 p0">
                 <div class="col-xs-12 p0">
-                <div class="col-xs-6" style="margin-bottom: 6px;">
+                <div class="col-xs-12 col-sm-6" style="margin-bottom: 6px;">
                   <label style="cursor: default;" for="reason">Reason</label>
                   <select class="form-control" name="actionId" [(ngModel)]="reply.actionId" [attr.disabled]="isPreviewEvent? '' : null">
                     <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
@@ -1411,7 +1411,7 @@ a.disabled {
                   </select>
                 </div>
                 <div *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30" [class.disabled]="isPreviewEvent">
-                  <div class="col-xs-2">
+                  <div class="col-xs-12 col-sm-2">
                     <label style="cursor: default;" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days
                       <b style="color: red">*</b>
                       <font><b>(Minimum 1 Day)</b></font>
@@ -1424,12 +1424,12 @@ a.disabled {
                     <input *ngIf="reply.actionId == 29 || reply.actionId == 30" [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" max="{{beforeDaysLength}}" oninput="validity.valid||(value='');">
                     <input *ngIf="reply.actionId !=29 && reply.actionId != 30" [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
                   </div>
-                  <div class="col-xs-3 time-col"  style="padding-left: 0;" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
+                  <div class="col-xs-12 col-sm-3 time-col"  style="padding-left: 0;" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
                     <div class="col-xs-2" style="cursor: default;"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b style="color: red">*</b></span></div>
-                    <div class="col-xs-10" style="height: 66px;"><timepicker [attr.disabled]="isPreviewEvent" [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker></div>
+                    <div class="col-xs-10 mEventDaysHeight" style="height: 66px;"><timepicker [attr.disabled]="isPreviewEvent" [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker></div>
                   </div>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-12 col-sm-6">
 					<label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<strong style="color: red">*</strong></label>
 					<div  [className]="!isPreviewEvent ? 'input-group merge-tag-input-border':''">
 					  <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
@@ -1617,12 +1617,12 @@ a.disabled {
 
         </div>
 
-        <div class="col-xs-12 p0" *ngIf="!isEventUpdate">
+        <div class="col-xs-12 p0 mEventPadTemplate" *ngIf="!isEventUpdate">
             <div class="btn-group btn-group-justified" [class.disabled]="eventError.eventExpiredError">
                <ng-container *ngFor="let options of launchOptions">
                   <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError" >
                     <input type="radio"[checked]="eventCampaign.campaignScheduleType === options" class="text-center" (input)="resetTabClass()" name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl
-                    style=" margin-right:1.5em; " />{{options}}
+                    style=" margin-right:0.5em; " />{{options}}
                   </label>
                </ng-container>
                </div>
@@ -1778,7 +1778,7 @@ a.disabled {
 <!--      Span check modal popup    -->
 
   	<div class="modal fade right" id="email_spam_check" *ngIf="eventCampaign.emailTemplate">
-		<div class="modal-dialog modal-lg modal-template" style="width: 65% !important;right:0">
+		<div class="modal-dialog modal-lg modal-template mEventSpamPopUp" style="width: 65%;right:0">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">

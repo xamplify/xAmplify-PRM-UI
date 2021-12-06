@@ -1,0 +1,35 @@
+<div class="modal fade right" id="preview-team-member-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <a class="close-circle" (click)="hidePopup()">
+                 <i class="fa fa-times" aria-hidden="true"></i></a>
+              <h4 class="modal-title" id="myModalLabel" translate>Available Modules</h4>
+          </div>
+          <div class="modal-body">
+              <div id="modal-content">
+                  <app-modal-popup-loader *ngIf="modulesLoader"></app-modal-popup-loader>
+                  <div  class="table-responsive" *ngIf="!modulesLoader">
+                    <div class="alert alert-danger" *ngIf="emptyModules">
+                      <strong>No Modules Found</strong>
+                   </div>
+                    <table style="width:100%" class="table table-bordered table-hover" aria-describedby="Module-Table">
+                      <ng-container *ngFor="let defaultModule of defaultModules;let i = index">
+                        <tr>
+                          <th scope="row">
+                            <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                            {{defaultModule?.moduleName}}
+                            <br>
+                          </th>
+                        </tr>
+                      </ng-container>
+                    </table>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+                <button type="submit" class="btn btn-default" (click)="hidePopup()" translate>Close</button>
+            </div>
+      </div>
+  </div>
+</div>

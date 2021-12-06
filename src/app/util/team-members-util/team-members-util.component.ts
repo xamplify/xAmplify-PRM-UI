@@ -71,13 +71,12 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   newlyAddedTeamMembers: any[];
   isOrgAdmin = false;
   /******Preview Group Modules */
-  modulesLoader = false;
-  defaultModules:Array<any> = new Array<any>();
-  emptyModules = false;
+
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   @Input() moduleName:any;
   @Input() teamMemberGroupId:number;
   isTeamMemberModule = false;
+  showModulesPopup: boolean;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -105,6 +104,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   }
 
   findAll(pagination: Pagination) {
+    this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
     this.httpRequestLoader.isHorizontalCss = true;
     if(!this.isTeamMemberModule){
@@ -178,7 +178,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
 
   /**************Search TeamMembers***************/
   searchTeamMembers() {
-    this.pagination.pageIndex = 1;
+    this.referenceService.setTeamMemberFilterForPagination(this.pagination,0);
     this.findAll(this.pagination);
   }
   /**************Pagination TeamMembers***************/
@@ -661,7 +661,6 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
         response=>{
           this.loading = false;
           team.enableOption = response.data;
-          console.log(team);
         },_error=>{
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
@@ -756,7 +755,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
     this.loading = false;
     let statusCode = JSON.parse(error['status']);
     let message = this.properties.serverErrorMessage;
-    if (statusCode == 409) {
+    if (statusCode == 409 || statusCode == 400) {
       let errorResponse = JSON.parse(error['_body']);
       message = errorResponse['message'];
     }
@@ -764,24 +763,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   }
 
   /***********Preview Modules*********** */
-  previewModules(teamMemberGroupId:number){
-    this.modulesLoader = true;
-    this.emptyModules = false;
-    this.defaultModules = [];
-    $('#preview-team-member-popup').modal('show');
-    this.teamMemberService.previewTeamMemberGroup(teamMemberGroupId).subscribe(
-      response => {
-       this.defaultModules = response.data.teamMemberModuleDTOs;
-       this.emptyModules = this.defaultModules.length==0;
-       this.modulesLoader = false;
-      }, error => {
-        this.logger.log(error);
-        this.modulesLoader = false;
-        $('#preview-team-member-popup').modal('hide');
-        this.referenceService.showSweetAlertServerErrorMessage();
-      }
-    );
-  }
+ 
 
   goToHome(){
     this.loading = true;
@@ -815,6 +797,15 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
 
   getSelectedTeamMemberGroup(selectedTeamMemberGroupId:any){
     this.team.teamMemberGroupId = selectedTeamMemberGroupId;
+  }
+
+  previewModules(teamMemberGroupId:number){
+    this.showModulesPopup = true;
+    this.teamMemberGroupId = teamMemberGroupId;
+  }
+
+  hideModulesPreviewPopUp(){
+   this.showModulesPopup = false;
   }
 
 }

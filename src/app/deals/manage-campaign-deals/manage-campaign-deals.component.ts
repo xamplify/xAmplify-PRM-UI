@@ -271,6 +271,7 @@ toggleFilterOption() {
   if (!this.showFilterOption) {
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
       this.listCampaignDeals(this.dealsPagination);
@@ -287,6 +288,7 @@ closeFilterOption() {
   this.toDateFilter = ""; 
   this.dealsPagination.fromDateFilterString = "";
   this.dealsPagination.toDateFilterString = "";
+  this.filterResponse.isVisible = false;
   if (this.filterMode) {
     this.dealsPagination.pageIndex = 1;
     this.listCampaignDeals(this.dealsPagination);
@@ -300,9 +302,11 @@ validateDateFilters() {
     if (this.toDateFilter != undefined && this.toDateFilter != "") {
       var toDate = Date.parse(this.toDateFilter);
       if (fromDate <= toDate) {
+        this.dealsPagination.pageIndex = 1;
         this.dealsPagination.fromDateFilterString = this.fromDateFilter;
         this.dealsPagination.toDateFilterString = this.toDateFilter;
         this.filterMode = true;
+        this.filterResponse.isVisible = false;
         this.listCampaignDeals(this.dealsPagination);
       } else {
         this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);

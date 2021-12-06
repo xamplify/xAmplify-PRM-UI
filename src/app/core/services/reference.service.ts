@@ -2168,6 +2168,7 @@ export class ReferenceService {
 		return array.filter(item => item !== itemToRemove);
 	}
 
+	/*******CheckBox Code**********/
 	highlightRowOnRowCick(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any, parnterGroupsHeaderCheckBox: string, selectedCheckBoxValue: any, event: any) {
 		trId = trId + "-" + selectedCheckBoxValue;
 		let isChecked = $('#' + selectedCheckBoxValue).is(':checked');
@@ -2225,7 +2226,8 @@ export class ReferenceService {
 		event.stopPropagation();
 		return selectedCheckBoxIds;
 	}
-
+	/*******CheckBox Code**********/
+	
 	addMergeTags(mergeTags:any,isCampaign:boolean,isEvent:boolean){
 		mergeTags.push({ name: 'First Name', value: '{{firstName}}' });
 		mergeTags.push({ name: 'Last Name', value: '{{lastName}}' });
@@ -2281,6 +2283,18 @@ export class ReferenceService {
 		mergeTags = this.addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags);
 		mergeTags = this.addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags);
 		return mergeTags;
+	}
+
+	disableDropDownById(dropDownId:string,color:boolean){
+		$("#"+dropDownId).prop("disabled", true);
+		$("#"+dropDownId).css("color", "darkgray");
+	}
+
+	setTeamMemberFilterForPagination(pagination:Pagination,index:number){
+		pagination.partnerTeamMemberGroupFilter = index==1;
+		pagination.pageIndex = 1;
+		pagination.maxResults = 12;
+		return pagination;
 	}
 
 

@@ -715,6 +715,7 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
     if (!this.showFilterOption) {
       this.pagination.fromDateFilterString = "";
       this.pagination.toDateFilterString = "";
+      this.filterResponse.isVisible = false;
       if (this.filterMode) {
         this.pagination.pageIndex = 1;
         this.listCampaign(this.pagination);
@@ -731,6 +732,7 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
     this.toDateFilter = ""; 
     this.pagination.fromDateFilterString = "";
     this.pagination.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.pagination.pageIndex = 1;
       this.listCampaign(this.pagination);
@@ -744,9 +746,11 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
       if (this.toDateFilter != undefined && this.toDateFilter != "") {
         var toDate = Date.parse(this.toDateFilter);
         if (fromDate <= toDate) {
+          this.pagination.pageIndex = 1;
           this.pagination.fromDateFilterString = this.fromDateFilter;
           this.pagination.toDateFilterString = this.toDateFilter;
           this.filterMode = true;
+          this.filterResponse.isVisible = false;
           this.listCampaign(this.pagination);
         } else {
           this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);

@@ -825,6 +825,7 @@ export class ManageLeadsComponent implements OnInit {
     if (!this.showFilterOption) {
       this.leadsPagination.fromDateFilterString = "";
       this.leadsPagination.toDateFilterString = "";
+      this.filterResponse.isVisible = false;
       if (this.filterMode) {
         this.leadsPagination.pageIndex = 1;
         this.listLeads(this.leadsPagination);
@@ -841,6 +842,7 @@ export class ManageLeadsComponent implements OnInit {
     this.toDateFilter = ""; 
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.leadsPagination.pageIndex = 1;
       this.listLeads(this.leadsPagination);
@@ -854,9 +856,11 @@ export class ManageLeadsComponent implements OnInit {
       if (this.toDateFilter != undefined && this.toDateFilter != "") {
         var toDate = Date.parse(this.toDateFilter);
         if (fromDate <= toDate) {
+          this.leadsPagination.pageIndex = 1;
           this.leadsPagination.fromDateFilterString = this.fromDateFilter;
           this.leadsPagination.toDateFilterString = this.toDateFilter;
           this.filterMode = true;
+          this.filterResponse.isVisible = false;
           this.listLeads(this.leadsPagination);
         } else {
           this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);

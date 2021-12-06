@@ -196,7 +196,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
   //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
 
-  const url = this.authenticationService.REST_URL + "lead/download/"
+  const url = this.authenticationService.REST_URL + "lead/campaign/download/"
     + fileName + ".csv?access_token=" + this.authenticationService.access_token;
 
   var mapForm = document.createElement("form");
@@ -226,18 +226,18 @@ export class ManageCampaignLeadsComponent implements OnInit {
   mapForm.appendChild(mapInput);
 
   // vanityUrlFilter
-  var mapInput = document.createElement("input");
-  mapInput.type = "hidden";
-  mapInput.name = "vanityUrlFilter";
-  mapInput.setAttribute("value", this.leadsPagination.vanityUrlFilter + "");
-  mapForm.appendChild(mapInput);
+  //  var mapInput = document.createElement("input");
+  //  mapInput.type = "hidden";
+  //  mapInput.name = "vanityUrlFilter";
+  //  mapInput.setAttribute("value", this.leadsPagination.vanityUrlFilter + "");
+  //  mapForm.appendChild(mapInput);
 
   // vendorCompanyProfileName
-  var mapInput = document.createElement("input");
-  mapInput.type = "hidden";
-  mapInput.name = "vendorCompanyProfileName";
-  mapInput.setAttribute("value", vendorCompanyProfileName);
-  mapForm.appendChild(mapInput);
+  // var mapInput = document.createElement("input");
+  // mapInput.type = "hidden";
+  // mapInput.name = "vendorCompanyProfileName";
+  // mapInput.setAttribute("value", vendorCompanyProfileName);
+  // mapForm.appendChild(mapInput);
 
   // searchKey
   var mapInput = document.createElement("input");
@@ -260,6 +260,20 @@ export class ManageCampaignLeadsComponent implements OnInit {
   mapInput.setAttribute("value", this.leadsPagination.toDateFilterString);
   mapForm.appendChild(mapInput);
 
+  // campaignId
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "campaignId";
+  mapInput.setAttribute("value", this.leadsPagination.campaignId + "");
+  mapForm.appendChild(mapInput);
+
+  // partnerCompanyId
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "partnerCompanyId";
+  mapInput.setAttribute("value", this.leadsPagination.partnerCompanyId + "");
+  mapForm.appendChild(mapInput);
+
   document.body.appendChild(mapForm);
   mapForm.submit();
   //window.location.assign(url);
@@ -273,6 +287,7 @@ toggleFilterOption() {
   if (!this.showFilterOption) {
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.leadsPagination.pageIndex = 1;
       this.listCampaignLeads(this.leadsPagination);
@@ -289,6 +304,7 @@ closeFilterOption() {
   this.toDateFilter = ""; 
   this.leadsPagination.fromDateFilterString = "";
   this.leadsPagination.toDateFilterString = "";
+  this.filterResponse.isVisible = false;
   if (this.filterMode) {
     this.leadsPagination.pageIndex = 1;
     this.listCampaignLeads(this.leadsPagination);
@@ -302,9 +318,11 @@ validateDateFilters() {
     if (this.toDateFilter != undefined && this.toDateFilter != "") {
       var toDate = Date.parse(this.toDateFilter);
       if (fromDate <= toDate) {
+        this.leadsPagination.pageIndex = 1;
         this.leadsPagination.fromDateFilterString = this.fromDateFilter;
         this.leadsPagination.toDateFilterString = this.toDateFilter;
         this.filterMode = true;
+        this.filterResponse.isVisible = false;
         this.listCampaignLeads(this.leadsPagination);
       } else {
         this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
