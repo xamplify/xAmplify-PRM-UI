@@ -543,6 +543,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 				});
 				this.isParnterGroupHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
 				this.referenceService.stopLoader(this.httpRequestLoader);
+				this.modalPopupLoader = false;
 			}, _error => {
 				this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
 			}, () => {
