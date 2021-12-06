@@ -83,4 +83,6 @@ export class Pagination {
 	excludeBeePdf : boolean = false;
 
 	surveyCampaignForm = false;
+	fromDateFilterString:string = "";
+	toDateFilterString:string = "";
 }

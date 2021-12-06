@@ -1095,7 +1095,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             }
 
             this.campaingContactLists = data.userLists;
-            this.isPartnerCampaign = this.campaign.channelCampaign ? '(PARTNER)' : '';
+            this.isPartnerCampaign = this.campaign.channelCampaign ? '('+this.authenticationService.partnerModule.customName+')' : '';
             this.loading = false;
           },
           error => {

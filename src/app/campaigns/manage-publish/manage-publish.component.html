@@ -32,7 +32,7 @@
           <div class="tabbable tabbable-custom tabbable-noborder">
             <div class="tab-content">
               <div class="page-bar m10">
-                <ul class="mix-filter col-xs-12 col-sm-12 col-md-5 p0 m0 mWid" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="display: inline-flex">
+                <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 mWid" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" >
                   <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
                   <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign" translate>
                   Email</li>
@@ -48,9 +48,9 @@
                   <li class="filter" (click)="filterCampaigns('SURVEY',7)" [class.campaign-type-selected]="7 == selectedCampaignTypeIndex" *ngIf="campaignAccess.survey" translate>Survey</li>
                   <li class="filter" style="display: none;" translate>Own Template</li>
                 </ul>
-                <div class="page-toolbar col-xs-12 col-sm-12 col-md-7" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                  <div class="row btn-group pull-right mPad">
-                    <div class="col-xs-2 col-sm-4 col-md-5 p0">
+                <div class="page-toolbar col-xs-12 col-sm-12 col-md-8" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                  <div class="row">                   
+                    <div class="btn-group col-xs-2 col-sm-4 col-md-4 p0">
                       <div style="float: right">
                         <ng-container class='m10'>
                           <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
@@ -81,6 +81,7 @@
                         </ng-container>
                       </div>
                     </div>
+                    
                     <div class="col-xs-5 col-sm-4 col-md-3">
                       <div style="float: left;">
                         <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
@@ -91,25 +92,74 @@
                       </div>
                     </div>
 
-                    <div class="col-xs-5 col-sm-4 col-md-4 manage-campaigns-prml">
-                      <div class="portlet-input input-inline input-small">
-                        <div class="input-icon campaign-search-rr">
+                    <div class="col-xs-5 col-sm-4 col-md-5 manage-campaigns-prml">
+                      <div class="portlet-input input-inline" style="display: inline-flex;">
+                        <div class="input-icon campaign-search-rr mr5">
                           <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchCampaigns();"></button>
                           <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
                             <i class="fa fa-search" aria-hidden="true"></i>
                           </button>
                         </div>
+                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Filter"
+                          (click)="toggleFilterOption()">
+                          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                        </span>
+                        <div class="ml5">
+                          <a *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()" class="close-circle campaign-downloading-mt"  data-toggle="tooltip" data-placement="top" title="Download">
+                            <i class="fa fa-download margin" aria-hidden="true"></i>
+                          </a>
+                          <a (click)="listCampaign(pagination)" class="close-circle mt10"  data-toggle="tooltip" data-placement="top" title="Refresh">
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                          </a>
+                        </div>
                       </div>
-                      <a  *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()" class="close-circle campaign-downloading-mt"  data-toggle="tooltip" data-placement="top" title="Download">
-									      <i class="fa fa-download margin" aria-hidden="true"></i>
-                      </a>
-                      <a  (click)="listCampaign(pagination)" class="close-circle campaign-refresh-style"  data-toggle="tooltip" data-placement="top" title="Refresh">
-									      <i class="fa fa-refresh" aria-hidden="true"></i>
-							    	  </a>
+                      
+                      
                     </div>
                   </div>
                 </div>
+              </div>
+               <!-- -------------------- Apply Filters Box-------------------- -->
+               <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="portlet light m10">
+                    <div class="portlet-title">
+                      <div class="caption" translate>Apply Filters</div>
+                      <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                    </div>                                       
+                    <div class="portlet box">
+                      <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
+                      </app-response-message> 
+                      <form role="form" class="form-horizontal form-bordered form-label-stripped">
+                        <div class="form-group">                         
+                          <div class="form-inline col-sm-12">
+                            <div class="form-group col-sm-4">
+                              <label class="control-label">From Date
+                                <span class="required">*</span>
+                              </label>
+                              <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                              </app-date-picker>
+                            </div>
+                            <div class="form-group col-sm-4">
+                              <label class="control-label">To Date
+                                <span class="required">*</span>
+                              </label>
+                              <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                              </app-date-picker>
+                            </div>
+                            <div class="form-group col-sm-4">
+                              <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
+                                translate>Filter</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>                                    
+                </div>                
               </div>
               <ng-container *ngIf="(modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView) && !isloading">
                 <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
@@ -758,7 +808,7 @@
                             <i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1"
                               class="fa fa-wpforms" aria-hidden="true"></i>
                             <i *ngIf="campaign.campaignType.indexOf('SURVEY') > -1"
-                                class="fa fa-wpforms" aria-hidden="true"></i>
+                                class="fas fa-poll-h" aria-hidden="true"></i>
                             </span>
                           </div>
                           <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">

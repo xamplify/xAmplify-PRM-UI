@@ -3,13 +3,15 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { LogService } from "../../core/services/log.service";
 import { UtilService } from "../../core/services/util.service";
 import { Ng2DeviceService } from "ng2-device-detector";
+import { Processor } from '../../core/models/processor';
 @Component({
   selector: "app-log-email-click",
   templateUrl: "./log-email-click.component.html",
   styleUrls: [
     "./log-email-click.component.css",
     "../../../assets/css/loader.css"
-  ]
+  ],
+  providers: [Processor]
 })
 export class LogEmailClickComponent implements OnInit {
   public campaignAlias: string = null;
@@ -18,15 +20,26 @@ export class LogEmailClickComponent implements OnInit {
   public alias: string;
   public emailLog: any;
   public deviceInfo: any;
+  errorHtml:any;
+  customCampaignError :any;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private logService: LogService,
     private utilService: UtilService,
     private deviceService: Ng2DeviceService,
+    public processor:Processor
   ) {}
+  
+  errorMessage(){
+      this.errorHtml =  '<div class="page-content"><div class="portlet light" style="border: navajowhite;">' +
+        ' <div class="portlet-body clearfix">' +
+        '<h3 style="color: blue;text-align: center;margin-top:150px;margin-bottom:100%;font-weight: bold;" >'+this.customCampaignError+'</h3></div></div></div>';
+
+}
 
   logEmailUrlClicks() {
+	  this.processor.set(this.processor);
     this.utilService.getJSONLocation().subscribe(
       (data: any) => {
         console.log("data :" + data);
@@ -59,7 +72,9 @@ export class LogEmailClickComponent implements OnInit {
         console.log("emailLog" + this.emailLog);
         this.logService
           .logEmailUrlClicks(this.emailLog)
-          .subscribe((result: any) => {
+          .subscribe(
+        		  (result: any) => {
+        	this.processor.remove(this.processor);
             console.log(result["_body"]);
             var body = result["_body"];
             var resp = JSON.parse(body);
@@ -72,14 +87,22 @@ export class LogEmailClickComponent implements OnInit {
               
             }else if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
               window.location.href = url;
-            } else if (url && !(url.startsWith("http://") || url.startsWith("https://"))) {
+            } else if (url && !(url.startsWith("Sorry!")) && !(url.startsWith("http://") || url.startsWith("https://"))) {
               url = 'http://'+ url;
               window.location.href = url;
+            }else if(url.startsWith("Sorry!")){
+            	this.customCampaignError = url;
+                this.errorMessage();
+                document.getElementById('para').innerHTML = this.errorHtml;
             }
             else{ 
               this.router.navigate(['home/notfound']);
             }
-          });
+          },
+          (error: any) => {
+             
+          }
+          );
       },
       error => console.log(error)
     );
