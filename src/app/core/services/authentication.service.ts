@@ -828,6 +828,36 @@ updateNotifyPartnersOption(companyId:number,status:boolean){
       .map(this.extractData)
       .catch(this.handleError);
 }
+
+/**********Team Member Groups***************/
+findAllTeamMemberGroupIdsAndNames(addDefaultOption:boolean){
+  let userId = this.getUserId();
+		var url = this.REST_URL + "teamMemberGroup/findAllGroupIdsAndNames/"+userId+"/"+addDefaultOption+"?access_token=" + this.access_token;
+		return this.http.get(url)
+			.map(this.extractData)
+			.catch(this.handleError);
+}
+
+findAllTeamMembersByGroupId(pagination:Pagination){
+		var url = this.REST_URL + "teamMember/findAllTeamMembersByGroupId?access_token=" + this.access_token;
+		return this.http.post(url,pagination)
+			.map(this.extractData)
+			.catch(this.handleError);
+}
+
+findSelectedTeamMemberIds(partnershipId:number){
+  var url = this.REST_URL + "teamMemberGroup/findSelectedTeamMemberIds/"+partnershipId+"?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+showPartnersFilter(){
+  var url = this.REST_URL + "admin/showPartnersFilter/"+this.getUserId()+"?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
   
   
 }
