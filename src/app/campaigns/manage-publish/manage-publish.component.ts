@@ -94,6 +94,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     exportObject:any = {};
     templateEmailOpenedAnalyticsAccess = false;
     modalPopupLoader = false;
+    showFilterOption: boolean = false;
+    fromDateFilter: any = "";
+    toDateFilter: any = "";
+    filterResponse: CustomResponse = new CustomResponse(); 
+    filterMode: boolean = false;
+
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
@@ -710,6 +716,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType);    
         }else if("Folder-Grid"==viewType){
+            this.closeFilterOption();
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = true;
@@ -733,6 +740,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 			this.exportObject['folderType'] = viewType;
             this.exportObject['type'] = 4;
 			this.exportObject['teamMemberId'] = this.teamMemberId;
+            this.closeFilterOption();
         }
     }
 
@@ -787,6 +795,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         let teamMemberAnalytics = null;
         let categoryId : number = 0;
         let categoryType = '';
+        let searchKey = this.pagination.searchKey;
     	
     	if(this.teamMemberId!=undefined){
     		teamMemberId = this.teamMemberId;
@@ -809,7 +818,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'teamMemberId' : teamMemberId,
                  'teamMemberAnalytics' : teamMemberAnalytics,
                  'categoryId' :categoryId,
-                 'categoryType' : categoryType
+                 'categoryType' : categoryType,
+                 'searchKey' : searchKey,
+                 'fromDate' : this.pagination.fromDateFilterString,
+                 'toDate' : this.pagination.toDateFilterString
              };
          } else {
              param = {
@@ -820,8 +832,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'teamMemberId' :  teamMemberId,
                  'teamMemberAnalytics' : teamMemberAnalytics,
                  'categoryId' :categoryId,
-                 'categoryType' : categoryType
-
+                 'categoryType' : categoryType,
+                 'searchKey' : searchKey,
+                 'fromDate' : this.pagination.fromDateFilterString,
+                 'toDate' : this.pagination.toDateFilterString
              };
          }
          let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
@@ -836,5 +850,56 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.logger.error("error in manage-publish-component init() ", error);
         }
     }
+
+    toggleFilterOption() {
+        this.showFilterOption = !this.showFilterOption;    
+        this.fromDateFilter = "";
+        this.toDateFilter = "";
+        if (!this.showFilterOption) {
+          this.pagination.fromDateFilterString = "";
+          this.pagination.toDateFilterString = "";
+          if (this.filterMode) {
+            this.pagination.pageIndex = 1;
+            this.listCampaign(this.pagination);
+            this.filterMode = false;
+          }      
+        } else {
+          this.filterMode = false;
+        }
+    }
+    
+      closeFilterOption() {
+        this.showFilterOption = false;
+        this.fromDateFilter = "";
+        this.toDateFilter = ""; 
+        this.pagination.fromDateFilterString = "";
+        this.pagination.toDateFilterString = "";
+        if (this.filterMode) {
+          this.pagination.pageIndex = 1;
+          this.listCampaign(this.pagination);
+          this.filterMode = false;
+        }    
+      }
+    
+      validateDateFilters() {
+        if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+          var fromDate = Date.parse(this.fromDateFilter);
+          if (this.toDateFilter != undefined && this.toDateFilter != "") {
+            var toDate = Date.parse(this.toDateFilter);
+            if (fromDate <= toDate) {
+              this.pagination.fromDateFilterString = this.fromDateFilter;
+              this.pagination.toDateFilterString = this.toDateFilter;
+              this.filterMode = true;
+              this.listCampaign(this.pagination);
+            } else {
+              this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+            }
+          } else {
+            this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+          }
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+        }    
+      }
 
 }
