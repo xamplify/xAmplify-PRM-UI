@@ -7,7 +7,9 @@
             </div>
             <div>
               <a class="close-circle ref-mar" (click)="refreshChart()" title="Refresh">
-                 <i class="fa fa-refresh" aria-hidden="true"></i></a>
+                 <i class="fa fa-refresh" aria-hidden="true"></i>
+              </a>
+              <app-team-member-filter-option [filterIcon]="true"></app-team-member-filter-option>
            </div>
             <div [hidden]="!hasLeadsAndDealsAccess">
                 <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">

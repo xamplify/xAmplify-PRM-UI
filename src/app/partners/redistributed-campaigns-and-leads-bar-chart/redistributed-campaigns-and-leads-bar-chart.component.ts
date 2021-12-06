@@ -39,7 +39,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
             if(this.chartId=='redistributeCampaignsAndLeadsCountBarChart'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
             }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
-                this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads For Previous Quarter':'Redistributed Campaigns For Previous Quarter';
+                this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Previous Quarter Leads':'Redistributed Campaigns For Previous Quarter';
             }else if(this.chartId=='top10LeadsAndDealsBarChart'){
                 if(this.hasLeadsAndDealsAccess){
                     this.hideLeadsAndDealsChart = false;

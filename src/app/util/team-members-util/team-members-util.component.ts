@@ -104,6 +104,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   }
 
   findAll(pagination: Pagination) {
+    this.referenceService.scrollSmoothToTop();
     this.referenceService.loading(this.httpRequestLoader, true);
     this.httpRequestLoader.isHorizontalCss = true;
     if(!this.isTeamMemberModule){

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter,Input } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   selectedFilterIndex = 0;
   loading = false;
   @Output() teamMemberFilterOptionEventEmitter = new EventEmitter();
+  @Input() filterIcon = false;
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -36,6 +37,10 @@ export class TeamMemberFilterOptionComponent implements OnInit {
     this.selectedFilterIndex = selectedIndex;
     this.teamMemberFilterOptionEventEmitter.emit(selectedIndex);
     this.loading = false;
+  }
+
+  openFilterPopup(){
+    alert("Work In Progress");
   }
 
 }
