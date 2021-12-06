@@ -858,6 +858,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if (!this.showFilterOption) {
           this.pagination.fromDateFilterString = "";
           this.pagination.toDateFilterString = "";
+          this.filterResponse.isVisible = false;
           if (this.filterMode) {
             this.pagination.pageIndex = 1;
             this.listCampaign(this.pagination);
@@ -874,6 +875,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.toDateFilter = ""; 
         this.pagination.fromDateFilterString = "";
         this.pagination.toDateFilterString = "";
+        this.filterResponse.isVisible = false;
         if (this.filterMode) {
           this.pagination.pageIndex = 1;
           this.listCampaign(this.pagination);
@@ -881,25 +883,27 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }    
       }
     
-      validateDateFilters() {
+    validateDateFilters() {
         if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-          var fromDate = Date.parse(this.fromDateFilter);
-          if (this.toDateFilter != undefined && this.toDateFilter != "") {
-            var toDate = Date.parse(this.toDateFilter);
-            if (fromDate <= toDate) {
-              this.pagination.fromDateFilterString = this.fromDateFilter;
-              this.pagination.toDateFilterString = this.toDateFilter;
-              this.filterMode = true;
-              this.listCampaign(this.pagination);
+            var fromDate = Date.parse(this.fromDateFilter);
+            if (this.toDateFilter != undefined && this.toDateFilter != "") {
+                var toDate = Date.parse(this.toDateFilter);
+                if (fromDate <= toDate) {
+                    this.pagination.pageIndex = 1;
+                    this.pagination.fromDateFilterString = this.fromDateFilter;
+                    this.pagination.toDateFilterString = this.toDateFilter;
+                    this.filterMode = true;
+                    this.filterResponse.isVisible = false;
+                    this.listCampaign(this.pagination);
+                } else {
+                    this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+                }
             } else {
-              this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+                this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
             }
-          } else {
-            this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-          }
         } else {
-          this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-        }    
-      }
+            this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+        }
+    }
 
 }
