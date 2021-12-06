@@ -162,8 +162,8 @@
                                         <!-- BEGIN FORM-->
                                         <div class="form-body col-sm-6 col-sm-offset-3">
                                             <div class="form-group" [attr.class]="campaignNameDivClass">
-                                                <label class="control-label col-sm-4" translate>Campaign name
-                                                    <br><small translate>(Save as)</small>
+                                                <label class="control-label col-sm-4 mName" translate>Campaign name
+                                                    <br><small class="mNameSave" translate>(Save as)</small>
                                                     <span style="color: red">*</span>
                                                 </label>
                                                 <div class="col-sm-8">
@@ -189,22 +189,22 @@
                                            
                                             <div class="form-group" *ngIf="!isOnlyPartner">
                                                  <!--Through Partner-->
-                                                <label class="control-label col-sm-4" data-toggle="tooltip" 
+                                                <label class="control-label col-sm-4 mThroughLabel" data-toggle="tooltip" 
                                                 data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}">
                                                     <strong *ngIf="campaign.channelCampaign" translate>Through {{authenticationService?.partnerModule?.customName}} </strong>
                                                     <ng-container *ngIf="!campaign.channelCampaign">Through {{authenticationService?.partnerModule?.customName}}</ng-container>
                                                 </label>
                                                 <!--Through Partner-->
-                                                <div class="col-sm-8">
+                                                <div class="col-sm-8 col-xs-6">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                            <div class="col-sm-1 col-xs-6 ui-switch-custom-div mSwitch">
                                                                 <switch [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="setChannelCampaign($event)">
                                                                 </switch>
                                                             </div>
                                                             <!--To Partner-->
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11 col-xs-12 mToPartner" style="padding: 0; margin-left: 100px;margin-top: -32px">
                                                                 <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">
                                                                     <strong>
                                                                         <ng-container *ngIf="channelCampaignFieldName=='tp'">
@@ -309,7 +309,7 @@
                                                         <strong>*</strong>
                                                     </span>
                                                 </label>
-                                                <div class="col-sm-8">
+                                                <div class="col-sm-8 col-xs-12">
                                                     <div class="input-group merge-tag-input-border">
                                                         <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" />
                                                         <span class="input-group-btn">
@@ -571,14 +571,14 @@
                                         <div class="tab" *ngIf="!campaign.createdFromVideos">
                                             <button [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner" translate>My Videos</button>
                                             <ng-container *ngIf="!campaign.createdFromVideos">
-                                                <div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
+                                                <div class="input-icon right pull-right m10 col-xs-7" *ngIf="isMyVideosActive">
                                                     <input type="text" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'myvideos')">
                                                     <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="videoSearchInput" (click)="videoSearchInput=''"></button>
                                                     <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchVideo()"><i
                                                             class="fa fa-search"
                                                             style="font-size: 16px !important;padding:5px !important;"></i></button>
                                                 </div>
-                                                <div class="input-icon right pull-right m10" *ngIf="!isMyVideosActive">
+                                                <div class="input-icon right pull-right m10 " *ngIf="!isMyVideosActive">
                                                     <input type="text" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'channel')">
                                                     <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="channelVideoSearchInput" (click)="channelVideoSearchInput=''"></button>
                                                     <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchChannelVideo()"><i class="fa fa-search"
@@ -705,7 +705,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div style="text-align:left;" [hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
+                                                <div class="col-xs-12 mPag" style="text-align:left;" [hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
                                                     <app-pagination [hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError" [pagination]="videosPagination" [type]="'videos'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadCampaignVideos($event)">
                                                     </app-pagination>
                                                 </div>
@@ -876,13 +876,13 @@
                                         </div>
                                         <div class="inputs" style="float: right;">
                                             <div style="float: left;">
-                                                 <select class="form-control cc" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
+                                                 <select class="form-control cc mTopSort" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
                                                     (ngModelChange)="sortRecipientsList($event)">                                                    
                                                     <option  *ngFor="let option of recipientsSortOption.campaignRecipientsDropDownOptions"
                                                         [ngValue]="option">{{option.name}}</option>
                                                 </select> 
                                             </div>
-                                            <div class="portlet-input input-inline" style="position: relative;top: -6px;">
+                                            <div class="portlet-input input-inline mAlign " style="position: relative;top: -6px;">
                                                 <div class="input-icon right">
                                                     <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
                                                     <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="recipientsSortOption.searchKey" (click)="recipientsSortOption.searchKey='';searchContactList()"></button>
@@ -1155,7 +1155,7 @@
                                                                 </ng-container>
                                                                 <ul class="content__list" *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index">
                                                                     <li *ngIf="emailTemplateId!=emailTemplate.id" class="list__item" [class.list__item--selected]="emailTemplate.id === selectedEmailTemplateRow">
-                                                                        <div class="flex-row" (click)="setEmailTemplate(emailTemplate)">
+                                                                        <div class="flex-row mHeight" (click)="setEmailTemplate(emailTemplate)">
                                                                             <div class="item__select-box-wrapper">
                                                                                 <span class="select-box" [class.hide]="emailTemplate.draft">
                                                                                     <label>
@@ -1702,7 +1702,7 @@
                                                         <form class="role add-reply" id="form-{{reply.divId}}">
                                                             <div class="col-xs-12 p0">
                                                                 <div class="col-xs-12 p0">
-                                                                    <div class="col-xs-6" style="margin-bottom: 6px;">
+                                                                    <div class="col-xs-12 col-sm-6" style="margin-bottom: 6px;">
                                                                         <label style="cursor: default;" for="reason" translate>Reason</label>
                                                                         <select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
                                                                             <option [value]="0"
@@ -1739,7 +1739,7 @@
                                                                         </select>
                                                                     </div>
                                                                     <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
-                                                                        <div class="col-xs-2">
+                                                                        <div class="col-xs-12 col-sm-2">
                                                                             <label class="default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}" translate>
                                                                                 Reply In X Days
                                                                                 <strong style="color: red">*</strong>
@@ -1751,18 +1751,18 @@
                                                                             <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
                                                                         </div>
 
-                                                                        <div class="col-xs-3 time-col" style="padding-left: 0;" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                                            <div class="col-xs-2 default">
+                                                                        <div class="col-xs-12 col-sm-3 time-col" style="padding-left: 0;" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
+                                                                            <div class="col-xs-4 col-sm-2 default">
                                                                                 <span for="time" id="send-time-{{reply.divId}}" class="time-picker-css" translate>At
                                                                                     <strong style="color: red">*</strong></span>
                                                                             </div>
-                                                                            <div class="col-xs-10" style="height: 66px;">
+                                                                            <div class="col-xs-8 col-sm-10" style="height: 66px;">
                                                                                 <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
                                                                             </div>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="col-xs-6">
+                                                                    <div class="col-xs-12 col-sm-6">
                                                                         <label class="default" for="time" id="reply-subject-{{reply.divId}}" translate>Subject
                                                                             <strong style="color: red">*</strong>
                                                                         </label>
@@ -2058,7 +2058,7 @@
                                                         <form class="role" id="form-{{url.divId}}" class="add-click">
                                                             <div class="col-xs-12 p0">
                                                                 <div class="col-xs-12 p0">
-                                                                    <div class="col-xs-6">
+                                                                    <div class="col-xs-12 col-sm-6">
                                                                         <label class="default" for="reason" translate>When To Send Email
                                                                             </label>
                                                                         <select class="form-control pointer" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
@@ -2093,7 +2093,7 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="col-xs-6">
+                                                                    <div class="col-xs-12 col-sm-6">
                                                                         <label class="default" for="time" id="click-subject-{{url.divId}}" translate>Subject
                                                                             <strong style="color: red">*</strong>
                                                                         </label>
@@ -2107,7 +2107,7 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="col-xs-6">
+                                                                    <div class="col-xs-12 col-sm-6">
                                                                         <label for="reason" style="cursor: default;" translate>Available URLs
                                                                             </label>
                                                                         <select class="form-control pointer" name="url" [(ngModel)]="url.url" style="width: 100%">
@@ -2377,7 +2377,7 @@
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let schedule of sheduleCampaignValues">
                                             <label class="btn btn-primary" style="border: 1px solid #fff;">
-                                                <input type="radio" class="text-center" name="scheduleCampaign"
+                                                <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
                                                     [value]="schedule" formControlName="scheduleCampaign"
                                                     ngDefaultControl style=" margin-right:1.5em; " />{{schedule}}
                                             </label>
@@ -2422,11 +2422,11 @@
                                 </div>
 
                                 <div class="portlet-title border-none">
-                                    <div class="col-xs-12 center-block">
-                                        <button type="button" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
-                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
-                                        <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
-                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green" (click)="spamCheck()" style="width: 10em;" translate>Spam check</button>
+                                    <div class="col-xs-12 center-block mTop">
+                                        <button type="button" class="btn btn-default mBtnAlign" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
+                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
+                                        <button type="submit" class="btn green mBtnAlign" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
+                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="spamCheck()" style="width: 10em;" translate>Spam check</button>
                                     </div>
                                 </div>
                             </div>

@@ -69,7 +69,10 @@
                 </div>
                 <div class="details">
                   <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc" style="font-size:13px">Through {{authenticationService?.partnerModule?.customName}} Campaigns</div>
+                  <div class="desc" style="font-size:13px" title="{{throughPartnerCampaignsTabName}}">
+                    {{throughPartnerCampaignsTabName | slice:0:20}}
+                    <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
+                  </div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a class="more" (click)="goToThroughPartnersDiv()"> Detailed view 
@@ -170,7 +173,7 @@
             </div>
             <div class="inputs" align="right" style="float: right">
               <div class="portlet-input input-inline">
-                <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
+                <div class="input-icon right mTop" style="position: relative; margin: -12px 0 0 0;">
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}"
                     placeholder="Search" (keypress)="inActivePartnersSearch($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey" (click)="inActivePartnersSearchKey=''"></button>
@@ -187,7 +190,7 @@
               <thead>
                 <th class="center-aligned" style="width:50%" scope="col">{{authenticationService?.partnerModule?.customName}}</th>
                 <th class="hidden-xs" style="text-align: left;" scope="col">LAST REMINDER SENT</th>
-                <th style="text-align: left" scope="col">Actions</th>
+                <th style="text-align: left" class="mAlign" scope="col">Actions</th>
               </thead>
               <tbody>
                 <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
@@ -198,7 +201,7 @@
                     <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.time"> </app-timestamp>
                     <h4 *ngIf="!item.time"><strong>-</strong></h4>
                    </td>
-                  <td (click)="sendPartnerReminder(item)">
+                  <td class="mAlign" (click)="sendPartnerReminder(item)">
                     <div class="actions-block float-none" >
                       <a data-toggle="tooltip" data-placement="left" title="Send reminder email">
                         <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -372,6 +375,12 @@
                         <img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
 
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && campaign.launched" src="assets/images/survey.png" style="height: 50px;"
+                          alt="{{campaign.campaignType}} Campaign">
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched" src="assets/images/survey.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                          alt="{{campaign.campaignType}} Campaign">
+
+
                       </td>
                       <td>
                         <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName
@@ -453,6 +462,7 @@
                             <i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
                             <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
                             <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar" aria-hidden="true"></i>
+                            <i *ngIf="campaign.campaignType.indexOf('SURVEY') > -1" class="fas fa-poll-h" aria-hidden="true"></i>
                           </span>
                         </div>
                         <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">

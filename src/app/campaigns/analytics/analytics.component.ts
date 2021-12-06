@@ -246,7 +246,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         pagination.campaignType = this.campaignType;
         this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
           .subscribe(data => {
-            this.listCampaignViewsDataInsert(data, data.totalRecords);
+            this.listCampaignViewsDataInsert(data.data, data.totalRecords);
           },
             error => console.log(error),
             () => {
@@ -468,7 +468,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
         this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
           .subscribe(data => {
-            this.campaignBarViews = data;
+            this.campaignBarViews = data.data;
             this.campaignBarViewsDataInsert();
           },
             error => console.log(error),
@@ -1095,7 +1095,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             }
 
             this.campaingContactLists = data.userLists;
-            this.isPartnerCampaign = this.campaign.channelCampaign ? '(PARTNER)' : '';
+            this.isPartnerCampaign = this.campaign.channelCampaign ? '('+this.authenticationService.partnerModule.customName+')' : '';
             this.loading = false;
           },
           error => {
@@ -1747,9 +1747,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   listTotalCampaignViews(campaignId: number) {
+	    let detailedAnalyticsShared = this.campaign.detailedAnalyticsShared;
 	  try {
-	      //this.isLeadListDownloadProcessing = true;
-	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.campaign.publicEventCampaign)
+	      if(!this.isNavigatedThroughAnalytics){
+	    	  detailedAnalyticsShared = true;
+	      }
+	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.campaign.publicEventCampaign,
+	    		  detailedAnalyticsShared)
 	        .subscribe(
 	          data => {
 	          this.downloadFile(data, 'campaignviews', campaignId);

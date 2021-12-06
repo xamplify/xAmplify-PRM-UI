@@ -114,6 +114,11 @@ export class AddDamComponent implements OnInit, OnDestroy {
           this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
           this.beeContainerInput['vendorCompanyLogoPath'] = this.vendorCompanyLogoPath;
           this.beeContainerInput['partnerCompanyLogoPath'] = this.partnerCompanyLogoPath;
+          if(dam.tagIds == undefined){
+            this.damPostDto.tagIds = new Array<number>();
+          } else {
+            this.damPostDto.tagIds = dam.tagIds;
+          }
         } else {
           this.goToManageSectionWithError();
         }
@@ -261,7 +266,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   pagination.maxResults = 0;
   let self = this;
   this.referenceService.startLoader(this.tagsLoader);
-  this.userService.getTags(pagination)
+  this.userService.getTagsSearchTagName(pagination)
     .subscribe(
       response => {
         const data = response.data;

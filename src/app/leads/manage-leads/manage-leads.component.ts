@@ -45,12 +45,12 @@ export class ManageLeadsComponent implements OnInit {
   partnerRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadFormTitle = "Lead";
   actionType = "add";
-  leadId = 0;  
+  leadId = 0;
   leadsResponse: CustomResponse = new CustomResponse();
-  counts : any;
+  counts: any;
   countsLoader = false;
   syncSalesForce = false;
-  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   listView = true;
   campaignPagination: Pagination = new Pagination();
   campaignSortOption: SortOption = new SortOption();
@@ -67,12 +67,17 @@ export class ManageLeadsComponent implements OnInit {
   selectedLead: Lead;
   isCommentSection = false;
   selectedCampaign: any;
+  showFilterOption: boolean = false;
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  filterResponse: CustomResponse = new CustomResponse(); 
+  filterMode: boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService, private userService: UserService,
-    private dealRegistrationService: DealRegistrationService, private leadsService: LeadsService, 
+    private dealRegistrationService: DealRegistrationService, private leadsService: LeadsService,
     public integrationService: IntegrationService) {
 
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -84,33 +89,33 @@ export class ManageLeadsComponent implements OnInit {
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = false;
     }
-        const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
-        // userService.getHomeRoles(url)
-        //     .subscribe(
-        //         response => {
-        //             if (response.statusCode == 200) {
-        //                 this.authenticationService.loggedInUserRole = response.data.role;
-        //                 this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-        //                 this.authenticationService.superiorRole = response.data.superiorRole;
-        //                 if (this.authenticationService.loggedInUserRole == "Team Member") {
-        //                     dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
-        //                         this.superiorId = response;
-        //                         this.init();
-        //                     });
-        //                 } else {
-        //                     this.superiorId = this.authenticationService.getUserId();
-        //                     this.init();
-        //                 }
-        //             }
-        //         })
-        //this.referenceService.loading(this.httpRequestLoader, true);
-        this.init();
-        
+    const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+    // userService.getHomeRoles(url)
+    //     .subscribe(
+    //         response => {
+    //             if (response.statusCode == 200) {
+    //                 this.authenticationService.loggedInUserRole = response.data.role;
+    //                 this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+    //                 this.authenticationService.superiorRole = response.data.superiorRole;
+    //                 if (this.authenticationService.loggedInUserRole == "Team Member") {
+    //                     dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
+    //                         this.superiorId = response;
+    //                         this.init();
+    //                     });
+    //                 } else {
+    //                     this.superiorId = this.authenticationService.getUserId();
+    //                     this.init();
+    //                 }
+    //             }
+    //         })
+    //this.referenceService.loading(this.httpRequestLoader, true);
+    this.init();
+
   }
 
-  ngOnInit() {   
-    this.countsLoader = true; 
-    this.referenceService.loading(this.httpRequestLoader, true);  
+  ngOnInit() {
+    this.countsLoader = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
   }
 
   init() {
@@ -150,7 +155,7 @@ export class ManageLeadsComponent implements OnInit {
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(response => {
       console.log(this.superiorId)
       this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
-        this.enableLeads = data.enableLeads; 
+        this.enableLeads = data.enableLeads;
         if (!this.isOnlyPartner) {
           if (this.authenticationService.vanityURLEnabled) {
             // if (this.authenticationService.isPartnerTeamMember) {
@@ -159,19 +164,19 @@ export class ManageLeadsComponent implements OnInit {
             //   this.isCompanyPartner = false;
             //   this.showVendor();
             // }
-            this.leadsService.getViewType(this.vanityLoginDto) .subscribe(
+            this.leadsService.getViewType(this.vanityLoginDto).subscribe(
               response => {
-                  if(response.statusCode==200){
-                    if (response.data === "PartnerView") {
-                      this.showPartner();
-                    } else if (response.data === "VendorView") {
-                      this.showVendor();
-                    } 
-                  }            
+                if (response.statusCode == 200) {
+                  if (response.data === "PartnerView") {
+                    this.showPartner();
+                  } else if (response.data === "VendorView") {
+                    this.showVendor();
+                  }
+                }
               },
               error => {
-                  this.httpRequestLoader.isServerError = true;
-                  },
+                this.httpRequestLoader.isServerError = true;
+              },
               () => { }
             );
           } else {
@@ -179,10 +184,10 @@ export class ManageLeadsComponent implements OnInit {
           }
         } else {
           this.showPartner();
-        } 
+        }
       });
     });
-    
+
     console.log(this.authenticationService.getRoles());
   }
 
@@ -205,55 +210,55 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   setViewType() {
-    this.leadsService.getViewType(this.vanityLoginDto) .subscribe(
+    this.leadsService.getViewType(this.vanityLoginDto).subscribe(
       response => {
-          if(response.statusCode==200){
-            if (response.data === "PartnerView") {
-              this.showPartner();
-            } else if (response.data === "VendorView") {
-              this.showVendor();
-            } 
-          }            
+        if (response.statusCode == 200) {
+          if (response.data === "PartnerView") {
+            this.showPartner();
+          } else if (response.data === "VendorView") {
+            this.showVendor();
+          }
+        }
       },
       error => {
-          this.httpRequestLoader.isServerError = true;
-          },
+        this.httpRequestLoader.isServerError = true;
+      },
       () => { }
-  );
+    );
   }
 
   getVendorCounts() {
     this.countsLoader = true;
     this.leadsService.getCounts(this.vanityLoginDto)
-    .subscribe(
+      .subscribe(
         response => {
-            if(response.statusCode==200){
-              this.counts = response.data.vendorCounts;
-              this.countsLoader = false;
-            }            
+          if (response.statusCode == 200) {
+            this.counts = response.data.vendorCounts;
+            this.countsLoader = false;
+          }
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
-            },
+          this.httpRequestLoader.isServerError = true;
+        },
         () => { }
-    );
+      );
   }
 
   getPartnerCounts() {
     this.countsLoader = true;
     this.leadsService.getCounts(this.vanityLoginDto)
-    .subscribe(
+      .subscribe(
         response => {
-            if(response.statusCode==200){
-              this.countsLoader = false;
-              this.counts = response.data.partnerCounts;
-            }            
+          if (response.statusCode == 200) {
+            this.countsLoader = false;
+            this.counts = response.data.partnerCounts;
+          }
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
-            },
+          this.httpRequestLoader.isServerError = true;
+        },
         () => { }
-    );
+      );
   }
 
   showLeads() {
@@ -261,10 +266,10 @@ export class ManageLeadsComponent implements OnInit {
     this.selectedTabIndex = 1;
     this.leadsPagination = new Pagination;
     this.campaignPagination = new Pagination;
-    if(this.vanityLoginDto.vanityUrlFilter){
-      this.leadsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
-      this.campaignPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
     this.listLeads(this.leadsPagination);
@@ -323,69 +328,69 @@ export class ManageLeadsComponent implements OnInit {
   listCampaignsForVendor(pagination: Pagination) {
     this.referenceService.loading(this.campaignRequestLoader, true);
     this.leadsService.listCampaignsForVendor(pagination)
-    .subscribe(
-        response => {  
-            this.referenceService.loading(this.campaignRequestLoader, false);
-            pagination.totalRecords = response.data.totalRecords;
-            this.campaignSortOption.totalRecords = response.data.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.campaignRequestLoader, false);
+          pagination.totalRecords = response.data.totalRecords;
+          this.campaignSortOption.totalRecords = response.data.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
         },
         error => {
-            this.campaignRequestLoader.isServerError = true;
-            },
+          this.campaignRequestLoader.isServerError = true;
+        },
         () => { }
-    );
+      );
   }
 
   listCampaignsForPartner(pagination: Pagination) {
     this.referenceService.loading(this.campaignRequestLoader, true);
     this.leadsService.listCampaignsForPartner(pagination)
-    .subscribe(
-        response => {            
-            this.referenceService.loading(this.campaignRequestLoader, false);
-            pagination.totalRecords = response.data.totalRecords;
-            this.campaignSortOption.totalRecords = response.data.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.campaignRequestLoader, false);
+          pagination.totalRecords = response.data.totalRecords;
+          this.campaignSortOption.totalRecords = response.data.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, response.data.campaigns);
         },
         error => {
-            this.campaignRequestLoader.isServerError = true;
-            },
+          this.campaignRequestLoader.isServerError = true;
+        },
         () => { }
-    );
+      );
   }
 
   listLeadsForVendor(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.listLeadsForVendor(pagination)
-    .subscribe(
+      .subscribe(
         response => {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            pagination.totalRecords = response.totalRecords;
-            this.leadsSortOption.totalRecords = response.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, response.data);
+          this.referenceService.loading(this.httpRequestLoader, false);
+          pagination.totalRecords = response.totalRecords;
+          this.leadsSortOption.totalRecords = response.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, response.data);
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
-            },
+          this.httpRequestLoader.isServerError = true;
+        },
         () => { }
-    );
+      );
   }
 
   listLeadsForPartner(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.listLeadsForPartner(pagination)
-    .subscribe(
-        response => {            
-            pagination.totalRecords = response.totalRecords;
-            this.leadsSortOption.totalRecords = response.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, response.data);
-            this.referenceService.loading(this.httpRequestLoader, false);
+      .subscribe(
+        response => {
+          pagination.totalRecords = response.totalRecords;
+          this.leadsSortOption.totalRecords = response.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, response.data);
+          this.referenceService.loading(this.httpRequestLoader, false);
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
-            },
+          this.httpRequestLoader.isServerError = true;
+        },
         () => { }
-    );
+      );
   }
 
   searchLeads() {
@@ -418,17 +423,17 @@ export class ManageLeadsComponent implements OnInit {
   setCampaignsPage(event: any) {
     // this.pipelineResponse = new CustomResponse();
     // this.customResponse = new CustomResponse();
-     this.campaignPagination.pageIndex = event.page;
-     this.listCampaigns(this.campaignPagination);
-   }
- 
-   getAllFilteredResultsCampaigns(pagination: Pagination) {
-     this.campaignPagination.pageIndex = 1;
-     this.campaignPagination.searchKey = this.campaignSortOption.searchKey;
-     this.listCampaigns(this.campaignPagination);
-   }
-  
-  closeLeadModal() {  
+    this.campaignPagination.pageIndex = event.page;
+    this.listCampaigns(this.campaignPagination);
+  }
+
+  getAllFilteredResultsCampaigns(pagination: Pagination) {
+    this.campaignPagination.pageIndex = 1;
+    this.campaignPagination.searchKey = this.campaignSortOption.searchKey;
+    this.listCampaigns(this.campaignPagination);
+  }
+
+  closeLeadModal() {
     this.showLeadForm = false;
     this.showLeads();
   }
@@ -444,275 +449,275 @@ export class ManageLeadsComponent implements OnInit {
 
   /************Page************** */
   setPartnersPage(event: any) {
-   
+
     this.partnerPagination.pageIndex = event.page;
     this.listPartnersForCampaign(this.partnerPagination);
   }
 
   getAllFilteredResultsPartners(pagination: Pagination) {
-   
+
     this.partnerPagination.pageIndex = 1;
     this.partnerPagination.searchKey = this.partnerSortOption.searchKey;
     this.listPartnersForCampaign(this.partnerPagination);
   }
   searchPartnersKeyPress(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
 
-  showSubmitLeadSuccess() {  
+  showSubmitLeadSuccess() {
     this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
     this.showLeadForm = false;
     this.showLeads();
   }
 
   addLead() {
-   // this.leadFormTitle = "Add a Lead"; 
-   // $('#leadFormModel').modal('show');
+    // this.leadFormTitle = "Add a Lead"; 
+    // $('#leadFormModel').modal('show');
     this.showLeadForm = true;
     this.actionType = "add";
-    this.leadId = 0;    
+    this.leadId = 0;
   }
 
-  resetValues(){
+  resetValues() {
     this.showLeadForm = false;
   }
 
-  viewLead(lead: Lead) {        
+  viewLead(lead: Lead) {
     //this.leadFormTitle = "View Lead";
-   // $('#leadFormModel').modal('show');    
-    this.showLeadForm = true; 
+    // $('#leadFormModel').modal('show');    
+    this.showLeadForm = true;
     this.actionType = "view";
     this.leadId = lead.id;
-    
+
   }
 
-  editLead(lead: Lead) {           
+  editLead(lead: Lead) {
     //this.leadFormTitle = "Edit Lead";
     //$('#leadFormModel').modal('show'); 
-    this.showLeadForm = true; 
+    this.showLeadForm = true;
     this.actionType = "edit";
     this.leadId = lead.id;
   }
 
-  confirmDeleteLead (lead: Lead) {
+  confirmDeleteLead(lead: Lead) {
     try {
-        let self = this;
-        swal({
-            title: 'Are you sure?',
-            text: "You won't be able to undo this action!",
-            type: 'warning',
-            showCancelButton: true,
-            swalConfirmButtonColor: '#54a7e9',
-            swalCancelButtonColor: '#999',
-            confirmButtonText: 'Yes, delete it!'
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        type: 'warning',
+        showCancelButton: true,
+        swalConfirmButtonColor: '#54a7e9',
+        swalCancelButtonColor: '#999',
+        confirmButtonText: 'Yes, delete it!'
 
-        }).then(function () {
-            self.deleteLead(lead);
-        }, function (dismiss: any) {
-            console.log('you clicked on option' + dismiss);
-        });
+      }).then(function () {
+        self.deleteLead(lead);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
     } catch (error) {
-        this.referenceService.showServerError(this.httpRequestLoader);
+      this.referenceService.showServerError(this.httpRequestLoader);
     }
- }
+  }
 
- deleteLead(lead: Lead) {
-  this.referenceService.loading(this.httpRequestLoader, true);
-  lead.userId = this.loggedInUserId;
-  this.leadsService.deleteLead(lead)
-  .subscribe(
-      response => {
+  deleteLead(lead: Lead) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    lead.userId = this.loggedInUserId;
+    this.leadsService.deleteLead(lead)
+      .subscribe(
+        response => {
           this.referenceService.loading(this.httpRequestLoader, false);
-          if(response.statusCode==200){
+          if (response.statusCode == 200) {
             this.leadsResponse = new CustomResponse('SUCCESS', "Lead Deleted Successfully", true);
             //this.getCounts();  
-            this.showLeads();                         
-        } else if (response.statusCode==500) {
+            this.showLeads();
+          } else if (response.statusCode == 500) {
             this.leadsResponse = new CustomResponse('ERROR', response.message, true);
-        }
-      },
-      error => {
+          }
+        },
+        error => {
           this.httpRequestLoader.isServerError = true;
-          },
-      () => { }
-  );
+        },
+        () => { }
+      );
 
- }
-
- getCounts() {
-  if (this.isVendorVersion) {
-    this.getVendorCounts();
-  } else if (this.isPartnerVersion) {
-    this.getPartnerCounts();
   }
- }
 
- showDealRegistrationForm(lead: Lead) {
-  this.showDealForm = true;
-  this.actionType = "add";
-  this.leadId = lead.id;
- }
+  getCounts() {
+    if (this.isVendorVersion) {
+      this.getVendorCounts();
+    } else if (this.isPartnerVersion) {
+      this.getPartnerCounts();
+    }
+  }
 
- closeDealForm() {  
-  this.showDealForm = false;
-  this.showLeads();
- }
+  showDealRegistrationForm(lead: Lead) {
+    this.showDealForm = true;
+    this.actionType = "add";
+    this.leadId = lead.id;
+  }
 
- showSubmitDealSuccess() {  
-  this.leadsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
-  this.showDealForm = false;
-  this.showLeads();
- }
+  closeDealForm() {
+    this.showDealForm = false;
+    this.showLeads();
+  }
 
- checkSalesforceIntegration(): any {
-  this.referenceService.loading(this.httpRequestLoader, true);
-    this.integrationService.checkConfigurationByTypeAndUserId("isalesforce", this.loggedInUserId).subscribe(data =>{
-         let response = data;
-         if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-             this.integrationService.checkSfCustomFields(this.loggedInUserId).subscribe(cfData =>{
-               let cfResponse = cfData;
-               if (cfResponse.statusCode === 400) {
-                 this.syncSalesForce = false;
-               } else {
-                 this.syncSalesForce = true;
-               }
-           },error =>{
-               console.log("Error in salesforce checkSalesforceIntegration()");
-           }, () => console.log("Error in salesforce checkSalesforceIntegration()"));
-              console.log("Error in salesforce checkSalesforceIntegration()");
-         } else{
-               this.syncSalesForce = false;             
-            }
-     },error =>{
-         console.log("Error in salesforce checkSalesforceIntegration()");
-     }, () => console.log("Error in checkSalesforceIntegration()"));
-     this.referenceService.loading(this.httpRequestLoader, false);
- }
+  showSubmitDealSuccess() {
+    this.leadsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    this.showDealForm = false;
+    this.showLeads();
+  }
 
- syncLeadsWithSalesforce() {
-  this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.leadsService.syncLeadsWithSalesforce(this.loggedInUserId)
-     .subscribe(
-       data => {
-         let statusCode = data.statusCode;
-         if(statusCode==200){
+  checkSalesforceIntegration(): any {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.integrationService.checkConfigurationByTypeAndUserId("isalesforce", this.loggedInUserId).subscribe(data => {
+      let response = data;
+      if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+        this.integrationService.checkSfCustomFields(this.loggedInUserId).subscribe(cfData => {
+          let cfResponse = cfData;
+          if (cfResponse.statusCode === 400) {
+            this.syncSalesForce = false;
+          } else {
+            this.syncSalesForce = true;
+          }
+        }, error => {
+          console.log("Error in salesforce checkSalesforceIntegration()");
+        }, () => console.log("Error in salesforce checkSalesforceIntegration()"));
+        console.log("Error in salesforce checkSalesforceIntegration()");
+      } else {
+        this.syncSalesForce = false;
+      }
+    }, error => {
+      console.log("Error in salesforce checkSalesforceIntegration()");
+    }, () => console.log("Error in checkSalesforceIntegration()"));
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
+
+  syncLeadsWithSalesforce() {
+    this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.syncLeadsWithSalesforce(this.loggedInUserId)
+      .subscribe(
+        data => {
+          let statusCode = data.statusCode;
+          if (statusCode == 200) {
             this.referenceService.loading(this.httpRequestLoader, false);
             this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
             //this.getCounts();  
-            this.showLeads();            
-         } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") { 
-          this.referenceService.loading(this.httpRequestLoader, false);
-          this.leadsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);               
-        } else{
+            this.showLeads();
+          } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.leadsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
+          } else {
             this.referenceService.loading(this.httpRequestLoader, false);
             this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
-         }
-       },
-       error => {
-         
-       },
-       () => {
+          }
+        },
+        error => {
+
+        },
+        () => {
           this.referenceService.loading(this.httpRequestLoader, false);
-       }
-     );
-}
-
-showPartners(campaign: any) {
-  if (campaign.id > 0) {
-    this.selectedCampaignId = campaign.id ;
-    this.selectedCampaignName = campaign.campaign;    
-    if (campaign.channelCampaign) {
-      this.showPartnerList = true;
-      campaign.expand = !campaign.expand;      
-      if (campaign.expand) {
-        if (this.selectedCampaign != null && this.selectedCampaign != undefined && this.selectedCampaign.id != campaign.id) {
-          this.selectedCampaign.expand = false;
         }
-        this.selectedCampaign = campaign;
-        this.partnerPagination = new Pagination;
-        this.partnerPagination.filterKey = this.campaignPagination.filterKey;
-        this.listPartnersForCampaign(this.partnerPagination);
-      }
-    } else {
-      this.showOwnCampaignLeads();
-    }            
+      );
   }
-}
 
-listPartnersForCampaign (pagination: Pagination) {
-  this.referenceService.loading(this.partnerRequestLoader, true);
+  showPartners(campaign: any) {
+    if (campaign.id > 0) {
+      this.selectedCampaignId = campaign.id;
+      this.selectedCampaignName = campaign.campaign;
+      if (campaign.channelCampaign) {
+        this.showPartnerList = true;
+        campaign.expand = !campaign.expand;
+        if (campaign.expand) {
+          if (this.selectedCampaign != null && this.selectedCampaign != undefined && this.selectedCampaign.id != campaign.id) {
+            this.selectedCampaign.expand = false;
+          }
+          this.selectedCampaign = campaign;
+          this.partnerPagination = new Pagination;
+          this.partnerPagination.filterKey = this.campaignPagination.filterKey;
+          this.listPartnersForCampaign(this.partnerPagination);
+        }
+      } else {
+        this.showOwnCampaignLeads();
+      }
+    }
+  }
+
+  listPartnersForCampaign(pagination: Pagination) {
+    this.referenceService.loading(this.partnerRequestLoader, true);
     pagination.userId = this.loggedInUserId;
     pagination.campaignId = this.selectedCampaignId;
     this.leadsService.listPartnersForCampaign(pagination)
-    .subscribe(
-        response => {            
-            this.referenceService.loading(this.partnerRequestLoader, false);
-            pagination.totalRecords = response.data.totalRecords;
-            this.partnerSortOption.totalRecords = response.data.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, response.data.partners);
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.partnerRequestLoader, false);
+          pagination.totalRecords = response.data.totalRecords;
+          this.partnerSortOption.totalRecords = response.data.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, response.data.partners);
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
-            },
+          this.httpRequestLoader.isServerError = true;
+        },
         () => { }
-    );
-}
-
-showCampaignLeadsByPartner(partner: any) {
-  if (partner.companyId > 0  && this.selectedCampaignId) {
-    this.selectedPartnerCompanyId = partner.companyId ;
-    this.selectedPartnerCompanyName = partner.companyName;
-    this.showCampaignLeads = true;          
+      );
   }
-}
 
-closeCampaignLeads() {
-  this.showCampaignLeads = false; 
-  this.selectedPartnerCompanyId = 0;
-  this.listLeads(this.leadsPagination);
-  this.listCampaigns(this.campaignPagination);
-}
-
-showOwnCampaignLeads() {
-  if (this.selectedCampaignId > 0) {
-    this.selectedPartnerCompanyId = 0 ;
-    this.selectedPartnerCompanyName = "";
-    this.showCampaignLeads = true;          
+  showCampaignLeadsByPartner(partner: any) {
+    if (partner.companyId > 0 && this.selectedCampaignId) {
+      this.selectedPartnerCompanyId = partner.companyId;
+      this.selectedPartnerCompanyName = partner.companyName;
+      this.showCampaignLeads = true;
+    }
   }
-}
 
-viewCampaignLeadForm(leadId: any) {   
-  this.showLeadForm = true;  
-  this.actionType = "view";
-  this.leadId = leadId;
-  
-}
+  closeCampaignLeads() {
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;
+    this.listLeads(this.leadsPagination);
+    this.listCampaigns(this.campaignPagination);
+  }
 
-editCampaignLeadForm(leadId: any) {  
-  this.showLeadForm = true; 
-  this.actionType = "edit";
-  this.leadId = leadId;
-}
+  showOwnCampaignLeads() {
+    if (this.selectedCampaignId > 0) {
+      this.selectedPartnerCompanyId = 0;
+      this.selectedPartnerCompanyName = "";
+      this.showCampaignLeads = true;
+    }
+  }
 
-refreshCounts() {
-  this.getCounts();
-}
+  viewCampaignLeadForm(leadId: any) {
+    this.showLeadForm = true;
+    this.actionType = "view";
+    this.leadId = leadId;
 
-registerDealForm(leadId: any) {
-  this.showDealForm = true;
-  this.actionType = "add";
-  this.leadId = leadId;
-}
+  }
 
-showComments(lead: any) {
-  this.selectedLead = lead;
-  this.isCommentSection = !this.isCommentSection;
-}
+  editCampaignLeadForm(leadId: any) {
+    this.showLeadForm = true;
+    this.actionType = "edit";
+    this.leadId = leadId;
+  }
 
-addCommentModalClose(event: any) {
-  this.selectedLead.unReadChatCount = 0;
- // console.log(this.selectedLead.unReadChatCount)
-  this.isCommentSection = !this.isCommentSection;
-}
+  refreshCounts() {
+    this.getCounts();
+  }
+
+  registerDealForm(leadId: any) {
+    this.showDealForm = true;
+    this.actionType = "add";
+    this.leadId = leadId;
+  }
+
+  showComments(lead: any) {
+    this.selectedLead = lead;
+    this.isCommentSection = !this.isCommentSection;
+  }
+
+  addCommentModalClose(event: any) {
+    this.selectedLead.unReadChatCount = 0;
+    // console.log(this.selectedLead.unReadChatCount)
+    this.isCommentSection = !this.isCommentSection;
+  }
 
   downloadLeads() {
     let type = this.leadsPagination.filterKey;
@@ -724,6 +729,11 @@ addCommentModalClose(event: any) {
       fileName = type + "-leads"
     }
 
+    let searchKey = "";  
+    if (this.leadsPagination.searchKey != null && this.leadsPagination.searchKey != undefined) {
+      searchKey = this.leadsPagination.searchKey;
+    }   
+
     let userType = "";
     if (this.isVendorVersion) {
       userType = "v";
@@ -734,6 +744,7 @@ addCommentModalClose(event: any) {
     if (this.leadsPagination.vendorCompanyProfileName != undefined && this.leadsPagination.vendorCompanyProfileName != null) {
       vendorCompanyProfileName = this.leadsPagination.vendorCompanyProfileName;
     }
+
     // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
     //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
 
@@ -780,10 +791,92 @@ addCommentModalClose(event: any) {
     mapInput.setAttribute("value", vendorCompanyProfileName);
     mapForm.appendChild(mapInput);
 
+    // searchKey
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "searchKey";
+    mapInput.setAttribute("value", searchKey);
+    mapForm.appendChild(mapInput);
+
+    // fromDate
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "fromDate";
+    mapInput.setAttribute("value", this.leadsPagination.fromDateFilterString);
+    mapForm.appendChild(mapInput);
+
+    // toDate
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "toDate";
+    mapInput.setAttribute("value", this.leadsPagination.toDateFilterString);
+    mapForm.appendChild(mapInput);
+
     document.body.appendChild(mapForm);
     mapForm.submit();
     //window.location.assign(url);
 
   }
- 
+
+  toggleFilterOption() {
+    this.showFilterOption = !this.showFilterOption;    
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    if (!this.showFilterOption) {
+      this.leadsPagination.fromDateFilterString = "";
+      this.leadsPagination.toDateFilterString = "";
+      if (this.filterMode) {
+        this.leadsPagination.pageIndex = 1;
+        this.listLeads(this.leadsPagination);
+        this.filterMode = false;
+      }      
+    } else {
+      this.filterMode = false;
+    }
+  }
+
+  closeFilterOption() {
+    this.showFilterOption = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = ""; 
+    this.leadsPagination.fromDateFilterString = "";
+    this.leadsPagination.toDateFilterString = "";
+    if (this.filterMode) {
+      this.leadsPagination.pageIndex = 1;
+      this.listLeads(this.leadsPagination);
+      this.filterMode = false;
+    }    
+  }
+
+  validateDateFilters() {
+    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+      var fromDate = Date.parse(this.fromDateFilter);
+      if (this.toDateFilter != undefined && this.toDateFilter != "") {
+        var toDate = Date.parse(this.toDateFilter);
+        if (fromDate <= toDate) {
+          this.leadsPagination.fromDateFilterString = this.fromDateFilter;
+          this.leadsPagination.toDateFilterString = this.toDateFilter;
+          this.filterMode = true;
+          this.listLeads(this.leadsPagination);
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }
+      } else {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      }
+    } else {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    }    
+  }
+
+  setListView() {
+    this.listView = true;
+    this.closeFilterOption();
+  }
+
+  setCampaignView() {
+    this.listView = false;
+    this.closeFilterOption();
+  }
+
 }

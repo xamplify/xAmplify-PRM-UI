@@ -366,7 +366,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	downloadEmptyCsv() {
-		window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
+		window.location.href = this.authenticationService.REST_URL+"userlists/download-default-list/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
+
 	}
 
 	setPage(event: any) {
@@ -1464,7 +1465,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	getGoogleContactsUsers() {
 		try {
-			let message = 'Retrieving ' + this.authenticationService.partnerModule.customName + ' from google...! Please Wait...It\'s processing';
+			let partnerModuleCustomName = localStorage.getItem('partnerModuleCustomName');
+			let message = 'Retrieving '+partnerModuleCustomName+' from google...! Please Wait...It\'s processing';
 			swal({
 				text: message,
 				allowOutsideClick: false,
@@ -1953,6 +1955,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
 					(error: any) => {
@@ -2026,6 +2029,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
 					(error: any) => {
@@ -2487,46 +2491,46 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	ngAfterViewInit() { }
 
 	ngAfterViewChecked() {
-		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
-		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
-		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
-		let tempZohoAuth = localStorage.getItem('isZohoAuth');
-		let tempValidationMessage: string = '';
-		tempValidationMessage = localStorage.getItem('validationMessage');
-		localStorage.removeItem('isGoogleAuth');
-		localStorage.removeItem('isSalesForceAuth');
-		localStorage.removeItem('isHubSpotAuth');
-		localStorage.removeItem('isZohoAuth');
-		localStorage.removeItem('validationMessage');
-		this.customResponse.isVisible = false;
-		if (tempCheckGoogleAuth == 'yes') {
-			this.getGoogleContactsUsers();
-			tempCheckGoogleAuth = 'no';
-			this.contactService.vanitySocialProviderName = "nothing";
-			//this.router.navigate(['/home/partners/add']);
-		}
-		else if (tempCheckSalesForceAuth == 'yes') {
-			this.showModal();
-			console.log("AddContactComponent salesforce() Authentication Success");
-			this.checkingPopupValues();
-			tempCheckSalesForceAuth = 'no';
-			this.contactService.vanitySocialProviderName = "nothing";
-		}
-		else if (tempCheckHubSpotAuth == 'yes') {
-			this.showHubSpotModal();
-			tempCheckHubSpotAuth = 'no';
-			this.contactService.vanitySocialProviderName = "nothing";
-		} else if (tempZohoAuth == 'yes') {
-			this.zohoShowModal();
-			this.checkingZohoPopupValues();
-			tempZohoAuth = 'no';
-			this.contactService.vanitySocialProviderName = "nothing";
-		}
-		else if (tempValidationMessage != null && tempValidationMessage.length > 0 && this.isPartner) {
-			swal.close();
-			this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
-		}
-	}
+        let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
+        let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
+        let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+        let tempZohoAuth = localStorage.getItem('isZohoAuth');
+        let tempValidationMessage : string = '';
+        tempValidationMessage = localStorage.getItem('validationMessage');
+        localStorage.removeItem('isGoogleAuth');
+        localStorage.removeItem('isSalesForceAuth');
+        localStorage.removeItem('isHubSpotAuth');
+        localStorage.removeItem('isZohoAuth');
+        localStorage.removeItem('validationMessage');
+        if (tempCheckGoogleAuth == 'yes' ) {
+        	this.getGoogleContactsUsers();
+        	tempCheckGoogleAuth = 'no';
+            this.contactService.vanitySocialProviderName = "nothing";
+        	//this.router.navigate(['/home/partners/add']);
+        }
+        else if (tempCheckSalesForceAuth == 'yes' ) {
+        	 this.showModal();
+             console.log("AddContactComponent salesforce() Authentication Success");
+             this.checkingPopupValues();
+             tempCheckSalesForceAuth = 'no';
+             this.contactService.vanitySocialProviderName = "nothing";
+        }
+        else if (tempCheckHubSpotAuth == 'yes' ) {
+        	this.showHubSpotModal();
+        	tempCheckHubSpotAuth = 'no';
+            this.contactService.vanitySocialProviderName = "nothing";
+        }else if (tempZohoAuth == 'yes') {
+        	this.zohoShowModal();
+            this.checkingZohoPopupValues();
+            tempZohoAuth = 'no';
+            this.contactService.vanitySocialProviderName = "nothing";
+        }
+        else if (tempValidationMessage!=null && tempValidationMessage.length>0 && this.isPartner) {
+        	swal.close();
+            this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
+        }
+    }
+
 
 	ngOnInit() {
 		try {
@@ -3296,6 +3300,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 			}
 			this.setSocialPage(1);
+			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 9;
 			console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);
 		}
@@ -3717,6 +3722,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		this.selectedAddPartnerOption = 6;
 		this.setSocialPage(1);
+		this.customResponse.isVisible = false;
 		swal.close();
 	}
 

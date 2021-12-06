@@ -480,7 +480,7 @@ table tr:nth-child(even) td {
 }
 
 .campaign-refresh-style {
-	margin-top: -25px;
+	margin-top: 10px;
     margin-left: 20px;
 }
 
@@ -497,4 +497,22 @@ table tr:nth-child(even) td {
 .manage-campaigns-prml {
 	padding-right: 0px;
 	margin-left: -25px;
+}
+
+@media screen and (max-width:600px){
+	.mWid{
+		display: block!important;;
+	}
+	.mPad{
+	left: -70px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+	}
+	.campaign-downloading-mt{
+	margin-top: -28px;
+    margin-right: -77px!important;
+	}
+	.mSlide{
+		overflow-x: auto;
+	}
 }

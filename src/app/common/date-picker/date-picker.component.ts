@@ -12,6 +12,7 @@ export class DatePickerComponent implements OnInit {
 	@Output() dataFieldChange: EventEmitter<any> = new EventEmitter();
 	@Input() isFromForm: boolean;
 	@Input() isFromMdfCredit: boolean;
+	@Input() isFromFilter: any = false;
 	constructor() { }
 
 	ngOnInit() {
@@ -28,6 +29,20 @@ export class DatePickerComponent implements OnInit {
 				minDate: new Date()
 			});
 			this.customPlaceHolder = "MM/DD/YYYY";
+		} else if (this.isFromFilter != undefined && this.isFromFilter) {	
+			let self = this;
+			flatpickr('.flatpickr', {
+				enableTime: false,
+				dateFormat: 'Y-m-d',
+				maxDate: new Date()
+			});
+			this.customPlaceHolder = "YYYY-MM-DD";
+		}  else {
+			flatpickr('.flatpickr', {
+				enableTime: false,
+				dateFormat: 'm-d-Y',
+			});
+			this.customPlaceHolder = "MM-DD-YYYY";
 		}
 	}
 

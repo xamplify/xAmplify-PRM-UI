@@ -870,7 +870,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       subscribe(
           response=>{
              if(response.data){
-                 let message = "This campaign cannot be edited as partner group has been selected.";
+                 let message = "This campaign cannot be edited as "+this.authenticationService.partnerModule.customName+" group has been selected.";
                  this.campaignErrorResponse = new CustomResponse('ERROR',message,true); 
                  this.referenceService.scrollToModalBodyTop("previewCampaignModalBody");
                  this.ngxloading = false;

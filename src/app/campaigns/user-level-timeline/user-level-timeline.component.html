@@ -23,17 +23,15 @@
         <div class="row mb10" style="margin-left: 30px;">
           <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
           <ng-container *ngIf="!disabled">
-            <span
-              *ngIf="((campaignDetails?.nurtureCampaign || !campaignDetails?.channelCampaign) &&  (campaignType!='LANDINGPAGE') &&(campaignType!='SOCIAL')&&
-                (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf) || campaignDetails?.showRegisterLeadButton">
+            <span *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
               <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                 class="btn btn-success">{{dealButtonText}}</button>
             </span>
           </ng-container>
           <ng-container *ngIf="disabled">
-            <button title="This campaign has been deleted by your vendor.You can't register a lead" 
-            style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
-             class="btn btn-success">{{dealButtonText}}</button>
+            <button title="This campaign has been deleted by your vendor.You can't register a lead"
+              style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
+              class="btn btn-success">{{dealButtonText}}</button>
           </ng-container>
           <h5 class="f-w-600 mt10 mb0">
             <span title="{{userLevelCampaignAnalyticsDTO?.fullName}}" *ngIf="userLevelCampaignAnalyticsDTO?.fullName">{{userLevelCampaignAnalyticsDTO?.fullName | slice:0:20}}</span>
@@ -205,7 +203,7 @@
 </section>
 
 <!-- --_Deal Registration -->
-<div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<!-- <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   data-keyboard="false" data-backdrop="static" *ngIf="isDealRegistration && !isDealPreview" style="display: block">
   <div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
     <div class="modal-content">
@@ -217,7 +215,13 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
+
+<ng-container *ngIf="isDealRegistration && !isDealPreview">
+  <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaignId"
+    [campaignName]="campaignName" [actionType]="leadActionType" (notifyOtherComponent)="showTimeLineView()">
+  </app-add-lead>
+</ng-container>
 <!-- --Lead Registration -->
 <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   data-keyboard="false" data-backdrop="static" *ngIf="isDealPreview" style="display: block">

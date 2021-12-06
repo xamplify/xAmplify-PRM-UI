@@ -531,7 +531,7 @@
               *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE' || campaignType === 'SURVEY'">
               <button class="portlet light color1-invert crcb lt-blue-c"
                 (click)="emailActionDetails(campaign.campaignId, 'recipients', emailActionDetailsPagination)"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 [disabled]="campaignReport.totalRecipients < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-user"></i>
@@ -546,7 +546,7 @@
               *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
               <button class="portlet light color1-invert crcb lt-green-c"
                 (click)="emailActionDetails(campaign.campaignId, 'sent', emailActionDetailsPagination)"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-envelope-o"></i>
@@ -561,7 +561,7 @@
               *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb tk-blue-c"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 (click)="emailActionDetails(campaign.campaignId, 'deliverability', emailActionDetailsPagination)"
                 [disabled]="campaignReport.deliveredCount < 1  || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
@@ -576,7 +576,7 @@
             <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb vlt-blue-c"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
                 [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
@@ -592,7 +592,7 @@
               *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
               [ngClass]="{'forbidden' :!isDataShare ?true:null}">
               <button class="portlet light color1-invert crcb pure-blue-c"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
                 [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
@@ -638,8 +638,8 @@
             </div>
             <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
               *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
-              [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-              <button class="portlet light color1-invert crcb y-b-c" [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+              [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}">
+              <button class="portlet light color1-invert crcb y-b-c" [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
                 [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
@@ -654,7 +654,7 @@
             <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
               *ngIf="campaignType === 'SOCIAL'">
               <button class="portlet light color1-invert crcb g-b-c" data-toggle="modal" data-target="#scrModal"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 [disabled]="redistributedAccounts.size < 1 || !isDataShare">
                 <div class="portlet-body text-center">
                   <i class="fa fa-share-alt"></i>
@@ -684,7 +684,7 @@
               *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
               <button class="portlet light color1-invert crcb r-b-c"
                 (click)="emailActionDetails(campaign.campaignId, 'hardbounce', emailActionDetailsPagination)"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 [disabled]="campaignReport.hardBounce < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-ban"></i>
@@ -699,7 +699,7 @@
               *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
               <button class="portlet light color1-invert crcb h-r-c"
                 (click)="emailActionDetails(campaign.campaignId, 'softbounce', emailActionDetailsPagination)"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 [disabled]="campaignReport.softBounce < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-trash-o"></i>
@@ -714,7 +714,7 @@
               *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
               <button class="portlet light color1-invert crcb r-r-c"
                 (click)="emailActionDetails(campaign.campaignId, 'unsubscribe', emailActionDetailsPagination)"
-                [ngClass]="{'forbidden' :!isDataShare ?true:null}"
+                [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 [disabled]="campaignReport.unsubscribed < 1 || !isPartnerEnabledAnalyticsAccess">
                 <div class="portlet-body text-center">
                   <i class="fa fa-user-times"></i>
@@ -736,7 +736,7 @@
                       MAP</span>
                   </div>
                   <div><span
-                      style="float: right;font-size: 14px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">
+                      style="float: right;font-size: 13px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">
                       <ng-container *ngIf="campaignType!='LANDINGPAGE'">
                         {{campaignType}}
                       </ng-container>
@@ -856,7 +856,7 @@
                       <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
                       <span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
                       <span *ngIf="campaignType==='REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
-                      <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{authenticationService?.partnerModule?.customName} REDISTRIBUTED CAMPAIGN
+                      <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{authenticationService?.partnerModule?.customName}} REDISTRIBUTED CAMPAIGN
                         ANALYTICS</span>
                       <span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
                       <span *ngIf="campaignType==='SURVEY'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
@@ -1084,11 +1084,11 @@
                                     <div class="progress-bar progress-bar-success"
                                       [ngClass]="{'special-progress-bar' : item.viewsCount === 0 }" role="progressbar"
                                       [style.width.%]="(item.viewsCount/maxViewsValue)*100">
-                                      <span
-                                        *ngIf="campaignType !== 'REGULAR' && campaignType !== 'VIDEO' && campaignType !== 'SURVEY'">{{item.viewsCount}}</span>
+                                      <!-- <span
+                                        *ngIf="campaignType !== 'REGULAR' && campaignType !== 'VIDEO' && campaignType !== 'SURVEY'">{{item.viewsCount}}</span> -->
                                       <span *ngIf="campaignType === 'VIDEO'">{{item.emailOpenedCount}}</span>
                                       <span
-                                        *ngIf="campaignType === 'REGULAR'|| campaignType === 'SURVEY'">{{item.emailOpenedCount}}</span>
+                                        *ngIf="campaignType === 'REGULAR'|| campaignType === 'SURVEY'||campaignType === 'SOCIAL'|| campaignType === 'LANDINGPAGE'|| campaignType === 'EVENT'">{{item.viewsCount}}</span>
                                     </div>
                                   </div>
                                   <ng-container *ngIf="campaignType == 'SOCIAL'">
@@ -1810,7 +1810,7 @@
             <div class="row mb10">
               <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
               <ng-container *ngIf="!disabled">
-                <span *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
+                <span *ngIf="showUserLevelCampaignAnalytics && showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
                   <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                     class="btn btn-success">{{dealButtonText}}</button>
                 </span>

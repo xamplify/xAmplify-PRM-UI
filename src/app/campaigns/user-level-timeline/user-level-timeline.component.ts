@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { PagerService } from 'app/core/services/pager.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
+import { LeadsService } from 'app/leads/services/leads.service';
 
 
 @Component({
@@ -41,8 +42,15 @@ export class UserLevelTimelineComponent implements OnInit {
   previousRouterAlias: string;
   navigatedFrom:string;
   analyticsCampaignId:number;
-  constructor(private dealRegistrationService:DealRegistrationService,private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
-	}
+  loggedInUserId: number = 0;
+  showRegisterLeadButton = false;
+  leadActionType = "add";
+  leadId = 0;
+  registerLeadButtonError = false;
+  campaignName: any;
+  constructor(private dealRegistrationService:DealRegistrationService,private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, private leadsService: LeadsService) {
+    this.loggedInUserId = this.authenticationService.getUserId();
+  }
 
   ngOnInit() {
     this.loading = true;
@@ -83,7 +91,7 @@ export class UserLevelTimelineComponent implements OnInit {
      let timeLineData = result.data;
      this.userLevelCampaignAnalyticsDTO = timeLineData;
      this.emailLogs = timeLineData['emailLogs'];
-     this.campaignDetails = timeLineData['campaignDetais'];
+     this.campaignDetails = timeLineData['campaignDetais'];     
      let launchTimeInUtcString = this.campaignDetails['launchTimeInUTCString'];
      if(launchTimeInUtcString!=""){
        console.log(launchTimeInUtcString);
@@ -92,6 +100,7 @@ export class UserLevelTimelineComponent implements OnInit {
       this.campaignDetails['displayTime'] = "-";
      }
      this.campaignType = this.campaignDetails['campaignType'];
+     this.campaignName = this.campaignDetails['campaignName'];
      this.selectedRow['campaignId'] = this.campaignId;
      this.selectedRow['userId'] = this.selectedUserId;
      this.selectedRow['emailId'] = this.userLevelCampaignAnalyticsDTO['emailId'];
@@ -146,75 +155,112 @@ export class UserLevelTimelineComponent implements OnInit {
   }
 
   /****************Deal Registration***************************/
-  getDealState() {
-    this.loading = true;
-      this.dataLoader = true;
-    if (this.campaignId>0) {
-      const obj = { "campaignId": this.campaignId };
-      this.campaignService.getCampaignById(obj).subscribe(data => {
-        if (data.nurtureCampaign) {
-          this.campaignService.getCampaignById({ "campaignId": data.parentCampaignId }).subscribe(parent_campaign => {
-            if(parent_campaign.userId!=undefined){
-              this.referenceService.getCompanyIdByUserId(parent_campaign.userId).subscribe(response => {
-                this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
-                  this.enableLeads = data.enableLeads;
-                  this.disabled = false;
-                });
-              })
-            }else{
-                this.disabled = true;
-            }
+  // getDealState() {
+  //   this.loading = true;
+  //     this.dataLoader = true;
+  //   if (this.campaignId>0) {
+  //     const obj = { "campaignId": this.campaignId };
+  //     this.campaignService.getCampaignById(obj).subscribe(data => {
+  //       if (data.nurtureCampaign) {
+  //         this.campaignService.getCampaignById({ "campaignId": data.parentCampaignId }).subscribe(parent_campaign => {
+  //           if(parent_campaign.userId!=undefined){
+  //             this.referenceService.getCompanyIdByUserId(parent_campaign.userId).subscribe(response => {
+  //               this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
+  //                 this.enableLeads = data.enableLeads;
+  //                 this.disabled = false;
+  //               });
+  //             })
+  //           }else{
+  //               this.disabled = true;
+  //           }
             
-          }, error => console.log(error))
-        } else {
-          if (this.authenticationService.loggedInUserRole != "Team Member") {
-            if (data.userId == this.authenticationService.getUserId()) {
-              this.createdBySelf = true;
-              console.log(this.createdBySelf)
-            }
-          } else {
-            this.dealRegistrationService.getSuperorId(this.authenticationService.getUserId()).subscribe(response => {
-              if (response.includes(data.userId)) {
-                this.createdBySelf = true;
-                console.log(this.createdBySelf)
-              }
-            })
+  //         }, error => console.log(error))
+  //       } else {
+  //         if (this.authenticationService.loggedInUserRole != "Team Member") {
+  //           if (data.userId == this.authenticationService.getUserId()) {
+  //             this.createdBySelf = true;
+  //             console.log(this.createdBySelf)
+  //           }
+  //         } else {
+  //           this.dealRegistrationService.getSuperorId(this.authenticationService.getUserId()).subscribe(response => {
+  //             if (response.includes(data.userId)) {
+  //               this.createdBySelf = true;
+  //               console.log(this.createdBySelf)
+  //             }
+  //           })
+  //         }
+  //         this.referenceService.getCompanyIdByUserId(data.userId).subscribe(response => {
+  //           this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
+  //             this.enableLeads = data.enableLeads;
+  //             console.log(data)
+  //           });
+  //         })
+  //       }
+  //     });
+  //     this.loading = false;
+  //     this.dataLoader = false;
+  //   }
+
+  //   this.dealRegistrationService.getDeal(this.campaignId, this.selectedUserId).subscribe(data => {
+  //     this.dealId = data;
+  //     if (data == -1) {
+  //       this.dealButtonText = "Register Lead";
+  //       this.isDeal = false;
+  //     } else {
+  //       this.dealRegistrationService.getDealById(data, this.selectedUserId).subscribe(response => {
+  //         let isDeal = response.data.deal;
+  //         if(this.campaignDetails['showRegisterLeadButton'] && !isDeal ){
+  //           this.isDeal = false;
+  //         }else{
+  //           this.isDeal = isDeal;
+  //         }
+  //         if (this.isDeal) {
+  //           this.dealButtonText = "Preview Deal";
+  //         } else {
+  //           this.dealButtonText = "Update Lead";
+  //         }
+  //         this.leadData = response.data;
+          
+  //       })
+  //     }
+  //   })
+  // }
+
+  getDealState() {
+    this.registerLeadButtonError = false;
+    if (this.campaignId != null) {
+      this.campaignService.showRegisterLeadButton(this.campaignId).
+        subscribe(data => {
+          if(data.statusCode==200){
+            let map = data.map;
+            this.disabled = map.disabled;
+            this.showRegisterLeadButton = map.showButton;
+          }else{
+            this.registerLeadButtonError = true;
           }
-          this.referenceService.getCompanyIdByUserId(data.userId).subscribe(response => {
-            this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
-              this.enableLeads = data.enableLeads;
-              console.log(data)
-            });
-          })
-        }
+      },error=>{
+          this.registerLeadButtonError = true;
       });
-      this.loading = false;
-      this.dataLoader = false;
     }
 
-    this.dealRegistrationService.getDeal(this.campaignId, this.selectedUserId).subscribe(data => {
-      this.dealId = data;
-      if (data == -1) {
+    
+
+    this.leadsService.getLeadByCampaign(this.campaignId, this.selectedUserId, this.loggedInUserId)
+    .subscribe(response => {
+      let data = response.data;
+      if (data == undefined) {
         this.dealButtonText = "Register Lead";
-        this.isDeal = false;
+        this.leadActionType = "add";
+        this.leadId = 0;
+        //this.isDeal = false;
       } else {
-        this.dealRegistrationService.getDealById(data, this.selectedUserId).subscribe(response => {
-          let isDeal = response.data.deal;
-          if(this.campaignDetails['showRegisterLeadButton'] && !isDeal ){
-            this.isDeal = false;
-          }else{
-            this.isDeal = isDeal;
-          }
-          if (this.isDeal) {
-            this.dealButtonText = "Preview Deal";
-          } else {
-            this.dealButtonText = "Update Lead";
-          }
-          this.leadData = response.data;
-          
-        })
-      }
+       // this.leadData = data;
+        this.dealButtonText = "Update Lead";
+        this.leadActionType = "edit";
+        this.leadId = data.id;
+      }      
     })
+
   }
 
   showDealRegistrationForm() {

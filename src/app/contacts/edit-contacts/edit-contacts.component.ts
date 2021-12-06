@@ -222,7 +222,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
 	sharedLeads : boolean = false;
 	showNotifyPartnerOption = false;
-
+	hasPartnersRole : boolean = false;
+    hasShareLeadsRole : boolean = false;
+	
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -279,6 +281,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.users = new Array<User>();
 		this.notifyParent = new EventEmitter<User>();
 		this.hasContactRole = this.refService.hasRole(this.refService.roles.contactsRole);
+		this.hasPartnersRole = this.refService.hasRole(this.refService.roles.partnersRole);
+        this.hasShareLeadsRole = this.refService.hasRole(this.refService.roles.shareLeadsRole);
 
 		this.hasAllAccess = this.refService.hasAllAccess();
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -1910,7 +1914,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		if (event.type == 'contacts') {
 			this.pagination.pageIndex = event.page;
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-		}
+		} else if (this.currentContactType == "all_contacts") {
+            this.pagination.searchKey = this.searchKey;
+            this.pagination.pageIndex = 1;
+            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+        }
 		else {
 			this.contactsByType.pagination.pageIndex = event.page;
 			this.listOfSelectedContactListByType(event.type);
@@ -1923,7 +1931,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	backToEditContacts() {
-		this.setPage(1);
+		this.currentContactType = "all_contacts";
 		this.searchKey = null;
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.maxResults = 12;
@@ -1940,6 +1948,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
 		this.contactsByType.selectedCategory = null;
+		this.setPage(1);
 	}
 
 	checkAllInvalidContacts(ev: any) {
@@ -2426,6 +2435,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	addContactModalOpen() {
 		this.addContactuser = new User();
 		this.isUpdateUser = false;
+		this.updateContactUser = false;
 		this.contactAllDetails = [];
 		this.contactService.isContactModalPopup = true;
 	}
@@ -2754,7 +2764,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	downloadEmptyCsv() {
 		if (this.isPartner) {
-			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_PARTNER_LIST _EMPTY.csv";
+			window.location.href = this.authenticationService.REST_URL+"userlists/download-default-list/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
 		} else {
 			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_USER_LIST _EMPTY.csv";
 		}
@@ -2826,6 +2836,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								let message = "Your "+customMessage+" has been updated successfully.";
                                 this.customResponse = new CustomResponse('SUCCESS', message, true);
                             }
+                            this.updateContactUser = false;
+                            this.isUpdateUser = false;
                             this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
                         } else {
                             this.authenticationService.forceToLogout();

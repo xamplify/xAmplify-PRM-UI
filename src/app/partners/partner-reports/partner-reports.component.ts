@@ -62,7 +62,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
   customResponse: CustomResponse = new CustomResponse();
   vendoorInvitation: VendorInvitation = new VendorInvitation();
   worldMapLoader = false;
-   survey: boolean =false;
+  survey: boolean =false;
+  throughPartnerCampaignsTabName: string = "Through Partner Campaigns";
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption,
@@ -410,7 +411,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
                if(response.approvePartnerList.length === 0){
-                   this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
+                   this.customResponse = new CustomResponse( 'INFO','No records found', true );
                }
                for ( var i in response.approvePartnerList) {
                    response.approvePartnerList[i].contactCompany = response.approvePartnerList[i].partnerCompanyName;
@@ -429,13 +430,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       if(this.authenticationService.isSuperAdmin()){
           pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
       }
-      console.log(pagination);
       this.parterService.getInActivePartnersAnalytics(pagination).subscribe(
               (response: any) => {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
                if(response.inactivePartnerList.length === 0){
-                   this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
+                   this.customResponse = new CustomResponse( 'INFO','No records found', true );
                }else {
                    this.customResponse = new CustomResponse();
                }
@@ -714,6 +714,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       if(this.loggedInUserId>0){
         this.partnerReportData();
         this.goToActivePartnersDiv();
+        if(localStorage!=undefined){
+            this.throughPartnerCampaignsTabName = "Through "+localStorage.getItem('partnerModuleCustomName')+" Campaigns";
+        }
     }else{
         this.router.navigate(['home/dashboard']);
     }

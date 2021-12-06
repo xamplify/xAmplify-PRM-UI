@@ -113,16 +113,16 @@
                 <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
                   <div class="btn-group pull-right">
                     <ng-container class='m10'>
-                      <span data-placement="bottom" (click)="listView = true" class="btn btn-xs hidden-xs l-g-view"
+                      <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
                         data-toggle="tooltip" [class.disabled]="listView" title="List View">
                         <i aria-hidden="true" class="fa fa-th-list p10"></i>
                       </span>
                       <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                        title="Campaign View" [class.disabled]="!listView" (click)="listView = false">
+                        title="Campaign View" [class.disabled]="!listView" (click)="setCampaignView()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                       </span>
                       <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                      title="Download" [class.disabled]="dealsSortOption.totalRecords == 0" (click)="downloadDeals()">
+                      title="Download" [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
                       <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                     </span>
                     </ng-container>
@@ -131,8 +131,8 @@
                         <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
                       </button>
                     </a>
-                    <div class="inputs" align="right" style="float: right">
-                      <div class="portlet-input input-inline" style="display: table-cell;">
+                    <div class="inputs" align="right" style="float: right; display: inline-flex;">
+                      <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
                         <div class="input-icon right" style="position: relative;right: -11px;">
                           <input type="text" class="form-control" [(ngModel)]="dealsSortOption.searchKey"
                             [ngModelOptions]="{standalone: true}" placeholder="Search"
@@ -144,12 +144,56 @@
                           </button>
                         </div>
                       </div>
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Filter"
+                          *ngIf="listView" (click)="toggleFilterOption()">
+                          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row" id="box" *ngIf="httpRequestLoader.isServerError" translate>
                 Please contact admin for 'Deals'
+              </div>
+              <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="portlet light m10">
+                    <div class="portlet-title">
+                      <div class="caption" translate>Apply Filter</div>
+                      <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                    </div>                                       
+                    <div class="portlet box">
+                      <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
+                      </app-response-message> 
+                      <form role="form" class="form-horizontal form-bordered form-label-stripped">
+                        <div class="form-group">
+                          <div class="form-inline col-sm-12 ">
+                            <div class="form-group col-sm-4">
+                              <label class="control-label">From Date
+                                <span class="required">*</span>
+                              </label>
+                              <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                              </app-date-picker>
+                            </div>
+                            <div class="form-group col-sm-4">
+                              <label class="control-label">To Date
+                                <span class="required">*</span>
+                              </label>
+                              <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                              </app-date-picker>
+                            </div>
+                            <div class="form-group col-sm-4">
+                              <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
+                                translate>Filter</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>                                    
+                </div>                
               </div>
               <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
               </app-list-loader>
@@ -323,9 +367,10 @@
                               style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                             <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.png"
                               style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                            <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 "
-                              src="assets/images/landing-page.png" style="height: 50px;"
-                              alt="{{campaign.campaignType}} Campaign">
+                            <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.png"
+                             style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                            <img *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 " src="assets/images/survey.png" 
+                              style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                           </td>
                           <td>
                             <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaign}}">
@@ -376,7 +421,7 @@
                                 <div class="portlet light">
                                   <div class="portlet-title">
                                     <div class="caption">
-                                      <span class="caption-subject font-red-sunglo uppercase">Partners</span>
+                                      <span class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
                                     </div>
                                     <div class="inputs" align="right" style="float: right; display: flex;">                                      
                                       <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
