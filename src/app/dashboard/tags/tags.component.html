@@ -68,7 +68,8 @@
                             <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="getTagById(tag)">
                                 <i class="fa fa-pencil-square-o"></i>
                             </a>
-                            <a id="template-delete" (click)="confirmDeleteTag(tag)" data-toggle="tooltip" data-placement="top" title="Delete">
+                            <a id="template-delete" [ngClass]="{'disable-click' : (loggedInUserId !== tag.createdBy)}"
+                                (click)="confirmDeleteTag(tag)" data-toggle="tooltip" data-placement="top" title="Delete">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </div>

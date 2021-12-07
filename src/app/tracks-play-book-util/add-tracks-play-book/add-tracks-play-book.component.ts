@@ -698,6 +698,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   openQuizPopup() {
+    this.quizFormPagination = new Pagination();
+    this.quizFormSortOption = new SortOption();
     this.listQuizForms(this.quizFormPagination);
     $('#quiz-list').modal('show');
   }

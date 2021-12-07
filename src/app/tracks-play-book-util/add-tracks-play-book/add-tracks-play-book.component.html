@@ -329,7 +329,7 @@
                           </span>
                         </div>
                         <div class="wrap-asset-name" style="-webkit-box-orient: vertical;">
-                          <span data-toggle="tooltip" [title]="file.assetName">
+                          <span [title]="file.assetName">
                             <strong>{{file.assetName}}</strong>
                           </span>
                         </div>
@@ -810,7 +810,7 @@
               [style.borderColor]="form.borderColor">
               <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor"
                 [style.borderColor]="form.borderColor">
-                <div class="panel-title">{{form.name}}</div>
+                <div class="panel-title form-name-wrap">{{form.name}}</div>
               </div>
               <div class="panel-body" *ngIf="!formError">
                 <h5>{{form.description}}</h5>
@@ -825,7 +825,7 @@
                         placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000"
                         disabled="disabled">
                     </ng-container>
-
+ 
                     <ng-container *ngIf="columnInfo.labelType=='textarea'">
                       <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}"
                         maxlength="1000" disabled="disabled"></textarea>

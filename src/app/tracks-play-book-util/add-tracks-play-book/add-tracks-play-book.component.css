@@ -1048,6 +1048,7 @@ input.cmn-toggle-round-flat:checked+label:after {
 .wrap-asset-name {
     text-overflow: ellipsis;
     overflow: hidden;
+    word-break: break-word;
     display: -webkit-box !important;
     -webkit-line-clamp: 2;
     color: #505659;
@@ -1067,3 +1068,7 @@ input.cmn-toggle-round-flat:checked+label:after {
     padding: 5px 10px;
     display: inline;
   }
+
+.form-name-wrap {
+    word-break: break-word;
+}
