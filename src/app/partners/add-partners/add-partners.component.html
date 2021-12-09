@@ -620,8 +620,26 @@
                                                     </td>
                                                     <td>
                                                         <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact"> </app-user-info>
+                                                        <ng-container *ngIf="!contact?.multipleTeamMemberGroupsAssigned">
+                                                            <span [className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
+                                                                <ng-container *ngIf="contact?.teamMemberGroupId>0">
+                                                                    <strong title="{{contact?.selectedTeamMemberGroupName}}">Group : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
+                                                                        <span *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
+                                                                    </strong>
+                                                                    <br>
+                                                                    <strong>Team Members : {{contact?.selectedTeamMembersCount}}</strong>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="contact?.teamMemberGroupId==0">
+                                                                    <strong>No Group Selected</strong>
+                                                                </ng-container>
+                                                            </span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="contact?.multipleTeamMemberGroupsAssigned">
+                                                            <span class="inactive-status">
+                                                                <strong>Please contact admin</strong>
+                                                            </span>
+                                                        </ng-container>
                                                     </td>
-                                                  
                                                     <td class="hidden-xs white-space-transform" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
                                                         <span *ngIf="contact.vertical?.length>14">..</span>
                                                     </td>
@@ -1211,13 +1229,6 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && authenticationService.module.isPrmAndPartnerTeamMember">
-                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
-                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
-                </ng-container>
-                <ng-container *ngIf="authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
-                    <h4 class="modal-title popup-header-title-font" translate>{{authenticationService?.partnerModule?.customName}}</h4>
-                </ng-container>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible"> 

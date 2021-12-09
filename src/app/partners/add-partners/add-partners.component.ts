@@ -653,7 +653,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$(".modal-body").animate({ scrollTop: 0 }, 'slow');
 		this.contactAndMdfPopupResponse = new CustomResponse();
 		let errorCount = 0;
-		let teamMemberGroupErrorCount = 0;
 		$.each(this.newPartnerUser, function (index: number, partner: any) {
 			let contactsLimit = partner.contactsLimit;
 			if (contactsLimit < 1) {
@@ -665,20 +664,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 				$('#contact-count-' + index).css('background-color', '#e9eef2');
 			}
-			let teamMemberGroupId = partner.teamMemberGroupId;
-			if (teamMemberGroupId == 0) {
-				teamMemberGroupErrorCount++;
-				$('#team-member-group-error-count-' + index).css('background-color', 'red');
-			} else {
-				if (teamMemberGroupErrorCount > 0) {
-					teamMemberGroupErrorCount--;
-				}
-				$('#team-member-group-error-count-' + index).css('background-color', '#e9eef2');
-			}
 		});
-		if (errorCount > 0 || teamMemberGroupErrorCount > 0) {
+		if (errorCount > 0) {
 			this.processingPartnersLoader = false;
-		} else if (errorCount <= 0 && teamMemberGroupErrorCount <= 0) {
+		} else if (errorCount == 0) {
 			this.validatePartnership();
 		}
 	}
@@ -3873,12 +3862,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	getTeamMembersByGroupId(partner: any, index: number) {
 		this.processingPartnersLoader = true;
-		let teamMemberGroupId = partner.teamMemberGroupId;
-		if (teamMemberGroupId == 0) {
-			$('#team-member-group-error-count-' + index).css('background-color', 'red');
-		} else {
-			$('#team-member-group-error-count-' + index).css('background-color', '#e9eef2');
-		}
 		if (partner['selectedTeamMemberIds'].length > 0) {
 			partner['selectedTeamMemberIds'] = [];
 			this.referenceService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
@@ -3911,6 +3894,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     if (partner.selectedTeamMemberIds.length > 0) {
       $("#partner-tm-group-" + partner.index).prop("disabled", true);
     } else {
+	  partner.teamMemberGroupId=0;
       $("#partner-tm-group-" + partner.index).prop("disabled", false);
     }
   }

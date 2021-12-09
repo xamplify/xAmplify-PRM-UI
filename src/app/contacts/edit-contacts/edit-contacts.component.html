@@ -1241,13 +1241,6 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-				<ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && authenticationService.module.isPrmAndPartnerTeamMember">
-					<h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
-					<h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
-					</ng-container>
-					<ng-container *ngIf="authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
-						<h4 class="modal-title popup-header-title-font" translate>{{this.authenticationService?.partnerModule?.customName}}</h4>
-					</ng-container>
             </div>
             <div class="modal-body">
                 <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
