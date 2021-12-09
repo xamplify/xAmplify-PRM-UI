@@ -272,6 +272,8 @@ export class ManageLeadsComponent implements OnInit {
       this.campaignPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;
     this.listLeads(this.leadsPagination);
     this.listCampaigns(this.campaignPagination);
   }
@@ -283,6 +285,8 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsPagination.filterKey = "won";
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "won";
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;
     this.listLeads(this.leadsPagination);
     this.listCampaigns(this.campaignPagination);
   }
@@ -293,6 +297,8 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsPagination.filterKey = "lost";
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "lost";
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;
     this.listLeads(this.leadsPagination);
     this.listCampaigns(this.campaignPagination);
   }
@@ -303,6 +309,8 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsPagination.filterKey = "converted";
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "converted";
+    this.showCampaignLeads = false;
+    this.selectedPartnerCompanyId = 0;
     this.listLeads(this.leadsPagination);
     this.listCampaigns(this.campaignPagination);
   }
@@ -395,6 +403,16 @@ export class ManageLeadsComponent implements OnInit {
 
   searchLeads() {
     this.getAllFilteredResultsLeads(this.leadsPagination);
+  }
+
+  clearSearch() {
+    this.leadsSortOption.searchKey='';
+    this.getAllFilteredResultsLeads(this.leadsPagination);
+  }
+
+  clearPartnerSearch() {
+    this.partnerSortOption.searchKey='';
+    this.getAllFilteredResultsPartners(this.partnerPagination);
   }
 
   leadsPaginationDropdown(items: any) {

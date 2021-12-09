@@ -165,20 +165,15 @@ export class ManageCampaignDealsComponent implements OnInit {
  }
 
 
- downloadLeads() {
+ downloadDeals() {
   let type = this.dealsPagination.filterKey;
   let fileName = "";
   if (type == null || type == undefined || type == "") {
     type = "all";
-    fileName = "leads"
+    fileName = "deals"
   } else {
-    fileName = type + "-leads"
+    fileName = type + "-deals"
   }
-
-  let searchKey = "";  
-  if (this.dealsPagination.searchKey != null && this.dealsPagination.searchKey != undefined) {
-    searchKey = this.dealsPagination.searchKey;
-  }   
 
   let userType = "";
   if (this.isVendorVersion) {
@@ -186,15 +181,12 @@ export class ManageCampaignDealsComponent implements OnInit {
   } else if (this.isPartnerVersion) {
     userType = "p";
   }
-  let vendorCompanyProfileName = null;
-  if (this.dealsPagination.vendorCompanyProfileName != undefined && this.dealsPagination.vendorCompanyProfileName != null) {
-    vendorCompanyProfileName = this.dealsPagination.vendorCompanyProfileName;
+
+  let searchKey = "";  
+  if (this.dealsPagination.searchKey != null && this.dealsPagination.searchKey != undefined) {
+    searchKey = this.dealsPagination.searchKey;
   }
-
-  // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
-  //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
-
-  const url = this.authenticationService.REST_URL + "lead/download/"
+  const url = this.authenticationService.REST_URL + "deal/campaign/download/"
     + fileName + ".csv?access_token=" + this.authenticationService.access_token;
 
   var mapForm = document.createElement("form");
@@ -223,20 +215,6 @@ export class ManageCampaignDealsComponent implements OnInit {
   mapInput.setAttribute("value", this.loggedInUserId + "");
   mapForm.appendChild(mapInput);
 
-  // vanityUrlFilter
-  var mapInput = document.createElement("input");
-  mapInput.type = "hidden";
-  mapInput.name = "vanityUrlFilter";
-  mapInput.setAttribute("value", this.dealsPagination.vanityUrlFilter + "");
-  mapForm.appendChild(mapInput);
-
-  // vendorCompanyProfileName
-  var mapInput = document.createElement("input");
-  mapInput.type = "hidden";
-  mapInput.name = "vendorCompanyProfileName";
-  mapInput.setAttribute("value", vendorCompanyProfileName);
-  mapForm.appendChild(mapInput);
-
   // searchKey
   var mapInput = document.createElement("input");
   mapInput.type = "hidden";
@@ -258,10 +236,22 @@ export class ManageCampaignDealsComponent implements OnInit {
   mapInput.setAttribute("value", this.dealsPagination.toDateFilterString);
   mapForm.appendChild(mapInput);
 
+  // campaignId
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "campaignId";
+  mapInput.setAttribute("value", this.dealsPagination.campaignId + "");
+  mapForm.appendChild(mapInput);
+
+  // partnerCompanyId
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "partnerCompanyId";
+  mapInput.setAttribute("value", this.dealsPagination.partnerCompanyId + "");
+  mapForm.appendChild(mapInput);
+
   document.body.appendChild(mapForm);
   mapForm.submit();
-  //window.location.assign(url);
-
 }
 
 toggleFilterOption() {
@@ -293,7 +283,7 @@ closeFilterOption() {
     this.dealsPagination.pageIndex = 1;
     this.listCampaignDeals(this.dealsPagination);
     this.filterMode = false;
-  }    
+  } 
 }
 
 validateDateFilters() {
@@ -317,6 +307,11 @@ validateDateFilters() {
   } else {
     this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
   }    
+}
+
+clearSearch() {
+  this.dealsSortOption.searchKey='';
+  this.getAllFilteredResultsDeals(this.dealsPagination);
 }
 
 }
