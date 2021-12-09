@@ -4,11 +4,10 @@
 		role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close-circle" data-dismiss="modal"
-					aria-hidden="true" (click)="hidePopup()">
+				<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true" (click)="hidePopup()">
 					<i class="fa fa-times" aria-hidden="true"></i>
 				</button>
-				<h4 class="modal-title" id="assetTitle"></h4>
+				<h4 class="modal-title text-break" id="assetTitle"></h4>
 			</div>
 			<div class="modal-body mBody">
 				<app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>

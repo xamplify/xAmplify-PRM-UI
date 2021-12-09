@@ -1538,8 +1538,7 @@ div.switch5>input.switch:focus~label:before {
 }
 
 .form-name-wrap {
-    text-overflow: ellipsis;
-    overflow: hidden;
+     word-break: break-word;
 }
 
 .padding-none {

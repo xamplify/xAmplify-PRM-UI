@@ -128,3 +128,7 @@ body {
 .mb15 {
     margin-bottom: 15px!important;
 }
+
+.text-break {
+	word-break: break-word;
+}

@@ -47,7 +47,9 @@
 									<strong>{{assetDetailsViewDto?.assetName}}</strong>
 								</h2>
 								<br>
-								<div [innerHTML]="assetDetailsViewDto?.description" class="desc-break"> <br>
+								<div class="desc-html">
+									<div [innerHTML]="assetDetailsViewDto?.description" class="desc-break"> <br>
+								</div>
 								</div>
 							</div>
 						</div>

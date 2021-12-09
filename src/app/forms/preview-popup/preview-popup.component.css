@@ -124,8 +124,7 @@
 
  
 .form-name-wrap {
-    text-overflow: ellipsis;
-    overflow: hidden;
+    word-break: break-word;
 }
 
 @media screen and (max-width:600px){
