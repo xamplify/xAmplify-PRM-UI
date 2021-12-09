@@ -2119,4 +2119,7 @@ legend {
     .mLabelAlign{
         font-size: 0px;
     }
+    .mSpamCheckWid{
+        width: 100% !important;
+    }
 }

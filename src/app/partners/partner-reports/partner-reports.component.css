@@ -142,6 +142,12 @@ cursor: default;
 .mTop{
 	margin: -6px 0 0 0!important;
 }
+.mlabelWidth{
+	letter-spacing: -1px!important;
+}
+.mGraphwidth{
+	min-width: 290px!important;
+}
 }
 
 

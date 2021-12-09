@@ -35,3 +35,11 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+
+
+@media screen and (max-width:600px){
+    .mBarChartWidth{
+    margin-left: -10px!important;
+    min-width: 300px;
+    }
+}
