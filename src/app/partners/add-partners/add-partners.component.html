@@ -1277,7 +1277,7 @@
                                         <div class="input-group">
                                         <select id="partner-tm-group-{{i}}" class="form-control" [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembersByGroupId(partner,i)">
                                           <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
-                                                 {{teamMemberGroup?.name}}
+                                                 {{teamMemberGroup?.name}} ({{teamMemberGroup?.teamMembersCount}})
                                         </option> 
                                         </select>
                                         <span class="input-group-btn">

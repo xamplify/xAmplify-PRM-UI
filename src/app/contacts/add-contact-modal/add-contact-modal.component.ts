@@ -292,6 +292,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         if(this.addContactuser.selectedTeamMembersCount>0){
             $('#sel-partner-tm').addClass("disable-dropdown");
         }else{
+            this.addContactuser.teamMemberGroupId = 0;
             $('#sel-partner-tm').removeClass("disable-dropdown");
         }
     }
