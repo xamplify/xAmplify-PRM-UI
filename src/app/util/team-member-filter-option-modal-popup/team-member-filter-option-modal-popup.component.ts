@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+declare var $;
 @Component({
   selector: 'app-team-member-filter-option-modal-popup',
   templateUrl: './team-member-filter-option-modal-popup.component.html',
@@ -7,9 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamMemberFilterOptionModalPopupComponent implements OnInit {
 
+  @Output() teamMemberFilterOptionModalPopupEmitter = new EventEmitter();
+  selectedTeamMemberFilterOption = 0;
+  @Input()selectedFilterIndex:number;
   constructor() { }
 
   ngOnInit() {
+    this.selectedTeamMemberFilterOption = this.selectedFilterIndex;
+    $('#teamMemberFilterModalPopup').modal('show');
+  }
+
+  
+  applyFilter(apply:boolean){
+    let input = {};
+    input['selectedOptionIndex'] = this.selectedTeamMemberFilterOption;
+    input['applyFilter'] = apply;
+    this.teamMemberFilterOptionModalPopupEmitter.emit(input);
+    $('#teamMemberFilterModalPopup').modal('hide');
   }
 
 }
