@@ -879,6 +879,26 @@
                               <td *ngIf="isPartner">
                                 <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact">
                                 </app-user-info>
+                                <!----XNFR-85-->
+                                <ng-container *ngIf="!contact?.multipleTeamMemberGroupsAssigned">
+                                  <span [className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
+                                    <ng-container *ngIf="contact?.teamMemberGroupId>0">
+                                      <strong title="{{contact?.selectedTeamMemberGroupName}}">Group Name : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
+                                        <span *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
+                                      </strong>
+                                      <br>
+                                      <strong>Team Members : {{contact?.selectedTeamMembersCount}}</strong>
+                                    </ng-container>
+                                    <ng-container *ngIf="contact?.teamMemberGroupId==0">
+                                      <strong>No Group Selected</strong>
+                                    </ng-container>
+                                  </span>
+                                </ng-container>
+                                <ng-container *ngIf="contact?.multipleTeamMemberGroupsAssigned">
+                                  <span class="inactive-status">
+                                    <strong>Please contact admin</strong>
+                                  </span>
+                                </ng-container>
                               </td>
                               <td *ngIf="!isPartner">
                                 <app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"></app-user-info>
