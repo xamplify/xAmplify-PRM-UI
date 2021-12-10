@@ -620,6 +620,7 @@
                                                     </td>
                                                     <td>
                                                         <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact"> </app-user-info>
+                                                        <!-- -XNFR-85 -->
                                                         <ng-container *ngIf="!contact?.multipleTeamMemberGroupsAssigned">
                                                             <span [className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
                                                                 <ng-container *ngIf="contact?.teamMemberGroupId>0">
