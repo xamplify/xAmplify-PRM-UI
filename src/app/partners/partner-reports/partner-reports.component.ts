@@ -64,6 +64,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
   worldMapLoader = false;
   survey: boolean =false;
   throughPartnerCampaignsTabName: string = "Through Partner Campaigns";
+  showFilterOption: boolean = false;
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  filterResponse: CustomResponse = new CustomResponse(); 
+  filterMode: boolean = false;
+
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption,
@@ -744,6 +750,61 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           },
           () => this.xtremandLogger.info("Finished getModuleAccess()")
       );
+  }
+
+  toggleFilterOption() {
+    this.showFilterOption = !this.showFilterOption;    
+    this.fromDateFilter = "";
+    this.toDateFilter = "";
+    if (!this.showFilterOption) {
+      this.throughPartnerCampaignPagination.fromDateFilterString = "";
+      this.throughPartnerCampaignPagination.toDateFilterString = "";
+      this.filterResponse.isVisible = false;
+      if (this.filterMode) {
+        this.throughPartnerCampaignPagination.pageIndex = 1;
+        this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+        this.filterMode = false;
+      }      
+    } else {
+      this.filterMode = false;
+    }
+  }
+
+  closeFilterOption() {
+    this.showFilterOption = false;
+    this.fromDateFilter = "";
+    this.toDateFilter = ""; 
+    this.throughPartnerCampaignPagination.fromDateFilterString = "";
+    this.throughPartnerCampaignPagination.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
+    if (this.filterMode) {
+      this.throughPartnerCampaignPagination.pageIndex = 1;
+      this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+      this.filterMode = false;
+    }    
+  }
+
+  validateDateFilters() {
+    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+      var fromDate = Date.parse(this.fromDateFilter);
+      if (this.toDateFilter != undefined && this.toDateFilter != "") {
+        var toDate = Date.parse(this.toDateFilter);
+        if (fromDate <= toDate) {
+          this.throughPartnerCampaignPagination.pageIndex = 1;
+          this.throughPartnerCampaignPagination.fromDateFilterString = this.fromDateFilter;
+          this.throughPartnerCampaignPagination.toDateFilterString = this.toDateFilter;
+          this.filterMode = true;
+          this.filterResponse.isVisible = false;
+          this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }
+      } else {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      }
+    } else {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    }    
   }
 
  
