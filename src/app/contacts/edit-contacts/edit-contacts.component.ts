@@ -1681,6 +1681,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactService.getContactsLimit(this.users, this.loggedInUserId).subscribe(
 			(data: any) => {
 				this.users = data.data;
+				/********XNFR-85********/
+				let teamMemberGroups = data.map['teamMemberGroups'];
+				this.teamMemberGroups = teamMemberGroups;
 				this.loading = false;
 				this.showNotifyPartnerOption = true;
 				$('#assignContactAndMdfPopup').modal('show');
@@ -1688,6 +1691,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.loading = false;
 				this.refService.showSweetAlertServerErrorMessage();
 				this.cancelContacts();
+			},()=>{
+
 			});
 	}
 
@@ -3392,6 +3397,57 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "ContactReportCount()");
         }
+	}
+	
+	/*********XNFR-85********* */
+	showTeamMembers = false;
+	showModulesPopup = false;
+	currentPartner: any;
+	teamMemberGroupId = 0;
+	teamMemberGroups:Array<any> = new Array<any>();
+	previewModules(teamMemberGroupId: number) {
+		this.teamMemberGroupId = teamMemberGroupId;
+		this.showModulesPopup = true;
+	}
+
+	getTeamMembersByGroupId(partner: any, index: number) {
+		this.processingPartnersLoader = true;
+		if (partner['selectedTeamMemberIds'].length > 0) {
+			partner['selectedTeamMemberIds'] = [];
+			this.refService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
+		} else {
+			this.getTeamMembers(partner, index);
+		}
+		this.processingPartnersLoader = false;
+	}
+
+	getTeamMembers(partner: any, index: number) {
+		if (partner.teamMemberGroupId > 0) {
+			this.currentPartner = partner;
+			this.currentPartner.index = index;
+			this.showTeamMembers = true;
+		}
+	}
+
+
+	hideModulesPreviewPopUp() {
+		this.showModulesPopup = false;
+		this.teamMemberGroupId = 0;
+	}
+	receiveTeamMemberIdsEntity(partner: any) {
+		this.currentPartner = partner;
+		this.toggleDropDownStatus(partner);
+		this.showTeamMembers = false;
+	}
+
+	toggleDropDownStatus(partner: any) {
+    if (partner.selectedTeamMemberIds.length > 0) {
+      $("#edit-partner-tm-group-" + partner.index).prop("disabled", true);
+    } else {
+	  partner.teamMemberGroupId=0;
+      $("#edit-partner-tm-group-" + partner.index).prop("disabled", false);
     }
+  }
+
     
 }

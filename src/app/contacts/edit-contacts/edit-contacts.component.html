@@ -1235,7 +1235,7 @@
 <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
 <!-- END PAGE CONTENT -->
 <div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog" aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog full-width-modal-popup" role="document">
         <div class="modal-content">
             <div class="modal-header" >
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
@@ -1260,6 +1260,11 @@
                                     <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
+								</th>
+								<th scope="row" translate>Team Member Group
+                                    <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
+                                    </span>
                                 </th>
                             </tr>
                         </thead>
@@ -1277,7 +1282,30 @@
 										<switch [status]="partner.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                                         	[size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)" [disabled]="partner?.disableNotifyPartnersOption">
                                         </switch>
-                                    </td>
+									</td>
+									<!--- (XNFR-85) ----->
+                                    <td id="edit-team-member-group-error-count-{{i}}">
+                                        <div class="input-group">
+                                        <select id="edit-partner-tm-group-{{i}}" [disabled]="partner?.selectedTeamMemberIds?.length > 0" class="form-control" [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembersByGroupId(partner,i)">
+                                          <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+                                                 {{teamMemberGroup?.name}} ({{teamMemberGroup?.teamMembersCount}})
+                                        </option> 
+                                        </select>
+                                        <span class="input-group-btn">
+                                          <button title="Preview Modules" [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(partner.teamMemberGroupId)">
+                                            <i class="fa fa-eye white" aria-hidden="true"></i>
+                                          </button>
+                                        </span>
+                                        <span class="input-group-btn">
+                                            <button title="Preview Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
+                                              <i class="fa fa-users white" aria-hidden="true"></i>
+                                            </button>
+                                          </span>
+                                        </div>
+                                        <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0">
+                                            <strong>Selected Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong>
+                                        </span>
+                                      </td>
                                 </tr>
                             </ng-container>
                         </tbody>
@@ -1294,3 +1322,7 @@
         </div>
     </div>
 </div>
+<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="currentPartner" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+<!-- Group Preview Popup  (XNFR-85)-->
+<app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
+<!-- End of  Group Preview Popup -->

@@ -207,7 +207,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	public salesForceCurrentUser: any;
 	/***XNFR-85**** */
 	teamMemberGroups: Array<any> = new Array<any>();
-	teamMembers: Array<any> = new Array<any>();
 	teamMembersPopUpLoader = false;
 	teamMembersPagination = new Pagination();
 	public teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
