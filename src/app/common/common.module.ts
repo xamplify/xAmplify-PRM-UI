@@ -108,6 +108,7 @@ import { DeleteAssetsComponent } from 'app/util/dam/delete-assets/delete-assets.
 import { TeamMemberGroupPreviewPopupComponent } from 'app/util/team-member-group-preview-popup/team-member-group-preview-popup.component';
 import { PartnerTeamMemberGroupTeamMembersComponent } from 'app/util/partner-team-member-group-team-members/partner-team-member-group-team-members.component';
 import { TeamMemberFilterOptionComponent } from 'app/util/team-member-filter-option/team-member-filter-option.component';
+import { TeamMemberFilterOptionModalPopupComponent } from 'app/util/team-member-filter-option-modal-popup/team-member-filter-option-modal-popup.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -127,7 +128,7 @@ import { TeamMemberFilterOptionComponent } from 'app/util/team-member-filter-opt
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
-		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent],
+		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent],
 
 
 
@@ -149,7 +150,7 @@ import { TeamMemberFilterOptionComponent } from 'app/util/team-member-filter-opt
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
-		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent]
+		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent]
 
 
 
