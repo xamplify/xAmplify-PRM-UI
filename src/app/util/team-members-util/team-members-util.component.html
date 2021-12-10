@@ -278,11 +278,16 @@
                       <i class="fa fa-eye white" aria-hidden="true"></i>
                     </button>
                     <div class="col-sm-8">
-                        <select class="form-control" (ngModelChange)="selectTeamMemberGroupId($event);"  [(ngModel)]="team.teamMemberGroupId"  [ngModelOptions]="{standalone: true}">
-                          <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
-                          {{teamMemberGroup.name}}
+                      <select title="Dropdown is disabled.Because {{authenticationService?.partnerModule?.customName}} are assigned to this team member" disabled class="form-control" *ngIf="team?.partnersCount>0"> 
+                        <option>
+                          {{team?.teamMemberGroupName}}
                         </option>
-                        </select>
+                      </select>
+                      <select *ngIf="team?.partnersCount==0"  class="form-control" (ngModelChange)="selectTeamMemberGroupId($event);"  [(ngModel)]="team.teamMemberGroupId"  [ngModelOptions]="{standalone: true}">
+                        <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+                        {{teamMemberGroup.name}}
+                      </option>
+                      </select>
                       </div>
                   </div>
                 </div>
