@@ -119,3 +119,16 @@ a[aria-expanded="true"] .childPlusSymbol{
 	color: #5b9bd1;
 }
 	
+@media screen and (max-width:600px){
+    .mSpamWid{
+        overflow-x: auto;
+    }
+    .mLabelSize{
+        font-size: 10px;
+        font-weight: 700;
+    }
+    .mLabelSizeSeal{
+        font-size: 9px;
+        font-weight: 800;
+    }
+}
