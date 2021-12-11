@@ -9,7 +9,7 @@
               <a class="close-circle ref-mar" (click)="refreshChart()" title="Refresh">
                  <i class="fa fa-refresh" aria-hidden="true"></i>
               </a>
-              <app-team-member-filter-option [filterIcon]="true"></app-team-member-filter-option>
+              <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
            </div>
             <div [hidden]="!hasLeadsAndDealsAccess">
                 <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">
@@ -44,6 +44,10 @@
         </div>
         </div>
         </figure>
+        <div class="alert alert-info center-align " *ngIf="statusCode==404">
+          <strong>No Data Found</strong>
+      </div>
+      
       </div>
       </div>
   </div>

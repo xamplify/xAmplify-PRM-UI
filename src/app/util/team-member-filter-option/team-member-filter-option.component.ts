@@ -12,6 +12,7 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   selectedFilterIndex = 0;
   loading = false;
   @Output() teamMemberFilterOptionEventEmitter = new EventEmitter();
+  @Output() teamMemberFilterModalPopUpOptionEventEmitter = new EventEmitter();
   @Input() filterIcon = false;
   showFilterPopup = false;
   constructor(public authenticationService: AuthenticationService) { }
@@ -47,7 +48,8 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   getSelectedOption(input:any){
     this.showFilterPopup = false;
     this.selectedFilterIndex = input['selectedOptionIndex'];
-    let applyFilter = input['applyFilter'];
+    this.teamMemberFilterModalPopUpOptionEventEmitter.emit(input);
+
   }
 
 }
