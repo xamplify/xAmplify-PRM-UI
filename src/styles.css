@@ -1118,4 +1118,7 @@ b, strong {
 .filter-box-selected{
 	background-color: #6dcff6 !important;
 }
+.overflow-x-auto{
+	overflow-x: auto;
+}
 

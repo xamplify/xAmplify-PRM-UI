@@ -62,6 +62,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
   customResponse: CustomResponse = new CustomResponse();
   vendoorInvitation: VendorInvitation = new VendorInvitation();
   worldMapLoader = false;
+  barChartLoader = false;
   survey: boolean =false;
   throughPartnerCampaignsTabName: string = "Through Partner Campaigns";
   showFilterOption: boolean = false;
@@ -69,7 +70,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
   toDateFilter: any = "";
   filterResponse: CustomResponse = new CustomResponse(); 
   filterMode: boolean = false;
-
+  applyFilter = false;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption,
@@ -112,11 +113,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       credits: { enabled: false },
       series: [{  showInLegend: false, data:data }]
     });
+    this.barChartLoader = false;
     this.worldMapLoader = false;
   }
   partnerReportData() {
+    this.barChartLoader = true;
     this.worldMapLoader = true;
-    this.parterService.partnerReports(this.loggedInUserId).subscribe(
+    this.parterService.partnerReports(this.loggedInUserId,this.applyFilter).subscribe(
       (data: any) => {
         this.worldMapdataReport = data.countrywisePartnersCount.countrywisepartners;
         this.campaignsCount = data.partnersLaunchedCampaignsCount;
@@ -133,6 +136,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       },
       (error: any) => {
           this.xtremandLogger.error(error);
+          this.barChartLoader = false;
           this.worldMapLoader = false;
          });
   }
@@ -807,6 +811,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }    
   }
 
- 
+  getSelectedIndexFromPopup(event:any){
+      this.applyFilter = event['selectedOptionIndex']==1;
+      this.partnerReportData();
+  }
 
 }

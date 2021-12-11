@@ -43,3 +43,7 @@
     min-width: 300px;
     }
 }
+
+.minheight-zero-px{
+    min-height: 0px;
+}

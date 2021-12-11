@@ -9,10 +9,10 @@ export class ParterService {
     URL = this.authenticationService.REST_URL;
 
     constructor( public authenticationService: AuthenticationService, public httpClient: HttpClient ) { }
-    partnerReports( userId: number ): Observable<any> {
+    partnerReports( userId: number,applyFilter:boolean ): Observable<any> {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/analytics?access_token=' + this.authenticationService.access_token +
-            '&userId=' + userId;
+            '&userId=' + userId+"&applyFilter="+applyFilter;
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
