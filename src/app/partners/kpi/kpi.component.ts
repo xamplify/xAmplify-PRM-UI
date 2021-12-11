@@ -133,7 +133,7 @@ export class KpiComponent implements OnInit {
 
   getMdfKpis() {
     this.mdfDto.loader = true;
-    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId,false).subscribe((result: any) => {
+    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe((result: any) => {
       this.mdfTotalBalance = result.data.totalBalance;
       this.mdfUsedBalance = result.data.usedBalance;
       this.mdfTotalBalanceInString = result.data.totalBalanceInString;
