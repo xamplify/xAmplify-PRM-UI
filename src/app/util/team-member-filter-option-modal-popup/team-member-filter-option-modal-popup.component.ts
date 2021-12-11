@@ -1,4 +1,5 @@
 import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { AuthenticationService } from '../../core/services/authentication.service';
 declare var $;
 @Component({
   selector: 'app-team-member-filter-option-modal-popup',
@@ -10,7 +11,7 @@ export class TeamMemberFilterOptionModalPopupComponent implements OnInit {
   @Output() teamMemberFilterOptionModalPopupEmitter = new EventEmitter();
   selectedTeamMemberFilterOption = 0;
   @Input()selectedFilterIndex:number;
-  constructor() { }
+  constructor(public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
     this.selectedTeamMemberFilterOption = this.selectedFilterIndex;

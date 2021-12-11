@@ -119,16 +119,16 @@ export class ParterService {
             .catch( this.handleError );
     }
 
-    findLeadsToDealsConversionPercentage(companyId:number) {
-        return this.kpiApi(companyId,'findLeadsToDealsConversionPercentage');
+    findLeadsToDealsConversionPercentage(companyId:number,applyTeamMemberFilter:boolean) {
+        return this.kpiApi(companyId,'findLeadsToDealsConversionPercentage',applyTeamMemberFilter);
     }
 
-    findLeadsOpportunityAmount(companyId:number) {
-        return this.kpiApi(companyId,'findLeadsOpportunityAmount');
+    findLeadsOpportunityAmount(companyId:number,applyTeamMemberFilter:boolean) {
+        return this.kpiApi(companyId,'findLeadsOpportunityAmount',applyTeamMemberFilter);
     }
 
-    kpiApi(companyId:number,url:string){
-        const apiUrl = this.URL + 'partner/'+url+'/'+companyId+'?access_token=' + this.authenticationService.access_token
+    kpiApi(companyId:number,url:string,applyTeamMemberFilter:boolean){
+        const apiUrl = this.URL + 'partner/'+url+'/'+companyId+'/'+this.authenticationService.getUserId()+'/'+applyTeamMemberFilter+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( apiUrl )
             .catch( this.handleError );
     }
