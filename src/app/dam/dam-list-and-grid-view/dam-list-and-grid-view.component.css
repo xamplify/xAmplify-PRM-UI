@@ -190,18 +190,6 @@ cursor: default;
   max-width: 175px !important;
 }
 
-@media screen and (max-width:600px){
-  .mView{
-    bottom:4px;
-  }
-  .mRight{
-    right:23px!important;
-  }
-  .mHeight{
-    height:255px!important;
-  }
-}
-
 .tag {
   font-size: 12px;
   background-color: #00a6e8;
@@ -212,4 +200,21 @@ cursor: default;
   border-radius: 20px;
   padding: 5px 10px;
   display: inline;
+}
+
+@media screen and (max-width:600px){
+  .mDamTop{
+    padding-top: 15px;
+  }
+  .mDamSort{
+    width: 90%;
+    padding: 0px!important;
+  }
+  .mDamSearch{
+    right: 0px!important;
+    width: 100%;
+  }
+  .mDamResponse{
+    margin-top: 45px;
+  }
 }

@@ -594,4 +594,7 @@ label {
     .mSort{
 		top:-8px;
 	}
+	.mListitemWid{
+		width: 100%;
+	}
   }

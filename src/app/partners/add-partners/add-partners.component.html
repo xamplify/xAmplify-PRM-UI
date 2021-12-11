@@ -284,7 +284,7 @@
                 <label for="name" class="col-xs-12 col-sm-4 control-label" translate>Legal Basis Options <span class="danger">*</span></label>
                 <div id="multiselect-sample" class="control-section">
                     <div class="col-lg-8 content-wrapper">
-                        <div class="control-styles">
+                        <div class="control-styles mLegalWid">
                             <ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='legalBasisOptions' [fields]='fields' [placeholder]='placeHolder' (blur)='validateLegalBasisOptions()'></ejs-multiselect>
                             <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
                         </div>
@@ -1120,7 +1120,7 @@
 <!-- T&C Modal -->
 <div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-copy" role="document">
-        <div class="modal-content" style="width: 80%;top: 100px;left: 60px">
+        <div class="modal-content mSweetalertWid" style="width: 80%;top: 100px;left: 60px">
             <div class="modal-header">
                 <h4 class="modal-title f-w-600" id="saveAsModalLabel" translate> Are you sure?</h4>
             </div>
