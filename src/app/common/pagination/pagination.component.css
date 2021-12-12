@@ -4,3 +4,6 @@
 .total-records-bg-color{
 	color: #1091d9;
 }
+.pagination{
+	margin: 0px !important;
+}
