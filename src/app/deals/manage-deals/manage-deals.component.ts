@@ -266,6 +266,8 @@ export class ManageDealsComponent implements OnInit {
       this.campaignPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
+    this.showCampaignDeals = false;
+    this.selectedPartnerCompanyId = 0;
     this.listDeals(this.dealsPagination);
     this.listCampaigns(this.campaignPagination);
   }
@@ -277,6 +279,8 @@ export class ManageDealsComponent implements OnInit {
     this.listDeals(this.dealsPagination);
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "won";
+    this.showCampaignDeals = false;
+    this.selectedPartnerCompanyId = 0;
     this.listCampaigns(this.campaignPagination);
   }
 
@@ -287,6 +291,8 @@ export class ManageDealsComponent implements OnInit {
     this.listDeals(this.dealsPagination);
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "lost";
+    this.showCampaignDeals = false;
+    this.selectedPartnerCompanyId = 0;
     this.listCampaigns(this.campaignPagination);
   }
 
@@ -797,6 +803,16 @@ export class ManageDealsComponent implements OnInit {
   setCampaignView() {
     this.listView = false;
     this.closeFilterOption();
+  }
+
+  clearSearch() {
+    this.dealsSortOption.searchKey='';
+    this.getAllFilteredResultsDeals(this.dealsPagination);
+  }
+
+  clearPartnerSearch() {
+    this.partnerSortOption.searchKey='';
+    this.getAllFilteredResultsPartners(this.partnerPagination);
   }
 
 }

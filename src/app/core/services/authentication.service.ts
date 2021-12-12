@@ -583,7 +583,7 @@ export class AuthenticationService {
           window.location.href = 'https://www.xamplify.com/';
         } else {
           this.closeSwal();
-          this.router.navigate(["/"]);
+          window.location.href = this.envService.CLIENT_URL+"login";
         }
       }
     }

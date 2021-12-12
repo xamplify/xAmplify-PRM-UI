@@ -199,8 +199,8 @@ export class ManageMdfDetailsComponent implements OnInit,OnDestroy {
 
 
   getSelectedIndex(index:number){
-    this.pagination.partnerTeamMemberGroupFilter = index==1;
     this.selectedFilterIndex = index;
+    this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
     this.listPartners(this.pagination);
     this.getTilesInfo(this.pagination.partnerTeamMemberGroupFilter);
   }

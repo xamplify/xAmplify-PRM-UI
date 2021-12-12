@@ -163,6 +163,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
 		let roleDisplayDto = data.roleDisplayDto;
 		module.isOnlyPartner = roleDisplayDto.partner;
+		module.partnerTeamMember = roleDisplayDto.partnerTeamMember;
 		module.isPrm = roleDisplayDto.prm;
 		module.isPrmTeamMember = roleDisplayDto.prmTeamMember;
 		module.isPrmAndPartner = roleDisplayDto.prmAndPartner;

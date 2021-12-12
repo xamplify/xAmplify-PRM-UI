@@ -22,13 +22,13 @@
             <li style="color: #808080" *ngIf="authenticationService.isOnlyPartner()" translate>View Templates</li>
         </ul>
     </div>
-    <div style="position: relative; top: -10px">
+    <div class="mTopAlert" style="position: relative; top: -10px">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
     </div>
     <div class="row">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="col-md-12">
-            <div class="portlet light clearfix" style="box-shadow: none;">
+            <div class="portlet light clearfix mAlertMsg" style="box-shadow: none;">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
@@ -92,7 +92,7 @@
                                                     {{sortOption.name}}</option>
                                             </select>
                                         </div>
-                                        <div class="portlet-input input-inline input-small" style="width: 198px !important;">
+                                        <div class="portlet-input input-inline input-small" style="width: 164px !important;">
                                             <div class="input-icon right" style="position: relative;right: -5px;">
                                                 <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
                                                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchTemplates()"></button>

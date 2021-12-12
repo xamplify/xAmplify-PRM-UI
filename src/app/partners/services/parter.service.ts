@@ -9,10 +9,10 @@ export class ParterService {
     URL = this.authenticationService.REST_URL;
 
     constructor( public authenticationService: AuthenticationService, public httpClient: HttpClient ) { }
-    partnerReports( userId: number ): Observable<any> {
+    partnerReports( userId: number,applyFilter:boolean ): Observable<any> {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/analytics?access_token=' + this.authenticationService.access_token +
-            '&userId=' + userId;
+            '&userId=' + userId+"&applyFilter="+applyFilter;
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
@@ -99,7 +99,7 @@ export class ParterService {
             .catch( this.handleError );
     }
 
-    getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(chartId:string,filterType:string) {
+    getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(chartId:string,filterType:string,applyTeamMemberFilter:boolean) {
         let urlSuffix = "";
         if(chartId=="redistributeCampaignsAndLeadsCountBarChart"){
             urlSuffix = 'getRedistributedCampaignsAndLeadsCountForBarChartDualAxes';
@@ -108,7 +108,7 @@ export class ParterService {
         }else if(chartId=="top10LeadsAndDealsBarChart"){
             urlSuffix = 'getLeadsAndDealsCount';
         }
-        const url = this.URL + 'partner/'+urlSuffix+'/'+this.authenticationService.getUserId()+'/'+filterType+'?access_token=' + this.authenticationService.access_token
+        const url = this.URL + 'partner/'+urlSuffix+'/'+this.authenticationService.getUserId()+'/'+filterType+'/'+applyTeamMemberFilter+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
@@ -119,16 +119,16 @@ export class ParterService {
             .catch( this.handleError );
     }
 
-    findLeadsToDealsConversionPercentage(companyId:number) {
-        return this.kpiApi(companyId,'findLeadsToDealsConversionPercentage');
+    findLeadsToDealsConversionPercentage(companyId:number,applyTeamMemberFilter:boolean) {
+        return this.kpiApi(companyId,'findLeadsToDealsConversionPercentage',applyTeamMemberFilter);
     }
 
-    findLeadsOpportunityAmount(companyId:number) {
-        return this.kpiApi(companyId,'findLeadsOpportunityAmount');
+    findLeadsOpportunityAmount(companyId:number,applyTeamMemberFilter:boolean) {
+        return this.kpiApi(companyId,'findLeadsOpportunityAmount',applyTeamMemberFilter);
     }
 
-    kpiApi(companyId:number,url:string){
-        const apiUrl = this.URL + 'partner/'+url+'/'+companyId+'?access_token=' + this.authenticationService.access_token
+    kpiApi(companyId:number,url:string,applyTeamMemberFilter:boolean){
+        const apiUrl = this.URL + 'partner/'+url+'/'+companyId+'/'+this.authenticationService.getUserId()+'/'+applyTeamMemberFilter+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( apiUrl )
             .catch( this.handleError );
     }

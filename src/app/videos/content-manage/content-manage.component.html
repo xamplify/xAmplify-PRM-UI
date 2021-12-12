@@ -125,7 +125,7 @@
 								<section [hidden]="isListView">
 									<ul class="content__list"
                     *ngFor="let file of pagedItems; let i =index;">
-										<li class="list__item"
+										<li class="list__item mListitemWid"
 											[ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}">
 											<div class="flex-row pointer" (click)="setFileCheck(file,file.id, $event)">
 												<div class="item__select-box-wrapper">

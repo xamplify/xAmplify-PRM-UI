@@ -12,7 +12,9 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   selectedFilterIndex = 0;
   loading = false;
   @Output() teamMemberFilterOptionEventEmitter = new EventEmitter();
+  @Output() teamMemberFilterModalPopUpOptionEventEmitter = new EventEmitter();
   @Input() filterIcon = false;
+  showFilterPopup = false;
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -40,7 +42,14 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   }
 
   openFilterPopup(){
-    alert("Work In Progress");
+    this.showFilterPopup = true;
+  }
+
+  getSelectedOption(input:any){
+    this.showFilterPopup = false;
+    this.selectedFilterIndex = input['selectedOptionIndex'];
+    this.teamMemberFilterModalPopUpOptionEventEmitter.emit(input);
+
   }
 
 }

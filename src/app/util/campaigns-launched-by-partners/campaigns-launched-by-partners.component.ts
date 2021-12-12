@@ -54,13 +54,18 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 				this.referenseService.loading(this.activeParnterHttpRequestLoader, false);
 			},
 			(_error: any) => {
-				console.log("error");
 			}
 		);
 	}
 
 	setPage(event:any) {
 		this.activePartnersPagination.pageIndex = event.page;
+		this.getActivePartnerReports();
+	}
+
+	getSelectedIndexFromPopup(event:any){
+		this.activePartnersPagination.partnerTeamMemberGroupFilter = event['selectedOptionIndex']==1;
+		this.activePartnersPagination.pageIndex = 1;
 		this.getActivePartnerReports();
 	}
 

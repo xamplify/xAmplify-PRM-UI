@@ -23,6 +23,7 @@ export class Module {
     isReDistribution = false;
 
     isOnlyPartner = false;
+    partnerTeamMember = false;
     isCompanyPartner:boolean = false;
     isVendor:boolean = false;
     isOrgAdmin:boolean = false;

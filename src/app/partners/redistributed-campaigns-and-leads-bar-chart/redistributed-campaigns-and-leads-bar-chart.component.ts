@@ -19,6 +19,7 @@ hasLeadsAndDealsAccess = false;
 headerText = "";
 filterValue = 'r';
 hideLeadsAndDealsChart = false;
+applyTeamMemberFilter = false;
 constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {
       this.refreshChart();
@@ -64,7 +65,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
   }
 
   getDataForBarChart(){
-    this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId,this.filterValue).subscribe(
+    this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId,this.filterValue,this.applyTeamMemberFilter).subscribe(
         response=>{
             let data = response.data;
             this.statusCode =  response.statusCode;
@@ -75,6 +76,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
                 this.renderChart(xAxis,yAxis1,yAxis2);
             }else{
                 this.chartLoader = false;
+                $('#'+this.chartId).html('');
             }
         },error=>{
             this.setErrorResponse(error);
@@ -82,7 +84,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
       );
   }
 
-  setErrorResponse(error){
+  setErrorResponse(error:any){
     this.chartLoader = false;
     this.statusCode = 500;
     this.xtremandLogger.error(error);
@@ -221,6 +223,17 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
     this.chartLoader = true;
     this.filterValue = $('#'+dropDownId+' option:selected').val();
     this.getDataForBarChart();
+  }
+
+  getSelectedIndexFromPopup(event:any){
+    let filter = event['applyFilter'];
+    let selectedIndex = event['selectedOptionIndex'];
+    if(filter){
+        this.applyTeamMemberFilter = selectedIndex==1;
+        this.chartLoader = true;
+        this.getDataForBarChart();
+    }
+    
   }
 
 }

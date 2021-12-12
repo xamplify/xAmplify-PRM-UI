@@ -32,7 +32,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
 
   loggedInUserId : number;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
-  leadsPagination: Pagination;
+  leadsPagination: Pagination = new Pagination();
   leadsSortOption: SortOption = new SortOption();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadsResponse: CustomResponse = new CustomResponse();
@@ -188,14 +188,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   } else if (this.isPartnerVersion) {
     userType = "p";
   }
-  let vendorCompanyProfileName = null;
-  if (this.leadsPagination.vendorCompanyProfileName != undefined && this.leadsPagination.vendorCompanyProfileName != null) {
-    vendorCompanyProfileName = this.leadsPagination.vendorCompanyProfileName;
-  }
-
-  // const url = this.authenticationService.REST_URL + "lead/"+userType+"/download/" + type 
-  //   + "/" + this.loggedInUserId +"/"+fileName+".csv?access_token=" + this.authenticationService.access_token;
-
+  
   const url = this.authenticationService.REST_URL + "lead/campaign/download/"
     + fileName + ".csv?access_token=" + this.authenticationService.access_token;
 
@@ -223,21 +216,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   mapInput.type = "hidden";
   mapInput.name = "userId";
   mapInput.setAttribute("value", this.loggedInUserId + "");
-  mapForm.appendChild(mapInput);
-
-  // vanityUrlFilter
-  //  var mapInput = document.createElement("input");
-  //  mapInput.type = "hidden";
-  //  mapInput.name = "vanityUrlFilter";
-  //  mapInput.setAttribute("value", this.leadsPagination.vanityUrlFilter + "");
-  //  mapForm.appendChild(mapInput);
-
-  // vendorCompanyProfileName
-  // var mapInput = document.createElement("input");
-  // mapInput.type = "hidden";
-  // mapInput.name = "vendorCompanyProfileName";
-  // mapInput.setAttribute("value", vendorCompanyProfileName);
-  // mapForm.appendChild(mapInput);
+  mapForm.appendChild(mapInput);  
 
   // searchKey
   var mapInput = document.createElement("input");
@@ -276,8 +255,6 @@ export class ManageCampaignLeadsComponent implements OnInit {
 
   document.body.appendChild(mapForm);
   mapForm.submit();
-  //window.location.assign(url);
-
 }
 
 toggleFilterOption() {
@@ -333,6 +310,11 @@ validateDateFilters() {
   } else {
     this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
   }    
+}
+
+clearSearch() {
+  this.leadsSortOption.searchKey='';
+  this.getAllFilteredResultsLeads(this.leadsPagination);
 }
 
 }

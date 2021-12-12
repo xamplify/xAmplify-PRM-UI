@@ -29,6 +29,7 @@ export class KpiComponent implements OnInit {
   mdfAccess = false;
   headerText = "";
   loader = false;
+  applyTeamMemberFilter = false;
   constructor(public mdfService:MdfService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public partnerService:ParterService
     ) { 
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -105,7 +106,7 @@ export class KpiComponent implements OnInit {
 
 
   findLeadsToDealsConversionPercentage(){
-    this.partnerService.findLeadsToDealsConversionPercentage(this.loggedInUserCompanyId).subscribe(
+    this.partnerService.findLeadsToDealsConversionPercentage(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe(
       response=>{
         this.leadsToDealsConversionInPercentage = response.data;
         this.leadsToDealsConversionDto.loader = false;
@@ -118,7 +119,7 @@ export class KpiComponent implements OnInit {
   }
 
   findLeadsOpportunityAmount(){
-    this.partnerService.findLeadsOpportunityAmount(this.loggedInUserCompanyId).subscribe(
+    this.partnerService.findLeadsOpportunityAmount(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe(
       response=>{
         this.opportunityAmount = response.data;
         this.opportunityAmountDto.loader = false;
@@ -132,7 +133,7 @@ export class KpiComponent implements OnInit {
 
   getMdfKpis() {
     this.mdfDto.loader = true;
-    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId,false).subscribe((result: any) => {
+    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe((result: any) => {
       this.mdfTotalBalance = result.data.totalBalance;
       this.mdfUsedBalance = result.data.usedBalance;
       this.mdfTotalBalanceInString = result.data.totalBalanceInString;
@@ -154,5 +155,14 @@ export class KpiComponent implements OnInit {
     this.leadsToDealsConversionDto.loader = false;
     this.opportunityAmountDto.loader = false;
     this.mdfDto.loader = false;
+  }
+  getSelectedIndexFromPopup(event:any){
+    let filter = event['applyFilter'];
+    let selectedIndex = event['selectedOptionIndex'];
+    if(filter){
+        this.applyTeamMemberFilter = selectedIndex==1;
+        this.refreshKpis();
+    }
+    
   }
 }

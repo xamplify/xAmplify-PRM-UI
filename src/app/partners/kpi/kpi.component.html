@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-6"  style="padding: 0" *ngIf="hasLeadsAndDealsAccess || mdfAccess">
+<div class="col-xs-12 col-sm-12"  style="padding: 0" *ngIf="hasLeadsAndDealsAccess || mdfAccess">
   <div class="col-xs-12">
       <div class="portlet light">
         <div class="portlet-title" style="min-height: 0px;">
@@ -7,7 +7,9 @@
             </div>
             <div>
                <a class="close-circle ref-mar" (click)="refreshKpis()" title="Refresh">
-                  <i class="fa fa-refresh" aria-hidden="true"></i></a>
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+               </a>
+               <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
             </div>
       </div>
       <div class="portlet-body">
@@ -21,8 +23,7 @@
                     <i aria-hidden="true" class="fa fa-tags"></i>
                  </div>
                  <div class="details">
-                    <div class="number">{{leadsToDealsConversionInPercentage | slice:0:8}}
-                     <span *ngIf="leadsToDealsConversionInPercentage?.length>8">...</span>
+                    <div class="number">{{leadsToDealsConversionInPercentage}}
                     </div>
                     <div class="desc">Leads To Deals Conversion</div>
                  </div>

@@ -130,3 +130,9 @@ cursor: default;
 .redisbgcolor{
 	background-color: #463c2c24 !important;
 }
+
+@media screen and (max-width:600px){
+.mRedistributedSearch{
+width:160px!important;
+}
+}

@@ -57,4 +57,5 @@ export class User {
     selectedTeamMembersCount = 0;
     selectedTeamMemberIds = [];
     partnershipId = 0;
+    selectedTeamMemberGroupName = "";
 }

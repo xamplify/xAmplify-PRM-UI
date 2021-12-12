@@ -10,3 +10,4 @@
     <i class="fa fa-filter" aria-hidden="true"></i>
   </a>
 </div>
+<app-team-member-filter-option-modal-popup *ngIf="showFilterPopup" [selectedFilterIndex]="selectedFilterIndex" (teamMemberFilterOptionModalPopupEmitter)="getSelectedOption($event)"></app-team-member-filter-option-modal-popup>

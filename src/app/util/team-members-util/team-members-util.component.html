@@ -90,7 +90,9 @@
                 </div>
             </div>
         </div>
-        <a class="reload tmu-refresh-padding" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()"></a>
+        <a aria-hidden="true" class="close-circle xamp-margin-left-icon chtfpx" (click)="refreshList()" title="Refresh">
+          <i aria-hidden="true" class="fa fa-refresh"></i>
+       </a>
     </div>
   </div>
   <div class="portlet-body clearfix">
@@ -124,7 +126,7 @@
           <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}" class="list-team-member-class">
             <td>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
-              <span [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'">
+              <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany" [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'">
                 <strong>Total {{authenticationService?.partnerModule?.customName}}: {{teamMember?.partnersCount}}</strong>
               </span>
             </td>
@@ -278,11 +280,16 @@
                       <i class="fa fa-eye white" aria-hidden="true"></i>
                     </button>
                     <div class="col-sm-8">
-                        <select class="form-control" (ngModelChange)="selectTeamMemberGroupId($event);"  [(ngModel)]="team.teamMemberGroupId"  [ngModelOptions]="{standalone: true}">
-                          <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
-                          {{teamMemberGroup.name}}
+                      <select title="Dropdown is disabled.Because {{authenticationService?.partnerModule?.customName}} are assigned to this team member" disabled class="form-control" *ngIf="team?.partnersCount>0"> 
+                        <option>
+                          {{team?.teamMemberGroupName}}
                         </option>
-                        </select>
+                      </select>
+                      <select *ngIf="team?.partnersCount==0"  class="form-control" (ngModelChange)="selectTeamMemberGroupId($event);"  [(ngModel)]="team.teamMemberGroupId"  [ngModelOptions]="{standalone: true}">
+                        <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+                        {{teamMemberGroup.name}}
+                      </option>
+                      </select>
                       </div>
                   </div>
                 </div>

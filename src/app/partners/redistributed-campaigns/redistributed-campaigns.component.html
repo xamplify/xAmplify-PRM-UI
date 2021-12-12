@@ -11,7 +11,7 @@
           </div>
           <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
             <div class="inputs" style="float: right">
-              <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6">
+              <div class="col-xs-6 col-sm-6 col-lg-6 p0">
               <div style="float: left;">
                 <select class="form-control" [(ngModel)]="channelCampaignsSortOption.selectedChannelCampaignSortDropDownOption" (ngModelChange)="sortChannelCampaigns($event)"
                   style="position: relative;right: -3px;">
@@ -19,8 +19,8 @@
                 </select>
               </div>
             </div>
-            <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6 p0">
-              <div class="portlet-input input-inline" style="margin-right: 12px; width:170px">
+            <div class="col-xs-6 col-sm-6 col-lg-6 p0">
+              <div class="portlet-input input-inline mRedistributedSearch" style="margin-right: 12px; width:170px">
                 <div class="input-icon right" style="position: relative;right: -11px;">
                   <input type="text" style="height:34px;" class="form-control" [(ngModel)]="channelCampaignsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
                     placeholder="Search" (keypress)="searchInCampaignsOnKeyPress($event.keyCode,'channel-campaigns')">
