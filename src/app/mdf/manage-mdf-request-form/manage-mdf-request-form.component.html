@@ -142,9 +142,9 @@
                         </div>
                      </div>
                   </div>
-                  <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                  <div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8">
                      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-                              (notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                              (notifyParentDropDown)="listSubmittedData($event)"></app-pagination>
                   </div>
                </div>
             </div>

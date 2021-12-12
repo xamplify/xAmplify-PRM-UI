@@ -263,8 +263,8 @@ gotoBottom(){
 }
 
 getSelectedIndex(index:number){
-  this.pagination.partnerTeamMemberGroupFilter = index==1;
   this.selectedFilterIndex = index;
+  this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
   this.listSubmittedData(this.pagination);
   this.mdfRequestFormEventEmitter.emit(index);
 }

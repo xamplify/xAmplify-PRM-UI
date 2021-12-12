@@ -169,14 +169,14 @@
                                     </ng-container>
                                  </tbody>
                               </table>
-                            <div *ngIf="pagination.totalRecords==0 && !partnerListLoader.isLoading" class="alert alert-info">
+                              <div *ngIf="pagination.totalRecords==0 && !partnerListLoader.isLoading" class="alert alert-info">
                                 <strong>No Data Found.</strong>
-                            </div>
+                              </div>
                            </div>
                         </div>
                      </div>
-                     <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="partnerListLoader.isLoading">
-                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)" [hidden]="partnerListLoader.isLoading">
+                     <div *ngIf="pagination.pagedItems.length !== 0 && !partnerListLoader.isLoading">
+                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)">
                         </app-pagination>
                     </div>
                   </div>
