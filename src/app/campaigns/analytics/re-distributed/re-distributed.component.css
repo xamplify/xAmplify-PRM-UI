@@ -33,3 +33,8 @@ cursor: default;
 		overflow-x: auto;
 	}
 }
+
+.prmmtpx{
+	position: relative;
+	margin: -12px 0 0 0;
+}

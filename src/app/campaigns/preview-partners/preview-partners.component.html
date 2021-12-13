@@ -55,8 +55,8 @@
             <app-response-message [customResponse]="partnerActionResponse"
             *ngIf="partnerActionResponse.isVisible"></app-response-message>
             <app-list-loader *ngIf="campaignPartnerLoader.isLoading"></app-list-loader>
-            <div class="portlet-body"
-               *ngIf="!campaignPartnerLoader.isLoading && sortOption.totalRecords > 0 ">
+            <div class="portlet-body"  [hidden]="campaignPartnerLoader.isLoading || sortOption.totalRecords ==0 ">
+               <app-team-member-filter-option (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                <table class="table tgrid" id="campaign-partner-table" aria-describedby="campaignPartnersTable">
                   <thead>
                      <tr>
@@ -138,21 +138,10 @@
                </table>
                
             </div>
-            <div
-               *ngIf="sortOption.totalRecords > 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
+            <div  *ngIf="sortOption.totalRecords > 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
                style="background: white">
-               <div *ngIf="partnersPagination.pagedItems.length !== 0">
-                  <app-pagination [pagination]="partnersPagination"
-                  [isDropdown]="true" (notifyParent)="setPage($event)"
-                  (notifyParentDropDown)="listPartners($event)"> </app-pagination>
-                  <select class="form-control" style="float: right; width: auto;"
-                  [(ngModel)]="sortOption.itemsSize"
-                  (ngModelChange)="paginationDropdown($event)">
-                  <option
-                  *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage"
-                  [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
-                  </select>
-               </div>
+               <app-pagination [pagination]="partnersPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)">
+               </app-pagination>
             </div>
             <div
                *ngIf="sortOption.totalRecords == 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"

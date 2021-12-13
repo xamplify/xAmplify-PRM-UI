@@ -469,6 +469,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
           .subscribe(data => {
             this.campaignBarViews = data.data;
+            this.pagination.totalRecords = data.totalRecords;
             this.campaignBarViewsDataInsert();
           },
             error => console.log(error),
@@ -479,6 +480,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             data => {
               console.log(data);
               this.campaignBarViews = data.data;
+              this.pagination.totalRecords = data.totalRecords;
               this.campaignBarViewsDataInsert();
             },
             error => console.log(error),
@@ -504,7 +506,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       views.push(this.campaignBarViews[i].viewsCount)
     }
     this.maxViewsValue = Math.max.apply(null, views);
-    this.pagination.totalRecords = parseInt(this.campaignReport.totalRecipients);
+    //this.pagination.totalRecords = parseInt(this.campaignReport.totalRecipients);
     this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignBarViews);
     console.log(this.pagination);
     if (isShowBarChart) {
