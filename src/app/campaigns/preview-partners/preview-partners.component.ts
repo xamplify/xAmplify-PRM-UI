@@ -224,7 +224,12 @@ export class PreviewPartnersComponent implements OnInit {
 	setHistoryPage(event: any) {
 		this.historyPagination.pageIndex = event.page;
 		this.listDownloadHistory(this.historyPagination);
-	}
+    }
+    
+    getSelectedIndex(index:number){
+        this.refService.setTeamMemberFilterForPagination(this.partnersPagination,index);
+        this.listPartners(this.partnersPagination);
+    }
 
 
 }

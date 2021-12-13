@@ -507,6 +507,7 @@ export class CampaignService {
             url = "listTemplateEmailOpenedPartners";
         }
         pagination.campaignId = campaignId;
+        pagination.userId = this.authenticationService.getUserId();
         let updatedUrl = this.URL +"campaign/"+url+"?access_token=" + this.authenticationService.access_token;
         return this.http.post(updatedUrl, pagination)
             .map(this.extractData)
