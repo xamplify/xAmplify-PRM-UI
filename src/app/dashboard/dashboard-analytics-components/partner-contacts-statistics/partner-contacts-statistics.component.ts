@@ -23,6 +23,7 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 	partnerContactsAnalyticsCount: any;
 	partnerContactsAnalyticsCountLoader = false;
 	partnerContactsAnalyticsCountStatusCode = 200;
+	applyFilter = false;
 	constructor(public authenticationService:AuthenticationService,public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService, public utilService: UtilService) {
 	}
 	ngOnInit() {
@@ -32,7 +33,7 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 
 	getPartnerContactsCount() {
 		this.partnerContactsAnalyticsCountLoader = true;
-		this.dashboardService.getPartnerContactsCount().
+		this.dashboardService.getPartnerContactsCount(this.applyFilter).
 			subscribe(
 				data => {
 					this.partnerContactsAnalyticsCount = data;
@@ -47,11 +48,10 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 
 	getContactsStatistics() {
 		this.referenceService.loading(this.treeMapLoader, true);
-		this.dashboardService.getContactsStatistics().
+		this.dashboardService.getContactsStatistics(this.applyFilter).
 			subscribe((response) => {
 				this.treeMapData = response;
 				this.showTreeMap(this.treeMapData, "minimized-contacts-treemap")
-
 			}, (error: any) => {
 				this.xtremandLogger.error(error);
 			});
@@ -109,6 +109,21 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 			}
 			);
 			self.referenceService.loading(this.treeMapLoader, false);
+		}
+	}
+
+	refreshChart(){
+		this.getPartnerContactsCount();
+		this.getContactsStatistics();
+	}
+
+	getSelectedIndexFromPopup(event:any){
+		let filter = event['applyFilter'];
+		let selectedIndex = event['selectedOptionIndex'];
+		this.applyFilter = selectedIndex==1;
+		if (filter) {
+			this.getPartnerContactsCount();
+			this.getContactsStatistics();
 		}
 	}
 

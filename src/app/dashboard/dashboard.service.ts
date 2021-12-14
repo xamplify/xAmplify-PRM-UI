@@ -453,8 +453,8 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    getContactsStatistics() {
-        const url = this.authenticationService.REST_URL + 'dashboard/views/getContactsAnalyticsTreeMapData' + '/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    getContactsStatistics(applyFilter:boolean) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getContactsAnalyticsTreeMapData' + '/' + this.authenticationService.getUserId() +'/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
@@ -467,15 +467,15 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    getPartnerContactsCount() {
-        const url = this.authenticationService.REST_URL + 'dashboard/views/getPartnerContactsCount' + '/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    getPartnerContactsCount(applyFilter:boolean) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getPartnerContactsCount' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getLeadsCount() {
-        return this.http.get(this.authenticationService.REST_URL + `lead/getVendorLeadsCount/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`)
+    getLeadsCount(applyFilter:boolean) {
+        return this.http.get(this.authenticationService.REST_URL + `lead/getVendorLeadsCount/${this.authenticationService.getUserId()}/ ${applyFilter} /  ?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -486,8 +486,8 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    getWordCloudDataForRedistributedCampaigns() {
-        const url = this.authenticationService.REST_URL + 'dashboard/views/getWordCloudDataForRedistributedCampaigns' + '/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    getWordCloudDataForRedistributedCampaigns(applyFilter:boolean) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getWordCloudDataForRedistributedCampaigns' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

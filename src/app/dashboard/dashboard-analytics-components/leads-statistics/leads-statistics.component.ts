@@ -14,7 +14,8 @@ import { Properties } from 'app/common/models/properties';
 export class LeadsStatisticsComponent implements OnInit {
   leadsData: any;
 	leadsLoader = false;
-	leadsStatusCode = 200;
+  leadsStatusCode = 200;
+  applyFilter = false;
   constructor(public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService, public utilService: UtilService) {
 	}
 
@@ -24,7 +25,7 @@ export class LeadsStatisticsComponent implements OnInit {
 
   getLeadsData(){
     this.leadsLoader = true;
-    this.dashboardService.getLeadsCount().subscribe(
+    this.dashboardService.getLeadsCount(this.applyFilter).subscribe(
       data=>{
         this.leadsData = data;
         this.leadsStatusCode = 200;
@@ -35,6 +36,12 @@ export class LeadsStatisticsComponent implements OnInit {
         this.leadsLoader = false;
       }
     );
+  }
+  getSelectedIndexFromPopup(event){
+    let filter = event['applyFilter'];
+		let selectedIndex = event['selectedOptionIndex'];
+    this.applyFilter = selectedIndex==1;
+    this.getLeadsData();
   }
 
 }

@@ -96,6 +96,7 @@ export class PartnersStatisticsComponent implements OnInit {
 		this.applyFilter = selectedIndex==1;
 		if (filter) {
 			this.getActiveInActiveTotalPartnerCounts();
+			this.referenseService.setTeamMemberFilterForPagination(this.activePartnersPagination,selectedIndex);
 		    this.getActivePartnerReports();
 		}
 	}

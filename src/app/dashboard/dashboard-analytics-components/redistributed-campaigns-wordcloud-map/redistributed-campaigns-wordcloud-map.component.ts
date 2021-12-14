@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
-import {AuthenticationService} from 'app/core/services/authentication.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 declare var Highcharts: any;
 @Component({
     selector: 'app-redistributed-campaigns-wordcloud-map',
@@ -12,28 +12,32 @@ declare var Highcharts: any;
 })
 export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
     wordCloudData: any;
-	loader = false;
-	statusCode = 200;
-    constructor(public authenticationService:AuthenticationService,public properties:Properties,public dashboardService: DashboardService, public xtremandLogger: XtremandLogger) { }
+    loader = false;
+    statusCode = 200;
+    applyFilter = false;
+    constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger) { }
 
     ngOnInit() {
+        this.findCloudDataAndRenderChart();
+    }
+
+    findCloudDataAndRenderChart() {
         this.loader = true;
-        this.dashboardService.getWordCloudDataForRedistributedCampaigns().subscribe(
-            data=>{
+        this.dashboardService.getWordCloudDataForRedistributedCampaigns(this.applyFilter).subscribe(
+            data => {
                 this.loader = false;
                 this.wordCloudData = data;
                 this.statusCode = 200;
                 this.loadChart(data);
-            },error=>{
+            }, error => {
                 this.xtremandLogger.error(error);
                 this.loader = false;
                 this.statusCode = 0;
             }
         );
-        
     }
 
-    loadChart(data) {
+    loadChart(data:any) {
         Highcharts.chart('partner-redistributed-wordcolud-map', {
             credits: {
                 enabled: false
@@ -55,5 +59,18 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
                 text: ''
             }
         });
+    }
+
+    refreshChart() {
+        this.findCloudDataAndRenderChart();
+    }
+
+    getSelectedIndexFromPopup(event: any) {
+        let filter = event['applyFilter'];
+        let selectedIndex = event['selectedOptionIndex'];
+        this.applyFilter = selectedIndex == 1;
+        if (filter) {
+            this.findCloudDataAndRenderChart();
+        }
     }
 }
