@@ -15,7 +15,9 @@ import { Properties } from 'app/common/models/properties';
 export class DealsStatisticsComponent implements OnInit {
   dealsData: any;
 	dealsLoader = false;
-	dealsStatusCode = 200;
+  dealsStatusCode = 200;
+  applyFilter = false;
+  loadChart = false;
   constructor(public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService, public utilService: UtilService) {
 	}
 
@@ -26,17 +28,30 @@ export class DealsStatisticsComponent implements OnInit {
 
   getDealsData(){
     this.dealsLoader = true;
-    this.dashboardService.getDealsCount().subscribe(
+    this.dashboardService.getDealsCount(this.applyFilter).subscribe(
       data=>{
         this.dealsData = data;
         this.dealsStatusCode = 200;
         this.dealsLoader = false;
+        this.loadChart = true;
       },error=>{
         this.xtremandLogger.error(error);
         this.dealsStatusCode = 0;
         this.dealsLoader = false;
+        this.loadChart = true;
       }
     );
+  }
+
+  getSelectedIndexFromPopup(event:any){
+    this.loadChart = false;
+		let selectedIndex = event['selectedOptionIndex'];
+    this.applyFilter = selectedIndex==1;
+    this.getDealsData();
+  }
+  refreshChart(){
+    this.loadChart = false;
+    this.getDealsData();
   }
 
 }

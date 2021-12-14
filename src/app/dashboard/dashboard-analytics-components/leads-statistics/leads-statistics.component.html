@@ -6,7 +6,7 @@
                   <span class="caption-subject" translate>Leads Statistics</span>
               </div>
               <div>
-                <a class="close-circle ref-mar" (click)="getLeadsData()" title="Refresh">
+                <a class="close-circle ref-mar" (click)="refreshChart()" title="Refresh">
                 <i class="fa fa-refresh" aria-hidden="true"></i>
                 </a>
                 <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
@@ -90,7 +90,7 @@
                   </div>
               </ng-container>
               <br>
-              <app-leads-and-deals-bubble-chart [moduleType]="'Leads'"></app-leads-and-deals-bubble-chart>
+              <app-leads-and-deals-bubble-chart *ngIf="loadChart" [moduleType]="'Leads'" [applyFilter]="applyFilter"></app-leads-and-deals-bubble-chart>
           </div>
       </div>
   </div>
