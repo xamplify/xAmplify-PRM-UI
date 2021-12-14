@@ -55,7 +55,7 @@
             <app-response-message [customResponse]="partnerActionResponse"
             *ngIf="partnerActionResponse.isVisible"></app-response-message>
             <app-list-loader *ngIf="campaignPartnerLoader.isLoading"></app-list-loader>
-            <div class="portlet-body"  [hidden]="campaignPartnerLoader.isLoading || sortOption.totalRecords ==0 ">
+            <div class="portlet-body"  [hidden]="campaignPartnerLoader.isLoading">
                <app-team-member-filter-option (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                <table class="table tgrid" id="campaign-partner-table" aria-describedby="campaignPartnersTable">
                   <thead>
@@ -136,15 +136,13 @@
                   </ng-container>
                   </tbody>
                </table>
-               
             </div>
             <div  *ngIf="sortOption.totalRecords > 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
                style="background: white">
                <app-pagination [pagination]="partnersPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)">
                </app-pagination>
             </div>
-            <div
-               *ngIf="sortOption.totalRecords == 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
+            <div *ngIf="sortOption.totalRecords == 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
                class="alert alert-info">
                <strong>No Data Found.</strong>
             </div>
