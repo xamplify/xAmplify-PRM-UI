@@ -5,6 +5,16 @@
                         <div class="caption">
                             <span class="caption-subject" translate>{{authenticationService?.partnerModule?.customName}} Statistics</span>
                         </div>
+                        <div>
+                            <a class="close-circle ref-mar" (click)="refreshChart()" title="Refresh">
+                               <i class="fa fa-refresh" aria-hidden="true"></i>
+                            </a>
+                            <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+                         </div>
+                    </div>
+                    <div class="portlet-body clearfix">
+                        <br>
+                        <!---Search Bar-->
                         <div class="inputs" id="right">
                             <div class="portlet-input input-inline input-medium">
                               <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
@@ -17,8 +27,7 @@
                               </div>
                             </div>
                           </div>
-                    </div>
-                    <div class="portlet-body clearfix" style="height: 485px;">
+                          <br><br>
                         <ng-container>
                             <app-dashboard-loader *ngIf="partnerAnalyticsCountLoader"></app-dashboard-loader>
                         </ng-container>

@@ -3,7 +3,6 @@
     pointer-events: none;
   }
   </style>
-  <!-- <span class="total-records-bg-color"><strong>Total Records : {{pagination?.totalRecords}}</strong></span> -->
   <div [hidden]="pagination.pagedItems.length == 0">
   <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
   	<select class="form-control margin-top" style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
@@ -38,3 +37,7 @@
     </a>
   </li>
 </ul>
+<br>
+<span class="total-records-bg-color"><strong>Total Records : {{pagination?.totalRecords}}</strong></span>
+
+

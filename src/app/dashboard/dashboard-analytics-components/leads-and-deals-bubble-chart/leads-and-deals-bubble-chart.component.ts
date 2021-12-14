@@ -12,6 +12,7 @@ declare var Highcharts: any;
 export class LeadsAndDealsBubbleChartComponent implements OnInit {
   loading = false;
   @Input() moduleType:any;
+  @Input() applyFilter:boolean;
   names: Array<any>;
   colors =['#d0e4f8','#d1d190','#dbdbdc','#ebb995','#e1efec','#b9acbb', '#c9a8ca','#d9c997','#d2e6f9','#f0cdfc'];
   constructor(public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public authenticationService:AuthenticationService) { }
@@ -22,7 +23,7 @@ export class LeadsAndDealsBubbleChartComponent implements OnInit {
 
   getBubbleChartDataByType(){
     this.loading = true;
-    this.dashboardService.getBubbleChartDataByType(this.moduleType).subscribe(
+    this.dashboardService.getBubbleChartDataByType(this.moduleType,this.applyFilter).subscribe(
       data=>{
           this.names = data.names;
           this.names.forEach((element, index) => {

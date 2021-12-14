@@ -6,6 +6,12 @@
                 <div class="caption">
                     <span class="caption-subject" translate>{{authenticationService?.partnerModule?.customName}} Based Redistributed Campaign Statistics</span>
                 </div>
+                <div>
+                    <a class="close-circle ref-mar" (click)="refreshChart()" title="Refresh">
+                       <i class="fa fa-refresh" aria-hidden="true"></i>
+                    </a>
+                    <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+                 </div>
             </div>
             <div class="portlet-body">
                 <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
