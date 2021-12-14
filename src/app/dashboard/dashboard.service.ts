@@ -460,8 +460,8 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    getActiveInActiveTotalPartnerCounts() {
-        const url = this.authenticationService.REST_URL + 'dashboard/views/getActiveInActiveTotalPartnerCounts' + '/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    getActiveInActiveTotalPartnerCounts(applyFilter:boolean) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getActiveInActiveTotalPartnerCounts' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+'?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
