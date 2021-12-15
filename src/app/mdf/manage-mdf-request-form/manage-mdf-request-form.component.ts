@@ -47,7 +47,7 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
   invalidComment: boolean;
   loggedInUserCompanyId: any;
   showPartners: boolean;
-  selectedFilterIndex = 0;
+  selectedFilterIndex = 1;
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService,private mdfService:MdfService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -88,7 +88,8 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
             if(this.partnershipId!=undefined && this.partnershipId>0){
                 this.pagination.partnershipId = this.partnershipId;
             }
-         this.listSubmittedData(this.pagination);
+            this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+            this.listSubmittedData(this.pagination);
           }
         }
       );
