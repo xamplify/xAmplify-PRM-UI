@@ -27,7 +27,9 @@
       <div>
         <div>
           <div class="row">
-            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToActivePartnersDiv()">
+            <app-box-loader [countLoader]=4 *ngIf="activePartnersLoader || redistributedCampaignsCountLoader ||throughPartnerCampaignsCountLoader ||inActivePartnersCountLoader"></app-box-loader>
+            <!---Active Partners Count-->
+            <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -47,7 +49,9 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
+
+            <!--Redistributed Campaigns Count-->
+            <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" >
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
@@ -57,8 +61,8 @@
                   </i>
                 </div>
                 <div class="details">
-                  <div class="number"><span *ngIf="campaignsCount">{{campaignsCount}}</span><span
-                      *ngIf="!campaignsCount">0</span></div>
+                  <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
+                      *ngIf="!redistributedCampaignsCount">0</span></div>
                   <div class="desc mlabelWidth">Redistributed Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
@@ -67,7 +71,9 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
+
+            <!--Through Partner Campaigns Count-->
+            <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
                 (click)="goToThroughPartnersDiv()">
                 <div class="visual">
@@ -89,7 +95,8 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToInActivePartnersDiv()">
+            <!--InActive Partner Campaigns Count-->
+            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToInActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -110,7 +117,8 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToApprovePartnersDiv()">
+            <!--Active Partner Campaigns Count-->
+            <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToApprovePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"

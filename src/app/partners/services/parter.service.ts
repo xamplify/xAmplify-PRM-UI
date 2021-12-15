@@ -154,6 +154,38 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+   
+    loadCountryData(userId:number,applyFilter:boolean){
+        return this.callApiForDashBoard("countrywisePartnersCount",userId,applyFilter);
+    }
+
+    findRedistributedCampaignsCount(userId:number,applyFilter:boolean){
+        return this.callApiForDashBoard("findRedistributedCampaignsCount",userId,applyFilter);
+    }
+
+    findThroughPartnerCampaignsCount(userId:number,applyFilter:boolean){
+        return this.callApiForDashBoard("findThroughPartnerCampaignsCount",userId,applyFilter);
+    }
+
+    findActivePartnersCount(userId:number,applyFilter:boolean){
+        return this.callApiForDashBoard("findActivePartnersCount",userId,applyFilter);
+    }
+
+    findInActivePartnersCount(userId:number,applyFilter:boolean){
+        return this.callApiForDashBoard("findInActivePartnersCount",userId,applyFilter);
+    }
+
+    findApprovePartnersCount(userId:number,applyFilter:boolean){
+        return this.callApiForDashBoard("findApprovePartnersCount",userId,applyFilter);
+    }
+
+
+    callApiForDashBoard(urlPrefix:string,userId:number,applyFilter:boolean){
+        const url = this.URL + 'partner/'+urlPrefix+'?access_token=' + this.authenticationService.access_token +
+        '&userId=' + userId+"&applyFilter="+applyFilter;
+        return this.httpClient.get( url )
+        .catch( this.handleError );
+    }
 
     
     
