@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 export class TeamMemberFilterOptionComponent implements OnInit {
 
   showPartners = false;
-  selectedFilterIndex = 0;
+  selectedFilterIndex = 1;
   loading = false;
   @Output() teamMemberFilterOptionEventEmitter = new EventEmitter();
   @Output() teamMemberFilterModalPopUpOptionEventEmitter = new EventEmitter();
