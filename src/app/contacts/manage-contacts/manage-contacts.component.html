@@ -506,7 +506,9 @@
                                   </a>
                                 </div>
                                 <div class="actions-block override-actions"
-                                  *ngIf="contactList.marketoSyncComplete && !contactList.emailValidationInd">
+  *ngIf="(contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
+||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
+|| (!contactList.synchronisedList  && !contactList.emailValidationInd)" >
                                   <a data-toggle="tooltip" data-placement="top" title="Force process the list"
                                     (click)="forceProcessList(contactList.id)">
                                     <i class="fa fa-repeat" aria-hidden="true"></i>
@@ -668,7 +670,10 @@
 								            <i class="fa fa-eye" aria-hidden="true"></i>
 								          </a>
                         </div>
-                        <div class="bar" *ngIf="!contactList.emailValidationInd">
+                        <div class="bar" 
+                          *ngIf="(contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
+||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
+|| (!contactList.synchronisedList  && !contactList.emailValidationInd)">
                           <a data-toggle="tooltip" data-placement="top" title="Force process the list"
                             data-rel="fancybox-button" (click)="forceProcessList(contactList.id)">
                             <i class="fa fa-repeat" aria-hidden="true"></i>
