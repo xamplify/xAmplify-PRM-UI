@@ -13,7 +13,7 @@ export class DetailedDashboardComponent implements OnInit {
   logedInCustomerCompanyName = "";
   hasAccess = false;
   loading = true;
-  applyFilter = false;
+  applyFilter = true;
   constructor(public referenceService:ReferenceService,public userService: UserService,public authenticationService:AuthenticationService,public logger:XtremandLogger) { }
 
   ngOnInit() {

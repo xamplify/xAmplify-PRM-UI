@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -23,7 +23,7 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 	partnerContactsAnalyticsCount: any;
 	partnerContactsAnalyticsCountLoader = false;
 	partnerContactsAnalyticsCountStatusCode = 200;
-	applyFilter = false;
+	@Input()applyFilter = false;
 	constructor(public authenticationService:AuthenticationService,public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService, public utilService: UtilService) {
 	}
 	ngOnInit() {
@@ -111,12 +111,5 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 			self.referenceService.loading(this.treeMapLoader, false);
 		}
 	}
-
-	refreshChart(){
-		this.getPartnerContactsCount();
-		this.getContactsStatistics();
-	}
-
-
 
 }

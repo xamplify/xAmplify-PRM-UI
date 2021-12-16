@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import {AuthenticationService} from 'app/core/services/authentication.service';
 @Component({
   selector: 'app-advanced-dashboard-analytics',
@@ -6,7 +6,7 @@ import {AuthenticationService} from 'app/core/services/authentication.service';
   styleUrls: ['./advanced-dashboard-analytics.component.css']
 })
 export class AdvancedDashboardAnalyticsComponent implements OnInit {
-
+  @Input() applyFilter:boolean;
   constructor(public authenticationService:AuthenticationService) { 
   }
 

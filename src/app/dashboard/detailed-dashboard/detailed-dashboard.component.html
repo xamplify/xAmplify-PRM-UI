@@ -12,7 +12,7 @@
              || authenticationService?.module?.isPrmAndPartnerTeamMember ||authenticationService?.module?.isVendorTier || authenticationService?.module?.isVendorTierTeamMember
              || authenticationService?.module?.isVendorTierAndPartner ||  authenticationService?.module?.isVendorTierAndPartnerTeamMember )">
                 <ng-container *ngIf="authenticationService?.mdf || authenticationService?.leadsAndDeals">
-                    <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
+                    <app-advanced-dashboard-analytics [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
                 </ng-container>
                 <ng-container *ngIf="!authenticationService?.mdf && !authenticationService?.leadsAndDeals && 
                 !authenticationService?.module?.damAccess && !authenticationService?.module?.damAccessAsPartner && 
@@ -26,7 +26,7 @@
             <ng-container *ngIf="(!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && !authenticationService?.module?.isPrmAndPartner
              && !authenticationService?.module?.isPrmAndPartnerTeamMember && !authenticationService?.module?.isVendorTier && !authenticationService?.module?.isVendorTierTeamMember
              && !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember)">
-                <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
+                <app-advanced-dashboard-analytics [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
             </ng-container>
             <ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
             || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
@@ -48,8 +48,8 @@
             <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="true" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
             </ng-container>
             <div class="clearfix" *ngIf="authenticationService?.leadsAndDeals">
-                <app-leads-statistics></app-leads-statistics>
-                <app-deals-statistics></app-deals-statistics>
+                <app-leads-statistics [applyFilter]="applyFilter"></app-leads-statistics>
+                <app-deals-statistics [applyFilter]="applyFilter"></app-deals-statistics>
              </div>
         </div>
 </div>

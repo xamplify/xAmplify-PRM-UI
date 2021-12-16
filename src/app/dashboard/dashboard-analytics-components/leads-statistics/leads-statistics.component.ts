@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -15,7 +15,7 @@ export class LeadsStatisticsComponent implements OnInit {
   leadsData: any;
 	leadsLoader = false;
   leadsStatusCode = 200;
-  applyFilter = false;
+  @Input()applyFilter:boolean;
   loadChart = false;
   constructor(public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService, public utilService: UtilService) {
 	}
