@@ -64,10 +64,6 @@ export class MdfStatisticsComponent implements OnInit {
 		}
   }
   
-  refreshChart(){
-    this.mdfStatsLoader = true;
-		this.getTilesInfo();
-  }
 
  
 

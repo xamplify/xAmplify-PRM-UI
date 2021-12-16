@@ -117,14 +117,6 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 		this.getContactsStatistics();
 	}
 
-	getSelectedIndexFromPopup(event:any){
-		let filter = event['applyFilter'];
-		let selectedIndex = event['selectedOptionIndex'];
-		this.applyFilter = selectedIndex==1;
-		if (filter) {
-			this.getPartnerContactsCount();
-			this.getContactsStatistics();
-		}
-	}
+
 
 }

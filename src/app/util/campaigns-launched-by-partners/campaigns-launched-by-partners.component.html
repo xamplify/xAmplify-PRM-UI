@@ -49,7 +49,7 @@
             </tr>
           </tbody>
         </table>
-        <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
+        <div *ngIf="activePartnersPagination.totalRecords==0 && !activeParnterHttpRequestLoader.isLoading" class="alert alert-info">
           <strong>No campaigns found</strong>
         </div>
       </div>

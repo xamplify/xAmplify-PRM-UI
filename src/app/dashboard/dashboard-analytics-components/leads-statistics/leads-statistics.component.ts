@@ -40,15 +40,6 @@ export class LeadsStatisticsComponent implements OnInit {
       }
     );
   }
-  getSelectedIndexFromPopup(event:any){
-    this.loadChart = false;
-		let selectedIndex = event['selectedOptionIndex'];
-    this.applyFilter = selectedIndex==1;
-    this.getLeadsData();
-  }
-  refreshChart(){
-    this.loadChart = false;
-    this.getLeadsData();
-  }
+
 
 }

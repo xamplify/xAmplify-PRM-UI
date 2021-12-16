@@ -60,17 +60,5 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
             }
         });
     }
-
-    refreshChart() {
-        this.findCloudDataAndRenderChart();
-    }
-
-    getSelectedIndexFromPopup(event: any) {
-        let filter = event['applyFilter'];
-        let selectedIndex = event['selectedOptionIndex'];
-        this.applyFilter = selectedIndex == 1;
-        if (filter) {
-            this.findCloudDataAndRenderChart();
-        }
-    }
+   
 }

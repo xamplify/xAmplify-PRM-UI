@@ -90,16 +90,5 @@ export class PartnersStatisticsComponent implements OnInit {
 		this.getActivePartnerReports();
 	}
 
-	getSelectedIndexFromPopup(event) {
-		let filter = event['applyFilter'];
-		let selectedIndex = event['selectedOptionIndex'];
-		this.applyFilter = selectedIndex==1;
-		if (filter) {
-			this.getActiveInActiveTotalPartnerCounts();
-			this.referenseService.setTeamMemberFilterForPagination(this.activePartnersPagination,selectedIndex);
-		    this.getActivePartnerReports();
-		}
-	}
-
 
 }

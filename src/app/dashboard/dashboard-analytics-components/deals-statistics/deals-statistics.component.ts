@@ -43,15 +43,6 @@ export class DealsStatisticsComponent implements OnInit {
     );
   }
 
-  getSelectedIndexFromPopup(event:any){
-    this.loadChart = false;
-		let selectedIndex = event['selectedOptionIndex'];
-    this.applyFilter = selectedIndex==1;
-    this.getDealsData();
-  }
-  refreshChart(){
-    this.loadChart = false;
-    this.getDealsData();
-  }
+ 
 
 }
