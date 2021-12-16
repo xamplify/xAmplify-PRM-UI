@@ -60,6 +60,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    showDealForm: boolean = false;
    customResponse: CustomResponse = new CustomResponse();
    showSandboxText = false;
+   applyFilter = true;
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
     public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService) {
@@ -418,5 +419,13 @@ showCampaignDetails(campaign:any){
     this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
   }
 
+  getSelectedIndexFromPopup(event:any){
+    this.ngxLoading = true;
+    let self = this;
+    setTimeout(function() {
+    self.ngxLoading = false;
+    self.applyFilter = event['selectedOptionIndex'] == 1;
+    }, 500);
+  }
 
 }
