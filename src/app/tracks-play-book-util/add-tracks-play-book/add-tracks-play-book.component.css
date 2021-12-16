@@ -1072,3 +1072,51 @@ input.cmn-toggle-round-flat:checked+label:after {
 .form-name-wrap {
     word-break: break-word;
 }
+
+@media screen and (max-width:600px){
+    .mPortlet{
+        overflow-x: auto;
+        padding-right: 10px!important;
+    }
+    .mPortlet-body{
+        padding-left: 10px!important;
+        overflow-x: auto;
+    }
+    .mTags{
+        width: 175%!important;
+        overflow-x: auto;
+    }
+
+    .link[_ngcontent-c9] button[_ngcontent-c9]{
+        width:17%;
+    }
+    .mTextAlign{
+        text-align: left!important;
+    }
+
+    .mScrollHeight{
+        height: 180px!important;
+    }
+
+    .mImageWid{
+        width:300%;
+    }
+    .mTextWid{
+        width:300%;
+        padding: 5px;
+    }
+
+    .mNextPad{
+        margin-left: 100px;
+    }
+    .mContentWid{
+        width:292%;
+        display: flex;
+    }
+    .mContentHeight{
+        height:180px;
+    }
+    .mToolBarPad{
+        padding:5px;
+    }
+}

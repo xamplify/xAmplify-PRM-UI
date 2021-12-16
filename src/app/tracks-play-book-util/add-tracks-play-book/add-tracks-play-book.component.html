@@ -48,8 +48,8 @@
     <!-- step 1 -->
     <div *ngIf="activeTabName == 'step-1'" class="setup-content step activeStepInfo">
       <div style="margin-top: 10px;">
-        <div class="portlet box">
-          <div class="portlet-body form">
+        <div class="portlet box mPortlet">
+          <div class="portlet-body form mPortlet-body">
             <div class="row">
               <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 form-body">
                 <div class="row form-group">
@@ -102,7 +102,7 @@
                   <label class="control-label col-sm-4" style="text-align: right;" translate>Folder
                     <font style="color: red">*</font>
                   </label>
-                  <div class="inline col-sm-8">
+                  <div class="inline col-sm-8 col-xs-12">
                     <div class="dropdown">
                       <input type="text" class="form-control" [(ngModel)]="folderName"
                         (click)="showDropDown();filterFolders(folderSearchValue)" readonly
@@ -120,10 +120,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="row form-group" style="padding-bottom: 10px;">
-                  <label class="control-label col-sm-4" style="text-align: right;" translate>Tags
+                <div class="row form-group mTags" style="padding-bottom: 10px;">
+                  <label class="control-label col-sm-4 col-xs-6 mTextAlign" style="text-align: right;" translate>Tags
                   </label>
-                  <div class="inline col-sm-8">
+                  <div class="inline col-sm-8 col-xs-8">
                     <div class="portlet light" style="width: 100%;padding: 5px !important;">
                       <div class="portlet-title tabbable-line " style="margin-bottom: 0px !important;">
                         <div class="inline" style="float: right;">
@@ -142,7 +142,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="scroller">
+                      <div class="scroller mScrollHeight">
                         <table class="table table-bordered no-footer tags-table" id="tags_list">
                           <tbody>
                             <tr role="row" *ngFor="let tag of tagsListFirstColumn;let i = index"
@@ -187,7 +187,7 @@
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row" style="padding-top: 10px;">
-                <div class="portlet light">
+                <div class="portlet light mImageWid">
                   <div class="portlet-title tabbable-line ">
                     <div class="caption caption-md ">
                       <i class="icon-globe theme-font hide " aria-hidden="true "></i>
@@ -216,14 +216,14 @@
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row">
-                <div class="message-content">
+                <div class="message-content mTextWid">
                   <ul>
                     <li translate>Maximum file size is 10 MB.</li>
                     <li translate>Please Upload <strong>.jpg, .jpeg, .png </strong>files only.</li>
                   </ul>
                 </div>
               </div>
-              <div class="col-sm-12 row" style="padding-right: 20px; padding-bottom: 10px;">
+              <div class="col-sm-12 col-xs-12 row mNextPad" style="padding-right: 20px; padding-bottom: 10px;">
                 <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-2');"
                   [disabled]="!isStepOneValid" translate>Next</button>
               </div>
@@ -272,7 +272,7 @@
         <div class="portlet light">
           <div class="col-lg-12">
             <div class="page-toolbar">
-              <div class="inline">
+              <div class="inline mToolBarPad">
                 <button class="btn btn-primary" (click)="openOrderAssetsPopup()">Order Assets</button>
                 <button *ngIf="type == undefined || type == 'TRACK'" class="btn btn-primary"
                   (click)="openQuizPopup()">Select Quiz</button>
@@ -304,9 +304,9 @@
           <div class="portlet-body">
             <app-grid-loader *ngIf="assetLoader.isLoading"></app-grid-loader>
             <div class="row" *ngIf="!assetError">
-              <ul class="content__list" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
+              <ul class="content__list mContentWid" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
                 <li class="list__item" [ngClass]="{'list__item--selected': isAssetSelected(file)}">
-                  <div class="flex-row pointer">
+                  <div class="flex-row pointer mContentHeight">
                     <div class="item__select-box-wrapper">
                       <span class="select-box-asset"> <label>
                           <input type="checkbox" (click)="$event.stopPropagation();">

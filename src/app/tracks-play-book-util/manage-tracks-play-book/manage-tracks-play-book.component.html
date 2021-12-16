@@ -3,7 +3,7 @@
 </div>
 <div class="row">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-    <div class="col-md-12">
+    <div class="col-md-12 mTop">
         <div class="portlet light clearfix" style="min-height: 644px;">
             <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                 <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)">
