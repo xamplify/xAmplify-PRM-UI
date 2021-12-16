@@ -83,3 +83,17 @@ img.active {
 .icon-class{
     color: #0085d5; font-size: 18px !important
 }
+
+@media screen and (max-width:600px){
+ .mHeight{
+     height: 400px !important;
+ }
+ .mPad{
+     padding:5px 0px 5px 0px;
+     width:100%
+ }
+ .mPad2{
+     Padding:5px 30px 5px 30px;
+     width:100%
+ }
+}

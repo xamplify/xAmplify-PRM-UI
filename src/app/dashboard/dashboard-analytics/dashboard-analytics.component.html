@@ -6,7 +6,6 @@
         <div class="col-xs-12 col-sm-6 p0">
             <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
         </div>
-
     </div>
     <div class="row">
         <div class="clearfix"></div>
@@ -24,7 +23,7 @@
     </div>
     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <ng-container *ngIf="!ngxLoading">
+    <div [hidden]="ngxLoading">
         <div class="page-bar" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
             <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
            'alert-danger': userDefaultPage.responseType == 'ERROR'}">
@@ -54,8 +53,9 @@
                     </div>
                 </div>
             </div>
+            <app-team-member-filter-option *ngIf="authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1" [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
         </div>
-    </ng-container>
+    </div>
     <ng-container
         *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
         <!------------Modules Count Anlatyics Boxes---------------------->
@@ -160,7 +160,7 @@
                 <div class="clearfix">
                     <app-campaign-statistics-analytics></app-campaign-statistics-analytics>
                     <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
-                        <app-advanced-dashboard-analytics></app-advanced-dashboard-analytics>
+                        <app-advanced-dashboard-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter" ></app-advanced-dashboard-analytics>
                     </ng-container>
                     <!-- ---Email Statistics---------------->
                     <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1">
@@ -222,7 +222,7 @@
                         (authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
             <div class="row">
                 <div class="page-bar portlet light border-radius-0 shadow mmtp">
-                    <app-mdf-statistics *ngIf="authenticationService?.mdf"></app-mdf-statistics>
+                    <app-mdf-statistics  [applyFilter]="applyFilter" *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>
                 </div>
             </div>
         </div>
@@ -259,17 +259,15 @@
 
 
         <div class="clearfix" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
-&& authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
-(authenticationService?.leadsAndDeals)">
+            && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
+            (authenticationService?.leadsAndDeals)">
             <div class="portlet light shadow">
                 <div class="portlet-body clearfix">
-                    <app-leads-statistics></app-leads-statistics>
-                    <app-deals-statistics></app-deals-statistics>
+                    <app-leads-statistics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-leads-statistics>
+                    <app-deals-statistics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-deals-statistics>
                 </div>
             </div>
         </div>
-
-
         <app-social-accounts-analytics></app-social-accounts-analytics>
     </ng-container>
 </div>

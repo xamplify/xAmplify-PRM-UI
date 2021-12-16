@@ -60,6 +60,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
           this.xtremandLogger.errorPage(error);
         },
         () => {
+          this.pagination.partnerTeamMemberGroupFilter = true;
           this.getAssetDetailsById();
         }
       );

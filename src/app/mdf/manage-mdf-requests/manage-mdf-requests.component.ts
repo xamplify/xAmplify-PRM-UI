@@ -115,7 +115,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
               this.listVendors(this.pagination);
             }
           }else{
-            this.getTilesInfoForVendor(false);
+            this.getTilesInfoForVendor(true);
             this.showMdfFormAnalyticsForVendorView = true;
             this.vendorCompanyId = this.loggedInUserCompanyId;
           }

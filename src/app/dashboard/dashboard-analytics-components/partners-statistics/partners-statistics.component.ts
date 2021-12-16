@@ -23,7 +23,7 @@ export class PartnersStatisticsComponent implements OnInit {
 	partnerAnalyticsCount: any;
 	partnerAnalyticsCountLoader = false;
 	partnerAnalyticsCountStatusCode = 200;
-	applyFilter = false;
+	@Input()applyFilter:boolean;
 	constructor(public dashboardService: DashboardService, public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService, public pagination: Pagination,
 		public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
 		public xtremandLogger: XtremandLogger, public properties: Properties) {
@@ -31,6 +31,7 @@ export class PartnersStatisticsComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
 		this.getActiveInActiveTotalPartnerCounts();
 		this.getActivePartnerReports();
 	}
@@ -88,17 +89,6 @@ export class PartnersStatisticsComponent implements OnInit {
 	refreshChart() {
 		this.getActiveInActiveTotalPartnerCounts();
 		this.getActivePartnerReports();
-	}
-
-	getSelectedIndexFromPopup(event) {
-		let filter = event['applyFilter'];
-		let selectedIndex = event['selectedOptionIndex'];
-		this.applyFilter = selectedIndex==1;
-		if (filter) {
-			this.getActiveInActiveTotalPartnerCounts();
-			this.referenseService.setTeamMemberFilterForPagination(this.activePartnersPagination,selectedIndex);
-		    this.getActivePartnerReports();
-		}
 	}
 
 

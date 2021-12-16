@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
@@ -14,7 +14,7 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
     wordCloudData: any;
     loader = false;
     statusCode = 200;
-    applyFilter = false;
+    @Input()applyFilter:boolean;
     constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger) { }
 
     ngOnInit() {
@@ -60,17 +60,5 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
             }
         });
     }
-
-    refreshChart() {
-        this.findCloudDataAndRenderChart();
-    }
-
-    getSelectedIndexFromPopup(event: any) {
-        let filter = event['applyFilter'];
-        let selectedIndex = event['selectedOptionIndex'];
-        this.applyFilter = selectedIndex == 1;
-        if (filter) {
-            this.findCloudDataAndRenderChart();
-        }
-    }
+   
 }

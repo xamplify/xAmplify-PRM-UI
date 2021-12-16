@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { MdfService } from 'app/mdf/services/mdf.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
@@ -17,7 +17,7 @@ export class MdfStatisticsComponent implements OnInit {
   mdfStatsLoader = false;
   mdfStatsStatusCode = 200;
   mdfData:any;
-  applyFilter = false;
+  @Input()applyFilter:boolean;
   constructor(public properties:Properties,public mdfService:MdfService,public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -54,20 +54,8 @@ export class MdfStatisticsComponent implements OnInit {
     this.mdfStatsStatusCode = 0;
     this.mdfStatsLoader = false;
   }
-  getSelectedIndexFromPopup(event:any){
-		let filter = event['applyFilter'];
-		let selectedIndex = event['selectedOptionIndex'];
-		this.applyFilter = selectedIndex==1;
-		if (filter) {
-      this.mdfStatsLoader = true;
-			this.getTilesInfo();
-		}
-  }
+
   
-  refreshChart(){
-    this.mdfStatsLoader = true;
-		this.getTilesInfo();
-  }
 
  
 

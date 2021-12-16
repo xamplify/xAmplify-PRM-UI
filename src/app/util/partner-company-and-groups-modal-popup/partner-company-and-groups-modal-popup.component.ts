@@ -60,7 +60,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	showExpandButton = false; 
 	expandedUserList: any;
 	/***XNFR-85*****/
-	selectedFilterIndex: number = 0;
+	selectedFilterIndex: number = 1;
 	showFilter = true;
 	selectedTab = 1;
 
@@ -73,6 +73,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 		if (this.companyId != undefined && this.companyId > 0 && this.inputId != undefined && this.inputId > 0 &&
 			this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
 			this.pagination.vendorCompanyId = this.companyId;
+			this.pagination.partnerTeamMemberGroupFilter = true;
 			this.openPopup();
 		} else {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
