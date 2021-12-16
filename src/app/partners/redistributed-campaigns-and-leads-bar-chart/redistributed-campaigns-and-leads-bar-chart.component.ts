@@ -15,11 +15,11 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
 chartLoader = false;
 statusCode=200;
 @Input() chartId:any;
+@Input() applyTeamMemberFilter:boolean;
 hasLeadsAndDealsAccess = false;
 headerText = "";
 filterValue = 'r';
 hideLeadsAndDealsChart = false;
-applyTeamMemberFilter = false;
 constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {
       this.refreshChart();
@@ -225,15 +225,5 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
     this.getDataForBarChart();
   }
 
-  getSelectedIndexFromPopup(event:any){
-    let filter = event['applyFilter'];
-    let selectedIndex = event['selectedOptionIndex'];
-    if(filter){
-        this.applyTeamMemberFilter = selectedIndex==1;
-        this.chartLoader = true;
-        this.getDataForBarChart();
-    }
-    
-  }
 
 }

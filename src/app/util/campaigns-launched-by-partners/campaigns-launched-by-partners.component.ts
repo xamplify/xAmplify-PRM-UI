@@ -15,17 +15,17 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 	providers: [Pagination, HttpRequestLoader,ListLoaderValue]
 })
 export class CampaignsLaunchedByPartnersComponent implements OnInit {
-	@Input() isFromPartnerAnalytics:boolean;
+	@Input() applyFilter:boolean;
 	activePartnersSearchKey: string = "";
 	activePartnersPagination: Pagination = new Pagination();
 	activeParnterHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	loggedInUserId: number = 0;
-	constructor(public listLoaderValue: ListLoaderValue,public authenticationService: AuthenticationService, public pagination: Pagination,
-		public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
+	constructor(public listLoaderValue: ListLoaderValue,public authenticationService: AuthenticationService,public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
 		public xtremandLogger: XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 	ngOnInit() {
+		this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
 		this.getActivePartnerReports();
 	}
 
@@ -60,12 +60,6 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 
 	setPage(event:any) {
 		this.activePartnersPagination.pageIndex = event.page;
-		this.getActivePartnerReports();
-	}
-
-	getSelectedIndexFromPopup(event:any){
-		this.activePartnersPagination.partnerTeamMemberGroupFilter = event['selectedOptionIndex']==1;
-		this.activePartnersPagination.pageIndex = 1;
 		this.getActivePartnerReports();
 	}
 

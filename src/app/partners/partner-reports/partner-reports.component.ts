@@ -70,8 +70,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     toDateFilter: any = "";
     filterResponse: CustomResponse = new CustomResponse();
     filterMode: boolean = false;
-    applyFilter = false;
+    applyFilter = true;
     redistributedCampaignsCount = 0;
+    reloadWithFilter = true;
+    loadAllCharts = false;
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -264,7 +266,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     /***************************Re Distributed**************************/
     goToReDistributedPartnersDiv() {
-        // this.throughPartnerCampaignPagination = new Pagination();
         this.sortOption = new SortOption();
         this.selectedTabIndex = 2;
         this.pagination.maxResults = 12;
@@ -273,7 +274,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         $("#through-partner-div").hide();
         $("#redistribute-partners-div").show();
         $('#approve-partners-div').hide();
-        this.listRedistributedThroughPartnerCampaigns(this.pagination);
+       // this.listRedistributedThroughPartnerCampaigns(this.pagination);
         // this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
         // this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
     }
@@ -812,8 +813,15 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
     getSelectedIndexFromPopup(event: any) {
-        this.applyFilter = event['selectedOptionIndex'] == 1;
-        this.partnerReportData();
+        this.loadAllCharts = true;
+        this.reloadWithFilter = false;
+        let self = this;
+        setTimeout(function() {
+        self.reloadWithFilter = true;
+        self.applyFilter = event['selectedOptionIndex'] == 1;
+        self.partnerReportData();
+        self.loadAllCharts = false;
+        }, 500);
     }
 
     loadCountryData() {
@@ -899,6 +907,5 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             });
     }
 
-
-
+    
 }

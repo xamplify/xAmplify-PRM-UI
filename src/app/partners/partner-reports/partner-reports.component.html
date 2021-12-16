@@ -20,6 +20,7 @@
         <a>{{authenticationService?.partnerModule?.customName}} Analytics</a>
       </li>
     </ul>
+    <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
   </div>
 
   <div class="row">
@@ -144,10 +145,11 @@
       </div>
     </div>
   </div>
-  <div id="active-partner-div">
+  <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
+  <div id="active-partner-div" *ngIf="!loadAllCharts">
     <div class="row">
       <div class="page-bar portlet light border-radius-0 shadow mmtp">
-        <div class="col-xs-12 col-sm-6 p5">
+        <div class="col-xs-12 col-sm-5 p5">
           <!-- Word Cloud Map-->
           <div class="portlet light">
             <div class="portlet-title">
@@ -168,35 +170,28 @@
             </div>
           </div>
           <!---Bar Chart-->
-          <div class="portlet light overflow-x-auto">
-            <app-dashboard-loader *ngIf="barChartLoader"></app-dashboard-loader>
-            <div [hidden]="barChartLoader" class="portlet-title" style="min-height: 0px;">
-              <div class="caption">
-                  <span class="caption-subject" translate>Campaigns</span>
-                </div>
-                <div>
-                  <a class="close-circle ref-mar" (click)="partnerReportData()" title="Refresh">
-                     <i class="fa fa-refresh" aria-hidden="true"></i>
-                  </a>
-                  <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
-               </div>
-            </div>
-            <div [hidden]="barChartLoader"  class="portlet-body" style="padding-top: 0;">
-            <div id="campaign-type-chart" class="campaign-type mGraphwidth"></div>
+          <div class="portlet light">
+            <div class="portlet-body" style="padding-top: 0;">
+              <div id="campaign-type-chart" class="campaign-type"></div>
             </div>
           </div>
           <!-- END PORTLET-->
         </div>
         <!-- -Campaigns Launched By Partners -->
-        <app-campaigns-launched-by-partners [isFromPartnerAnalytics]='true'></app-campaigns-launched-by-partners>
-        <app-redistributed-campaigns-and-leads-bar-chart [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
-        <app-redistributed-campaigns-and-leads-bar-chart [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart>
-        <app-kpi></app-kpi>
-        <app-redistributed-campaigns-and-leads-bar-chart [chartId]="'top10LeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+        <ng-container *ngIf="reloadWithFilter">
+          <app-campaigns-launched-by-partners [applyFilter]="applyFilter"></app-campaigns-launched-by-partners>
+          <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter" [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+          <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter" [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart>
+          <app-kpi [applyTeamMemberFilter]="applyFilter"></app-kpi>
+          <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter" [chartId]="'top10LeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+        </ng-container>
       </div>
 
     </div>
-  </div><!-- End Of active-partners-div -->
+  </div>
+  <!-- End Of active-partners-div -->
+
+
   <!-- --------------------Inactive Partners Count-------- -->
   <div id="inactive-partners-div" style="display: none;">
     <div class="row">
@@ -207,7 +202,7 @@
               <span class="caption-subject font-red-sunglo uppercase">Inactive
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
-            <div class="inputs" align="right" style="float: right">
+            <div class="inputs" style="float: right">
               <div class="portlet-input input-inline">
                 <div class="input-icon right mTop" style="position: relative; margin: -12px 0 0 0;">
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey"
@@ -347,7 +342,6 @@
           <div class="tab-content">
             <div class="page-bar m10">
               <ul class="mix-filter col-xs-12 col-md-5 p0 m0" style="display: inline-flex;">
-                <!-- <li class="hidden-xs" style="background: white; color: #616161;cursor: default;font-size: 14px;">Campaign Type:</li> -->
                 <li class="filter" (click)="filterCampaigns('NONE',0)"
                   [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex">All</li>
                 <li class="filter" (click)="filterCampaigns('REGULAR',1)"
@@ -668,6 +662,7 @@
       </div>
     </div>
   </div>
+
   <app-scroll-top></app-scroll-top>
 </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MdfService } from 'app/mdf/services/mdf.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
@@ -29,7 +29,7 @@ export class KpiComponent implements OnInit {
   mdfAccess = false;
   headerText = "";
   loader = false;
-  applyTeamMemberFilter = false;
+  @Input() applyTeamMemberFilter:boolean;
   constructor(public mdfService:MdfService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public partnerService:ParterService
     ) { 
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -156,13 +156,5 @@ export class KpiComponent implements OnInit {
     this.opportunityAmountDto.loader = false;
     this.mdfDto.loader = false;
   }
-  getSelectedIndexFromPopup(event:any){
-    let filter = event['applyFilter'];
-    let selectedIndex = event['selectedOptionIndex'];
-    if(filter){
-        this.applyTeamMemberFilter = selectedIndex==1;
-        this.refreshKpis();
-    }
-    
-  }
+
 }
