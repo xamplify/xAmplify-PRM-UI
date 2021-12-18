@@ -94,7 +94,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         Highcharts.chart('campaign-type-chart', {
             chart: { type: 'bar' },
             xAxis: {
-                categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN'],
+                categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
                 lineWidth: 0,
                 minorTickLength: 0,
                 tickLength: 0,
@@ -105,7 +105,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 visible: false,
                 gridLineWidth: 0,
             },
-            colors: ['#ffb600', '#be72d3', '#ff3879', '#357ebd'],
+            colors: ['#ffb600', '#be72d3', '#ff3879', '#357ebd','#00ffc8'],
             tooltip: {
                 formatter: function () {
                     return 'Campaign Type: <b>' + this.point.category + '</b><br>Campaigns Count: <b>' + this.point.y;
@@ -127,6 +127,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
+                campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SURVEY);
                 this.campaignTypeChart(campaignData);
             },
             (error: any) => {
@@ -274,9 +275,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         $("#through-partner-div").hide();
         $("#redistribute-partners-div").show();
         $('#approve-partners-div').hide();
-       // this.listRedistributedThroughPartnerCampaigns(this.pagination);
-        // this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
-        // this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
     }
 
 
@@ -306,6 +304,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.sortOption.selectedCampaignTypeIndex = index;//This is to highlight the tab
         this.throughPartnerCampaignPagination.pageIndex = 1;
         this.throughPartnerCampaignPagination.campaignType = type;
+        this.throughPartnerCampaignPagination.maxResults = 12;
         this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
 
     }
@@ -800,6 +799,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     this.throughPartnerCampaignPagination.toDateFilterString = this.toDateFilter;
                     this.filterMode = true;
                     this.filterResponse.isVisible = false;
+                    this.throughPartnerCampaignPagination.maxResults = 12;
                     this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
                 } else {
                     this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
@@ -811,16 +811,34 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
         }
     }
-
+    reloadRedistributeCampaigns = true;
     getSelectedIndexFromPopup(event: any) {
-        this.loadAllCharts = true;
-        this.reloadWithFilter = false;
         let self = this;
+        this.activePartnersLoader = true;
+        this.redistributedCampaignsCountLoader = true;
+        this.inActivePartnersCountLoader = true;
+        this.approvePartnersCountLoader = true;
+        this.throughPartnerCampaignsCountLoader = true;
+        if(this.selectedTabIndex==0){
+            this.loadAllCharts = true;
+            this.reloadWithFilter = false;
+        }else if(this.selectedTabIndex==2){
+            this.reloadRedistributeCampaigns = false;
+        }
         setTimeout(function() {
-        self.reloadWithFilter = true;
         self.applyFilter = event['selectedOptionIndex'] == 1;
-        self.partnerReportData();
-        self.loadAllCharts = false;
+        self.findActivePartnersCount();
+        self.findRedistributedCampaignsCount();
+        self.findInActivePartnersCount();
+        self.findApprovePartnersCount();
+        if(self.selectedTabIndex==0){
+            self.reloadWithFilter = true;
+            self.partnerReportData();
+            self.loadAllCharts = false;
+        }else if(self.selectedTabIndex==2){
+            self.reloadRedistributeCampaigns = true;
+        }
+        self.throughPartnerCampaignsCountLoader = false;
         }, 500);
     }
 

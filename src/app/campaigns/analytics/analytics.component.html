@@ -25,24 +25,29 @@
   [class.ml0]="authenticationService.isSuperAdmin()">
   <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
     <ul class="page-breadcrumb">
-      <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a
+      <li *ngIf="!authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i> <a
           [routerLink]="referenceService.homeRouter">Home</a>
-        <i class="fa fa-angle-right"></i>
+        <i class="fa fa-angle-right"  aria-hidden="true"></i>
       </li>
-      <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a
+      <li *ngIf="authenticationService.isSuperAdmin()">
+        <i class="fa fa-home"  aria-hidden="true"></i><a
           [routerLink]="['/home/dashboard/admin-report']">Admin
-          Report</a><i class="fa fa-angle-right"></i></li>
-      <li *ngIf="campaignRouter==='managecampaigns'"><a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i
-          class="fa fa-angle-right"></i></li>
+          Report</a><i class="fa fa-angle-right"  aria-hidden="true"></i></li>
+      <li *ngIf="campaignRouter==='managecampaigns'">
+        <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i
+          class="fa fa-angle-right"  aria-hidden="true"></i></li>
       <li *ngIf="campaignRouter==='notification'"><a
-          [routerLink]="['/home/dashboard/notifications']">Notifications</a><i class="fa fa-angle-right"></i></li>
+          [routerLink]="['/home/dashboard/notifications']">Notifications</a>
+          <i class="fa fa-angle-right"  aria-hidden="true"></i></li>
       <li *ngIf="campaignRouter==='partnerAnalytics'"><a [routerLink]="['/home/partners/analytics']">{{authenticationService?.partnerModule?.customName}}
-          Analytics</a><i class="fa fa-angle-right"></i></li>
+          Analytics</a>
+          <i class="fa fa-angle-right"  aria-hidden="true"></i></li>
       <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
         <!--  <b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b> -->
-        <b *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</b>
-        <b *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify {{authenticationService?.partnerModule?.customName}} is OFF)</b>
+        <strong *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</strong>
+        <strong *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify {{authenticationService?.partnerModule?.customName}} is OFF)</strong>
       </li>
       <li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>

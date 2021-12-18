@@ -40,7 +40,7 @@ export class PieChartComponent implements OnInit {
        },
        exporting: {enabled: false},
        credits: {enabled: false},
-       colors: ['#ffb600', '#ff3879', '#be72d3', '#357ebd'],
+       colors: ['#ffb600', '#ff3879', '#be72d3', '#357ebd','#00ffc8'],
        series: [{
            name: 'Count',
            colorByPoint: true,
@@ -53,7 +53,7 @@ export class PieChartComponent implements OnInit {
       var pieChartData;
       this.parterService.launchedCampaignsCountGroupByCampaignType(this.partnerCompanyId, this.authenticationService.user.id).subscribe(
         (data: any) => {
-          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL},{name: 'EVENT', y: data.EVENT}];
+          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL},{name: 'EVENT', y: data.EVENT},{name: 'SURVEY', y: data.SURVEY}];
         },
         (error: any) => { 
 		this.xtremandLogger.error(error);

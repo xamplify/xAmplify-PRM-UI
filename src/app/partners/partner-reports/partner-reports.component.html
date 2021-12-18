@@ -28,7 +28,7 @@
       <div>
         <div>
           <div class="row">
-            <app-box-loader [countLoader]=4 *ngIf="activePartnersLoader || redistributedCampaignsCountLoader ||throughPartnerCampaignsCountLoader ||inActivePartnersCountLoader"></app-box-loader>
+            <app-box-loader [countLoader]=5 *ngIf="activePartnersLoader"></app-box-loader>
             <!---Active Partners Count-->
             <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
@@ -52,6 +52,7 @@
             </div>
 
             <!--Redistributed Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader"></app-box-loader>
             <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" >
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="goToReDistributedPartnersDiv()">
@@ -74,6 +75,7 @@
             </div>
 
             <!--Through Partner Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader"></app-box-loader>
             <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
                 (click)="goToThroughPartnersDiv()">
@@ -97,6 +99,7 @@
             </div>
 
             <!--InActive Partner Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
             <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToInActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
@@ -119,6 +122,7 @@
             </div>
 
             <!--Active Partner Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
             <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToApprovePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
                 <div class="visual">
@@ -332,7 +336,8 @@
 
   <!-- ------****************Through Partner Div************************** -->
   <div id="redistribute-partners-div" style="display: none;">
-    <app-redistributed-campaigns *ngIf="selectedTabIndex==2" [selectedIndex]="2"></app-redistributed-campaigns>
+    <app-modal-popup-loader *ngIf="!reloadRedistributeCampaigns"></app-modal-popup-loader>
+    <app-redistributed-campaigns *ngIf="selectedTabIndex==2 && reloadRedistributeCampaigns" [selectedIndex]="2" [applyFilter]="applyFilter"></app-redistributed-campaigns>
   </div>
 
   <div id="through-partner-div" style="display: none;">
@@ -340,8 +345,10 @@
       <div class="col-md-12">
         <div class="tabbable tabbable-custom tabbable-noborder" id="header">
           <div class="tab-content">
-            <div class="page-bar m10">
-              <ul class="mix-filter col-xs-12 col-md-5 p0 m0" style="display: inline-flex;">
+            <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+            <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+            <div class="page-bar m10" [hidden]="httpRequestLoader.isLoading">
+              <ul  class="mix-filter col-xs-12 col-md-5 p0 m0" style="display: inline-flex;">
                 <li class="filter" (click)="filterCampaigns('NONE',0)"
                   [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex">All</li>
                 <li class="filter" (click)="filterCampaigns('REGULAR',1)"
@@ -358,9 +365,7 @@
                 </li>
                 <li class="filter" (click)="filterCampaigns('SURVEY',6)"
                   [class.campaign-type-selected]="6 == sortOption.selectedCampaignTypeIndex" *ngIf="survey">Survey</li>
-
                 <li class="filter" style="display: none;">Own Template</li>
-
               </ul>
               <div class="page-toolbar col-xs-12 col-sm-12 col-md-7">
                 <div class="btn-group pull-right">
@@ -372,7 +377,7 @@
                       title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i
                         class="fa fa-th-large p10" aria-hidden="true"></i></span>
                   </ng-container>
-                  <div class="inputs" align="right" style="float: right;display: inline-flex;">
+                  <div class="inputs" style="float: right;display: inline-flex;">
                     <div style="float: left;">
                       <select class="form-control" [(ngModel)]="sortOption.selectedSortedOption"
                         (ngModelChange)="getSortedResultForPartnerCampaigns($event,'through-partner')"
@@ -401,8 +406,6 @@
                 </div>
               </div>
             </div>
-            <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
-            <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
             <!-- -------------------- Apply Filters Box-------------------- -->
             <div class="row"
               *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
@@ -449,14 +452,14 @@
             <section class='m10'
               *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
               <div class="table-responsive">
-                <table class='table tgrid table-hover table-sm' *ngIf="isListView">
+                <table class='table tgrid table-hover table-sm' *ngIf="isListView" aria-describedby="">
                   <thead>
                     <tr>
-                      <th class="hidden-xs" colspan="2" style="width: 50%">Campaign</th>
-                      <th class="visible-xs" colspan="1" style="width: 50%">Campaign</th>
-                      <th class="hidden-xs">Status</th>
-                      <th class="hidden-xs">Created On</th>
-                      <th style="text-align:left">Actions</th>
+                      <th scope="col" class="hidden-xs" colspan="2" style="width: 50%">Campaign</th>
+                      <th scope="col" class="visible-xs" colspan="1" style="width: 50%">Campaign</th>
+                      <th scope="col" class="hidden-xs">Status</th>
+                      <th scope="col" class="hidden-xs">Created On</th>
+                      <th scope="col" style="text-align:left">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -519,8 +522,6 @@
                           src="assets/images/survey.png"
                           style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
-
-
                       </td>
                       <td>
                         <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">
@@ -535,19 +536,17 @@
                       </td>
                       <td class="center hidden-xs" style="text-align: center">
                         <span align="right">
-                          <b *ngIf="campaign.launched">Launched On</b>
-                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</b>
-                          <b *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</b>
+                          <strong *ngIf="campaign.launched">Launched On</strong>
+                          <strong *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</strong>
+                          <strong *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</strong>
                         </span>
                         <span align="right" title="Upload Date">
-                          <!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
-                          <b *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
-                            <!-- {{campaign.launchedOn}} -->
+                          <strong *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
                             <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
-                          </b>
-                          <b *ngIf="campaign.scheduleType=='SAVE'">
+                          </strong>
+                          <strong *ngIf="campaign.scheduleType=='SAVE'">
                             <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
-                          </b>
+                          </strong>
                         </span>
                       </td>
                       <td class="text-center hidden-xs">
@@ -557,20 +556,19 @@
                         <a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(campaign)"
                           data-toggle="tooltip" data-placement="top" title="Campaign Based Reports"
                           class='circled-number'>
-                          <i class="fa fa-line-chart"></i>
+                          <i class="fa fa-line-chart" aria-hidden="true"></i>
                         </a>
-                        <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.dataShare && selectedTabIndex==2">
-                          <img src="../assets/images/disabled-icon.png">
-                        </a> -->
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </section>
+
             <div *ngIf="sortOption.totalRecords <= 0 && isListView" class="alert alert-info">
               <strong>No campaigns found</strong>
             </div>
+
             <div class="tab-pane active" *ngIf="!isListView">
               <div class="margin-top-10">
                 <div class="row mix-grid p10">
@@ -579,7 +577,7 @@
                     <div *ngFor="let campaign of throughPartnerCampaignPagination.pagedItems; let i= index"
                       class="col-xs-12 col-sm-4 col-lg-3">
                       <div class="grid-box">
-                        <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
+                        <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                         <h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
                           <span *ngIf="campaign.campaignName?.length>25">...</span>
                         </h4>
@@ -627,11 +625,8 @@
                         <div class="bar">
                           <a (click)="referenseService.goToCampaignAnalytics(campaign)" data-toggle="tooltip"
                             data-placement="top" title="Campaign Based Reports">
-                            <i class="fa fa-line-chart"></i>
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
                           </a>
-                          <!--  <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!campaign.dataShare && selectedTabIndex==2">
-                            <img src="../assets/images/disabled-icon.png" style="margin-top: 9px;margin-left: 2px;">
-                          </a> -->
                         </div>
                       </div>
                     </div>
@@ -643,18 +638,12 @@
                 <strong>No campaigns found</strong>
               </div>
             </div>
+
+
             <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
               style="background:white">
-              <div *ngIf="throughPartnerCampaignPagination.pagedItems.length !== 0" style="padding: 0 13px;">
-                <app-pagination [pagination]="throughPartnerCampaignPagination" [type]="'campaign'" [isDropdown]="true"
-                  (notifyParent)="setPartnerCampaignsPageByType($event,'through-partner')"
-                  (notifyParentDropDown)="listThroughPartnerCampaigns($event)"></app-pagination>
-                <select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize"
-                  (ngModelChange)="getNumberOfItemsPerPageByType($event,'through-partner')">
-                  <option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">
-                    {{itemPerPage.name}}</option>
-                </select>
-              </div>
+              <app-pagination [pagination]="throughPartnerCampaignPagination" (notifyParent)="setPartnerCampaignsPageByType($event,'through-partner')" (notifyParentDropDown)="listThroughPartnerCampaigns($event)">
+              </app-pagination>
             </div>
           </div>
           <!-- End Of tab Content -->
