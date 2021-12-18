@@ -29,7 +29,7 @@ export class ModuleAnalyticsComponent implements OnInit {
   showDealForm: boolean;
   @Output() notifyShowDealForm = new EventEmitter();
   @Output() notifyLeadSuccess = new EventEmitter();
-
+  @Input() applyFilter:boolean;
   constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
     public authenticationService: AuthenticationService,public referenceService:ReferenceService,private route: ActivatedRoute,private vanityUrlService:VanityURLService) { 
 
@@ -37,6 +37,7 @@ export class ModuleAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+    this.dashboardAnalyticsDto.applyFilter = this.applyFilter;
     this.getModulesAnaltyics();
   }
 

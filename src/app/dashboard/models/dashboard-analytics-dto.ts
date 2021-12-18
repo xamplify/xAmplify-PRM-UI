@@ -5,4 +5,5 @@ export class DashboardAnalyticsDto {
 	vanityUrlFilter = false;
 	vendorCompanyProfileName = "";
 	vendorCompanyId = 0;
+	applyFilter = false;
 }

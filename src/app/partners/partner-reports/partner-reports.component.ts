@@ -811,16 +811,34 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
         }
     }
-
+    reloadRedistributeCampaigns = true;
     getSelectedIndexFromPopup(event: any) {
-        this.loadAllCharts = true;
-        this.reloadWithFilter = false;
         let self = this;
+        this.activePartnersLoader = true;
+        this.redistributedCampaignsCountLoader = true;
+        this.inActivePartnersCountLoader = true;
+        this.approvePartnersCountLoader = true;
+        this.throughPartnerCampaignsCountLoader = true;
+        if(this.selectedTabIndex==0){
+            this.loadAllCharts = true;
+            this.reloadWithFilter = false;
+        }else if(this.selectedTabIndex==2){
+            this.reloadRedistributeCampaigns = false;
+        }
         setTimeout(function() {
-        self.reloadWithFilter = true;
         self.applyFilter = event['selectedOptionIndex'] == 1;
-        self.partnerReportData();
-        self.loadAllCharts = false;
+        self.findActivePartnersCount();
+        self.findRedistributedCampaignsCount();
+        self.findInActivePartnersCount();
+        self.findApprovePartnersCount();
+        if(self.selectedTabIndex==0){
+            self.reloadWithFilter = true;
+            self.partnerReportData();
+            self.loadAllCharts = false;
+        }else if(self.selectedTabIndex==2){
+            self.reloadRedistributeCampaigns = true;
+        }
+        self.throughPartnerCampaignsCountLoader = false;
         }, 500);
     }
 

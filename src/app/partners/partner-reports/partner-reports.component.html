@@ -336,7 +336,8 @@
 
   <!-- ------****************Through Partner Div************************** -->
   <div id="redistribute-partners-div" style="display: none;">
-    <app-redistributed-campaigns *ngIf="selectedTabIndex==2" [selectedIndex]="2"></app-redistributed-campaigns>
+    <app-modal-popup-loader *ngIf="!reloadRedistributeCampaigns"></app-modal-popup-loader>
+    <app-redistributed-campaigns *ngIf="selectedTabIndex==2 && reloadRedistributeCampaigns" [selectedIndex]="2" [applyFilter]="applyFilter"></app-redistributed-campaigns>
   </div>
 
   <div id="through-partner-div" style="display: none;">
