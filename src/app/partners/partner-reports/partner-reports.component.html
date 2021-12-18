@@ -28,7 +28,7 @@
       <div>
         <div>
           <div class="row">
-            <app-box-loader [countLoader]=4 *ngIf="activePartnersLoader || redistributedCampaignsCountLoader ||throughPartnerCampaignsCountLoader ||inActivePartnersCountLoader"></app-box-loader>
+            <app-box-loader [countLoader]=5 *ngIf="activePartnersLoader"></app-box-loader>
             <!---Active Partners Count-->
             <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
@@ -52,6 +52,7 @@
             </div>
 
             <!--Redistributed Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader"></app-box-loader>
             <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" >
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="goToReDistributedPartnersDiv()">
@@ -74,6 +75,7 @@
             </div>
 
             <!--Through Partner Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader"></app-box-loader>
             <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
                 (click)="goToThroughPartnersDiv()">
@@ -97,6 +99,7 @@
             </div>
 
             <!--InActive Partner Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
             <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToInActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
@@ -119,6 +122,7 @@
             </div>
 
             <!--Active Partner Campaigns Count-->
+            <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
             <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToApprovePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
                 <div class="visual">

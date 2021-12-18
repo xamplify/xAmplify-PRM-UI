@@ -26,11 +26,16 @@ export class BoxLoaderComponent implements OnInit {
 			this.className = "col-sm-4 col-xs-8 col-lg-4 col-md-4";
 		}
 		if (this.countLoader != undefined) {
-			if(this.countLoader==1){
-				this.className = "col-xs-16 col-sm-8 col-md-6";
-			}
-			for (let i = 0; i < this.countLoader; i++) {
-				this.items.push(i);
+			if(this.countLoader==5){
+				this.className = "col-xs-6 col-sm-4 col-md-2";
+				this.items.push(1);
+			}else{
+				if(this.countLoader==1){
+					this.className = "col-xs-16 col-sm-8 col-md-6";
+				}
+				for (let i = 0; i < this.countLoader; i++) {
+					this.items.push(i);
+				}
 			}
 		} else {
 			this.items.push(1);
