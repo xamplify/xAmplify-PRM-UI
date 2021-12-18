@@ -274,9 +274,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         $("#through-partner-div").hide();
         $("#redistribute-partners-div").show();
         $('#approve-partners-div').hide();
-       // this.listRedistributedThroughPartnerCampaigns(this.pagination);
-        // this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
-        // this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
     }
 
 

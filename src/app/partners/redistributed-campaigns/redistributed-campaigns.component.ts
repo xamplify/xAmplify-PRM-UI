@@ -33,6 +33,7 @@ export class RedistributedCampaignsComponent implements OnInit {
     public utilService: UtilService) { }
 
   ngOnInit() {
+    this.channelCampaignsPagination.partnerTeamMemberGroupFilter = true;
     this.findChannelCampaigns(this.channelCampaignsPagination);
   }
 
@@ -113,6 +114,8 @@ export class RedistributedCampaignsComponent implements OnInit {
   if(campaign.expand){
     this.referenceService.loading(this.redistributedCampaignsLoader, true);
     this.redistributedCampaignsPagination.campaignId = campaign.campaignId;
+    this.redistributedCampaignsPagination.partnerTeamMemberGroupFilter = true;
+    this.redistributedCampaignsPagination.userId = this.authenticationService.getUserId();
     this.findRedistributedCampaigns(this.redistributedCampaignsPagination);
   }
 
@@ -133,7 +136,7 @@ export class RedistributedCampaignsComponent implements OnInit {
           this.referenceService.loading(this.redistributedCampaignsLoader, false);
       },
       (error: any ) => { 
-        this.xtremandLogger.error(error);
+        this.xtremandLogger.errorPage(error);
        });
   }
   goToCampaignAnalytics(campaign:any){
