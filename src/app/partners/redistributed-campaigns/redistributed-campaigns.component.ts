@@ -52,7 +52,7 @@ export class RedistributedCampaignsComponent implements OnInit {
           this.referenceService.loading( this.channelCampaignsLoader, false );
       },
       (error: any ) => { 
-        this.xtremandLogger.error(error);
+        this.xtremandLogger.errorPage(error);
         
        });
   }
@@ -141,8 +141,12 @@ export class RedistributedCampaignsComponent implements OnInit {
   }
   goToCampaignAnalytics(campaign:any){
     this.loading = true;
-    this.referenceService.campaignType = campaign.campaignType;
-    this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
+    let self = this;
+    setTimeout(function() {
+      self.referenceService.campaignType = campaign.campaignType;
+      self.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
+      }, 500);
+    
   }
   
   downloadCsv(){
