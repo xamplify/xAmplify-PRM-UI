@@ -304,6 +304,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.sortOption.selectedCampaignTypeIndex = index;//This is to highlight the tab
         this.throughPartnerCampaignPagination.pageIndex = 1;
         this.throughPartnerCampaignPagination.campaignType = type;
+        this.throughPartnerCampaignPagination.maxResults = 12;
         this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
 
     }
@@ -798,6 +799,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     this.throughPartnerCampaignPagination.toDateFilterString = this.toDateFilter;
                     this.filterMode = true;
                     this.filterResponse.isVisible = false;
+                    this.throughPartnerCampaignPagination.maxResults = 12;
                     this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
                 } else {
                     this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
