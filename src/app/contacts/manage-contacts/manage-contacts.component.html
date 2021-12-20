@@ -1229,7 +1229,7 @@
 
 
 <!---Share Pop Up-->
-<app-partner-company-modal-popup  [inputId] = "selectedContactListId"  *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
+<app-partner-company-modal-popup  [companyId]="loggedInUserCompanyId" [inputId] = "selectedContactListId"  *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
 </app-partner-company-modal-popup>
 
 

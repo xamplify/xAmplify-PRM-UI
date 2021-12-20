@@ -124,6 +124,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	contactListIdForSyncLocal: any;
 	socialNetworkForSyncLocal: any;	
 	disableSave : boolean =false;
+	loggedInUserCompanyId: any;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
@@ -2294,7 +2295,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	
 	callInitMethods(){
 	      try {
-
+	    	  this.getCompanyId();
+	    	  
 	    	    /*if (this.loggedInThroughVanityUrl){
 	                if (this.socialNetworkForSyncLocal == 'google'
 	                    || this.socialNetworkForSyncLocal == 'salesforce'
@@ -2619,7 +2621,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.pagination.filterBy = filterType;
 		this.loadContactLists(this.pagination);
 	}
-
 	
-	
+	   getCompanyId() {
+        if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+        	this.referenceService.loading(this.httpRequestLoader, true);
+            this.loading = true;
+            this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+                (result: any) => {
+                    if (result !== "") {
+                        this.loggedInUserCompanyId = result;
+                        this.loading = false;
+                        this.referenceService.loading(this.httpRequestLoader, false);
+                    }
+                }, (error: any) => {
+                    this.loading = false;
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                }
+            );
+        }
+	  }
 }
