@@ -22,10 +22,6 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
                                        <ng-container *ngIf="!sendSuccess">
-                                          <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
-                                             <div class="row">
-                                                <div>
-                                                   <div class="col-xs-12">
                                                       <div class="page-toolbar">
                                                          <div class="btn-group pull-right">
                                                             <div class="inputs float-right" style="display: inline-flex;">
@@ -41,14 +37,9 @@
                                                             </div>
                                                          </div>
                                                       </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <br>
+                                          
                                 <app-team-member-filter-option *ngIf="showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-                                        
-                                         <br/><br/>  
+                                   <br/><br/>
                                    <ng-container *ngIf="!sendSuccess">   
                                      <div class="alert alert-success text-center" *ngIf="selectedPartnershipIds?.length>0">
                                        <strong>Selected Companies : {{selectedPartnershipIds?.length}}</strong>
