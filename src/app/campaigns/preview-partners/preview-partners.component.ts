@@ -131,9 +131,7 @@ export class PreviewPartnersComponent implements OnInit {
             error => { 
                 this.refService.loading( this.campaignPartnerLoader, false );
                 this.partnerActionResponse = new CustomResponse( 'ERROR', this.refService.serverErrorMessage, true );
-        },
-            () => console.log( "Partner Deleted Successfully" )
-            );
+        });
     }
 
     paginationDropdown(items:any){
