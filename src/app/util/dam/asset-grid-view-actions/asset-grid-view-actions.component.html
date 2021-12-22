@@ -6,7 +6,7 @@
   <a *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit" title="Design"	(click)="addOrEdit(asset.id)"> 
     <i class="fa fa-paint-brush" aria-hidden="true"></i>
   </a> 
-  <a *ngIf="asset?.beeTemplate && isPartnerView && asset?.edit" title="Edit"	(click)="addOrEdit(asset.id)">
+  <a *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
      <i class="fa fa-edit"	aria-hidden="true"></i>
   </a> 
   <a *ngIf="!isPartnerView && asset?.edit" title="Edit" (click)="editDetails(asset.id)">
