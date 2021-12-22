@@ -65,6 +65,7 @@ export class PreviewPartnersComponent implements OnInit {
         subscribe(
             data=>{
                 if(data.statusCode==200){
+                    this.partnersPagination.partnerTeamMemberGroupFilter = true;
                     this.listPartners(this.partnersPagination);
                 }else{
                     this.refService.goToPageNotFound();
