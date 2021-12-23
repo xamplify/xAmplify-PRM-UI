@@ -90,10 +90,10 @@
                  <div class="table-responsive" style="overflow-x: inherit; padding:15px;"  *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0" aria-describedby="">
                      <thead>
-                       <tr class="hidden-xs">
+                       <tr class="">
                          <th scope="col" colspan="1" style="width:50%" translate>Videos</th>
-                         <th scope="col" class="text-center" translate>Category</th>
-                         <th scope="col" class="text-center" translate>Upload Date</th>
+                         <th scope="col" class="text-center hidden-xs" translate>Category</th>
+                         <th scope="col" class="text-center hidden-xs" translate>Upload Date</th>
                          <th scope="col" style="width: 20%;" class="text-center" *ngIf="videoFileService.videoType!='partnerVideos'">
                           <span [hidden]="authenticationService.isOnlyPartner()" translate>Actions</span></th>
                           <th scope="col" style="width: 20%;" class="text-center" *ngIf="videoFileService.videoType=='partnerVideos'">
@@ -113,7 +113,7 @@
                          <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
                          </td>
                          <td *ngIf="!authenticationService.isSuperAdmin()">
-                           <div class="actions-block override-actions" *ngIf="videoFileService.videoType==='myVideos'">
+                           <div class="actions-block override-actions mActionAlign" *ngIf="videoFileService.videoType==='myVideos'">
                              <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier"
                                (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

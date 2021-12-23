@@ -190,4 +190,8 @@
     .mTop{
         margin-top:44px;
     }
+    .mActionAlign{
+        white-space: pre-line!important;
+        line-height: 0.1;
+    }
 }

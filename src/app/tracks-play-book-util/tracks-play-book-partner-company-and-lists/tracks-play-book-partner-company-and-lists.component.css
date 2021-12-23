@@ -262,3 +262,12 @@
 .click {
     pointer-events: auto;
 }
+
+@media screen and (max-width:600px){
+    .mSearchAlign{
+        margin-left: -13px!important;
+        width: 85%;
+        position: relative;
+        right: -32px;
+    }
+}
