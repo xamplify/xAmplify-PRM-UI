@@ -76,10 +76,8 @@
                                             <div class="portlet light cphdam box-shadow" style="height: 235px;">
                                                 <div class="portlet-title port-heading">
                                                     <div class="caption" style="color: #fff!important;">
-                                                        <h4 title="{{assetDetails?.assetName}}">
-                                                            <strong>{{assetDetails?.assetName |
-                                                                slice:0:100}}</strong>
-                                                            <span *ngIf="assetDetails?.assetName?.length>100">..</span>
+                                                        <h4 class="asset-name-wrap col-sm-6 col-lg-6 col-md-5 col-sm-6" title="{{assetDetails?.assetName}}">
+                                                            <strong>{{assetDetails?.assetName}}</strong>
                                                         </h4>
                                                     </div>
                                                 </div>
@@ -101,9 +99,8 @@
                                                     <div class="center" style="padding: 10px;margin: 0 !important;font-size: 14px;" title="{{assetDetails.assetType}}"
                                                         translate>
                                                         <strong>Type: </strong>{{assetDetails.assetType}}<br>
-                                                        <div title="{{assetDetails?.assetName}}">
-                                                            <strong>Title: </strong>{{assetDetails?.assetName | slice:0:100}}
-                                                            <span *ngIf="assetDetails?.assetName?.length>100">..</span>
+                                                        <div class="asset-name-wrap" title="{{assetDetails?.assetName}}">
+                                                            <strong>Title: </strong>{{assetDetails?.assetName}}
                                                         </div>
                                                     </div>
                                                 </div>

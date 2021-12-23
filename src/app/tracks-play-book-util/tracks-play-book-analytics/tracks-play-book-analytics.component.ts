@@ -48,6 +48,7 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
     if (this.learningTrackId < 1) {
       this.goBack();
     }
+    this.pagination.partnerTeamMemberGroupFilter = true;
     this.getAnalytics(this.pagination);
   }
 
@@ -132,6 +133,11 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
       route = "home/playbook/partnerAnalytics/" + this.learningTrackId + "/" + company.id;
     }
     this.router.navigate([route]);
+  }
+
+  getSelectedIndex(index: any) {
+    this.pagination.partnerTeamMemberGroupFilter = index == 1;
+    this.getAnalytics(this.pagination);
   }
 
 }

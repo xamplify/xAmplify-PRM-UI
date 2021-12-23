@@ -441,3 +441,9 @@ body {
     max-height: 100%;
     max-width: 100%;
 }
+
+.asset-name-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

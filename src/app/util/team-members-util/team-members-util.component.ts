@@ -780,6 +780,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   edit(id: number) {
+    this.referenceService.scrollSmoothToTop();
     this.customResponse = new CustomResponse();
     this.referenceService.hideDiv('csv-error-div');
     this.referenceService.loading(this.httpRequestLoader, true);
