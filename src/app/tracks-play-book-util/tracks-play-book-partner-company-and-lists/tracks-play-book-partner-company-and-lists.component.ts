@@ -59,6 +59,10 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	tracksPlayBook: TracksPlayBook = new TracksPlayBook();
 	showExpandButton = false; 
     expandedUserList: any;
+	/***XNFR-85*****/
+	selectedFilterIndex: number = 0;
+	showFilter = true;
+	selectedTab = 1;
 
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
@@ -80,6 +84,7 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 			} else {
 				this.isAdd = true;
 			}
+			this.pagination.partnerTeamMemberGroupFilter = true;
 			this.findPartnerCompanies(this.pagination);
 		} else {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
@@ -89,6 +94,8 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	findPartnerCompanies(pagination: Pagination) {
 		this.referenceService.scrollToModalBodyTopByClass();
 		pagination.vendorCompanyId = this.companyId;
+		pagination.campaignId = this.inputId;
+		pagination.userId = this.loggedInUserId;
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
 			let data = result.data;
@@ -394,5 +401,11 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 		}
 	}
 
+	/******XNFR-85**************/
+	getSelectedIndex(index:number){
+		this.selectedFilterIndex = index;
+		this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
+		this.findPartnerCompanies(this.pagination);
+	  }
 }
 
