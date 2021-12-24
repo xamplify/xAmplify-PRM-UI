@@ -207,4 +207,8 @@ background: #ffffff;
     .mSrchWdth{
       width: 107%;
     }
+    .mActionAlign{
+      white-space: pre-line!important;
+      line-height: 0.5;
+    }
   }
