@@ -114,7 +114,7 @@
                          </td>
                          <td *ngIf="!authenticationService.isSuperAdmin()">
                            <div class="actions-block override-actions mActionAlign" *ngIf="videoFileService.videoType==='myVideos'">
-                             <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier"
+                             <a class="mMobileDisable" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier"
                                (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                              </a>
@@ -193,7 +193,7 @@
                    <div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
                      <div >
                       <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
-                        <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier"
+                        <a class="mMobileDisable" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier"
                           (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_edit}}">
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </a>

@@ -1122,3 +1122,9 @@ b, strong {
 	overflow-x: auto;
 }
 
+@media only screen and (max-width:600px){
+	.mMobileDisable{
+		pointer-events: none;
+		cursor: not-allowed!important;
+	}
+}
