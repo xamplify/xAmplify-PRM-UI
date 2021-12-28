@@ -224,6 +224,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showNotifyPartnerOption = false;
 	hasPartnersRole : boolean = false;
     hasShareLeadsRole : boolean = false;
+	selectedFilterIndex: number = 0;
+    showFilter = true;
 	
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
@@ -3221,6 +3223,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 
 		try {
+            if (this.isPartner) {
+                this.pagination.partnerTeamMemberGroupFilter = true;
+		}
+		
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
 			this.selectedContactListName = this.contactListName;
@@ -3448,6 +3454,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
       $("#edit-partner-tm-group-" + partner.index).prop("disabled", false);
     }
   }
+	
+    getSelectedIndex(index:number){
+        this.selectedFilterIndex = index;
+        this.refService.setTeamMemberFilterForPagination(this.pagination,index);
+        this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+    }
 
     
 }
