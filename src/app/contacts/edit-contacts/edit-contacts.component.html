@@ -254,8 +254,8 @@
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar">
+									<app-team-member-filter-option *ngIf="isPartner&&showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
 										<div class="clearfix">
-										<app-team-member-filter-option *ngIf="isPartner&&showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
 											<ng-container
 												*ngIf=" selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 												   && (showAddOptions && ((assignLeads && !contactService?.assignedToPartner) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')))">
@@ -835,6 +835,9 @@
 							<div class="portlet-body">
 									<div class="page-bar" *ngIf="!showEditContactData">
 									<div class="col-xs-12 col-md-12 col-sm-12 p0">
+									<div class="col-xs-2 col-md-2 col-sm-2" style="padding: 0;">
+									<app-team-member-filter-option *ngIf="isPartner && showFilter" [resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+									</div>
 									<div class="btn-group pull-right">
 									<div class="col-xs-2 col-md-2 col-sm-2" style="padding: 0;">
 									<div *ngIf="!isSegmentation" (click)="modelForSeg()"
@@ -853,7 +856,7 @@
 										style="color: red; margin-left: -8px;"></i>
 								</div>
 							</div>
-							<div class="col-xs-10 col-md-10 col-sm-10 p0">
+							<div class="col-xs-8 col-md-8 col-sm-8 p0">
 										<div class="inputs" align="right" style="float: right; display: inline-flex;">
 											<div style="float: left; margin-right: 10px;">
 												<select class="form-control" [(ngModel)]="sortOption"

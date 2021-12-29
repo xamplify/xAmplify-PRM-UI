@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter,Input } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-team-member-filter-option',
@@ -15,10 +16,17 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   @Output() teamMemberFilterModalPopUpOptionEventEmitter = new EventEmitter();
   @Input() filterIcon = false;
   showFilterPopup = false;
+  @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.showPartnersFilterOption();
+    this.resetTMSelectedFilterIndex.subscribe(response => {
+        if (response) {
+        	this.selectedFilterIndex = 1;
+        	//this.showPartnersFilterOption();
+        }
+      });
   }
 
   showPartnersFilterOption() {
