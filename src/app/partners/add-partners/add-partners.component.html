@@ -589,6 +589,7 @@
                             <div class="inputs" align="right" style="float: right"></div>
                         </div>
                         <div class="clearfix">
+                       <app-team-member-filter-option *ngIf="showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                             <div class="col-xs-12" style="padding: 10px 0;">
                                 <div class="alert alert-info flex" *ngIf="isLoadingList">
                                     <div class="loader" style="position: relative; top: -3px; left: -5px; width: 25px; height: 27px;"></div>

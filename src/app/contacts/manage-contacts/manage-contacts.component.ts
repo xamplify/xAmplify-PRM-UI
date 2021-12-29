@@ -26,6 +26,7 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
+import { Subject } from 'rxjs';
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
@@ -222,7 +223,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showExpandButton = false;
 	showShareListPopup : boolean = false;
 	isFormList = false;
-	selectedFilterIndex = 0;
+	selectedFilterIndex: number = 0;
+    showFilter = true;
+    resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService) {
@@ -1437,9 +1440,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	listContactsByType(contactType : string) {
-	
 		this.campaignLoader = true;
 		try {
+			this.contactsByType.selectedCategory = contactType;
 			this.contactsByType.isLoading = true;
 			this.resetResponse();
 			this.resetListContacts();
@@ -2640,4 +2643,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             );
         }
 	  }
+	      getSelectedIndex(index:number){
+	          this.selectedFilterIndex = index;
+	          this.referenceService.setTeamMemberFilterForPagination(this.contactsByType.pagination,index);
+	          this.listContactsByType(this.contactsByType.selectedCategory);
+	      }
 }

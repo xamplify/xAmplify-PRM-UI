@@ -10,6 +10,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Lead } from '../models/lead';
 import { EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -19,10 +20,12 @@ declare var swal, $, videojs: any;
 })
 export class ManageCampaignLeadsComponent implements OnInit {
   @Input() public campaignId : any;
-  @Input() public partnerCompanyId : any;
+  @Input() public partnerCompanyId : any = 0;
   @Input() public isVendorVersion : any;
   @Input() public isPartnerVersion : any;
   @Input() public filterKey : any;
+  @Input() public fromAnalytics : boolean = false;
+  @Input() refreshCampaignLeadsSubject: Subject<boolean> = new Subject<boolean>();
   
   @Output() viewCampaignLeadForm = new EventEmitter<any>();
   @Output() editCampaignLeadForm = new EventEmitter<any>();
@@ -55,8 +58,15 @@ export class ManageCampaignLeadsComponent implements OnInit {
   ngOnInit() {
     if (this.campaignId != undefined && this.campaignId > 0) {
         this.leadsPagination = new Pagination();
-        this.listCampaignLeads(this.leadsPagination);
+        this.listCampaignLeads(this.leadsPagination);        
     }
+
+    this.refreshCampaignLeadsSubject.subscribe(response => {
+      if (response) {
+        this.listCampaignLeads(this.leadsPagination);
+      }
+    });
+    
   }
 
   listCampaignLeads(pagination: Pagination) { 
@@ -64,6 +74,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
     pagination.userId = this.loggedInUserId;   
     pagination.campaignId = this.campaignId;
     pagination.partnerCompanyId = this.partnerCompanyId;
+    pagination.forCampaignAnalytics = this.fromAnalytics;
     if (this.filterKey != undefined && this.filterKey !== "") {
       pagination.filterKey = this.filterKey;
     }
@@ -111,7 +122,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   }  
 
   editLead(lead: Lead) {
-    this.editCampaignLeadForm.emit(lead.id);    console.log("hello");
+    this.editCampaignLeadForm.emit(lead.id);
   }
 
   registerDeal (lead: Lead) {
@@ -182,7 +193,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
     searchKey = this.leadsPagination.searchKey;
   }   
 
-  let userType = "";
+  let userType = "v";
   if (this.isVendorVersion) {
     userType = "v";
   } else if (this.isPartnerVersion) {
@@ -251,6 +262,13 @@ export class ManageCampaignLeadsComponent implements OnInit {
   mapInput.type = "hidden";
   mapInput.name = "partnerCompanyId";
   mapInput.setAttribute("value", this.leadsPagination.partnerCompanyId + "");
+  mapForm.appendChild(mapInput);
+
+  //fromAnalytics
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "forAnalytics";
+  mapInput.setAttribute("value", this.fromAnalytics+"");
   mapForm.appendChild(mapInput);
 
   document.body.appendChild(mapForm);

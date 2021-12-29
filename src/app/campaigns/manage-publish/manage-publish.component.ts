@@ -128,7 +128,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
+        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);       
     }
 
 

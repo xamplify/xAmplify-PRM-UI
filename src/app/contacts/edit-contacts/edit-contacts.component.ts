@@ -31,6 +31,7 @@ import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaig
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+import { Subject } from 'rxjs';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -224,6 +225,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showNotifyPartnerOption = false;
 	hasPartnersRole : boolean = false;
     hasShareLeadsRole : boolean = false;
+	selectedFilterIndex: number = 0;
+    showFilter = true;
+    resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
 	
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
@@ -1937,6 +1941,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	backToEditContacts() {
 		this.currentContactType = "all_contacts";
+		this.pagination.partnerTeamMemberGroupFilter = true;
 		this.searchKey = null;
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.maxResults = 12;
@@ -2296,10 +2301,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	showingContactDetails(contactType: string) {
+		this.resetTMSelectedFilterIndex.next(true);
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
-		this.contactsByType.selectedCategory = null;
-	//	this.listOfAllSelectedContactListByType(contactType);
+		this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
+		this.contactsByType.selectedCategory = contactType;
 		this.listOfSelectedContactListByType(contactType);
 	}
 
@@ -3221,6 +3227,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 
 		try {
+			this.currentContactType = "all_contacts";
+            if (this.isPartner) {
+                this.pagination.partnerTeamMemberGroupFilter = true;
+		}
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
 			this.selectedContactListName = this.contactListName;
@@ -3448,6 +3458,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
       $("#edit-partner-tm-group-" + partner.index).prop("disabled", false);
     }
   }
+	
+    getSelectedIndex(index: number) {
+        this.selectedFilterIndex = index;
+        if (this.currentContactType == "all_contacts") {
+            this.refService.setTeamMemberFilterForPagination(this.pagination, index);
+            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+        }else if(this.contactsByType.selectedCategory){
+        	this.refService.setTeamMemberFilterForPagination(this.contactsByType.pagination, index);
+        	this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+        }
+    }
 
     
 }

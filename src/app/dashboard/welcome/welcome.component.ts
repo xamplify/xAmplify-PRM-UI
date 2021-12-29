@@ -35,6 +35,8 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     contactOrPartnerLink:string ="";
     welcomeVideoInfo: any;
     showDiv = false;
+    applyFilter = true;
+    ngxLoading = false;
     vendor_welcome_text = {
         "videos": "Upload your content and you'll soon be ready for primetime.",
         "contacts": "Add, segment, manage, and edit the members of your Strategic Network.",
@@ -227,4 +229,14 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     closeDealForm() {
       this.showDealForm = false;
     }
+
+    getSelectedIndexFromPopup(event:any){
+      this.ngxLoading = true;
+      let self = this;
+      setTimeout(function() {
+      self.ngxLoading = false;
+      self.applyFilter = event['selectedOptionIndex'] == 1;
+      }, 500);
+    }
+  
 }

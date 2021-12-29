@@ -1041,6 +1041,16 @@ b, strong {
   border-color: #008fd5 !important;
 }
 
+.vlt-b-c{
+	color: #8877a9 !important;
+	border-color: #008fd5 !important;
+}
+
+.lt-g-b-c{
+	color: #57c195 !important;
+	border-color: #008fd5 !important;
+}
+
 .backdrop{
 	position: fixed !important;
 }
@@ -1122,3 +1132,9 @@ b, strong {
 	overflow-x: auto;
 }
 
+@media only screen and (max-width:600px){
+	.mMobileDisable{
+		pointer-events: none;
+		cursor: not-allowed!important;
+	}
+}

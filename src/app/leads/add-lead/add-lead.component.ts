@@ -34,6 +34,7 @@ export class AddLeadComponent implements OnInit {
   @Output() notifyOtherComponent = new EventEmitter();
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
+  @Output() notifyAnalyticsComponentToHidePopup= new EventEmitter();
   lead: Lead = new Lead();
   preview = false;
   edit = false;
@@ -341,6 +342,7 @@ export class AddLeadComponent implements OnInit {
 
   closeLeadModal() {
     this.notifyOtherComponent.emit();
+    this.notifyAnalyticsComponentToHidePopup.emit();
     this.notifyManageLeadsComponentToHidePopup.emit();
     $('#leadFormModel').modal('hide');
   }

@@ -19,10 +19,11 @@ declare var swal, $, videojs: any;
 })
 export class ManageCampaignDealsComponent implements OnInit {
   @Input() public campaignId : any;
-  @Input() public partnerCompanyId : any;
+  @Input() public partnerCompanyId : any = 0;
   @Input() public isVendorVersion : any;
   @Input() public isPartnerVersion : any;
   @Input() public filterKey : any;
+  @Input() public fromAnalytics : boolean = false;
 
   @Output() viewCampaignDealForm = new EventEmitter<any>();
   @Output() editCampaignDealForm = new EventEmitter<any>();
@@ -64,6 +65,7 @@ export class ManageCampaignDealsComponent implements OnInit {
     pagination.userId = this.loggedInUserId;   
     pagination.campaignId = this.campaignId;
     pagination.partnerCompanyId = this.partnerCompanyId;
+    pagination.forCampaignAnalytics = this.fromAnalytics;
     if (this.filterKey != undefined && this.filterKey !== "") {
       pagination.filterKey = this.filterKey;
     }
@@ -175,7 +177,7 @@ export class ManageCampaignDealsComponent implements OnInit {
     fileName = type + "-deals"
   }
 
-  let userType = "";
+  let userType = "v";
   if (this.isVendorVersion) {
     userType = "v";
   } else if (this.isPartnerVersion) {
@@ -248,6 +250,13 @@ export class ManageCampaignDealsComponent implements OnInit {
   mapInput.type = "hidden";
   mapInput.name = "partnerCompanyId";
   mapInput.setAttribute("value", this.dealsPagination.partnerCompanyId + "");
+  mapForm.appendChild(mapInput);
+
+  //fromAnalytics
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "forAnalytics";
+  mapInput.setAttribute("value", this.fromAnalytics+"");
   mapForm.appendChild(mapInput);
 
   document.body.appendChild(mapForm);

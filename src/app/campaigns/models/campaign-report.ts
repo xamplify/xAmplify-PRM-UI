@@ -98,4 +98,7 @@ export class CampaignReport {
     socialRedistributed: string;
     deliveredCount : number=0;
 
+    leadCount: string;
+    dealCount: string;
+
 }

@@ -88,4 +88,5 @@ export class Pagination {
 
 	fromDateFilterString:string = "";
 	toDateFilterString:string = "";
+	forCampaignAnalytics = false;
 }

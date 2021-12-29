@@ -212,6 +212,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	public teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
 	public showModulesPopup = false;
 	public teamMemberGroupId = 0;
+	selectedFilterIndex: number = 0;
+    showFilter = true;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2526,6 +2528,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
+			this.pagination.partnerTeamMemberGroupFilter=true;
 			this.defaultPartnerList(this.loggedInUserId);
 			/*if (localStorage.getItem('vanityUrlFilter')) {
 				localStorage.removeItem('vanityUrlFilter');
@@ -3897,6 +3900,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
       $("#partner-tm-group-" + partner.index).prop("disabled", false);
     }
   }
-
+	
+	  getSelectedIndex(index:number){
+	      this.selectedFilterIndex = index;
+	      this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
+	      this.defaultPartnerList(this.loggedInUserId);
+	  }
 
 }
