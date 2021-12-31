@@ -17,10 +17,14 @@ export class TeamMemberFilterOptionComponent implements OnInit {
   @Input() filterIcon = false;
   showFilterPopup = false;
   @Input()  resetTMSelectedFilterIndex   : Subject<boolean> = new Subject<boolean>();
+  @Input() customSelectedIndex: number;
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.showPartnersFilterOption();
+    if (this.customSelectedIndex !== undefined && this.customSelectedIndex !== null) {
+      this.selectedFilterIndex = this.customSelectedIndex;
+    }
     this.resetTMSelectedFilterIndex.subscribe(response => {
         if (response) {
         	this.selectedFilterIndex = 1;

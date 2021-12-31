@@ -422,6 +422,7 @@ export class ManageDealsComponent implements OnInit {
   showSubmitDealSuccess() {
     this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
     this.showDealForm = false;
+    this.showFilterOption = false;
     //this.getCounts();    
     this.showDeals();
   }
@@ -509,7 +510,7 @@ export class ManageDealsComponent implements OnInit {
       error => {
           this.httpRequestLoader.isServerError = true;
           },
-      () => { }
+      () => { this.showFilterOption = false;}
   );
 
  }
