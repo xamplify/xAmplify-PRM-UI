@@ -557,6 +557,9 @@ export class AuthenticationService {
     module.showAddLeadsAndDealsOptionInTheDashboard = false;
     module.showCampaignOptionInManageVideos = false;
     module.createCampaign = false;
+    module.loggedInThroughXamplifyUrl = false;
+    module.loggedInThroughVendorVanityUrl = false;
+    module.loggedInThroughOwnVanityUrl = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;

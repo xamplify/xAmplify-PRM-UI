@@ -43,6 +43,7 @@ export class ManageLeadsComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   campaignRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   partnerRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  countsRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadFormTitle = "Lead";
   actionType = "add";
   leadId = 0;
@@ -72,6 +73,7 @@ export class ManageLeadsComponent implements OnInit {
   toDateFilter: any = "";
   filterResponse: CustomResponse = new CustomResponse(); 
   filterMode: boolean = false;
+  selectedFilterIndex: number = 1;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -195,8 +197,7 @@ export class ManageLeadsComponent implements OnInit {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
-      this.checkSalesforceIntegration();
-      //this.getVendorCounts();
+      this.checkSalesforceIntegration();      
       this.showLeads();
     } else {
       this.showPartner();
@@ -205,7 +206,7 @@ export class ManageLeadsComponent implements OnInit {
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
-    //this.getPartnerCounts();
+    //this.getPartnerCounts();    
     this.showLeads();
   }
 
@@ -229,16 +230,19 @@ export class ManageLeadsComponent implements OnInit {
 
   getVendorCounts() {
     this.countsLoader = true;
+    this.referenceService.loading(this.countsRequestLoader, true);
+    this.vanityLoginDto.applyFilter = this.selectedFilterIndex==1;
     this.leadsService.getCounts(this.vanityLoginDto)
       .subscribe(
         response => {
+          this.referenceService.loading(this.countsRequestLoader, false);
           if (response.statusCode == 200) {
             this.counts = response.data.vendorCounts;
             this.countsLoader = false;
           }
         },
         error => {
-          this.httpRequestLoader.isServerError = true;
+          this.countsRequestLoader.isServerError = true;
         },
         () => { }
       );
@@ -265,7 +269,9 @@ export class ManageLeadsComponent implements OnInit {
     this.getCounts();
     this.selectedTabIndex = 1;
     this.leadsPagination = new Pagination;
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.campaignPagination = new Pagination;
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if (this.vanityLoginDto.vanityUrlFilter) {
       this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
@@ -273,7 +279,7 @@ export class ManageLeadsComponent implements OnInit {
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
     this.showCampaignLeads = false;
-    this.selectedPartnerCompanyId = 0;
+    this.selectedPartnerCompanyId = 0;    
     this.listLeads(this.leadsPagination);
     this.listCampaigns(this.campaignPagination);
   }
@@ -283,8 +289,10 @@ export class ManageLeadsComponent implements OnInit {
     this.selectedTabIndex = 2;
     this.leadsPagination = new Pagination;
     this.leadsPagination.filterKey = "won";
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "won";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignLeads = false;
     this.selectedPartnerCompanyId = 0;
     this.listLeads(this.leadsPagination);
@@ -295,8 +303,10 @@ export class ManageLeadsComponent implements OnInit {
     this.selectedTabIndex = 3;
     this.leadsPagination = new Pagination;
     this.leadsPagination.filterKey = "lost";
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "lost";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignLeads = false;
     this.selectedPartnerCompanyId = 0;
     this.listLeads(this.leadsPagination);
@@ -307,8 +317,10 @@ export class ManageLeadsComponent implements OnInit {
     this.selectedTabIndex = 4;
     this.leadsPagination = new Pagination;
     this.leadsPagination.filterKey = "converted";
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "converted";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignLeads = false;
     this.selectedPartnerCompanyId = 0;
     this.listLeads(this.leadsPagination);
@@ -483,6 +495,7 @@ export class ManageLeadsComponent implements OnInit {
   showSubmitLeadSuccess() {
     this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
     this.showLeadForm = false;
+    this.showFilterOption = false;
     this.showLeads();
   }
 
@@ -555,7 +568,7 @@ export class ManageLeadsComponent implements OnInit {
         error => {
           this.httpRequestLoader.isServerError = true;
         },
-        () => { }
+        () => { this.showFilterOption = false; }
       );
 
   }
@@ -582,6 +595,7 @@ export class ManageLeadsComponent implements OnInit {
   showSubmitDealSuccess() {
     this.leadsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
     this.showDealForm = false;
+    this.showFilterOption = false;
     this.showLeads();
   }
 
@@ -653,6 +667,7 @@ export class ManageLeadsComponent implements OnInit {
           this.selectedCampaign = campaign;
           this.partnerPagination = new Pagination;
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
+          this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
           this.listPartnersForCampaign(this.partnerPagination);
         }
       } else {
@@ -664,7 +679,7 @@ export class ManageLeadsComponent implements OnInit {
   listPartnersForCampaign(pagination: Pagination) {
     this.referenceService.loading(this.partnerRequestLoader, true);
     pagination.userId = this.loggedInUserId;
-    pagination.campaignId = this.selectedCampaignId;
+    pagination.campaignId = this.selectedCampaignId;    
     this.leadsService.listPartnersForCampaign(pagination)
       .subscribe(
         response => {
@@ -752,8 +767,10 @@ export class ManageLeadsComponent implements OnInit {
       searchKey = this.leadsPagination.searchKey;
     }   
 
+    let partnerTeamMemberGroupFilter = false;    
     let userType = "";
     if (this.isVendorVersion) {
+      partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
       userType = "v";
     } else if (this.isPartnerVersion) {
       userType = "p";
@@ -830,6 +847,13 @@ export class ManageLeadsComponent implements OnInit {
     mapInput.setAttribute("value", this.leadsPagination.toDateFilterString);
     mapForm.appendChild(mapInput);
 
+    // partnerTeamMemberGroupFilter
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "partnerTeamMemberGroupFilter";
+    mapInput.setAttribute("value", partnerTeamMemberGroupFilter+"");
+    mapForm.appendChild(mapInput);
+
     document.body.appendChild(mapForm);
     mapForm.submit();
     //window.location.assign(url);
@@ -899,6 +923,16 @@ export class ManageLeadsComponent implements OnInit {
   setCampaignView() {
     this.listView = false;
     this.closeFilterOption();
+  }
+
+  getSelectedIndex(index:number){
+    this.selectedFilterIndex = index;
+    this.getCounts();
+    this.referenceService.setTeamMemberFilterForPagination(this.leadsPagination,index);
+    this.referenceService.setTeamMemberFilterForPagination(this.campaignPagination,index);
+    this.listLeadsForVendor(this.leadsPagination);
+    this.listCampaignsForVendor(this.campaignPagination);
+    
   }
 
 }

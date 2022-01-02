@@ -134,6 +134,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 						this.customNamePartners = this.authenticationService.partnerModule.customName;
 						localStorage.setItem('partnerModuleCustomName',this.customNamePartners);
 					}
+					this.authenticationService.module.loggedInThroughOwnVanityUrl = data.loggedInThroughOwnVanityUrl;
+					this.authenticationService.module.loggedInThroughVendorVanityUrl = data.loggedInThroughVendorVanityUrl;
+					this.authenticationService.module.loggedInThroughXamplifyUrl = data.loggedInThroughXamplifyUrl;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -333,5 +336,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.playbook = playbook;
 	}
 	
+	startLoader(){
+		this.loading = true;
+	}
 
 }
