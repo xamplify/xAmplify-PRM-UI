@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+            <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
         </div>
     </div>
     <ng-container

@@ -71,6 +71,9 @@ export class Module {
     showAddLeadsAndDealsOptionInTheDashboard = false;
     showCampaignOptionInManageVideos = false;
     createCampaign = false;
+    loggedInThroughVendorVanityUrl = false;
+    loggedInThroughOwnVanityUrl = false;
+    loggedInThroughXamplifyUrl = false;
 
    
 }
