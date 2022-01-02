@@ -12,7 +12,7 @@
 
           <!---Account Dashboard-->
           <li *ngIf="menuItem?.accountDashboard" [ngClass]="{'active': location.path().includes('dashboard')}">
-            <a [routerLink]="['/home/dashboard/default']">
+            <a (click)="startLoader()" [routerLink]="['/home/dashboard/default']" >
                 <i class="icon-home" aria-hidden="true"></i>
                 <span class="title" translate>Account Dashboard</span>                    
                 <span class="selected"></span>
@@ -29,13 +29,13 @@
             </a>
             <ul class="sub-menu" [ngStyle]="{'display': partners? 'block': 'none' }" >
               <li>
-                  <a [routerLink]="['./partners/add']">
+                  <a (click)="startLoader()" [routerLink]="['./partners/add']" >
                       <i class="fa fa-users" aria-hidden="true"></i>
                       <span class="title" translate>Onboarding {{customNamePartners}}</span>
                   </a>
               </li>
               <li>
-                  <a [routerLink]="['./partners/manage']">
+                  <a (click)="startLoader()" [routerLink]="['./partners/manage']" >
                       <i class="fa fa-list" aria-hidden="true"></i>
                       <span class="title" translate>Manage {{customNamePartners}}</span>
                   </a>
@@ -46,7 +46,7 @@
           <!--Content-->
           <li *ngIf="menuItem?.content"  [ngClass]="{'active': location.path().includes('select-modules') || location.path().includes('content') || location.path().includes('dam') 
                   || location.path().includes('tracks') || location.path().includes('playbook') }">
-            <a [routerLink]="['/home/select-modules']">
+            <a (click)="startLoader()" [routerLink]="['/home/select-modules']" >
               <i class="fa fa-cloud-upload" aria-hidden="true"></i>
               <span class="title">Content</span>
               <span class="selected"></span>
@@ -63,13 +63,13 @@
           </a>
           <ul class="sub-menu" [ngStyle]="{'display': contacts? 'block': 'none' }">
               <li>
-                  <a [routerLink]="['./contacts/add']">
+                  <a (click)="startLoader()" [routerLink]="['./contacts/add']" >
                       <i class="fa fa-users" aria-hidden="true"></i>
                       <span class="title" translate>Add Contacts</span>
                   </a>
               </li>
               <li>
-                  <a [routerLink]="['./contacts/manage']">
+                  <a (click)="startLoader()" [routerLink]="['./contacts/manage']" >
                       <i class="fa fa-list" aria-hidden="true"></i>
                       <span class="title" translate>Manage Contacts</span>
                   </a>
@@ -87,13 +87,13 @@
           </a>
           <ul class="sub-menu" [ngStyle]="{'display': assignLeads? 'block': 'none' }">
             <li>
-              <a [routerLink]="['./assignleads/add']"> 
+              <a (click)="startLoader()" [routerLink]="['./assignleads/add']" > 
                 <i class="fa fa-users" aria-hidden="true"></i>
                  <span class="title" translate>Add Leads</span>
               </a>
             </li>
             <li>
-              <a  [routerLink]="['./assignleads/manage']"> 
+              <a (click)="startLoader()"  [routerLink]="['./assignleads/manage']" > 
                 <i class="fa fa-list" aria-hidden="true"></i> 
                 <span class="title"  translate>Manage Leads</span>
               </a>
@@ -103,7 +103,7 @@
 
           <!--Shared Leads-->
           <li *ngIf="menuItem?.sharedLeads"	[ngClass]="{'active': location.path().includes('sharedleads')}">
-              <a [routerLink]="['./sharedleads/manage']">
+              <a (click)="startLoader()" [routerLink]="['./sharedleads/manage']" >
               <i class="fa fa-id-badge"aria-hidden="true"></i> 
               <span class="title" translate>Shared Leads</span>
               <span class="selected"></span>
@@ -112,7 +112,7 @@
 
           <!--Pages--->
           <li *ngIf="menuItem?.pagesAccessAsPartner"	[ngClass]="{'active': location.path().includes('pages/partner') ||location.path().includes('forms/partner') }">
-              <a [routerLink]="['./pages/partner']"> 
+              <a (click)="startLoader()" [routerLink]="['./pages/partner']" > 
                 <i class="fa fa-wpforms" aria-hidden="true"></i> 
                 <span class="title" translate>Pages</span>
                 <span class="selected"></span>
@@ -123,7 +123,7 @@
           <li  *ngIf="menuItem?.design" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') || 
               (location.path().includes('forms') && !location.path().includes('forms/partner') && !location.path().includes('forms/clpf') && !location.path().includes('/analytics/cfa') )
                ||(location.path().includes('pages') && !location.path().includes('pages/partner')) && !location.path().includes('campaign')  }">
-            <a [routerLink]="['./design/add']">
+            <a (click)="startLoader()" [routerLink]="['./design/add']" >
                 <i class="fa fa-paint-brush" aria-hidden="true"></i>
                 <span class="title" translate>Design</span>
                 <span class="selected"></span>
@@ -142,7 +142,7 @@
             <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
                 <!--Redistribute Campaign-->
                 <li *ngIf="menuItem?.campaignAccessAsPartner">
-                  <a [routerLink]="['./campaigns/partner/all']">
+                  <a (click)="startLoader()" [routerLink]="['./campaigns/partner/all']" >
                     <i class="fa fa-bullhorn" aria-hidden="true"></i>
                     <span class="title" translate>Redistribute Campaign</span>
                   </a>
@@ -150,7 +150,7 @@
 
                 <!--Create Campaign-->
                 <li *ngIf="menuItem?.campaign">
-                    <a [routerLink]="['./campaigns/select']">
+                    <a (click)="startLoader()" [routerLink]="['./campaigns/select']" >
                         <i class="fa fa-bullhorn" aria-hidden="true"></i>
                         <span class="title" translate>Create Campaign</span>
                     </a>
@@ -158,7 +158,7 @@
 
                 <!--Manage Campaigns-->
                 <li>
-                    <a [routerLink]="['./campaigns/manage']">
+                    <a (click)="startLoader()" [routerLink]="['./campaigns/manage']" >
                       <i class="fa fa-list" aria-hidden="true"></i>
                       <span class="title" translate>Manage Campaigns</span>
                     </a>
@@ -179,14 +179,14 @@
             <ul class="sub-menu" [ngStyle]="{'display': deals? 'block': 'none' }">
                 <!--Manage Leads-->
                 <li>
-                    <a [routerLink]="['/home/leads/']">
+                    <a (click)="startLoader()" [routerLink]="['/home/leads/']" >
                         <i class="fa fa-user-circle" aria-hidden="true"></i>
                         <span class="title" translate>Manage Leads</span>
                     </a>
                 </li>
                 <!--Manage Deals-->
                 <li>
-                    <a [routerLink]="['/home/deal/']">
+                    <a (click)="startLoader()" [routerLink]="['/home/deal/']" >
                         <i class="fa fa-tags" aria-hidden="true"></i>
                         <span class="title" translate>Manage Deals</span>
                     </a>
@@ -196,7 +196,7 @@
 
           <!-- ------Social Feeds / Rss Feeds------ -->
           <li  *ngIf="menuItem?.socialFeeds || menuItem?.socialFeedsAccessAsPartner" [ngClass]="{'active': location.path().includes('rss')}">
-            <a [routerLink]="['/home/rss/']">
+            <a (click)="startLoader()" [routerLink]="['/home/rss/']" >
              <i class="fa fa-rss" aria-hidden="true"></i>
              <span class="title">Social Feeds</span>
              <span class="selected"></span>
@@ -205,7 +205,7 @@
 
           <!--------MDF------ -->
           <li *ngIf="menuItem?.mdf || menuItem?.mdfAccessAsPartner" [ngClass]="{'active': location.path().includes('mdf') }">
-            <a  [routerLink]="['/home/mdf/select']">
+            <a (click)="startLoader()"  [routerLink]="['/home/mdf/select']" >
               <i class="fa fa-dollar" aria-hidden="true"></i>
               <span class="title">MDF</span>
               <span class="selected"></span>
@@ -215,7 +215,7 @@
 
           <!--------Team------ -->
           <li *ngIf="menuItem?.team || isLoggedInAsTeamMember"  [ngClass]="{'active': location.path().includes('team')}">
-              <a [routerLink]="['./team/add-team']">
+              <a (click)="startLoader()"  [routerLink]="['./team/add-team']" >
                   <i class="fa fa-users" aria-hidden="true"></i>
                   <span class="title" translate>Team</span>
                   <span class="selected"></span>

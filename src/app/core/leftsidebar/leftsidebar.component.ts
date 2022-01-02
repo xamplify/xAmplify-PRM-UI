@@ -333,5 +333,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.playbook = playbook;
 	}
 	
+	startLoader(){
+		this.loading = true;
+	}
 
 }
