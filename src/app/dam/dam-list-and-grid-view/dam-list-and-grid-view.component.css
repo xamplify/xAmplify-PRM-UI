@@ -217,4 +217,9 @@ cursor: default;
   .mDamResponse{
     margin-top: 45px;
   }
+  .mAlignView{
+    white-space: pre-line!important;
+    line-height: 2px;
+    text-align: center;
+  }
 }

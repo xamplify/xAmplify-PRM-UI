@@ -27,3 +27,9 @@
     width: auto;
     margin: 0 auto;
 }
+
+@media screen and (max-width:600px){
+    .mtext-center{
+        text-align: center;
+    }
+}
