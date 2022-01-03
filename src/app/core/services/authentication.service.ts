@@ -560,6 +560,7 @@ export class AuthenticationService {
     module.loggedInThroughXamplifyUrl = false;
     module.loggedInThroughVendorVanityUrl = false;
     module.loggedInThroughOwnVanityUrl = false;
+    module.adminOrSuperVisor = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;

@@ -74,6 +74,7 @@ export class Module {
     loggedInThroughVendorVanityUrl = false;
     loggedInThroughOwnVanityUrl = false;
     loggedInThroughXamplifyUrl = false;
+    adminOrSuperVisor = false;
 
    
 }
