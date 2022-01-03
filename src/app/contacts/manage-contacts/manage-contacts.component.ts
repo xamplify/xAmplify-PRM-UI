@@ -1438,6 +1438,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.xtremandLogger.error(error, "ManageContactsComponent", "ContactReportCount()");
 		}
 	}
+	
+    loadContactsByType(contactType: string) {
+    	this.contactsByType.pagination.pageIndex = 1;
+        if (this.isPartner) {
+            this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
+            this.resetTMSelectedFilterIndex.next(true);
+        }
+        this.listContactsByType(contactType);
+	}
 
 	listContactsByType(contactType : string) {
 		this.campaignLoader = true;
