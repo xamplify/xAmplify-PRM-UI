@@ -64,7 +64,7 @@
                     <div class="col-xs-6 col-sm-2 col-lg-2  margin-top-10"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat blue"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
-                        (click)="contactsByType.pagination.pageIndex = 1;contactsByType.pagination.partnerTeamMemberGroupFilter=true;resetTMSelectedFilterIndex.next(true);listContactsByType('all')"
+                        (click)="loadContactsByType('all')"
                         [disabled]="contactsByType.allContactsCount == 0">
                         <div class="visual">
                           <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
@@ -88,7 +88,7 @@
                     <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat green"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
-                        (click)="contactsByType.pagination.pageIndex = 1;contactsByType.pagination.partnerTeamMemberGroupFilter=true;resetTMSelectedFilterIndex.next(true);listContactsByType('active')"
+                        (click)="loadContactsByType('active')"
                         [disabled]="contactsByType.activeContactsCount == 0">
                         <div class="visual">
                           <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
@@ -113,7 +113,7 @@
                     <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat purple"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
-                        (click)="contactsByType.pagination.pageIndex = 1;contactsByType.pagination.partnerTeamMemberGroupFilter=true;resetTMSelectedFilterIndex.next(true);listContactsByType('non-active')"
+                      (click)="loadContactsByType('non-active')"
                         [disabled]="contactsByType.inactiveContactsCount == 0">
                         <div class="visual">
                           <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
@@ -160,7 +160,7 @@
                     <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat yellow-gold"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
-                        (click)="contactsByType.pagination.pageIndex = 1;contactsByType.pagination.partnerTeamMemberGroupFilter=true;resetTMSelectedFilterIndex.next(true);listContactsByType('invalid')"
+                        (click)="loadContactsByType('invalid')"
                         [disabled]="contactsByType.invalidContactsCount == 0">
                         <div class="visual">
                          <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
@@ -188,7 +188,7 @@
                     <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                       <button class="btn-block dashboard-stat red"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
-                        (click)="contactsByType.pagination.pageIndex = 1;contactsByType.pagination.partnerTeamMemberGroupFilter=true;resetTMSelectedFilterIndex.next(true);listContactsByType('unsubscribe')"
+                        (click)="loadContactsByType('unsubscribe')"
                         [disabled]="contactsByType.unsubscribedContactsCount == 0">
                         <div class="visual">
                           <i class="fa fa-check-circle"

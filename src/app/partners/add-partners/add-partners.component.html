@@ -1252,7 +1252,7 @@
                                         <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                 </th>
-                                <th scope="row" translate>Team Member Group
+                                <th *ngIf="authenticationService?.module?.adminOrSuperVisor" scope="row" translate>Team Member Group
                                     <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true"  title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
@@ -1275,7 +1275,7 @@
                                         </switch>
                                     </td>
                                    <!--- (XNFR-85) ----->
-                                    <td id="team-member-group-error-count-{{i}}">
+                                    <td *ngIf="authenticationService?.module?.adminOrSuperVisor" id="team-member-group-error-count-{{i}}">
                                         <div class="input-group">
                                         <select id="partner-tm-group-{{i}}" class="form-control" [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembersByGroupId(partner,i)">
                                           <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">

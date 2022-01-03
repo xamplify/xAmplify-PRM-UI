@@ -1941,7 +1941,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	backToEditContacts() {
 		this.currentContactType = "all_contacts";
-		this.pagination.partnerTeamMemberGroupFilter = true;
+        if (this.isPartner) {
+            this.pagination.partnerTeamMemberGroupFilter = true;
+		}
 		this.searchKey = null;
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.maxResults = 12;
@@ -2301,11 +2303,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	showingContactDetails(contactType: string) {
-		this.resetTMSelectedFilterIndex.next(true);
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
-		this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
 		this.contactsByType.selectedCategory = contactType;
+	    if (this.isPartner) {
+            this.resetTMSelectedFilterIndex.next(true);
+            this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
+        }
 		this.listOfSelectedContactListByType(contactType);
 	}
 

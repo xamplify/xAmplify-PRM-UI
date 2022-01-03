@@ -137,6 +137,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.loggedInThroughOwnVanityUrl = data.loggedInThroughOwnVanityUrl;
 					this.authenticationService.module.loggedInThroughVendorVanityUrl = data.loggedInThroughVendorVanityUrl;
 					this.authenticationService.module.loggedInThroughXamplifyUrl = data.loggedInThroughXamplifyUrl;
+					this.authenticationService.module.adminOrSuperVisor = data.adminOrSuperVisor;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
