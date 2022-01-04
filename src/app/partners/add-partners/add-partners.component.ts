@@ -2528,7 +2528,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
-			this.pagination.partnerTeamMemberGroupFilter=true;
+            if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+                this.pagination.partnerTeamMemberGroupFilter = true;
+			}
 			this.defaultPartnerList(this.loggedInUserId);
 			/*if (localStorage.getItem('vanityUrlFilter')) {
 				localStorage.removeItem('vanityUrlFilter');
