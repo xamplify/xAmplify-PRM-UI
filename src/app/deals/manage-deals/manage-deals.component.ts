@@ -43,6 +43,7 @@ export class ManageDealsComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   campaignRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   partnerRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  countsRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   showDealForm = false;
   dealsResponse: CustomResponse = new CustomResponse();
   actionType = "add";
@@ -70,6 +71,7 @@ export class ManageDealsComponent implements OnInit {
   toDateFilter: any = "";
   filterResponse: CustomResponse = new CustomResponse();
   filterMode: any = false;
+  selectedFilterIndex: number = 1;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -223,16 +225,19 @@ export class ManageDealsComponent implements OnInit {
 
   getVendorCounts() {
     this.countsLoader = true;
+    this.referenceService.loading(this.countsRequestLoader, true);
+    this.vanityLoginDto.applyFilter = this.selectedFilterIndex==1;
     this.dealsService.getCounts(this.vanityLoginDto)
     .subscribe(
         response => {
+          this.referenceService.loading(this.countsRequestLoader, false);
             if(response.statusCode==200){
               this.counts = response.data.vendorCounts;
               this.countsLoader = false;
             }            
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
+            this.countsRequestLoader.isServerError = true;
             },
         () => { }
     );
@@ -259,7 +264,9 @@ export class ManageDealsComponent implements OnInit {
     this.getCounts();
     this.selectedTabIndex = 1;
     this.dealsPagination = new Pagination;
+    this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.campaignPagination = new Pagination;
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if(this.vanityLoginDto.vanityUrlFilter){
       this.dealsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
       this.dealsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
@@ -570,6 +577,7 @@ export class ManageDealsComponent implements OnInit {
           this.selectedCampaign = campaign;
           this.partnerPagination = new Pagination;
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
+          this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
           this.listPartnersForCampaign(this.partnerPagination);
         }
       } else {
@@ -661,8 +669,10 @@ export class ManageDealsComponent implements OnInit {
       vendorCompanyProfileName = this.dealsPagination.vendorCompanyProfileName;
     }
 
+    let partnerTeamMemberGroupFilter = false; 
     let userType = "";
     if (this.isVendorVersion) {
+      partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
       userType = "v";
     } else if (this.isPartnerVersion) {
       userType = "p";
@@ -734,6 +744,13 @@ export class ManageDealsComponent implements OnInit {
     mapInput.type = "hidden";
     mapInput.name = "toDate";
     mapInput.setAttribute("value", this.dealsPagination.toDateFilterString);
+    mapForm.appendChild(mapInput);
+
+    // partnerTeamMemberGroupFilter
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "partnerTeamMemberGroupFilter";
+    mapInput.setAttribute("value", partnerTeamMemberGroupFilter+"");
     mapForm.appendChild(mapInput);
 
     document.body.appendChild(mapForm);
@@ -814,6 +831,16 @@ export class ManageDealsComponent implements OnInit {
   clearPartnerSearch() {
     this.partnerSortOption.searchKey='';
     this.getAllFilteredResultsPartners(this.partnerPagination);
+  }
+
+  getSelectedIndex(index:number){
+    this.selectedFilterIndex = index;
+    this.getCounts();
+    this.referenceService.setTeamMemberFilterForPagination(this.dealsPagination,index);
+    this.referenceService.setTeamMemberFilterForPagination(this.campaignPagination,index);
+    this.listDealsForVendor(this.dealsPagination);
+    this.listCampaignsForVendor(this.campaignPagination);
+    
   }
 
 }
