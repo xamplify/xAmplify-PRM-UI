@@ -135,7 +135,7 @@
 								<td class="text-center">{{asset?.assetType}}</td>
 								<td class="text-center"><app-timestamp
 										[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
-								<td>
+								<td class="mAlignView">
 									<div
 										[className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon'">
 										<ng-container *ngIf="asset?.status=='COMPLETED'">
@@ -145,10 +145,10 @@
 										<a *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"	title="Design" (click)="addOrEdit(asset.id)">
 											 <i class="fa fa-paint-brush" aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
+										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
 											 <i class="fa fa-edit"	aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id)">
+										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id)">
 											 <i class="fa fa-edit"	aria-hidden="true"></i>
 										</a> 
 										<a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)">
@@ -227,7 +227,7 @@
 															<a title="Design" (click)="addOrEdit(asset.id)"> <i
 																class="fa fa-paint-brush" aria-hidden="true"></i>
 															</a>
-															 <a *ngIf="!isPartnerView" title="Edit"
+															 <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
 																(click)="editDetails(asset.id)"> <i
 																class="fa fa-edit" aria-hidden="true"></i>
 															</a> 
@@ -382,7 +382,7 @@
 								<a *ngIf="asset?.beeTemplate" title="Design"
 									(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush"
 									aria-hidden="true"></i>
-								</a> <a *ngIf="!isPartnerView" title="Edit"
+								</a> <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
 									(click)="editDetails(asset.id)">
 									 <i class="fa fa-edit"
 									aria-hidden="true"></i>
