@@ -1941,7 +1941,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	backToEditContacts() {
 		this.currentContactType = "all_contacts";
-        if (this.isPartner) {
+        if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
             this.pagination.partnerTeamMemberGroupFilter = true;
 		}
 		this.searchKey = null;
@@ -2306,7 +2306,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
 		this.contactsByType.selectedCategory = contactType;
-	    if (this.isPartner) {
+	    if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
             this.resetTMSelectedFilterIndex.next(true);
             this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
         }
@@ -3232,7 +3232,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 		try {
 			this.currentContactType = "all_contacts";
-            if (this.isPartner) {
+            if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
                 this.pagination.partnerTeamMemberGroupFilter = true;
 		}
 			this.getLegalBasisOptions();
