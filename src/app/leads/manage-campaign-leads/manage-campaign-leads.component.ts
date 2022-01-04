@@ -44,6 +44,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   toDateFilter: any = "";
   filterResponse: CustomResponse = new CustomResponse(); 
   filterMode: boolean = false;
+  selectedFilterIndex: number = 1;
 
   constructor(public authenticationService: AuthenticationService,
     private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -333,6 +334,13 @@ validateDateFilters() {
 clearSearch() {
   this.leadsSortOption.searchKey='';
   this.getAllFilteredResultsLeads(this.leadsPagination);
+}
+
+getSelectedIndex(index:number){
+  this.selectedFilterIndex = index;
+  this.referenceService.setTeamMemberFilterForPagination(this.leadsPagination,index);
+  this.listCampaignLeads(this.leadsPagination);
+  
 }
 
 }
