@@ -42,6 +42,7 @@ export class ManageCampaignDealsComponent implements OnInit {
   toDateFilter: any = "";
   filterResponse: CustomResponse = new CustomResponse(); 
   filterMode: boolean = false;
+  selectedFilterIndex: number = 1;
 
   constructor(public authenticationService: AuthenticationService,
     private dealsService: DealsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -56,6 +57,7 @@ export class ManageCampaignDealsComponent implements OnInit {
   ngOnInit() {
     if (this.campaignId != undefined && this.campaignId > 0) {
       this.dealsPagination = new Pagination();
+      this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
       this.listCampaignDeals(this.dealsPagination);
     }
   }
@@ -177,8 +179,10 @@ export class ManageCampaignDealsComponent implements OnInit {
     fileName = type + "-deals"
   }
 
+  let partnerTeamMemberGroupFilter = false;
   let userType = "v";
   if (this.isVendorVersion) {
+    partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
     userType = "v";
   } else if (this.isPartnerVersion) {
     userType = "p";
@@ -259,6 +263,13 @@ export class ManageCampaignDealsComponent implements OnInit {
   mapInput.setAttribute("value", this.fromAnalytics+"");
   mapForm.appendChild(mapInput);
 
+  // partnerTeamMemberGroupFilter
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "partnerTeamMemberGroupFilter";
+  mapInput.setAttribute("value", partnerTeamMemberGroupFilter+"");
+  mapForm.appendChild(mapInput);
+
   document.body.appendChild(mapForm);
   mapForm.submit();
 }
@@ -321,6 +332,13 @@ validateDateFilters() {
 clearSearch() {
   this.dealsSortOption.searchKey='';
   this.getAllFilteredResultsDeals(this.dealsPagination);
+}
+
+getSelectedIndex(index:number){
+  this.selectedFilterIndex = index;
+  this.referenceService.setTeamMemberFilterForPagination(this.dealsPagination,index);
+  this.listCampaignDeals(this.dealsPagination);
+  
 }
 
 }

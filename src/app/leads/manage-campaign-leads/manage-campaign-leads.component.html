@@ -1,8 +1,8 @@
 <div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
   <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
-  <!-- <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="fromAnalytics">
+  <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && isVendorVersion">
     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-  </div> -->
+  </div>
   <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
     <div class="btn-group pull-right" style="width: max-content;">      
       <div class="inputs" align="right" style="float: right; display: inline-flex;">
