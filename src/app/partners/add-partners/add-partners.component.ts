@@ -104,6 +104,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	isCompanyDetails = false;
 	allPartnersPagination: Pagination = new Pagination();
 	contactAssociatedCampaignPagination: Pagination = new Pagination();
+	downloadAssociatedPagination: Pagination = new Pagination();
 	pageSize: number = 12;
 	contactListAssociatedCampaignsList: any;
 	editingEmailId = '';
@@ -212,7 +213,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	public teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
 	public showModulesPopup = false;
 	public teamMemberGroupId = 0;
-	selectedFilterIndex: number = 0;
+	selectedFilterIndex: number = 1;
     showFilter = true;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -2314,28 +2315,33 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	downloadPartnerList() {
-		this.hasAccess().subscribe(
-			data => {
-				if (data) {
-					try {
-						this.contactService.downloadContactList(this.partnerListId)
-							.subscribe(
-								data => this.downloadFile(data),
-								(error: any) => {
-									this.xtremandLogger.error(error);
-									this.xtremandLogger.errorPage(error);
-								},
-								() => this.xtremandLogger.info("download partner List completed")
-							);
-					} catch (error) {
-						this.xtremandLogger.error(error, "addPartnerComponent", "download Partner list");
-					}
-				} else {
-					this.authenticationService.forceToLogout();
-				}
-			}
-		);
+    downloadPartnerList() {
+        this.hasAccess().subscribe(
+            data => {
+                if (data) {
+                    try {
+                        this.downloadAssociatedPagination.userListId = this.partnerListId;
+                        this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
+                        if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+                        	 this.referenceService.setTeamMemberFilterForPagination(this.downloadAssociatedPagination,this.selectedFilterIndex);
+                        }
+                        this.contactService.downloadContactList(this.downloadAssociatedPagination)
+                            .subscribe(
+                            data => this.downloadFile(data),
+                            (error: any) => {
+                                this.xtremandLogger.error(error);
+                                this.xtremandLogger.errorPage(error);
+                            },
+                            () => this.xtremandLogger.info("download partner List completed")
+                            );
+                    } catch (error) {
+                        this.xtremandLogger.error(error, "addPartnerComponent", "download Partner list");
+                    }
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
+            }
+        );
 	}
 
 	sendMail(partnerId: number) {
