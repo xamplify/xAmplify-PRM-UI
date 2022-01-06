@@ -620,7 +620,13 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 		this.selectedFilterIndex = index;
 		this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
 		this.findPartnerCompanies(this.pagination);
-	  }
+	}
+
+	findPartnerCompaniesByFilterIndex(pagination:Pagination){
+		this.selectedFilterIndex = 1;
+		this.referenceService.setTeamMemberFilterForPagination(pagination,this.selectedFilterIndex);
+		this.findPartnerCompanies(pagination);
+	}
 	
 
 }
