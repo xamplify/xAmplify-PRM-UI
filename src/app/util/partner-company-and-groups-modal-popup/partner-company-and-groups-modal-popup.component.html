@@ -31,7 +31,7 @@
                         <div class="panel-heading" id="company-and-group-tabs">
                            <ul class="nav nav-tabs">
                               <li id="partners-li" >
-                                 <a class="partnersC" title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners" data-toggle="tab" (click)="findPartnerCompanies(pagination);showFilter=true;selectedTab=1">{{authenticationService?.partnerModule?.customName}}</a>
+                                 <a class="partnersC" title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners" data-toggle="tab" (click)="findPartnerCompaniesByFilterIndex(pagination);showFilter=true;selectedTab=1">{{authenticationService?.partnerModule?.customName}}</a>
                               </li>
                               <li id="partnerGroups-li">
                                  <a class="partnerGroupsC" title="Click to see List of {{authenticationService?.partnerModule?.customName}}"   href="#partnerGroups" data-toggle="tab"  (click)="findPartnerGroups(partnerGroupsPagination);showFilter=false;selectedTab=2">List of {{authenticationService?.partnerModule?.customName}}</a>
