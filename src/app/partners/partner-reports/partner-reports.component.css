@@ -148,6 +148,9 @@ cursor: default;
 .mGraphwidth{
 	min-width: 290px!important;
 }
+.mDisplay{
+	display: contents!important;
+}
 }
 
 
