@@ -348,7 +348,7 @@
             <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
             <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
             <div class="page-bar m10" [hidden]="httpRequestLoader.isLoading">
-              <ul  class="mix-filter col-xs-12 col-md-5 p0 m0" style="display: inline-flex;">
+              <ul  class="mix-filter col-xs-12 col-md-5 p0 m0 mDisplay" style="display: inline-flex;">
                 <li class="filter" (click)="filterCampaigns('NONE',0)"
                   [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex">All</li>
                 <li class="filter" (click)="filterCampaigns('REGULAR',1)"

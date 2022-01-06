@@ -226,6 +226,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	selectedFilterIndex: number = 0;
     showFilter = true;
     resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
+    downloadAssociatedPagination : Pagination = new Pagination();
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService) {
@@ -589,21 +590,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         }
 	}
 
-	downloadContactList(contactListId: number, contactListName: any) {
-		try {
-			this.contactService.downloadContactList(contactListId)
-				.subscribe(
-					data => this.downloadFile(data, contactListName),
-					(error: any) => {
-						this.xtremandLogger.error(error);
-						this.xtremandLogger.errorPage(error);
-					},
-					() => this.xtremandLogger.info("download completed")
-				);
+    downloadContactList(contactListId: number, contactListName: any) {
+        try {
+            this.downloadAssociatedPagination.userListId = contactListId;
+            this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
+            this.contactService.downloadContactList(this.downloadAssociatedPagination)
+                .subscribe(
+                data => this.downloadFile(data, contactListName),
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("download completed")
+                );
 
-		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
-		}
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+        }
 	}
 
 	downloadFile(data: any, contactListName: any) {
@@ -1770,10 +1773,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     hasAccessForDownloadUndeliverableContacts() {
-        if (this.assignLeads){
-        	this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
+        if (this.assignLeads) {
+            this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
         } else {
             try {
+                if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+                    this.referenceService.setTeamMemberFilterForPagination(this.contactsByType.contactPagination, this.selectedFilterIndex);
+                }
                 this.contactService.hasAccess(this.isPartner)
                     .subscribe(
                     data => {
