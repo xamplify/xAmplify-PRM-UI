@@ -98,6 +98,7 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
     this.referenceService.scrollToModalBodyTopByClass();
     this.currentPartner.selectedTeamMemberIds =  [];
     this.currentPartner['isTeamMemberHeaderCheckBoxChecked'] = false;
+    $('#'+this.partnerGroupTeamMemberheaderCheckBoxId+"-"+this.currentPartner['index']).prop('checked', false);
   }
 
 }

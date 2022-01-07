@@ -54,7 +54,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isSynchronizationList: boolean;
 	@Input('value') value: number;
 	@Input() isFormList: boolean;
-	
+	/*****XNFR-98******/
+	@Input() isTeamMemberPartnerList:boolean;
 	editContacts: User;
 	@Output() notifyParent: EventEmitter<User>;
 	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
@@ -690,7 +691,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -918,7 +919,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -1594,7 +1595,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 
@@ -3229,7 +3230,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-
 		try {
 			this.currentContactType = "all_contacts";
             if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
