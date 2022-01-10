@@ -129,6 +129,8 @@ body {
     margin-bottom: 15px!important;
 }
 
-.text-break {
-	word-break: break-word;
+.form-name-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

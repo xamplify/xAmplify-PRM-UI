@@ -218,3 +218,9 @@
 .no-float {
     float: none;
 }
+
+.name-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

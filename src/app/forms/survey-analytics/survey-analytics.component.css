@@ -54,3 +54,8 @@
     color: #5b9bd1;
 }
 
+.text-wrap {
+	overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+}
