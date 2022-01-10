@@ -15,6 +15,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
+import { Subject } from 'rxjs';
 
 declare var $, swal, Highcharts, CKEDITOR: any;
 
@@ -74,6 +75,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     redistributedCampaignsCount = 0;
     reloadWithFilter = true;
     loadAllCharts = false;
+    selectedFilterIndex: number = 0 ;
+    showFilter = true;
+    resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
+    
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -378,6 +383,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     /************************InActive Partners Tab********************/
     goToInActivePartnersDiv() {
+        if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+        	this.resetTMSelectedFilterIndex.next(true);
+        	this.inActivePartnersPagination.partnerTeamMemberGroupFilter = true;
+        }
         this.sortOption = new SortOption();
         this.selectedTabIndex = 1;
         this.httpRequestLoader = new HttpRequestLoader();
@@ -386,6 +395,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         $('#inactive-partners-div').show();
         $("#redistribute-partners-div").hide();
         $('#approve-partners-div').hide();
+        this.inActivePartnersPagination.pageIndex = 1;
         this.inActivePartnersPagination.maxResults = 12;
         this.getInActivePartnerReports(this.inActivePartnersPagination);
     }
@@ -923,6 +933,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.error(error);
                 this.approvePartnersCountLoader = false;
             });
+    }
+    
+    getSelectedIndex(index: number) {
+        this.selectedFilterIndex = index;
+        this.referenseService.setTeamMemberFilterForPagination(this.inActivePartnersPagination, index);
+        this.getInActivePartnerReports(this.inActivePartnersPagination);
     }
 
     

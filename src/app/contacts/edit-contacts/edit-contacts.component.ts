@@ -1941,11 +1941,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	backToEditContacts() {
-		this.currentContactType = "all_contacts";
-		this.selectedFilterIndex = 1
-        if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-            this.pagination.partnerTeamMemberGroupFilter = true;
-		}
 		this.searchKey = null;
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.maxResults = 12;
@@ -1962,6 +1957,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
 		this.contactsByType.selectedCategory = null;
+		this.currentContactType = "all_contacts";
+        this.selectedFilterIndex = 1
+        if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+            this.resetTMSelectedFilterIndex.next(true);
+            this.pagination.partnerTeamMemberGroupFilter = true;
+        }
 		this.setPage(1);
 	}
 
