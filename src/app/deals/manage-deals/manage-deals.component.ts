@@ -283,9 +283,11 @@ export class ManageDealsComponent implements OnInit {
     this.selectedTabIndex = 2;
     this.dealsPagination = new Pagination;
     this.dealsPagination.filterKey = "won";
+    this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.listDeals(this.dealsPagination);
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "won";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignDeals = false;
     this.selectedPartnerCompanyId = 0;
     this.listCampaigns(this.campaignPagination);
@@ -295,9 +297,11 @@ export class ManageDealsComponent implements OnInit {
     this.selectedTabIndex = 3;
     this.dealsPagination = new Pagination;
     this.dealsPagination.filterKey = "lost";
+    this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.listDeals(this.dealsPagination);
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "lost";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignDeals = false;
     this.selectedPartnerCompanyId = 0;
     this.listCampaigns(this.campaignPagination);

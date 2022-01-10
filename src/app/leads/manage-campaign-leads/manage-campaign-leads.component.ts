@@ -24,7 +24,8 @@ export class ManageCampaignLeadsComponent implements OnInit {
   @Input() public isVendorVersion : any;
   @Input() public isPartnerVersion : any;
   @Input() public filterKey : any;
-  @Input() public fromAnalytics : boolean = false;
+  @Input() public fromAnalytics : boolean = false;  
+  @Input() public showTeamMemberFilter : boolean = false;
   @Input() refreshCampaignLeadsSubject: Subject<boolean> = new Subject<boolean>();
   
   @Output() viewCampaignLeadForm = new EventEmitter<any>();
@@ -59,7 +60,11 @@ export class ManageCampaignLeadsComponent implements OnInit {
   ngOnInit() {
     if (this.campaignId != undefined && this.campaignId > 0) {
         this.leadsPagination = new Pagination();
-        this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+        if (this.fromAnalytics && !this.showTeamMemberFilter) {
+          this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==0;
+        } else {
+          this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+        }        
         this.listCampaignLeads(this.leadsPagination);        
     }
 

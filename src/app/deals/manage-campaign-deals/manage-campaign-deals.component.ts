@@ -24,6 +24,7 @@ export class ManageCampaignDealsComponent implements OnInit {
   @Input() public isPartnerVersion : any;
   @Input() public filterKey : any;
   @Input() public fromAnalytics : boolean = false;
+  @Input() public showTeamMemberFilter : boolean = false;
 
   @Output() viewCampaignDealForm = new EventEmitter<any>();
   @Output() editCampaignDealForm = new EventEmitter<any>();
@@ -57,7 +58,11 @@ export class ManageCampaignDealsComponent implements OnInit {
   ngOnInit() {
     if (this.campaignId != undefined && this.campaignId > 0) {
       this.dealsPagination = new Pagination();
-      this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+      if (this.fromAnalytics && !this.showTeamMemberFilter) {
+        this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==0;
+      } else {
+        this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+      }      
       this.listCampaignDeals(this.dealsPagination);
     }
   }
@@ -339,6 +344,30 @@ getSelectedIndex(index:number){
   this.referenceService.setTeamMemberFilterForPagination(this.dealsPagination,index);
   this.listCampaignDeals(this.dealsPagination);
   
+}
+
+setDealStatus(deal: Deal) {
+  this.referenceService.loading(this.httpRequestLoader, true);
+  let request: Deal = new Deal();
+  request.id = deal.id;
+  request.pipelineStageId = deal.pipelineStageId;
+  request.userId = this.loggedInUserId;
+  this.dealsService.changeDealStatus(request)
+    .subscribe(
+      response => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+        if (response.statusCode == 200) {
+          this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
+          this.listCampaignDeals(this.dealsPagination);
+        } else if (response.statusCode == 500) {
+          this.dealsResponse = new CustomResponse('ERROR', response.message, true);
+        }
+      },
+      error => {
+        this.httpRequestLoader.isServerError = true;
+      },
+      () => { }
+    );
 }
 
 }
