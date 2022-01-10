@@ -156,7 +156,7 @@
                     <div class="vertical-center">
                         <div class="panel panel-info mWid" *ngIf="!formError" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
                             <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
-                                <div class="panel-title form-name-wrap">{{form.name}}</div>
+                                <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                             </div>
                             <div class="panel-body" *ngIf="!formError">
                                 <h5>{{form.description}}</h5>

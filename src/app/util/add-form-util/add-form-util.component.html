@@ -41,14 +41,14 @@
                                 <div class="portlet light">
                                     <div class="portlet-title tabbable-line">
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6 padding-none">
-                                            <div class="caption caption-md" style="width: 100%;">
+                                            <div class="caption caption-md" style="width: 100%;display: inline-flex;">
                                                 <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                                 <h4 [attr.class]="formNameClass"><strong title="{{form.name}}">{{form.name}}</strong>
-                                                    <a *ngIf="!isMdfForm" data-toggle="tooltip" data-placement="top" title="Change Form Details"
+                                                </h4>
+                                                <a *ngIf="!isMdfForm" class="icon-margin" data-toggle="tooltip" data-placement="top" title="Change Form Details"
                                                         (click)="showAddForm()">
                                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                    </a>
-                                                </h4>
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 padding-none">
