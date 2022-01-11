@@ -3098,4 +3098,8 @@ viewCampaignLeadForm(leadId: any) {
     this.isCommentSection = !this.isCommentSection;
   }
 
+  refreshCounts() {
+    this.customResponse.isVisible = false;
+  }
+
 }

@@ -518,6 +518,29 @@
                                                         </div>
                                                     </button>
                                                 </div>
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"
+                                                    *ngIf="campaign.campaignType != 'EVENT' && ((!campaign.nurtureCampaign && authenticationService.module.hasOpportunityRole) || (campaign.nurtureCampaign && authenticationService.module.opportunitiesAccessAsPartner))">
+                                                    <button class="btn btn-default btn-xs re-distributed-high-level vlt-b-c">
+                                                        <div class="portlet-body text-center">
+                                                            <h6 class="custom-font-size">
+                                                                <strong class="custom-font-weight">{{campaign?.leadCount}}</strong>
+                                                            </h6>
+                                                            <span class="custom-font-weight">Leads</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"
+                                                    *ngIf="campaign.campaignType != 'EVENT' && ((!campaign.nurtureCampaign && authenticationService.module.hasOpportunityRole) || (campaign.nurtureCampaign && authenticationService.module.opportunitiesAccessAsPartner))">
+                                                    <button class="btn btn-default btn-xs re-distributed-high-level lt-g-b-c">
+                                                        <div class="portlet-body text-center">
+                                                            <h6 class="custom-font-size">
+                                                                <strong class="custom-font-weight">{{campaign?.dealCount}}</strong>
+                                                            </h6>
+                                                            <span class="custom-font-weight">Deals</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                                
                                             </div>
                                         </td>
                                         <td *ngIf="!campaign?.emailNotification && !campaign?.nurtureCampaign">
