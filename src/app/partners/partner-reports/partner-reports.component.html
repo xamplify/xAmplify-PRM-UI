@@ -20,6 +20,7 @@
         <a>{{authenticationService?.partnerModule?.customName}} Analytics</a>
       </li>
     </ul>
+    <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
   </div>
 
   <div class="row">
