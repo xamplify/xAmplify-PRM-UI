@@ -57,7 +57,6 @@
 					</div>
 					<div class="tab-pane active">
 						<!-- BEGIN FILTER -->
-
 						<div class="page-bar m0">
 							<div>
 								<div class="page-breadcrumb">
@@ -258,7 +257,7 @@
 									<app-team-member-filter-option *ngIf="isPartner&&showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
 										<div class="clearfix">
 											<ng-container
-												*ngIf=" selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
+												*ngIf="!isTeamMemberPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 												   && (showAddOptions && ((assignLeads && !contactService?.assignedToPartner) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')))">
 												<div class="col-xs-12 col-md-6 col-sm-6 p0" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
 																					 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner ||
@@ -1076,11 +1075,11 @@
 
 
 <div *ngIf="contactService.isContactModalPopup && !updateContactUser">
-	<app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
+	<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
 </div>
 
 <div *ngIf="contactService.isContactModalPopup && updateContactUser">
-	<app-add-contact-modal [mdfAccess]="mdfAccess"  [gdprInput]="parentInput" [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+	<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"  [gdprInput]="parentInput" [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div>
 
 <app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
