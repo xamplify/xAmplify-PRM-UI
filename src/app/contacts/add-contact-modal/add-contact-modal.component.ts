@@ -52,6 +52,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     showModulesPopup = false;
     teamMemberGroupId = 0;
     showTeamMembers = false;
+    /****XNFR-98******/
+    @Input() isTeamMemberPartnerList:boolean;
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
@@ -234,6 +236,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
             this.gdprStatus = this.gdprInput.gdprStatus;
         }
+        /*****XNFR-98*****/
+        if(this.isTeamMemberPartnerList==undefined){
+            this.isTeamMemberPartnerList = false;
+        }
         $( '#addContactModal' ).modal( 'show' );
         
        } catch ( error ) {
@@ -289,7 +295,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     }
 
     enableOrDisableTeamMemberGroupDropDown(){
-        if(this.addContactuser.selectedTeamMembersCount>0){
+        if(this.addContactuser.selectedTeamMembersCount>0 || this.isTeamMemberPartnerList){
             $('#sel-partner-tm').addClass("disable-dropdown");
         }else{
             this.addContactuser.teamMemberGroupId = 0;

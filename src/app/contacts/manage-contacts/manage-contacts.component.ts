@@ -224,9 +224,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showShareListPopup : boolean = false;
 	isFormList = false;
 	selectedFilterIndex: number = 0;
-    showFilter = true;
-    resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
-    downloadAssociatedPagination : Pagination = new Pagination();
+  showFilter = true;
+  resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
+	isTeamMemberPartnerList: boolean;
+  downloadAssociatedPagination : Pagination = new Pagination();
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService) {
@@ -841,12 +842,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
-		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean) {
+		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
 		this.isDefaultPartnerList = isDefaultPartnerList;
-		this.isSynchronizationList = isSynchronizationList
+		this.isSynchronizationList = isSynchronizationList;
+		this.isTeamMemberPartnerList = isTeamMemberPartnerList;
 		this.showAll = false;
 		this.showEdit = true;
 		this.isFormList = isFormList;
