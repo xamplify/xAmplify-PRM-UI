@@ -226,9 +226,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showNotifyPartnerOption = false;
 	hasPartnersRole : boolean = false;
     hasShareLeadsRole : boolean = false;
-	selectedFilterIndex: number = 0;
+	selectedFilterIndex: number = 1;
     showFilter = true;
     resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
+    downloadAssociatedPagination: Pagination = new Pagination();
 	
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
@@ -1941,10 +1942,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	backToEditContacts() {
-		this.currentContactType = "all_contacts";
-        if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-            this.pagination.partnerTeamMemberGroupFilter = true;
-		}
 		this.searchKey = null;
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.maxResults = 12;
@@ -1961,6 +1958,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
 		this.contactsByType.selectedCategory = null;
+		this.currentContactType = "all_contacts";
+        this.selectedFilterIndex = 1
+        if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+            this.resetTMSelectedFilterIndex.next(true);
+            this.pagination.partnerTeamMemberGroupFilter = true;
+        }
 		this.setPage(1);
 	}
 
@@ -2307,6 +2310,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
 		this.contactsByType.selectedCategory = contactType;
+		this.selectedFilterIndex = 1;
 	    if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
             this.resetTMSelectedFilterIndex.next(true);
             this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
@@ -2994,6 +2998,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         const response = JSON.parse(body);
                         let access = response.access;
                         if (access) {
+                            if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+                                this.refService.setTeamMemberFilterForPagination(this.downloadAssociatedPagination,this.selectedFilterIndex);
+                            }
                             this.downloadList();
                         } else {
                             this.authenticationService.forceToLogout();
@@ -3008,7 +3015,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	downloadList() {
 		try {
-			this.contactService.downloadContactList(this.contactListId)
+			this.downloadAssociatedPagination.userListId = this.contactListId;
+            this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
+			this.contactService.downloadContactList(this.downloadAssociatedPagination)
 				.subscribe(
 					data => {
 						this.downloadFile(data);
@@ -3026,9 +3035,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     hasAccessForDownloadUndeliverableContacts() {
         if (this.assignLeads) {
-        	this.listOfAllSelectedContactListByType();
+            this.listOfAllSelectedContactListByType();
         } else {
             try {
+                if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+                    this.refService.setTeamMemberFilterForPagination(this.contactsByType.contactPagination, this.selectedFilterIndex);
+                  }
                 this.contactService.hasAccess(this.isPartner)
                     .subscribe(
                     data => {

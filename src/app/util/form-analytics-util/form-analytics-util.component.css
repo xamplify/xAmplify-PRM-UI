@@ -71,6 +71,8 @@
 	font-size: 13px;
 }
 
-.text-break {
-	word-break: break-word;
+.text-wrap {
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

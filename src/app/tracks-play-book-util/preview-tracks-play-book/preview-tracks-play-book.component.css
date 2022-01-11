@@ -442,7 +442,7 @@ body {
     max-width: 100%;
 }
 
-.asset-name-wrap {
+.name-wrap {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

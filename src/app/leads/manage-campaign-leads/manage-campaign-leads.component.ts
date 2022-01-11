@@ -24,7 +24,8 @@ export class ManageCampaignLeadsComponent implements OnInit {
   @Input() public isVendorVersion : any;
   @Input() public isPartnerVersion : any;
   @Input() public filterKey : any;
-  @Input() public fromAnalytics : boolean = false;
+  @Input() public fromAnalytics : boolean = false;  
+  @Input() public showTeamMemberFilter : boolean = false;
   @Input() refreshCampaignLeadsSubject: Subject<boolean> = new Subject<boolean>();
   
   @Output() viewCampaignLeadForm = new EventEmitter<any>();
@@ -59,6 +60,11 @@ export class ManageCampaignLeadsComponent implements OnInit {
   ngOnInit() {
     if (this.campaignId != undefined && this.campaignId > 0) {
         this.leadsPagination = new Pagination();
+        if (this.fromAnalytics && !this.showTeamMemberFilter) {
+          this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==0;
+        } else {
+          this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+        }        
         this.listCampaignLeads(this.leadsPagination);        
     }
 
@@ -194,8 +200,10 @@ export class ManageCampaignLeadsComponent implements OnInit {
     searchKey = this.leadsPagination.searchKey;
   }   
 
+  let partnerTeamMemberGroupFilter = false;
   let userType = "v";
   if (this.isVendorVersion) {
+    partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
     userType = "v";
   } else if (this.isPartnerVersion) {
     userType = "p";
@@ -270,6 +278,13 @@ export class ManageCampaignLeadsComponent implements OnInit {
   mapInput.type = "hidden";
   mapInput.name = "forAnalytics";
   mapInput.setAttribute("value", this.fromAnalytics+"");
+  mapForm.appendChild(mapInput);
+
+  // partnerTeamMemberGroupFilter
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "partnerTeamMemberGroupFilter";
+  mapInput.setAttribute("value", partnerTeamMemberGroupFilter+"");
   mapForm.appendChild(mapInput);
 
   document.body.appendChild(mapForm);

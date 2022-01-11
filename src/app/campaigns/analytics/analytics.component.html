@@ -1563,11 +1563,11 @@
       <a (click)="closeCampaignLeads()" class="pull-right close-circle"
         style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
         <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-      <app-manage-campaign-leads [campaignId]="campaignId" [fromAnalytics]="true"
+      <app-manage-campaign-leads [campaignId]="campaignId" [fromAnalytics]="!isNavigatedThroughAnalytics" 
+        [showTeamMemberFilter] = "campaign.channelCampaign"
         (viewCampaignLeadForm)="viewCampaignLeadForm($event)" (editCampaignLeadForm)="editCampaignLeadForm($event)"
         (registerDealForm)="registerDealForm($event)" (refreshCounts)="refreshCounts()"
-        (showCommentsPopUp)="showComments($event)"
-        [refreshCampaignLeadsSubject]="refreshCampaignLeadsSubject.asObservable()">
+        (showCommentsPopUp)="showComments($event)" [refreshCampaignLeadsSubject]="refreshCampaignLeadsSubject.asObservable()">
       </app-manage-campaign-leads>
     </div>
   </div>
@@ -1577,7 +1577,8 @@
       <a (click)="closeCampaignDeals()" class="pull-right close-circle"
         style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
         <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-      <app-manage-campaign-deals [campaignId]="campaignId" [fromAnalytics]="true"
+      <app-manage-campaign-deals [campaignId]="campaignId" [fromAnalytics]="!isNavigatedThroughAnalytics"
+        [showTeamMemberFilter] = "campaign.channelCampaign"
         (viewCampaignDealForm)="viewCampaignDealForm($event)" (editCampaignDealForm)="editCampaignDealForm($event)"
         (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showDealComments($event)"> </app-manage-campaign-deals>
     </div>

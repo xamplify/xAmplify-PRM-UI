@@ -28,7 +28,6 @@ export class TeamMemberFilterOptionComponent implements OnInit {
     this.resetTMSelectedFilterIndex.subscribe(response => {
         if (response) {
         	this.selectedFilterIndex = 1;
-        	//this.showPartnersFilterOption();
         }
       });
   }
