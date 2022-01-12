@@ -498,7 +498,8 @@
                                       <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </a>
                                   </ng-container>
-                                  <a *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
+                                  <a *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
+                                   && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0"
                                     data-toggle="tooltip" data-placement="top"
                                     (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
                                     title="{{actionsDescription.send_campaigns}}"> <i class="fa fa-bullhorn"
@@ -506,9 +507,9 @@
                                   </a>
                                 </div>
                                 <div class="actions-block override-actions"
-  *ngIf="(contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
-||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
-|| (!contactList.synchronisedList  && !contactList.emailValidationInd)" >
+                                    *ngIf="(contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
+                                  ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
+                                  || (!contactList.synchronisedList  && !contactList.emailValidationInd)" >
                                   <a data-toggle="tooltip" data-placement="top" title="Force process the list"
                                     (click)="forceProcessList(contactList.id)">
                                     <i class="fa fa-repeat" aria-hidden="true"></i>
@@ -661,7 +662,8 @@
                               class="fa fa-trash-o" aria-hidden="true"></i>
                           </a>
                           </ng-container>
-                           <a *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
+                           <a *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads 
+                           && !sharedLeads && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0"
                                     data-toggle="tooltip" data-placement="top" style="width:11.3%;"
                                     (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
                                     title="{{actionsDescription.send_campaigns}}"> <i class="fa fa-bullhorn" aria-hidden="true"></i>
