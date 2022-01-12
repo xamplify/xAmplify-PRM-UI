@@ -424,3 +424,9 @@ a.social-stats{text-align: center;}
 .tool-size{ font-size: 20px; }
 .pointer { cursor: pointer;}
 .chart-css{ font-size: 13px;font-weight: 500;cursor: default;}
+
+@media screen and (max-width:600px){
+    .mimg-circle{
+		transform: scale(0.9);
+	}
+}

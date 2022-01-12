@@ -355,4 +355,12 @@ body {
     .mTopAlert{
         top: -22px !important;
     }
+    .mActionAlign{
+        white-space: pre-line!important;
+        line-height: 2px;
+        text-align: center!important;
+    }
+    .mFloat{
+        float: none!important;
+    }
 }
