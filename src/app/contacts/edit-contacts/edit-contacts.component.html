@@ -723,7 +723,9 @@
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																 </a>
 																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
-																 *ngIf= "selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))">
+																 *ngIf= "selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
+																  && ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
+																  && !isTeamMemberPartnerList">
 																	<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
 
@@ -1126,7 +1128,7 @@
 										<div class="form-group col-sm-2 filter-delete" data-toggle="tooltip"
 												data-placement="left" title="Remove a condition">
 											<span (click)="cancelSegmentationRow(i)">
-                         <i class="fa fa-trash-o" aria-hidden="true" 	style="color: red; font-size: 26px; margin-top: 6px"></i>
+                         						<i class="fa fa-trash-o" aria-hidden="true" 	style="color: red; font-size: 26px; margin-top: 6px"></i>
 											</span>
 										</div>
 									</div>
