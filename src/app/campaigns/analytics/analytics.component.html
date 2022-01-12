@@ -733,9 +733,7 @@
               </button>
             </div>
             <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
-              *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' &&
-                ((!campaign.nurtureCampaign && authenticationService.module.hasOpportunityRole) || 
-                  (campaign.nurtureCampaign && ((isNavigatedThroughAnalytics && authenticationService.module.hasOpportunityRole) || (!isNavigatedThroughAnalytics && authenticationService.module.opportunitiesAccessAsPartner))))">
+              *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
               <button class="portlet light color1-invert crcb vlt-b-c" (click)="showCampaignLeads()"
                 [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 [disabled]="campaignReport.leadCount < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -749,9 +747,7 @@
               </button>
             </div>
             <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
-              *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && 
-            ((!campaign.nurtureCampaign && authenticationService.module.hasOpportunityRole) || 
-              (campaign.nurtureCampaign && ((isNavigatedThroughAnalytics && authenticationService.module.hasOpportunityRole) || (!isNavigatedThroughAnalytics && authenticationService.module.opportunitiesAccessAsPartner))))">
+              *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
               <button class="portlet light color1-invert crcb lt-g-b-c" (click)="showCampaignDeals()"
                 [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                 [disabled]="campaignReport.dealCount < 1 || !isPartnerEnabledAnalyticsAccess">
