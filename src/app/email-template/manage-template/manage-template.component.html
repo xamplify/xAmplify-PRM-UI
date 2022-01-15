@@ -176,8 +176,8 @@
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
                                             </app-timestamp>
                                         </td>
-                                        <td style="width: 14%">
-                                            <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet':'actions-block override-actions'">
+                                        <td style="width: 14%" class="mActionAlign">
+                                            <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet':'actions-block override-actions mFloat'">
                                                 <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
                                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                                 </a>

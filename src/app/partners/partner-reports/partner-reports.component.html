@@ -213,14 +213,13 @@
                     [ngModelOptions]="{standalone: true}" placeholder="Search"
                     (keypress)="inActivePartnersSearch($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey"
-                    (click)="inActivePartnersSearchKey=''"></button>
+                    (click)="inActivePartnersSearchKey='';searchInActivePartnerAnalytics()"></button>
                   <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()">
                     <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
               </div>
             </div>
           </div>
-        <app-team-member-filter-option *ngIf="showFilter" [resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
             *ngIf="customResponse.isVisible"></app-response-message>
