@@ -59,7 +59,6 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
   
 
   findPartnerModuleTeamMembers(pagination: Pagination, partner: any) {
-    this.referenceService.scrollToModalBodyTopByClass();
     this.referenceService.startLoader(this.teamMembersLoader);
     this.authenticationService.findAllTeamMembersByGroupId(pagination).
       subscribe(
