@@ -132,7 +132,7 @@ export class ReferenceService {
 	startWidth: any;
 	regularExpressions = new RegularExpressions();
 	loaderFromAdmin = false;
-	
+
 	constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
 		private router: Router, public deviceService: Ng2DeviceService, private route: ActivatedRoute) {
 		console.log('reference service constructor');
@@ -240,10 +240,14 @@ export class ReferenceService {
 		return Observable.throw(errMsg);
 	}
 	goToTop() {
-		$('html,body').animate({ scrollTop: 0 }, 'slow');
+		if (!this.isMobile()) {
+			$('html,body').animate({ scrollTop: 0 }, 'slow');
+		}
 	}
 	goToTopImmediately() {
-		$('html,body').animate({ scrollTop: 0 }, 'fast');
+		if (!this.isMobile()) {
+			$('html,body').animate({ scrollTop: 0 }, 'fast');
+		}
 	}
 
 	removeDuplicates(list: any) {
@@ -349,22 +353,28 @@ export class ReferenceService {
 		return Object.keys(uniq).filter((a) => uniq[a] > 1)
 	}
 	goToDiv(divId: string) {
-		var div = $("#" + divId);
-		if (div.length) {
-			var contentNav = div.offset().top;
-			$('html,body').animate({
-				scrollTop: contentNav
-			},
-				'slow');
+		if (!this.isMobile()) {
+			var div = $("#" + divId);
+			if (div.length) {
+				var contentNav = div.offset().top;
+				$('html,body').animate({
+					scrollTop: contentNav
+				},
+					'slow');
+			}
 		}
 	}
 
-	scrollToModalBodyTop(divId:string){
-	$('#'+divId).animate({ scrollTop: 0 }, 'slow');
+	scrollToModalBodyTop(divId: string) {
+		if (!this.isMobile()) {
+			$('#' + divId).animate({ scrollTop: 0 }, 'slow');
+		}
 	}
 
-	scrollToModalBodyTopByClass(){
-		$('.modal-body').animate({ scrollTop: 0 }, 'slow');
+	scrollToModalBodyTopByClass() {
+		if (!this.isMobile()) {
+			$('.modal-body').animate({ scrollTop: 0 }, 'slow');
+		}
 	}
 
 	removeSelectedObjectFromList(arrayList: any, id: any) {
@@ -1782,8 +1792,8 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal, myMergeTags.senderCompany);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrlGlobal, myMergeTags.myCompanyUrl);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumberGlobal, myMergeTags.myCompanyContactNumber);
-			updatedBody = updatedBody.replace(this.senderMergeTag.privacyPolicyGlobal,myMergeTags.privacyPolicy);
-			updatedBody = updatedBody.replace(this.senderMergeTag.senderAboutUs,myMergeTags.aboutUs);
+			updatedBody = updatedBody.replace(this.senderMergeTag.privacyPolicyGlobal, myMergeTags.privacyPolicy);
+			updatedBody = updatedBody.replace(this.senderMergeTag.senderAboutUs, myMergeTags.aboutUs);
 
 		}
 		return updatedBody;
@@ -1801,8 +1811,8 @@ export class ReferenceService {
 	hasMyMergeTagsExits(body: string) {
 		return body.indexOf(this.senderMergeTag.senderFirstName) > -1 || body.indexOf(this.senderMergeTag.senderLastName) > -1 || body.indexOf(this.senderMergeTag.senderFullName) > -1 ||
 			body.indexOf(this.senderMergeTag.senderTitle) > -1 || body.indexOf(this.senderMergeTag.senderEmailId) > -1 || body.indexOf(this.senderMergeTag.senderContactNumber) > -1 || body.indexOf(this.senderMergeTag.senderCompany) > -1
-			|| body.indexOf(this.senderMergeTag.senderCompanyUrl) > -1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber) > -1 || body.indexOf(this.senderMergeTag.aboutUs) > -1 
-			|| body.indexOf(this.senderMergeTag.privacyPolicy)>-1 || body.indexOf(this.senderMergeTag.senderAboutUs)>-1;
+			|| body.indexOf(this.senderMergeTag.senderCompanyUrl) > -1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber) > -1 || body.indexOf(this.senderMergeTag.aboutUs) > -1
+			|| body.indexOf(this.senderMergeTag.privacyPolicy) > -1 || body.indexOf(this.senderMergeTag.senderAboutUs) > -1;
 	}
 
 	formatAMPM(date) {
@@ -1817,17 +1827,24 @@ export class ReferenceService {
 	}
 
 	scrollSmoothToBottom() {
-		const scrollingElement = (document.scrollingElement || document.body)
-		$(scrollingElement).animate({ scrollTop: document.body.scrollHeight }, 500);
+		if (!this.isMobile()) {
+			const scrollingElement = (document.scrollingElement || document.body)
+			$(scrollingElement).animate({ scrollTop: document.body.scrollHeight }, 500);
+		}
+
 	}
 	//Require jQuery
 	scrollSmoothToTop() {
-		const scrollingElement = (document.scrollingElement || document.body)
-		$(scrollingElement).animate({ scrollTop: 0 }, 500);
+		if (!this.isMobile()) {
+			const scrollingElement = (document.scrollingElement || document.body)
+			$(scrollingElement).animate({ scrollTop: 0 }, 500);
+		}
 	}
 
 	scrollSmoothToDiv(elementId: string) {
-		$("#" + elementId).animate({ scrollTop: document.body.scrollHeight }, 500);
+		if (!this.isMobile()) {
+			$("#" + elementId).animate({ scrollTop: document.body.scrollHeight }, 500);
+		}
 	}
 	getOrgCampaignTypes(companyId: any) {
 		return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}`)
@@ -1857,9 +1874,11 @@ export class ReferenceService {
 	}
 
 	scrollToBottomByDivId(divId: string) {
-		$('#' + divId).animate({
-			scrollTop: $('#' + divId)[0].scrollHeight
-		}, 500);
+		if (!this.isMobile()) {
+			$('#' + divId).animate({
+				scrollTop: $('#' + divId)[0].scrollHeight
+			}, 500);
+		}
 	}
 
 	removeObjectFromArrayList(arr: any, id: string, key: string) {
@@ -1958,7 +1977,7 @@ export class ReferenceService {
 		swal(message1, message2, type);
 	}
 
-	showReAuthenticateMessage(){
+	showReAuthenticateMessage() {
 		swal(this.properties.reAuthenticateMessage, "", "info");
 	}
 
@@ -2079,7 +2098,7 @@ export class ReferenceService {
 
 	}
 
-	
+
 
 	getSenderMergeTagsData() {
 		return this.http.get(this.authenticationService.REST_URL + "admin/getSenderMergeTagsData/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, "")
@@ -2106,15 +2125,15 @@ export class ReferenceService {
 	goToRouter(url: string) {
 		this.router.navigate([url]);
 	}
-	goToPageNotFound(){
+	goToPageNotFound() {
 		this.router.navigate(['/404']);
 	}
 
-	goToAccessDeniedPage(){
+	goToAccessDeniedPage() {
 		this.router.navigate(['/access-denied']);
 	}
 
-	goToDashboard(){
+	goToDashboard() {
 		this.router.navigate(['/home/dashboard']);
 	}
 
@@ -2122,20 +2141,20 @@ export class ReferenceService {
 		return list.map(function (e: any) { return e[columnName]; });
 	}
 
-	getFileExtension(filename:string) {
+	getFileExtension(filename: string) {
 		var ext = filename.split('.').pop();
 		if (ext == filename) return "";
 		return ext;
 	}
 
-	showSweetAlertProcessingLoader(title:string) {
+	showSweetAlertProcessingLoader(title: string) {
 		swal(
 			{
 				title: title,
 				text: "Please Wait...",
 				showConfirmButton: false,
 				imageUrl: "assets/images/loader.gif",
-				allowOutsideClick:false
+				allowOutsideClick: false
 			}
 		);
 	}
@@ -2143,28 +2162,28 @@ export class ReferenceService {
 		this.showSweetAlertProcessingLoader(title);
 	}
 
-	post(obj:any,url:string) {
+	post(obj: any, url: string) {
 		var mapForm = document.createElement("form");
 		mapForm.target = "_blank";
 		mapForm.method = "POST"; // or "post" if appropriate
 		mapForm.action = url;
-		Object.keys(obj).forEach(function(param){
-		  var mapInput = document.createElement("input");
-		  mapInput.type = "hidden";
-		  mapInput.name = param;
-		  mapInput.setAttribute("value", obj[param]);
-		  mapForm.appendChild(mapInput);
-	  });
-	  document.body.appendChild(mapForm);
-	  mapForm.submit();
+		Object.keys(obj).forEach(function (param) {
+			var mapInput = document.createElement("input");
+			mapInput.type = "hidden";
+			mapInput.name = param;
+			mapInput.setAttribute("value", obj[param]);
+			mapForm.appendChild(mapInput);
+		});
+		document.body.appendChild(mapForm);
+		mapForm.submit();
 	}
 
-	setModalPopupProperties(){
+	setModalPopupProperties() {
 		$('.modal .modal-body').css('overflow-y', 'auto');
 		$('.modal .modal-body').css('max-height', $(window).height() * 0.75);
 	}
 
-	filterArrayList(array:Array<any>,itemToRemove:any){
+	filterArrayList(array: Array<any>, itemToRemove: any) {
 		return array.filter(item => item !== itemToRemove);
 	}
 
@@ -2188,7 +2207,7 @@ export class ReferenceService {
 	checkOrUnCheckHeaderCheckBox(tableId: string, checkBoxName: string, parnterGroupsHeaderCheckBox: string) {
 		var trLength = $('#' + tableId + ' tbody tr').length;
 		var selectedRowsLength = $('[name="' + checkBoxName + '[]"]:checked').length;
-		$('#'+parnterGroupsHeaderCheckBox).prop('checked',trLength == selectedRowsLength);
+		$('#' + parnterGroupsHeaderCheckBox).prop('checked', trLength == selectedRowsLength);
 	}
 
 	highlightRowByCheckBox(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any, parnterGroupsHeaderCheckBox: string, checkBoxValue: any, event: any) {
@@ -2203,23 +2222,23 @@ export class ReferenceService {
 		this.checkOrUnCheckHeaderCheckBox(tableId, checkBoxName, parnterGroupsHeaderCheckBox);
 	}
 
-	selectOrUnselectAllOfTheCurrentPage(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any,pagination:Pagination,event: any){
+	selectOrUnselectAllOfTheCurrentPage(trId: string, tableId: string, checkBoxName: string, selectedCheckBoxIds: any, pagination: Pagination, event: any) {
 		if (event.target.checked) {
-			$('[name="'+checkBoxName+'[]"]').prop('checked', true);
-			$('[name="'+checkBoxName+'[]"]:checked').each(function(_index: number) {
+			$('[name="' + checkBoxName + '[]"]').prop('checked', true);
+			$('[name="' + checkBoxName + '[]"]:checked').each(function (_index: number) {
 				var id = $(this).val();
 				selectedCheckBoxIds.push(parseInt(id));
 				$(trId).addClass('row-selected');
 			});
 			selectedCheckBoxIds = this.removeDuplicates(selectedCheckBoxIds);
 		} else {
-			$('[name="'+checkBoxName+'[]"]').prop('checked', false);
-			$('#'+tableId+ ' tr').removeClass("row-selected");
+			$('[name="' + checkBoxName + '[]"]').prop('checked', false);
+			$('#' + tableId + ' tr').removeClass("row-selected");
 			if (pagination.maxResults > 30 || (pagination.maxResults == pagination.totalRecords)) {
 				selectedCheckBoxIds = [];
 			} else {
 				selectedCheckBoxIds = this.removeDuplicates(selectedCheckBoxIds);
-				let currentPageSelectedIds = pagination.pagedItems.map(function(a) { return a.id; });
+				let currentPageSelectedIds = pagination.pagedItems.map(function (a) { return a.id; });
 				selectedCheckBoxIds = this.removeDuplicatesFromTwoArrays(selectedCheckBoxIds, currentPageSelectedIds);
 			}
 		}
@@ -2227,8 +2246,8 @@ export class ReferenceService {
 		return selectedCheckBoxIds;
 	}
 	/*******CheckBox Code**********/
-	
-	addMergeTags(mergeTags:any,isCampaign:boolean,isEvent:boolean){
+
+	addMergeTags(mergeTags: any, isCampaign: boolean, isEvent: boolean) {
 		mergeTags.push({ name: 'First Name', value: '{{firstName}}' });
 		mergeTags.push({ name: 'Last Name', value: '{{lastName}}' });
 		mergeTags.push({ name: 'Full Name', value: '{{fullName}}' });
@@ -2265,37 +2284,42 @@ export class ReferenceService {
 		return mergeTags;
 	}
 
-	addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags:any){
+	addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags: any) {
 		mergeTags.push({ name: 'Sender Company', value: this.senderMergeTag.senderCompany });
 		mergeTags.push({ name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl });
 		return mergeTags;
 	}
 
-	addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags:any){
+	addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags: any) {
 		mergeTags.push({ name: 'Sender About Us', value: this.senderMergeTag.senderAboutUs });
 		mergeTags.push({ name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber });
 		mergeTags.push({ name: 'Sender Privacy Policy', value: this.senderMergeTag.privacyPolicy });
 		return mergeTags;
 	}
 
-	addPageMergeTags(){
+	addPageMergeTags() {
 		let mergeTags = [];
 		mergeTags = this.addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags);
 		mergeTags = this.addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags);
 		return mergeTags;
 	}
 
-	disableDropDownById(dropDownId:string,color:boolean){
-		$("#"+dropDownId).prop("disabled", true);
-		$("#"+dropDownId).css("color", "darkgray");
+	disableDropDownById(dropDownId: string, color: boolean) {
+		$("#" + dropDownId).prop("disabled", true);
+		$("#" + dropDownId).css("color", "darkgray");
 	}
 
-	setTeamMemberFilterForPagination(pagination:Pagination,index:number){
-		pagination.partnerTeamMemberGroupFilter = index==1;
+	setTeamMemberFilterForPagination(pagination: Pagination, index: number) {
+		pagination.partnerTeamMemberGroupFilter = index == 1;
 		pagination.pageIndex = 1;
 		pagination.maxResults = 12;
 		return pagination;
 	}
+
+	isMobile() {
+		let mobileView = window.matchMedia("(max-width: 767px)").matches;
+		return mobileView;
+	};
 
 
 
