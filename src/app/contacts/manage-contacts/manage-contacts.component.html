@@ -1036,6 +1036,15 @@
                                   </div>
                                 </td>
                               </ng-container>
+                              <td *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all' && authenticationService.isPartnerTeamMember
+                              && !authenticationService.module.isCampaign"
+                                  class="text-center">
+                                  <div class="actions-block no-float">
+                                    <a title="Delete" (click)="confirmDeleteContact(contact)">
+                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                                  </div>
+                                </td>
                               <td *ngIf="contactsByType.selectedCategory == 'non-active'"></td>
                               <ng-template #NA>N/A</ng-template>
                             </tr>
