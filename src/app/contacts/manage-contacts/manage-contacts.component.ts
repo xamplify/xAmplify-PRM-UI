@@ -620,7 +620,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		} else {
 			let a = document.createElement('a');
 			a.href = url;
-			a.download = contactListName + " " + this.checkingContactTypeName + ' List.csv';
+			a.download = contactListName.substr(0, 26) + " " + this.checkingContactTypeName + ' List.csv';
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
