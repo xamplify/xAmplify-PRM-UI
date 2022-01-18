@@ -452,7 +452,7 @@
 <!-- End of  Group Preview Popup -->
 
 <!----XNFR-97----->
-<app-team-member-partners *ngIf="showPartnersPopup" [selectedTeamMemberId]="selectedTeamMemberId" (teamMemberPartnersPopupEventEmitter)="hidePartnersPreviewPopup()"></app-team-member-partners>
+<app-team-member-partners *ngIf="showPartnersPopup" [selectedTeamMemberId]="selectedTeamMemberId" (teamMemberPartnersPopupEventEmitter)="hidePartnersPreviewPopup($event)"></app-team-member-partners>
 
 
 

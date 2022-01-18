@@ -5,6 +5,8 @@
               <h4 class="modal-title popup-header-title-font text-center" translate>{{authenticationService?.partnerModule?.customName}}</h4>
           </div>
           <ng-container *ngIf="!apiError">
+            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message>
             <div class="modal-body">
                 <app-list-loader *ngIf="partnersLoader.isLoading"></app-list-loader>
                 <div class="table-responsive" *ngIf="!partnersLoader.isLoading">

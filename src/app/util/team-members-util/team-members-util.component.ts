@@ -820,9 +820,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.selectedTeamMemberId = teamMember.teamMemberId;
   }
 
-  hidePartnersPreviewPopup(){
+  hidePartnersPreviewPopup(refreshList:boolean){
     this.showPartnersPopup = false;
     this.selectedTeamMemberId = 0;
+    if(refreshList){
+      this.refreshList();
+    }
   }
 
 }

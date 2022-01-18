@@ -33,7 +33,8 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
   errorMessage: string;
   isDelete = false;
   customResponse:CustomResponse = new CustomResponse();
-deleteTeamMemberPartnerRequestDto :DeleteTeamMemberPartnerRequestDto = new DeleteTeamMemberPartnerRequestDto();
+  deleteTeamMemberPartnerRequestDto :DeleteTeamMemberPartnerRequestDto = new DeleteTeamMemberPartnerRequestDto();
+  refershTeamMemberList = false;
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, public teamMemberService: TeamMemberService,
     public xtremandLogger: XtremandLogger, public pagerService: PagerService, public utilService: UtilService,public properties:Properties) { }
   
@@ -129,7 +130,7 @@ deleteTeamMemberPartnerRequestDto :DeleteTeamMemberPartnerRequestDto = new Delet
 
   closePartnersPreviewPopup() {
     $('#teamMemberPartnersPreviewPopup').modal('hide');
-    this.teamMemberPartnersPopupEventEmitter.emit();
+    this.teamMemberPartnersPopupEventEmitter.emit(this.refershTeamMemberList);
   }
 
   openSweetAlert(id:number){
@@ -146,6 +147,7 @@ deleteTeamMemberPartnerRequestDto :DeleteTeamMemberPartnerRequestDto = new Delet
           (response: any) => {
             if (response.statusCode == 200) {
               this.removeAllSelectedPartners();
+              this.refershTeamMemberList = true;
               this.deleteTeamMemberPartnerRequestDto = new DeleteTeamMemberPartnerRequestDto();
               this.customResponse = new CustomResponse('SUCCESS', "Row(s) Deleted Successfully", true);
               this.partnersPagination.pageIndex = 1;
