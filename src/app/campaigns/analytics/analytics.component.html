@@ -205,7 +205,7 @@
                   <span>Click for preview</span>
                 </div>
               </div>
-              <div class="actions-block override-actions" id="email-icons">
+              <div class="actions-block override-actions" id="email-icons"  *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0">
                 <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount>0"
                   routerLink="/home/forms/csf/{{campaign.campaignId}}" data-rel="fancybox-button" data-toggle="tooltip"
                   data-placement="top" title="Survey Forms Count">
