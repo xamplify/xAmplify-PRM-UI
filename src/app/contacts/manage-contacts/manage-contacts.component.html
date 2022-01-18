@@ -1036,7 +1036,7 @@
                                   </div>
                                 </td>
                               </ng-container>
-                              <td *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all' && authenticationService.isPartnerTeamMember
+                              <td *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all' && (authenticationService.isPartnerTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember)
                               && !authenticationService.module.isCampaign"
                                   class="text-center">
                                   <div class="actions-block no-float">

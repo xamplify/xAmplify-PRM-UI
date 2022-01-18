@@ -2978,7 +2978,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else {
 			let a = document.createElement('a');
 			a.href = url;
-			a.download = this.contactListName + '_' + this.checkingContactTypeName + '_List.csv';
+			a.download = this.contactListName.substr(0, 26) + '_' + this.checkingContactTypeName + '_List.csv';
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
@@ -3091,6 +3091,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 			this.downloadDataList.push(object);
 		}
+		if(this.contactsByType.listOfAllContacts.length===0){
+	         var object = {
+	                 "First Name": null,
+	                 "Last Name": null,
+	                 "Company": null,
+	                 "Job Title": null,
+	                 "Email Id": null,
+	                 "Address": null,
+	                 "City": null,
+	                 "Country": null,
+	                 "Mobile Number": null
+	             }
+	             this.downloadDataList.push(object);
+		}
+		
 		this.refService.isDownloadCsvFile = true;
 	}
 
