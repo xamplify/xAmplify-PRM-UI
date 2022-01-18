@@ -3091,6 +3091,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 			this.downloadDataList.push(object);
 		}
+		if(this.contactsByType.listOfAllContacts.length===0){
+	         var object = {
+	                 "First Name": null,
+	                 "Last Name": null,
+	                 "Company": null,
+	                 "Job Title": null,
+	                 "Email Id": null,
+	                 "Address": null,
+	                 "City": null,
+	                 "Country": null,
+	                 "Mobile Number": null
+	             }
+	             this.downloadDataList.push(object);
+		}
+		
 		this.refService.isDownloadCsvFile = true;
 	}
 
