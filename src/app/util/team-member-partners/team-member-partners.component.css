@@ -1,0 +1,9 @@
+h1 {
+    font-weight: 900;
+    font-size: 8em;
+    margin: 0;
+}
+#users-dropdown{
+    position: relative;
+    right: 5px;
+}

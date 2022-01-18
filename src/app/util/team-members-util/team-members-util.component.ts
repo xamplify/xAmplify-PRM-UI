@@ -78,6 +78,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   isTeamMemberModule = false;
   showModulesPopup: boolean;
   moveToTop: boolean;
+  showPartnersPopup:boolean;
+  selectedTeamMemberId:number;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -811,6 +813,16 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   hideModulesPreviewPopUp() {
     this.showModulesPopup = false;
+  }
+
+  showPartners(teamMember:any){
+    this.showPartnersPopup = true;
+    this.selectedTeamMemberId = teamMember.teamMemberId;
+  }
+
+  hidePartnersPreviewPopup(){
+    this.showPartnersPopup = false;
+    this.selectedTeamMemberId = 0;
   }
 
 }

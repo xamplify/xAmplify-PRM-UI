@@ -127,7 +127,9 @@
             <td>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
               <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany" [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'">
+                <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'" (click)="teamMember?.partnersCount>0 && showPartners(teamMember)">
                 <strong>Total {{authenticationService?.partnerModule?.customName}}: {{teamMember?.partnersCount}}</strong>
+               </a>
               </span>
             </td>
             <!---Assigned Group-->
@@ -449,6 +451,8 @@
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
 <!-- End of  Group Preview Popup -->
 
+<!----XNFR-97----->
+<app-team-member-partners *ngIf="showPartnersPopup" [selectedTeamMemberId]="selectedTeamMemberId" (teamMemberPartnersPopupEventEmitter)="hidePartnersPreviewPopup()"></app-team-member-partners>
 
 
 
