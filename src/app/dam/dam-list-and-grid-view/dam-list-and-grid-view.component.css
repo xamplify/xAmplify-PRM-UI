@@ -202,6 +202,10 @@ cursor: default;
   display: inline;
 }
 
+.ActionAlign{
+  display: flex;
+}
+
 @media screen and (max-width:600px){
   .mDamTop{
     padding-top: 15px;
@@ -218,8 +222,20 @@ cursor: default;
     margin-top: 45px;
   }
   .mAlignView{
+    /* white-space: pre-line!important; */
+    line-height: 1.0px;
+    /* text-align: center; */
+  }
+  .mActionWidth{
+    min-width: 140px!important;
+  }
+  .mActionAlign{
     white-space: pre-line!important;
-    line-height: 2px;
-    text-align: center;
+    float: left!important;
+  }
+  .mActionAlign2{
+    white-space: nowrap!important;
+    display: inherit!important;
+    margin-top: 3px;
   }
 }
