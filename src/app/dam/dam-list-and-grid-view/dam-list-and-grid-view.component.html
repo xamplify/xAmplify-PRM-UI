@@ -143,14 +143,14 @@
 										<a *ngIf="asset?.history &&!isPartnerView  && asset?.edit" title="History"	(click)="expandHistory(asset,i)"> 
 											<i class="fa"	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"	title="Design" (click)="addOrEdit(asset.id)">
-											 <i class="fa fa-paint-brush" aria-hidden="true"></i>
+										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"	title="Design" (click)="addOrEdit(asset.id)">
+											 <i class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
 										</a> 
 										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
-											 <i class="fa fa-edit"	aria-hidden="true"></i>
+											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a> 
 										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id)">
-											 <i class="fa fa-edit"	aria-hidden="true"></i>
+											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a>
 										</div>
 										<div class="mActionAlign"> 
@@ -232,12 +232,12 @@
 															[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
 													<td id="actions-row">
 														<div class="actions-block override-actions custom-width-icon">
-															<a title="Design" (click)="addOrEdit(asset.id)"> <i
-																class="fa fa-paint-brush" aria-hidden="true"></i>
+															<a class="mMobileDisable" title="Design" (click)="addOrEdit(asset.id)"> <i
+																class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
 															</a>
 															 <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
 																(click)="editDetails(asset.id)"> <i
-																class="fa fa-edit" aria-hidden="true"></i>
+																class="fa fa-edit mDisableColor" aria-hidden="true"></i>
 															</a> 
 															<a title="Preview" (click)="preview(asset)"> <i
 																class="fa fa-eye" aria-hidden="true"></i>
@@ -387,12 +387,12 @@
 								<span *ngIf="asset?.published" translate>Published</span>
 							</div>
 							<div class="bar auto-height">
-								<a *ngIf="asset?.beeTemplate" title="Design"
-									(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush"
+								<a class="mMobileDisable" *ngIf="asset?.beeTemplate" title="Design"
+									(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush mDisableColor"
 									aria-hidden="true"></i>
 								</a> <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
 									(click)="editDetails(asset.id)">
-									 <i class="fa fa-edit"
+									 <i class="fa fa-edit mDisableColor"
 									aria-hidden="true"></i>
 								</a> <a title="Preview" (click)="preview(asset)"> <i
 									class="fa fa-eye" aria-hidden="true"></i>

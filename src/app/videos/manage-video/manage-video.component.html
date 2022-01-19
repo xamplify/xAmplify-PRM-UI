@@ -117,7 +117,7 @@
                             <div> 
                             <a class="mMobileDisable" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier"
                                (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit">
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                              </a>
                              <ng-container *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
                                 

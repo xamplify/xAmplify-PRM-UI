@@ -149,4 +149,10 @@ cursor: default;
   .mPad{
       padding: 5px;
   }
+  .mTopAlert{
+    top: -22px !important;
+  }
+  .mDisableColor{
+    color: #888!important;
+}
 }
