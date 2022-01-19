@@ -186,12 +186,20 @@
     margin: 5px 0 5px 5px;
 }
 
+.actionAlignment{
+    display: flex;
+}
+
 @media screen and (max-width:600px){
     .mTop{
         margin-top:44px;
     }
     .mActionAlign{
         white-space: pre-line!important;
-        line-height: 0.1;
+        line-height: 0.05;
+    }
+    .mDisableColor{
+        color: #888!important;
+        border: 1px solid;
     }
 }

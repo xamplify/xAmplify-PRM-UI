@@ -213,4 +213,8 @@ background: #ffffff;
       line-height: 2.8;
       display: block!important;
     }
+    .mDisableColor{
+      color: #888!important;
+      border: 1px solid;
+  }
   }

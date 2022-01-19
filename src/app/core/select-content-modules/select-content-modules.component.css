@@ -129,4 +129,7 @@ h5 {
     .mButtonNotClickable{
         cursor:not-allowed!important;
     }
+    .mDisableColor{
+        color: #888!important;
+    }
 }

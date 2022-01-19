@@ -265,11 +265,16 @@ export class ManageLeadsComponent implements OnInit {
       );
   }
 
+  resetLeadsPagination() {
+    this.leadsPagination = new Pagination;
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.showFilterOption = false;
+  }
+
   showLeads() {
     this.getCounts();
     this.selectedTabIndex = 1;
-    this.leadsPagination = new Pagination;
-    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.resetLeadsPagination();
     this.campaignPagination = new Pagination;
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if (this.vanityLoginDto.vanityUrlFilter) {
@@ -287,9 +292,8 @@ export class ManageLeadsComponent implements OnInit {
   showWonLeads() {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.selectedTabIndex = 2;
-    this.leadsPagination = new Pagination;
+    this.resetLeadsPagination();
     this.leadsPagination.filterKey = "won";
-    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "won";
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
@@ -301,9 +305,8 @@ export class ManageLeadsComponent implements OnInit {
 
   showLostLeads() {
     this.selectedTabIndex = 3;
-    this.leadsPagination = new Pagination;
+    this.resetLeadsPagination();
     this.leadsPagination.filterKey = "lost";
-    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "lost";
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
@@ -315,9 +318,8 @@ export class ManageLeadsComponent implements OnInit {
 
   showConvertedLeads() {
     this.selectedTabIndex = 4;
-    this.leadsPagination = new Pagination;
+    this.resetLeadsPagination();
     this.leadsPagination.filterKey = "converted";
-    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "converted";
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;

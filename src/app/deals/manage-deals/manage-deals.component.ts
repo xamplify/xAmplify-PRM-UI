@@ -260,11 +260,16 @@ export class ManageDealsComponent implements OnInit {
     );
   }
 
+  resetDealsPagination() {
+    this.dealsPagination = new Pagination;
+    this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.showFilterOption = false;
+  }
+
   showDeals() {
     this.getCounts();
     this.selectedTabIndex = 1;
-    this.dealsPagination = new Pagination;
-    this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.resetDealsPagination();
     this.campaignPagination = new Pagination;
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if(this.vanityLoginDto.vanityUrlFilter){
@@ -281,9 +286,8 @@ export class ManageDealsComponent implements OnInit {
 
   showWonDeals() {
     this.selectedTabIndex = 2;
-    this.dealsPagination = new Pagination;
+    this.resetDealsPagination();
     this.dealsPagination.filterKey = "won";
-    this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.listDeals(this.dealsPagination);
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "won";
@@ -295,9 +299,8 @@ export class ManageDealsComponent implements OnInit {
 
   showLostDeals() {
     this.selectedTabIndex = 3;
-    this.dealsPagination = new Pagination;
+    this.resetDealsPagination();
     this.dealsPagination.filterKey = "lost";
-    this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.listDeals(this.dealsPagination);
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "lost";

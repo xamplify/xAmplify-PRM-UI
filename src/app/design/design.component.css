@@ -64,3 +64,9 @@ h5 {
     font-size: 12px;
     font-weight: 600;
 }
+
+@media only screen and (max-width:600px){
+    .mDisableColor{
+        color: #888!important;
+    }
+}
