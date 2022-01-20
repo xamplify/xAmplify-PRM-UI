@@ -243,6 +243,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     } else if (activeTab == "step-3") {
       this.stepThreeTabClass = this.activeTabClass;
       this.assetPagination = new Pagination();
+      this.assetSortOption = new SortOption();
       this.listAssets(this.assetPagination);
     } else if (activeTab == "step-4") {
       this.stepFourTabClass = this.activeTabClass;
@@ -322,6 +323,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   getFormsList() {
     this.formsError = false;
     this.customResponse = new CustomResponse();
+    this.formPagination = new Pagination();
+    this.formSortOption = new SortOption();
     this.formPagination.userId = this.loggedInUserId;
     this.listForms(this.formPagination);
     $('#formsList').modal('show');
@@ -528,7 +531,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     pagination.maxResults = 0;
     let self = this;
     this.referenceService.startLoader(this.httpRequestLoader);
-    this.userService.getTags(pagination)
+    this.userService.getTagsSearchTagName(pagination)
       .subscribe(
         response => {
           const data = response.data;
@@ -695,6 +698,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   openQuizPopup() {
+    this.quizFormPagination = new Pagination();
+    this.quizFormSortOption = new SortOption();
     this.listQuizForms(this.quizFormPagination);
     $('#quiz-list').modal('show');
   }
@@ -992,7 +997,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   validateGroupOrCompany() {
     if (this.tracksPlayBook.groupIds.length < 1 && this.tracksPlayBook.userIds.length < 1) {
-      this.addErrorMessage("groupOrCompany", "Select either a partner or a partner list");
+      let name = this.authenticationService.partnerModule.customName;
+      this.addErrorMessage("groupOrCompany", "Select either a "+name+" or a "+name+" list");
     } else {
       this.removeErrorMessage("groupOrCompany");
     }
@@ -1337,6 +1343,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.assetError = false;
     this.customResponse = new CustomResponse();
     this.assetPagination = new Pagination();
+    this.assetSortOption = new SortOption();
     this.isAssestPopUpOpen = true;
     this.listAssets(this.assetPagination);
     $('#media-asset-list').modal('show');

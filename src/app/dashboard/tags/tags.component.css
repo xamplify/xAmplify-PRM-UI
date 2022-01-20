@@ -1,0 +1,9 @@
+.disable-click {
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.disable {
+    cursor: not-allowed;
+    opacity: 0.6;
+}

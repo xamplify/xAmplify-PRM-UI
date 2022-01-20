@@ -436,3 +436,14 @@ body {
     text-overflow: ellipsis;
     color: #fff;
 }
+
+:host ::ng-deep .padding_bottom * {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.name-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

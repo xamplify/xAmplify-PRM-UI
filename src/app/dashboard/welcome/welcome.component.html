@@ -28,32 +28,35 @@
              </h4>
           </div>
     </div>
-    <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
-      <div class="col-xs-12 col-sm-6">
-        <h4 style="margin: 0.3em 0;color: #00a6e8;font-weight: 400;">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
-      </div>
-      <div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier ">
-        <div style="display: flex;float: right;">
-          <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
-          <div style="margin: 3px 0 3px 20px;">
-            <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
-              size="small" (change)="setWelcomeAsDefaultPage($event)"></ui-switch>
+    <div [hidden]="ngxLoading">
+      <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+        <div class="col-xs-12 col-sm-6">
+          <h4 style="margin: 0.3em 0;color: #00a6e8;font-weight: 400;">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+        </div>
+        <div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier ">
+          <div style="display: flex;float: right;">
+            <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
+            <div style="margin: 3px 0 3px 20px;">
+              <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
+                size="small" (change)="setWelcomeAsDefaultPage($event)"></ui-switch>
+            </div>
           </div>
         </div>
+        <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
       </div>
     </div>
- 
-    <div class="page-bar page-bar-shadow">
-      <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
-     <app-module-analytics (notifyShowDealForm)="showDealForm=true"></app-module-analytics>
-    </div>
-     <!------------Dashbaord Button Carusel---------------------->    
-    <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
-    <app-vendor-activity-analytics></app-vendor-activity-analytics>
-    <app-modal-popup-loader *ngIf="welcomePageItemsLoader || authenticationService?.module?.contentLoader"></app-modal-popup-loader>
-    <div style="position: relative; top:-10px;">
-     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !welcomePageItemsLoader "></app-response-message>
-   </div>
+      <div class="page-bar page-bar-shadow">
+        <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
+        <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
+        <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>
+      </div>
+      <!------------Dashbaord Button Carusel---------------------->    
+      <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
+      <app-vendor-activity-analytics></app-vendor-activity-analytics>
+      <app-modal-popup-loader *ngIf="welcomePageItemsLoader || authenticationService?.module?.contentLoader"></app-modal-popup-loader>
+      <div style="position: relative; top:-10px;">
+      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !welcomePageItemsLoader "></app-response-message>
+      </div>
     <div class="page-bar page-bar-shadow" *ngIf="!authenticationService?.module?.contentLoader &&!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !welcomePageItemsLoader && !customResponse.isVisible && showDiv">
      <div class="col-xs-12">
        <!--Partners-->

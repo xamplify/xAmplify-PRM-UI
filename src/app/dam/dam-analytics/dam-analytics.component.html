@@ -36,7 +36,7 @@
 
  <div class="row">
   <div class="col-md-12 col-lg-12">
-     <div class="portlet light" style="height:198px;">
+     <div class="portlet light mHeight" style="height:198px;">
       <div class="page-bar">
          <ul class="page-breadcrumb">
             <li>
@@ -51,7 +51,7 @@
            <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
            <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
               <div class="row">
-                 <div  id="vendor-details-tile" class="{{tileClass}}">
+                 <div  id="vendor-details-tile" class="{{tileClass}} mPad2">
                     <div class="row">
                         <div class="flex margin-flex">
                             <span class='profile'>
@@ -75,7 +75,7 @@
                             </div>
                     </div>
                  </div>
-                 <div class="{{tileClass}}">
+                 <div class="{{tileClass}} mPad">
                     <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                        <div class="visual">
                           <i aria-hidden="true" class=""></i>
@@ -90,7 +90,7 @@
                     </span>
                     </a>
                  </div>
-                 <div  class="{{tileClass}}">
+                 <div  class="{{tileClass}} mPad">
                     <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                        <div class="visual">
                           <i aria-hidden="true" class=""></i>

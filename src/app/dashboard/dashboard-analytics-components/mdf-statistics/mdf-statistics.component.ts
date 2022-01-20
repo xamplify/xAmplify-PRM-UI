@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { MdfService } from 'app/mdf/services/mdf.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
@@ -17,6 +17,7 @@ export class MdfStatisticsComponent implements OnInit {
   mdfStatsLoader = false;
   mdfStatsStatusCode = 200;
   mdfData:any;
+  @Input()applyFilter:boolean;
   constructor(public properties:Properties,public mdfService:MdfService,public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -40,7 +41,7 @@ export class MdfStatisticsComponent implements OnInit {
 
   }
   getTilesInfo() {
-    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId).subscribe((result: any) => {
+    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId,this.applyFilter).subscribe((result: any) => {
       this.mdfStatsLoader = false;
       this.mdfData = result.data;
     }, error => {
@@ -53,6 +54,8 @@ export class MdfStatisticsComponent implements OnInit {
     this.mdfStatsStatusCode = 0;
     this.mdfStatsLoader = false;
   }
+
+  
 
  
 

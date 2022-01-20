@@ -594,4 +594,12 @@ label {
     .mSort{
 		top:-8px;
 	}
+	.mListitemWid{
+		width: 100%;
+	}
+	.mActionAlign{
+		white-space: pre-line!important;
+		line-height: 2.6!important;
+		margin-top: -40px;
+	}
   }

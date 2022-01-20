@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -27,11 +27,11 @@ declare var $, swal: any;
   styleUrls: ['./team-members-util.component.css'],
   providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties, RegularExpressions]
 })
-export class TeamMembersUtilComponent implements OnInit,OnDestroy {
-  
+export class TeamMembersUtilComponent implements OnInit, OnDestroy {
+
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-  addTeamMemberLoader:HttpRequestLoader = new HttpRequestLoader();
+  addTeamMemberLoader: HttpRequestLoader = new HttpRequestLoader();
   teamMembers: Array<any> = new Array<any>();
   isLoggedInAsTeamMember = false;
   teamMemberGroups: Array<any> = new Array<any>();
@@ -50,15 +50,15 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   loggedInUserId: number;
   showAddTeamMemberDiv = false;
   editTeamMember = false;
-  teamMemberUi:TeamMemberUi = new TeamMemberUi();
-  team:TeamMember = new TeamMember();
+  teamMemberUi: TeamMemberUi = new TeamMemberUi();
+  team: TeamMember = new TeamMember();
   saveOrUpdateButtonText = "Save";
   /*****Form Related**************/
-	formGroupClass: string = "col-sm-8";
+  formGroupClass: string = "col-sm-8";
   emaillIdDivClass: string = this.formGroupClass;
-  groupNameDivClass:string = this.formGroupClass;
-	errorClass: string = "col-sm-8 has-error has-feedback";
-	successClass: string = "col-sm-8 has-success has-feedback";
+  groupNameDivClass: string = this.formGroupClass;
+  errorClass: string = "col-sm-8 has-error has-feedback";
+  successClass: string = "col-sm-8 has-success has-feedback";
   defaultClass: string = this.formGroupClass;
   /************CSV Related************* */
   showUploadedTeamMembers = false;
@@ -66,35 +66,36 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   errorMessage: string;
   isUploadCsv: boolean;
   @ViewChild('fileImportInput')
-	fileImportInput: any;
+  fileImportInput: any;
   csvRecords: any[];
   newlyAddedTeamMembers: any[];
   isOrgAdmin = false;
   /******Preview Group Modules */
-  modulesLoader = false;
-  defaultModules:Array<any> = new Array<any>();
-  emptyModules = false;
-  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
-  @Input() moduleName:any;
-  @Input() teamMemberGroupId:number;
+
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  @Input() moduleName: any;
+  @Input() teamMemberGroupId: number;
   isTeamMemberModule = false;
+  showModulesPopup: boolean;
+  moveToTop: boolean;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
     public utilService: UtilService, private vanityUrlService: VanityURLService, public properties: Properties, public regularExpressions: RegularExpressions) {
-      this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
-      this.loggedInUserId = this.authenticationService.getUserId();
-      this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
-      this.isOrgAdmin = this.authenticationService.module.isOrgAdmin;
-      if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
-        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-        this.vanityLoginDto.userId = this.loggedInUserId; 
-        this.vanityLoginDto.vanityUrlFilter = true;
-       }
+    this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
+    this.loggedInUserId = this.authenticationService.getUserId();
+    this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+    this.isOrgAdmin = this.authenticationService.module.isOrgAdmin;
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    }
   }
 
   ngOnInit() {
-    this.isTeamMemberModule = this.moduleName=='teamMember';
+    this.isTeamMemberModule = this.moduleName == 'teamMember';
+    this.moveToTop = "/home/team/add-team" == this.referenceService.getCurrentRouteUrl();
     this.findAll(this.pagination);
   }
 
@@ -105,11 +106,14 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   }
 
   findAll(pagination: Pagination) {
+    if (this.moveToTop) {
+      this.referenceService.scrollSmoothToTop();
+    }
     this.referenceService.loading(this.httpRequestLoader, true);
     this.httpRequestLoader.isHorizontalCss = true;
-    if(!this.isTeamMemberModule){
+    if (!this.isTeamMemberModule) {
       pagination.filterKey = "teamMemberGroup";
-      pagination.categoryId = this.teamMemberGroupId>0 ? this.teamMemberGroupId : 0;
+      pagination.categoryId = this.teamMemberGroupId > 0 ? this.teamMemberGroupId : 0;
     }
     this.teamMemberService.findAll(pagination)
       .subscribe(
@@ -149,7 +153,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   }
 
 
-  changeOrgAdminStatus(team:any,event:any) {
+  changeOrgAdminStatus(team: any, event: any) {
     team.secondAdmin = event;
   }
 
@@ -167,18 +171,18 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
 
 
 
-  goToCampaignAnalytics(teamMember:any) {
-    if(teamMember.status!="UNAPPROVED"){
+  goToCampaignAnalytics(teamMember: any) {
+    if (teamMember.status != "UNAPPROVED") {
       this.loading = true;
       let teamMemberId = teamMember.teamMemberUserId;
       this.router.navigate(['/home/campaigns/manage/tm/' + teamMemberId]);
     }
-    
+
   }
 
   /**************Search TeamMembers***************/
   searchTeamMembers() {
-    this.pagination.pageIndex = 1;
+    this.referenceService.setTeamMemberFilterForPagination(this.pagination, 0);
     this.findAll(this.pagination);
   }
   /**************Pagination TeamMembers***************/
@@ -219,7 +223,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
               this.findAll(this.pagination);
             } else if (data.statusCode == 403) {
               this.authenticationService.forceToLogout();
-            } 
+            }
           },
           error => {
             this.referenceService.loading(this.addTeamMemberLoader, false);
@@ -234,9 +238,9 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
 
 
   /*************************Delete Team Member************** */
-  showPopup(teamMember:any) {
+  showPopup(teamMember: any) {
     if (!this.isLoggedInAsTeamMember) {
-      if(teamMember.status=="UNAPPROVED"){
+      if (teamMember.status == "UNAPPROVED") {
         let self = this;
         swal({
           title: 'Are you sure?',
@@ -246,38 +250,38 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
           swalConfirmButtonColor: '#54a7e9',
           swalCancelButtonColor: '#999',
           confirmButtonText: 'Yes, delete it!'
-        }).then(function() {
+        }).then(function () {
           self.loading = true;
           self.selectedId = 0;
           self.teamMemberIdToDelete = teamMember.teamMemberUserId;
           self.selectedTeamMemberEmailId = teamMember.emailId;
           self.delete();
-        }, function(dismiss: any) {
-          
+        }, function (dismiss: any) {
+
         });
-      }else{
+      } else {
         this.selectedId = 0;
         this.deletePopupLoader = true;
         $('#delete-team-member-popup').modal('show');
         this.teamMemberService.findUsersToTransferData()
-        .subscribe(
-          data => {
-            this.setDropDownData(data);
-            this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberUserId);
-            this.teamMemberIdToDelete = teamMember.teamMemberUserId;
-            this.selectedTeamMemberEmailId = teamMember.emailId;
-            this.deletePopupLoader = false;
-          },
-          _error => {
-            $('#delete-team-member-popup').modal('hide');
-            this.referenceService.showSweetAlertServerErrorMessage();
-          });
+          .subscribe(
+            data => {
+              this.setDropDownData(data);
+              this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberUserId);
+              this.teamMemberIdToDelete = teamMember.teamMemberUserId;
+              this.selectedTeamMemberEmailId = teamMember.emailId;
+              this.deletePopupLoader = false;
+            },
+            _error => {
+              $('#delete-team-member-popup').modal('hide');
+              this.referenceService.showSweetAlertServerErrorMessage();
+            });
       }
     }
 
   }
 
- 
+
 
   delete() {
     this.deletePopupLoader = true;
@@ -380,7 +384,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   }
 
 
-  resendEmailInvitation(emailId:string) {
+  resendEmailInvitation(emailId: string) {
     if (!this.isLoggedInAsTeamMember) {
       let self = this;
       swal({
@@ -402,7 +406,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
 
   }
 
-  sendEmail(emailId:string) {
+  sendEmail(emailId: string) {
     this.customResponse = new CustomResponse();
     try {
       this.loading = true;
@@ -432,7 +436,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
 
 
   /***********Add Team Member(s) ********************/
-  goToAddTeamMemberDiv(){
+  goToAddTeamMemberDiv() {
     this.referenceService.hideDiv('csv-error-div');
     this.team = new TeamMember();
     this.customResponse = new CustomResponse();
@@ -441,18 +445,18 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
     this.findAllTeamMemberGroupIdsAndNames();
   }
 
-  selectTeamMemberGroupId(teamMemberGroupId:any){
+  selectTeamMemberGroupId(teamMemberGroupId: any) {
     this.team.teamMemberGroupId = teamMemberGroupId;
     this.validateAddTeamMemberForm("teamMemberGroup");
-    if(this.isOrgAdmin){
+    if (this.isOrgAdmin) {
       this.team.enableOption = false;
       this.team.secondAdmin = false;
       this.loading = true;
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
-        response=>{
+        response => {
           this.loading = false;
           this.team.enableOption = response.data;
-        },_error=>{
+        }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
         }
@@ -460,29 +464,29 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
     }
   }
 
-  
 
-  validateAddTeamMemberForm(fieldName:string){
-    if("emailId"==fieldName){
+
+  validateAddTeamMemberForm(fieldName: string) {
+    if ("emailId" == fieldName) {
       this.team.validEmailId = this.referenceService.validateEmailId(this.team.emailId);
-      this.team.emailIdErrorMessage  = this.team.validEmailId ? '':'Please enter a valid email address';
+      this.team.emailIdErrorMessage = this.team.validEmailId ? '' : 'Please enter a valid email address';
       this.emaillIdDivClass = this.team.validEmailId ? this.successClass : this.errorClass;
-    }else if("teamMemberGroup"==fieldName){
-        this.team.validTeamMemberGroupId = this.team.teamMemberGroupId!=undefined && this.team.teamMemberGroupId>0;
+    } else if ("teamMemberGroup" == fieldName) {
+      this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0;
     }
     this.validateAllFields();
   }
   validateAllFields() {
-    if(this.editTeamMember){
+    if (this.editTeamMember) {
       this.team.validEmailId = this.referenceService.validateEmailId(this.team.emailId);
     }
     this.team.validForm = this.team.validEmailId && this.team.validTeamMemberGroupId;
-	}
+  }
 
-  
 
-	clearForm() {
-		this.emaillIdDivClass = this.defaultClass;
+
+  clearForm() {
+    this.emaillIdDivClass = this.defaultClass;
     this.team = new TeamMember();
     this.showAddTeamMemberDiv = false;
     this.showUploadedTeamMembers = false;
@@ -490,70 +494,70 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
     this.saveOrUpdateButtonText = "Save";
     this.refreshList();
   }
-  
 
-  addOrUpdateTeamMember(){
+
+  addOrUpdateTeamMember() {
     this.customResponse = new CustomResponse();
-    if(this.team.validForm){
+    if (this.team.validForm) {
       this.referenceService.loading(this.addTeamMemberLoader, true);
       this.team.userId = this.loggedInUserId;
-      if(this.editTeamMember){
-          this.updateTeamMember();
-      }else{
+      if (this.editTeamMember) {
+        this.updateTeamMember();
+      } else {
         this.addTeamMember();
       }
-    }else{
+    } else {
       this.referenceService.showSweetAlertErrorMessage("Invalid Email Id/Team Member Group.")
     }
 
   }
 
-  addTeamMember(){
+  addTeamMember() {
     this.loading = true;
     let teamMemberDtos = new Array<any>();
-    let teamMemberDto = {'emailId':this.team.emailId,'firstName':this.team.firstName,'lastName':this.team.lastName,'teamMemberGroupId':this.team.teamMemberGroupId,'secondAdmin':this.team.secondAdmin};
+    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName, 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
     teamMemberDtos.push(teamMemberDto);
     let teamInput = {};
-    this.setTeamInputData(teamMemberDtos,teamInput);
+    this.setTeamInputData(teamMemberDtos, teamInput);
     this.teamMemberService.saveTeamMembersXNFR2(teamInput).
-    subscribe(
-      data=>{
-        if(data.statusCode==200){
-          this.customResponse = new CustomResponse('SUCCESS', data.message, true);
-          this.clearForm();
-        }else if(data.statusCode==3008 || data.statusCode==3010){
-          this.customResponse = new CustomResponse('ERROR', data.message, true);
-        }else{
-          this.team.validEmailId = false;
-          this.team.emailIdErrorMessage  = data.message;
-          this.emaillIdDivClass = this.errorClass;
-          this.team.validForm = false;
+      subscribe(
+        data => {
+          if (data.statusCode == 200) {
+            this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+            this.clearForm();
+          } else if (data.statusCode == 3008 || data.statusCode == 3010) {
+            this.customResponse = new CustomResponse('ERROR', data.message, true);
+          } else {
+            this.team.validEmailId = false;
+            this.team.emailIdErrorMessage = data.message;
+            this.emaillIdDivClass = this.errorClass;
+            this.team.validForm = false;
+          }
+          this.referenceService.loading(this.addTeamMemberLoader, false);
+          this.loading = false;
+        }, error => {
+          this.addServerError(error);
         }
-        this.referenceService.loading(this.addTeamMemberLoader, false);
-        this.loading = false;
-      },error=>{
-        this.addServerError(error);
-      }
-    );
+      );
   }
 
-  
 
-  addTeamMembers(){
+
+  addTeamMembers() {
     this.referenceService.goToTop();
     this.referenceService.loading(this.addTeamMemberLoader, true);
     this.customResponse = new CustomResponse();
     let teamInput = {};
-    this.setTeamInputData(this.newlyAddedTeamMembers,teamInput);
+    this.setTeamInputData(this.newlyAddedTeamMembers, teamInput);
     this.teamMemberService.saveTeamMembersXNFR2(teamInput).
       subscribe(
-        data=>{
-          if(data.statusCode==200){
+        data => {
+          if (data.statusCode == 200) {
             this.customResponse = new CustomResponse('SUCCESS', data.message, true);
             this.clearForm();
-          }else if(data.statusCode==3008 || data.statusCode==3010){
+          } else if (data.statusCode == 3008 || data.statusCode == 3010) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
-          }else if(data.statusCode==400 || data.statusCode==401 || data.statusCode==413){
+          } else if (data.statusCode == 400 || data.statusCode == 401 || data.statusCode == 413) {
             let duplicateEmailIds = "";
             $.each(data.data, function (index: number, value: string) {
               duplicateEmailIds += (index + 1) + "." + value + "<br><br>";
@@ -562,13 +566,13 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
             this.customResponse = new CustomResponse('ERROR', message, true);
           }
           this.referenceService.loading(this.addTeamMemberLoader, false);
-        },error=>{
-            this.addServerError(error);
+        }, error => {
+          this.addServerError(error);
         }
       );
   }
 
-  setTeamInputData(teamMemberDtos:any,teamInput:any){
+  setTeamInputData(teamMemberDtos: any, teamInput: any) {
     teamInput['userId'] = this.loggedInUserId;
     teamInput['teamMemberDTOs'] = teamMemberDtos;
     teamInput['vendorCompanyProfileName'] = this.vanityLoginDto.vendorCompanyProfileName;
@@ -576,11 +580,11 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   }
 
   /*************Upload CSV **************/
-  downloadTeamMembersCsv(){
-    window.location.href = this.authenticationService.REST_URL+"teamMember/downloadDefaultCsv/Add-Team-Members.csv?access_token="+this.authenticationService.access_token;
+  downloadTeamMembersCsv() {
+    window.location.href = this.authenticationService.REST_URL + "teamMember/downloadDefaultCsv/Add-Team-Members.csv?access_token=" + this.authenticationService.access_token;
   }
-  
-  readCsvFile(event:any){
+
+  readCsvFile(event: any) {
     this.customResponse = new CustomResponse();
     this.csvErrors = [];
     var files = event.srcElement.files;
@@ -588,16 +592,16 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
       $("#empty-roles-div").hide();
       $("#csv-error-div").hide();
       var input = event.target;
-			var reader = new FileReader();
+      var reader = new FileReader();
       reader.readAsText(input.files[0]);
       reader.onload = (data) => {
-				this.isUploadCsv = true;
-				let csvData = reader.result;
+        this.isUploadCsv = true;
+        let csvData = reader.result;
         let csvRecordsArray = csvData['split'](/\r\n|\n/);
-				let headersRow = this.fileUtil
-					.getHeaderArray(csvRecordsArray);
+        let headersRow = this.fileUtil
+          .getHeaderArray(csvRecordsArray);
         let headers = headersRow[0].split(',');
-				if (this.validateHeaders(headers)) {
+        if (this.validateHeaders(headers)) {
           this.csvRecords = this.fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
           if (this.csvRecords.length > 1) {
             this.processCSVData();
@@ -607,40 +611,40 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
         } else {
           this.showCsvFileError('Invalid CSV');
         }
-			}
-			let self = this;
-			reader.onerror = function () {
-				self.showErrorMessageDiv('Unable to read the file');
-				self.isUploadCsv = false;
-			};
-    }else{
+      }
+      let self = this;
+      reader.onerror = function () {
+        self.showErrorMessageDiv('Unable to read the file');
+        self.isUploadCsv = false;
+      };
+    } else {
       this.showErrorMessageDiv('Please Import csv file only');
-			this.fileReset();
+      this.fileReset();
     }
   }
 
   processCSVData() {
-		this.validateCsvData();
-		if (this.csvErrors.length > 0) {
-			$("#csv-error-div").show();
-			this.fileReset();
-			this.isUploadCsv = false;
-		} else {
+    this.validateCsvData();
+    if (this.csvErrors.length > 0) {
+      $("#csv-error-div").show();
+      this.fileReset();
+      this.isUploadCsv = false;
+    } else {
       this.showUploadedTeamMembers = true;
-			this.appendCsvDataToTable();
-			this.fileReset();
-		}
+      this.appendCsvDataToTable();
+      this.fileReset();
+    }
   }
-  
-  appendCsvDataToTable(){
+
+  appendCsvDataToTable() {
     this.findAllTeamMemberGroupIdsAndNames();
     for (var i = 1; i < this.csvRecords.length; i++) {
-			let rows = this.csvRecords[i];
-			let row = rows[0].split(',');
-			this.teamMemberUi.emptyTable = false;
+      let rows = this.csvRecords[i];
+      let row = rows[0].split(',');
+      this.teamMemberUi.emptyTable = false;
       let team = {};
       let emailId = row[0].toLowerCase();
-      if(emailId!=undefined && $.trim(emailId).length>0){
+      if (emailId != undefined && $.trim(emailId).length > 0) {
         team['emailId'] = emailId;
         team['firstName'] = row[1];
         team['lastName'] = row[2];
@@ -651,18 +655,17 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
     }
   }
 
-  validateSecondAdminOptionForCsvUsers(teamMemberGroupId:number,team:any){
+  validateSecondAdminOptionForCsvUsers(teamMemberGroupId: number, team: any) {
     team.teamMemberGroupId = teamMemberGroupId;
-    if(this.isOrgAdmin){
+    if (this.isOrgAdmin) {
       team.enableOption = false;
       team.secondAdmin = false;
       this.loading = true;
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
-        response=>{
+        response => {
           this.loading = false;
           team.enableOption = response.data;
-          console.log(team);
-        },_error=>{
+        }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
         }
@@ -670,61 +673,61 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
     }
   }
 
-	validateCsvData() {
+  validateCsvData() {
     let names = this.csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
     let duplicateEmailIds = this.referenceService.returnDuplicates(names);
-		this.newlyAddedTeamMembers = [];
-		if (duplicateEmailIds.length == 0) {
-			for (var i = 1; i < this.csvRecords.length; i++) {
-				let rows = this.csvRecords[i];
-				let row = rows[0].split(',');
+    this.newlyAddedTeamMembers = [];
+    if (duplicateEmailIds.length == 0) {
+      for (var i = 1; i < this.csvRecords.length; i++) {
+        let rows = this.csvRecords[i];
+        let row = rows[0].split(',');
         let emailId = row[0];
-        if(emailId!=undefined && $.trim(emailId).length>0){
+        if (emailId != undefined && $.trim(emailId).length > 0) {
           if (!this.referenceService.validateEmailId(emailId)) {
             this.csvErrors.push(emailId + " is invalid email address.");
-          } 
+          }
         }
-       
-			}
-		} else {
-			for (let d = 0; d < duplicateEmailIds.length; d++) {
+
+      }
+    } else {
+      for (let d = 0; d < duplicateEmailIds.length; d++) {
         let emailId = duplicateEmailIds[d];
-        if(emailId!=undefined && $.trim(emailId).length>0){
+        if (emailId != undefined && $.trim(emailId).length > 0) {
           this.csvErrors.push(duplicateEmailIds[d] + " is duplicate email address.");
           this.isUploadCsv = false;
         }
-				
-			}
 
-		}
-	}				
+      }
 
-  validateHeaders(headers:any){
-    return (headers[0] == "Email Id"  &&  headers[1] == "First Name" && headers[2]=="Last Name");
+    }
+  }
+
+  validateHeaders(headers: any) {
+    return (headers[0] == "Email Id" && headers[1] == "First Name" && headers[2] == "Last Name");
   }
 
   showErrorMessageDiv(message: string) {
-		this.errorMessage = message;
-		this.customResponse = new CustomResponse('ERROR', this.errorMessage, true);
-	}
+    this.errorMessage = message;
+    this.customResponse = new CustomResponse('ERROR', this.errorMessage, true);
+  }
 
-	hideErrorMessageDiv() {
-		this.errorMessage = "";
-		this.customResponse = new CustomResponse('ERROR', this.errorMessage, false);
-	}
+  hideErrorMessageDiv() {
+    this.errorMessage = "";
+    this.customResponse = new CustomResponse('ERROR', this.errorMessage, false);
+  }
 
-	showCsvFileError(message: string) {
-		this.showErrorMessageDiv(message);
-		this.fileReset();
-		this.isUploadCsv = false;
-	}
-	fileReset() {
-    if(this.fileImportInput!=undefined){
+  showCsvFileError(message: string) {
+    this.showErrorMessageDiv(message);
+    this.fileReset();
+    this.isUploadCsv = false;
+  }
+  fileReset() {
+    if (this.fileImportInput != undefined) {
       this.fileImportInput.nativeElement.value = "";
     }
-		this.csvRecords = [];
+    this.csvRecords = [];
   }
-  
+
   deleteRow(index: number, teamMember: any) {
     let emailId = teamMember['emailId'];
     $('#team-member-' + index).remove();
@@ -732,18 +735,18 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
     this.newlyAddedTeamMembers = this.spliceArray(this.newlyAddedTeamMembers, emailId);
     let tableRows = $("#add-team-member-table > tbody > tr").length;
     if (tableRows == 0 || this.newlyAddedTeamMembers.length == 0) {
-        this.clearUploadCsvDataAndGoBack();
+      this.clearUploadCsvDataAndGoBack();
     }
-	}
-
-	spliceArray(arr: any, emailId: string) {
-		arr = $.grep(arr, function (data:any, _index:number) {
-			return data.emailId != emailId
-		});
-		return arr;
   }
-  
-  clearUploadCsvDataAndGoBack(){
+
+  spliceArray(arr: any, emailId: string) {
+    arr = $.grep(arr, function (data: any, _index: number) {
+      return data.emailId != emailId
+    });
+    return arr;
+  }
+
+  clearUploadCsvDataAndGoBack() {
     this.customResponse = new CustomResponse();
     this.showUploadedTeamMembers = false;
     this.newlyAddedTeamMembers = [];
@@ -756,7 +759,7 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
     this.loading = false;
     let statusCode = JSON.parse(error['status']);
     let message = this.properties.serverErrorMessage;
-    if (statusCode == 409) {
+    if (statusCode == 409 || statusCode == 400) {
       let errorResponse = JSON.parse(error['_body']);
       message = errorResponse['message'];
     }
@@ -764,48 +767,32 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   }
 
   /***********Preview Modules*********** */
-  previewModules(teamMemberGroupId:number){
-    this.modulesLoader = true;
-    this.emptyModules = false;
-    this.defaultModules = [];
-    $('#preview-team-member-popup').modal('show');
-    this.teamMemberService.previewTeamMemberGroup(teamMemberGroupId).subscribe(
-      response => {
-       this.defaultModules = response.data.teamMemberModuleDTOs;
-       this.emptyModules = this.defaultModules.length==0;
-       this.modulesLoader = false;
-      }, error => {
-        this.logger.log(error);
-        this.modulesLoader = false;
-        $('#preview-team-member-popup').modal('hide');
-        this.referenceService.showSweetAlertServerErrorMessage();
-      }
-    );
-  }
 
-  goToHome(){
+
+  goToHome() {
     this.loading = true;
     this.referenceService.goToRouter(this.referenceService.homeRouter);
   }
 
-  goToAdminReport(url:string){
+  goToAdminReport(url: string) {
     this.loading = true;
     this.referenceService.goToRouter(url);
   }
 
-  edit(id:number){
+  edit(id: number) {
+    this.referenceService.scrollSmoothToTop();
     this.customResponse = new CustomResponse();
     this.referenceService.hideDiv('csv-error-div');
     this.referenceService.loading(this.httpRequestLoader, true);
     this.httpRequestLoader.isHorizontalCss = true;
     this.teamMemberService.findById(id).subscribe(
-      response=>{
+      response => {
         this.team = response.data;
         this.team.id = id;
         this.editTeamMember = true;
         this.saveOrUpdateButtonText = "Update";
         this.team.validForm = true;
-      },error=>{
+      }, error => {
         this.referenceService.loading(this.httpRequestLoader, false);
         this.referenceService.showSweetAlertServerErrorMessage();
       }
@@ -813,8 +800,17 @@ export class TeamMembersUtilComponent implements OnInit,OnDestroy {
   }
 
 
-  getSelectedTeamMemberGroup(selectedTeamMemberGroupId:any){
+  getSelectedTeamMemberGroup(selectedTeamMemberGroupId: any) {
     this.team.teamMemberGroupId = selectedTeamMemberGroupId;
+  }
+
+  previewModules(teamMemberGroupId: number) {
+    this.showModulesPopup = true;
+    this.teamMemberGroupId = teamMemberGroupId;
+  }
+
+  hideModulesPreviewPopUp() {
+    this.showModulesPopup = false;
   }
 
 }

@@ -104,7 +104,7 @@
 													<td class="text-center hidden-xs"><span>{{file.filesizeInKb}}</span></td>
 													<td class="text-center hidden-xs"><span>{{file.type}}</span></td>
 													<td>
-														<div class="actions-block override-actions">
+														<div class="actions-block override-actions mActionAlign">
                               <a data-toggle="tooltip" data-placement="top" [title]="actionsDescription.preview_item" href="{{file.downloadLink}}" target="_blank">
                                 <i class="fa fa-external-link" aria-hidden="true"></i>
                               </a>
@@ -125,7 +125,7 @@
 								<section [hidden]="isListView">
 									<ul class="content__list"
                     *ngFor="let file of pagedItems; let i =index;">
-										<li class="list__item"
+										<li class="list__item mListitemWid"
 											[ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}">
 											<div class="flex-row pointer" (click)="setFileCheck(file,file.id, $event)">
 												<div class="item__select-box-wrapper">

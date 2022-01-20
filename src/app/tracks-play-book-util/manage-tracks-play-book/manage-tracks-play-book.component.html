@@ -3,7 +3,7 @@
 </div>
 <div class="row">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-    <div class="col-md-12">
+    <div class="col-md-12 mTop">
         <div class="portlet light clearfix" style="min-height: 644px;">
             <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                 <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)">
@@ -128,14 +128,17 @@
                                             <span *ngIf="learningTrack.progress == undefined">0%</span>
                                         </div>
                                     </td>
-                                    <td id="actions-row" class="text-center">
-                                        <div class="actions-block override-actions custom-width-icon">
-                                            <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
-                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <td id="actions-row " class="text-center mActionAlign">
+                                        <div class="actions-block override-actions custom-width-icon actionAlignment">
+                                            <div>
+                                            <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
+                                                <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                             </a>
                                             <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
                                                 <i class="fa fa-reply" aria-hidden="true"></i>
                                             </a>
+                                            </div>
+                                            <div>
                                             <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
                                                 <i class="fa fa-share" aria-hidden="true"></i>
                                             </a>
@@ -145,9 +148,12 @@
                                             <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                             </a>
+                                            </div>
+                                            <div>
                                             <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
                                                 <i class="fa fa-line-chart" aria-hidden="true"></i>
                                             </a>
+                                            </div>
                                             <!-- <ng-container *ngIf="">
                                               <a class="cursor">
                                                   <i class="fa fa-line-chart"></i>
@@ -216,13 +222,16 @@
                         <div class="ribbon">
                             <span style="background-color: #5cb85c;" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
                         </div>
-                        <div class="bar" style="padding: 9px 3px;">
-                            <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <div class="bar actionAlignment" style="padding: 9px 3px;">
+                            <div >
+                            <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
+                                <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                             </a>
                             <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
                                 <i class="fa fa-reply" aria-hidden="true"></i>
                             </a>
+                            </div>
+                            <div>
                             <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
                                 <i class="fa fa-share" aria-hidden="true"></i>
                             </a>
@@ -232,9 +241,12 @@
                             <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
                             </a>
+                            </div>
+                            <div>
                             <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
                                 <i class="fa fa-line-chart" aria-hidden="true"></i>
                             </a>
+                            </div>
                             <!-- <ng-container *ngIf="">
                               <a class="cursor">
                                   <i class="fa fa-line-chart"></i>

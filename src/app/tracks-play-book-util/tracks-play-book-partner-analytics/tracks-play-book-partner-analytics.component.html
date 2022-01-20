@@ -47,7 +47,7 @@
               *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
               <thead>
                 <tr>
-                  <th class="hidden-xs" style="width: 35%" id="border-bottom">
+                  <th class="" style="width: 35%" id="border-bottom">
                     <span class="gridHeader" translate>{{authenticationService?.partnerModule?.customName}}</span>
                   </th>
                   <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" style="width: 35%" translate>
@@ -206,10 +206,10 @@
                     <img alt="Image not found" [src]="detailedAnalytics.assetThumbnail">
                   </div>
                   <div class="timeline-panel">
-                    <div class="timeline-heading">
+                    <div class="timeline-heading name-wrap">
                       <span class="timeline-title">
                         <label>Asset Name:</label>
-                        <h5 style="display: inline;">{{detailedAnalytics.assetName}}</h5>
+                        <h5 style="display: inline;" title="{{detailedAnalytics.assetName}}">{{detailedAnalytics.assetName}}</h5>
                       </span>
                     </div>
                     <div class="timeline-body">

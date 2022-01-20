@@ -347,3 +347,20 @@ body {
 .mwttpxmet{
     min-width: 210px !important;
 }
+
+@media screen and (max-width:600px){
+    .mAlertMsg{
+        margin-top: 32px;
+    }
+    .mTopAlert{
+        top: -22px !important;
+    }
+    .mActionAlign{
+        white-space: pre-line!important;
+        line-height: 2px;
+        text-align: center!important;
+    }
+    .mFloat{
+        float: none!important;
+    }
+}

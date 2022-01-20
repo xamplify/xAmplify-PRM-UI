@@ -1,26 +1,31 @@
 <div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
   <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
+  <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && showTeamMemberFilter">
+    <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+  </div>
   <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
-    <div class="btn-group pull-right" style="width: max-content;">
-      <!-- <a *ngIf="isVendorVersion && syncSalesForce" (click)="syncLeadsWithSalesforce()">
-        <button class="btn btn-white" data-toggle="tooltip"
-        data-placement="bottom" title="Synchronize with Salesforce" translate>
-          <i class="fa fa-refresh" aria-hidden="true"></i> Salesforce
-        </button>
-      </a>               -->
-      <div class="inputs" align="right" style="float: right">
-        <div class="portlet-input input-inline" style="display: table-cell;">
+    <div class="btn-group pull-right" style="width: max-content;">      
+      <div class="inputs" align="right" style="float: right; display: inline-flex;">
+        <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
           <div class="input-icon right" style="position: relative;right: -11px;">
             <input type="text" class="form-control" [(ngModel)]="leadsSortOption.searchKey"
               [ngModelOptions]="{standalone: true}" placeholder="Search"
               (keypress)="leadEventHandler($event.keyCode)">
             <button class="glyphicon glyphicon-remove search-box-item-clear"
-              *ngIf="leadsSortOption.searchKey" (click)="leadsSortOption.searchKey=''"></button>
+              *ngIf="leadsSortOption.searchKey" (click)="clearSearch()"></button>
             <button type="submit" class="search-box-item-click" (click)="searchLeads()">
               <i class="fa fa-search" aria-hidden="true"></i>
             </button>
-          </div>
+          </div>          
         </div>
+        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view mr5" data-toggle="tooltip" title="Filter"
+          (click)="toggleFilterOption()">
+          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+        </span>
+        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Download"
+          [class.disabled]="leadsSortOption.totalRecords == 0" (click)="downloadLeads()">
+          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+        </span>
       </div>
     </div>
   </div>
@@ -30,6 +35,47 @@
 </div>
 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 </app-list-loader>
+<!-- -------------------- Apply Filters Box-------------------- -->
+<div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+  <div class="col-xs-12 col-sm-12">
+    <div class="portlet light m10">
+      <div class="portlet-title">
+        <div class="caption" translate>Apply Filters</div>
+        <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>                                       
+      <div class="portlet box">
+        <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
+        </app-response-message> 
+        <form role="form" class="form-horizontal form-bordered form-label-stripped">
+          <div class="form-group">                         
+            <div class="form-inline col-sm-12">
+              <div class="form-group col-sm-4">
+                <label class="control-label">From Date
+                  <span class="required">*</span>
+                </label>
+                <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                </app-date-picker>
+              </div>
+              <div class="form-group col-sm-4">
+                <label class="control-label">To Date
+                  <span class="required">*</span>
+                </label>
+                <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                </app-date-picker>
+              </div>
+              <div class="form-group col-sm-4">
+                <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
+                  translate>Filter</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>                                    
+  </div>                
+</div>
 
 <section class='m10'
   *ngIf="leadsSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">

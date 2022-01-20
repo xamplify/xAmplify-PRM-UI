@@ -1,0 +1,13 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="tg-filter" *ngIf="showPartners">
+  <ul class="mix-filter" *ngIf="!filterIcon">
+    <li class="filter" (click)="applyFilter(0)" [class.filter-box-selected]="0 == selectedFilterIndex" translate>All
+    </li>
+    <li class="filter" (click)="applyFilter(1)" [class.filter-box-selected]="1 == selectedFilterIndex" translate>My
+      {{authenticationService?.partnerModule?.customName}}</li>
+  </ul>
+  <a *ngIf="filterIcon" class="close-circle ref-mar mrfpximp" (click)="openFilterPopup()" title="Apply Filter">
+    <i class="fa fa-filter" aria-hidden="true"></i>
+  </a>
+</div>
+<app-team-member-filter-option-modal-popup *ngIf="showFilterPopup" [selectedFilterIndex]="selectedFilterIndex" (teamMemberFilterOptionModalPopupEmitter)="getSelectedOption($event)"></app-team-member-filter-option-modal-popup>

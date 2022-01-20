@@ -91,3 +91,16 @@
 	font-size: 24px;
 	margin: 0 auto 10px
 }
+
+.e9eef2{
+	background-color: #e9eef2;
+}
+
+@media screen and (max-width:600px){
+	.mSweetalertWid{
+		left: 30px!important;
+	}
+	.mLegalWid{
+		width:178%;
+	}
+}

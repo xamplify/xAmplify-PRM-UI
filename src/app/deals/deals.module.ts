@@ -6,12 +6,11 @@ import { CommonComponentModule } from "../common/common.module";
 import { DealsRoutingModule } from './deals-routing.module';
 import { ManageDealsComponent } from './manage-deals/manage-deals.component';
 import { DealsService } from './services/deals.service';
-import { ManageCampaignDealsComponent } from './manage-campaign-deals/manage-campaign-deals.component';
 @NgModule({
   imports: [
      CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DealsRoutingModule
   ],
-  declarations: [ManageDealsComponent, ManageCampaignDealsComponent],
+  declarations: [ManageDealsComponent],
   providers: [DealsService]
 })
 export class DealsModule { }

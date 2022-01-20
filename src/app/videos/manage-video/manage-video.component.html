@@ -90,10 +90,10 @@
                  <div class="table-responsive" style="overflow-x: inherit; padding:15px;"  *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0" aria-describedby="">
                      <thead>
-                       <tr class="hidden-xs">
+                       <tr class="">
                          <th scope="col" colspan="1" style="width:50%" translate>Videos</th>
-                         <th scope="col" class="text-center" translate>Category</th>
-                         <th scope="col" class="text-center" translate>Upload Date</th>
+                         <th scope="col" class="text-center hidden-xs" translate>Category</th>
+                         <th scope="col" class="text-center hidden-xs" translate>Upload Date</th>
                          <th scope="col" style="width: 20%;" class="text-center" *ngIf="videoFileService.videoType!='partnerVideos'">
                           <span [hidden]="authenticationService.isOnlyPartner()" translate>Actions</span></th>
                           <th scope="col" style="width: 20%;" class="text-center" *ngIf="videoFileService.videoType=='partnerVideos'">
@@ -113,10 +113,11 @@
                          <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>
                          </td>
                          <td *ngIf="!authenticationService.isSuperAdmin()">
-                           <div class="actions-block override-actions" *ngIf="videoFileService.videoType==='myVideos'">
-                             <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier"
+                           <div class="actions-block override-actions mActionAlign" *ngIf="videoFileService.videoType==='myVideos'" style="display: flex;">
+                            <div> 
+                            <a class="mMobileDisable" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier"
                                (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_edit">
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                              </a>
                              <ng-container *ngIf="(hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && videoFileService.videoType!='partnerVideos'">
                                 
@@ -131,6 +132,7 @@
                                     <i class="fa fa-bullhorn" aria-hidden="true" ></i>
                                   </a>
                               </ng-container>
+                            </div>
                               <ng-container *ngIf="videoFile.processed">
                              <a (click)="showCampaignVideoReport(videoFile)" data-toggle="tooltip" data-placement="top" *ngIf="videoFile.viewBy!=='DRAFT'" [title]="actionsDescription.video_report">
                                <i class="fa fa-line-chart" aria-hidden="true" ></i>
@@ -193,7 +195,7 @@
                    <div class="bar" *ngIf="!authenticationService.isSuperAdmin()">
                      <div >
                       <ng-container  *ngIf="videoFileService.videoType==='myVideos'">
-                        <a *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier"
+                        <a class="mMobileDisable" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId==videoFile.uploadedUserId) || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier"
                           (click)="showEditVideo(videoFile)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.video_edit}}">
                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </a>

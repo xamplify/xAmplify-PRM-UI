@@ -48,8 +48,8 @@
     <!-- step 1 -->
     <div *ngIf="activeTabName == 'step-1'" class="setup-content step activeStepInfo">
       <div style="margin-top: 10px;">
-        <div class="portlet box">
-          <div class="portlet-body form">
+        <div class="portlet box mPortlet">
+          <div class="portlet-body form mPortlet-body">
             <div class="row">
               <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 form-body">
                 <div class="row form-group">
@@ -102,7 +102,7 @@
                   <label class="control-label col-sm-4" style="text-align: right;" translate>Folder
                     <font style="color: red">*</font>
                   </label>
-                  <div class="inline col-sm-8">
+                  <div class="inline col-sm-8 col-xs-12">
                     <div class="dropdown">
                       <input type="text" class="form-control" [(ngModel)]="folderName"
                         (click)="showDropDown();filterFolders(folderSearchValue)" readonly
@@ -120,10 +120,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="row form-group" style="padding-bottom: 10px;">
-                  <label class="control-label col-sm-4" style="text-align: right;" translate>Tags
+                <div class="row form-group mTags" style="padding-bottom: 10px;">
+                  <label class="control-label col-sm-4 col-xs-6 mTextAlign" style="text-align: right;" translate>Tags
                   </label>
-                  <div class="inline col-sm-8">
+                  <div class="inline col-sm-8 col-xs-8">
                     <div class="portlet light" style="width: 100%;padding: 5px !important;">
                       <div class="portlet-title tabbable-line " style="margin-bottom: 0px !important;">
                         <div class="inline" style="float: right;">
@@ -142,7 +142,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="scroller">
+                      <div class="scroller mScrollHeight">
                         <table class="table table-bordered no-footer tags-table" id="tags_list">
                           <tbody>
                             <tr role="row" *ngFor="let tag of tagsListFirstColumn;let i = index"
@@ -187,7 +187,7 @@
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row" style="padding-top: 10px;">
-                <div class="portlet light">
+                <div class="portlet light mImageWid">
                   <div class="portlet-title tabbable-line ">
                     <div class="caption caption-md ">
                       <i class="icon-globe theme-font hide " aria-hidden="true "></i>
@@ -216,14 +216,14 @@
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row">
-                <div class="message-content">
+                <div class="message-content mTextWid">
                   <ul>
                     <li translate>Maximum file size is 10 MB.</li>
                     <li translate>Please Upload <strong>.jpg, .jpeg, .png </strong>files only.</li>
                   </ul>
                 </div>
               </div>
-              <div class="col-sm-12 row" style="padding-right: 20px; padding-bottom: 10px;">
+              <div class="col-sm-12 col-xs-12 row mNextPad" style="padding-right: 20px; padding-bottom: 10px;">
                 <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-2');"
                   [disabled]="!isStepOneValid" translate>Next</button>
               </div>
@@ -272,7 +272,7 @@
         <div class="portlet light">
           <div class="col-lg-12">
             <div class="page-toolbar">
-              <div class="inline">
+              <div class="inline mToolBarPad">
                 <button class="btn btn-primary" (click)="openOrderAssetsPopup()">Order Assets</button>
                 <button *ngIf="type == undefined || type == 'TRACK'" class="btn btn-primary"
                   (click)="openQuizPopup()">Select Quiz</button>
@@ -304,9 +304,9 @@
           <div class="portlet-body">
             <app-grid-loader *ngIf="assetLoader.isLoading"></app-grid-loader>
             <div class="row" *ngIf="!assetError">
-              <ul class="content__list" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
+              <ul class="content__list mContentWid" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
                 <li class="list__item" [ngClass]="{'list__item--selected': isAssetSelected(file)}">
-                  <div class="flex-row pointer">
+                  <div class="flex-row pointer mContentHeight">
                     <div class="item__select-box-wrapper">
                       <span class="select-box-asset"> <label>
                           <input type="checkbox" (click)="$event.stopPropagation();">
@@ -329,7 +329,7 @@
                           </span>
                         </div>
                         <div class="wrap-asset-name" style="-webkit-box-orient: vertical;">
-                          <span data-toggle="tooltip" [title]="file.assetName">
+                          <span [title]="file.assetName">
                             <strong>{{file.assetName}}</strong>
                           </span>
                         </div>
@@ -493,14 +493,14 @@
             <div class="portlet light">
               <div class="portlet-title ">
                 <div class="inputs" id="right">
-                  <div id="left">
+                  <div id="left" class="mSortAlign">
                     <select class="form-control" [(ngModel)]="formSortOption.formsSortOption"
                       (ngModelChange)="formsSortBy($event)" style="position: relative;right: -3px;">
                       <option *ngFor="let option of formSortOption.manageFormsSortOptions" [ngValue]="option">
                         {{option.name}}</option>
                     </select>
                   </div>
-                  <div class="portlet-input input-inline input-small" id="search">
+                  <div class="portlet-input input-inline input-small mSearchAlign" id="search">
                     <div class="input-icon right" id="search-icon">
                       <input type="text" id="search-text" class="form-control" [(ngModel)]="formSortOption.searchKey"
                         [ngModelOptions]="{standalone: true}" placeholder="search..."
@@ -519,7 +519,7 @@
                   aria-describedby="describe">
                   <thead>
                     <tr>
-                      <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
+                      <th class="" colspan="2" style="width: 35%" id="border-bottom">
                         <span class="gridHeader" translate>Form Details</span>
                       </th>
                       <th class="hidden-xs text-center" translate scope="col">Created On</th>
@@ -532,7 +532,7 @@
                         <input type="radio">
                       </td>
                       <td>
-                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
+                        <h4 class="ellipsis mt5 mb5 f-w-600 mFormName" title="{{form.name}}">
                           {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
                         </h4>
                         <h6>
@@ -616,17 +616,17 @@
                 aria-describedby="describe">
                 <thead>
                   <tr>
-                    <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
+                    <th class="" colspan="2" style="width: 35%" id="border-bottom">
                       <span class="gridHeader" translate>Asset Details</span>
                     </th>
-                    <th class="hidden-xs text-center" translate scope="col">Type</th>
-                    <th class="hidden-xs text-center" translate scope="col">Created On</th>
+                    <th class="text-center" translate scope="col">Type</th>
+                    <th class="text-center" translate scope="col">Created On</th>
                     <th class="text-center">Preview</th>
                   </tr>
                 </thead>
                 <tbody [dragula]='"assetsDragula"' [dragulaModel]='selectedAssets'>
                   <tr *ngFor="let asset of selectedAssets; let i = index" style="cursor: move;">
-                    <td class="hidden-xs text-cente" style="width: 10%;">
+                    <td class="text-cente" style="width: 10%;">
                       <div class="thumbnail-wrapper">
                         <img class="img-asset-list" alt="Image not found" [src]="asset.thumbnailPath">
                       </div>
@@ -640,14 +640,14 @@
                           <strong>{{asset.displayName}}</strong></span>
                       </h6>
                     </td>
-                    <td class="hidden-xs text-center">
+                    <td class="text-center">
                       {{asset.assetType}}
                     </td>
-                    <td class="hidden-xs text-center">
+                    <td class="text-center">
                       <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.displayTime">
                       </app-timestamp>
                     </td>
-                    <td id="actions-row" style="text-align: center;">
+                    <td id="actions-row " class="mActionsAlign" style="text-align: center;">
                       <div class="actions-block override-actions custom-width-icon" style="float: none;">
                         <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset, true)">
                           <i class="fa fa-eye" aria-hidden="true"></i>
@@ -690,15 +690,15 @@
             <div class="portlet light">
               <div class="portlet-title">
                 <div class="inputs" id="right">
-                  <div id="left">
+                  <div id="left"class="mSortAlign" >
                     <select class="form-control" [(ngModel)]="quizFormSortOption.formsSortOption"
                       (ngModelChange)="quizSortBy($event)" style="position: relative;right: -3px;">
                       <option *ngFor="let option of quizFormSortOption.manageFormsSortOptions" [ngValue]="option">
                         {{option.name}}</option>
                     </select>
                   </div>
-                  <div class="portlet-input input-inline input-small" id="search">
-                    <div class="input-icon right" id="search-icon">
+                  <div class="portlet-input input-inline input-small mSearchAlign" id="search">
+                    <div class="input-icon right " id="search-icon">
                       <input type="text" id="search-text" class="form-control"
                         [(ngModel)]="quizFormSortOption.searchKey" [ngModelOptions]="{standalone: true}"
                         placeholder="search..." (keypress)="quizEventHandler($event.keyCode)">
@@ -717,7 +717,7 @@
                   aria-describedby="describe">
                   <thead>
                     <tr>
-                      <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
+                      <th class="" colspan="2" style="width: 35%" id="border-bottom">
                         <span class="gridHeader" translate>Form Details</span>
                       </th>
                       <th class="hidden-xs text-center" translate scope="col">Created On</th>
@@ -730,7 +730,7 @@
                         <input type="radio" [checked]="this.tracksPlayBook.quizId === form.id">
                       </td>
                       <td>
-                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
+                        <h4 class="ellipsis mt5 mb5 f-w-600 mFormName" title="{{form.name}}">
                           {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
                         </h4>
                         <h6>
@@ -806,11 +806,11 @@
               alt="" />
           </div>
           <div class="vertical-center">
-            <div class="panel panel-info " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor"
+            <div class="panel panel-info mFormWidth " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor"
               [style.borderColor]="form.borderColor">
               <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor"
                 [style.borderColor]="form.borderColor">
-                <div class="panel-title">{{form.name}}</div>
+                <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
               </div>
               <div class="panel-body" *ngIf="!formError">
                 <h5>{{form.description}}</h5>
@@ -825,7 +825,7 @@
                         placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000"
                         disabled="disabled">
                     </ng-container>
-
+ 
                     <ng-container *ngIf="columnInfo.labelType=='textarea'">
                       <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}"
                         maxlength="1000" disabled="disabled"></textarea>
@@ -947,14 +947,14 @@
             <div class="portlet light">
               <div class="portlet-title">
                 <div class="inputs" id="right">
-                  <div id="left">
+                  <div id="left" class="mSortAlign">
                     <select class="form-control" [(ngModel)]="assetSortOption.damSortOption"
                       (ngModelChange)="assetSortBy($event)" style="position: relative;right: -3px;">
                       <option *ngFor="let option of assetSortOption.damSortDropDownOptions" [ngValue]="option">
                         {{option.name}}</option>
                     </select>
                   </div>
-                  <div class="portlet-input input-inline input-small" id="search">
+                  <div class="portlet-input input-inline input-small mSearchAlign" id="search">
                     <div class="input-icon right" id="search-icon">
                       <input type="text" id="search-text" class="form-control" [(ngModel)]="assetSortOption.searchKey"
                         [ngModelOptions]="{standalone: true}" placeholder="search..."
@@ -973,11 +973,11 @@
                   aria-describedby="describe">
                   <thead>
                     <tr>
-                      <th class="hidden-xs" colspan="3" style="width: 35%" id="border-bottom">
+                      <th class="" colspan="3" style="width: 35%" id="border-bottom">
                         <span class="gridHeader" translate>Asset Details</span>
                       </th>
-                      <th class="hidden-xs text-center" translate scope="col">Type</th>
-                      <th class="hidden-xs text-center" translate scope="col">Created On</th>
+                      <th class="text-center" translate scope="col">Type</th>
+                      <th class="text-center" translate scope="col">Created On</th>
                       <th class="text-center">Preview</th>
                     </tr>
                   </thead>
@@ -988,7 +988,7 @@
                         <input type="radio"
                           [checked]="selectedAssetForMedia != undefined && selectedAssetForMedia != null">
                       </td>
-                      <td class="hidden-xs text-cente" style="width: 10%;">
+                      <td class="text-cente" style="width: 10%;">
                         <div class="thumbnail-wrapper">
                           <img class="img-asset-list" alt="Image not found" [src]="asset.thumbnailPath">
                         </div>
@@ -1002,10 +1002,10 @@
                             <strong>{{asset.displayName}}</strong></span>
                         </h6>
                       </td>
-                      <td class="hidden-xs text-center">
+                      <td class=" text-center">
                         {{asset.assetType}}
                       </td>
-                      <td class="hidden-xs text-center">
+                      <td class=" text-center">
                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.displayTime">
                         </app-timestamp>
                       </td>
@@ -1071,7 +1071,7 @@
 
 <!-- Preview Assets -->
 <ng-container *ngIf="showFilePreview">
-  <div class="overlay page-content">
+  <div class="overlay page-content mFileLeft">
     <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </button>

@@ -382,3 +382,73 @@ a.icons-link:hover {
 .zeropx{
   margin-top: 0px;
 }
+
+@media screen and (max-width:600px){
+  .mThroughLabel{
+    padding: 0px 0px 0px 0px;
+    top: 0px!important;
+  }
+  .mSwitch{
+    margin-left: -25px;
+  }
+  .mToLabel{
+    padding: 0px 0px 0px 0px;
+    margin-right: -70px;
+    margin-left: 222px;
+    margin-top: -25px;
+  }
+  .mPadTop{
+   padding-top: 5px;
+  }
+  .mLabel{
+    margin-top: -25px!important;
+    margin-left: 296px;
+  }
+  .mPadCity{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .mPadState{
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-top: 8px;
+  }
+  .mPadZip{
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 8px;
+  }
+  .mEventPad{
+    padding: 0px;
+  }
+  .mEventSearch{
+    width: 50%;
+    position: inherit!important;
+    float: right;
+    padding-bottom: 15px;
+  }
+  .mGridHeight{
+    height: 170px;
+  }
+  .mGridPad{
+    padding-left:2px!important ;
+  }
+  .list__item[_ngcontent-c8] .item__content[_ngcontent-c8], .list__item[_ngcontent-c8] .item__select-box-wrapper[_ngcontent-c8] {
+    width: 42%;
+}
+.mEventLaunchHeight{
+  height: 126px;
+}
+.mEventLaunchWidth{
+  width:85%;
+}
+.mEventDaysHeight{
+  height:75px!important;
+}
+.mEventSpamPopUp{
+  width:100%!important;
+}
+.mEventPadTemplate{
+  padding-bottom: 10px!important;
+}
+}

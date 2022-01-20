@@ -134,6 +134,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 						this.customNamePartners = this.authenticationService.partnerModule.customName;
 						localStorage.setItem('partnerModuleCustomName',this.customNamePartners);
 					}
+					this.authenticationService.module.loggedInThroughOwnVanityUrl = data.loggedInThroughOwnVanityUrl;
+					this.authenticationService.module.loggedInThroughVendorVanityUrl = data.loggedInThroughVendorVanityUrl;
+					this.authenticationService.module.loggedInThroughXamplifyUrl = data.loggedInThroughXamplifyUrl;
+					this.authenticationService.module.adminOrSuperVisor = data.adminOrSuperVisor;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -163,6 +167,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isPartnershipEstablishedOnlyWithVendorTier = data.partnershipEstablishedOnlyWithVendorTier;
 		let roleDisplayDto = data.roleDisplayDto;
 		module.isOnlyPartner = roleDisplayDto.partner;
+		module.partnerTeamMember = roleDisplayDto.partnerTeamMember;
 		module.isPrm = roleDisplayDto.prm;
 		module.isPrmTeamMember = roleDisplayDto.prmTeamMember;
 		module.isPrmAndPartner = roleDisplayDto.prmAndPartner;
@@ -332,5 +337,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.playbook = playbook;
 	}
 	
+	startLoader(){
+		this.loading = true;
+	}
 
 }

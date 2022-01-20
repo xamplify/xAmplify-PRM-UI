@@ -122,13 +122,36 @@
      font-weight: 600;
  }
 
+ 
+.form-name-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
- @media screen and (max-width:600px){
+@media screen and (max-width:600px){
    
     .mWid{
     width: 175%;
     margin-left: -70px;
     }
+
+    .mPadSort{
+        padding:0px
+    }
+    .mPadSearch{
+        padding:0px;
+        margin-right: 0px!important;
+    }
+
+   .mMargin{
+    float: left!important;
+    margin-left: -5px;
+   }
+   .mFloat{
+       display: contents;
+   }
 }
+
 
 

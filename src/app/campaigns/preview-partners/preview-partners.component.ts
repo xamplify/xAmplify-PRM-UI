@@ -65,6 +65,7 @@ export class PreviewPartnersComponent implements OnInit {
         subscribe(
             data=>{
                 if(data.statusCode==200){
+                    this.partnersPagination.partnerTeamMemberGroupFilter = true;
                     this.listPartners(this.partnersPagination);
                 }else{
                     this.refService.goToPageNotFound();
@@ -131,9 +132,7 @@ export class PreviewPartnersComponent implements OnInit {
             error => { 
                 this.refService.loading( this.campaignPartnerLoader, false );
                 this.partnerActionResponse = new CustomResponse( 'ERROR', this.refService.serverErrorMessage, true );
-        },
-            () => console.log( "Partner Deleted Successfully" )
-            );
+        });
     }
 
     paginationDropdown(items:any){
@@ -224,7 +223,12 @@ export class PreviewPartnersComponent implements OnInit {
 	setHistoryPage(event: any) {
 		this.historyPagination.pageIndex = event.page;
 		this.listDownloadHistory(this.historyPagination);
-	}
+    }
+    
+    getSelectedIndex(index:number){
+        this.refService.setTeamMemberFilterForPagination(this.partnersPagination,index);
+        this.listPartners(this.partnersPagination);
+    }
 
 
 }

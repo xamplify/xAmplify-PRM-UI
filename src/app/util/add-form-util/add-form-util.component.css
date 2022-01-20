@@ -1537,6 +1537,15 @@ div.switch5>input.switch:focus~label:before {
     width: 95%;
 }
 
+.form-name-wrap {
+     overflow: hidden;
+     text-overflow: ellipsis;
+     white-space: nowrap;
+}
+
+.padding-none {
+    padding: 0px;
+}
 
 @media screen and (max-width:600px){
     .mPad{
@@ -1553,4 +1562,8 @@ div.switch5>input.switch:focus~label:before {
         width: 100%;
         margin-left: 0px;
         }
-}    
+}   
+
+.icon-margin {
+    margin: 2% 0% 0% 0%;
+}

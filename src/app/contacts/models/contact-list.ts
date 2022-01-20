@@ -34,4 +34,5 @@ export class ContactList {
     synchronisedList : boolean = false;
     moduleName : string;
     externalListId : number;
+    teamMemberPartnerList = false;
 }

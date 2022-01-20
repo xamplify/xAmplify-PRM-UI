@@ -12,3 +12,13 @@
 .desc-break {
     word-break: break-word;
 }
+
+.text-wrap {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+:host ::ng-deep .desc-html * {
+    max-height: 100%;
+    max-width: 100%;
+}

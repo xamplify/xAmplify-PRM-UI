@@ -13,6 +13,7 @@ export class DetailedDashboardComponent implements OnInit {
   logedInCustomerCompanyName = "";
   hasAccess = false;
   loading = true;
+  applyFilter = true;
   constructor(public referenceService:ReferenceService,public userService: UserService,public authenticationService:AuthenticationService,public logger:XtremandLogger) { }
 
   ngOnInit() {
@@ -39,6 +40,15 @@ export class DetailedDashboardComponent implements OnInit {
         this.logger.error(error);
       }
     );
+  }
+
+  getSelectedIndexFromPopup(event:any){
+    this.loading = true;
+    let self = this;
+    setTimeout(function() {
+    self.loading = false;
+    self.applyFilter = event['selectedOptionIndex'] == 1;
+    }, 500);
   }
 
   

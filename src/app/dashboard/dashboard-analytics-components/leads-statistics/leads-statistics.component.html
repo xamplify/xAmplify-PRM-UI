@@ -3,7 +3,7 @@
       <div class="portlet light">
           <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
               <div class="caption">
-                  <span class="caption-subject" translate>Leads Statistics</span>
+                  <span class="caption-subject" translate>Lead Statistics</span>
               </div>
           </div>
           <div class="portlet-body clearfix" style="min-height: 450px;">
@@ -84,7 +84,7 @@
                   </div>
               </ng-container>
               <br>
-              <app-leads-and-deals-bubble-chart [moduleType]="'Leads'"></app-leads-and-deals-bubble-chart>
+              <app-leads-and-deals-bubble-chart *ngIf="loadChart" [moduleType]="'Leads'" [applyFilter]="applyFilter"></app-leads-and-deals-bubble-chart>
           </div>
       </div>
   </div>

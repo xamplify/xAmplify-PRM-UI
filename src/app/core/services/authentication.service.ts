@@ -557,6 +557,10 @@ export class AuthenticationService {
     module.showAddLeadsAndDealsOptionInTheDashboard = false;
     module.showCampaignOptionInManageVideos = false;
     module.createCampaign = false;
+    module.loggedInThroughXamplifyUrl = false;
+    module.loggedInThroughVendorVanityUrl = false;
+    module.loggedInThroughOwnVanityUrl = false;
+    module.adminOrSuperVisor = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	  this.contactsCount = false;
@@ -583,7 +587,11 @@ export class AuthenticationService {
           window.location.href = 'https://www.xamplify.com/';
         } else {
           this.closeSwal();
-          this.router.navigate(["/"]);
+          if(this.envService.CLIENT_URL=="http://localhost:4200/"){
+            this.router.navigate(['/']);
+          }else{
+            window.location.href = this.envService.CLIENT_URL+"login";
+          }
         }
       }
     }
@@ -827,6 +835,36 @@ updateNotifyPartnersOption(companyId:number,status:boolean){
   return this.http.get(this.REST_URL+"admin/updateNotifyPartnersOption/"+companyId+"/"+status+"?access_token="+this.access_token)
       .map(this.extractData)
       .catch(this.handleError);
+}
+
+/**********Team Member Groups***************/
+findAllTeamMemberGroupIdsAndNames(addDefaultOption:boolean){
+  let userId = this.getUserId();
+		var url = this.REST_URL + "teamMemberGroup/findAllGroupIdsAndNames/"+userId+"/"+addDefaultOption+"?access_token=" + this.access_token;
+		return this.http.get(url)
+			.map(this.extractData)
+			.catch(this.handleError);
+}
+
+findAllTeamMembersByGroupId(pagination:Pagination){
+		var url = this.REST_URL + "teamMember/findAllTeamMembersByGroupId?access_token=" + this.access_token;
+		return this.http.post(url,pagination)
+			.map(this.extractData)
+			.catch(this.handleError);
+}
+
+findSelectedTeamMemberIds(partnershipId:number){
+  var url = this.REST_URL + "teamMemberGroup/findSelectedTeamMemberIds/"+partnershipId+"?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+showPartnersFilter(){
+  var url = this.REST_URL + "admin/showPartnersFilter/"+this.getUserId()+"?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
 }
   
   

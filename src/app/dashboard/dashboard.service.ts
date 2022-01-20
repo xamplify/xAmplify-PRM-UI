@@ -399,7 +399,6 @@ export class DashboardService {
     }
 
     getVideoViewsLevelOneReportsForVanityURL(daysInterval: number, dateValue: any, dto: DashboardAnalyticsDto) {
-        console.log("date value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/views/level1?access_token=' + this.authenticationService.access_token +
             '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, dto)
@@ -423,12 +422,12 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getVideoMinutesWatchedLevelTwoReportsForVanityURL(daysInterval: any, dateValue: number, videoId: number, pagination: Pagination) {
-        console.log("date value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/minuteswatched/level2?access_token=' + this.authenticationService.access_token + '&videoId=' + videoId + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
+
 
     getCampaignsHeatMapDetailsForVanityURL(limit: any, dto: DashboardAnalyticsDto) {
         const url = this.authenticationService.REST_URL + 'dashboard/views/heatmap-data?access_token=' + this.authenticationService.access_token + '&limit=' + limit;
@@ -453,49 +452,48 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    getContactsStatistics() {
-        const url = this.authenticationService.REST_URL + 'dashboard/views/getContactsAnalyticsTreeMapData' + '/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    getContactsStatistics(applyFilter:boolean) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getContactsAnalyticsTreeMapData' + '/' + this.authenticationService.getUserId() +'/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getActiveInActiveTotalPartnerCounts() {
-        const url = this.authenticationService.REST_URL + 'dashboard/views/getActiveInActiveTotalPartnerCounts' + '/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+    getActiveInActiveTotalPartnerCounts(applyFilter:boolean) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getActiveInActiveTotalPartnerCounts' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+'?access_token=' + this.authenticationService.access_token;
+        return this.getUrl(url);
+    }
+
+    getPartnerContactsCount(applyFilter:boolean) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getPartnerContactsCount' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
+        return this.getUrl(url);
+    }
+
+    getLeadsCount(applyFilter:boolean) {
+        return this.http.get(this.authenticationService.REST_URL + "lead/getVendorLeadsCount/"+this.authenticationService.getUserId()+"/"+applyFilter+"?access_token="+this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getDealsCount(applyFilter:boolean) {
+        let url = this.authenticationService.REST_URL + "deal/getVendorDealsCount/"+this.authenticationService.getUserId()+"/"+applyFilter+"?access_token="+this.authenticationService.access_token;
+        return this.getUrl(url);
+    }
+
+    getWordCloudDataForRedistributedCampaigns(applyFilter:boolean) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getWordCloudDataForRedistributedCampaigns' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
+        return this.getUrl(url);
+    }
+
+    getUrl(url:string){
         return this.http.get(url)
-            .map(this.extractData)
-            .catch(this.handleError);
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
-    getPartnerContactsCount() {
-        const url = this.authenticationService.REST_URL + 'dashboard/views/getPartnerContactsCount' + '/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
-        return this.http.get(url)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    getLeadsCount() {
-        return this.http.get(this.authenticationService.REST_URL + `lead/getVendorLeadsCount/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    getDealsCount() {
-        return this.http.get(this.authenticationService.REST_URL + `deal/getVendorDealsCount/${this.authenticationService.getUserId()}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    getWordCloudDataForRedistributedCampaigns() {
-        const url = this.authenticationService.REST_URL + 'dashboard/views/getWordCloudDataForRedistributedCampaigns' + '/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
-        return this.http.get(url)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    getBubbleChartDataByType(type: string) {
+    getBubbleChartDataByType(type: string,applyFilter:boolean) {
         let dealOrLeadUrl = type == "Deals" ? 'getDealBubbleChartData' : 'getLeadBubbleChartData';
-        const url = this.authenticationService.REST_URL + 'dashboard/views/' + dealOrLeadUrl + '/' + this.authenticationService.getUserId() + '?access_token=' + this.authenticationService.access_token;
+        const url = this.authenticationService.REST_URL + 'dashboard/views/' + dealOrLeadUrl + '/' + this.authenticationService.getUserId() +'/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

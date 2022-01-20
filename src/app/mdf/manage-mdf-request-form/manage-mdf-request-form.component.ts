@@ -1,4 +1,4 @@
-import { Component, OnInit,Input, OnDestroy } from '@angular/core';
+import { Component, OnInit,Input, OnDestroy,EventEmitter,Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -32,6 +32,7 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
   @Input() vendorCompanyId:number;
   @Input() partnerView:boolean;
   @Input() partnershipId:number;
+  @Output() mdfRequestFormEventEmitter = new EventEmitter();
   formName: string="";
   statusCode:number = 0; 
   customResponse:CustomResponse = new CustomResponse();
@@ -45,6 +46,8 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
   comments:Array<any> = new Array<any>();
   invalidComment: boolean;
   loggedInUserCompanyId: any;
+  showPartners: boolean;
+  selectedFilterIndex = 1;
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService,private mdfService:MdfService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -85,7 +88,8 @@ export class ManageMdfRequestFormComponent implements OnInit,OnDestroy {
             if(this.partnershipId!=undefined && this.partnershipId>0){
                 this.pagination.partnershipId = this.partnershipId;
             }
-         this.listSubmittedData(this.pagination);
+            this.pagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+            this.listSubmittedData(this.pagination);
           }
         }
       );
@@ -257,6 +261,13 @@ stopLoaders(){
 gotoBottom(){
     $("#comments-div").animate({ scrollTop: $('#comments-div').prop("scrollHeight")}, 1000);
     
+}
+
+getSelectedIndex(index:number){
+  this.selectedFilterIndex = index;
+  this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
+  this.listSubmittedData(this.pagination);
+  this.mdfRequestFormEventEmitter.emit(index);
 }
 
 }

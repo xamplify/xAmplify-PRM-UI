@@ -26,6 +26,7 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
+import { Subject } from 'rxjs';
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
@@ -124,6 +125,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	contactListIdForSyncLocal: any;
 	socialNetworkForSyncLocal: any;	
 	disableSave : boolean =false;
+	loggedInUserCompanyId: any;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
@@ -221,7 +223,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showExpandButton = false;
 	showShareListPopup : boolean = false;
 	isFormList = false;
-	selectedFilterIndex = 0;
+	selectedFilterIndex: number = 0;
+  showFilter = true;
+  resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
+	isTeamMemberPartnerList: boolean;
+  downloadAssociatedPagination : Pagination = new Pagination();
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService) {
@@ -585,21 +591,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         }
 	}
 
-	downloadContactList(contactListId: number, contactListName: any) {
-		try {
-			this.contactService.downloadContactList(contactListId)
-				.subscribe(
-					data => this.downloadFile(data, contactListName),
-					(error: any) => {
-						this.xtremandLogger.error(error);
-						this.xtremandLogger.errorPage(error);
-					},
-					() => this.xtremandLogger.info("download completed")
-				);
+    downloadContactList(contactListId: number, contactListName: any) {
+        try {
+            this.downloadAssociatedPagination.userListId = contactListId;
+            this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
+            this.contactService.downloadContactList(this.downloadAssociatedPagination)
+                .subscribe(
+                data => this.downloadFile(data, contactListName),
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("download completed")
+                );
 
-		} catch (error) {
-			this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
-		}
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+        }
 	}
 
 	downloadFile(data: any, contactListName: any) {
@@ -612,7 +620,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		} else {
 			let a = document.createElement('a');
 			a.href = url;
-			a.download = contactListName + " " + this.checkingContactTypeName + ' List.csv';
+			a.download = contactListName.substr(0, 26) + " " + this.checkingContactTypeName + ' List.csv';
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
@@ -834,12 +842,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
-		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean) {
+		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
 		this.isDefaultPartnerList = isDefaultPartnerList;
-		this.isSynchronizationList = isSynchronizationList
+		this.isSynchronizationList = isSynchronizationList;
+		this.isTeamMemberPartnerList = isTeamMemberPartnerList;
 		this.showAll = false;
 		this.showEdit = true;
 		this.isFormList = isFormList;
@@ -1434,11 +1443,20 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.xtremandLogger.error(error, "ManageContactsComponent", "ContactReportCount()");
 		}
 	}
+	
+    loadContactsByType(contactType: string) {
+    	this.contactsByType.pagination.pageIndex = 1;
+        if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember ) {
+            this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
+            this.resetTMSelectedFilterIndex.next(true);
+        }
+        this.listContactsByType(contactType);
+	}
 
 	listContactsByType(contactType : string) {
-	
 		this.campaignLoader = true;
 		try {
+			this.contactsByType.selectedCategory = contactType;
 			this.contactsByType.isLoading = true;
 			this.resetResponse();
 			this.resetListContacts();
@@ -1757,10 +1775,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     hasAccessForDownloadUndeliverableContacts() {
-        if (this.assignLeads){
-        	this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
+        if (this.assignLeads) {
+            this.listAllContactsByType(this.contactsByType.selectedCategory, this.contactsByType.pagination.totalRecords);
         } else {
             try {
+                if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+                    this.referenceService.setTeamMemberFilterForPagination(this.contactsByType.contactPagination, this.selectedFilterIndex);
+                }
                 this.contactService.hasAccess(this.isPartner)
                     .subscribe(
                     data => {
@@ -2294,7 +2315,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	
 	callInitMethods(){
 	      try {
-
+	    	  this.getCompanyId();
+	    	  
 	    	    /*if (this.loggedInThroughVanityUrl){
 	                if (this.socialNetworkForSyncLocal == 'google'
 	                    || this.socialNetworkForSyncLocal == 'salesforce'
@@ -2619,7 +2641,28 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.pagination.filterBy = filterType;
 		this.loadContactLists(this.pagination);
 	}
-
 	
-	
+	   getCompanyId() {
+        if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+        	this.referenceService.loading(this.httpRequestLoader, true);
+            this.loading = true;
+            this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+                (result: any) => {
+                    if (result !== "") {
+                        this.loggedInUserCompanyId = result;
+                        this.loading = false;
+                        this.referenceService.loading(this.httpRequestLoader, false);
+                    }
+                }, (error: any) => {
+                    this.loading = false;
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                }
+            );
+        }
+	  }
+	      getSelectedIndex(index:number){
+	          this.selectedFilterIndex = index;
+	          this.referenceService.setTeamMemberFilterForPagination(this.contactsByType.pagination,index);
+	          this.listContactsByType(this.contactsByType.selectedCategory);
+	      }
 }

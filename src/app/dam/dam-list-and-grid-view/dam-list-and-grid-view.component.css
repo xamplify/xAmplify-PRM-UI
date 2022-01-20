@@ -190,18 +190,6 @@ cursor: default;
   max-width: 175px !important;
 }
 
-@media screen and (max-width:600px){
-  .mView{
-    bottom:4px;
-  }
-  .mRight{
-    right:23px!important;
-  }
-  .mHeight{
-    height:255px!important;
-  }
-}
-
 .tag {
   font-size: 12px;
   background-color: #00a6e8;
@@ -212,4 +200,46 @@ cursor: default;
   border-radius: 20px;
   padding: 5px 10px;
   display: inline;
+}
+
+.ActionAlign{
+  display: flex;
+}
+
+@media screen and (max-width:600px){
+  .mDamTop{
+    padding-top: 15px;
+  }
+  .mDamSort{
+    width: 90%;
+    padding: 0px!important;
+  }
+  .mDamSearch{
+    right: 0px!important;
+    width: 100%;
+  }
+  .mDamResponse{
+    margin-top: 45px;
+  }
+  .mAlignView{
+    /* white-space: pre-line!important; */
+    line-height: 1.0px;
+    /* text-align: center; */
+  }
+  .mActionWidth{
+    min-width: 140px!important;
+  }
+  .mActionAlign{
+    white-space: pre-line!important;
+    float: left!important;
+  }
+  .mActionAlign2{
+    white-space: nowrap!important;
+    display: inherit!important;
+    margin-top: 3px;
+  }
+  .mDisableColor{
+    color: #888!important;
+    border: 1px solid;
+}
 }

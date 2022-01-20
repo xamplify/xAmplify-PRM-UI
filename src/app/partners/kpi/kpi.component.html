@@ -5,10 +5,6 @@
           <div class="caption" *ngIf="!loader">
               <span class="caption-subject" translate>{{headerText}}</span>
             </div>
-            <div>
-               <a class="close-circle ref-mar" (click)="refreshKpis()" title="Refresh">
-                  <i class="fa fa-refresh" aria-hidden="true"></i></a>
-            </div>
       </div>
       <div class="portlet-body">
         <div class="row" *ngIf="!companyIdError">
@@ -21,8 +17,7 @@
                     <i aria-hidden="true" class="fa fa-tags"></i>
                  </div>
                  <div class="details">
-                    <div class="number">{{leadsToDealsConversionInPercentage | slice:0:8}}
-                     <span *ngIf="leadsToDealsConversionInPercentage?.length>8">...</span>
+                    <div class="number">{{leadsToDealsConversionInPercentage}}
                     </div>
                     <div class="desc">Leads To Deals Conversion</div>
                  </div>

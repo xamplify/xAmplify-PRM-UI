@@ -15,6 +15,7 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
 chartLoader = false;
 statusCode=200;
 @Input() chartId:any;
+@Input() applyTeamMemberFilter:boolean;
 hasLeadsAndDealsAccess = false;
 headerText = "";
 filterValue = 'r';
@@ -39,7 +40,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
             if(this.chartId=='redistributeCampaignsAndLeadsCountBarChart'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
             }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
-                this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads For Previous Quarter':'Redistributed Campaigns For Previous Quarter';
+                this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Previous Quarter Leads':'Redistributed Campaigns For Previous Quarter';
             }else if(this.chartId=='top10LeadsAndDealsBarChart'){
                 if(this.hasLeadsAndDealsAccess){
                     this.hideLeadsAndDealsChart = false;
@@ -64,7 +65,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
   }
 
   getDataForBarChart(){
-    this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId,this.filterValue).subscribe(
+    this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId,this.filterValue,this.applyTeamMemberFilter).subscribe(
         response=>{
             let data = response.data;
             this.statusCode =  response.statusCode;
@@ -75,6 +76,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
                 this.renderChart(xAxis,yAxis1,yAxis2);
             }else{
                 this.chartLoader = false;
+                $('#'+this.chartId).html('');
             }
         },error=>{
             this.setErrorResponse(error);
@@ -82,7 +84,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
       );
   }
 
-  setErrorResponse(error){
+  setErrorResponse(error:any){
     this.chartLoader = false;
     this.statusCode = 500;
     this.xtremandLogger.error(error);
@@ -222,5 +224,6 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
     this.filterValue = $('#'+dropDownId+' option:selected').val();
     this.getDataForBarChart();
   }
+
 
 }

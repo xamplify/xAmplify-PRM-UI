@@ -83,4 +83,10 @@ export class Pagination {
 	excludeBeePdf : boolean = false;
 
 	surveyCampaignForm = false;
+	partnerTeamMemberGroupFilter = false;
+	callPaginationComponent = false;
+
+	fromDateFilterString:string = "";
+	toDateFilterString:string = "";
+	forCampaignAnalytics = false;
 }

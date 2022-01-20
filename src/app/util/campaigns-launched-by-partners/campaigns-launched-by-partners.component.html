@@ -2,10 +2,11 @@
     <div class="portlet light" style="min-height: 494px">
       <div class="portlet-title" style="min-height: 50px;">
         <div class="caption">
-          <span class="caption-subject font-red-sunglo uppercase" translate>Campaigns  Launched By Active {{authenticationService?.partnerModule?.customName}}</span>
+          <span class="caption-subject font-red-sunglo uppercase" translate>
+            Campaigns  Launched By Active {{authenticationService?.partnerModule?.customName}}</span>
         </div>
         <div class="inputs" id="right">
-          <div class="portlet-input input-inline input-medium">
+          <div class="portlet-input input-inline">
             <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
               <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
               placeholder="Search" (keypress)="activePartnerSearch($event.keyCode)">
@@ -48,7 +49,7 @@
             </tr>
           </tbody>
         </table>
-        <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
+        <div *ngIf="activePartnersPagination.totalRecords==0 && !activeParnterHttpRequestLoader.isLoading" class="alert alert-info">
           <strong>No campaigns found</strong>
         </div>
       </div>

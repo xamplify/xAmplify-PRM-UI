@@ -890,6 +890,18 @@ fieldset {
   border-color: #fff !important;
 }
 
+.vlt-b-c:hover{	
+	background-color: #8877a9 !important;
+	color: #fff !important;
+	border-color: #fff !important;
+}
+
+.lt-g-b-c:hover{	
+	background-color: #57c195 !important;
+	color: #fff !important;
+	border-color: #fff !important;
+}
+
 #email-icons {
 	margin-top: 10px;
 	width: 125px;

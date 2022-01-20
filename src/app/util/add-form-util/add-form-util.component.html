@@ -40,17 +40,23 @@
                             <div class="col-md-8" id="complete-form-div">
                                 <div class="portlet light">
                                     <div class="portlet-title tabbable-line">
-                                        <div class="caption caption-md">
-                                            <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                            <h4 [attr.class]="formNameClass"><strong>{{form.name}}</strong>
-                                                <a *ngIf="!isMdfForm" data-toggle="tooltip" data-placement="top" title="Change Form Details" (click)="showAddForm()">
-                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6 padding-none">
+                                            <div class="caption caption-md" style="width: 100%;display: inline-flex;">
+                                                <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                                                <h4 [attr.class]="formNameClass"><strong title="{{form.name}}">{{form.name}}</strong>
+                                                </h4>
+                                                <a *ngIf="!isMdfForm" class="icon-margin" data-toggle="tooltip" data-placement="top" title="Change Form Details"
+                                                        (click)="showAddForm()">
+                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
-                                            </h4>
+                                            </div>
                                         </div>
-                                        <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen" (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
-                                        <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i class="fa fa-eye" aria-hidden="true"
-                                                id="eye"></i></a>
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 padding-none">
+                                            <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen"
+                                                (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
+                                            <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i
+                                                    class="fa fa-eye" aria-hidden="true" id="eye"></i></a>
+                                        </div>
                                     </div>
                                     <div class="portlet-body clearfix" id="create-from-div" [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}" [style.backgroundColor]="pageBackgroundColor">
                                         <div *ngIf="form.showCompanyLogo">
@@ -60,7 +66,7 @@
                                         <div class="vertical-center">
                                             <div class="panel panel-info mWid" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
                                                 <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
-                                                    <div class="panel-title">{{form.name}}</div>
+                                                    <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                                                 </div>
                                                 <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='columnInfos'>
                                                     <ng-container *ngFor="let columnInfo of columnInfos;let i=index">

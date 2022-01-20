@@ -20,8 +20,8 @@ declare var $: any, swal: any;
 	styleUrls: ['./partner-company-and-groups-modal-popup.component.css'],
 	providers: [HttpRequestLoader, SortOption, Properties, DamService]
 })
-export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDestroy {
-	
+export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDestroy {
+
 
 	ngxLoading = false;
 	loggedInUserId: number = 0;
@@ -58,7 +58,11 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 	selectedPartnerGroupName = "";
 	selectedPartnerGroupId:number=0;
 	showExpandButton = false; 
-    expandedUserList: any;
+	expandedUserList: any;
+	/***XNFR-85*****/
+	selectedFilterIndex: number = 1;
+	showFilter = true;
+	selectedTab = 1;
 
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
@@ -69,6 +73,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		if (this.companyId != undefined && this.companyId > 0 && this.inputId != undefined && this.inputId > 0 &&
 			this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
 			this.pagination.vendorCompanyId = this.companyId;
+			this.pagination.partnerTeamMemberGroupFilter = true;
 			this.openPopup();
 		} else {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
@@ -85,30 +90,32 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		this.findPublishedType();
 	}
 
-	findPublishedType(){
+	findPublishedType() {
 		this.modalPopupLoader = true;
 		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.isPublishedToPartnerGroups(this.inputId,this.moduleName).subscribe(
-			response=>{
+		this.damService.isPublishedToPartnerGroups(this.inputId, this.moduleName).subscribe(
+			response => {
 				this.isPublishedToPartnerGroup = response.data;
-				if(this.isPublishedToPartnerGroup){
+				if (this.isPublishedToPartnerGroup) {
 					$('#partnerGroups-li').addClass('active');
 					$('#partnerGroups').addClass('tab-pane fade in active');
-				}else{
+					this.showFilter = false;
+					this.selectedTab = 2;
+				}else {
 					$('#partners-li').addClass('active');
 					$('#partners').addClass('tab-pane fade in active');
+					this.showFilter = true;
+					this.selectedTab = 1;
 				}
-			},error=>{
+			}, error => {
 				this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 				this.closePopup();
-			},()=>{
-				this.modalPopupLoader = false;
-				if(this.isPublishedToPartnerGroup){
+			},() => {
+				if (this.isPublishedToPartnerGroup) {
 					this.findPublishedPartnerGroupIdsByInputId();
-				}else{
+				} else {
 					this.findPublishedPartnershipIdsByInputId();
 					this.findPublishedPartnerIds();
-
 				}
 			}
 		);
@@ -116,7 +123,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 
 	findPublishedPartnerGroupIdsByInputId() {
 		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.findPublishedPartnerGroupIdsByDamId(this.inputId,this.moduleName).subscribe(
+		this.damService.findPublishedPartnerGroupIdsByDamId(this.inputId, this.moduleName).subscribe(
 			response => {
 				this.selectedPartnerGroupIds = response.data;
 				if (response.data != undefined && response.data.length > 0) {
@@ -134,7 +141,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 
 	findPublishedPartnerIds() {
 		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.findPublishedPartnerIds(this.inputId,this.moduleName).subscribe(
+		this.damService.findPublishedPartnerIds(this.inputId, this.moduleName).subscribe(
 			response => {
 				this.selectedTeamMemberIds = response.data;
 				if (response.data != undefined && response.data.length > 0) {
@@ -150,7 +157,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 
 	findPublishedPartnershipIdsByInputId() {
 		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.findPublishedPartnershipIdsByDamId(this.inputId,this.moduleName).subscribe(
+		this.damService.findPublishedPartnershipIdsByDamId(this.inputId, this.moduleName).subscribe(
 			response => {
 				this.selectedPartnershipIds = response.data;
 			}, error => {
@@ -166,6 +173,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		pagination.campaignId = this.inputId;
+		pagination.userId = this.loggedInUserId;
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;
@@ -175,8 +183,10 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 			});
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
 			this.referenceService.stopLoader(this.httpRequestLoader);
+			this.modalPopupLoader = false;
 		}, _error => {
 			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+			this.modalPopupLoader = false;
 		}, () => {
 
 		});
@@ -259,7 +269,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		}
 	}
 
-	
+
 
 	getTeamMembersAndAdmins(teamMembersPagination: Pagination) {
 		this.adminsAndTeamMembersErrorMessage = new CustomResponse();
@@ -346,15 +356,16 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		event.stopPropagation();
 	}
 
-	disableOrEnablePartnerListsTab(){
-		if(this.selectedTeamMemberIds.length>0){
-			$('#partnerGroups-li').css({'cursor':'not-allowed'});
-			$('.partnerGroupsC').css({'pointer-events':'none'});
-			$('#partnerGroups-li').attr('title','You can choose either partners/partner lists');
-		}else{
-			$('#partnerGroups-li').css({'cursor':'auto'});
-			$('.partnerGroupsC').css({'pointer-events':'auto'});
-			$('#partnerGroups-li').attr('title','Click to see partner lists');
+	disableOrEnablePartnerListsTab() {
+		if (this.selectedTeamMemberIds.length > 0) {
+			$('#partnerGroups-li').css({ 'cursor': 'not-allowed' });
+			$('.partnerGroupsC').css({ 'pointer-events': 'none' });
+			let tooltipMessage = "You can choose either company / list";
+			$('#partnerGroups-li').attr('title', tooltipMessage);
+		} else {
+			$('#partnerGroups-li').css({ 'cursor': 'auto' });
+			$('.partnerGroupsC').css({ 'pointer-events': 'auto' });
+			$('#partnerGroups-li').attr('title', 'Click to see lists');
 		}
 	}
 
@@ -381,32 +392,33 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		this.disableOrEnablePartnerListsTab();
 		ev.stopPropagation();
 	}
-	clearAll(){
+	clearAll() {
 		let selectedTabName = this.selectedTabName();
-		if("partners"==selectedTabName){
+		if ("partners" == selectedTabName) {
 			this.selectedTeamMemberIds = [];
 			this.selectedPartnershipIds = [];
 			this.isHeaderCheckBoxChecked = false;
 			this.disableOrEnablePartnerListsTab();
-		}else{
+		} else {
 			this.selectedPartnerGroupIds = [];
 			this.isParnterGroupHeaderCheckBoxChecked = false;
+			$('#parnterGroupsHeaderCheckBox').prop('checked',false);
 			this.disableOrEnablePartnerCompaniesTab();
 		}
 	}
 	/************Partner Company Checkbox related code ends here****************/
-	selectedTabName(){
+	selectedTabName() {
 		return $('.tab-pane.active').attr("id");
 	}
 
 	publish() {
 		this.customResponse = new CustomResponse();
-		if (this.selectedTeamMemberIds.length > 0 || this.selectedPartnerGroupIds.length>0 || this.isEdit) {
+		if (this.selectedTeamMemberIds.length > 0 || this.selectedPartnerGroupIds.length > 0 || this.isEdit) {
 			let selectedType = this.selectedTabName();
 			this.damPublishPostDto.partnerGroupSelected = ('partnerGroups' == selectedType);
-			if(this.isEdit){
+			if (this.isEdit) {
 				this.publishOrUnPublishToGroupsOrCompanies();
-			}else{
+			} else {
 				this.setValuesAndPublish();
 			}
 		} else {
@@ -415,58 +427,58 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		}
 	}
 
-	publishOrUnPublishToGroupsOrCompanies(){
-		if(this.damPublishPostDto.partnerGroupSelected  && !this.isPublishedToPartnerGroup){
+	publishOrUnPublishToGroupsOrCompanies() {
+		if (this.damPublishPostDto.partnerGroupSelected && !this.isPublishedToPartnerGroup) {
 			this.unPublishToCompaniesAndPublishToGroups();
-		 }else if(!this.damPublishPostDto.partnerGroupSelected && this.isPublishedToPartnerGroup){
+		} else if (!this.damPublishPostDto.partnerGroupSelected && this.isPublishedToPartnerGroup) {
 			this.unPublishToGroupsAndPublishToCompanies();
-		 }else{
-			 this.setValuesAndPublish();
-		 }
+		} else {
+			this.setValuesAndPublish();
+		}
 	}
 
 
-	unPublishToCompaniesAndPublishToGroups(){
-			if(this.selectedPartnerGroupIds.length>0){
-				this.showSweetAlertAndProceed();
-			}else{
-				this.referenceService.goToTop();
-				this.customResponse = new CustomResponse('ERROR', 'Please select atleast one group', true);
-			}
-	}
-
-	unPublishToGroupsAndPublishToCompanies(){
-		if(this.selectedTeamMemberIds.length>0){
+	unPublishToCompaniesAndPublishToGroups() {
+		if (this.selectedPartnerGroupIds.length > 0) {
 			this.showSweetAlertAndProceed();
-		}else{
+		} else {
+			this.referenceService.goToTop();
+			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one group', true);
+		}
+	}
+
+	unPublishToGroupsAndPublishToCompanies() {
+		if (this.selectedTeamMemberIds.length > 0) {
+			this.showSweetAlertAndProceed();
+		} else {
 			this.referenceService.goToTop();
 			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one company', true);
 		}
 	}
 
-	showSweetAlertAndProceed(){
+	showSweetAlertAndProceed() {
 		let self = this;
-				swal({
-					title: 'Are you sure?',
-					text: "Existing data will be deleted",
-					type: 'warning',
-					showCancelButton: true,
-					swalConfirmButtonColor: '#54a7e9',
-					swalCancelButtonColor: '#999',
-					confirmButtonText: 'Yes, delete it!'
-				}).then(function () {
-					self.setValuesAndPublish();
-				}, function (dismiss: any) {
-				});
+		swal({
+			title: 'Are you sure?',
+			text: "Existing data will be deleted",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, delete it!'
+		}).then(function () {
+			self.setValuesAndPublish();
+		}, function (dismiss: any) {
+		});
 	}
 
-	setValuesAndPublish(){
+	setValuesAndPublish() {
 		this.startLoaders();
 		this.damPublishPostDto.damId = this.inputId;
-		if(this.selectedTabName()=="partners"){
+		if (this.selectedTabName() == "partners") {
 			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
 			this.damPublishPostDto.partnerGroupIds = [];
-		}else{
+		} else {
 			this.damPublishPostDto.partnerGroupIds = this.selectedPartnerGroupIds;
 			this.damPublishPostDto.partnerIds = [];
 		}
@@ -474,7 +486,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		this.publishToPartnersOrGroups();
 	}
 
-	publishToPartnersOrGroups(){
+	publishToPartnersOrGroups() {
 		this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
 			this.referenceService.scrollToModalBodyTopByClass();
 			this.stopLoaders();
@@ -511,34 +523,34 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 
 	/******************Partner Group related code starts here*********************/
 	findPartnerGroups(pagination: Pagination) {
-		if(this.selectedTeamMemberIds.length==0){
-		this.customResponse = new CustomResponse();
-		this.referenceService.scrollToModalBodyTopByClass();
-		this.referenceService.startLoader(this.httpRequestLoader);
-		pagination.companyId = this.companyId;
-		pagination.campaignId = this.inputId;
-		this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
-			let data = result.data;
-			pagination.totalRecords = data.totalRecords;
-			this.partnerGroupsSortOption.totalRecords = data.totalRecords;
-			$.each(data.list, function (_index: number, list: any) {
-				list.displayTime = new Date(list.createdTimeInString);
-			});
-			pagination = this.pagerService.getPagedItems(pagination, data.list);
-			/*******Header checkbox will be chcked when navigating through page numbers*****/
-			let partnerGroupIds = pagination.pagedItems.map(function (a) { return a.id; });
-			
-			let items = $.grep(this.selectedPartnerGroupIds, function (element: any) {
-				return $.inArray(element, partnerGroupIds) !== -1;
-			});
-			this.isParnterGroupHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
-			this.referenceService.stopLoader(this.httpRequestLoader);
-		}, _error => {
-			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-		}, () => {
+		if (this.selectedTeamMemberIds.length == 0) {
+			this.customResponse = new CustomResponse();
+			this.referenceService.scrollToModalBodyTopByClass();
+			this.referenceService.startLoader(this.httpRequestLoader);
+			pagination.companyId = this.companyId;
+			pagination.campaignId = this.inputId;
+			this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
+				let data = result.data;
+				pagination.totalRecords = data.totalRecords;
+				this.partnerGroupsSortOption.totalRecords = data.totalRecords;
+				$.each(data.list, function (_index: number, list: any) {
+					list.displayTime = new Date(list.createdTimeInString);
+				});
+				pagination = this.pagerService.getPagedItems(pagination, data.list);
+				/*******Header checkbox will be chcked when navigating through page numbers*****/
+				let partnerGroupIds = pagination.pagedItems.map(function (a) { return a.id; });
+				let items = $.grep(this.selectedPartnerGroupIds, function (element: any) {
+					return $.inArray(element, partnerGroupIds) !== -1;
+				});
+				this.isParnterGroupHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
+				this.referenceService.stopLoader(this.httpRequestLoader);
+				this.modalPopupLoader = false;
+			}, _error => {
+				this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+			}, () => {
 
-		});
-	}
+			});
+		}
 	}
 
 	partnerGroupsSearchOnKeyEvent(keyCode: any) { if (keyCode === 13) { this.searchPartnerGroups(); } }
@@ -562,44 +574,59 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit,OnDest
 		this.disableOrEnablePartnerCompaniesTab();
 	}
 
-	selectOrUnselectAllPartnerGroupsOfTheCurrentPage(event:any){
-		this.selectedPartnerGroupIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds,this.partnerGroupsPagination,event);
+	selectOrUnselectAllPartnerGroupsOfTheCurrentPage(event: any) {
+		this.selectedPartnerGroupIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('partnerGroups-tr', 'parnter-groups-table', 'partnerGroupsCheckBox', this.selectedPartnerGroupIds, this.partnerGroupsPagination, event);
 		this.disableOrEnablePartnerCompaniesTab();
 	}
 
-	disableOrEnablePartnerCompaniesTab(){
-		if(this.selectedPartnerGroupIds.length>0){
-			$('#partners-li').css({'cursor':'not-allowed'});
-			$('.partnersC').css({'pointer-events':'none'});
-			$('#partners-li').attr('title','You can choose either partners/partner lists');
-		}else{
-			$('#partners-li').css({'cursor':'auto'});
-			$('.partnersC').css({'pointer-events':'auto'});
-			$('#partners-li').attr('title','Click to see partner companies');
+	disableOrEnablePartnerCompaniesTab() {
+		if (this.selectedPartnerGroupIds.length > 0) {
+			$('#partners-li').css({ 'cursor': 'not-allowed' });
+			$('.partnersC').css({ 'pointer-events': 'none' });
+			let tooltipMessage = "You can choose either company / list";
+			$('#partners-li').attr('title', tooltipMessage);
+		} else {
+			$('#partners-li').css({ 'cursor': 'auto' });
+			$('.partnersC').css({ 'pointer-events': 'auto' });
+			$('#partners-li').attr('title', 'Click to see companies');
 		}
 	}
-	
-	previewUserListUsers(partnerGroup:any){
+
+	previewUserListUsers(partnerGroup: any) {
 		this.showUsersPreview = true;
 		this.selectedPartnerGroupName = partnerGroup.groupName;
 		this.selectedPartnerGroupId = partnerGroup.id;
 	}
-	
-	resetValues(){
+
+	resetValues() {
 		this.showUsersPreview = false;
-		this.selectedPartnerGroupName ="";
+		this.selectedPartnerGroupName = "";
 		this.selectedPartnerGroupId = 0;
 	}
 
-	viewMatchedContacts(userList: any) {		
-		userList.expand = !userList.expand;		
+	viewMatchedContacts(userList: any) {
+		userList.expand = !userList.expand;
 		if (userList.expand) {
 			if ((this.expandedUserList != undefined || this.expandedUserList != null)
-			 && userList != this.expandedUserList) {				
-				this.expandedUserList.expand = false;				
-			}			
-			this.expandedUserList = userList;			
+				&& userList != this.expandedUserList) {
+				this.expandedUserList.expand = false;
+			}
+			this.expandedUserList = userList;
 		}
 	}
+
+	/******XNFR-85**************/
+	getSelectedIndex(index:number){
+		this.selectedFilterIndex = index;
+		this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
+		this.findPartnerCompanies(this.pagination);
+	}
+
+	findPartnerCompaniesByFilterIndex(pagination:Pagination){
+		this.selectedFilterIndex = 1;
+		this.referenceService.setTeamMemberFilterForPagination(pagination,this.selectedFilterIndex);
+		this.findPartnerCompanies(pagination);
+	}
+	
 
 }

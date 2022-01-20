@@ -46,6 +46,14 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     termsAndConditionStatus: boolean = true;
     gdprStatus:boolean = true;
     validLimit = false;
+    teamMemberGroups:Array<any> = new Array<any>();
+    loading = false;
+    validTeamMemberGroupId: boolean;
+    showModulesPopup = false;
+    teamMemberGroupId = 0;
+    showTeamMembers = false;
+    /****XNFR-98******/
+    @Input() isTeamMemberPartnerList:boolean;
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
@@ -63,6 +71,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
       else {
           this.isPartner = true;
           this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
+        
       }
 
     }
@@ -176,47 +185,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     validteContactsCount(contactsLimit:number){
         this.validLimit = contactsLimit>0;
-
     }
 
-/*    geoLocation(){
-        try{
-        this.videoFileService.getJSONLocation()
-        .subscribe(
-        (data: any) => {
-            this.locationCountry = data.country;
-            if ( !this.isUpdateUser || this.addContactuser.country == undefined ) {
-                this.addContactuser.country = data.country;
-            }
-
-            if ( !this.isUpdateUser || this.addContactuser.mobileNumber == undefined ) {
-                for ( let i = 0; i < this.countryNames.countriesMobileCodes.length; i++ ) {
-                    if ( data.countryCode == this.countryNames.countriesMobileCodes[i].code ) {
-                        this.addContactuser.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
-                        break;
-                    }
-                }
-            }
-
-        } )
-        } catch ( error ) {
-            console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
-        }
-    }*/
-
+    
 
     ngOnInit() {
        try{
-        //this.geoLocation();
         this.addContactuser.country = this.countryNames.countries[0];
-        /*if(this.isPartner){
-            this.checkingContactTypeName = "Partner";
-        }else if(this.isAssignLeads){
-        	this.checkingContactTypeName = "Lead";
-        }else{
-            this.checkingContactTypeName = "Contact";
-        }*/
-
         if ( this.isUpdateUser ) {
             this.checkingForEmail = true;
             this.addContactuser.userId = this.contactDetails.id;
@@ -240,36 +215,97 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
             this.validLimit = this.contactDetails.contactsLimit>0;
             this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
-           /* if ( this.addContactuser.mobileNumber == undefined ) {
-                //this.addContactuser.mobileNumber = "+1";
-                this.geoLocation()
-            }*/
             if ( this.isPartner || this.isAssignLeads ) {
                 if ( this.addContactuser.contactCompany !== undefined && this.addContactuser.contactCompany !== '') {
                     this.isCompanyDetails = true;
                 } else {
                     this.isCompanyDetails = false;
                 }
+                /*******XNFR-85*******/
+                this.findTeamMemberGroups();
+                
             }
-
         }
         if ( this.addContactuser.country == undefined ) {
-            //this.geoLocation();
             this.addContactuser.country = this.countryNames.countries[0];
         }
         /**************Show Legal Basis Content*******************/
         this.fields = { text: 'name', value: 'id' };
-        console.log(this.gdprInput)
         if(this.gdprInput!=undefined){
             this.legalBasisOptions = this.gdprInput.legalBasisOptions;
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
             this.gdprStatus = this.gdprInput.gdprStatus;
         }
+        /*****XNFR-98*****/
+        if(this.isTeamMemberPartnerList==undefined){
+            this.isTeamMemberPartnerList = false;
+        }
         $( '#addContactModal' ).modal( 'show' );
-
+        
        } catch ( error ) {
            console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
        }
+    }
+    /**********XNFR-85************ */
+    findTeamMemberGroups(){
+        if(this.isPartner){
+            this.loading = true;
+            this.addContactuser.selectedTeamMembersCount = this.contactDetails['selectedTeamMembersCount'];
+            this.addContactuser.partnershipId = this.contactDetails.partnershipId;
+            this.addContactuser.teamMemberGroupId = this.contactDetails.teamMemberGroupId;
+            this.addContactuser.selectedTeamMemberIds = this.contactDetails['selectedTeamMemberIds'];
+            this.validTeamMemberGroupId = this.addContactuser.teamMemberGroupId>0;
+            this.authenticationService.findAllTeamMemberGroupIdsAndNames(true).
+            subscribe(
+                response=>{
+                    this.teamMemberGroups = response.data;
+                    this.enableOrDisableTeamMemberGroupDropDown();
+                    this.loading = false;
+                },error=>{
+                    this.loading = false;
+                }
+            );
+        }
+    }
+
+
+    validateTeamMemberGroupId(teamMemberGroupId:any){
+        this.validTeamMemberGroupId = teamMemberGroupId>0;
+        if(this.validTeamMemberGroupId){
+            this.previewTeamMembers();
+        }
+    }
+
+    previewModules(teamMemberGroupId:number){
+        this.showModulesPopup = true;
+        this.teamMemberGroupId = teamMemberGroupId;
+    }
+
+    previewTeamMembers(){
+        this.addContactuser['index'] = 0;
+        this.showTeamMembers = true;
+    }
+
+    receiveTeamMemberIdsEntity(partner:any){
+        this.addContactuser = partner;
+        this.addContactuser.selectedTeamMembersCount = partner['selectedTeamMemberIds'].length;
+        this.enableOrDisableTeamMemberGroupDropDown();
+        this.showTeamMembers = false;
+        
+    }
+
+    enableOrDisableTeamMemberGroupDropDown(){
+        if(this.addContactuser.selectedTeamMembersCount>0 || this.isTeamMemberPartnerList){
+            $('#sel-partner-tm').addClass("disable-dropdown");
+        }else{
+            this.addContactuser.teamMemberGroupId = 0;
+            $('#sel-partner-tm').removeClass("disable-dropdown");
+        }
+    }
+
+    hideModulesPreviewPopUp(){
+        this.showModulesPopup = false;
+		this.teamMemberGroupId = 0;
     }
 
     ngAfterViewInit(){

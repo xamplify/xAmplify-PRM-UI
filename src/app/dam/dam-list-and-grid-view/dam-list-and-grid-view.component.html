@@ -5,16 +5,16 @@
 	[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="row">
 	<div class="col-md-12">
-		<div class="portlet light clearfix" style="min-height: 644px;">
+		<div class="portlet light clearfix mDamResponse" style="min-height: 644px;">
 			<ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
 			<div class="portlet-title" style="border-bottom: none">
 				<div class="row">
 					<div class="page-toolbar col-xs-12">
 						<div class="btn-group pull-right">
 							<ng-container class='m10'>
-								 <span	class="btn btn-xs l-g-view mView"	[class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')"> 
+								 <span	class="btn btn-xs l-g-view"	[class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')"> 
 									<i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp; 
-									<span class="btn btn-xs l-g-view margin-space mView" [class.disabled]="modulesDisplayType.isGridView"	data-toggle="tooltip" data-placement="bottom" title="Grid View"	(click)="setViewType('g')"> 
+									<span class="btn btn-xs l-g-view margin-space" [class.disabled]="modulesDisplayType.isGridView"	data-toggle="tooltip" data-placement="bottom" title="Grid View"	(click)="setViewType('g')"> 
 										<i class="fa fa-th-large p10" aria-hidden="true"></i>
 									</span>
 									 <!-- <ng-container>
@@ -28,24 +28,24 @@
 									<span  class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
 									<i class="fa fa-arrow-up p10" aria-hidden="true"></i></span> -->
 							</ng-container>
-							<div class="inputs" style="float: right">
+							<div class="inputs mDamTop" style="float: right">
 								<a class="close-circle ref-mar" (click)="refreshList()"	title="Refresh">
 									<i class="fa fa-refresh" aria-hidden="true"></i>
 								</a>
 								<div style="float: left;">
 									<ng-container *ngIf="isPartnerView">
-										<select class="form-control mRight"	[(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
+										<select class="form-control mDamSort"	[(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
 											<option	*ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
 										</select> 
 									</ng-container>
 									<ng-container *ngIf="!isPartnerView">
-										<select	class="form-control mRight" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
+										<select	class="form-control mDamSort" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
 											<option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
 										</select> 
 									</ng-container>
 								</div>
 								<div class="portlet-input input-inline input-small"	style="margin-right: 10px;">
-									<div class="input-icon right"	style="position: relative; right: -11px;">
+									<div class="input-icon right mDamSearch"	style="position: relative; right: -11px;">
 										<input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
 										<button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
 										<button type="submit" class="search-box-item-click"	(click)="searchAssets()">
@@ -135,28 +135,33 @@
 								<td class="text-center">{{asset?.assetType}}</td>
 								<td class="text-center"><app-timestamp
 										[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
-								<td>
+								<td class="mAlignView">
 									<div
-										[className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon'">
+										[className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon mActionWidth ActionAlign'" >
 										<ng-container *ngIf="asset?.status=='COMPLETED'">
+										<div class="mActionAlign">	
 										<a *ngIf="asset?.history &&!isPartnerView  && asset?.edit" title="History"	(click)="expandHistory(asset,i)"> 
 											<i class="fa"	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"	title="Design" (click)="addOrEdit(asset.id)">
-											 <i class="fa fa-paint-brush" aria-hidden="true"></i>
+										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"	title="Design" (click)="addOrEdit(asset.id)">
+											 <i class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="asset?.beeTemplate && isPartnerView && asset?.edit" title="Edit"	(click)="addOrEdit(asset.id)">
-											 <i class="fa fa-edit"	aria-hidden="true"></i>
+										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
+											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id)">
-											 <i class="fa fa-edit"	aria-hidden="true"></i>
-										</a> 
+										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id)">
+											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
+										</a>
+										</div>
+										<div class="mActionAlign"> 
 										<a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)">
 											 <i	class="fa fa-eye" aria-hidden="true"></i>
 										</a> 
 										<a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
 											 <i	class="fa fa-share" aria-hidden="true"></i>
-										</a> 
+										</a>
+										</div> 
+										<div class="mActionAlign">
 										<a *ngIf="!isPartnerView" title="Download"	(click)="openPopup(asset)">
 											 <i class="fa fa-download"	aria-hidden="true"></i>
 										</a> 
@@ -167,10 +172,13 @@
 											(click)="viewDetails(asset)">
 											 <i class="fa fa-eye" aria-hidden="true"></i>
 										</a>
+										</div>
+										<div class="mActionAlign2">
 										<a *ngIf="!isPartnerView && asset?.delete " title="Delete"
 											(click)="confirmDelete(asset)"> 
 											<i class="fa fa-trash-o" aria-hidden="true"></i>
 										</a>
+										</div>
 									 </ng-container>
 									</div>
 								</td>
@@ -224,12 +232,12 @@
 															[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
 													<td id="actions-row">
 														<div class="actions-block override-actions custom-width-icon">
-															<a title="Design" (click)="addOrEdit(asset.id)"> <i
-																class="fa fa-paint-brush" aria-hidden="true"></i>
+															<a class="mMobileDisable" title="Design" (click)="addOrEdit(asset.id)"> <i
+																class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
 															</a>
-															 <a *ngIf="!isPartnerView" title="Edit"
+															 <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
 																(click)="editDetails(asset.id)"> <i
-																class="fa fa-edit" aria-hidden="true"></i>
+																class="fa fa-edit mDisableColor" aria-hidden="true"></i>
 															</a> 
 															<a title="Preview" (click)="preview(asset)"> <i
 																class="fa fa-eye" aria-hidden="true"></i>
@@ -311,7 +319,6 @@
 							</div>
 							
 							<div class="bar auto-height">
-								
 								<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset"
 								 (assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 								(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
@@ -380,12 +387,12 @@
 								<span *ngIf="asset?.published" translate>Published</span>
 							</div>
 							<div class="bar auto-height">
-								<a *ngIf="asset?.beeTemplate" title="Design"
-									(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush"
+								<a class="mMobileDisable" *ngIf="asset?.beeTemplate" title="Design"
+									(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush mDisableColor"
 									aria-hidden="true"></i>
-								</a> <a *ngIf="!isPartnerView" title="Edit"
+								</a> <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
 									(click)="editDetails(asset.id)">
-									 <i class="fa fa-edit"
+									 <i class="fa fa-edit mDisableColor"
 									aria-hidden="true"></i>
 								</a> <a title="Preview" (click)="preview(asset)"> <i
 									class="fa fa-eye" aria-hidden="true"></i>

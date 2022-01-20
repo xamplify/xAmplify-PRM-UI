@@ -25,7 +25,7 @@
                       </span>
                    </h6>
                    <div class="media col-xs-12">
-                      <div class="col-xs-6">
+                      <div class="col-sm-6 col-sm-12">
                       <div class="media-left p10">
                          <i class="fa fa-bullhorn" aria-hidden="true"></i>
                       </div>
@@ -52,7 +52,7 @@
                          </h6>
                       </div>
                    </div>
-                   <div class="col-sm-6">
+                   <div class="col-sm-6 col-xs-12">
                       <div class="media-left p10">
                          <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                       </div>
@@ -68,7 +68,7 @@
                    </div>
 
                    <div class="media col-xs-12">
-                     <div class="col-xs-6">
+                     <div class="col-xs-8 col-sm-6">
                       <div class="media-left p10">
                          <i class="fa fa-folder-open-o" aria-hidden="true"></i>
                       </div>
@@ -78,7 +78,7 @@
                          </h5>
                       </div>
                    </div>
-                   <div class="col-xs-6">
+                   <div class="col-xs-4 col-sm-6">
                      <div class="media-left p10">
                         <i class="fa fa-book" aria-hidden="true"></i>
                      </div>
@@ -109,10 +109,10 @@
                 <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor" [hidden]="previewCampaignType === 'SOCIAL'">
                    <legend class="scheduler-border">Selected:</legend>
                    <div class="col-xs-12 col-xs-12 row p0">
-                      <div [hidden]="!campaign.campaignVideoFile" class="col-xs-6 p0">
+                      <div [hidden]="!campaign.campaignVideoFile" class="col-xs-12 col-sm-6 p0">
                          <app-video-play *ngIf="campaign?.campaignVideoFile" [isPreview]="true" [videoFile]="campaign.campaignVideoFile" [videoWidth]="'280px'" [videoHeight]="'165px'"></app-video-play>
                       </div>
-                      <div *ngIf="(previewCampaignType==='REGULAR' || previewCampaignType==='EVENT' ||  previewCampaignType==='LANDINGPAGE')" class="col-xs-6">
+                      <div *ngIf="(previewCampaignType==='REGULAR' || previewCampaignType==='EVENT' ||  previewCampaignType==='LANDINGPAGE')" class="col-xs-12 col-sm-6">
                          <div class="portlet light clearfix" style="padding:0px">
                             <div class="p0">
                                <div class="pricing hover-effect">
@@ -132,7 +132,7 @@
                          <div *ngIf="!campaign.emailTemplate?.id" class="col-xs-6 p0" style="margin-top: 60px; text-align: center;">
                             <p style="color: #ff3a3a;">No Template found</p>
                          </div>
-                         <div *ngIf="campaign.emailTemplate?.id" class="col-xs-6 p0">
+                         <div *ngIf="campaign.emailTemplate?.id" class="col-xs-12 col-sm-6 p0">
                             <ul class="content__list">
                                <li class="list__item" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
                                   <div class="flex-row">

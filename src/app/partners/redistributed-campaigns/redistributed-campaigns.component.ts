@@ -26,6 +26,7 @@ export class RedistributedCampaignsComponent implements OnInit {
   channelCampaignsLoader:HttpRequestLoader = new HttpRequestLoader();
   redistributedCampaignsLoader:HttpRequestLoader = new HttpRequestLoader();
   loading = false;
+  @Input() applyFilter;
   constructor(public router: Router, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,
@@ -33,6 +34,7 @@ export class RedistributedCampaignsComponent implements OnInit {
     public utilService: UtilService) { }
 
   ngOnInit() {
+    this.channelCampaignsPagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.findChannelCampaigns(this.channelCampaignsPagination);
   }
 
@@ -51,7 +53,7 @@ export class RedistributedCampaignsComponent implements OnInit {
           this.referenceService.loading( this.channelCampaignsLoader, false );
       },
       (error: any ) => { 
-        this.xtremandLogger.error(error);
+        this.xtremandLogger.errorPage(error);
         
        });
   }
@@ -113,6 +115,8 @@ export class RedistributedCampaignsComponent implements OnInit {
   if(campaign.expand){
     this.referenceService.loading(this.redistributedCampaignsLoader, true);
     this.redistributedCampaignsPagination.campaignId = campaign.campaignId;
+    this.redistributedCampaignsPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+    this.redistributedCampaignsPagination.userId = this.authenticationService.getUserId();
     this.findRedistributedCampaigns(this.redistributedCampaignsPagination);
   }
 
@@ -133,16 +137,20 @@ export class RedistributedCampaignsComponent implements OnInit {
           this.referenceService.loading(this.redistributedCampaignsLoader, false);
       },
       (error: any ) => { 
-        this.xtremandLogger.error(error);
+        this.xtremandLogger.errorPage(error);
        });
   }
   goToCampaignAnalytics(campaign:any){
     this.loading = true;
-    this.referenceService.campaignType = campaign.campaignType;
-    this.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
+    let self = this;
+    setTimeout(function() {
+      self.referenceService.campaignType = campaign.campaignType;
+      self.router.navigate(["/home/campaigns/"+campaign.campaignId+"/details"]);
+      }, 500);
+    
   }
   
   downloadCsv(){
-    window.open(this.authenticationService.REST_URL+'partner/drpc/'+this.authenticationService.getUserId()+"/Redistributed-Campaigns.csv?access_token="+this.authenticationService.access_token,"taget_blank");
+    window.open(this.authenticationService.REST_URL+'partner/drpc/'+this.authenticationService.getUserId()+"/"+this.applyFilter+"/Redistributed-Campaigns.csv?access_token="+this.authenticationService.access_token,"taget_blank");
   } 
 }

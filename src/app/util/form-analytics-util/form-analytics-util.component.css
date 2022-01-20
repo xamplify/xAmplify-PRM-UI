@@ -70,3 +70,9 @@
 	z-index: 1;
 	font-size: 13px;
 }
+
+.text-wrap {
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

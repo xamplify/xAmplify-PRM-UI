@@ -604,7 +604,7 @@ export class DealAnalyticsComponent implements OnInit
             }
             this.campaingContactLists = data.userLists;
 
-            this.isPartnerCampaign = this.campaign.channelCampaign ? '(PARTNER)' : '';
+            this.isPartnerCampaign = this.campaign.channelCampaign ? '('+this.authenticationService.partnerModule.customName+')' : '';
             this.loading = false;
           },
           error =>

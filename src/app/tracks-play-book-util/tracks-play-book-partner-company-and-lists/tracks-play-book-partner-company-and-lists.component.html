@@ -14,21 +14,12 @@
   <div class="panel-body">
     <div class="tab-content">
       <div class="tab-pane fade in active" id="partners">
+        <app-team-member-filter-option *ngIf="showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
         <ng-container>
           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
             <div class="row">
               <div>
                 <div class="col-xs-12">
-                  <div class="alert alert-success left-float" *ngIf="selectedPartnershipIds?.length>0">
-                    <strong>
-                      <ng-container *ngIf="selectedPartnershipIds?.length==1">
-                        {{selectedPartnershipIds?.length}} company is selected
-                      </ng-container>
-                      <ng-container *ngIf="selectedPartnershipIds?.length>1">
-                        {{selectedPartnershipIds?.length}} companies are selected
-                      </ng-container>
-                    </strong>
-                  </div>
                   <div class="page-toolbar">
                     <div class="left-float">
                       <button class="btn btn-danger" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) "
@@ -50,6 +41,18 @@
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div class="col-xs-12" style="padding-top: 5px;">
+                  <div class="alert alert-success text-center" style="padding: 5px;" *ngIf="selectedPartnershipIds?.length>0">
+                    <strong>
+                      <ng-container *ngIf="selectedPartnershipIds?.length==1">
+                        {{selectedPartnershipIds?.length}} company is selected
+                      </ng-container>
+                      <ng-container *ngIf="selectedPartnershipIds?.length>1">
+                        {{selectedPartnershipIds?.length}} companies are selected
+                      </ng-container>
+                    </strong>
                   </div>
                 </div>
               </div>
@@ -203,7 +206,7 @@
                   </div>
                   <div class="btn-group pull-right">
                     <div class="inputs float-right" style="display: inline-flex;">
-                      <div class="portlet-input input-inline" id="search-div">
+                      <div class="portlet-input input-inline mSearchAlign" id="search-div">
                         <div class="input-icon right" id="icon">
                           <input type="text" id="sort-text" class="form-control" [(ngModel)]="partnerGroupsSortOption.searchKey"
                             [ngModelOptions]="{standalone: true}" placeholder="search..."

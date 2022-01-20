@@ -129,8 +129,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
                             if (!defaultLandingPage) {
                                 self.name = landingPageName;
-
-                                var buttons = $('<div>')
+                                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                                     .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                                 let dropDown = '<div class="form-group">';
                                 dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
@@ -171,7 +170,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                         self.ngxloading = true;
                                         self.clickedButtonName = "UPDATE";
                                         // self.referenceService.startLoader( self.httpRequestLoader );
-                                        swal.close();
+                                        //swal.close();
+                                        $("#bee-save-buton-loader").addClass("button-loader"); 
                                         self.updateLandingPage(false);
                                     } else {
                                         $('#pageTypeSpanError').text('Page Type cannot be changed');
@@ -279,7 +279,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 onSaveAsTemplate: function (jsonFile) { // + thumbnail?
                                 },
                                 onAutoSave: function (jsonFile) { // + thumbnail?
-                                    console.log(new Date().toISOString() + ' autosaving...');
                                     self.landingPage.jsonBody = jsonFile;
                                     self.isMinTimeOver = true;
                                 },
@@ -395,7 +394,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
 
     updateLandingPage(isDestroy: boolean) {
-        swal.close();
         this.landingPage.name = this.name;
         this.landingPage.id = this.id;
         this.landingPage.userId = this.loggedInUserId;
@@ -404,6 +402,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         this.updateCompanyLogo(this.landingPage);
         this.landingPageService.update(this.landingPage).subscribe(
             data => {
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
                     this.ngxloading = false;
                     this.referenceService.stopLoader(this.httpRequestLoader);
@@ -418,6 +417,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                 }
             },
             error => {
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
+                swal.close();
                 this.ngxloading = false;
                 this.referenceService.stopLoader(this.httpRequestLoader);
                 if (error.status == 400) {

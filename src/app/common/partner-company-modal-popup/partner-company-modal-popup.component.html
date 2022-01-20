@@ -22,21 +22,7 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
                                        <ng-container *ngIf="!sendSuccess">
-                                          <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
-                                             <div class="row">
-                                                <div>
-                                                   <div class="col-xs-12">
                                                       <div class="page-toolbar">
-                                                         <div class="alert alert-success left-float" *ngIf="selectedPartnershipIds?.length>0">
-                                                            <strong>
-                                                               <ng-container *ngIf="selectedPartnershipIds?.length==1">
-                                                                  {{selectedPartnershipIds?.length}} company is selected
-                                                               </ng-container>
-                                                               <ng-container *ngIf="selectedPartnershipIds?.length>1">
-                                                                  {{selectedPartnershipIds?.length}} companies are selected
-                                                               </ng-container>
-                                                               </strong>
-                                                         </div>
                                                          <div class="btn-group pull-right">
                                                             <div class="inputs float-right" style="display: inline-flex;">
                                                                <div class="portlet-input input-inline" id="search-div">
@@ -51,11 +37,13 @@
                                                             </div>
                                                          </div>
                                                       </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <br>
+                                          
+                                <app-team-member-filter-option *ngIf="showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                                   <br/><br/>
+                                   <ng-container *ngIf="!sendSuccess">   
+                                     <div class="alert alert-success text-center" *ngIf="selectedPartnershipIds?.length>0">
+                                       <strong>Selected Companies : {{selectedPartnershipIds?.length}}</strong>
+                                    </div>
                                           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                           <ng-container *ngIf="!httpRequestLoader.isLoading">
                                              <div class="table-responsive">
@@ -151,6 +139,7 @@
                                                 <strong>No Data Found.</strong>
                                              </div>
                                           </ng-container>
+                                         </ng-container>
                                        </ng-container>
                                        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
                                        <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">

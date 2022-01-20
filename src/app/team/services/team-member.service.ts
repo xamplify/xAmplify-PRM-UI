@@ -262,11 +262,7 @@ export class TeamMemberService{
 	}
 
 	findAllTeamMemberGroupIdsAndNames(addDefaultOption:boolean) {
-		let userId = this.authenticationService.getUserId();
-		var url = this.URL + "teamMemberGroup/findAllGroupIdsAndNames/"+userId+"/"+addDefaultOption+"?access_token=" + this.authenticationService.access_token;
-		return this.http.get(url)
-			.map(this.extractData)
-			.catch(this.handleError);
+		return this.authenticationService.findAllTeamMemberGroupIdsAndNames(addDefaultOption);
 	}
 
 	saveTeamMembersXNFR2(teamMember:any){

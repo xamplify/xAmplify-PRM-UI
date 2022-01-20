@@ -1,14 +1,10 @@
 <div class="col-xs-12 col-sm-6"  style="padding: 0" *ngIf="!hideLeadsAndDealsChart">
   <div class="col-xs-12">
-      <div class="portlet light" style="min-height: 530px;">
-        <div class="portlet-title" style="min-height: 0px;" [hidden]="chartLoader">
+      <div class="portlet light overflow-x-auto" style="min-height: 530px;">
+        <div class="portlet-title minheight-zero-px" [hidden]="chartLoader">
           <div class="caption">
               <span class="caption-subject" translate>{{headerText}}</span>
             </div>
-            <div>
-              <a class="close-circle ref-mar" (click)="refreshChart()" title="Refresh">
-                 <i class="fa fa-refresh" aria-hidden="true"></i></a>
-           </div>
             <div [hidden]="!hasLeadsAndDealsAccess">
                 <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">
                   <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartDropDown" (change)="filterRedistributeCampaignsAndLeadsCountBarChart()">
@@ -32,7 +28,7 @@
       </div>
       <div class="portlet-body">
         <app-modal-popup-loader [height]="460"  [hidden]="!chartLoader"></app-modal-popup-loader>
-        <figure [hidden]="chartLoader" class="highcharts-figure">
+        <figure [hidden]="chartLoader" class="highcharts-figure mBarChartWidth">
         <div id="{{chartId}}">
           <div class="alert alert-info center-align " *ngIf="statusCode==404">
             <strong>No Data Found</strong>
@@ -42,6 +38,10 @@
         </div>
         </div>
         </figure>
+        <div class="alert alert-info center-align " *ngIf="statusCode==404">
+          <strong>No Data Found</strong>
+      </div>
+      
       </div>
       </div>
   </div>

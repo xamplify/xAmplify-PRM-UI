@@ -10,6 +10,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Lead } from '../models/lead';
 import { EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -19,10 +20,13 @@ declare var swal, $, videojs: any;
 })
 export class ManageCampaignLeadsComponent implements OnInit {
   @Input() public campaignId : any;
-  @Input() public partnerCompanyId : any;
+  @Input() public partnerCompanyId : any = 0;
   @Input() public isVendorVersion : any;
   @Input() public isPartnerVersion : any;
   @Input() public filterKey : any;
+  @Input() public fromAnalytics : boolean = false;  
+  @Input() public showTeamMemberFilter : boolean = false;
+  @Input() refreshCampaignLeadsSubject: Subject<boolean> = new Subject<boolean>();
   
   @Output() viewCampaignLeadForm = new EventEmitter<any>();
   @Output() editCampaignLeadForm = new EventEmitter<any>();
@@ -32,11 +36,16 @@ export class ManageCampaignLeadsComponent implements OnInit {
 
   loggedInUserId : number;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
-  leadsPagination: Pagination;
+  leadsPagination: Pagination = new Pagination();
   leadsSortOption: SortOption = new SortOption();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadsResponse: CustomResponse = new CustomResponse();
-
+  showFilterOption: boolean = false;
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  filterResponse: CustomResponse = new CustomResponse(); 
+  filterMode: boolean = false;
+  selectedFilterIndex: number = 1;
 
   constructor(public authenticationService: AuthenticationService,
     private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -51,14 +60,28 @@ export class ManageCampaignLeadsComponent implements OnInit {
   ngOnInit() {
     if (this.campaignId != undefined && this.campaignId > 0) {
         this.leadsPagination = new Pagination();
-        this.listCampaignLeads(this.leadsPagination);
+        if (this.fromAnalytics && !this.showTeamMemberFilter) {
+          this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==0;
+        } else {
+          this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+        }        
+        this.listCampaignLeads(this.leadsPagination);        
     }
+
+    this.refreshCampaignLeadsSubject.subscribe(response => {
+      if (response) {
+        this.listCampaignLeads(this.leadsPagination);
+      }
+    });
+    
   }
 
   listCampaignLeads(pagination: Pagination) { 
+    this.referenceService.loading(this.httpRequestLoader, true);
     pagination.userId = this.loggedInUserId;   
     pagination.campaignId = this.campaignId;
     pagination.partnerCompanyId = this.partnerCompanyId;
+    pagination.forCampaignAnalytics = this.fromAnalytics;
     if (this.filterKey != undefined && this.filterKey !== "") {
       pagination.filterKey = this.filterKey;
     }
@@ -106,7 +129,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   }  
 
   editLead(lead: Lead) {
-    this.editCampaignLeadForm.emit(lead.id);    console.log("hello");
+    this.editCampaignLeadForm.emit(lead.id);
   }
 
   registerDeal (lead: Lead) {
@@ -161,5 +184,178 @@ export class ManageCampaignLeadsComponent implements OnInit {
  showComments(deal: any) {
   this.showCommentsPopUp.emit(deal);
  }
+
+ downloadLeads() {
+  let type = this.leadsPagination.filterKey;
+  let fileName = "";
+  if (type == null || type == undefined || type == "") {
+    type = "all";
+    fileName = "leads"
+  } else {
+    fileName = type + "-leads"
+  }
+
+  let searchKey = "";  
+  if (this.leadsPagination.searchKey != null && this.leadsPagination.searchKey != undefined) {
+    searchKey = this.leadsPagination.searchKey;
+  }   
+
+  let partnerTeamMemberGroupFilter = false;
+  let userType = "v";
+  if (this.isVendorVersion) {
+    partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
+    userType = "v";
+  } else if (this.isPartnerVersion) {
+    userType = "p";
+  }
+  
+  const url = this.authenticationService.REST_URL + "lead/campaign/download/"
+    + fileName + ".csv?access_token=" + this.authenticationService.access_token;
+
+  var mapForm = document.createElement("form");
+  //mapForm.target = "_blank";
+  mapForm.method = "POST";
+  mapForm.action = url;
+
+  // userType
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "userType";
+  mapInput.setAttribute("value", userType);
+  mapForm.appendChild(mapInput);
+
+  // type
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "type";
+  mapInput.setAttribute("value", type);
+  mapForm.appendChild(mapInput);
+
+  // loggedInUserId
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "userId";
+  mapInput.setAttribute("value", this.loggedInUserId + "");
+  mapForm.appendChild(mapInput);  
+
+  // searchKey
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "searchKey";
+  mapInput.setAttribute("value", searchKey);
+  mapForm.appendChild(mapInput);
+
+  // fromDate
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "fromDate";
+  mapInput.setAttribute("value", this.leadsPagination.fromDateFilterString);
+  mapForm.appendChild(mapInput);
+
+  // toDate
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "toDate";
+  mapInput.setAttribute("value", this.leadsPagination.toDateFilterString);
+  mapForm.appendChild(mapInput);
+
+  // campaignId
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "campaignId";
+  mapInput.setAttribute("value", this.leadsPagination.campaignId + "");
+  mapForm.appendChild(mapInput);
+
+  // partnerCompanyId
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "partnerCompanyId";
+  mapInput.setAttribute("value", this.leadsPagination.partnerCompanyId + "");
+  mapForm.appendChild(mapInput);
+
+  //fromAnalytics
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "forAnalytics";
+  mapInput.setAttribute("value", this.fromAnalytics+"");
+  mapForm.appendChild(mapInput);
+
+  // partnerTeamMemberGroupFilter
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "partnerTeamMemberGroupFilter";
+  mapInput.setAttribute("value", partnerTeamMemberGroupFilter+"");
+  mapForm.appendChild(mapInput);
+
+  document.body.appendChild(mapForm);
+  mapForm.submit();
+}
+
+toggleFilterOption() {
+  this.showFilterOption = !this.showFilterOption;    
+  this.fromDateFilter = "";
+  this.toDateFilter = "";
+  if (!this.showFilterOption) {
+    this.leadsPagination.fromDateFilterString = "";
+    this.leadsPagination.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
+    if (this.filterMode) {
+      this.leadsPagination.pageIndex = 1;
+      this.listCampaignLeads(this.leadsPagination);
+      this.filterMode = false;
+    }      
+  } else {
+    this.filterMode = false;
+  }
+}
+
+closeFilterOption() {
+  this.showFilterOption = false;
+  this.fromDateFilter = "";
+  this.toDateFilter = ""; 
+  this.leadsPagination.fromDateFilterString = "";
+  this.leadsPagination.toDateFilterString = "";
+  this.filterResponse.isVisible = false;
+  if (this.filterMode) {
+    this.leadsPagination.pageIndex = 1;
+    this.listCampaignLeads(this.leadsPagination);
+    this.filterMode = false;
+  }    
+}
+
+validateDateFilters() {
+  if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+    var fromDate = Date.parse(this.fromDateFilter);
+    if (this.toDateFilter != undefined && this.toDateFilter != "") {
+      var toDate = Date.parse(this.toDateFilter);
+      if (fromDate <= toDate) {
+        this.leadsPagination.pageIndex = 1;
+        this.leadsPagination.fromDateFilterString = this.fromDateFilter;
+        this.leadsPagination.toDateFilterString = this.toDateFilter;
+        this.filterMode = true;
+        this.filterResponse.isVisible = false;
+        this.listCampaignLeads(this.leadsPagination);
+      } else {
+        this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+      }
+    } else {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+    }
+  } else {
+    this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+  }    
+}
+
+clearSearch() {
+  this.leadsSortOption.searchKey='';
+  this.getAllFilteredResultsLeads(this.leadsPagination);
+}
+
+getSelectedIndex(index:number){
+  this.selectedFilterIndex = index;
+  this.referenceService.setTeamMemberFilterForPagination(this.leadsPagination,index);
+  this.listCampaignLeads(this.leadsPagination);
+  
+}
 
 }

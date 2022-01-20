@@ -43,13 +43,13 @@
 								<div class="caption" style="color: #000 !important;">Overview</div>
 							</div>
 							<div style="margin-left: 10px;">
-								<h2 title="{{assetDetailsViewDto?.assetName}}">
-									<strong>{{assetDetailsViewDto?.assetName |
-										slice:0:50}}</strong> <span
-										*ngIf="assetDetailsViewDto?.assetName?.length>50">..</span>
+								<h2 class="text-wrap" title="{{assetDetailsViewDto?.assetName}}">
+									<strong>{{assetDetailsViewDto?.assetName}}</strong>
 								</h2>
 								<br>
-								<div [innerHTML]="assetDetailsViewDto?.description" class="desc-break"> <br>
+								<div class="desc-html">
+									<div [innerHTML]="assetDetailsViewDto?.description" class="desc-break"> <br>
+								</div>
 								</div>
 							</div>
 						</div>

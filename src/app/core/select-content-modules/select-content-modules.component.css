@@ -126,4 +126,10 @@ h5 {
       margin-top: -6px;
       margin-bottom: 10px;
     }
+    .mButtonNotClickable{
+        cursor:not-allowed!important;
+    }
+    .mDisableColor{
+        color: #888!important;
+    }
 }

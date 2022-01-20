@@ -31,6 +31,7 @@ import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaig
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+import { Subject } from 'rxjs';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -53,7 +54,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isSynchronizationList: boolean;
 	@Input('value') value: number;
 	@Input() isFormList: boolean;
-	
+	/*****XNFR-98******/
+	@Input() isTeamMemberPartnerList:boolean;
 	editContacts: User;
 	@Output() notifyParent: EventEmitter<User>;
 	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
@@ -224,6 +226,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showNotifyPartnerOption = false;
 	hasPartnersRole : boolean = false;
     hasShareLeadsRole : boolean = false;
+	selectedFilterIndex: number = 1;
+    showFilter = true;
+    resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
+    downloadAssociatedPagination: Pagination = new Pagination();
 	
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
@@ -686,7 +692,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -914,7 +920,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -1590,7 +1596,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 
@@ -1681,6 +1687,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.contactService.getContactsLimit(this.users, this.loggedInUserId).subscribe(
 			(data: any) => {
 				this.users = data.data;
+				/********XNFR-85********/
+				let teamMemberGroups = data.map['teamMemberGroups'];
+				this.teamMemberGroups = teamMemberGroups;
 				this.loading = false;
 				this.showNotifyPartnerOption = true;
 				$('#assignContactAndMdfPopup').modal('show');
@@ -1688,6 +1697,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.loading = false;
 				this.refService.showSweetAlertServerErrorMessage();
 				this.cancelContacts();
+			},()=>{
+
 			});
 	}
 
@@ -1931,7 +1942,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	backToEditContacts() {
-		this.currentContactType = "all_contacts";
 		this.searchKey = null;
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.maxResults = 12;
@@ -1948,6 +1958,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
 		this.contactsByType.selectedCategory = null;
+		this.currentContactType = "all_contacts";
+        this.selectedFilterIndex = 1
+        if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+            this.resetTMSelectedFilterIndex.next(true);
+            this.pagination.partnerTeamMemberGroupFilter = true;
+        }
 		this.setPage(1);
 	}
 
@@ -2293,8 +2309,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showingContactDetails(contactType: string) {
 		this.resetResponse();
 		this.contactsByType.pagination = new Pagination();
-		this.contactsByType.selectedCategory = null;
-	//	this.listOfAllSelectedContactListByType(contactType);
+		this.contactsByType.selectedCategory = contactType;
+		this.selectedFilterIndex = 1;
+	    if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+            this.resetTMSelectedFilterIndex.next(true);
+            this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
+        }
 		this.listOfSelectedContactListByType(contactType);
 	}
 
@@ -2958,7 +2978,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else {
 			let a = document.createElement('a');
 			a.href = url;
-			a.download = this.contactListName + '_' + this.checkingContactTypeName + '_List.csv';
+			a.download = this.contactListName.substr(0, 26) + '_' + this.checkingContactTypeName + '_List.csv';
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
@@ -2978,6 +2998,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         const response = JSON.parse(body);
                         let access = response.access;
                         if (access) {
+                            if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+                                this.refService.setTeamMemberFilterForPagination(this.downloadAssociatedPagination,this.selectedFilterIndex);
+                            }
                             this.downloadList();
                         } else {
                             this.authenticationService.forceToLogout();
@@ -2992,7 +3015,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	downloadList() {
 		try {
-			this.contactService.downloadContactList(this.contactListId)
+			this.downloadAssociatedPagination.userListId = this.contactListId;
+            this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
+			this.contactService.downloadContactList(this.downloadAssociatedPagination)
 				.subscribe(
 					data => {
 						this.downloadFile(data);
@@ -3010,9 +3035,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     hasAccessForDownloadUndeliverableContacts() {
         if (this.assignLeads) {
-        	this.listOfAllSelectedContactListByType();
+            this.listOfAllSelectedContactListByType();
         } else {
             try {
+                if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+                    this.refService.setTeamMemberFilterForPagination(this.contactsByType.contactPagination, this.selectedFilterIndex);
+                  }
                 this.contactService.hasAccess(this.isPartner)
                     .subscribe(
                     data => {
@@ -3063,6 +3091,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 			this.downloadDataList.push(object);
 		}
+		if(this.contactsByType.listOfAllContacts.length===0){
+	         var object = {
+	                 "First Name": null,
+	                 "Last Name": null,
+	                 "Company": null,
+	                 "Job Title": null,
+	                 "Email Id": null,
+	                 "Address": null,
+	                 "City": null,
+	                 "Country": null,
+	                 "Mobile Number": null
+	             }
+	             this.downloadDataList.push(object);
+		}
+		
 		this.refService.isDownloadCsvFile = true;
 	}
 
@@ -3214,8 +3257,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-
 		try {
+			this.currentContactType = "all_contacts";
+            if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+                this.pagination.partnerTeamMemberGroupFilter = true;
+		}
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
 			this.selectedContactListName = this.contactListName;
@@ -3392,6 +3438,68 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "ContactReportCount()");
         }
+	}
+	
+	/*********XNFR-85********* */
+	showTeamMembers = false;
+	showModulesPopup = false;
+	currentPartner: any;
+	teamMemberGroupId = 0;
+	teamMemberGroups:Array<any> = new Array<any>();
+	previewModules(teamMemberGroupId: number) {
+		this.teamMemberGroupId = teamMemberGroupId;
+		this.showModulesPopup = true;
+	}
+
+	getTeamMembersByGroupId(partner: any, index: number) {
+		this.processingPartnersLoader = true;
+		if (partner['selectedTeamMemberIds'].length > 0) {
+			partner['selectedTeamMemberIds'] = [];
+			this.refService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
+		} else {
+			this.getTeamMembers(partner, index);
+		}
+		this.processingPartnersLoader = false;
+	}
+
+	getTeamMembers(partner: any, index: number) {
+		if (partner.teamMemberGroupId > 0) {
+			this.currentPartner = partner;
+			this.currentPartner.index = index;
+			this.showTeamMembers = true;
+		}
+	}
+
+
+	hideModulesPreviewPopUp() {
+		this.showModulesPopup = false;
+		this.teamMemberGroupId = 0;
+	}
+	receiveTeamMemberIdsEntity(partner: any) {
+		this.currentPartner = partner;
+		this.toggleDropDownStatus(partner);
+		this.showTeamMembers = false;
+	}
+
+	toggleDropDownStatus(partner: any) {
+    if (partner.selectedTeamMemberIds.length > 0) {
+      $("#edit-partner-tm-group-" + partner.index).prop("disabled", true);
+    } else {
+	  partner.teamMemberGroupId=0;
+      $("#edit-partner-tm-group-" + partner.index).prop("disabled", false);
     }
+  }
+	
+    getSelectedIndex(index: number) {
+        this.selectedFilterIndex = index;
+        if (this.currentContactType == "all_contacts") {
+            this.refService.setTeamMemberFilterForPagination(this.pagination, index);
+            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+        }else if(this.contactsByType.selectedCategory){
+        	this.refService.setTeamMemberFilterForPagination(this.contactsByType.pagination, index);
+        	this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+        }
+    }
+
     
 }

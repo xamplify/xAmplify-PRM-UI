@@ -32,6 +32,10 @@ import { ClickedUrlsVendorAnalyticsComponent} from '../clicked-urls-vendor-analy
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { LeadsService } from '../../leads/services/leads.service';
 import { isUndefined } from 'util';
+import { Subject } from 'rxjs';
+import { DealsService } from 'app/deals/services/deals.service';
+import { Lead } from 'app/leads/models/lead';
+import { Deal } from 'app/deals/models/deal';
 
 declare var $, Highcharts, swal: any;
 
@@ -39,7 +43,7 @@ declare var $, Highcharts, swal: any;
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.css', './timeline.css'],
-  providers: [Pagination, HttpRequestLoader, LandingPageService]
+  providers: [Pagination, HttpRequestLoader, LandingPageService, DealsService]
 })
 export class AnalyticsComponent implements OnInit, OnDestroy {
   isDealRegistration: boolean = false;
@@ -194,6 +198,16 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   leadActionType = "add";
   leadId = 0;
   showUserLevelCampaignAnalytics = false;
+  showLeads: boolean = false;
+  showDeals: boolean = false;
+  showLeadForm: boolean = false;
+  refreshCampaignLeadsSubject: Subject<boolean> = new Subject<boolean>();
+  showDealForm: boolean = false;
+  dealActionType = "add";
+  selectedLead: Lead;
+  selectedDeal: Deal;
+  isCommentSection: boolean = false;
+
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -469,6 +483,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
           .subscribe(data => {
             this.campaignBarViews = data.data;
+            this.pagination.totalRecords = data.totalRecords;
             this.campaignBarViewsDataInsert();
           },
             error => console.log(error),
@@ -479,6 +494,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             data => {
               console.log(data);
               this.campaignBarViews = data.data;
+              this.pagination.totalRecords = data.totalRecords;
               this.campaignBarViewsDataInsert();
             },
             error => console.log(error),
@@ -504,7 +520,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       views.push(this.campaignBarViews[i].viewsCount)
     }
     this.maxViewsValue = Math.max.apply(null, views);
-    this.pagination.totalRecords = parseInt(this.campaignReport.totalRecipients);
+    //this.pagination.totalRecords = parseInt(this.campaignReport.totalRecipients);
     this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignBarViews);
     console.log(this.pagination);
     if (isShowBarChart) {
@@ -583,7 +599,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 	            	this.campaignReport.pagesClicked = response.data.pagesClicked;
 	            	this.campaignReport.deliveredCount = parseInt(response.data.deliveredCount);
 	            	this.campaignReport.usersWatchCount = parseInt(response.data.views);
-	            	
+                this.campaignReport.leadCount = response.data.leadCount;
+	            	this.campaignReport.dealCount = response.data.dealCount;
                     this.listCampaignViews(campaignId, this.campaignViewsPagination);
 	              /*this.campaignReport.emailOpenCount = data["email_opened_count"];
 	              this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
@@ -1065,8 +1082,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           data => {
             this.campaign = data;
             this.isChannelCampaign = data.channelCampaign;
-            if (this.campaign.nurtureCampaign && this.campaign.userId != this.loggedInUserId && !this.authenticationService.isPartnerTeamMember && !this.isOnlyPartner
-            		&& !this.authenticationService.isVendorAndPartnerTeamMember  && !this.authenticationService.isOrgAdminAndPartnerTeamMember ) {
+            if (this.campaign.nurtureCampaign && this.campaign.userId != this.loggedInUserId
+            		&& !this.authenticationService.module.isOnlyPartner && !this.authenticationService.module.partnerTeamMember) {
               this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
               this.isDataShare = this.campaign.dataShare;
               this.isNavigatedThroughAnalytics = true;
@@ -1095,7 +1112,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             }
 
             this.campaingContactLists = data.userLists;
-            this.isPartnerCampaign = this.campaign.channelCampaign ? '(PARTNER)' : '';
+            this.isPartnerCampaign = this.campaign.channelCampaign ? '('+this.authenticationService.partnerModule.customName+')' : '';
             this.loading = false;
           },
           error => {
@@ -1636,6 +1653,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.userCampaignReport.emailClickedCount = 0;
       this.userCampaignReport.totalUniqueWatchCount = 0;
       this.clearPaginationValues();
+      if (this.campaignType != 'SMS') {
+        this.getCampaignHighLevelAnalytics(this.campaignId);
+      }
     } catch (error) {
       this.xtremandLogger.error('error' + error)
     }
@@ -1747,10 +1767,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   listTotalCampaignViews(campaignId: number) {
+	    let detailedAnalyticsShared = this.campaign.detailedAnalyticsShared;
 	  try {
-	      //this.isLeadListDownloadProcessing = true;
+	      if(!this.isNavigatedThroughAnalytics){
+	    	  detailedAnalyticsShared = true;
+	      }
 	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.campaign.publicEventCampaign,
-	    		  this.campaign.detailedAnalyticsShared)
+	    		  detailedAnalyticsShared)
 	        .subscribe(
 	          data => {
 	          this.downloadFile(data, 'campaignviews', campaignId);
@@ -2974,6 +2997,109 @@ goToCampaignAnaltyics(item:any){
   }
 }
 
+showCampaignLeads() {
+  this.showLeads = true;
+}
+
+closeCampaignLeads() {
+  this.showLeads = false;
+  this.customResponse.isVisible = false;
+  if (this.campaignType != 'SMS') {
+    this.getCampaignHighLevelAnalytics(this.campaignId);
+  }
+}
+
+showCampaignDeals() {
+  this.showDeals = true;
+}
+
+closeCampaignDeals() {
+  this.showDeals = false;
+  this.customResponse.isVisible = false;
+  if (this.campaignType != 'SMS') {
+    this.getCampaignHighLevelAnalytics(this.campaignId);
+  }
+}
+
+viewCampaignLeadForm(leadId: any) {
+    this.showLeadForm = true;
+    this.leadId = leadId;
+    this.leadActionType = "view";
+
+  }
+
+  editCampaignLeadForm(leadId: any) {
+    this.showLeadForm = true;
+    this.leadActionType = "edit";
+    this.leadId = leadId;
+  }
     
+  closeLeadsForm() {
+    this.showLeadForm = false;        
+  }
+
+  showSubmitLeadSuccess() {
+    this.showLeadForm = false;
+    this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);  
+    if (this.leadActionType == "edit") {
+      this.refreshCampaignLeadsSubject.next(true);
+    }  
+  }
+
+  registerDealForm(leadId: any) {
+    this.showDealForm = true;
+    this.dealActionType = "add";
+    this.leadId = leadId;
+  }  
+
+  viewCampaignDealForm(dealId: any) {
+    this.showDealForm = true;   
+    this.dealActionType = "view";
+    this.dealId = dealId;
+    
+  }
+
+  editCampaignDealForm(dealId: any) {
+    this.showDealForm = true;   
+    this.dealActionType = "edit";
+    this.dealId = dealId;
+  }
+
+  closeDealForm() {
+    this.showDealForm = false;    
+  }
+    
+  showSubmitDealSuccess() {
+    this.showDealForm = false;
+    this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);    
+  }
+
+  showComments(lead: any) {
+    this.selectedLead = lead;
+    this.selectedDeal = null;
+    this.isCommentSection = !this.isCommentSection;
+  }
+
+  showDealComments(deal: any) {
+    this.selectedDeal = deal;
+    this.selectedLead = null;
+    this.isCommentSection = !this.isCommentSection;
+  }
+
+  addCommentModalClose(event: any) {
+    if (this.selectedLead != null) {
+      this.selectedLead.unReadChatCount = 0;
+    }
+
+    if (this.selectedDeal != null) {
+      this.selectedDeal.unReadChatCount = 0;
+    }
+    
+    this.isCommentSection = !this.isCommentSection;
+  }
+
+  refreshCounts() {
+    this.customResponse.isVisible = false;
+  }
 
 }

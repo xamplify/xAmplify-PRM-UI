@@ -284,7 +284,7 @@
                 <label for="name" class="col-xs-12 col-sm-4 control-label" translate>Legal Basis Options <span class="danger">*</span></label>
                 <div id="multiselect-sample" class="control-section">
                     <div class="col-lg-8 content-wrapper">
-                        <div class="control-styles">
+                        <div class="control-styles mLegalWid">
                             <ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='legalBasisOptions' [fields]='fields' [placeholder]='placeHolder' (blur)='validateLegalBasisOptions()'></ejs-multiselect>
                             <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
                         </div>
@@ -589,6 +589,7 @@
                             <div class="inputs" align="right" style="float: right"></div>
                         </div>
                         <div class="clearfix">
+                       <app-team-member-filter-option *ngIf="showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                             <div class="col-xs-12" style="padding: 10px 0;">
                                 <div class="alert alert-info flex" *ngIf="isLoadingList">
                                     <div class="loader" style="position: relative; top: -3px; left: -5px; width: 25px; height: 27px;"></div>
@@ -620,8 +621,27 @@
                                                     </td>
                                                     <td>
                                                         <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact"> </app-user-info>
+                                                        <!-- -XNFR-85 -->
+                                                        <ng-container *ngIf="!contact?.multipleTeamMemberGroupsAssigned">
+                                                            <span [className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
+                                                                <ng-container *ngIf="contact?.teamMemberGroupId>0">
+                                                                    <strong title="{{contact?.selectedTeamMemberGroupName}}">Group Name : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
+                                                                        <span *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
+                                                                    </strong>
+                                                                    <br>
+                                                                    <strong>Team Members : {{contact?.selectedTeamMembersCount}}</strong>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="contact?.teamMemberGroupId==0">
+                                                                    <strong>No Group Selected</strong>
+                                                                </ng-container>
+                                                            </span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="contact?.multipleTeamMemberGroupsAssigned">
+                                                            <span class="inactive-status">
+                                                                <strong>Please contact admin</strong>
+                                                            </span>
+                                                        </ng-container>
                                                     </td>
-                                                  
                                                     <td class="hidden-xs white-space-transform" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
                                                         <span *ngIf="contact.vertical?.length>14">..</span>
                                                     </td>
@@ -1101,7 +1121,7 @@
 <!-- T&C Modal -->
 <div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-copy" role="document">
-        <div class="modal-content" style="width: 80%;top: 100px;left: 60px">
+        <div class="modal-content mSweetalertWid" style="width: 80%;top: 100px;left: 60px">
             <div class="modal-header">
                 <h4 class="modal-title f-w-600" id="saveAsModalLabel" translate> Are you sure?</h4>
             </div>
@@ -1205,26 +1225,20 @@
 </div>
 
 <div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog" aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog full-width-modal-popup" role="document">
         <div class="modal-content">
             <div class="modal-header" >
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && authenticationService.module.isPrmAndPartnerTeamMember">
-                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
-                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
-                </ng-container>
-                <ng-container *ngIf="authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
-                    <h4 class="modal-title popup-header-title-font" translate>{{authenticationService?.partnerModule?.customName}}</h4>
-                </ng-container>
             </div>
             <div class="modal-body">
-                <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
-                </app-response-message>
+                <div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible"> 
+                    <strong class="pre-wrap-next-line">{{contactAndMdfPopupResponse?.responseMessage}}</strong>
+                </div>
                 <app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
                 <div class="table-responsive" *ngIf="!processingPartnersLoader">
-                    <table class="table tgrid table-hover table-sm" id="assignContactAndTable" aria-describedby="assignContactAndTable">
+                    <table class="table tgrid table-hover table-sm beige" id="assignContactAndTable" aria-describedby="assignContactAndTable">
                         <thead>
                             <tr>
                                 <th scope="row" translate>Entity Info</th>
@@ -1236,6 +1250,11 @@
                                 <th scope="row" translate>Sign up Notification
                                     <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
+                                    </span>
+                                </th>
+                                <th *ngIf="authenticationService?.module?.adminOrSuperVisor" scope="row" translate>Team Member Group
+                                    <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true"  title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                 </th>
                             </tr>
@@ -1255,6 +1274,29 @@
                                         [size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)">
                                         </switch>
                                     </td>
+                                   <!--- (XNFR-85) ----->
+                                    <td *ngIf="authenticationService?.module?.adminOrSuperVisor" id="team-member-group-error-count-{{i}}">
+                                        <div class="input-group">
+                                        <select id="partner-tm-group-{{i}}" class="form-control" [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembersByGroupId(partner,i)">
+                                          <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
+                                                 {{teamMemberGroup?.name}} ({{teamMemberGroup?.teamMembersCount}})
+                                        </option> 
+                                        </select>
+                                        <span class="input-group-btn">
+                                          <button title="Preview Modules" [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(partner.teamMemberGroupId)">
+                                            <i class="fa fa-eye white" aria-hidden="true"></i>
+                                          </button>
+                                        </span>
+                                        <span class="input-group-btn">
+                                            <button title="Preview Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
+                                              <i class="fa fa-users white" aria-hidden="true"></i>
+                                            </button>
+                                          </span>
+                                        </div>
+                                        <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0">
+                                            <strong>Selected Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong>
+                                        </span>
+                                      </td>
                                 </tr>
                             </ng-container>
                         </tbody>
@@ -1270,3 +1312,8 @@
         </div>
     </div>
 </div>
+
+<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="currentPartner" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+<!-- Group Preview Popup  (XNFR-85)-->
+<app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
+<!-- End of  Group Preview Popup -->

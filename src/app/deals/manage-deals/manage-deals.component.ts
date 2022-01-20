@@ -43,6 +43,7 @@ export class ManageDealsComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   campaignRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   partnerRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  countsRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   showDealForm = false;
   dealsResponse: CustomResponse = new CustomResponse();
   actionType = "add";
@@ -65,11 +66,12 @@ export class ManageDealsComponent implements OnInit {
   selectedDeal: Deal;
   isCommentSection = false;
   selectedCampaign: any;
-  showDownloadFilterOption: boolean = false;
+  showFilterOption: boolean = false;
   fromDateFilter: any = "";
   toDateFilter: any = "";
-  showDateFilters: boolean = false;
-  downloadFilterResponse: CustomResponse = new CustomResponse();
+  filterResponse: CustomResponse = new CustomResponse();
+  filterMode: any = false;
+  selectedFilterIndex: number = 1;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -223,16 +225,19 @@ export class ManageDealsComponent implements OnInit {
 
   getVendorCounts() {
     this.countsLoader = true;
+    this.referenceService.loading(this.countsRequestLoader, true);
+    this.vanityLoginDto.applyFilter = this.selectedFilterIndex==1;
     this.dealsService.getCounts(this.vanityLoginDto)
     .subscribe(
         response => {
+          this.referenceService.loading(this.countsRequestLoader, false);
             if(response.statusCode==200){
               this.counts = response.data.vendorCounts;
               this.countsLoader = false;
             }            
         },
         error => {
-            this.httpRequestLoader.isServerError = true;
+            this.countsRequestLoader.isServerError = true;
             },
         () => { }
     );
@@ -255,38 +260,53 @@ export class ManageDealsComponent implements OnInit {
     );
   }
 
+  resetDealsPagination() {
+    this.dealsPagination = new Pagination;
+    this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.showFilterOption = false;
+  }
+
   showDeals() {
     this.getCounts();
     this.selectedTabIndex = 1;
-    this.dealsPagination = new Pagination;
+    this.resetDealsPagination();
     this.campaignPagination = new Pagination;
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     if(this.vanityLoginDto.vanityUrlFilter){
       this.dealsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
       this.dealsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
       this.campaignPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
       this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
+    this.showCampaignDeals = false;
+    this.selectedPartnerCompanyId = 0;
     this.listDeals(this.dealsPagination);
     this.listCampaigns(this.campaignPagination);
   }
 
   showWonDeals() {
     this.selectedTabIndex = 2;
-    this.dealsPagination = new Pagination;
+    this.resetDealsPagination();
     this.dealsPagination.filterKey = "won";
     this.listDeals(this.dealsPagination);
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "won";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.showCampaignDeals = false;
+    this.selectedPartnerCompanyId = 0;
     this.listCampaigns(this.campaignPagination);
   }
 
   showLostDeals() {
     this.selectedTabIndex = 3;
-    this.dealsPagination = new Pagination;
+    this.resetDealsPagination();
     this.dealsPagination.filterKey = "lost";
     this.listDeals(this.dealsPagination);
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "lost";
+    this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.showCampaignDeals = false;
+    this.selectedPartnerCompanyId = 0;
     this.listCampaigns(this.campaignPagination);
   }
 
@@ -416,6 +436,7 @@ export class ManageDealsComponent implements OnInit {
   showSubmitDealSuccess() {
     this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
     this.showDealForm = false;
+    this.showFilterOption = false;
     //this.getCounts();    
     this.showDeals();
   }
@@ -503,7 +524,7 @@ export class ManageDealsComponent implements OnInit {
       error => {
           this.httpRequestLoader.isServerError = true;
           },
-      () => { }
+      () => { this.showFilterOption = false;}
   );
 
  }
@@ -563,6 +584,7 @@ export class ManageDealsComponent implements OnInit {
           this.selectedCampaign = campaign;
           this.partnerPagination = new Pagination;
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
+          this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
           this.listPartnersForCampaign(this.partnerPagination);
         }
       } else {
@@ -654,8 +676,10 @@ export class ManageDealsComponent implements OnInit {
       vendorCompanyProfileName = this.dealsPagination.vendorCompanyProfileName;
     }
 
+    let partnerTeamMemberGroupFilter = false; 
     let userType = "";
     if (this.isVendorVersion) {
+      partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
       userType = "v";
     } else if (this.isPartnerVersion) {
       userType = "p";
@@ -719,42 +743,58 @@ export class ManageDealsComponent implements OnInit {
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
     mapInput.name = "fromDate";
-    mapInput.setAttribute("value", this.fromDateFilter);
+    mapInput.setAttribute("value", this.dealsPagination.fromDateFilterString);
     mapForm.appendChild(mapInput);
 
     // toDate
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
     mapInput.name = "toDate";
-    mapInput.setAttribute("value", this.toDateFilter);
+    mapInput.setAttribute("value", this.dealsPagination.toDateFilterString);
+    mapForm.appendChild(mapInput);
+
+    // partnerTeamMemberGroupFilter
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "partnerTeamMemberGroupFilter";
+    mapInput.setAttribute("value", partnerTeamMemberGroupFilter+"");
     mapForm.appendChild(mapInput);
 
     document.body.appendChild(mapForm);
     mapForm.submit();
   
-    this.closeFilterOptionForDownload();
   }
 
-  showFilterOptionForDownload() {
-    this.showDownloadFilterOption = !this.showDownloadFilterOption;
-    this.showDateFilters = false;
+  toggleFilterOption() {
+    this.showFilterOption = !this.showFilterOption;    
     this.fromDateFilter = "";
     this.toDateFilter = "";
+    if (!this.showFilterOption) {
+      this.dealsPagination.fromDateFilterString = "";
+      this.dealsPagination.toDateFilterString = "";
+      this.filterResponse.isVisible = false;
+      if (this.filterMode) {
+        this.dealsPagination.pageIndex = 1;
+        this.listDeals(this.dealsPagination);
+        this.filterMode = false;
+      }      
+    } else {
+      this.filterMode = false;
+    }
   }
 
-  closeFilterOptionForDownload() {
-    this.showDownloadFilterOption = false;
-    this.showDateFilters = false;
+  closeFilterOption() {
+    this.showFilterOption = false;
     this.fromDateFilter = "";
     this.toDateFilter = ""; 
-  }
-
-  enableOrDisableDateFilters(event: any) {
-    if (event.target.checked) {
-      this.showDateFilters = true;
-    } else {
-      this.showDateFilters = false;
-    }
+    this.dealsPagination.fromDateFilterString = "";
+    this.dealsPagination.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
+    if (this.filterMode) {
+      this.dealsPagination.pageIndex = 1;
+      this.listDeals(this.dealsPagination);
+      this.filterMode = false;
+    } 
   }
 
   validateDateFilters() {
@@ -763,17 +803,50 @@ export class ManageDealsComponent implements OnInit {
       if (this.toDateFilter != undefined && this.toDateFilter != "") {
         var toDate = Date.parse(this.toDateFilter);
         if (fromDate <= toDate) {
-          this.downloadDeals();
+          this.dealsPagination.pageIndex = 1;
+          this.dealsPagination.fromDateFilterString = this.fromDateFilter;
+          this.dealsPagination.toDateFilterString = this.toDateFilter;
+          this.filterMode = true;
+          this.filterResponse.isVisible = false;
+          this.listDeals(this.dealsPagination);
         } else {
-          this.downloadFilterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
         }
       } else {
-        this.downloadFilterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
       }
     } else {
-      this.downloadFilterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    }
+      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    }    
+  }
 
+  setListView() {
+    this.listView = true;
+    this.closeFilterOption();
+  }
+
+  setCampaignView() {
+    this.listView = false;
+    this.closeFilterOption();
+  }
+
+  clearSearch() {
+    this.dealsSortOption.searchKey='';
+    this.getAllFilteredResultsDeals(this.dealsPagination);
+  }
+
+  clearPartnerSearch() {
+    this.partnerSortOption.searchKey='';
+    this.getAllFilteredResultsPartners(this.partnerPagination);
+  }
+
+  getSelectedIndex(index:number){
+    this.selectedFilterIndex = index;
+    this.getCounts();
+    this.referenceService.setTeamMemberFilterForPagination(this.dealsPagination,index);
+    this.referenceService.setTeamMemberFilterForPagination(this.campaignPagination,index);
+    this.listDealsForVendor(this.dealsPagination);
+    this.listCampaignsForVendor(this.campaignPagination);
     
   }
 

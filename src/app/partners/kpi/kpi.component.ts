@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MdfService } from 'app/mdf/services/mdf.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
@@ -29,6 +29,7 @@ export class KpiComponent implements OnInit {
   mdfAccess = false;
   headerText = "";
   loader = false;
+  @Input() applyTeamMemberFilter:boolean;
   constructor(public mdfService:MdfService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public partnerService:ParterService
     ) { 
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -105,7 +106,7 @@ export class KpiComponent implements OnInit {
 
 
   findLeadsToDealsConversionPercentage(){
-    this.partnerService.findLeadsToDealsConversionPercentage(this.loggedInUserCompanyId).subscribe(
+    this.partnerService.findLeadsToDealsConversionPercentage(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe(
       response=>{
         this.leadsToDealsConversionInPercentage = response.data;
         this.leadsToDealsConversionDto.loader = false;
@@ -118,7 +119,7 @@ export class KpiComponent implements OnInit {
   }
 
   findLeadsOpportunityAmount(){
-    this.partnerService.findLeadsOpportunityAmount(this.loggedInUserCompanyId).subscribe(
+    this.partnerService.findLeadsOpportunityAmount(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe(
       response=>{
         this.opportunityAmount = response.data;
         this.opportunityAmountDto.loader = false;
@@ -132,7 +133,7 @@ export class KpiComponent implements OnInit {
 
   getMdfKpis() {
     this.mdfDto.loader = true;
-    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId).subscribe((result: any) => {
+    this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe((result: any) => {
       this.mdfTotalBalance = result.data.totalBalance;
       this.mdfUsedBalance = result.data.usedBalance;
       this.mdfTotalBalanceInString = result.data.totalBalanceInString;
@@ -155,4 +156,5 @@ export class KpiComponent implements OnInit {
     this.opportunityAmountDto.loader = false;
     this.mdfDto.loader = false;
   }
+
 }

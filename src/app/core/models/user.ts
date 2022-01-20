@@ -53,4 +53,9 @@ export class User {
     mdfAmount:any;
     notifyPartners = false;
     disableNotifyPartnersOption = false;
+    teamMemberGroupId = 0;
+    selectedTeamMembersCount = 0;
+    selectedTeamMemberIds = [];
+    partnershipId = 0;
+    selectedTeamMemberGroupName = "";
 }

@@ -128,3 +128,9 @@ body {
 .mb15 {
     margin-bottom: 15px!important;
 }
+
+.form-name-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

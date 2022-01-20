@@ -33,7 +33,7 @@
                                 <a class="close-circle" (click)="refreshForm()" title="Refresh">
                                     <i class="fa fa-refresh" id="line-height" aria-hidden="true"></i>
                                 </a>
-                                <div class="panel-title" title="{{form.name}}">{{form.name | slice:0:50}}<span *ngIf="form.name?.length>50">..</span></div>
+                                <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                             </div>
                             <div class="panel-body">
                                 <h5 class="mb15" title="{{form.description}}">{{form.description}}</h5>

@@ -26,6 +26,7 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
     loggedInUserId: number = 0;
     pagination: Pagination = new Pagination();
     customResponse: CustomResponse = new CustomResponse();
+	@Input() companyId: any;
     @Input() inputId: any;
     @Output() notifyOtherComponent = new EventEmitter();
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -43,25 +44,36 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
     selectedPartnershipIds: any[] = [];
     teamMembersPagination: Pagination = new Pagination();
     teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
-
+    selectedFilterIndex: number = 0;
+    showFilter = true;
   constructor(public partnerService: ParterService,public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
 	        public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService, public contactService: ContactService) { 
 	  this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
-      this.openPopup();
+      if (this.companyId != undefined && this.companyId > 0 && this.inputId != undefined && this.inputId > 0 ) {
+              this.pagination.vendorCompanyId = this.companyId;
+              this.pagination.partnerTeamMemberGroupFilter = true;
+              this.openPopup();
+          } else {
+              this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
+              this.closePopup();
+          }
   }
   
   openPopup() {
       $('#partnerCompaniesPopup').modal('show');
-          this.findPartnerCompanies(this.pagination);
+      this.findPartnerCompanies(this.pagination);
   }
   
   findPartnerCompanies(pagination: Pagination) {
       this.referenceService.scrollToModalBodyTopByClass();
       this.referenceService.startLoader(this.httpRequestLoader);
-      this.partnerService.loadPartnerCompanies(pagination, this.loggedInUserId).subscribe((result: any) => {
+      pagination.campaignId = this.inputId;
+      pagination.userId = this.loggedInUserId;
+      pagination.vendorCompanyId = this.companyId;
+      this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
           let data = result.data;
           pagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
@@ -299,6 +311,12 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
       this.teamMembersPagination.pageIndex = 1;
       this.getTeamMembersAndAdmins(this.teamMembersPagination);
   }
+  
+  getSelectedIndex(index:number){
+      this.selectedFilterIndex = index;
+      this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
+      this.findPartnerCompanies(this.pagination);
+    }
   
   
 }
