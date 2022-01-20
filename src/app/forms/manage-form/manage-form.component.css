@@ -145,14 +145,31 @@ cursor: default;
   overflow: hidden !important;
 }
 
+.ActionAlign{
+  display: flex;
+}
+
 @media screen and (max-width:600px){
   .mPad{
-      padding: 5px;
+      /* padding: 5px; */
+      width: 40%;
   }
   .mTopAlert{
     top: -22px !important;
   }
+  .mActionTop{
+    margin-top: 5px;
+  }
   .mDisableColor{
     color: #888!important;
-}
+    border: 1px solid;
+  }
+  .mActionAlign{
+    display: block!important;
+    padding-left: 30px;
+  }
+  .mMobileAlignAction2{
+    white-space: initial!important;
+    /* line-height: 1px!important; */
+  }
 }
