@@ -3,14 +3,14 @@
   <a *ngIf="asset?.history && !isPartnerView && asset?.edit " title="History" (click)="viewGirdHistory(asset)"> 
     <i class="fa" [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}"	aria-hidden="true"></i>
   </a> 
-  <a *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit" title="Design"	(click)="addOrEdit(asset.id)"> 
-    <i class="fa fa-paint-brush" aria-hidden="true"></i>
+  <a class="mMobileDisable mDisableColor" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit" title="Design"	(click)="addOrEdit(asset.id)"> 
+    <i class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
   </a> 
-  <a *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
-     <i class="fa fa-edit"	aria-hidden="true"></i>
+  <a class="mMobileDisable mDisableColor" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
+     <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
   </a> 
-  <a *ngIf="!isPartnerView && asset?.edit" title="Edit" (click)="editDetails(asset.id)">
-     <i class="fa fa-edit"	aria-hidden="true"></i>
+  <a class="mMobileDisable mDisableColor" *ngIf="!isPartnerView && asset?.edit" title="Edit" (click)="editDetails(asset.id)">
+     <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
   </a> 
   <a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)"> 
     <i	class="fa fa-eye" aria-hidden="true"></i>
