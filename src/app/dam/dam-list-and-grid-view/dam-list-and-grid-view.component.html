@@ -137,9 +137,9 @@
 										[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
 								<td class="mAlignView">
 									<div
-										[className]="asset?.history ? 'actions-block override-actions':'actions-block override-actions custom-width-icon mActionWidth ActionAlign'" >
+										[className]="asset?.history ? 'actions-block override-actions mActionWidth ActionAlign':'actions-block override-actions custom-width-icon mActionWidth ActionAlign'" >
 										<ng-container *ngIf="asset?.status=='COMPLETED'">
-										<div class="mActionAlign">	
+										<div class="mActionAlign ActionButtonPad">	
 										<a *ngIf="asset?.history &&!isPartnerView  && asset?.edit" title="History"	(click)="expandHistory(asset,i)"> 
 											<i class="fa"	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
 										</a> 
