@@ -516,3 +516,8 @@ table tr:nth-child(even) td {
 		overflow-x: auto;
 	}
 }
+
+.breadcrumb-right {
+	padding-top: 5px;
+	padding-right: 5px;
+}

@@ -99,6 +99,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     toDateFilter: any = "";
     filterResponse: CustomResponse = new CustomResponse(); 
     filterMode: boolean = false;
+    archived: boolean = false;
 
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -158,6 +159,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
             this.pagination.vanityUrlFilter = true;
         }
+        this.pagination.archived = this.archived;
         let self = this;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
@@ -725,6 +727,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
             this.exportObject['folderType'] = viewType;
             this.exportObject['teamMemberId'] = this.teamMemberId;
+            this.exportObject['archived'] = this.archived;
             if(this.categoryId>0){
                 if(this.teamMemberId!=undefined && this.teamMemberId>0){
                     this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
@@ -741,6 +744,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 			this.exportObject['folderType'] = viewType;
             this.exportObject['type'] = 4;
 			this.exportObject['teamMemberId'] = this.teamMemberId;
+            this.exportObject['archived'] = this.archived;
             this.closeFilterOption();
         }
     }
@@ -822,7 +826,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'categoryType' : categoryType,
                  'searchKey' : searchKey,
                  'fromDate' : this.pagination.fromDateFilterString,
-                 'toDate' : this.pagination.toDateFilterString
+                 'toDate' : this.pagination.toDateFilterString,
+                 'archived': this.pagination.archived
              };
          } else {
              param = {
@@ -836,7 +841,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'categoryType' : categoryType,
                  'searchKey' : searchKey,
                  'fromDate' : this.pagination.fromDateFilterString,
-                 'toDate' : this.pagination.toDateFilterString
+                 'toDate' : this.pagination.toDateFilterString,
+                 'archived': this.pagination.archived
              };
          }
          let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
@@ -905,6 +911,33 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         } else {
             this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
         }
+    }
+
+    showArchivedCampaigns() {
+        this.archived = true;
+        this.resetPagination();        
+        this.listCampaign(this.pagination);
+    }
+
+    showActiveCampaigns() {
+        this.archived = false;  
+        this.resetPagination();      
+        this.listCampaign(this.pagination);
+    }
+
+    resetPagination() {
+        this.pagination.pageIndex = 1;
+        this.searchKey = this.pagination.searchKey = "";
+        this.pagination.sortcolumn = this.pagination.sortingOrder = null;
+        this.selectedSortedOption = this.sortByDropDown[0]; 
+        this.pagination.maxResults = 12;
+        this.itemsSize = this.numberOfItemsPerPage[0];
+        this.pagination.campaignType = 'NONE';
+        this.selectedCampaignTypeIndex = 0;
+        this.modulesDisplayType.isListView = true;
+        this.modulesDisplayType.isGridView = false;
+        this.modulesDisplayType.isFolderGridView = false;
+        this.modulesDisplayType.isFolderListView = false;
     }
 
 }

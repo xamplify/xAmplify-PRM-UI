@@ -30,6 +30,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     folderViewType = "List";
 	folderListViewInput = {};
 	selectedModuleType = "";
+    archived: any = false;
     constructor(private router: Router,
         private pagerService: PagerService, public referenceService: ReferenceService,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -50,6 +51,8 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         this.folderListViewInput = {};
         this.folderViewType = this.moduleType['folderType'];
         this.selectedModuleType = this.moduleType['type'];
+        this.archived = this.moduleType['archived'];
+        this.pagination.archived = this.archived;
         this.listCategories(this.pagination);
     }
 

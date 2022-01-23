@@ -101,6 +101,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   toDateFilter: any = "";
   filterResponse: CustomResponse = new CustomResponse(); 
   filterMode: boolean = false;
+  @Input() archived:boolean = false;
 
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -131,44 +132,46 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
       // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
   }
 
-  listCampaign(pagination: Pagination) {
-      this.isloading = true;
-      this.refService.loading(this.httpRequestLoader, true);
-      pagination.searchKey = this.searchKey;
-      if(this.pagination.teamMemberAnalytics){
-          this.pagination.teamMemberId = this.teamMemberId;
-      }
-       //Added by Vivek for Vanity URL
-       if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
-        this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-        this.pagination.vanityUrlFilter = true;
+    listCampaign(pagination: Pagination) {
+        this.isloading = true;
+        this.refService.loading(this.httpRequestLoader, true);
+        pagination.searchKey = this.searchKey;
+        if (this.pagination.teamMemberAnalytics) {
+            this.pagination.teamMemberId = this.teamMemberId;
+        }
+        //Added by Vivek for Vanity URL
+        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this.pagination.vanityUrlFilter = true;
+        }
+
+        this.pagination.archived = this.archived;
+        this.campaignService.listCampaign(pagination, this.loggedInUserId)
+            .subscribe(
+                data => {
+                    this.isloading = false;
+                    if (data.access) {
+                        this.campaigns = data.campaigns;
+                        this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
+                        $.each(this.campaigns, function (_index: number, campaign) {
+                            campaign.displayTime = new Date(campaign.utcTimeInString);
+                            campaign.createdDate = new Date(campaign.createdDate);
+                        });
+                        this.totalRecords = data.totalRecords;
+                        pagination.totalRecords = data.totalRecords;
+                        pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                        this.refService.loading(this.httpRequestLoader, false);
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                error => {
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                },
+                () => this.logger.info("Finished listCampaign()", this.campaigns)
+            );
     }
-      this.campaignService.listCampaign(pagination, this.loggedInUserId)
-          .subscribe(
-          data => {
-            this.isloading = false;
-              if(data.access){
-                this.campaigns = data.campaigns;
-				this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
-                $.each(this.campaigns, function (_index:number, campaign) {
-                    campaign.displayTime = new Date(campaign.utcTimeInString);
-                    campaign.createdDate = new Date(campaign.createdDate);
-                });
-                this.totalRecords = data.totalRecords;
-                pagination.totalRecords = data.totalRecords;
-                pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                this.refService.loading(this.httpRequestLoader, false);
-              }else{
-                this.authenticationService.forceToLogout();
-              }
-          },
-          error => {
-              this.isloading = false;
-              this.logger.errorPage(error);
-          },
-          () => this.logger.info("Finished listCampaign()", this.campaigns)
-          );
-  }
 
   setPage(event) {
       this.pagination.pageIndex = event.page;
@@ -687,7 +690,8 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
                'categoryType' : categoryType,
                'searchKey' : searchKey,
                'fromDate' : this.pagination.fromDateFilterString,
-               'toDate' : this.pagination.toDateFilterString               
+               'toDate' : this.pagination.toDateFilterString,
+               'archived': this.pagination.archived               
            };
        } else {
            param = {
@@ -701,7 +705,8 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
                'categoryType' : categoryType,
                'searchKey' : searchKey,
                'fromDate' : this.pagination.fromDateFilterString,
-               'toDate' : this.pagination.toDateFilterString
+               'toDate' : this.pagination.toDateFilterString,
+               'archived': this.pagination.archived
            };
        }
        let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;

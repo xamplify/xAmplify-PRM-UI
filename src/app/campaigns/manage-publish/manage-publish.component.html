@@ -20,6 +20,11 @@
           <a translate>Manage Campaigns</a>
         </li>
       </ul>
+      <div class="pull-right breadcrumb-right">
+        <button type="button" class="primary" *ngIf="!archived" (click)="showArchivedCampaigns()">View Archived Campaigns</button>
+        <button type="button" class="primary" *ngIf="archived" (click)="showActiveCampaigns()">View Active Campaigns</button>
+      </div>
+     
     </div>
     <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }">
     </ngx-loading>

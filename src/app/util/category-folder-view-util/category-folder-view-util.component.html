@@ -59,7 +59,8 @@
                             {{category.name | slice:0:22}}
                             <span *ngIf="category.name?.length>22">...</span>
                         </h4><br><br>
-                        <span class="view-banner" id="custom-view-banner">{{category.count}}</span>
+                        <span class="view-banner" *ngIf="!archived" id="custom-view-banner">{{category.count}}</span>
+                        <span class="view-banner" *ngIf="archived" id="custom-view-banner">{{category.archivedCount}}</span>
                         <h6 [title]="category.createdBy" translate>By
                             <strong>{{category.createdBy | slice:0:15}}<span
                                     *ngIf="category.createdBy?.length>15">...</span></strong>
@@ -129,7 +130,8 @@
                     </td>
                     <td class="text-center">
                         <div  class="override-actions">
-                            <span  id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.count}}</b></span>
+                            <span *ngIf="!archived" id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.count}}</b></span>
+                            <span *ngIf="archived" id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.archivedCount}}</b></span>
                         </div> 
                     </td>
                 </tr>
@@ -146,7 +148,7 @@
                         		<app-landing-pages-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-landing-pages-list-view-util>
                             </ng-container>
                         	<ng-container *ngIf="selectedModuleType==4">
-                        		<app-campaigns-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-campaigns-list-view-util>
+                        		<app-campaigns-list-view-util [archived]="archived" [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-campaigns-list-view-util>
                             </ng-container>
                             <ng-container *ngIf="selectedModuleType==5">
                         		<app-redistribute-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-redistribute-campaigns-list-view-util>
