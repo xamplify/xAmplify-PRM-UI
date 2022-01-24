@@ -907,6 +907,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	readFiles(files: any, index = 0) {
 		if (this.fileUtil.isCSVFile(files[0])) {
 			this.isListLoader = true;
+			this.customResponse = new CustomResponse();
 			this.paginationType = "csvPartners";
 			var outputstring = files[0].name.substring(0, files[0].name.lastIndexOf("."));
 			this.selectedAddPartnerOption = 2;
