@@ -21,8 +21,8 @@
         </li>
       </ul>
       <div class="pull-right breadcrumb-right">
-        <button type="button" class="primary" *ngIf="!archived" (click)="showArchivedCampaigns()">View Archived Campaigns</button>
-        <button type="button" class="primary" *ngIf="archived" (click)="showActiveCampaigns()">View Active Campaigns</button>
+        <button type="button" class="primary" *ngIf="!campaignService.archived" (click)="showArchivedCampaigns()">View Archived Campaigns</button>
+        <button type="button" class="primary" *ngIf="campaignService.archived" (click)="showActiveCampaigns()">View Active Campaigns</button>
       </div>
      
     </div>

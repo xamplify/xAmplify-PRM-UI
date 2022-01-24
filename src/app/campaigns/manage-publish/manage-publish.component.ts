@@ -99,7 +99,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     toDateFilter: any = "";
     filterResponse: CustomResponse = new CustomResponse(); 
     filterMode: boolean = false;
-    archived: boolean = false;
 
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -159,7 +158,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
             this.pagination.vanityUrlFilter = true;
         }
-        this.pagination.archived = this.archived;
+        
+        this.pagination.archived = this.campaignService.archived;
         let self = this;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
@@ -727,7 +727,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
             this.exportObject['folderType'] = viewType;
             this.exportObject['teamMemberId'] = this.teamMemberId;
-            this.exportObject['archived'] = this.archived;
+            this.exportObject['archived'] = this.campaignService.archived;
             if(this.categoryId>0){
                 if(this.teamMemberId!=undefined && this.teamMemberId>0){
                     this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
@@ -744,7 +744,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 			this.exportObject['folderType'] = viewType;
             this.exportObject['type'] = 4;
 			this.exportObject['teamMemberId'] = this.teamMemberId;
-            this.exportObject['archived'] = this.archived;
+            this.exportObject['archived'] = this.campaignService.archived;
             this.closeFilterOption();
         }
     }
@@ -914,13 +914,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     showArchivedCampaigns() {
-        this.archived = true;
+        this.campaignService.archived = true;
         this.resetPagination();        
         this.listCampaign(this.pagination);
     }
 
     showActiveCampaigns() {
-        this.archived = false;  
+        this.campaignService.archived = false;  
         this.resetPagination();      
         this.listCampaign(this.pagination);
     }

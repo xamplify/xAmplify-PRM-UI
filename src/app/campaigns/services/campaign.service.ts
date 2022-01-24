@@ -25,6 +25,7 @@ export class CampaignService {
     URL = this.authenticationService.REST_URL;
     reDistributeEvent = false;
     loading = false;
+    archived:boolean = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
     saveCampaignDetails(data: any) {
