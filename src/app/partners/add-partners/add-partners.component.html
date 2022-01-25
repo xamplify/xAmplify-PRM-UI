@@ -93,7 +93,7 @@
                                             <div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px; border-radius: 3px !important;" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
                                                 <i class="fa fa-file-excel-o cct" aria-hidden="true"></i>
                                                 <span style="display:block; font-size:12px; text-align:center" translate>Upload a CSV</span>
-                                                <input type="file" ng2FileSelect [uploader]="uploader" title=" " (click)="input.value = null" (change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
+                                                <input type="file" ng2FileSelect [uploader]="uploader" title=" " (click)="input.value = null;resetResponse();" (change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
                                             </div>
                                             <div style="margin-top: 5px;">
                                                 <a (click)="downloadEmptyCsv()">
