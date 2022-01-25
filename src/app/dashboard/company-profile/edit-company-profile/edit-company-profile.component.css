@@ -181,3 +181,17 @@ svg {
 	width: 224px;
     height: auto;
 }
+
+@media screen and (max-width:600px){
+    .mPadCompanyProfile{
+        padding-left: 15px!important;
+    }
+    .mPad1{
+        padding-right: 0px!important;
+        padding-left: 0px!important;
+    }
+    .mPad2{
+        padding-left: 2px!important;
+        padding-right: 0px!important;
+    }
+}

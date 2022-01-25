@@ -1,0 +1,9 @@
+@media screen and (max-width:600px){
+    .mAlignment{
+        display: grid!important;
+    }
+    .mSearchAlign{
+        margin-right: 40px!important;
+        margin-top: -34px!important;
+    }
+}

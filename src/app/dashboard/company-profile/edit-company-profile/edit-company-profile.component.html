@@ -77,7 +77,7 @@
 			<div [hidden]="processor.isProcessing">
 				<form role="form" id="company-profile-form">
 					<div class="row">
-						<div class="col-sm-3 col-xs-12" style="padding-right: 0px">
+						<div class="col-sm-3 col-xs-12 mPad1" style="padding-right: 0px">
 							<div class="image blur-content" id="image-blur-content-div">
 								<div class="portlet light border-radius-0 shadow" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;border-radius: 4px!important;">
 									<div class="portlet-body clearfix" style="text-align: center;padding:12px 12px!important">
@@ -382,7 +382,7 @@
 							</div>
 							</div>
 						</div>
-						<div class="col-sm-9 col-xs-12" style="padding-left: 2px;">
+						<div class="col-sm-9 col-xs-12 mPad2" style="padding-left: 2px;">
 							<!-- ---Start Of Admin Panel -->
 							<div class="portlet light"
 							style="padding-left: 17px!important;padding-right: 17px!important;border-radius: 4px!important;border: 1px solid #eaeaea!important;padding-bottom: 48px!important;">
@@ -446,7 +446,7 @@
 										*ngIf="companyNameError" style="color: #f55d7a">{{companyNameErrorMessage}}</span>
 								</div>
 								</div>
-                                <div class="col-md-6 col-lg-6" style="padding-left: 0px;">
+                                <div class="col-md-6 col-lg-6 mPadCompanyProfile" style="padding-left: 0px;">
 								<div class="form-group"
 									[attr.class]="companyProfileNameDivClass">
 									<label class="control-label" translate>Company Profile Name <font
@@ -480,7 +480,7 @@
 											*ngIf="emailIdError" style="color: #f55d7a">{{emailIdErrorMessage}}</span>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6"style="padding-left: 0px;">
+								<div class="col-md-6 col-lg-6 mPadCompanyProfile"style="padding-left: 0px;">
 								<div class="form-group" [attr.class]="tagLineDivClass">
 									<label class="control-label" translate>Tag Line</label> <input
 										type="text" id="tagLine" name="tagLine" placeholder="Tag Line"
@@ -506,7 +506,7 @@
 									<span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
 								</div>
 								</div>
-								<div class="col-md-6 col-lg-6"style="padding-left: 0px;">
+								<div class="col-md-6 col-lg-6 mPadCompanyProfile"style="padding-left: 0px;">
 								<div class="form-group" [attr.class]="websiteDivClass">
 									<label class="control-label" translate>Company URL <font
 										style="color: #f55d7a"><b>*</b></font></label> <input type="text"
