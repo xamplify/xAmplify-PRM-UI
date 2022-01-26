@@ -189,6 +189,9 @@
 .actionAlignment{
     display: flex;
 }
+.btnAlignPad{
+    padding-left: 35px;
+}
 
 @media screen and (max-width:600px){
     .mTop{
@@ -201,5 +204,8 @@
     .mDisableColor{
         color: #888!important;
         border: 1px solid;
+    }
+    .mbtnAlignPad{
+        padding-left: 100px!important;
     }
 }

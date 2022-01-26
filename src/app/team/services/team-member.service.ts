@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import {Pagination} from '../../core/models/pagination';
 import {ReferenceService} from "../../core/services/reference.service";
+import { DeleteTeamMemberPartnerRequestDto } from 'app/util/models/delete-team-member-partner-request-dto';
 
 @Injectable()
 export class TeamMemberService{
@@ -302,6 +303,22 @@ export class TeamMemberService{
 
 	hasSuperVisorRole(teamMemberGroupId:number){
 		return this.http.get(this.URL + "teamMemberGroup/hasSuperVisorRole/"+teamMemberGroupId+"?access_token=" + this.authenticationService.access_token)
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+    /*****XNFR-97***********/
+    findPartners(pagination:Pagination){
+        var url =this.URL+"teamMember/findPartners?access_token="+this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);   
+    }
+
+    deletePartners(deleteTeamMemberPartnerRequestDto: DeleteTeamMemberPartnerRequestDto) {
+        deleteTeamMemberPartnerRequestDto.loggedInUserId = this.authenticationService.getUserId();
+		const url = this.URL + "teamMember/deletePartners?access_token="+this.authenticationService.access_token;
+		return this.http.post(url,deleteTeamMemberPartnerRequestDto)
 			.map(this.extractData)
 			.catch(this.handleError);
 	}
