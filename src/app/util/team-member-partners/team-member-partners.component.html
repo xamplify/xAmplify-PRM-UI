@@ -5,8 +5,14 @@
               <h4 class="modal-title popup-header-title-font text-center" translate>{{authenticationService?.partnerModule?.customName}}</h4>
           </div>
           <ng-container *ngIf="!apiError">
-            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-            </app-response-message>
+            <div *ngIf="customResponse.isVisible" class="text-center">
+                <div [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
+                  <a (click)="customResponse.isVisible=false" [ngClass]="customResponse?.responseType=='SUCCESS'? 'close-circle scc':'close-circle ecc' ">
+                    <i class="fa fa-close" aria-hidden="true"></i>
+                  </a>
+                  <strong [innerHTML]="customResponse.responseMessage"></strong>
+                </div>
+              </div>
             <div class="modal-body">
                 <app-list-loader *ngIf="partnersLoader.isLoading"></app-list-loader>
                 <div class="table-responsive" *ngIf="!partnersLoader.isLoading">
