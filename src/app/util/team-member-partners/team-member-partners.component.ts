@@ -126,6 +126,7 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
   removeAllSelectedPartners() {
     this.selectedPartnerTeamMemberGroupMappingIds = [];
     this.isHeaderCheckBoxChecked = false;
+    $('#team-member-partners-header-checkbox-id').prop('checked',false);
   }
 
   closePartnersPreviewPopup() {
@@ -149,7 +150,9 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
               this.removeAllSelectedPartners();
               this.refershTeamMemberList = true;
               this.deleteTeamMemberPartnerRequestDto = new DeleteTeamMemberPartnerRequestDto();
-              this.customResponse = new CustomResponse('SUCCESS', "Row(s) Deleted Successfully", true);
+              let partnersModuleName = this.authenticationService.partnerModule.customName;
+              let message = partnersModuleName+" Deleted Successfully";
+              this.customResponse = new CustomResponse('SUCCESS', message, true);
               this.partnersPagination.pageIndex = 1;
               this.partnersPagination.maxResults = 12;
               this.findPartners(this.partnersPagination);
