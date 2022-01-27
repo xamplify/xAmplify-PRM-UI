@@ -128,7 +128,7 @@
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
               <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany" [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
                  [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
-                <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'" (click)="teamMember?.partnersCount>0 && showPartners(teamMember)">
+                <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'" (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
                 <strong>Total {{authenticationService?.partnerModule?.customName}}: {{teamMember?.partnersCount}}</strong>
                </a>
               </span>
