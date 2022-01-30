@@ -1036,8 +1036,8 @@
                                   </div>
                                 </td>
                               </ng-container>
-                              <td *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all' && (authenticationService.isPartnerTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember)
-                              && !authenticationService.module.isCampaign"
+                              <td *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all' && (authenticationService.isPartnerTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember
+                              || authenticationService.isOrgAdminTeamMember) && !authenticationService.module.isCampaign"
                                   class="text-center">
                                   <div class="actions-block no-float">
                                     <a title="Delete" (click)="confirmDeleteContact(contact)">

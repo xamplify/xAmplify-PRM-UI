@@ -49,6 +49,7 @@ export class AuthenticationService {
   isPartnerTeamMember = false;
   isVendorAndPartnerTeamMember = false;
   isOrgAdminAndPartnerTeamMember = false;
+  isOrgAdminTeamMember = false ;
   superiorRole = '';
   selectedVendorId: number;
   venorMyProfileReport: any;
