@@ -64,12 +64,16 @@
                                 </span>
                             </ng-container>
                             <div class="inputs" id="right" style="display: inline-flex;">
-                                <div>
-                                    <select class="form-control" [(ngModel)]="selectedSortedOption"
-                                        (ngModelChange)="getSortedResult($event)"
-                                        style="position: relative;right: 3px;">
-                                        <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
-                                            {{sortOption.name}}
+                                <div class="mr5">                                    
+                                    <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
+                                        (ngModelChange)="getSortedResult($event)" style="position: relative;">
+                                        <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
+                                        </option>
+                                    </select>
+                                
+                                    <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
+                                        (ngModelChange)="getSortedResult($event)" style="position: relative;">
+                                        <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">{{sortOption.name}}
                                         </option>
                                     </select>
                                 </div>
@@ -315,6 +319,14 @@
                                                 </strong>
                                             </span>
                                         </h5>
+                                        <h5 *ngIf="archived">
+                                            <span>Archived On
+                                              <strong>
+                                                <app-timestamp [dateAndTime]="campaign.archivedDate">
+                                                </app-timestamp>
+                                              </strong>
+                                            </span>
+                                          </h5>
                                     </td>
 
                                     <ng-container
@@ -1133,6 +1145,13 @@
                                     </strong>
                                 </span>
                             </h6>
+                            <h6 *ngIf="archived">
+                                <span translate>Archived On 
+                                  <strong>
+                                    {{campaign.archivedDate |date:'mediumDate'}},{{campaign.archivedDate |date:'shortTime'}}                                
+                                  </strong>
+                                </span>
+                              </h6>
 
                             <div class="bookmark-ribbon">
                                 <span style="margin: 0px -7px; font-size: 17px; color: white;">

@@ -517,7 +517,6 @@ table tr:nth-child(even) td {
 	}
 }
 
-.breadcrumb-right {
-	padding-top: 5px;
-	padding-right: 5px;
+.breadcrumb-right-btn {
+	padding: 9px;
 }

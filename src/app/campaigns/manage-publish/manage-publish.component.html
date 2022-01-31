@@ -20,9 +20,9 @@
           <a translate>Manage Campaigns</a>
         </li>
       </ul>
-      <div class="pull-right breadcrumb-right">
-        <button type="button" class="primary" *ngIf="!campaignService.archived" (click)="showArchivedCampaigns()">View Archived Campaigns</button>
-        <button type="button" class="primary" *ngIf="campaignService.archived" (click)="showActiveCampaigns()">View Active Campaigns</button>
+      <div class="pull-right">
+        <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!archived" (click)="showArchivedCampaigns()">View Archived Campaigns</button>
+        <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="archived" (click)="showActiveCampaigns()">View Active Campaigns</button>
       </div>
      
     </div>
@@ -89,10 +89,16 @@
                     
                     <div class="col-xs-5 col-sm-4 col-md-3">
                       <div style="float: left;">
-                        <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                        <option *ngFor="let sortOption of sortByDropDown"
-                        [ngValue]="sortOption">{{sortOption.name}}
-                        </option>
+                        <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)"
+                          style="position: relative;right: -3px;">
+                          <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
+                          </option>
+                        </select>
+
+                        <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)"
+                          style="position: relative;right: -3px;">
+                          <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">{{sortOption.name}}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -167,7 +173,7 @@
                 </div>                
               </div>
               <ng-container *ngIf="(modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView) && !isloading">
-                <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
+                <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)" (navigatingToRelatedComponent)="navigatedToCategoryItems()"></app-category-folder-view-util>
               </ng-container>
               <app-grid-loader *ngIf="httpRequestLoader.isLoading && (modulesDisplayType.isGridView || modulesDisplayType.isFolderGridView)"></app-grid-loader>
               <app-list-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
@@ -247,11 +253,11 @@
                         </h5>
                         <h5>
                           <span>Created On
-                          <strong>
-                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
-                            </app-timestamp>
-                          </strong>
-                        </span>
+                            <strong>
+                              <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate">
+                              </app-timestamp>
+                            </strong>
+                          </span>
                         </h5>
                         <h5>
                           <span align="right">
@@ -294,6 +300,14 @@
                           <br>
                           <span>{{campaign.campaignScheduleTimeInString}}</span>
                           </strong>
+                          </span>
+                        </h5>
+                        <h5 *ngIf="archived">
+                          <span>Archived On
+                            <strong>
+                              <app-timestamp [dateAndTime]="campaign.archivedDate">
+                              </app-timestamp>
+                            </strong>
                           </span>
                         </h5>
                       </td>
@@ -578,9 +592,14 @@
                                     <i class="fa fa-eye mr5" style="width: 30px;" aria-hidden="true"></i> Preview Campaign
                                   </a>
                                 </li>
-                                <li *ngIf="campaign.canArchive">
-                                  <a (click)="showCampaignPreview(campaign)" translate>
+                                <li *ngIf="!archived && campaign.canArchive">
+                                  <a (click)="archiveCampaign(campaign)" translate>
                                     <i class="fa fa-folder mr5" style="width: 30px;" aria-hidden="true"></i> Archive Campaign
+                                  </a>
+                                </li>
+                                <li *ngIf="archived && campaign.canArchive">
+                                  <a (click)="unarchiveCampaign(campaign)" translate>
+                                    <i class="fa fa-folder mr5" style="width: 30px;" aria-hidden="true"></i> Unarchive Campaign
                                   </a>
                                 </li>
                                 <section *ngIf="!campaign.showCancelButton">
@@ -679,7 +698,7 @@
                             </ng-container>
                             <span *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">{{campaign.launchedOn}}</span>
                             <span *ngIf="campaign.scheduleType=='SAVE'">{{campaign.startTime}}</span>
-                          </h5>
+                          </h5>                         
                         </td>
                         <td>
                           <div class="pull-right">
@@ -843,6 +862,14 @@
                               </strong>
                             </span>
                           </h6>
+                          <h6 *ngIf="archived">
+                            <span translate>Archived On 
+                              <strong>
+                                {{campaign.archivedDate |date:'mediumDate'}},{{campaign.archivedDate |date:'shortTime'}}                                
+                              </strong>
+                            </span>
+                          </h6>
+                          
                           <div class="bookmark-ribbon">
                             <span style="margin: 0px -7px; font-size: 17px; color: white;">
                             <i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1"

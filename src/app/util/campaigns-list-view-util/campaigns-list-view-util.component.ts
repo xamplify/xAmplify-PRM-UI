@@ -53,6 +53,16 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
       { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
   ];
 
+  sortByDropDownArchived = [
+    { 'name': 'Sort By', 'value': 'createdTime-DESC' },
+    { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
+    { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
+    { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+    { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
+    { 'name': 'Archived On (ASC)', 'value': 'archivedTime-ASC' },
+    { 'name': 'Archived On (DESC)', 'value': 'archivedTime-DESC' }
+];
+
   numberOfItemsPerPage = [
       { 'name': '12', 'value': '12' },
       { 'name': '24', 'value': '24' },
@@ -213,6 +223,9 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
       try {
+          if (this.archived) {
+                this.selectedSortedOption = this.sortByDropDownArchived[0];
+            } 
             this.getCampaignTypes();
       } catch (error) {
           this.logger.error("error in manage-publish-component init() ", error);

@@ -52,6 +52,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
 
+    sortByDropDownArchived = [
+        { 'name': 'Sort By', 'value': 'createdTime-DESC' },
+        { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
+        { 'name': 'Archived On (ASC)', 'value': 'archivedTime-ASC' },
+        { 'name': 'Archived On (DESC)', 'value': 'archivedTime-DESC' }
+    ];
+
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
@@ -99,6 +109,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     toDateFilter: any = "";
     filterResponse: CustomResponse = new CustomResponse(); 
     filterMode: boolean = false;
+    archived: boolean = false;
+    navigatingToRelatedComponent: boolean = false;
 
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -159,7 +171,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vanityUrlFilter = true;
         }
         
-        this.pagination.archived = this.campaignService.archived;
+        this.pagination.archived = this.archived;
         let self = this;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
@@ -230,13 +242,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
    
     
     ngOnInit() {
-        try {
+        try {             
+            this.archived = this.campaignService.archived;    
+            if (this.archived) {
+                this.selectedSortedOption = this.sortByDropDownArchived[0];
+            }                       
             this.getCampaignTypes();
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }
     }
-  
+
     getCampaignTypes(){
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
@@ -269,7 +285,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.refService.manageRouter = true;
                     this.pagination.maxResults = 12;
                     this.categoryId = this.route.snapshot.params['categoryId'];
-                    if(this.categoryId!=undefined){
+                    if(this.categoryId!=undefined ){
                         this.pagination.categoryId = this.categoryId;
                         this.pagination.categoryType = 'c';
                     }
@@ -441,6 +457,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         $('#cancelEventModal').modal('hide');
         $('#public-event-url-modal').modal('hide');
         $('#public-event-url-modal').modal('hide');
+        if (!this.navigatingToRelatedComponent) {
+            this.campaignService.archived = false;
+        }
+                
     }
     openSaveAsModal(campaign: any) {
         $('#saveAsModal').modal('show');
@@ -680,6 +700,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         
           
           goToCalendarView(){
+              this.navigatingToRelatedComponent = true;
               if(this.teamMemberId>0){
                 if(this.categoryId!=undefined && this.categoryId>0){
                     this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId+"/"+this.categoryId]);
@@ -727,8 +748,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
             this.exportObject['folderType'] = viewType;
             this.exportObject['teamMemberId'] = this.teamMemberId;
-            this.exportObject['archived'] = this.campaignService.archived;
+            this.exportObject['archived'] = this.archived;
             if(this.categoryId>0){
+                this.navigatingToRelatedComponent = true;
                 if(this.teamMemberId!=undefined && this.teamMemberId>0){
                     this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
                 }else{
@@ -744,7 +766,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 			this.exportObject['folderType'] = viewType;
             this.exportObject['type'] = 4;
 			this.exportObject['teamMemberId'] = this.teamMemberId;
-            this.exportObject['archived'] = this.campaignService.archived;
+            this.exportObject['archived'] = this.archived;
             this.closeFilterOption();
         }
     }
@@ -786,7 +808,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
 
     getUpdatedValue(event:any){
-        let viewType = event.viewType;
+        //this.archived = event.archived;
+        let viewType = event.viewType;        
         if(viewType!=undefined){
             this.setViewType(viewType);
         }
@@ -914,12 +937,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     showArchivedCampaigns() {
+        this.archived = true;
         this.campaignService.archived = true;
         this.resetPagination();        
         this.listCampaign(this.pagination);
     }
 
     showActiveCampaigns() {
+        this.archived = false;
         this.campaignService.archived = false;  
         this.resetPagination();      
         this.listCampaign(this.pagination);
@@ -929,7 +954,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.searchKey = this.pagination.searchKey = "";
         this.pagination.sortcolumn = this.pagination.sortingOrder = null;
-        this.selectedSortedOption = this.sortByDropDown[0]; 
+        if (this.archived) {
+            this.selectedSortedOption = this.sortByDropDownArchived[0];
+        } else {
+            this.selectedSortedOption = this.sortByDropDown[0];
+        }
+        
         this.pagination.maxResults = 12;
         this.itemsSize = this.numberOfItemsPerPage[0];
         this.pagination.campaignType = 'NONE';
@@ -938,6 +968,68 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.modulesDisplayType.isGridView = false;
         this.modulesDisplayType.isFolderGridView = false;
         this.modulesDisplayType.isFolderListView = false;
+
+        this.showFilterOption = false;
+        this.fromDateFilter = "";
+        this.toDateFilter = ""; 
+        this.pagination.fromDateFilterString = "";
+        this.pagination.toDateFilterString = "";
+        this.filterResponse.isVisible = false;
+        this.filterMode = false;
+        this.customResponse = new CustomResponse();
+
+        if (this.categoryId != undefined && this.categoryId > 0) {
+            this.navigatingToRelatedComponent = true;
+            if(this.teamMemberId!=undefined && this.teamMemberId>0){
+                this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
+            }else{
+                this.router.navigateByUrl('/home/campaigns/manage');
+            }
+        }
+    }
+
+    archiveCampaign(campaign: any) {
+        var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+        this.campaignService.archiveCampaign(request)
+            .subscribe(
+                response => {
+                    this.isloading = false;
+                    if (response.statusCode == 200) {
+                        this.listCampaign(this.pagination);
+                        this.refService.loading(this.httpRequestLoader, false);
+                        this.customResponse = new CustomResponse('SUCCESS', "Campaign Archived Successfully", true);
+                    }
+                },
+                error => {
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                },
+                () => this.logger.info("Finished archiveCampaign()", campaign)
+            );
+    }
+
+    unarchiveCampaign(campaign: any) {
+        var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+        this.campaignService.unarchiveCampaign(request)
+            .subscribe(
+                response => {
+                    this.isloading = false;
+                    if (response.statusCode == 200) {
+                        this.listCampaign(this.pagination);
+                        this.refService.loading(this.httpRequestLoader, false);
+                        this.customResponse = new CustomResponse('SUCCESS', "Campaign Unarchived Successfully", true);
+                    }
+                },
+                error => {
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                },
+                () => this.logger.info("Finished archiveCampaign()", campaign)
+            );
+    }
+
+    navigatedToCategoryItems() {
+        this.navigatingToRelatedComponent = true;
     }
 
 }
