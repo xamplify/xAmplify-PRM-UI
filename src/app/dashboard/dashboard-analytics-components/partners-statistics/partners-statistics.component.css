@@ -116,6 +116,8 @@
 @media screen and (max-width:600px){
     .mHeight{
         min-height: 700px!important;
-
+    }
+    .mPad0{
+        padding: 0px;
     }
 }

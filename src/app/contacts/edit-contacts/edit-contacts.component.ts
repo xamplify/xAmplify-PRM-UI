@@ -1065,6 +1065,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	showAlert(contactListId: number) {
 		this.xtremandLogger.info("userIdForChecked" + this.selectedContactListIds);
+		this.resetResponse();
 		if (this.selectedContactListIds.length != 0) {
 			this.xtremandLogger.info("contactListId in sweetAlert() " + this.contactListId);
 			let self = this;
@@ -1770,6 +1771,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	cancelContacts() {
+		this.resetResponse();
 		if (this.selectedAddContactsOption == 1) {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		}
@@ -2390,6 +2392,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	sortByOption(event: any, selectedType: string) {
 		try {
+			this.resetResponse();
 			this.sortOption = event;
 			const sortedValue = this.sortOption.value;
 			if (sortedValue !== '') {
@@ -2418,7 +2421,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	search(searchType: string) {
-
+		this.resetResponse();
 		this.searchContactType = this.searchContactType;
 		try {
 			if (this.currentContactType == "all_contacts") {
@@ -2453,6 +2456,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	addContactModalOpen() {
+		this.resetResponse();
 		this.addContactuser = new User();
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
@@ -2648,6 +2652,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	modelForSeg() {
+		this.resetResponse();
 		this.addNewRow();
 		this.criteria.property = this.filterOptions[0].value;
 		this.criteria.operation = this.filterConditions[0].value;
@@ -2783,6 +2788,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	downloadEmptyCsv() {
+		this.resetResponse();
 		if (this.isPartner) {
 			window.location.href = this.authenticationService.REST_URL+"userlists/download-default-list/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
 		} else {
@@ -2969,6 +2975,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	downloadFile(data: any) {
+		this.resetResponse();
 		let parsedResponse = data.text();
 		let blob = new Blob([parsedResponse], { type: 'text/csv' });
 		let url = window.URL.createObjectURL(blob);

@@ -375,4 +375,7 @@ body {
         white-space: pre-line!important;
         line-height: 1.8px!important;
     }
+    .mPadAction{
+        padding-left: 35px!important;
+    }
 }

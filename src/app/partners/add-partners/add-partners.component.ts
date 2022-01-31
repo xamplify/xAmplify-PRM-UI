@@ -260,6 +260,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	sortByOption(event: any, selectedType: string) {
+		this.resetResponse();
 		this.sortOption = event;
 		const sortedValue = this.sortOption.value;
 		if (sortedValue !== '') {
@@ -279,6 +280,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	search() {
+		this.resetResponse();
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.pageIndex = 1;
 		this.loadPartnerList(this.pagination);
@@ -355,6 +357,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	addPartnerModalOpen() {
+		this.resetResponse();
 		this.contactService.isContactModalPopup = true;
 		this.updatePartnerUser = false;
 		this.addPartnerUser.country = (this.countryNames.countries[0]);
@@ -907,6 +910,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	readFiles(files: any, index = 0) {
 		if (this.fileUtil.isCSVFile(files[0])) {
 			this.isListLoader = true;
+			this.customResponse = new CustomResponse();
 			this.paginationType = "csvPartners";
 			var outputstring = files[0].name.substring(0, files[0].name.lastIndexOf("."));
 			this.selectedAddPartnerOption = 2;
@@ -1000,6 +1004,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	copyFromClipboard() {
+		this.resetResponse();
 		this.fileTypeError = false;
 		this.clipboardTextareaText = "";
 		this.paginationType = "csvPartners";
@@ -2278,6 +2283,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	downloadFile(data: any) {
 		try {
+			this.resetResponse();
 			let parsedResponse = data.text();
 			let blob = new Blob([parsedResponse], { type: 'text/csv' });
 			let url = window.URL.createObjectURL(blob);
@@ -3916,6 +3922,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	      this.selectedFilterIndex = index;
 	      this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
 	      this.defaultPartnerList(this.loggedInUserId);
+	  }
+	  
+      resetResponse() {
+          this.customResponse = new CustomResponse();
 	  }
 
 }

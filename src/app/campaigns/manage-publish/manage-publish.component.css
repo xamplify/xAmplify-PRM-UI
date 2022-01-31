@@ -510,9 +510,18 @@ table tr:nth-child(even) td {
 	}
 	.campaign-downloading-mt{
 	margin-top: -28px;
-    margin-right: -77px!important;
+    margin-right: -35px!important;
 	}
 	.mSlide{
 		overflow-x: auto;
+	}
+	.mPadBottom{
+		padding-bottom: 5px;
+	}
+	.mSortWid{
+		width: 65%!important;
+	}
+	.mFloatSearch{
+		float: right!important;
 	}
 }
