@@ -203,6 +203,10 @@ td h6 {
     padding: 3px 9px;
 }
 
+.actionAlignWeb{
+    display: flex;
+}
+
 @media only screen and (max-width:768px) {
     .modal-template {
         width: 100% !important;
@@ -356,11 +360,22 @@ body {
         top: -22px !important;
     }
     .mActionAlign{
-        white-space: pre-line!important;
+        /* white-space: pre-line!important; */
         line-height: 2px;
         text-align: center!important;
     }
     .mFloat{
         float: none!important;
+    }
+    .mDisableColor{
+        color: #888!important;
+        border: 1px solid;
+    }
+    .mActionDiv{
+        white-space: pre-line!important;
+        line-height: 1.8px!important;
+    }
+    .mPadAction{
+        padding-left: 35px!important;
     }
 }

@@ -10,7 +10,7 @@
         <div class="row" *ngIf="!companyIdError">
          <app-box-loader [countLoader]=1 *ngIf="opportunityAmountDto?.loader"></app-box-loader>
          <ng-container *ngIf="!opportunityAmountDto?.loader && hasLeadsAndDealsAccess">
-          <div class="col-sm-6" title="{{leadsToDealsConversionInPercentage}}">
+          <div class="col-sm-6 mPad" title="{{leadsToDealsConversionInPercentage}}">
             <div>
               <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
                  <div class="visual custp">

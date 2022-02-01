@@ -217,4 +217,8 @@ background: #ffffff;
       color: #888!important;
       border: 1px solid;
   }
+    .grid-box{
+      height: 264px!important;
+      background: none;
+    }
   }

@@ -111,6 +111,7 @@ import { TeamMemberFilterOptionComponent } from 'app/util/team-member-filter-opt
 import { TeamMemberFilterOptionModalPopupComponent } from 'app/util/team-member-filter-option-modal-popup/team-member-filter-option-modal-popup.component';
 import { ManageCampaignLeadsComponent } from 'app/leads/manage-campaign-leads/manage-campaign-leads.component';
 import { ManageCampaignDealsComponent } from 'app/deals/manage-campaign-deals/manage-campaign-deals.component';
+import { TeamMemberPartnersComponent } from 'app/util/team-member-partners/team-member-partners.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -131,7 +132,7 @@ import { ManageCampaignDealsComponent } from 'app/deals/manage-campaign-deals/ma
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
-		ManageCampaignLeadsComponent,ManageCampaignDealsComponent],
+		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent],
 
 
 
@@ -154,7 +155,7 @@ import { ManageCampaignDealsComponent } from 'app/deals/manage-campaign-deals/ma
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
-		ManageCampaignLeadsComponent,ManageCampaignDealsComponent]
+		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent]
 
 
 

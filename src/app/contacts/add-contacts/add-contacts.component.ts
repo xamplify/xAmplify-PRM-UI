@@ -1374,6 +1374,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     copyFromClipboard() {
+    	this.resetResponse();
         this.noOptionsClickError = false;
         this.disableOtherFuctionality = true;
         this.clipboardTextareaText = "";
@@ -2870,6 +2871,7 @@ salesForceVanityAuthentication() {
     }
 
     addContactModalOpen() {
+    	this.resetResponse();
         this.contactService.isContactModalPopup = true;
     }
 
@@ -4381,6 +4383,10 @@ vanityCheckingMarketoContactsAuthentication(){
         this.userUserListWrapper.users = newUsers;
         this.userUserListWrapper.userList = this.contactListObject;
         return this.userUserListWrapper;
+    }
+    
+    resetResponse() {
+        this.customResponse = new CustomResponse();
     }
 
 }

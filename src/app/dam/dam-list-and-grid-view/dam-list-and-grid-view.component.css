@@ -206,6 +206,10 @@ cursor: default;
   display: flex;
 }
 
+.ActionButtonPad{
+  display: contents;
+}
+
 @media screen and (max-width:600px){
   .mDamTop{
     padding-top: 15px;

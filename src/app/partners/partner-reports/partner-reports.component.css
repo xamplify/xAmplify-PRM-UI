@@ -151,6 +151,11 @@ cursor: default;
 .mDisplay{
 	display: contents!important;
 }
+.mAlignGraph{
+	padding: 0px 0px 2px 0px!important;
+    height: 115px;
+    width: 101%;
+}
 }
 
 

@@ -55,7 +55,7 @@
                 </ul>
                 <div class="page-toolbar col-xs-12 col-sm-12 col-md-8" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                   <div class="row">                   
-                    <div class="btn-group col-xs-2 col-sm-4 col-md-4 p0">
+                    <div class="btn-group col-xs-12 col-sm-4 col-md-4 p0">
                       <div style="float: right">
                         <ng-container class='m10'>
                           <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
@@ -86,9 +86,8 @@
                         </ng-container>
                       </div>
                     </div>
-                    
                     <div class="col-xs-5 col-sm-4 col-md-3">
-                      <div style="float: left;">
+                      <div class="mSortWid" style="float: left;">
                         <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)"
                           style="position: relative;right: -3px;">
                           <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
@@ -103,7 +102,7 @@
                       </div>
                     </div>
 
-                    <div class="col-xs-5 col-sm-4 col-md-5 manage-campaigns-prml">
+                    <div class="col-xs-12 col-sm-4 col-md-5 manage-campaigns-prml mFloatSearch">
                       <div class="portlet-input input-inline" style="display: inline-flex;">
                         <div class="input-icon campaign-search-rr mr5">
                           <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
