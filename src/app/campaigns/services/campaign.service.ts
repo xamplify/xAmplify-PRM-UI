@@ -15,7 +15,7 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
 declare var swal, $, Promise: any;
 @Injectable()
-export class CampaignService {
+export class CampaignService {    
    
     campaign: Campaign;
     eventCampaign:any;
@@ -25,6 +25,7 @@ export class CampaignService {
     URL = this.authenticationService.REST_URL;
     reDistributeEvent = false;
     loading = false;
+    archived:boolean = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
     saveCampaignDetails(data: any) {
@@ -1131,6 +1132,18 @@ export class CampaignService {
         return this.http.get(url, "")
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    archiveCampaign(request: any) {
+        return this.http.post(this.URL + `campaign/archive?access_token=${this.authenticationService.access_token}`, request)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    unarchiveCampaign(request: any) {
+        return this.http.post(this.URL + `campaign/unarchive?access_token=${this.authenticationService.access_token}`, request)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
     private extractData(res: Response) {
