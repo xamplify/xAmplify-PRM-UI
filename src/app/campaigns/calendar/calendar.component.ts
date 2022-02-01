@@ -101,7 +101,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if(this.teamMemberId>0){
       teamMemberAnalytics = true;
     }
-    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.loggedInUserId,'teamMemberAnalytics':teamMemberAnalytics,'teamMemberId':this.teamMemberId,'categoryId':this.categoryId };
+    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.loggedInUserId, 'teamMemberAnalytics': teamMemberAnalytics, 'teamMemberId': this.teamMemberId, 'categoryId': this.categoryId, 'archived': this.campaignService.archived };
     this.loading = true;
     this.campaignService.getCampaignCalendarView(request)
       .subscribe(
