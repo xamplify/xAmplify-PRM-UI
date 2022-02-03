@@ -129,10 +129,16 @@ export class AuthenticationService {
       this.clientSecret = this.envService.clientSecret;
       this.beePageClientId = this.envService.beePageProdClientId;
       this.beePageClientSecret = this.envService.beePageProdClientSecret;
-    }else{
-      console.log("dev keys are used");
+    }else if(this.SERVER_URL=="https://aravindu.com/" && this.APP_URL=="https://xamplify.co/"){
+      console.log("QA keys are used");
       this.clientId = this.envService.beeTemplateQAClientId;
       this.clientSecret = this.envService.beeTemplateQAClientSecret;
+      this.beePageClientId = this.envService.beePageQAClientId;
+      this.beePageClientSecret = this.envService.beePageQAClientSecret;
+    }else{
+      console.log("dev keys are used");
+      this.clientId = this.envService.beeTemplateDevClientId;
+      this.clientSecret = this.envService.beeTemplateDevClientSecret;
       this.beePageClientId = this.envService.beePageDevClientId;
       this.beePageClientSecret = this.envService.beePageDevClientSecret;
     }
