@@ -40,7 +40,8 @@
                                 </li>
                                 <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)"
                                     [class.campaign-type-selected]="6 == selectedCampaignTypeIndex"
-                                    *ngIf="campaignAccess.landingPageCampaign && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl">Page</li>
+                                    *ngIf="campaignAccess.landingPageCampaign && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl">
+                                    Page</li>
                                 <li class="filter" (click)="filterCampaigns('SURVEY',7)"
                                     [class.campaign-type-selected]="7 == selectedCampaignTypeIndex"
                                     *ngIf="campaignAccess.survey">Survey</li>
@@ -64,16 +65,18 @@
                                 </span>
                             </ng-container>
                             <div class="inputs" id="right" style="display: inline-flex;">
-                                <div class="mr5">                                    
+                                <div class="mr5">
                                     <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
                                         (ngModelChange)="getSortedResult($event)" style="position: relative;">
-                                        <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
+                                        <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
+                                            {{sortOption.name}}
                                         </option>
                                     </select>
-                                
+
                                     <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
                                         (ngModelChange)="getSortedResult($event)" style="position: relative;">
-                                        <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">{{sortOption.name}}
+                                        <option *ngFor="let sortOption of sortByDropDownArchived"
+                                            [ngValue]="sortOption">{{sortOption.name}}
                                         </option>
                                     </select>
                                 </div>
@@ -89,21 +92,22 @@
                                         <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
                                             <i class="fa fa-search" aria-hidden="true"></i></button>
                                     </div>
-                                    <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Filter"
-                                        (click)="toggleFilterOption()">
+                                    <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view"
+                                        data-toggle="tooltip" title="Filter" (click)="toggleFilterOption()">
                                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                                     </span>
-                                    <a style="margin-top:5px;position:relative;right: -4px;" *ngIf="pagination.totalRecords>0"
-                                        (click)="downloadCampaignHighLevelAnalytics()" class="close-circle" data-toggle="tooltip" data-placement="top"
+                                    <a style="margin-top:5px;position:relative;right: -4px;"
+                                        *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()"
+                                        class="close-circle" data-toggle="tooltip" data-placement="top"
                                         title="Download">
                                         <i class="fa fa-download margin" aria-hidden="true"></i>
                                     </a>
-                                    <a (click)="listCampaign(pagination)" class="close-circle campaign-refresh-style-fl" data-toggle="tooltip"
-                                        data-placement="top" title="Refresh">
+                                    <a (click)="listCampaign(pagination)" class="close-circle campaign-refresh-style-fl"
+                                        data-toggle="tooltip" data-placement="top" title="Refresh">
                                         <i class="fa fa-refresh" aria-hidden="true"></i>
                                     </a>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -321,12 +325,12 @@
                                         </h5>
                                         <h5 *ngIf="archived">
                                             <span>Archived On
-                                              <strong>
-                                                <app-timestamp [dateAndTime]="campaign.archivedDate">
-                                                </app-timestamp>
-                                              </strong>
+                                                <strong>
+                                                    <app-timestamp [dateAndTime]="campaign.archivedDate">
+                                                    </app-timestamp>
+                                                </strong>
                                             </span>
-                                          </h5>
+                                        </h5>
                                     </td>
 
                                     <ng-container
@@ -532,10 +536,12 @@
                                                 </div>
                                                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"
                                                     *ngIf="campaign.showLeadAndDealCounts">
-                                                    <button class="btn btn-default btn-xs re-distributed-high-level vlt-b-c">
+                                                    <button
+                                                        class="btn btn-default btn-xs re-distributed-high-level vlt-b-c">
                                                         <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
-                                                                <strong class="custom-font-weight">{{campaign?.leadCount}}</strong>
+                                                                <strong
+                                                                    class="custom-font-weight">{{campaign?.leadCount}}</strong>
                                                             </h6>
                                                             <span class="custom-font-weight">Leads</span>
                                                         </div>
@@ -543,16 +549,18 @@
                                                 </div>
                                                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"
                                                     *ngIf="campaign.showLeadAndDealCounts">
-                                                    <button class="btn btn-default btn-xs re-distributed-high-level lt-g-b-c">
+                                                    <button
+                                                        class="btn btn-default btn-xs re-distributed-high-level lt-g-b-c">
                                                         <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
-                                                                <strong class="custom-font-weight">{{campaign?.dealCount}}</strong>
+                                                                <strong
+                                                                    class="custom-font-weight">{{campaign?.dealCount}}</strong>
                                                             </h6>
                                                             <span class="custom-font-weight">Deals</span>
                                                         </div>
                                                     </button>
                                                 </div>
-                                                
+
                                             </div>
                                         </td>
                                         <td *ngIf="!campaign?.emailNotification && !campaign?.nurtureCampaign">
@@ -797,6 +805,18 @@
                                                                 Preview Campaign
                                                             </a>
                                                         </li>
+                                                        <li *ngIf="!archived && campaign.canArchive">
+                                                            <a (click)="archiveCampaign(campaign)" translate>
+                                                                <i class="fa fa-archive mr5" style="width: 30px;"
+                                                                    aria-hidden="true"></i> Archive Campaign
+                                                            </a>
+                                                        </li>
+                                                        <li *ngIf="archived && campaign.canArchive">
+                                                            <a (click)="unarchiveCampaign(campaign)" translate>
+                                                                <i class="fa fa-archive mr5" style="width: 30px;"
+                                                                    aria-hidden="true"></i> Unarchive Campaign
+                                                            </a>
+                                                        </li>
                                                         <section *ngIf="!campaign.showCancelButton">
                                                             <li
                                                                 *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor   || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted">
@@ -1019,6 +1039,7 @@
                                                             Campaign
                                                         </a>
                                                     </li>
+
                                                     <section *ngIf="!campaign.showCancelButton">
                                                         <li
                                                             *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor   || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier">
@@ -1146,12 +1167,13 @@
                                 </span>
                             </h6>
                             <h6 *ngIf="archived">
-                                <span translate>Archived On 
-                                  <strong>
-                                    {{campaign.archivedDate |date:'mediumDate'}},{{campaign.archivedDate |date:'shortTime'}}                                
-                                  </strong>
+                                <span translate>Archived On
+                                    <strong>
+                                        {{campaign.archivedDate |date:'mediumDate'}},{{campaign.archivedDate
+                                        |date:'shortTime'}}
+                                    </strong>
                                 </span>
-                              </h6>
+                            </h6>
 
                             <div class="bookmark-ribbon">
                                 <span style="margin: 0px -7px; font-size: 17px; color: white;">
@@ -1281,7 +1303,18 @@
                                                     class="fa fa-envelope-open-o" aria-hidden="true"></i></span>
                                         </a>
                                     </ng-container>
+                                    <span>
+                                        <a *ngIf="!archived && campaign.canArchive" (click)="archiveCampaign(campaign)"
+                                            data-toggle="tooltip" data-placement="top" title="Archive">
+                                            <i class="fa fa-archive mr5" aria-hidden="true"></i>
+                                        </a>
+                                        <a *ngIf="archived && campaign.canArchive" (click)="unarchiveCampaign(campaign)"
+                                            data-toggle="tooltip" data-placement="top" title="Unarchive">
+                                            <i class="fa fa-archive mr5" aria-hidden="true"></i>
+                                        </a>
+                                    </span>
                                 </ng-container>
+
                                 <span [class.disablednew]="!campaign.hasAccess"
                                     *ngIf="!campaign.showCancelButton || campaign.vendorCampaignDeleted ">
                                     <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip"
