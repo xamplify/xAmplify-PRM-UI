@@ -781,5 +781,45 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
     }    
   }
 
+  archiveCampaign(campaign: any) {
+    var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+    this.campaignService.archiveCampaign(request)
+        .subscribe(
+            response => {
+                this.isloading = false;
+                if (response.statusCode == 200) {
+                    this.listCampaign(this.pagination);
+                    this.refService.loading(this.httpRequestLoader, false);
+                    this.customResponse = new CustomResponse('SUCCESS', "Campaign Archived Successfully", true);
+                }
+            },
+            error => {
+                this.isloading = false;
+                this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished archiveCampaign()", campaign)
+        );
+}
+
+unarchiveCampaign(campaign: any) {
+    var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+    this.campaignService.unarchiveCampaign(request)
+        .subscribe(
+            response => {
+                this.isloading = false;
+                if (response.statusCode == 200) {
+                    this.listCampaign(this.pagination);
+                    this.refService.loading(this.httpRequestLoader, false);
+                    this.customResponse = new CustomResponse('SUCCESS', "Campaign Unarchived Successfully", true);
+                }
+            },
+            error => {
+                this.isloading = false;
+                this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished archiveCampaign()", campaign)
+        );
+}
+
 
 }
