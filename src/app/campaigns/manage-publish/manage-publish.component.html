@@ -28,7 +28,7 @@
       <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!archived"
         (click)="showArchivedCampaigns()">View Archived Campaigns</button>
       <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="archived"
-        (click)="showActiveCampaigns()">View Active Campaigns</button>
+        style="background-color: #5cb85c !important;" (click)="showActiveCampaigns()">View Active Campaigns</button>
     </div>
 
   </div>
@@ -305,6 +305,9 @@
                           translate>
                           Scheduled
                         </h5>
+                        <h6 class="view-banner banner-top" *ngIf="archived" style="background-color: #f76c1a !important"
+                          translate>
+                          Archived</h6>
                       </td>
                       <td>
                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
@@ -964,7 +967,7 @@
                     *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div *ngFor="let campaign of pagination.pagedItems; let i= index"
                       class="col-xs-12 col-sm-4 col-lg-3">
-                      <div class="grid-box" style="height:240px">
+                      <div class="grid-box" style="height:250px">
                         <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                         <h4 class="ellipsis" title="{{campaign.campaignName}}">
                           {{campaign.campaignName | slice:0:22}}
@@ -987,7 +990,9 @@
                           <span class="view-banner"
                             *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign"
                             style="position: relative;top: -3px;background-color: #d9534f;" translate>Private</span>
-                        </h4>
+                          <span class="view-banner" *ngIf="archived" style="position: relative;top: -3px; background-color: #f76c1a !important"
+                            translate>Archived</span>
+                          </h4>
                         <h6 [title]="campaign.createdBy" translate>By
                           <strong>{{campaign.createdBy | slice:0:15}}<span
                               *ngIf="campaign.createdBy?.length>15">...</span></strong>
