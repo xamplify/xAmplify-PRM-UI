@@ -3,8 +3,8 @@
     width: 180px;
     margin: 0;
     background: #f2f4f9;
-    border: solid 1px #008fd5;
-    border-radius: 1px;
+    border: solid 1px #cccccc;
+    border-radius: 6px;
 }
 
 .img-grid-track {
@@ -80,10 +80,10 @@
     color: white;
     padding: 4px;
     text-align: center;
-    width: 125px;
     margin: 0 0;
     font-size: 11px;
     font-weight: 600;
+    display: inline;
 }
 
 .ribbon div {
@@ -158,20 +158,20 @@
 
 .tag {
     font-size: 14px;
-    background-color: #00a6e8;
-    color: white;
+    background-color: #d3d3d3;
+    color: #1b1b1b;
     padding: 4px;
     text-align: center;
     width: fit-content;
     margin: 2px auto;
     /* font-weight: 600; */
-    border-radius: 20px;
+    border-radius: 1px;
     padding: 5px 10px;
     /* display: inline; */
 }
 
 .tag-dots {
-    font-size: 16px;
+    font-size: 10px;
     margin: 0px 2px;
 }
 
