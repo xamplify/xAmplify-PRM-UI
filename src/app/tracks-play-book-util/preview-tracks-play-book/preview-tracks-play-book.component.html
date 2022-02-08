@@ -150,14 +150,13 @@
                             </ng-container>
                         </div> -->
                     </div>
-                    <div class="page-bar card-shadow">
+                    div class="page-bar card-shadow">
                         <app-list-loader *ngIf="trackViewLoader && modulesDisplayType.isListView">
                         </app-list-loader>
                         <!-- <app-grid-loader *ngIf="trackViewLoader && modulesDisplayType.isGridView">
                         </app-grid-loader> -->
                         <!---List View----->
                         <section *ngIf="modulesDisplayType.isListView && !trackViewLoader">
-                            <div style="overflow-y: scroll; height: 50%;">
                             <div class="table-responsive" style="float: left;">
                                 <table class='table tgrid table-hover table-sm' id="manage-assets-table"
                                     *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
@@ -266,7 +265,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
                             </div>
                         </section>
                         <!----Grid View------->
