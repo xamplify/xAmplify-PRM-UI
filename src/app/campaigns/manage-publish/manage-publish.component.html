@@ -26,9 +26,10 @@
     </ul>
     <div class="pull-right">
       <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!archived"
-        (click)="showArchivedCampaigns()">View Archived Campaigns</button>
+        (click)="showArchivedCampaigns()"><i class="fa fa-archive" aria-hidden="true"></i>  Archived Campaigns</button>
       <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="archived"
-        style="background-color: #5cb85c !important;" (click)="showActiveCampaigns()">View Active Campaigns</button>
+        style="background-color: #5cb85c !important;" (click)="showActiveCampaigns()"><i class="fa fa-bullhorn"></i>
+        Active Campaigns</button>
     </div>
 
   </div>
