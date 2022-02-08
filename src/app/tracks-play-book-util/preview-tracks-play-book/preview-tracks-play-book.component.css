@@ -118,7 +118,7 @@
     height: 90px;
     width: 100px;
     background: #f2f4f9;
-    border: solid 2px #008fd5;
+    border: solid 1px #cccccc;
     border-radius: 1px;
 }
 
@@ -268,8 +268,6 @@ body {
 
 .description-scroll {
     margin-left: 10px; 
-    overflow-y: auto; 
-    height: 145px;
     word-break: break-word;
 }
 
@@ -361,7 +359,9 @@ body {
 	height: 81px;
 	background-color: #f1f1f1;
 	text-align: center;
-	position: relative;
+    position: relative;
+    border: solid 1px #cccccc;
+    border-radius: 3px;
 }
 
 .thumbnail-wrapper>img {
@@ -437,7 +437,7 @@ body {
     color: #fff;
 }
 
-:host ::ng-deep .padding_bottom * {
+:host ::ng-deep .img-desc-section-wrap * {
     max-height: 100%;
     max-width: 100%;
 }
@@ -446,4 +446,37 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.text-break {
+	word-break: break-word;
+}
+
+.padding-none {
+    padding: 0px;
+}
+
+.img-class {
+    height: 140px !important;
+    width: 100% !important;
+}
+
+.content-in-view {
+    background-color: #f5f5f5;
+}
+
+.title-class {
+    display: inline;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 3px;
+}
+
+.asset-name-class {
+    background-color: #f1f3fa;
+    color: #8c9dad !important;
+}
+
+.card-shadow {
+    box-shadow: 0 1px 10px 0 rgb(50 50 50 / 20%);
 }

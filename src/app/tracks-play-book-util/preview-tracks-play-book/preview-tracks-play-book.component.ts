@@ -57,6 +57,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   videoFormats: Array<string> = ['webm', 'mkv', 'flv', 'flv', 'vob', 'ogv', 'ogg', 'drc', 'gif', 'gifv', 'mng', 'avi', 'mts', 'm2ts',
     'ts', 'mov', 'qt', 'wmv', 'yuv', 'rm', 'rmvb', 'viv', 'asf', 'amv', 'mp4', 'm4p', 'm4v', 'mpg', 'mp2', 'mpeg', 'mpe', 'mpv', 'mpg',
     'mpeg', 'm2v', 'm4v', 'svi', '3gp', '3g2', 'mxf', 'roq', 'nsv', 'flv', 'f4v', 'f4p', 'f4a', 'f4b'];
+  contentIndexInView: number;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -168,7 +169,8 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     this.referenceService.post(object, url);
   }
 
-  viewContent(asset: any) {
+  viewContent(asset: any, index: number) {
+    this.contentIndexInView = index;
     this.showTracksPlayBook = false;
     this.notifyShowTracksPlayBook.emit(this.showTracksPlayBook);
     this.assetDetails = asset;
@@ -193,6 +195,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   closeView(customResponse: CustomResponse) {
+    this.contentIndexInView = null;
     this.showTracksPlayBook = true;
     this.notifyShowTracksPlayBook.emit(this.showTracksPlayBook);
     this.showAsset = false;
