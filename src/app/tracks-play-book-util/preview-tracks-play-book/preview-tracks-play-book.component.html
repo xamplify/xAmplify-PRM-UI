@@ -170,7 +170,7 @@
                                     <tbody>
                                         <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
                                             <tr
-                                                [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}" (click)="$event.stopPropagation();viewContent(content, i)">
+                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}" (click)="$event.stopPropagation();viewContent(content, i)">
                                                 <td style="width: 10%;">
                                                     <div class="list-image-container">
                                                         <div class="thumbnail-wrapper">
@@ -224,7 +224,7 @@
                                             </tr>
                                         </ng-container>
                                         <tr *ngIf="(type == undefined || type == 'TRACK') && tracksPlayBook.quiz"
-                                            [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}" (click)="viewQuiz()">
+                                            [ngClass]="{'disable-click': !isCreatedUser && !tracksPlayBook.enableQuiz}" (click)="viewQuiz()">
                                             <td style="width: 10%;">
                                                 <div class="thumbnail-wrapper">
                                                     <img class="custom-image-css" [src]="tracksPlayBook.featuredImage"
