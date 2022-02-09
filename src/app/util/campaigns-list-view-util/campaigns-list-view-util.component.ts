@@ -53,6 +53,16 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
       { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
   ];
 
+  sortByDropDownArchived = [
+    { 'name': 'Sort By', 'value': 'createdTime-DESC' },
+    { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
+    { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
+    { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+    { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
+    { 'name': 'Archived On (ASC)', 'value': 'archivedTime-ASC' },
+    { 'name': 'Archived On (DESC)', 'value': 'archivedTime-DESC' }
+];
+
   numberOfItemsPerPage = [
       { 'name': '12', 'value': '12' },
       { 'name': '24', 'value': '24' },
@@ -101,6 +111,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   toDateFilter: any = "";
   filterResponse: CustomResponse = new CustomResponse(); 
   filterMode: boolean = false;
+  @Input() archived:boolean = false;
 
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -131,44 +142,46 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
       // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
   }
 
-  listCampaign(pagination: Pagination) {
-      this.isloading = true;
-      this.refService.loading(this.httpRequestLoader, true);
-      pagination.searchKey = this.searchKey;
-      if(this.pagination.teamMemberAnalytics){
-          this.pagination.teamMemberId = this.teamMemberId;
-      }
-       //Added by Vivek for Vanity URL
-       if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
-        this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-        this.pagination.vanityUrlFilter = true;
+    listCampaign(pagination: Pagination) {
+        this.isloading = true;
+        this.refService.loading(this.httpRequestLoader, true);
+        pagination.searchKey = this.searchKey;
+        if (this.pagination.teamMemberAnalytics) {
+            this.pagination.teamMemberId = this.teamMemberId;
+        }
+        //Added by Vivek for Vanity URL
+        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this.pagination.vanityUrlFilter = true;
+        }
+
+        this.pagination.archived = this.archived;
+        this.campaignService.listCampaign(pagination, this.loggedInUserId)
+            .subscribe(
+                data => {
+                    this.isloading = false;
+                    if (data.access) {
+                        this.campaigns = data.campaigns;
+                        this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
+                        $.each(this.campaigns, function (_index: number, campaign) {
+                            campaign.displayTime = new Date(campaign.utcTimeInString);
+                            campaign.createdDate = new Date(campaign.createdDate);
+                        });
+                        this.totalRecords = data.totalRecords;
+                        pagination.totalRecords = data.totalRecords;
+                        pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                        this.refService.loading(this.httpRequestLoader, false);
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                error => {
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                },
+                () => this.logger.info("Finished listCampaign()", this.campaigns)
+            );
     }
-      this.campaignService.listCampaign(pagination, this.loggedInUserId)
-          .subscribe(
-          data => {
-            this.isloading = false;
-              if(data.access){
-                this.campaigns = data.campaigns;
-				this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
-                $.each(this.campaigns, function (_index:number, campaign) {
-                    campaign.displayTime = new Date(campaign.utcTimeInString);
-                    campaign.createdDate = new Date(campaign.createdDate);
-                });
-                this.totalRecords = data.totalRecords;
-                pagination.totalRecords = data.totalRecords;
-                pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                this.refService.loading(this.httpRequestLoader, false);
-              }else{
-                this.authenticationService.forceToLogout();
-              }
-          },
-          error => {
-              this.isloading = false;
-              this.logger.errorPage(error);
-          },
-          () => this.logger.info("Finished listCampaign()", this.campaigns)
-          );
-  }
 
   setPage(event) {
       this.pagination.pageIndex = event.page;
@@ -210,6 +223,9 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
       try {
+          if (this.archived) {
+                this.selectedSortedOption = this.sortByDropDownArchived[0];
+            } 
             this.getCampaignTypes();
       } catch (error) {
           this.logger.error("error in manage-publish-component init() ", error);
@@ -687,7 +703,8 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
                'categoryType' : categoryType,
                'searchKey' : searchKey,
                'fromDate' : this.pagination.fromDateFilterString,
-               'toDate' : this.pagination.toDateFilterString               
+               'toDate' : this.pagination.toDateFilterString,
+               'archived': this.pagination.archived               
            };
        } else {
            param = {
@@ -701,7 +718,8 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
                'categoryType' : categoryType,
                'searchKey' : searchKey,
                'fromDate' : this.pagination.fromDateFilterString,
-               'toDate' : this.pagination.toDateFilterString
+               'toDate' : this.pagination.toDateFilterString,
+               'archived': this.pagination.archived
            };
        }
        let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
@@ -762,6 +780,46 @@ goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
       this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
     }    
   }
+
+  archiveCampaign(campaign: any) {
+    var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+    this.campaignService.archiveCampaign(request)
+        .subscribe(
+            response => {
+                this.isloading = false;
+                if (response.statusCode == 200) {
+                    this.listCampaign(this.pagination);
+                    this.refService.loading(this.httpRequestLoader, false);
+                    this.customResponse = new CustomResponse('SUCCESS', "Campaign Archived Successfully", true);
+                }
+            },
+            error => {
+                this.isloading = false;
+                this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished archiveCampaign()", campaign)
+        );
+}
+
+unarchiveCampaign(campaign: any) {
+    var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+    this.campaignService.unarchiveCampaign(request)
+        .subscribe(
+            response => {
+                this.isloading = false;
+                if (response.statusCode == 200) {
+                    this.listCampaign(this.pagination);
+                    this.refService.loading(this.httpRequestLoader, false);
+                    this.customResponse = new CustomResponse('SUCCESS', "Campaign Unarchived Successfully", true);
+                }
+            },
+            error => {
+                this.isloading = false;
+                this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished archiveCampaign()", campaign)
+        );
+}
 
 
 }

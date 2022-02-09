@@ -84,7 +84,7 @@
                             <tbody>
                                 <tr *ngFor="let learningTrack of pagination.pagedItems ;let i =index">
                                     <td class="hidden-xs text-cente" style="width: 10%;">
-                                        <img class="img-track-list" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="Image Not Found">
+                                        <img class="img-track-list" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms-thumbnail.png';" alt="Image Not Found">
                                     </td>
                                     <td>
                                         <h4 class="moreipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}" translate>
@@ -98,7 +98,6 @@
                                             <span translate> Created By
                                                 <strong>{{learningTrack.createdByName}}</strong></span>
                                         </h6>
-                                        <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner" style="background-color: #5cb85c;" translate>Published</h6>
                                     </td>
                                     <td class="hidden-xs text-center">
                                         <ng-container *ngIf="learningTrack.tagNames?.length > 0">
@@ -111,12 +110,13 @@
                                                 </div>
                                             </ng-container>
                                             <span *ngIf="learningTrack.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
-                                                title="{{learningTrack.toolTipTagNames}}">...</span>
+                                                title="{{learningTrack.toolTipTagNames}}">More</span>
                                         </ng-container>
                                     </td>
                                     <td class="hidden-xs text-center">
-                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
+                                        <app-timestamp style="display: block;margin-bottom: 4px;" [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
                                         </app-timestamp>
+                                        <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner" style="background-color: #5cb85c;" translate>Published</h6>
                                     </td>
                                     <td>
                                         <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" class="row">
@@ -129,7 +129,7 @@
                                         </div>
                                     </td>
                                     <td id="actions-row " class="text-center mActionAlign">
-                                        <div class="actions-block override-actions custom-width-icon actionAlignment">
+                                        <div class="actions-block override-actions custom-width-icon" [ngClass]="{actionAlignment : !isPartnerView}">
                                             <div>
                                             <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                                 <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
@@ -190,7 +190,7 @@
             <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
                     <div class="grid-box box-shadow">
-                        <img class="img-grid-track " [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="{{learningTrack.title}}">
+                        <img class="img-grid-track " [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms-thumbnail.png';" alt="{{learningTrack.title}}">
                         <h4 class="ellipsis mt5 mb5 f-w-600 grid-title" title="{{learningTrack.title}}" style="float: none !important;overflow: hidden; padding-right: 3px;" translate>
                             {{learningTrack.title | slice:0:25}} <span *ngIf="learningTrack.title?.length>25">...</span><br><br>
                         </h4>
@@ -222,7 +222,7 @@
                         <div class="ribbon">
                             <span style="background-color: #5cb85c;" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
                         </div>
-                        <div class="bar actionAlignment" style="padding: 9px 3px;">
+                        <div [ngClass]="{actionAlignment : !isPartnerView}" class="bar" style="padding: 9px 3px;">
                             <div class="btnAlignPad mbtnAlignPad">
                             <a class="mMobileDisable mDisableColor" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                 <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>

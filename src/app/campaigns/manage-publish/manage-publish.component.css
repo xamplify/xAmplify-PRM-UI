@@ -525,3 +525,7 @@ table tr:nth-child(even) td {
 		float: right!important;
 	}
 }
+
+.breadcrumb-right-btn {
+	padding: 9px;
+}

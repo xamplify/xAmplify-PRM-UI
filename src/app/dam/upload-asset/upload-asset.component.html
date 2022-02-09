@@ -229,7 +229,7 @@
                                   <!-- <textarea class="form-control" rows="7"  [(ngModel)]="damUploadPostDto.description"  [ngModelOptions]="{standalone: true}"  placeholder="Enter Description" maxlength="5000" (input)="validateForm('description')"></textarea> -->
                                   <ckeditor #ckeditor [(ngModel)]="damUploadPostDto.description" [ngModelOptions]="{standalone: true}"
                                     [config]="ckeConfig" (ready)="onReady($event)" debounce="500" maxlength="5000"
-                                    (change)="getCkEditorData();validateForm('description')"
+                                    (change)="validateForm('description')"
                                     (input)="getCkEditorData();validateForm('description')">
                                   </ckeditor>
                                 </div>
