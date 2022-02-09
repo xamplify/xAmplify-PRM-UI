@@ -96,6 +96,11 @@ body {
     transition: opacity 1s
 }
 
+.form-background-image-from-track {
+    position: absolute !important;
+    z-index: 0 !important;
+}
+
 .button-padding {
     padding: 7px 14px;
     font-size: 14px;

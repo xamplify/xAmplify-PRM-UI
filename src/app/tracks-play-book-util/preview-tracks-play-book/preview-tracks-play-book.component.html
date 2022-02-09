@@ -58,18 +58,26 @@
                     </div>
                 </section>
                 <section *ngIf="!showTracksPlayBook">
-                    <div *ngIf="!showAsset" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <a (click)="closeView()" class="pull-right close-circle" style="padding: 3px 5px; margin: 4px 10px 0px 0px;">
-                            <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-                        <div class="page-bar" style="padding: 3px;">
-                            <div class="col-md-6 col-lg-6 track-title" title="{{tracksPlayBook.title}}">
-                                <div class="title-class" style="color: #333333;">Track's Title:</div>
-                                <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;color: #333333;">{{tracksPlayBook.title}}</a>
+                    <div *ngIf="!showAsset" class="portlet light page-bar">
+                        <div class="portlet-title">
+                            <div *ngIf="!showAsset" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <a (click)="closeView()" class="pull-right close-circle" style="padding: 3px 5px; margin: 4px 0px 0px 0px;">
+                                    <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+                                <div class="page-bar" style="padding: 3px;margin-bottom: 1px;                                ">
+                                    <div class="col-md-6 col-lg-6 track-title" title="{{tracksPlayBook.title}}">
+                                        <div class="title-class" style="color: #333333;">Track's Title:</div>
+                                        <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;color: #333333;">{{tracksPlayBook.title}}</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="portlet-body">
+                        <div class="col-md-12 col-lg-12" style="padding-top: 30px;">
+                            <app-form-preview *ngIf="!showAsset" [learningTrackId]="tracksPlayBook.id" (notifyParent)="closeView($event)">
+                            </app-form-preview>
+                        </div>
                     </div>
-                    <app-form-preview *ngIf="!showAsset" [learningTrackId]="tracksPlayBook.id" (notifyParent)="closeView($event)">
-                    </app-form-preview>
+                    </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                         <div>
                             <div *ngIf="showAsset">
