@@ -42,7 +42,7 @@
 }
 
 .form-background {
-    background: none;
+    background: #F1F3FA !important;
 }
 
 .disable-click {
@@ -485,4 +485,21 @@ body {
 
 .title-height {
     line-height: 1.3;
+}
+
+.portlet.light.form {
+    padding: 0px;
+    background: #F1F3FA;
+}
+.portlet.light.form .portlet-body {
+    padding-top: 0px!important;
+}
+.portlet.light.form {
+    border: 1px solid #CCC;
+    padding: 0px !important;
+}
+
+:host ::ng-deep .form-preview * {
+    max-height: 100%;
+    max-width: 100%;
 }
