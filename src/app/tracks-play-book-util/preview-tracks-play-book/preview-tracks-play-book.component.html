@@ -58,23 +58,20 @@
                     </div>
                 </section>
                 <section *ngIf="!showTracksPlayBook">
-                    <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <a (click)="closeView()" class="pull-right close-circle"
-                            style="padding: 3px 5px; margin: 7px 10px 0px 0px;">
-                            <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
-                                aria-hidden="true"></span></a>
+                    <div *ngIf="!showAsset" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <a (click)="closeView()" class="pull-right close-circle" style="padding: 3px 5px; margin: 4px 10px 0px 0px;">
+                            <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
                         <div class="page-bar" style="padding: 3px;">
-                            <div class="name-wrap" style="font-size: 15px; padding: 5px;">
-                                <div class="title-class">Track's Title:</div>
-                                <strong style="margin: 0px 0px 0px 10px;"
-                                    title="{{tracksPlayBook.title}}">{{tracksPlayBook.title}}</strong>
+                            <div class="col-md-6 col-lg-6 track-title" title="{{tracksPlayBook.title}}">
+                                <div class="title-class" style="color: #333333;">Track's Title:</div>
+                                <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;color: #333333;">{{tracksPlayBook.title}}</a>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
+                    <app-form-preview *ngIf="!showAsset" [learningTrackId]="tracksPlayBook.id" (notifyParent)="closeView($event)">
+                    </app-form-preview>
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                         <div>
-                            <app-form-preview *ngIf="!showAsset" [learningTrackId]="tracksPlayBook.id" (notifyParent)="closeView($event)">
-                            </app-form-preview>
                             <div *ngIf="showAsset">
                                 <div>
                                     <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
@@ -93,7 +90,7 @@
                                                                 </h4>
                                                             </div>
                                                             <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 asset-name-class">
-                                                                <h4 class="name-wrap" style="font-size: 15px;font-weight: bold;" title="{{assetDetails?.assetName}}">
+                                                                <h4 class="name-wrap title-height" style="font-size: 15px;font-weight: bold;" title="{{assetDetails?.assetName}}">
                                                                     <strong>{{assetDetails?.assetName}}</strong>
                                                                 </h4>
                                                             </div>
@@ -104,7 +101,7 @@
                                                                     alt="No Image Found">
                                                             </div>
                                                             <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                                                <div class="center" style="padding: 10px;margin: 0 !important;font-size: 14px;" title="{{assetDetails.assetType}}"
+                                                                <div class="center title-height" style="padding: 10px;margin: 0 !important;font-size: 14px;" title="{{assetDetails.assetType}}"
                                                                     translate>
                                                                     <strong>Type: </strong>{{assetDetails.assetType}}<br>
                                                                     <!-- <div class="name-wrap" title="{{assetDetails?.assetName}}">
@@ -117,7 +114,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 6px 10px 10px 10px;">
-                                                            <div class="description-scroll padding_bottom" [innerHTML]="assetDetails?.description">
+                                                            <div class="description-scroll padding_bottom img-desc-section-wrap" [innerHTML]="assetDetails?.description">
                                                         </div>
                                                     </div>
                                                     </div>
@@ -173,7 +170,7 @@
                                     <tbody>
                                         <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
                                             <tr
-                                                [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}">
+                                                [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}" (click)="$event.stopPropagation();viewContent(content, i)">
                                                 <td style="width: 10%;">
                                                     <div class="list-image-container">
                                                         <div class="thumbnail-wrapper">
@@ -227,7 +224,7 @@
                                             </tr>
                                         </ng-container>
                                         <tr *ngIf="(type == undefined || type == 'TRACK') && tracksPlayBook.quiz"
-                                            [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
+                                            [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}" (click)="viewQuiz()">
                                             <td style="width: 10%;">
                                                 <div class="thumbnail-wrapper">
                                                     <img class="custom-image-css" [src]="tracksPlayBook.featuredImage"
