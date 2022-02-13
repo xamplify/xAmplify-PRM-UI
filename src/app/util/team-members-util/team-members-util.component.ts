@@ -454,17 +454,29 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.team.enableOption = false;
       this.team.secondAdmin = false;
       this.loading = true;
+
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
         response => {
-          this.loading = false;
           this.team.enableOption = response.data;
         }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        },()=>{
+          this.teamMemberService.getPartnersCount(teamMemberGroupId).subscribe(
+            response=>{
+              this.loading = false;
+              this.team.teamMemberGroupPartnersCount = response.data;
+            },error=>{
+              this.loading = false;
+              this.referenceService.showSweetAlertServerErrorMessage();
+            }
+          )
         }
-      )
+      );
+
     }
   }
+
 
 
 
@@ -665,11 +677,20 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
         response => {
-          this.loading = false;
           team.enableOption = response.data;
         }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        },()=>{
+          this.teamMemberService.getPartnersCount(teamMemberGroupId).subscribe(
+            response=>{
+              this.loading = false;
+              team.teamMemberGroupPartnersCount = response.data;
+            },error=>{
+              this.loading = false;
+              this.referenceService.showSweetAlertServerErrorMessage();
+            }
+          )
         }
       )
     }
