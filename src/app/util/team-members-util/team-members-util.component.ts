@@ -454,7 +454,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.team.enableOption = false;
       this.team.secondAdmin = false;
       this.loading = true;
-
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
         response => {
           this.team.enableOption = response.data;
@@ -462,21 +461,26 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
         },()=>{
-          this.teamMemberService.getPartnersCount(teamMemberGroupId).subscribe(
-            response=>{
-              this.loading = false;
-              this.team.teamMemberGroupPartnersCount = response.data;
-            },error=>{
-              this.loading = false;
-              this.referenceService.showSweetAlertServerErrorMessage();
-            }
-          )
+          this.getPartnersCount(teamMemberGroupId);
         }
       );
-
+    }else{
+     // this.loading = true;
+     // this.getPartnersCount(teamMemberGroupId);
     }
   }
 
+  getPartnersCount(teamMemberGroupId:number){
+    this.teamMemberService.getPartnersCount(teamMemberGroupId).subscribe(
+      response=>{
+        this.loading = false;
+        this.team.teamMemberGroupPartnersCount = response.data;
+      },error=>{
+        this.loading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    )
+  }
 
 
 
@@ -677,25 +681,20 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
         response => {
+          this.loading = true;
           team.enableOption = response.data;
         }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
         },()=>{
-          this.teamMemberService.getPartnersCount(teamMemberGroupId).subscribe(
-            response=>{
-              this.loading = false;
-              team.teamMemberGroupPartnersCount = response.data;
-            },error=>{
-              this.loading = false;
-              this.referenceService.showSweetAlertServerErrorMessage();
-            }
-          )
+         // this.getPartnersCount(teamMemberGroupId);
         }
       )
+    }else{
+     // this.loading = true;
+     // this.getPartnersCount(teamMemberGroupId);
     }
   }
-
   validateCsvData() {
     let names = this.csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
     let duplicateEmailIds = this.referenceService.returnDuplicates(names);

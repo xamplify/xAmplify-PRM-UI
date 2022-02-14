@@ -293,12 +293,12 @@
                         {{teamMemberGroup.name}}
                       </option>
                       </select>
-                      <span *ngIf="team?.partnersCount==0" class="info-text-color">
+                      <!-- <span *ngIf="team?.partnersCount==0" class="info-text-color">
                        <strong *ngIf="team?.teamMemberGroupPartnersCount>0">
                          <span class="active-status">{{team?.teamMemberGroupPartnersCount}}</span> 
                           {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
                         </strong>
-                      </span>
+                      </span> -->
                       </div>
                   </div>
                 </div>
@@ -394,12 +394,12 @@
              		{{teamMemberGroup?.name}}
             </option> 
             </select>
-            <span class="info-text-color float-left" *ngIf="teamMember?.teamMemberGroupPartnersCount>0">
+            <!-- <span class="info-text-color float-left" *ngIf="teamMember?.teamMemberGroupPartnersCount>0">
               <strong>
                 <span class="active-status">{{teamMember?.teamMemberGroupPartnersCount}}</span> 
                  {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
                </strong>
-             </span>
+             </span> -->
             <span class="input-group-btn">
               <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info mbtpxni" type="button" tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)">
                 <i class="fa fa-eye white" aria-hidden="true"></i>
