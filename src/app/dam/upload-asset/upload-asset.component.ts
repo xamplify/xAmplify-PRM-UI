@@ -15,7 +15,7 @@ import { Tag } from 'app/dashboard/models/tag'
 import { UserService } from '../../core/services/user.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 
-declare var $, swal, CKEDITOR: any, gapi, downloadFromGDrive: any, google;
+declare var $, swal, CKEDITOR: any, gapi, google;
 
 @Component({
 	selector: 'app-upload-asset',
@@ -135,8 +135,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if (files.length > 0) {
 			this.formData.delete("uploadedFile");
 			this.uploadedAssetName  = "";
-			this.uploadedCloudAssetName = "";
-			this.damUploadPostDto = new DamUploadPostDto();
+			
 			this.customResponse = new CustomResponse();
 			let file = files[0];
 			let sizeInKb = file.size / 1024;
@@ -150,6 +149,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				this.uploadedAssetName = file['name'];
 				this.damUploadPostDto.cloudContent = false;
 				this.damUploadPostDto.fileName = this.uploadedAssetName;
+				this.uploadedCloudAssetName = "";
+	            this.damUploadPostDto.downloadLink = null;
+	            this.damUploadPostDto.oauthToken = null;
 			}
 		}else{
 			this.clearPreviousSelectedAsset();
@@ -529,8 +531,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
               allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
           });*/
           this.uploadedAssetName  = "";
+          this.formData.delete("uploadedFile");
           this.uploadedCloudAssetName = "";
-          this.damUploadPostDto = new DamUploadPostDto();
           this.customResponse = new CustomResponse();
           //
           this.uploadedCloudAssetName = doc.name;
@@ -545,7 +547,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
       }
     }catch(error) {this.xtremandLogger.error('Error in upload video pickerCallback'+error);swal.close(); }
   }
-  
+  // // clound content code changes - dropBox
   
   
   
