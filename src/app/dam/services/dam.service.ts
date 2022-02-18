@@ -139,7 +139,7 @@ export class DamService {
       {
         type: "application/json"
       }));
-    let url = isAdd ? 'upload' : 'update';
+    let url = isAdd ? 'upload-content' : 'update';
     return this.http.post(this.URL + url + "?access_token=" + this.authenticationService.access_token, formData)
       .map(this.extractData)
       .catch(this.handleError);
@@ -213,4 +213,17 @@ export class DamService {
   handleError(error: any) {
     return Observable.throw(error);
   }
+  // upload content from cloud storage
+  downloadFromGDrive(downloadLink: string, fileName: string, oauthToken: string): Observable<any> {
+      fileName = fileName.replace(/[^a-zA-Z0-9.]/g, '');
+      var suffix = fileName.substring(fileName.lastIndexOf("."));
+      var prefix = fileName.substring(0, fileName.lastIndexOf("."));
+      fileName = prefix + suffix;
+      console.log('file path in service' + downloadLink + 'file name' + fileName + 'oauthToken' + oauthToken);
+      const url = this.URL + '?access_token=' + this.authenticationService.access_token +
+          '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&oauthToken=' + oauthToken +
+          '&userId=' + this.authenticationService.user.id;
+      return this.http.post(url, "")
+          .catch(this.handleError);
+}
 }

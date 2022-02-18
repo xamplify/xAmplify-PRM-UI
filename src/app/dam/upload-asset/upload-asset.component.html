@@ -63,6 +63,10 @@
                         <div class="mb-padding" *ngIf="isAdd">
                           <span [style.color]="invalidAssetName ? 'red':''"><strong>Upload Asset<span
                                 class="required">*</span></strong></span>
+<!-- // -->
+<div class="row">
+
+  <div class="col-md-6">
                           <div class="upload-asset-div" (click)="browse()" (drop)="chooseAsset($event)">
                             <input type="file" (change)="chooseAsset($event)" style="opacity: 0.0; position: absolute;"
                               id="uploadedAsset">
@@ -81,6 +85,46 @@
                               </span>
                             </div>
                           </div>
+  </div>
+ <div class="col-md-6">
+ <div class="upload-asset-div">
+  <div class="text-center">
+					<div class="col-xs-6 col-sm-3 col-md-3 text-center hidden-xs hidden-sm" >
+						<img src="assets/images/record.png" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to record using your webcam" (click)="cameraChange()"
+						 height="50" width="auto" class="camera" style=" border: 5px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
+						<div style="font-weight: 600;color: #ea7b92; margin: 9px 12px;" translate>WebCam</div>
+					</div>
+					<div class="col-xs-4 col-sm-4 col-md-3 text-center" >
+						<img src="assets/images/Dropbox.png" class="dropBox" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Dropbox account" (click)="dropBoxChange()"
+						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
+						<div style="font-weight: 600;color: #55bede;margin: 9px 13px;" translate>DropBox</div>
+					</div>
+					<div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" >
+						<img src="assets/images/box.png" class="box" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Box account" (click)="boxChange()"
+						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
+						<div style="font-weight: 600;margin: 9px 24px;color: #6eabd7;" translate>Box</div>
+					</div>
+					<div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" >
+						<img src="assets/images/GoogleDrive.png" alt="" data-toggle="tooltip" data-placement="bottom" class="googleDrive" title="Click here to access videos from your GoogleDrive account"
+						 (click)="googleDriveChange()" height="50" width="auto" style="cursor: pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1"
+						 onMouseOut="this.style.opacity= 0.7">
+						<div style="font-weight: 600; color: #eec24c; margin: 9px 3px" translate>GoogleDrive</div>
+          </div>
+             <br/><br/><br/><br/>
+                              <span *ngIf="uploadedCloudAssetName?.length>0">
+                                <strong>File Name : {{uploadedCloudAssetName}}</strong>
+                              </span>
+                              <span *ngIf="uploadedAssetName?.length==0">
+                                <strong>No File Selected</strong>
+                              </span>
+                              </div>
+          </div>
+  </div>
+
+</div>
+
+
+<!-- // -->
                           <div class="col-xs-12 p0 top10px md-padd">
                             <div class="col-xs-12 message-content">
                               <ul>
