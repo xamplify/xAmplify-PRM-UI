@@ -545,6 +545,15 @@
                                                     <textarea id="smsText" placeholder="Sms Text" class="form-control" [(ngModel)]="smsText" name="smsText" (input)="validateForm();validateField('smsText');" maxlength="200"></textarea>
                                                 </div>
                                             </div>
+
+                                            <!-- End Date -->
+                                            <div class="form-group" [attr.class]="endDateDivClass" [hidden]="!campaign.channelCampaign">
+                                                <label class="control-label col-sm-4" translate>End Date</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr"
+                                                        [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- END FORM-->
                                     </div>
@@ -2387,7 +2396,7 @@
                                         <div class="col-md-4">
                                             <label style="float: left;" translate>Date</label>
                                             <br>
-                                            <input type="text" class="form-control flatpickr square-box" placeholder="Select" formControlName="launchTime" />
+                                            <input type="text" class="form-control flatpickr square-box" placeholder="Select" id="launchTime" formControlName="launchTime" />
                                             <font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')" translate>Date Required
                                             </font>
                                         </div>

@@ -20,6 +20,7 @@ import {PublicEventEmailPopupComponent} from 'app/campaigns/public-event-email-p
 import { UserService } from '../../core/services/user.service';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { utc } from 'moment';
 
 declare var swal, $: any;
 
@@ -300,6 +301,10 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                       this.router.navigate(["/home/campaigns/social"]);
                   } else {
                       this.campaignService.campaign = data;
+                      let endDate = this.campaignService.campaign.endDate;
+                        if (endDate != undefined && endDate != null) {
+                            this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+                        }
                       let isLaunched = this.campaignService.campaign.launched;
                       let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                       if (isLaunched) {

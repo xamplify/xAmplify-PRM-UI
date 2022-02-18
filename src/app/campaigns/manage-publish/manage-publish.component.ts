@@ -19,6 +19,7 @@ import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receiver
 import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public-event-email-popup.component';
 import { UserService } from '../../core/services/user.service';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { utc } from 'moment';
 
 declare var swal, $: any;
 
@@ -322,7 +323,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.campaignService.getCampaignById(obj)
                 .subscribe(
                 data => {
-                        this.campaignService.campaign = data;
+                        this.campaignService.campaign = data; 
+                        // let endDate = this.campaignService.campaign.endDate;
+                        // this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:MM");                      
                         let isLaunched = this.campaignService.campaign.launched;
                         let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                         if (isLaunched) {
@@ -350,6 +353,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         this.router.navigate(["/home/campaigns/social"]);
                     } else {
                         this.campaignService.campaign = data;
+                        let endDate = this.campaignService.campaign.endDate;
+                        if (endDate != undefined && endDate != null) {
+                            this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+                        }
+                        
+                        
                         let isLaunched = this.campaignService.campaign.launched;
                         let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                         if (isLaunched) {

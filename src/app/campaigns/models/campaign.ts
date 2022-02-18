@@ -92,4 +92,6 @@ export class Campaign {
     unsubscribeLink = true;
     toPartner : boolean;
 
+    endDate: string;
+    clientTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 }

@@ -309,6 +309,9 @@
                         <h6 class="view-banner banner-top" *ngIf="archived" style="background-color: #f76c1a !important"
                           translate>
                           Archived</h6>
+                        <h6 class="view-banner banner-top" *ngIf="campaign.ended" style="background-color: #b6039e !important"
+                          translate>
+                          Ended</h6>
                       </td>
                       <td>
                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
@@ -381,6 +384,14 @@
                           <span>Archived On
                             <strong>
                               <app-timestamp [dateAndTime]="campaign.archivedDate">
+                              </app-timestamp>
+                            </strong>
+                          </span>
+                        </h5>
+                        <h5 *ngIf="campaign.showEndDate">
+                          <span>Ending On
+                            <strong>
+                              <app-timestamp [dateAndTime]="campaign.endDate">
                               </app-timestamp>
                             </strong>
                           </span>
@@ -993,6 +1004,8 @@
                             style="position: relative;top: -3px;background-color: #d9534f;" translate>Private</span>
                           <span class="view-banner" *ngIf="archived" style="position: relative;top: -3px; background-color: #f76c1a !important"
                             translate>Archived</span>
+                          <span class="view-banner" *ngIf="campaign.ended" style="position: relative;top: -3px; background-color: #b6039e !important"
+                            translate>Ended</span>
                           </h4>
                         <h6 [title]="campaign.createdBy" translate>By
                           <strong>{{campaign.createdBy | slice:0:15}}<span
@@ -1051,6 +1064,13 @@
                           <span translate>Archived On
                             <strong>
                               {{campaign.archivedDate |date:'mediumDate'}},{{campaign.archivedDate |date:'shortTime'}}
+                            </strong>
+                          </span>
+                        </h6>
+                        <h6 *ngIf="campaign.showEndDate">
+                          <span translate>Ending On
+                            <strong>
+                              {{campaign.endDate |date:'mediumDate'}},{{campaign.endDate |date:'shortTime'}}
                             </strong>
                           </span>
                         </h6>
