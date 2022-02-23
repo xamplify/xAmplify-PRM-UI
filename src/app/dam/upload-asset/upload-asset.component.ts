@@ -15,7 +15,7 @@ import { Tag } from 'app/dashboard/models/tag'
 import { UserService } from '../../core/services/user.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 
-declare var $, swal, CKEDITOR: any, gapi, google, Dropbox;
+declare var $, swal, CKEDITOR: any, gapi, google, Dropbox, BoxSelect;
 
 @Component({
 	selector: 'app-upload-asset',
@@ -65,7 +65,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	ckeConfig: any;
 	@ViewChild("ckeditor") ckeditor: any;
 	isCkeditorLoaded = false;
-	 tempr: any;
+	tempr: any = null;
 	pickerApiLoaded = false;
 	picker: any;
 	cloudStorageSelected = false;	
@@ -78,6 +78,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	public videoFileService: VideoFileService){
 		
 		$('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
+		$('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
 	}
 	
 	ngOnInit() {
@@ -515,35 +516,22 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
       }
   }
   pickerCallback(data: any) {
-    try{
-    const self = this;
-      if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
-          self.cloudStorageSelected = true;
-          const doc = data[google.picker.Response.DOCUMENTS][0];
-          if (self.picker) {
+      try {
+          const self = this;
+          if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+              self.cloudStorageSelected = true;
+              const doc = data[google.picker.Response.DOCUMENTS][0];
+              if (self.picker) {
+                  self.picker.setVisible(false);
+                  self.picker.dispose();
+              }
+              let downloadLink = 'https://www.googleapis.com/drive/v3/files/' + doc.id + '?alt=media';
+              this.setCloudContentValues(doc.name, downloadLink);
+          } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
               self.picker.setVisible(false);
               self.picker.dispose();
           }
-          /*swal({
-              text: 'Thanks   for waiting while   we retrieve your video from Google Drive',
-              allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
-          });*/
-          this.uploadedAssetName  = "";
-          this.formData.delete("uploadedFile");
-          this.uploadedCloudAssetName = "";
-          this.customResponse = new CustomResponse();
-          //
-          this.uploadedCloudAssetName = doc.name;
-          this.damUploadPostDto.downloadLink = 'https://www.googleapis.com/drive/v3/files/' + doc.id + '?alt=media';
-          this.damUploadPostDto.oauthToken = this.tempr;
-          this.damUploadPostDto.cloudContent = true;
-          this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
-          //self.downloadGDriveFile(doc.id, doc.name);
-      } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
-          self.picker.setVisible(false);
-          self.picker.dispose();
-      }
-    }catch(error) {this.xtremandLogger.error('Error in upload video pickerCallback'+error);swal.close(); }
+      } catch (error) { this.xtremandLogger.error('Error in upload video pickerCallback' + error); swal.close(); }
   }
   
   // cloud content -- DropBox code changes  
@@ -554,10 +542,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
               success: function(files: any) {
                   console.log(files[0].name);
                   self.cloudStorageSelected = true;
-                  self.dropbox(files);
+                  self.setCloudContentValues(files[0].name, files[0].link);
               },
               cancel: function() {
-                  //self.defaultSettings();
               },
               linkType: 'direct',
               multiselect: false,
@@ -566,21 +553,47 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
           Dropbox.choose(options);
       } catch (error) { this.xtremandLogger.error('Error in upload video downloadFromDropbox' + error); }
   }
-
-  dropbox(files: any) {
-      this.uploadedAssetName = "";
-      this.formData.delete("uploadedFile");
-      this.uploadedCloudAssetName = "";
-      this.customResponse = new CustomResponse();
-      //
-      this.uploadedCloudAssetName = files[0].name;
-      this.damUploadPostDto.downloadLink = files[0].link;
-      //this.damUploadPostDto.oauthToken = this.tempr;
-      this.damUploadPostDto.cloudContent = true;
-      this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
-    }
   
 //cloud content -- Box code changes 
-  
+  downloadFrombox() {
+      try{
+        const value = this;
+        const options = {
+            clientId: 'a8gaa6kwnxe10uruyregh3u6h7qxd24g',
+            linkType: 'direct',
+            multiselect: false,
+        };
+        const boxSelect = new BoxSelect(options);
+        boxSelect.launchPopup();
+        const self = this;
+        boxSelect.success(function (files: any) {
+            if (files[0].name) {
+                self.cloudStorageSelected = true;
+                self.setCloudContentValues(files[0].name, files[0].url);
+            } 
+        });
+        // Register a cancel callback handler
+        boxSelect.cancel(function () {
+            console.log('The user clicked cancel or closed the popup');
+            //self.defaultSettings();
+        });
+      } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);swal.close();}
+    };
+    
+    setCloudContentValues(uploadedCloudAssetName:string, downloadLink:string) {
+        this.uploadedAssetName = "";
+        this.formData.delete("uploadedFile");
+        this.uploadedCloudAssetName = "";
+        this.customResponse = new CustomResponse();
+        //
+        this.uploadedCloudAssetName = uploadedCloudAssetName;
+        this.damUploadPostDto.downloadLink = downloadLink;
+        this.damUploadPostDto.oauthToken = this.tempr;
+        this.damUploadPostDto.cloudContent = true;
+        this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
+      }
+    
+    
+    
   
 }
