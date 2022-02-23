@@ -481,7 +481,10 @@
                                                         </div> -->
                                                        <h5>
 														<span *ngIf="newContact?.mobileNumber; else NA"
-															>{{newContact.mobileNumber}}</span>
+															>
+                                                            <!-- {{newContact.mobileNumber}} -->
+                                                            <a href="tel:{{newContact?.mobileNumber}}">{{newContact?.mobileNumber}}</a>
+                                                        </span>
 													</h5>
                                                     </td>
                                                     <!-- <td>
