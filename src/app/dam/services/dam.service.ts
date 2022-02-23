@@ -145,7 +145,7 @@ export class DamService {
               .map(this.extractData)
               .catch(this.handleError);
       } else {
-          this.uploadCloudContent( formData, damUploadPostDto, isAdd );
+          return this.uploadCloudContent( formData, damUploadPostDto, isAdd );
       }
   }
 

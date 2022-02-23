@@ -114,7 +114,7 @@
                               <span *ngIf="uploadedCloudAssetName?.length>0">
                                 <strong>File Name : {{uploadedCloudAssetName}}</strong>
                               </span>
-                              <span *ngIf="uploadedAssetName?.length==0">
+                              <span *ngIf="uploadedCloudAssetName?.length==0">
                                 <strong>No File Selected</strong>
                               </span>
                               </div>
@@ -288,7 +288,7 @@
           </div>
           <div class="footer">
           <button class="btn btn-default" id="right" style="margin-right: 7px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
-          <button [disabled]="!isValidForm"  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadOrUpdate()" translate>{{submitButtonText}}</button>
+          <button  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadOrUpdate()" translate>{{submitButtonText}}</button>
           </div>
         </div>
       </div>
