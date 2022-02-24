@@ -14,8 +14,9 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Tag } from 'app/dashboard/models/tag'
 import { UserService } from '../../core/services/user.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
+import { Ng2DeviceService } from 'ng2-device-detector';
 
-declare var $, swal, CKEDITOR: any, gapi, google, Dropbox, BoxSelect;
+declare var $, swal, CKEDITOR: any, gapi, google, Dropbox, BoxSelect, videojs: any;
 
 @Component({
 	selector: 'app-upload-asset',
@@ -68,17 +69,67 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	tempr: any = null;
 	pickerApiLoaded = false;
 	picker: any;
-	cloudStorageSelected = false;	
-	sweetAlertDisabled : boolean;
 	uploadedCloudAssetName = "";
-	
+	browserInfo: string;
+	deviceInfo = null;
+	closeModalId: boolean;
+	stopButtonShow = false; 
+    testSpeedshow = false; 
+    rageDisabled = false;
+    player: any;
+    playerInit = false;
+    recordedVideo: any;
+    RecordSave = false;
+    textAreaValue = '';
+    changeVolume = 1;
+    textAreaDisable: boolean;
+    hideSaveDiscard: boolean;
+    maxTimeDuration: number;
+    testSpeeddisabled: boolean;
+    stopButtonDisabled: boolean;
+    camera: boolean;
+    saveVideo: boolean;
+    discardVideo: boolean;
+    checkSpeedValue = false;
+    isFileDrop = false;
+    recordCustomResponse: CustomResponse = new CustomResponse();
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
-	public videoFileService: VideoFileService){
+	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService){
 		
+		//this.isChecked = false;
+       // this.isDisable = false;
+        this.isFileDrop = false;
+        this.loading = false;
+        this.saveVideo = false;
+        this.discardVideo = false;
+        this.closeModalId = true;
+        this.testSpeedshow = true;
+        this.testSpeeddisabled = true;
+        this.hideSaveDiscard = true;
+        //this.isFileProgress = false;
+        this.textAreaDisable = true;
+        this.maxTimeDuration = 3400; // record video time
+        //this.maxVideoSize = 800; // upload video size in MB's
+        
 		$('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
 		$('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
+		 $('head').append('<link href="assets/js/indexjscss/webcam-capture/nvideojs.record.css" rel="stylesheet"  class="r-video">');
+		 $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="r-video"/>');
+         $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">');
+         $('head').append('<script src="assets/js/indexjscss/webcam-capture/nvideojs.record.js" type="text/javascript"  class="r-video"/>');
+		
+		this.deviceInfo = this.deviceService.getDeviceInfo();
+        this.browserInfo = this.deviceInfo.browser;
+        
+        if (this.referenceService.isEnabledCamera === false && !this.isIE() && !this.browserInfo.includes('safari') &&
+            !this.browserInfo.includes('edge')) {
+            this.referenceService.isEnabledCamera = true;
+        } else if (this.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) {
+            this.referenceService.cameraIsthere = true;
+             }
+        
 	}
 	
 	ngOnInit() {
@@ -97,6 +148,23 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	ngOnDestroy(): void {
 		$('#thumbnailImageModal').modal('hide');
 		this.openAddTagPopup = false;
+		
+		//
+        $('.r-video').remove();
+        if (this.camera) {
+            this.modalPopupClosed();
+            this.videoFileService.actionValue = '';
+        }
+        if (this.playerInit) {
+            this.player.record().destroy();
+            this.playerInit = false;
+        }
+        //this.isChecked = false;
+        if (this.picker) {
+            this.picker.setVisible(false);
+            this.picker.dispose();
+        }
+		
 	}
 
 	getAssetDetailsById(selectedAssetId: number) {
@@ -519,7 +587,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
       try {
           const self = this;
           if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
-              self.cloudStorageSelected = true;
               const doc = data[google.picker.Response.DOCUMENTS][0];
               if (self.picker) {
                   self.picker.setVisible(false);
@@ -541,7 +608,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
           const options = {
               success: function(files: any) {
                   console.log(files[0].name);
-                  self.cloudStorageSelected = true;
                   self.setCloudContentValues(files[0].name, files[0].link);
               },
               cancel: function() {
@@ -568,7 +634,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         const self = this;
         boxSelect.success(function (files: any) {
             if (files[0].name) {
-                self.cloudStorageSelected = true;
                 self.setCloudContentValues(files[0].name, files[0].url);
             } 
         });
@@ -593,6 +658,267 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
       }
     
+    
+    // upload content from Webcam
+    isIE() {
+        const isInternetExplorar = navigator.userAgent;
+        /* MSIE used to detect old browsers and Trident used to newer ones*/
+        const is_ie = isInternetExplorar.indexOf("MSIE ") > -1 || isInternetExplorar.indexOf("Trident/") > -1;
+        return is_ie;
+    }
+    
+    closeRecordPopup() {
+        try{
+         $('#myModal').modal('hide');
+          this.defaultSettings();
+          this.stop();
+         this.isFileDrop = false;
+          this.player.record().reset();
+          //this.saveVideo = false;
+          this.discardVideo = false;
+          this.playerInit = true;
+          // this.router.navigate(['./home/videos']);
+        }catch(error) { this.xtremandLogger.error('Error in upload video, closeRecordPopup method'+error);}
+      }
+    stop() {
+        this.stopButtonShow = false; // hide the stop button
+        this.testSpeedshow = true; // show the test speed button
+        this.rageDisabled = false;
+        $('#script-text').stop(true);
+    }
+    textAreaEmpty() {
+        if (this.textAreaValue !== '') { this.testSpeeddisabled = false; }
+    }
+    testSpeed() {
+        const self = this;
+        $('#script-text').stop(true);
+        $('#script-text').scrollTop(0);
+        if ($('#script-text').val() === '') {
+            // swal("Please Add your script and Test it back");
+        } else {
+            this.stopButtonShow = true; // stop button show
+            this.stopButtonDisabled = false;
+            this.testSpeedshow = false; // hide the test speed button
+            this.rageDisabled = true;
+            this.checkSpeedValue = true;
+            const volume = this.changeVolume * 60000;
+            $('#script-text').animate({ scrollTop: $('#script-text').prop('scrollHeight') },
+                {
+                    duration: volume,
+                    complete: function () {
+                        self.stop();
+                    }
+                });
+        }
+    }
+    checkCameraBlock() {
+        const recordBlocked = this;
+        navigator.getUserMedia(
+            {   // we would like to use video but not audio
+                video: true,
+                audio: true
+            },
+            function (stream) {
+                const localStream = stream;
+                const track = stream.getTracks()[0];
+                track.stop();
+                localStream.getVideoTracks()[0].stop();
+                recordBlocked.referenceService.cameraIsthere = true;
+            },
+            function () {
+                recordBlocked.referenceService.cameraIsthere = false;
+                console.log('user did not give access to the camera');
+            }
+        );
+    }
+    recordVideo() {
+        $('#script-text').val('');
+        $('#myModal').modal('show');
+    }
+    cameraChange() {
+        if(this.isIE() || this.browserInfo.includes('edge') ){
+          swal('Oops...',  'This Cam won\'t work in Internet explorar and edge browser!', 'error');
+         }
+        else {
+        if (true) {
+            this.camera = true;
+            //this.isDisable = true;
+            this.isFileDrop = true;
+            //this.isChecked = true;
+            this.fileDropDisabled();
+            this.recordVideo();
+            this.playerInit = true;
+            $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+            $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').attr('style', 'display:none');
+            $('.vjs-volume-panel-horizontal').attr('style', 'display:none');
+            $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').css('cssText', 'display:none !important');
+
+            const self = this;
+            self.player = videojs('myVideo',
+                {
+                    controls: true,
+                    loop: false,
+                    width: 676,
+                    height: 360,
+                    plugins: {
+                        record: {
+                            maxLength: self.maxTimeDuration,
+                            debug: true,
+                            audio: true,
+                            video: {
+                                // video constraints: set resolution of camera
+                                mandatory: {
+                                    minWidth: 640,
+                                    minHeight: 360,
+                                },
+                            },
+                            // dimensions of captured video frames
+                            frameWidth: 640,
+                            frameHeight: 360
+                        }
+                    },
+                    controlBar: {
+                        // hide volume and fullscreen controls
+                        volumeMenuButton: false
+                    }
+                });
+            self.player.on('deviceError', function () {
+                console.log('device error:', this.player.deviceErrorCode);
+            });
+            self.player.on('deviceReady', function () {
+                self.saveVideo = false;
+                self.discardVideo = false;
+                $('.video-js .vjs-fullscreen-control').hide();
+                console.log('device error:', this.player.deviceErrorCode);
+            });
+            self.player.on('error', function (error: any) {
+                console.log('error:', error);
+            });
+            // user clicked the record button and started recording
+            self.player.on('startRecord', function () {
+                console.log('started recording!');
+                self.closeModalId = false; // close button disabled for modal pop up
+                $('#script-text').scrollTop(0);
+                self.stopButtonShow = false; // stop button hide in modal pop up
+                self.stopButtonDisabled = true; // stop button disabled in modal pop up
+                self.testSpeedshow = true; // show the test speed button
+                self.testSpeeddisabled = true; // test speed button disabled
+                self.testSpeed();
+                self.rageDisabled = true;
+                console.log('started recording!');
+                self.saveVideo = false; // save button disabled
+                self.discardVideo = false; // discard button disabled
+            });
+            // user completed recording and stream is available
+            self.player.on('finishRecord', function () {
+                self.saveVideo = true; // save button enabled
+                self.discardVideo = true; // discard button enabled
+                self.testSpeeddisabled = false; // enabled the test speed button
+                self.closeModalId = true; // close button enabled
+                $('.video-js .vjs-fullscreen-control').show();
+                $('.vjs-volume-panel-horizontal').attr('style', 'display:none');
+                $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').css('cssText', 'display:none !important');
+                self.stop();
+                self.rageDisabled = false;
+                console.log('finished recording: ', self.player.recordedData);
+                self.recordedVideo = self.player.recordedData;
+            });
+        }
+      }
+    }
+    
+    fileDropDisabled() {
+        // this.isChecked =true;
+        this.isFileDrop = true;
+    }
+    fileDropEnabled() {
+        //this.isChecked = false;
+        this.isFileDrop = false;
+    }
+    
+    uploadRecordedVideo() {
+        if(this.player.record().getDuration() < 10) {
+          //this.videoRecordTimeLess = true;
+          this.recordCustomResponse = new CustomResponse( 'ERROR', 'Record Video length must be greater than 10 seconds', true );
+         } else {
+         // this.videoRecordTimeLess = false;
+         try{
+           this.RecordSave = true;
+           this.saveVideo = false;
+           this.discardVideo = false;
+           this.testSpeeddisabled = true;
+           this.closeModalId = false;
+           //this.uploadeRecordVideo = true;
+           this.textAreaDisable = false; // not using ,need to check
+           this.hideSaveDiscard = false; // hide the save and discard buttons when the video processing
+           
+           
+          // const formData = new FormData();
+           //const object = this.recordedVideo;
+           console.log(this.recordedVideo);
+           //formData.append('file', object);
+           //console.log(formData);
+
+           //  add recorded video success block
+           this.formData.delete("uploadedFile");
+           this.uploadedAssetName  = "";
+
+           this.customResponse = new CustomResponse();
+           this.formData.append("uploadedFile", this.recordedVideo, 'recorded_video');
+           this.uploadedAssetName = 'recorded_video';
+           this.damUploadPostDto.cloudContent = false;
+           this.damUploadPostDto.fileName = this.uploadedAssetName;
+           this.uploadedCloudAssetName = "";
+           this.damUploadPostDto.downloadLink = null;
+           this.damUploadPostDto.oauthToken = null;
+           
+           (<HTMLInputElement>document.getElementById('script-text')).disabled = true;
+           (<HTMLInputElement>document.getElementById('rangeDisabled')).disabled = true;
+           $('.video-js .vjs-control-bar').hide();
+           
+           this.recordModalPopupAfterUpload();
+           
+           
+          }catch(error) { this.xtremandLogger.error('Error in upload video, uploadRecordedVideo method'+error);}
+          }
+       }
+       removeRecordVideo() {
+          try{
+           this.player.record().stopDevice();
+           this.player.record().getDevice();
+           this.saveVideo = false;
+           this.discardVideo = false;
+           this.hideSaveDiscard = true;
+           $('.video-js .vjs-fullscreen-control').hide();
+         }catch(error) { this.xtremandLogger.error('Error in upload video, removeRecordVideo method'+error);}
+       }
+       
+       modalPopupClosed() {
+           $('#myModal').modal('hide');
+           $('body').removeClass('modal-open');
+           $('.modal-backdrop fade in').remove();
+       }
+       
+       recordModalPopupAfterUpload() {
+           this.modalPopupClosed();
+           this.closeRecordPopup();
+           //this.cloudStorageDisabled();
+          // this.processing = true;
+       }
+       
+       defaultSettings() {
+           this.camera = false;
+           this.isFileDrop = false;
+           //this.isDisable = false;
+           this.hideSaveDiscard = true;
+          // this.isFileProgress = false;
+          // this.sweetAlertDisabled = false;
+           $('.camera').attr('style', 'cursor:pointer; opacity:0.7');
+          // $('.addfiles').attr('style', 'float: left; margin-right: 9px; opacity:1');
+       }
     
     
   
