@@ -461,28 +461,31 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
         },()=>{
-          this.getPartnersCount(teamMemberGroupId);
+          this.getPartnersCount(teamMemberGroupId,undefined);
         }
       );
     }else{
-     // this.loading = true;
-     // this.getPartnersCount(teamMemberGroupId);
+      this.loading = true;
+     this.getPartnersCount(teamMemberGroupId,undefined);
     }
   }
 
-  getPartnersCount(teamMemberGroupId:number){
+  getPartnersCount(teamMemberGroupId:number,team:any){
     this.teamMemberService.getPartnersCount(teamMemberGroupId).subscribe(
       response=>{
         this.loading = false;
-        this.team.teamMemberGroupPartnersCount = response.data;
+        let count = response.data;
+        if(team!=undefined){
+          team.teamMemberGroupPartnersCount = count;
+        }else{
+          this.team.teamMemberGroupPartnersCount = count;
+        }
       },error=>{
         this.loading = false;
         this.referenceService.showSweetAlertServerErrorMessage();
       }
     )
   }
-
-
 
   validateAddTeamMemberForm(fieldName: string) {
     if ("emailId" == fieldName) {
@@ -681,18 +684,17 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
         response => {
-          this.loading = true;
           team.enableOption = response.data;
         }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
         },()=>{
-         // this.getPartnersCount(teamMemberGroupId);
+          this.getPartnersCount(teamMemberGroupId,team);
         }
       )
     }else{
-     // this.loading = true;
-     // this.getPartnersCount(teamMemberGroupId);
+     this.loading = true;
+      this.getPartnersCount(teamMemberGroupId,team);
     }
   }
   validateCsvData() {
