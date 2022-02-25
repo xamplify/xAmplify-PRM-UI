@@ -148,7 +148,7 @@
                             </li>
                             <!--Notify Partners-->
                             <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module.notifyPartners" [ngClass]="{'active-tab': activeTabName == 'notifyPartners'}" >
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'notifyPartners'}" (click)="activateTab('notifyPartners');clearCustomResponse()">{{properties.notifyPartners | translate}}</a>
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'notifyPartners'}" (click)="activateTab('notifyPartners');clearCustomResponse()">{{authenticationService?.partnerModule?.customName | translate}} Invitation</a>
                             </li>
                         </ng-container>
                         </ul>
@@ -217,7 +217,7 @@
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                    <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">Onboarding configurations of your {{authenticationService?.partnerModule?.customName | translate}}</span>
+                                    <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName | translate}} Invitation Configuration </span>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate}}</span>
                                 </div>
                             </div>
