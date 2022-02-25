@@ -748,13 +748,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             this.fileDropDisabled();
             this.recordVideo();
             this.playerInit = true;
-            $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').attr('style', 'display:none');
-            $('.vjs-volume-panel-horizontal').attr('style', 'display:none');
-            $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').css('cssText', 'display:none !important');
+           
+        
 
             const self = this;
             self.player = videojs('myVideo',
