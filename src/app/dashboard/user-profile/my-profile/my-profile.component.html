@@ -148,7 +148,7 @@
                             </li>
                             <!--Notify Partners-->
                             <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module.notifyPartners" [ngClass]="{'active-tab': activeTabName == 'notifyPartners'}" >
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'notifyPartners'}" (click)="activateTab('notifyPartners');clearCustomResponse()">{{authenticationService?.partnerModule?.customName | translate}} Invitation</a>
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'notifyPartners'}" (click)="activateTab('notifyPartners');clearCustomResponse()">{{authenticationService?.partnerModule?.customName | translate}} Invitation Configuration</a>
                             </li>
                         </ng-container>
                         </ul>
@@ -217,7 +217,7 @@
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                    <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName | translate}} Invitation Configuration </span>
+                                    <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName | translate}} Invitation</span>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate}}</span>
                                 </div>
                             </div>
@@ -1522,27 +1522,16 @@
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </a>
                         </div>
-                        <!-- <div class="form-group col-md-6" style="margin-left: -16px;">
-                            <label class="control-label">Subject <font
-                            style="color: #f55d7a"><b>*</b></font></label>        
-                            <input type="text" class="form-control" name="subject" placeholder="subject"
-                              [(ngModel)]="xamplifyDefaultTemplate.subject" maxlength="255">            
-                              <div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                <span style="cursor: pointer;color: #54a7e9;">
-                                    <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right" title="{{subjectLineTooltipText}}" style="font-size: 20px;float: left;margin: 8px 0 0 446px;"></i>
-                            </span>
-                            </div>
-                          </div> -->
                           <div class="form-group row" style="margin-left: -16px;">
-                            <label class="col-md-2" style="margin-top: 6px;">Subject <font
-                            style="color: #f55d7a"><b>*</b></font></label>   
+                            <label class="col-md-2" style="margin-top: 6px;">Subject 
+                                <span style="color: #f55d7a"><strong>*</strong></span></label>   
                             <div class="col-md-4" style="margin-left: -100px;">
                                 <input type="text" class="form-control" name="subject" placeholder="subject"
                               [(ngModel)]="xamplifyDefaultTemplate.subject" maxlength="255">
                             </div>                                        
-                              <div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                              <div class="col-md-4">
                                 <span style="cursor: pointer;color: #54a7e9;">
-                                    <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right" title="{{subjectLineTooltipText}}" style="font-size: 20px;float: left;margin: 8px 0 0 380px;"></i>
+                                    <i class="fa fa-question-circle icon-fstpx" data-html="true" data-toggle="tooltip" data-placement="right" title="{{subjectLineTooltipText}}"></i>
                             </span>
                             </div>
                           </div>
