@@ -162,20 +162,20 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     }
     private navigationInterceptor(event: Event): void {
       if (event instanceof NavigationStart) { 
-        this.loader = true;
+      //  this.loader = true;
          this.slimLoadingBarService.start();
       }
       if (event instanceof NavigationEnd) { 
-        this.stopLoader();
+      //  this.stopLoader();
         this.slimLoadingBarService.complete();
        }
       // Set loading state to false in both of the below events to hide the loader in case a request fails
       if (event instanceof NavigationCancel) {
-        this.stopLoader();
+      //  this.stopLoader();
          this.slimLoadingBarService.stop();
       }
       if (event instanceof NavigationError) { 
-        this.stopLoader();
+        //this.stopLoader();
         this.slimLoadingBarService.stop();
         
       }
