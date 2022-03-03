@@ -1,7 +1,7 @@
-<router-outlet *ngIf="!isShowingRouteLoadIndicator && !showLoaderForAuthGuard"></router-outlet>
+<router-outlet *ngIf="!isShowingRouteLoadIndicator && !showLoaderForAuthGuard &&  !loader"></router-outlet>
 
 <!-- I indicate that a router module is being loaded asynchronously. -->
-<div *ngIf="isShowingRouteLoadIndicator || showLoaderForAuthGuard" id="router-loader">
+<div *ngIf="isShowingRouteLoadIndicator || showLoaderForAuthGuard || loader" id="router-loader">
   <img   [src]=env.loaderGif  alt="">
     <p>l</p>
     <p>o</p>

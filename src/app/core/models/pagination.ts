@@ -91,4 +91,5 @@ export class Pagination {
 	forCampaignAnalytics = false;
 
 	archived = false;
+	timeZone = "";
 }
