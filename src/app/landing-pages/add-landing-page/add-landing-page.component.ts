@@ -91,6 +91,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                         this.landingPage.coBranded = landingPage.coBranded;
                         this.landingPage.type = landingPage.type;
                         this.landingPage.categoryId = landingPage.categoryId;
+                        this.landingPage.openLinksInNewTab = landingPage.openLinksInNewTab;
                         var request = function (method, url, data, type, callback) {
                             var req = new XMLHttpRequest();
                             req.onreadystatechange = function () {
@@ -456,11 +457,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
     ngOnInit() { }
     ngOnDestroy() {
-        swal.close();
-        /* let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
-         if(isButtonClicked  &&this.loggedInUserId>0 && this.landingPage.jsonBody!=undefined && this.isMinTimeOver){
-             this.showSweetAlert();
-         }*/
+    swal.close();
     }
     showSweetAlert() {
         let self = this;
