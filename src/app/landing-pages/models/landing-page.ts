@@ -22,5 +22,6 @@ export class LandingPage {
     categoryId:number = 0;
     companyProfileName: string="";
     aliasUrl = "";
+    openLinksInNewTab = false;
 
 }
