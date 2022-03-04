@@ -131,7 +131,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                             if (!defaultLandingPage) {
                                 self.name = landingPageName;
                                 var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                                    .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                                    .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200" autocomplete="off"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                                 let dropDown = '<div class="form-group">';
                                 dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
                                 dropDown += '<select class="form-control" id="pageType">';
@@ -186,7 +186,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false });
                             } else {
                                 var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                                    .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200">' +
+                                    .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"  autocomplete="off">' +
                                         '<span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
 
                                 if (!self.loggedInAsSuperAdmin) {
