@@ -242,6 +242,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
    
     
     ngOnInit() {
+        const timeZoneOffset = new Date().getTimezoneOffset();
         try {             
             this.archived = this.campaignService.archived;    
             if (this.archived) {
@@ -924,6 +925,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.pagination.toDateFilterString = this.toDateFilter;
                     this.filterMode = true;
                     this.filterResponse.isVisible = false;
+                    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                     this.listCampaign(this.pagination);
                 } else {
                     this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);

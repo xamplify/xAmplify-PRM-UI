@@ -37,5 +37,6 @@ export class TeamMember{
     userId  = 0;
     teamMemberGroupName = "";
     partnersCount = 0;
+    teamMemberGroupPartnersCount = 0;
 
 }

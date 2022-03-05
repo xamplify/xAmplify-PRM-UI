@@ -1404,3 +1404,15 @@ b, strong {
     background-color: #00a6e847 !important;
     color: white;
 }
+.info-text-color{
+	color:#38a8df !important;
+}
+
+.float-left {
+	float: left !important;
+}
+
+.icon-fstpx{
+	font-size: 20px !important;
+}
+

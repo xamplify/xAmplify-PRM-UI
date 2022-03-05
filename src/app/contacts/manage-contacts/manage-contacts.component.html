@@ -603,8 +603,9 @@
                         <!--  -->
                         <div class="bar" 
                           *ngIf="!authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
-                          <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember|| authenticationService.module.isVendorTier || (hasContactRole) || authenticationService.isOnlyPartner())
-                                                && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
+                          <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
+                                  	|| (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
+                                     && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
                             data-toggle="tooltip" data-placement="top" style="width:11%;"
                             (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                             title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share" aria-hidden="true"></i>

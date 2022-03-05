@@ -119,6 +119,13 @@
                                             <h6 class="moreipsis">
                                                 <span>Folder <strong>{{landingPage.categoryName}}</strong></span>
                                             </h6>
+                                            <h6 class="moreipsis">
+                                                <span translate>
+                                                    <strong translate>Open Links In New Tab 
+                                                        <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                                                    </strong>
+                                                </span>
+                                            </h6>
                                             <span class="view-banner">{{landingPage.type}}</span>
                                         </td>
 
@@ -201,6 +208,13 @@
                                     <h6 title="{{landingPage.createdUser}}">By
                                         <strong>{{landingPage.createdUser | slice:0:25}}</strong>
                                         <span *ngIf="landingPage.createdUser?.length>25">..</span>
+                                    </h6>
+                                    <h6 class="moreipsis">
+                                        <span translate>
+                                            <strong translate>Open Links In New Tab 
+                                                <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                                            </strong>
+                                        </span>
                                     </h6>
                                 </div>
 
