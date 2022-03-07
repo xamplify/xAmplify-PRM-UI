@@ -851,7 +851,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'searchKey' : searchKey,
                  'fromDate' : this.pagination.fromDateFilterString,
                  'toDate' : this.pagination.toDateFilterString,
-                 'archived': this.pagination.archived
+                 'archived': this.pagination.archived,
+                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
              };
          } else {
              param = {
@@ -866,7 +867,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'searchKey' : searchKey,
                  'fromDate' : this.pagination.fromDateFilterString,
                  'toDate' : this.pagination.toDateFilterString,
-                 'archived': this.pagination.archived
+                 'archived': this.pagination.archived,
+                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
              };
          }
          let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
