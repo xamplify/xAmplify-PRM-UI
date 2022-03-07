@@ -320,6 +320,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     templateUpdateMessage = "";
     showEditTemplateMessageDiv = false;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
+    endDatePickr: any;
 
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
@@ -640,7 +641,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             defaultDate = new Date(this.campaign.endDate);
         }
 
-        flatpickr('#endDate', {
+        this.endDatePickr = flatpickr('#endDate1', {
             enableTime: true,
             dateFormat: 'Y-m-d H:i',
             time_24hr: true,
@@ -895,7 +896,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     validateForm() {
         var isValid = true;        
         $('#campaignDetailsForm input[type="text"]').each(function () {
-            if (this.id != "endDate") {
+            if (this.id != "endDate1") {
                 if ($.trim($(this).val()) == '') {
                     isValid = false;
                 }
@@ -3610,6 +3611,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         }else{
             this.searchEmailTemplate();
         }
+    }
+
+    clearEndDate() {
+        this.endDatePickr.clear();
+        this.campaign.endDate = undefined;
     }
 }
 
