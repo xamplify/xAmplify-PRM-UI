@@ -91,5 +91,5 @@ export class Pagination {
 	forCampaignAnalytics = false;
 
 	archived = false;
-	timeZone = "";
+	timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
