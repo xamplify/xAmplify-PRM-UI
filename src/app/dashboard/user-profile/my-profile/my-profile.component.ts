@@ -1725,7 +1725,24 @@ configSalesforce() {
 			var x = screen.width / 2 - 700 / 2;
 			var y = screen.height / 2 - 450 / 2;
 			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
-			this.referenceService.showSweetAlertInfoMessage();
+
+			let providerName = 'isalesforce';
+			let salesforceCurrentUser = localStorage.getItem('currentUser');
+			const encodedData = window.btoa(salesforceCurrentUser);
+			const encodedUrl = window.btoa(this.sfRedirectURL);
+			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
+			console.log("vanityUserId: "+vanityUserId);
+			let url = null;
+			if (this.sfRedirectURL) {
+				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
+			} else {
+				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
+			}
+
+			var x = screen.width / 2 - 700 / 2;
+			var y = screen.height / 2 - 450 / 2;
+			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+			//this.referenceService.showSweetAlertInfoMessage();
 		}
 		else if (this.sfRedirectURL !== undefined && this.sfRedirectURL !== '') {
 			window.location.href = this.sfRedirectURL;
