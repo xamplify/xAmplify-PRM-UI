@@ -274,6 +274,13 @@ export class ManageCampaignDealsComponent implements OnInit {
   mapInput.name = "partnerTeamMemberGroupFilter";
   mapInput.setAttribute("value", partnerTeamMemberGroupFilter+"");
   mapForm.appendChild(mapInput);
+  
+  // clientTimeZone
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "timeZone";
+    mapInput.setAttribute("value", Intl.DateTimeFormat().resolvedOptions().timeZone);
+    mapForm.appendChild(mapInput);
 
   document.body.appendChild(mapForm);
   mapForm.submit();
