@@ -88,7 +88,8 @@
   </div>
  <div class="col-md-6">
  <div class="upload-asset-div">
-  <div class="text-center">
+  <div class="text-center" style="margin-bottom:10px;">
+  <br/> 
 					<div class="col-xs-6 col-sm-3 col-md-3 text-center hidden-xs hidden-sm" >
 						<img src="assets/images/record.png" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to record using your webcam" (click)="cameraChange()"
 						 height="50" width="auto" class="camera" style=" border: 5px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
@@ -110,7 +111,7 @@
 						 onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600; color: #eec24c; margin: 9px 3px" translate>GoogleDrive</div>
           </div>
-             <br/><br/><br/><br/>
+          <!-- <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE | translate}}</h6> -->
                               <span *ngIf="uploadedCloudAssetName?.length>0">
                                 <strong>File Name : {{uploadedCloudAssetName}}</strong>
                               </span>
@@ -118,6 +119,7 @@
                                 <strong>No File Selected</strong>
                               </span>
                               </div>
+                              <br/>
           </div>
   </div>
 
@@ -357,7 +359,7 @@
 
 
 
-	<!--record model popup start-->
+	<!--record video model popup start-->
 	<div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
 		<div class="modal-dialog modal-cam" role="document">
 			<div class="modal-content" style="border-radius:0">
@@ -409,7 +411,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- record modal popup end  -->
+	<!-- record video modal popup end  -->
 
 
 

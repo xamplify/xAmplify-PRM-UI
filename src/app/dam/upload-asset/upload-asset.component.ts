@@ -202,10 +202,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			files = event.dataTransfer.files;
 		 }
 		if (files.length > 0) {
-			this.formData.delete("uploadedFile");
-			this.uploadedAssetName  = "";
-			
-			this.customResponse = new CustomResponse();
 			let file = files[0];
 			let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 800;
@@ -214,11 +210,15 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			}else if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
 			}else{
+				this.formData.delete("uploadedFile");
+	            this.uploadedAssetName  = "";
+	            this.uploadedCloudAssetName = "";
+	            this.customResponse = new CustomResponse();
+				//
 				this.formData.append("uploadedFile", file, file['name']);
 				this.uploadedAssetName = file['name'];
 				this.damUploadPostDto.cloudContent = false;
 				this.damUploadPostDto.fileName = this.uploadedAssetName;
-				this.uploadedCloudAssetName = "";
 	            this.damUploadPostDto.downloadLink = null;
 	            this.damUploadPostDto.oauthToken = null;
 			}
@@ -315,7 +315,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
 			fileObj = this.utilService.blobToFile(fileObj);
 			this.showDefaultLogo = false;
-			this.formData.append("thumbnailImage", fileObj, fileObj['name']);
+			this.formData.append("thumbnailImage", fileObj, this.uploadedThumbnailName );
 			$('#thumbnailImageModal').modal('hide');
 		} else {
 			this.clearThumbnailImage();
@@ -647,8 +647,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     
     setCloudContentValues(uploadedCloudAssetName:string, downloadLink:string) {
         this.uploadedAssetName = "";
-        this.formData.delete("uploadedFile");
         this.uploadedCloudAssetName = "";
+        this.formData.delete("uploadedFile");
         this.customResponse = new CustomResponse();
         //
         this.uploadedCloudAssetName = uploadedCloudAssetName;
@@ -826,49 +826,37 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     }
     
     fileDropDisabled() {
-        // this.isChecked =true;
         this.isFileDrop = true;
     }
     fileDropEnabled() {
-        //this.isChecked = false;
         this.isFileDrop = false;
     }
     
     uploadRecordedVideo() {
         if(this.player.record().getDuration() < 10) {
-          //this.videoRecordTimeLess = true;
           this.recordCustomResponse = new CustomResponse( 'ERROR', 'Record Video length must be greater than 10 seconds', true );
          } else {
-         // this.videoRecordTimeLess = false;
          try{
            this.RecordSave = true;
            this.saveVideo = false;
            this.discardVideo = false;
            this.testSpeeddisabled = true;
            this.closeModalId = false;
-           //this.uploadeRecordVideo = true;
            this.textAreaDisable = false; // not using ,need to check
            this.hideSaveDiscard = false; // hide the save and discard buttons when the video processing
-           
-           
-          // const formData = new FormData();
-           //const object = this.recordedVideo;
            console.log(this.recordedVideo);
-           //formData.append('file', object);
-           //console.log(formData);
-
-           //  add recorded video success block
            this.formData.delete("uploadedFile");
            this.uploadedAssetName  = "";
-
-           this.customResponse = new CustomResponse();
-           this.formData.append("uploadedFile", this.recordedVideo, 'recorded_video');
-           this.uploadedAssetName = 'recorded_video';
-           this.damUploadPostDto.cloudContent = false;
-           this.damUploadPostDto.fileName = this.uploadedAssetName;
            this.uploadedCloudAssetName = "";
+           this.customResponse = new CustomResponse();
+           
+           this.uploadedCloudAssetName = 'recorded_video.mp4';
+           this.formData.append("uploadedFile", this.recordedVideo, this.recordedVideo.name);
+           this.damUploadPostDto.cloudContent = false;
+           this.damUploadPostDto.fileName = this.recordedVideo.name;
            this.damUploadPostDto.downloadLink = null;
            this.damUploadPostDto.oauthToken = null;
+           this.damUploadPostDto.source= 'webcam';
            
            (<HTMLInputElement>document.getElementById('script-text')).disabled = true;
            (<HTMLInputElement>document.getElementById('rangeDisabled')).disabled = true;
@@ -900,21 +888,14 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
        recordModalPopupAfterUpload() {
            this.modalPopupClosed();
            this.closeRecordPopup();
-           //this.cloudStorageDisabled();
-          // this.processing = true;
        }
        
        defaultSettings() {
            this.camera = false;
            this.isFileDrop = false;
-           //this.isDisable = false;
            this.hideSaveDiscard = true;
-          // this.isFileProgress = false;
-          // this.sweetAlertDisabled = false;
            $('.camera').attr('style', 'cursor:pointer; opacity:0.7');
-          // $('.addfiles').attr('style', 'float: left; margin-right: 9px; opacity:1');
        }
-    
     
   
 }
