@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 declare var $;
 @Component({
@@ -6,12 +6,13 @@ declare var $;
   templateUrl: './team-member-filter-option-modal-popup.component.html',
   styleUrls: ['./team-member-filter-option-modal-popup.component.css']
 })
-export class TeamMemberFilterOptionModalPopupComponent implements OnInit {
+export class TeamMemberFilterOptionModalPopupComponent implements OnInit,OnDestroy {
 
   @Output() teamMemberFilterOptionModalPopupEmitter = new EventEmitter();
   selectedTeamMemberFilterOption = 0;
   @Input()selectedFilterIndex:number;
   constructor(public authenticationService:AuthenticationService) { }
+  
 
   ngOnInit() {
     this.selectedTeamMemberFilterOption = this.selectedFilterIndex;
@@ -25,6 +26,10 @@ export class TeamMemberFilterOptionModalPopupComponent implements OnInit {
     input['applyFilter'] = apply;
     this.teamMemberFilterOptionModalPopupEmitter.emit(input);
     $('#teamMemberFilterModalPopup').modal('hide');
+  }
+
+  ngOnDestroy(): void {
+   $('#teamMemberFilterModalPopup').modal('hide');
   }
 
 }

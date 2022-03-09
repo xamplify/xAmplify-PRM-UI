@@ -73,9 +73,13 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
           swal( "", "Whoops! We are unable to save this template because subject line is empty", "error" );
           return false;
         }
-        if (jsonContent.indexOf("_CUSTOMER_FULL_NAME") < 0 ) {
+      if (jsonContent.indexOf("_CUSTOMER_FULL_NAME") < 0 && "JOIN_VENDOR_COMPANY"!=emailTemplate['typeInString']) {
           swal( "", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error" );
           return false;
+      }
+      if("JOIN_VENDOR_COMPANY"==emailTemplate['typeInString'] && jsonContent.indexOf("{{PARTNER_NAME}}") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag.", "error" );
+        return false;
       }
       if(jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0){
         swal( "", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error" );

@@ -222,6 +222,14 @@
               </a>
           </li>
 
+          <!-------Configuration-------->
+          <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()"  [ngClass]="{'active': location.path().includes('myprofile')}">
+            <a (click)="startLoader()"  [routerLink]="['/home/dashboard/myprofile']" >
+                <i class="fa fa-cog" aria-hidden="true"></i>
+                <span class="title" translate>Configuration</span>
+                <span class="selected"></span>
+            </a>
+        </li>
           </ul>
       </ng-container>
     </div>

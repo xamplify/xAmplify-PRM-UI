@@ -55,7 +55,9 @@ export class NotifyPartnersComponent implements OnInit {
     this.authenticationService.updateNotifyPartnersOption(this.companyId,this.notifyPartners).subscribe(
       response=>{
         this.loading = false;
-        this.customResponse = new CustomResponse('SUCCESS','Success in updating the onboarding configuration.',true);
+        let partnerModuleCustomName = this.authenticationService.partnerModule.customName;
+        let message = "Success in updating "+partnerModuleCustomName+" Invitation Configuration";
+        this.customResponse = new CustomResponse('SUCCESS',message,true);
         this.findNotifyPartnersOption();
       },error=>{
         this.loading = false;

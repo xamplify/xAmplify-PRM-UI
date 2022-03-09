@@ -112,6 +112,7 @@
                 </app-landing-page-loader>
                 <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView "></app-list-loader>
                 <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
+                <!---List View----->
                 <section *ngIf="modulesDisplayType.isListView ">
                     <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
                         <div class="table-responsive">
@@ -142,7 +143,6 @@
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{landingPage.name}}">
                                                 <span><strong translate>{{landingPage.name}}</strong></span>
                                             </h4>
-                                           
                                             <ng-container>
                                                 <h6 class="moreipsis" title="{{landingPage.createdUser}}">
                                                     <span *ngIf="!isPartnerLandingPage" translate>Created By <strong translate>{{landingPage.createdUser}}</strong></span>
@@ -154,6 +154,13 @@
                                             </h6>
                                             <h6 class="moreipsis">
                                                 <span translate>Folder <strong translate>{{landingPage.categoryName}}</strong></span>
+                                            </h6>
+                                            <h6 class="moreipsis">
+                                                <span translate>
+                                                    <strong translate>Open Links In New Tab 
+                                                        <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                                                    </strong>
+                                                </span>
                                             </h6>
                                             <span class="view-banner" translate>{{landingPage.type}}</span>
                                         </td>
@@ -243,6 +250,13 @@
                                     <h6 title="{{landingPage.createdUser}}" translate>By
                                         <strong>{{landingPage.createdUser | slice:0:25}}</strong>
                                         <span *ngIf="landingPage.createdUser?.length>25">..</span>
+                                    </h6>
+                                    <h6 class="moreipsis">
+                                        <span translate>
+                                            <strong translate>Open Links In New Tab 
+                                                <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                                            </strong>
+                                        </span>
                                     </h6>
                                 </div>
 
