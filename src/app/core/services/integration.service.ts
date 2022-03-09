@@ -35,6 +35,7 @@ export class IntegrationService {
         if (code !== undefined) {
 				let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 				let vanityUserId = localStorage.getItem('vanityUserId');
+                console.log("vanityUserId: "+vanityUserId);
 				if(vanityUrlFilter){
 					return this._http.get(this.authenticationService.REST_URL + type + "/" + vanityUserId + "/oauth/callback?code=" + code)
                 .map(this.extractData)
