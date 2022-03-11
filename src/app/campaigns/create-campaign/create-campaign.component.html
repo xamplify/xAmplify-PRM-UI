@@ -547,7 +547,7 @@
                                             </div>
 
                                             <!-- End Date -->
-                                            <div class="form-group" [attr.class]="endDateDivClass" [hidden]="!campaign.channelCampaign">
+                                            <div class="form-group" [attr.class]="endDateDivClass" [hidden]="!campaign.channelCampaign || campaignType == 'landingPage' || campaignType=='sms'">
                                                 <label class="control-label col-sm-4" translate>End Date</label>
                                                 <!-- <div class="col-sm-8">
                                                     <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr"

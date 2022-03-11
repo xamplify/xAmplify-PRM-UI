@@ -774,6 +774,11 @@
                                                                     <i class="fa fa-files-o" style="width: 30px;"></i>
                                                                     Copy Campaign
                                                                 </a>
+
+                                                                <a *ngIf="campaign.canEditEndDate" data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
+                                                                    <i class="fa fa-calendar" style="width: 30px;" aria-hidden="true"></i> Update End Date
+                                                                </a>
+
                                                                 <!---Add Workflows List View-->
                                                                 <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
                                                                         data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
@@ -1007,6 +1012,10 @@
                                                                 <i class="fa fa-files-o" style="width: 30px;"></i> Copy
                                                                 Campaign
                                                             </a>
+
+                                                            <a *ngIf="campaign.canEditEndDate" data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
+                                                                <i class="fa fa-calendar" style="width: 30px;" aria-hidden="true"></i> Update End Date
+                                                              </a>
                                                             <!---Add Workflows List View-->
                                                             <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
                                                                     data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
@@ -1336,6 +1345,10 @@
                                             data-toggle="tooltip" data-placement="top" title="Unarchive">
                                             <i class="fa fa-archive mr5" aria-hidden="true"></i>
                                         </a>
+                                        <a *ngIf="campaign.canEditEndDate" (click)="showEndDateModal(campaign)" data-toggle="tooltip" data-placement="top"
+                                            title="Update End Date">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </a>
                                     </span>
                                 </ng-container>
 
@@ -1644,3 +1657,48 @@
 <!-- -----------------Sending Public Event Email Pop Up------->
 <app-public-event-email-popup #publiEventEmailPopup></app-public-event-email-popup>
 <!-----------------Adding New Workflows Popup-->
+
+<!-----------------Edit End Date------------------------->
+<div class="modal right fade" id="endDateModalInUtil" role="dialog" aria-labelledby="endDateModalLabel"
+  aria-hidden="true" data-focus="false">
+  <div class="modal-dialog modal-copy" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title f-w-600" id="endDateModalLabel" translate>Edit End Date</h4>
+        <button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;" (click)="closeEndDateModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-modal-popup-loader *ngIf="endDateRequestLoader.isLoading && !endDateRequestLoader.isServerError">
+        </app-modal-popup-loader>
+        <app-response-message [customResponse]="endDateCustomResponse" *ngIf="endDateCustomResponse.isVisible">
+        </app-response-message>
+        <div class="form-group">
+          <label for="endDate" translate>End Date</label> 
+
+          <!-- <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="selectedEndDate"
+            name="endDate" [value]="selectedEndDate" /> -->
+               
+
+          <div class="input-group">
+            <input type="text" id="endDateInUtil" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="selectedEndDate"
+              name="endDate" [value]="selectedEndDate">
+            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
+              <button class="btn btn-default" type="button"><i class="fa fa-refresh" aria-hidden="true"
+                  (click)="clearEndDate()"></i></button>
+            </span>
+          </div>
+
+          <!-- <app-date-picker *ngIf="showEditEndDateForm" [(dataField)]="selectedEndDate" [isEndDate]='true'
+            [value]="selectedEndDate">
+          </app-date-picker> -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" translate  (click)="closeEndDateModal()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateEndDate()" translate>Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -248,7 +248,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     
     ngAfterViewInit() {        
         let now:Date = new Date();
-        let defaultDate = undefined;
+        let defaultDate = now;
         if (this.selectedEndDate != undefined && this.selectedEndDate != null) {
             defaultDate = new Date(this.selectedEndDate);
         }
@@ -1074,16 +1074,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.selectedEndDate = utc(campaign.endDate).local().format("YYYY-MM-DD HH:mm");
             let selectedDate = new Date(this.selectedEndDate);
             this.endDatePickr.setDate(selectedDate);
+        } else {
+            this.endDatePickr.clear();
         }
-        
+        this.endDatePickr.set("minDate", new Date())
     }
 
-    closeEndDateModal() {
-        $('#endDateModal').modal('hide');
+    closeEndDateModal() {       
         this.showEditEndDateForm = false;
         this.selectedCampaign = undefined;
         this.selectedEndDate = undefined;
         this.endDateCustomResponse.isVisible = false;
+        this.endDatePickr.clear();
+        $('#endDateModal').modal('hide');
     }
 
     updateEndDate() {
