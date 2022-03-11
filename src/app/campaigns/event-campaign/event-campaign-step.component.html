@@ -1459,9 +1459,9 @@ a.disabled {
                       <div [hidden]="eventCampaign.nurtureCampaign || isPreviewEvent">
                         <div class="input-icon pull-right col-xs-3" style="padding-right: 0px;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
                           <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                          placeholder="Search" (keypress)="eventReplyHandler($event.keyCode, reply)">
-                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="reply.emailTemplateSearchInput" (click)="reply.emailTemplateSearchInput=''"></button>
-                          <button type="submit" class="search-box-item-click" (click)="searchReplyEmailTemplate(reply)"><i class="fa fa-search" aria-hidden="true"></i></button>
+                          placeholder="Search" (keypress)="eventReplyHandler($event, reply)">
+						  <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="reply.emailTemplateSearchInput" (click)="removeSearchInput(reply)"></button>                         
+						   <button type="submit" class="search-box-item-click" (click)="searchReplyEmailTemplate(reply)"><i class="fa fa-search" aria-hidden="true"></i></button>
                        </div>
                       </div>
                     </div>

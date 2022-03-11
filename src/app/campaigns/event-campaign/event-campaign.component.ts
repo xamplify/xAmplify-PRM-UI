@@ -1104,6 +1104,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.emailTemplatesPagination.searchKey = "";
         this.loadEmailTemplates(this.emailTemplatesPagination);
     }
+    removeSearchInput(reply: Reply) {
+        reply.emailTemplateSearchInput = "";
+        this.searchReplyEmailTemplate(reply);
+    }
 
     loadEmailTemplates(emailTemplatesPagination: Pagination) {
         //Not calling this method for only partner
@@ -1712,7 +1716,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         reply.emailTemplatesPagination.pageIndex = 1;
         this.loadEmailTemplatesForAddReply(reply);
     }
-    eventReplyHandler(keyCode: any, reply: Reply) { if (keyCode === 13) { this.searchReplyEmailTemplate(reply); } }
+    eventReplyHandler(event: any, reply: Reply) 
+    { 
+        if (event.keyCode === 13) 
+        { 
+            this.searchReplyEmailTemplate(reply); 
+        }
+    }
     searchReplyEmailTemplate(reply: Reply) {
         reply.emailTemplatesPagination.pageIndex = 1;
         reply.emailTemplatesPagination.searchKey = reply.emailTemplateSearchInput;
