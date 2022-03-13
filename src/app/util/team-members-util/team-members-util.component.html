@@ -283,7 +283,7 @@
                       <i class="fa fa-eye white" aria-hidden="true"></i>
                     </button>
                     <div class="col-sm-8">
-                      <select title="Dropdown is disabled.Because {{authenticationService?.partnerModule?.customName}} are assigned to this team member" disabled class="form-control" *ngIf="team?.partnersCount>0"> 
+                      <select title="Team Member Group cannot be changed.One or more {{authenticationService?.partnerModule?.customName}} part of the group" disabled class="form-control" *ngIf="team?.partnersCount>0"> 
                         <option>
                           {{team?.teamMemberGroupName}}
                         </option>
@@ -294,11 +294,14 @@
                       </option>
                       </select>
                        <span *ngIf="team?.partnersCount==0" class="info-text-color">
-                       <strong *ngIf="team?.teamMemberGroupPartnersCount>0">
-                         <span class="active-status">{{team?.teamMemberGroupPartnersCount}}</span> 
+                       <strong>
+                         <span [className]="team?.teamMemberGroupPartnersCount>0 ? 'active-status' : 'inactive-status'">{{team?.teamMemberGroupPartnersCount}}</span> 
                           {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
                         </strong>
                       </span> 
+                      <span *ngIf="team?.partnersCount>0" class="info-text-color">
+                          <span class="inactive-status">Team Member Group cannot be changed.One or more {{authenticationService?.partnerModule?.customName}} part of the group</span> 
+                       </span> 
                       </div>
                   </div>
                 </div>
