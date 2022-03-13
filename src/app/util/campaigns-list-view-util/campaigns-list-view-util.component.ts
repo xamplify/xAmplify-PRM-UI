@@ -479,6 +479,11 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
     filterCampaigns(type: string, index: number) {
         this.selectedCampaignTypeIndex = index;//This is to highlight the tab
+        this.pagination.pageIndex = 1;
+       this.pagination.maxResults = 12;
+      this.itemsSize = this.numberOfItemsPerPage[0];
+      this.pagination.campaignType = type;
+      this.listCampaign(this.pagination);
     }     
         
   /************Adding Workflows**************** */
@@ -729,7 +734,8 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 'searchKey': searchKey,
                 'fromDate': this.pagination.fromDateFilterString,
                 'toDate': this.pagination.toDateFilterString,
-                'archived': this.pagination.archived
+                'archived': this.pagination.archived,
+                'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
             };
         } else {
             param = {
@@ -744,7 +750,8 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 'searchKey': searchKey,
                 'fromDate': this.pagination.fromDateFilterString,
                 'toDate': this.pagination.toDateFilterString,
-                'archived': this.pagination.archived
+                'archived': this.pagination.archived,
+                'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
             };
         }
         let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
