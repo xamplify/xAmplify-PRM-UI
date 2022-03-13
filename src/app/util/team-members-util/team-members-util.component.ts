@@ -456,17 +456,36 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
         response => {
-          this.loading = false;
           this.team.enableOption = response.data;
         }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        },()=>{
+          this.getPartnersCount(teamMemberGroupId,undefined);
         }
-      )
+      );
+    }else{
+      this.loading = true;
+     this.getPartnersCount(teamMemberGroupId,undefined);
     }
   }
 
-
+  getPartnersCount(teamMemberGroupId:number,team:any){
+    this.teamMemberService.getPartnersCount(teamMemberGroupId).subscribe(
+      response=>{
+        this.loading = false;
+        let count = response.data;
+        if(team!=undefined){
+          team.teamMemberGroupPartnersCount = count;
+        }else{
+          this.team.teamMemberGroupPartnersCount = count;
+        }
+      },error=>{
+        this.loading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    )
+  }
 
   validateAddTeamMemberForm(fieldName: string) {
     if ("emailId" == fieldName) {
@@ -665,16 +684,19 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
         response => {
-          this.loading = false;
           team.enableOption = response.data;
         }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        },()=>{
+          this.getPartnersCount(teamMemberGroupId,team);
         }
       )
+    }else{
+     this.loading = true;
+      this.getPartnersCount(teamMemberGroupId,team);
     }
   }
-
   validateCsvData() {
     let names = this.csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
     let duplicateEmailIds = this.referenceService.returnDuplicates(names);

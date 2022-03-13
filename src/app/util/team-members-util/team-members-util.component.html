@@ -129,7 +129,7 @@
               <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany" [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
                  [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
                 <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'" (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
-                <strong>Total {{authenticationService?.partnerModule?.customName}}: {{teamMember?.partnersCount}}</strong>
+                <strong>Total {{authenticationService?.partnerModule?.customName}} : {{teamMember?.partnersCount}}</strong>
                </a>
               </span>
             </td>
@@ -293,6 +293,12 @@
                         {{teamMemberGroup.name}}
                       </option>
                       </select>
+                       <span *ngIf="team?.partnersCount==0" class="info-text-color">
+                       <strong *ngIf="team?.teamMemberGroupPartnersCount>0">
+                         <span class="active-status">{{team?.teamMemberGroupPartnersCount}}</span> 
+                          {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
+                        </strong>
+                      </span> 
                       </div>
                   </div>
                 </div>
@@ -382,14 +388,20 @@
             </switch>
           </td>
           <td>
-            <div class="input-group">
+            <div class="input-group spxni-width">
             <select class="form-control" [(ngModel)]="teamMember.teamMemberGroupId" (ngModelChange)="validateSecondAdminOptionForCsvUsers($event,teamMember);" >
               <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
              		{{teamMemberGroup?.name}}
             </option> 
             </select>
+             <span class="info-text-color float-left" *ngIf="teamMember?.teamMemberGroupPartnersCount>0">
+              <strong>
+                <span class="active-status">{{teamMember?.teamMemberGroupPartnersCount}}</span> 
+                 {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
+               </strong>
+             </span>
             <span class="input-group-btn">
-              <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)">
+              <button [disabled]="teamMember.teamMemberGroupId==0" class="btn btn-info mbtpxni" type="button" tabindex="-1" (click)="previewModules(teamMember.teamMemberGroupId)">
                 <i class="fa fa-eye white" aria-hidden="true"></i>
               </button>
             </span>

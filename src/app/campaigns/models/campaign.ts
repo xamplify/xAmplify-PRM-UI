@@ -91,6 +91,7 @@ export class Campaign {
     viewInBrowserTag = true;
     unsubscribeLink = true;
     toPartner : boolean;
+    companyId : number; 
 
     endDate: string;
     endDateInUtcString: string;

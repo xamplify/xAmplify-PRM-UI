@@ -29,6 +29,9 @@
                         </ul>
                         <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
                         <app-merge-tags *ngIf="loadLandingPage" [input]="mergeTagsInput"></app-merge-tags>
+                        <button  class="new-tab-button" *ngIf="loadLandingPage">
+                            Open Links In New Tab <input type="checkbox" [(ngModel)]="landingPage.openLinksInNewTab">
+                          </button>
                     </div>
                     <div id="bee-plugin-container"></div>
                 </div>
