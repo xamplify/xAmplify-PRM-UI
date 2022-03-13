@@ -169,6 +169,12 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
+    getOpenLinksInNewTab(id:number): Observable<any> {
+        return this.http.get( this.URL + "getOpenLinksInNewTab/"+id+"?access_token=" + this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     updateJsonAndHtmlBody(ladingPage:LandingPage): Observable<any> {
         return this.http.post( this.URL + "updateJsonAndHtmlBody?access_token=" + this.authenticationService.access_token,ladingPage)
             .map( this.extractData )

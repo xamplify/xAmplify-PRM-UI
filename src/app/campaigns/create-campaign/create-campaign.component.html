@@ -2464,8 +2464,12 @@
                     <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
+                    
                     <app-preview-popup #previewPopUpComponent *ngIf="showEditTemplatePopup && campaignType=='landingPage'"></app-preview-popup>
                     <app-merge-tags *ngIf="showEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
+                    <button  class="new-tab-button" *ngIf="showEditTemplatePopup && campaignType=='landingPage'">
+                        Open Links In New Tab <input type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
+                      </button>
                 </div>
               <div class="portlet-body clearfix">
                   <div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">

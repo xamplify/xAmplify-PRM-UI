@@ -3538,10 +3538,12 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         landingPage.jsonBody = event.jsonContent;
         landingPage.htmlBody = event.htmlContent;
         landingPage.userId = this.loggedInUserId;
+        landingPage.openLinksInNewTab = this.beeContainerInput['openLinksInNewTab'];
         landingPage.companyProfileName = this.authenticationService.companyProfileName;
         this.landingPageService.updateJsonAndHtmlBody(landingPage).subscribe(
             response => {
                 this.showTemplateUpdatedSuccessMessage();
+                this.listLandingPages(this.landingPagePagination);
             }, error => {
                 this.loading =false;
                 if (error.status == 400) {
@@ -3593,15 +3595,26 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.beeContainerInput['module'] = "pages";
                 this.beeContainerInput['jsonBody'] = response.message;
                 this.beeContainerInput['id'] = landingPage.id;
+            },error=>{
+                this.hideEditTemplateDiv();
+                this.refService.showSweetAlertServerErrorMessage();
+            },() =>{
+                this.setOpenLinksInNewTab(landingPage.id);
+            });
+    }
+
+    setOpenLinksInNewTab(id:number){
+        this.landingPageService.getOpenLinksInNewTab(id).subscribe(
+            response=>{
+                this.beeContainerInput['module'] = "pages";
                 this.editTemplateMergeTagsInput['page'] = true;
+                this.beeContainerInput['openLinksInNewTab'] = response.data;
                 this.showEditTemplatePopup = true;
                 this.editTemplateLoader = false;
             },error=>{
                 this.hideEditTemplateDiv();
                 this.refService.showSweetAlertServerErrorMessage();
-            }
-
-        );
+            });
     }
     
 
