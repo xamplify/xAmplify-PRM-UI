@@ -93,4 +93,7 @@ export class Campaign {
     toPartner : boolean;
     companyId : number; 
 
+    endDate: string;
+    endDateInUtcString: string;
+    clientTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 }

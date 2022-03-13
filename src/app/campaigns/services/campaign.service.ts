@@ -1146,6 +1146,12 @@ export class CampaignService {
         .catch(this.handleError);
     }
 
+    updateEndDate(request: any) {
+        return this.http.post(this.URL + `campaign/enddate/edit?access_token=${this.authenticationService.access_token}`, request)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         return body || {};

@@ -117,6 +117,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     messageDivClass: string = this.formGroupClass;
     leadPipelineClass: string = this.formGroupClass;
     dealPipelineClass: string = this.formGroupClass;
+    endDateDivClass: string = this.formGroupClass;
     campaignType: string = "";
     isCampaignDetailsFormValid: boolean = false;
     channelCampaignFieldName: string = "";
@@ -319,6 +320,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     templateUpdateMessage = "";
     showEditTemplateMessageDiv = false;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
+    endDatePickr: any;
 
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
@@ -632,13 +634,31 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         if (event === 13 && type === 'landingPages') { this.searchLandingPage(); }
     }
 
+    ngAfterViewInit() {
+        let now:Date = new Date();
+        let defaultDate = now;
+        if (this.campaign.endDate != undefined && this.campaign.endDate != null) {
+            defaultDate = new Date(this.campaign.endDate);
+        }
+
+        this.endDatePickr = flatpickr('#endDate1', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            time_24hr: true,
+            minDate: now,
+            defaultDate: defaultDate
+        });
+        
+    }
 
     ngOnInit() {
-        flatpickr('.flatpickr', {
+                
+        flatpickr('#launchTime', {
             enableTime: true,
             dateFormat: 'm/d/Y h:i K',
             time_24hr: false
-        });
+        });        
+        
         this.isListView = !this.refService.isGridView;
         if (this.campaignType == "video") {
             this.width = "20%";
@@ -874,12 +894,13 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     isValidEmail: boolean = false;
     isValidCampaignName: boolean = true;
     validateForm() {
-        var isValid = true;
+        var isValid = true;        
         $('#campaignDetailsForm input[type="text"]').each(function () {
-            if ($.trim($(this).val()) == '') {
-                isValid = false;
+            if (this.id != "endDate1") {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                }
             }
-
         });
 
         if (isValid && (this.smsService || this.campaignType == 'sms')) {
@@ -2208,7 +2229,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             'leadPipelineId': this.campaign.leadPipelineId,
             'dealPipelineId': this.campaign.dealPipelineId,
             'viewInBrowserTag': this.campaign.viewInBrowserTag,
-            'unsubscribeLink': this.campaign.unsubscribeLink
+            'unsubscribeLink': this.campaign.unsubscribeLink,
+            'endDate': this.campaign.endDate,
+            'clientTimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
         };
         return data;
     }
@@ -3588,6 +3611,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         }else{
             this.searchEmailTemplate();
         }
+    }
+
+    clearEndDate() {
+        this.endDatePickr.clear();
+        this.campaign.endDate = undefined;
     }
 }
 

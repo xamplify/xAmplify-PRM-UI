@@ -309,6 +309,9 @@
                         <h6 class="view-banner banner-top" *ngIf="archived" style="background-color: #f76c1a !important"
                           translate>
                           Archived</h6>
+                        <h6 class="view-banner banner-top" *ngIf="campaign.ended" style="background-color: #b6039e !important"
+                          translate>
+                          Ended</h6>
                       </td>
                       <td>
                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
@@ -381,6 +384,14 @@
                           <span>Archived On
                             <strong>
                               <app-timestamp [dateAndTime]="campaign.archivedDate">
+                              </app-timestamp>
+                            </strong>
+                          </span>
+                        </h5>
+                        <h5 *ngIf="campaign.showEndDate">
+                          <span>Ending On
+                            <strong>
+                              <app-timestamp [dateAndTime]="campaign.endDate">
                               </app-timestamp>
                             </strong>
                           </span>
@@ -663,6 +674,9 @@
                                       <i class="fa fa-files-o" style="width: 30px;" aria-hidden="true"></i> Copy
                                       Campaign
                                     </a>
+                                    <a *ngIf="campaign.canEditEndDate" data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
+                                      <i class="fa fa-calendar" style="width: 30px;" aria-hidden="true"></i> Update End Date
+                                    </a>
                                     <!---Add Workflows List View-->
                                     <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
                                                                     data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
@@ -875,6 +889,10 @@
                                   <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0"
                                     data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" translate>
                                     <i class="fa fa-files-o" style="width: 30px;" aria-hidden="true"></i> Copy Campaign
+                                  </a>  
+                                  <a *ngIf="campaign.canEditEndDate"
+                                    data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
+                                    <i class="fa fa-calendar" style="width: 30px;" aria-hidden="true"></i> Update End Date
                                   </a>
                                   <!---Add Workflows List View-->
                                   <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
@@ -993,6 +1011,8 @@
                             style="position: relative;top: -3px;background-color: #d9534f;" translate>Private</span>
                           <span class="view-banner" *ngIf="archived" style="position: relative;top: -3px; background-color: #f76c1a !important"
                             translate>Archived</span>
+                          <span class="view-banner" *ngIf="campaign.ended" style="position: relative;top: -3px; background-color: #b6039e !important"
+                            translate>Ended</span>
                           </h4>
                         <h6 [title]="campaign.createdBy" translate>By
                           <strong>{{campaign.createdBy | slice:0:15}}<span
@@ -1051,6 +1071,13 @@
                           <span translate>Archived On
                             <strong>
                               {{campaign.archivedDate |date:'mediumDate'}},{{campaign.archivedDate |date:'shortTime'}}
+                            </strong>
+                          </span>
+                        </h6>
+                        <h6 *ngIf="campaign.showEndDate">
+                          <span translate>Ending On
+                            <strong>
+                              {{campaign.endDate |date:'mediumDate'}},{{campaign.endDate |date:'shortTime'}}
                             </strong>
                           </span>
                         </h6>
@@ -1187,6 +1214,10 @@
                             <a *ngIf="archived && campaign.canArchive" (click)="unarchiveCampaign(campaign)" data-toggle="tooltip"
                               data-placement="top" title="Unarchive">
                               <i class="fa fa-archive mr5" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="campaign.canEditEndDate" (click)="showEndDateModal(campaign)" data-toggle="tooltip"
+                              data-placement="top" title="Update End Date">
+                              <i class="fa fa-calendar" aria-hidden="true"></i>
                             </a>
                           </ng-container>
 
@@ -1487,3 +1518,48 @@
 <!-- -----------------Sending Public Event Email Pop Up------->
 <app-public-event-email-popup #publiEventEmailPopup></app-public-event-email-popup>
 <!-----------------Adding New Workflows Popup-->
+
+<!-----------------Edit End Date------------------------->
+<div class="modal right fade" id="endDateModal" role="dialog" aria-labelledby="endDateModalLabel"
+  aria-hidden="true" data-focus="false">
+  <div class="modal-dialog modal-copy" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title f-w-600" id="endDateModalLabel" translate>Edit End Date</h4>
+        <button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;" (click)="closeEndDateModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-modal-popup-loader *ngIf="endDateRequestLoader.isLoading && !endDateRequestLoader.isServerError">
+        </app-modal-popup-loader>
+        <app-response-message [customResponse]="endDateCustomResponse" *ngIf="endDateCustomResponse.isVisible">
+        </app-response-message>
+        <div class="form-group">
+          <label for="endDate" translate>End Date</label> 
+
+          <!-- <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="selectedEndDate"
+            name="endDate" [value]="selectedEndDate" /> -->
+               
+
+          <div class="input-group">
+            <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="selectedEndDate"
+              name="endDate" [value]="selectedEndDate">
+            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
+              <button class="btn btn-default" type="button"><i class="fa fa-refresh" aria-hidden="true"
+                  (click)="clearEndDate()"></i></button>
+            </span>
+          </div>
+
+          <!-- <app-date-picker *ngIf="showEditEndDateForm" [(dataField)]="selectedEndDate" [isEndDate]='true'
+            [value]="selectedEndDate">
+          </app-date-picker> -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" translate  (click)="closeEndDateModal()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateEndDate()" translate>Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

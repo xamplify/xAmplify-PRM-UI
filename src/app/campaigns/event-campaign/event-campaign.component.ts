@@ -45,6 +45,7 @@ import { Pipeline } from 'app/dashboard/models/pipeline';
 
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
+import { utc } from 'moment';
 
 declare var $, swal, flatpickr, CKEDITOR, require;
 var moment = require('moment-timezone');
@@ -247,6 +248,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     showEditTemplateMessageDiv = false;
     TO_PARTNER_MESSAGE: string = "";
     THROUGH_PARTNER_MESSAGE: string= "";
+    endDatePickr: any;
 
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
@@ -376,8 +378,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             if (this.reDistributeEvent) { this.campaignService.reDistributeEvent = true; this.eventCampaign.emailNotification = true }
             this.campaignService.getEventCampaignById(alias).subscribe(
                 (result) => {
-                    this.campaignService.eventCampaign = result.data;
+                    this.campaignService.eventCampaign = result.data;                    
                     this.eventCampaign = result.data;
+
+                    let endDate = this.eventCampaign.endDateString;
+                    if (endDate != undefined && endDate != null) {
+                        let endDateString = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+                        this.eventCampaign.endDateString = endDateString;
+                        this.campaignService.eventCampaign.endDateString = endDateString;
+                        this.endDatePickr.setDate(new Date(endDateString));
+                    }
+
                     this.isPushToCrm = this.eventCampaign.pushToMarketingAutomation;
                     this.eventCampaign.pushToCRM = [];
                     if (this.eventCampaign.pushToMarketo) {
@@ -624,7 +635,22 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         // this.listAllTeamMemberEmailIds();
         this.detailsTab = true;
         this.resetTabClass();
+        
+        let now:Date = new Date();
+        let defaultDate = now;
+        if (this.eventCampaign.endDateString != undefined && this.eventCampaign.endDateString != null) {
+            defaultDate = new Date(this.eventCampaign.endDateString);
+        }
+
+        this.endDatePickr = flatpickr('#endDate1', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            time_24hr: true,
+            minDate: now,
+            defaultDate: defaultDate
+        });
     }
+
 
     ngAfterViewChecked() {
         /*    if( this.previewPopUpComponent && this.previewPopUpComponent.selectedFormData.length != 0 ){
@@ -1505,7 +1531,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 'forms': this.selectedFormData,
                 'pushToCRM': eventCampaign.pushToCRM,
                 'vanityUrlDomainName': vanityUrlDomainName,
-                'vanityUrlCampaign': vanityUrlCampaign
+                'vanityUrlCampaign': vanityUrlCampaign,
+                'endDateString': eventCampaign.endDateString,
+                "clientTimeZone": eventCampaign.clientTimeZone
             }
             eventCampaign = customEventCampaign;
         }
@@ -1578,6 +1606,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         delete eventCampaign.emailTemplateDTO;
         delete eventCampaign.userDTO
         delete eventCampaign.userListDTOs
+        eventCampaign.clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         if (eventCampaign.campaignScheduleType === "NOW" || eventCampaign.campaignScheduleType === "SAVE") { eventCampaign.launchTimeInString = this.campaignService.setLaunchTime(); }
         if (this.validForm(eventCampaign) && this.isFormSubmitted) {
             this.referenceService.startLoader(this.httpRequestLoader);
@@ -3098,5 +3127,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             }
         )
 
+    }
+
+    clearEndDate() {
+        this.endDatePickr.clear();
+        this.eventCampaign.endDateString = undefined;
     }
 }

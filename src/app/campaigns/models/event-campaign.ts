@@ -78,6 +78,8 @@ export class EventCampaign {
 	  eventCancellation : EventCancellation;
 	  leadPipelineId: number;
     dealPipelineId: number;
+    endDateString: string;
+    clientTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     constructor() {
         this.campaignEventMedias.push(new CampaignEventMedia());

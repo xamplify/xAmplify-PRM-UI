@@ -168,11 +168,16 @@
                         </a>
                         <span>
                           <ng-container *ngIf="campaign.allowRedistribution">
-                            <a *ngIf="campaign.campaignType != 'EVENT'"
+                            <a *ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended"
                             (click)="reDistributeCampaign(campaign)"
                             data-toggle="tooltip" data-placement="top"
                             title="Redistribute Campaign" data-rel="fancybox-button">
                             <i class="fa fa-clone" aria-hidden="true"></i>
+                            </a>
+                            <a *ngIf="campaign.campaignType != 'EVENT' && campaign.ended"
+                            data-toggle="tooltip" data-placement="top"
+                            title="Campaign can not be furthur redistributed" data-rel="fancybox-button">
+                            <i class="fa fa-clone cancelled-event" aria-hidden="true"></i>
                             </a>
                             <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton"
                             (click)="reDistributeCampaign(campaign)"
