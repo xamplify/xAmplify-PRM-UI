@@ -403,7 +403,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                         this.pagination.pagedItems.splice(position, 1);
                         this.pagination.pageIndex = 1;
                         this.listCampaign(this.pagination);
-                        this.listNotifications();
+                         this.listNotifications();
                         this.exportObject['categoryId'] = this.categoryId;
                         this.exportObject['itemsCount'] = this.pagination.totalRecords;
                         this.updatedItemsCount.emit(this.exportObject);
@@ -479,106 +479,9 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
     filterCampaigns(type: string, index: number) {
         this.selectedCampaignTypeIndex = index;//This is to highlight the tab
-
-              
-            }
-        }     
+    }     
         
   /************Adding Workflows**************** */
-  addWorkFlows(campaign:Campaign){
-      this.customResponse = new CustomResponse();
-      this.addWorkflows = true;
-      this.selectedCampaign = campaign;
-      
-  }
-
-  setViewType(viewType:string){
-      if("List"==viewType){
-          this.modulesDisplayType.isListView = true;
-          this.modulesDisplayType.isGridView = false;
-          this.modulesDisplayType.isFolderGridView = false;
-          this.modulesDisplayType.isFolderListView = false;
-      }else if("Grid"==viewType){
-          this.modulesDisplayType.isListView = false;
-          this.modulesDisplayType.isGridView = true;
-          this.modulesDisplayType.isFolderGridView = false;
-          this.modulesDisplayType.isFolderListView = false;
-      }
-  }
-  
-  downloadCampaignHighLevelAnalytics() {
-      let param = null;
-      let campaignType = this.pagination.campaignType;
-      let teamMemberId : number = 0;
-      let teamMemberAnalytics = null;
-      let categoryId : number = 0;
-      let categoryType = '';
-      let searchKey = this.pagination.searchKey;
-      
-      if(this.teamMemberId!=undefined){
-          teamMemberId = this.teamMemberId;
-          teamMemberAnalytics = true;
-      }else{
-          teamMemberAnalytics = false;
-      }
-      
-      if(this.categoryId!=undefined){
-          categoryId = this.categoryId;
-          categoryType = 'c';
-      }
-       
-       if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-           param = {
-               'userId': this.loggedInUserId,
-               'vendorCompanyProfileName': this.authenticationService.companyProfileName,
-               'vanityUrlFilter': true,
-               'campaignType' : campaignType,
-               'teamMemberId' : teamMemberId,
-               'teamMemberAnalytics' : teamMemberAnalytics,
-               'categoryId' :categoryId,
-               'categoryType' : categoryType,
-               'searchKey' : searchKey,
-               'fromDate' : this.pagination.fromDateFilterString,
-               'toDate' : this.pagination.toDateFilterString,
-               'archived': this.pagination.archived,
-                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone              
-           };
-       } else {
-           param = {
-               'userId': this.loggedInUserId,
-               'vanityUrlFilter': false,
-               'vendorCompanyProfileName':null,
-               'campaignType' : campaignType,
-               'teamMemberId' :  teamMemberId,
-               'teamMemberAnalytics' : teamMemberAnalytics,
-               'categoryId' :categoryId,
-               'categoryType' : categoryType,
-               'searchKey' : searchKey,
-               'fromDate' : this.pagination.fromDateFilterString,
-               'toDate' : this.pagination.toDateFilterString,
-               'archived': this.pagination.archived,
-                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
-           };
-       }
-       let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
-       this.refService.post(param, completeUrl);
-  }
-
-  toggleFilterOption() {
-    this.showFilterOption = !this.showFilterOption;    
-    this.fromDateFilter = "";
-    this.toDateFilter = "";
-    if (!this.showFilterOption) {
-      this.pagination.fromDateFilterString = "";
-      this.pagination.toDateFilterString = "";
-      this.filterResponse.isVisible = false;
-      if (this.filterMode) {
-        this.pagination.pageIndex = 1;
-        this.pagination.maxResults = 12;
-        this.itemsSize = this.numberOfItemsPerPage[0];
-        this.pagination.campaignType = type;
-        this.listCampaign(this.pagination);
-    }
     campaginRouter(campaign: any) {
         this.refService.campaignType = campaign.campaignType;
         this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
