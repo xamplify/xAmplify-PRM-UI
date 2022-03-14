@@ -211,8 +211,8 @@
 											<!-- (onAdd)="onAdding($event)"  for removing duplicate tags(lower/upper case) -->
 
 											<tag-input [(ngModel)]="itemOfTags"  [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'"
-											 [validators]="validatorsTag" required></tag-input>
-											<div *ngIf="itemOfTags?.length===0 || itemOfTags===null" style="color:red" translate>Please add a tag and press enter for your video.</div>
+											></tag-input>
+										
 										</div>
 									</div>
 									<div class="form-group">
