@@ -3543,7 +3543,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.landingPageService.updateJsonAndHtmlBody(landingPage).subscribe(
             response => {
                 this.showTemplateUpdatedSuccessMessage();
-                this.listLandingPages(this.landingPagePagination);
             }, error => {
                 this.loading =false;
                 if (error.status == 400) {
