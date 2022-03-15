@@ -1105,7 +1105,7 @@
                   </div>
                 </div>
                 <app-pagination style="position:relative;top:-9px;" [pagination]="contactsByType.pagination"
-                  [hidden]="contactsByType.isLoading" [type]="contactsByType.selectedCategory"
+                  *ngIf="!contactsByType.isLoading" [type]="contactsByType.selectedCategory"
                   (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)">
                 </app-pagination>
               </div>
