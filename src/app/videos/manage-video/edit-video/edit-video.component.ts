@@ -158,8 +158,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.enableVideoControl = this.saveVideoFile.enableVideoController;
       this.editVideoTitle = this.saveVideoFile.title;
 
-      if ( this.saveVideoFile.tags ) {
-          if ( this.saveVideoFile.tags[0] != null ) {
+      if (  this.saveVideoFile.tags != null && this.saveVideoFile.tags.length>0 ) {
+          if ( this.saveVideoFile.tags != null ) {
               this.itemOfTags = this.saveVideoFile.tags;
           }
   }
@@ -1204,7 +1204,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           'uploadedUserId': [this.saveVideoFile.uploadedUserId],
           'viewBy': [this.saveVideoFile.viewBy, Validators.required],
           'categoryId': [this.saveVideoFile.categoryId, Validators.required],
-          'tags': [this.saveVideoFile.tags],
+       //   'tags': [this.saveVideoFile.tags],
           'imageFile': [this.saveVideoFile.imageFile],
           'imagePath': [this.saveVideoFile.imagePath],
           'gifImagePath': [this.saveVideoFile.gifImagePath, Validators.required],
