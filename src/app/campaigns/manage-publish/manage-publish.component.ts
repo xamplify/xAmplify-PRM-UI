@@ -253,7 +253,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             defaultDate = new Date(this.selectedEndDate);
         }
 
-        this.endDatePickr = flatpickr('#endDate', {
+        this.endDatePickr = flatpickr('#campaignEndDate', {
             enableTime: true,
             dateFormat: 'Y-m-d H:i',
             time_24hr: true,

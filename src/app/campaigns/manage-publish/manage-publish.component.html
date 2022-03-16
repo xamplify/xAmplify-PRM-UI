@@ -1537,23 +1537,14 @@
         </app-response-message>
         <div class="form-group">
           <label for="endDate" translate>End Date</label> 
-
-          <!-- <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="selectedEndDate"
-            name="endDate" [value]="selectedEndDate" /> -->
-               
-
           <div class="input-group">
-            <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="selectedEndDate"
+            <input type="text" id="campaignEndDate" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="selectedEndDate"
               name="endDate" [value]="selectedEndDate">
             <span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
               <button class="btn btn-default" type="button"><i class="fa fa-refresh" aria-hidden="true"
                   (click)="clearEndDate()"></i></button>
             </span>
           </div>
-
-          <!-- <app-date-picker *ngIf="showEditEndDateForm" [(dataField)]="selectedEndDate" [isEndDate]='true'
-            [value]="selectedEndDate">
-          </app-date-picker> -->
         </div>
       </div>
       <div class="modal-footer">

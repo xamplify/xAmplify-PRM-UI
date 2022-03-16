@@ -118,7 +118,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     endDate: any;
     selectedEndDate: any;
     endDateCustomResponse: CustomResponse = new CustomResponse();
-    endDatePickr: any;
+    endDatePickrInUtil: any;
     endDateRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
@@ -235,7 +235,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             defaultDate = new Date(this.selectedEndDate);
         }
 
-        this.endDatePickr = flatpickr('#endDateInUtil', {
+        this.endDatePickrInUtil = flatpickr('#endDateInUtil', {
             enableTime: true,
             dateFormat: 'Y-m-d H:i',
             time_24hr: true,
@@ -860,11 +860,11 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         if (campaign.endDate != undefined && campaign.endDate != null) {
             this.selectedEndDate = utc(campaign.endDate).local().format("YYYY-MM-DD HH:mm");
             let selectedDate = new Date(this.selectedEndDate);
-            this.endDatePickr.setDate(selectedDate);
+            this.endDatePickrInUtil.setDate(selectedDate);
         } else {
-            this.endDatePickr.clear();
+            this.endDatePickrInUtil.clear();
         }
-        this.endDatePickr.set("minDate", new Date());
+        this.endDatePickrInUtil.set("minDate", new Date());
     }
 
     closeEndDateModal() {
@@ -872,7 +872,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         this.selectedCampaign = undefined;
         this.selectedEndDate = undefined;
         this.endDateCustomResponse.isVisible = false;
-        this.endDatePickr.clear();
+        this.endDatePickrInUtil.clear();
         $('#endDateModalInUtil').modal('hide');
     }
 
@@ -903,7 +903,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
 
     clearEndDate() {
-        this.endDatePickr.clear();
+        this.endDatePickrInUtil.clear();
         this.selectedEndDate = undefined;
     }
 

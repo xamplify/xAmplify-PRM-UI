@@ -564,7 +564,7 @@
 					</div>
 				</div>
 					<!-- End Date -->
-					<div class="form-group" [hidden]="!eventCampaign.channelCampaign">
+					<div class="form-group" [hidden]="!eventCampaign.channelCampaign || reDistributeEvent">
 						<label class="col-sm-3 labal-css color-css" translate>End Date</label>
 						<div class="col-sm-9">
 							<!-- <input type="text" id="endDate1" placeholder="YYYY-MM-DD" class="form-control flatpickr"
