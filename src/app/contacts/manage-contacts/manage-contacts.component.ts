@@ -897,6 +897,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	onChangeAllContactUsers(event: Pagination) {
 		this.contactsByType.pagination = event;
+		//this.pagination.maxResults=12;
 		this.listContactsByType(this.contactsByType.selectedCategory);
 	}
 
