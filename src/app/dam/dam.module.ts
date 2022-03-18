@@ -16,12 +16,14 @@ import { SelectUploadTypeComponent } from './select-upload-type/select-upload-ty
 import { ShowHistoryComponent } from './show-history/show-history.component';
 import { ViewDamComponent } from './view-dam/view-dam.component';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { EditVideoComponent } from '../videos/manage-video/edit-video/edit-video.component';
 
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule, CKEditorModule
   ],
-  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent],
+  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent,
+                 EditVideoComponent],
   providers: [DamService]
 })
 export class DamModule { }

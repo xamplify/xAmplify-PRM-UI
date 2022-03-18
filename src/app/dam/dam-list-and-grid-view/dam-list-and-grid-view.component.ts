@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { DamService } from '../services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -18,6 +18,9 @@ import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { SaveVideoFile } from '../../videos/models/save-video-file';
+import { VideoFileService } from '../../videos/services/video-file.service';
+import { UserService } from '../../core/services/user.service';
 
 declare var $, swal: any;
 @Component({
@@ -27,7 +30,7 @@ declare var $, swal: any;
 	providers: [HttpRequestLoader, SortOption, Properties]
 })
 export class DamListAndGridViewComponent implements OnInit, OnDestroy {
-
+	//@Output() newItemEvent : EventEmitter<boolean>;	
 	loading = false;
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
@@ -60,13 +63,17 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	asset: any;
 	showPdfModalPopup: boolean;
 	deleteAsset = false;
-	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+	@Output() newItemEvent  = new EventEmitter<any>();
+	
+	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
+			public videoFileService: VideoFileService, public userService: UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.vanityLoginDto.userId = this.loggedInUserId;
 			this.vanityLoginDto.vanityUrlFilter = true;
 		}
+		
 	}
 
 	ngOnInit() {
@@ -94,7 +101,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (this.referenceService.isAssetDetailsUpldated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Details Updated Successfully', true);
 		}
-		this.getCompanyId();
+		this.getCompanyId();		
 	}
 
 	ngOnDestroy() {
@@ -356,9 +363,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	editDetails(id: number) {
-		this.loading = true;
-		this.referenceService.goToRouter("/home/dam/editDetails/" + id);
+    editDetails(id: number, assetType: string, alias:string) {
+        if (this.isVideo(assetType)) {
+            this.showEditVideo(alias, id);
+        } else {
+            this.loading = true;
+            this.referenceService.goToRouter("/home/dam/editDetails/" + id);
+        }
 	}
 
 	refreshList() {
@@ -455,7 +466,80 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	viewDetails(asset:any){
 		this.referenceService.goToRouter("/home/dam/shared/view/"+asset.id);
 	}
+	
+    showEditVideo(alias:string, id: number) {
+        if(this.referenceService.defaultPlayerSettings!=undefined && this.referenceService.defaultPlayerSettings.playerColor===undefined){ this.getDefaultVideoSettings(); }
+        try{
+       // this.referenceService.loading(this.httpRequestLoader, true);
+        //this.xtremandLogger.log('show edit video method in mange assets ' + JSON.stringify(video));
+        //this.videoFileService.videoViewBy = 'DRAFT';
+        this.videoFileService.getVideo(alias, 'DRAFT')
+            .subscribe((editVideoFile: SaveVideoFile) => {
+                if(editVideoFile.access){
+                this.xtremandLogger.log('enter the show edit vidoe method');
+                //this.referenceService.loading(this.httpRequestLoader, false);
+                if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                    editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+                }
+                editVideoFile.damId = id;
+                this.videoFileService.saveVideoFile = editVideoFile;
+                this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+                this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+                this.xtremandLogger.log('show edit vidoe object :');
+                this.xtremandLogger.log(this.videoFileService.saveVideoFile);
+                this.videoFileService.actionValue = 'Update';
+                this.showVideosPage(false, true, false, false);
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+            },
+            (error: any) => {
+                this.xtremandLogger.error('Error In: show edit videos ():' + error);
+                this.xtremandLogger.errorPage(error);
+            }
+            );
+          }catch(error){
+            this.xtremandLogger.error('error'+error);
+          }
+    }
+    getDefaultVideoSettings() {
+        this.userService.getVideoDefaultSettings().subscribe((data) => { this.referenceService.defaultPlayerSettings = data; });
+    }
 
+    showVideosPage(manageVideos: boolean, editVideo: boolean, playVideo: boolean, campaignReport: boolean) {
+        // this.manageVideos = manageVideos;
+        
+       // this.playVideo = playVideo;
+        //this.campaignReport = campaignReport;
+        this.newItemEvent.emit(false);
+    }
+
+    update(videoFile: SaveVideoFile) {
+
+    }
+	
+    isVideo(filename: any) {
+        const parts = filename.split('.');
+        const ext = parts[parts.length - 1];
+        switch (ext.toLowerCase()) {
+            case 'm4v':
+            case 'mkv':
+            case 'avi':
+            case 'mpg':
+            case 'mp4':
+            case 'flv':
+            case 'mov':
+            case 'wmv':
+            case 'divx':
+            case 'f4v':
+            case 'mpeg':
+            case 'vob':
+            case 'xvid':
+                // etc
+                return true;
+        }
+        return false;
+    }
 
 
 

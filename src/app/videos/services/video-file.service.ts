@@ -355,4 +355,13 @@ export class VideoFileService {
             return Observable.throw(error);
         }
     }
+    
+    updateVideoContent(videoFile: SaveVideoFile) {
+    	let requestParam =  'userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+        let url = this.authenticationService.REST_URL ;
+        return this.http.post(url + "dam/update-video?" +requestParam, videoFile)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
 }

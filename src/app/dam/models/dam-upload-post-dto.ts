@@ -17,4 +17,5 @@ export class DamUploadPostDto {
     oauthToken : string;
     fileName : string;
     cloudContent : boolean=false;
+    source: string = "";
 }

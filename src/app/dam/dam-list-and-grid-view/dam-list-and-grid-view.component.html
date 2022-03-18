@@ -149,7 +149,7 @@
 										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a> 
-										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id)">
+										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias)">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a>
 										</div>
@@ -451,3 +451,5 @@
 	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()">
 	</app-delete-assets>
 </ng-container>
+
+<!--  <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video> --> 
