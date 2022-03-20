@@ -242,6 +242,12 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             minDate: now,
             defaultDate: defaultDate
         });  
+
+        flatpickr('.dateFilterPickr', {
+            enableTime: false,
+            dateFormat: 'Y-m-d',
+            maxDate: new Date()
+        });
     }
 
 

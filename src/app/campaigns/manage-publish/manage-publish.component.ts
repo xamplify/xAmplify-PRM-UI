@@ -259,7 +259,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             time_24hr: true,
             minDate: now,
             defaultDate: defaultDate
-        });  
+        }); 
+        
+        flatpickr('.dateFilterPickr', {
+            enableTime: false,
+            dateFormat: 'Y-m-d',
+            maxDate: new Date()
+        });
     }
    
     
