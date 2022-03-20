@@ -57,7 +57,7 @@ export class DeleteAssetsComponent implements OnInit,OnDestroy {
 		this.damService.delete(damUploadPostDto)
 			.subscribe(
 				(response: any) => {
-					this.deleteAssetSuccessEmitter.emit();
+					this.deleteAssetSuccessEmitter.emit(response);
 				},
 				(_error: string) => {
 					this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
