@@ -1080,22 +1080,40 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.showEditEndDateForm = true;
         $('#endDateModal').modal('show');
         this.selectedCampaign = campaign;
+
         if (campaign.endDate != undefined && campaign.endDate != null) {
             this.selectedEndDate = utc(campaign.endDate).local().format("YYYY-MM-DD HH:mm");
-            let selectedDate = new Date(this.selectedEndDate);
-            this.endDatePickr.setDate(selectedDate);
+            let selectedDate = new Date(this.selectedEndDate);            
+            if (Array.isArray(this.endDatePickr)) {
+                $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+                    endDatePickrObj.setDate(selectedDate);                        
+                });
+            } else {
+                this.endDatePickr.setDate(selectedDate);
+            }
         } else {
-            this.endDatePickr.clear();
+            this.clearEndDate();
         }
-        this.endDatePickr.set("minDate", new Date())
+
+        if (Array.isArray(this.endDatePickr)) {
+            $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+                endDatePickrObj.set("minDate", new Date());                        
+            });
+        } else {
+            this.endDatePickr.set("minDate", new Date());
+        }
+        
     }
 
     closeEndDateModal() {       
         this.showEditEndDateForm = false;
-        this.selectedCampaign = undefined;
-        this.selectedEndDate = undefined;
+        this.selectedCampaign = undefined;        
         this.endDateCustomResponse.isVisible = false;
-        this.endDatePickr.clear();
+
+        //this.selectedEndDate = undefined;
+        //this.endDatePickr.clear();
+        this.clearEndDate();
+
         $('#endDateModal').modal('hide');
     }
 
@@ -1125,8 +1143,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             );
     }
 
-    clearEndDate() {
-        this.endDatePickr.clear();
+    clearEndDate() {        
+        if (Array.isArray(this.endDatePickr)) {
+            $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+                endDatePickrObj.clear();                        
+            });
+        } else {
+            this.endDatePickr.clear();
+        }       
         this.selectedEndDate = undefined;
     }
 
