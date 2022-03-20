@@ -169,7 +169,7 @@
             </div>
             <!-- -------------------- Apply Filters Box-------------------- -->
             <div class="row"
-              *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+              [hidden]="!showFilterOption || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
               <div class="col-xs-12 col-sm-12">
                 <div class="portlet light m10">
                   <div class="portlet-title">
@@ -189,15 +189,19 @@
                             <label class="control-label">From Date
                               <span class="required">*</span>
                             </label>
-                            <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
-                            </app-date-picker>
+                            <!-- <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                            </app-date-picker> -->
+                            <input type="text" class="form-control flatpickr dateFilterPickr" [(ngModel)]="fromDateFilter" name="fromDateFilter"
+                               placeholder="YYYY-MM-DD" id="fromDateFilter">
                           </div>
                           <div class="form-group col-sm-4">
                             <label class="control-label">To Date
                               <span class="required">*</span>
                             </label>
-                            <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
-                            </app-date-picker>
+                            <!-- <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                            </app-date-picker> -->
+                            <input type="text" class="form-control flatpickr dateFilterPickr" [(ngModel)]="toDateFilter" name="toDateFilter"
+                              placeholder="YYYY-MM-DD" id="toDateFilter">
                           </div>
                           <div class="form-group col-sm-4">
                             <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
@@ -675,7 +679,7 @@
                                       Campaign
                                     </a>
                                     <a *ngIf="campaign.canEditEndDate" data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
-                                      <i class="fa fa-calendar" style="width: 30px;" aria-hidden="true"></i> Update End Date
+                                      <i class="fa fa-calendar-times-o" style="width: 30px;" aria-hidden="true"></i> Update End Date
                                     </a>
                                     <!---Add Workflows List View-->
                                     <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
@@ -892,7 +896,7 @@
                                   </a>  
                                   <a *ngIf="campaign.canEditEndDate"
                                     data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
-                                    <i class="fa fa-calendar" style="width: 30px;" aria-hidden="true"></i> Update End Date
+                                    <i class="fa fa-calendar-times-o" style="width: 30px;" aria-hidden="true"></i> Update End Date
                                   </a>
                                   <!---Add Workflows List View-->
                                   <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
@@ -1090,7 +1094,7 @@
                               aria-hidden="true"></i>
                             <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe"
                               aria-hidden="true"></i>
-                            <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar"
+                            <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar-check-o"
                               aria-hidden="true"></i>
                             <i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" class="fa fa-wpforms"
                               aria-hidden="true"></i>
@@ -1217,7 +1221,7 @@
                             </a>
                             <a *ngIf="campaign.canEditEndDate" (click)="showEndDateModal(campaign)" data-toggle="tooltip"
                               data-placement="top" title="Update End Date">
-                              <i class="fa fa-calendar" aria-hidden="true"></i>
+                              <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
                             </a>
                           </ng-container>
 

@@ -242,6 +242,12 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             minDate: now,
             defaultDate: defaultDate
         });  
+
+        flatpickr('.dateFilterPickr', {
+            enableTime: false,
+            dateFormat: 'Y-m-d',
+            maxDate: new Date()
+        });
     }
 
 
@@ -860,19 +866,35 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         if (campaign.endDate != undefined && campaign.endDate != null) {
             this.selectedEndDate = utc(campaign.endDate).local().format("YYYY-MM-DD HH:mm");
             let selectedDate = new Date(this.selectedEndDate);
-            this.endDatePickrInUtil.setDate(selectedDate);
+            if (Array.isArray(this.endDatePickrInUtil)) {
+                $.each(this.endDatePickrInUtil, function (_index:number, endDatePickrObj) {
+                    endDatePickrObj.setDate(selectedDate);                        
+                });
+            } else {
+                this.endDatePickrInUtil.setDate(selectedDate);
+            }
         } else {
-            this.endDatePickrInUtil.clear();
+            this.clearEndDate();
         }
-        this.endDatePickrInUtil.set("minDate", new Date());
+        
+        if (Array.isArray(this.endDatePickrInUtil)) {
+            $.each(this.endDatePickrInUtil, function (_index:number, endDatePickrObj) {
+                endDatePickrObj.set("minDate", new Date());                        
+            });
+        } else {
+            this.endDatePickrInUtil.set("minDate", new Date());
+        }
     }
 
     closeEndDateModal() {
         this.showEditEndDateForm = false;
-        this.selectedCampaign = undefined;
-        this.selectedEndDate = undefined;
+        this.selectedCampaign = undefined;        
         this.endDateCustomResponse.isVisible = false;
-        this.endDatePickrInUtil.clear();
+
+        //this.selectedEndDate = undefined;
+        //this.endDatePickrInUtil.clear();
+        this.clearEndDate();
+
         $('#endDateModalInUtil').modal('hide');
     }
 
@@ -902,8 +924,14 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             );
     }
 
-    clearEndDate() {
-        this.endDatePickrInUtil.clear();
+    clearEndDate() {        
+        if (Array.isArray(this.endDatePickrInUtil)) {
+            $.each(this.endDatePickrInUtil, function (_index:number, endDatePickrObj) {
+                endDatePickrObj.clear();                        
+            });
+        } else {
+            this.endDatePickrInUtil.clear();
+        }
         this.selectedEndDate = undefined;
     }
 
