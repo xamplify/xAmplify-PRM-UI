@@ -293,7 +293,7 @@
                         {{teamMemberGroup.name}}
                       </option>
                       </select>
-                       <span *ngIf="team?.partnersCount==0" class="info-text-color">
+                       <span *ngIf="team?.partnersCount==0 && !authenticationService?.module?.isOnlyPartnerCompany" class="info-text-color">
                        <strong>
                          <span [className]="team?.teamMemberGroupPartnersCount>0 ? 'active-status' : 'inactive-status'">{{team?.teamMemberGroupPartnersCount}}</span> 
                           {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
@@ -397,7 +397,7 @@
              		{{teamMemberGroup?.name}}
             </option> 
             </select>
-             <span class="info-text-color float-left" *ngIf="teamMember?.teamMemberGroupPartnersCount>0">
+             <span class="info-text-color float-left" *ngIf="teamMember?.teamMemberGroupPartnersCount>0 && !authenticationService?.module?.isOnlyPartnerCompany">
               <strong>
                 <span class="active-status">{{teamMember?.teamMemberGroupPartnersCount}}</span> 
                  {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
