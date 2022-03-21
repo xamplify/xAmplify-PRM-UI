@@ -24,10 +24,10 @@ export class SocialLoginComponent implements OnInit {
 
 	constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService, private hubSpotService: HubSpotService,
 		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService) {
-			this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');
-		}
+		this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');
+	}
 	login(providerName: string) {
-		
+
 		if (providerName == 'google' && this.isLoggedInVanityUrl == 'true') {
 			let currentModule = localStorage.getItem('vanityCurrentModule');
 			this.contactService.googleVanityLogin(currentModule)
@@ -49,52 +49,58 @@ export class SocialLoginComponent implements OnInit {
 					() => this.xtremandLogger.log("AddContactsComponent() googleContacts() finished.")
 				);
 
-		}
-		else if (providerName == 'salesforce' && this.isLoggedInVanityUrl == 'true') {
+		} else if (providerName == 'salesforce' && this.isLoggedInVanityUrl == 'true') {
 			let currentModule = localStorage.getItem('vanityCurrentModule');
 			this.contactService.salesforceVanityLogin(currentModule)
 				.subscribe(
-						response => {
-	                        this.storeLogin = response.data;
-	                        let data = response.data;
-	                        localStorage.setItem("userAlias", data.userAlias);
-	                        localStorage.setItem("currentModule", data.module);
-	                        window.location.href = "" + data.redirectUrl;
+					response => {
+						this.storeLogin = response.data;
+						let data = response.data;
+						localStorage.setItem("userAlias", data.userAlias);
+						localStorage.setItem("currentModule", data.module);
+						window.location.href = "" + data.redirectUrl;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
 					},
 					() => this.xtremandLogger.log("addContactComponent salesforceContacts() login finished.")
 				);
-		}
-		
-		else if (providerName == 'zoho' && this.isLoggedInVanityUrl == 'true') {
+		} else if (providerName == 'zoho' && this.isLoggedInVanityUrl == 'true') {
 			let currentModule = localStorage.getItem('vanityCurrentModule');
 			this.contactService.checkingZohoVanityAuthentication(currentModule)
 				.subscribe(
-						response => {
-	                        this.storeLogin = response.data;
-	                        let data = response.data;
-	                        localStorage.setItem("userAlias", data.userAlias);
-	                        localStorage.setItem("currentModule", data.module);
-	                        window.location.href = "" + data.redirectUrl;
+					response => {
+						this.storeLogin = response.data;
+						let data = response.data;
+						localStorage.setItem("userAlias", data.userAlias);
+						localStorage.setItem("currentModule", data.module);
+						window.location.href = "" + data.redirectUrl;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
 					},
 					() => this.xtremandLogger.log("addContactComponent salesforceContacts() login finished.")
 				);
+		} else if (providerName == 'hubspot' && this.isLoggedInVanityUrl == 'true') {
+			this.contactService.vanityConfigHubSpot().subscribe(data => {
+				let response = data;
+				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+					window.location.href = "" + response.data.redirectUrl;
+				}
+			}, (error: any) => {
+				this.xtremandLogger.error(error);
+			}, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
+
+		} else if (providerName == 'isalesforce' && this.isLoggedInVanityUrl == 'true') {
+			this.contactService.vanityConfigSalesForce().subscribe(data => {
+				let response = data;
+				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+					window.location.href = "" + response.data.redirectUrl;
+				}
+			}, (error: any) => {
+				this.xtremandLogger.error(error);
+			}, () => this.xtremandLogger.log("Salesforce in integrations Configuration Checking done"));
 		}
-	      else if (providerName == 'hubspot' && this.isLoggedInVanityUrl == 'true') {
-	          this.contactService.vanityConfigHubSpot().subscribe(data => {
-	              let response = data;
-	              if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-	            	  window.location.href = "" + response.data.redirectUrl;
-	              }
-	          }, (error: any) => {
-	        	  this.xtremandLogger.error(error);
-	          }, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
-	        }
 
 		else {
 			this.socialService.login(providerName)

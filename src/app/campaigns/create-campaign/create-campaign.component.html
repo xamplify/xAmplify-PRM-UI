@@ -545,6 +545,26 @@
                                                     <textarea id="smsText" placeholder="Sms Text" class="form-control" [(ngModel)]="smsText" name="smsText" (input)="validateForm();validateField('smsText');" maxlength="200"></textarea>
                                                 </div>
                                             </div>
+
+                                            <!-- End Date -->
+                                            <div class="form-group" [attr.class]="endDateDivClass" [hidden]="!campaign.channelCampaign || campaignType == 'landingPage' || campaignType=='sms'">
+                                                <label class="control-label col-sm-4" translate>End Date</label>
+                                                <!-- <div class="col-sm-8">
+                                                    <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr"
+                                                        [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
+                                                </div> -->
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <input type="text" id="endDate1" placeholder="YYYY-MM-DD" class="form-control flatpickr"
+                                                            [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
+                                                        <span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
+                                                            <button class="btn btn-default" type="button"><i class="fa fa-refresh npcfs" aria-hidden="true"
+                                                                    (click)="clearEndDate()"></i></button>
+                                                        </span>                                                
+                                                    </div>                                                
+                                                </div>
+                                            </div>
+
                                         </div>
                                         <!-- END FORM-->
                                     </div>
@@ -2387,7 +2407,7 @@
                                         <div class="col-md-4">
                                             <label style="float: left;" translate>Date</label>
                                             <br>
-                                            <input type="text" class="form-control flatpickr square-box" placeholder="Select" formControlName="launchTime" />
+                                            <input type="text" class="form-control flatpickr square-box" placeholder="Select" id="launchTime" formControlName="launchTime" />
                                             <font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')" translate>Date Required
                                             </font>
                                         </div>
@@ -2444,8 +2464,12 @@
                     <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
+                    
                     <app-preview-popup #previewPopUpComponent *ngIf="showEditTemplatePopup && campaignType=='landingPage'"></app-preview-popup>
                     <app-merge-tags *ngIf="showEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
+                    <button  class="new-tab-button" *ngIf="showEditTemplatePopup && campaignType=='landingPage'">
+                        Open Links In New Tab <input type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
+                      </button>
                 </div>
               <div class="portlet-body clearfix">
                   <div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">

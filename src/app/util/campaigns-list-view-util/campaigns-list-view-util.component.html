@@ -118,7 +118,7 @@
             <app-list-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
             <!-- -------------------- Apply Filters Box-------------------- -->
             <div class="row"
-                *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                [hidden]="!showFilterOption || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
                 <div class="col-xs-12 col-sm-12">
                     <div class="portlet light m10">
                         <div class="portlet-title">
@@ -138,15 +138,19 @@
                                             <label class="control-label">From Date
                                                 <span class="required">*</span>
                                             </label>
-                                            <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
-                                            </app-date-picker>
+                                            <!-- <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                                            </app-date-picker> -->
+                                            <input type="text" class="form-control flatpickr dateFilterPickr" [(ngModel)]="fromDateFilter" name="fromDateFilter"
+                                                placeholder="YYYY-MM-DD" id="fromDateFilter">
                                         </div>
                                         <div class="form-group col-sm-4">
                                             <label class="control-label">To Date
                                                 <span class="required">*</span>
                                             </label>
-                                            <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
-                                            </app-date-picker>
+                                            <!-- <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                                            </app-date-picker> -->
+                                            <input type="text" class="form-control flatpickr dateFilterPickr" [(ngModel)]="toDateFilter" name="toDateFilter"
+                                                placeholder="YYYY-MM-DD" id="toDateFilter">
                                         </div>
                                         <div class="form-group col-sm-4">
                                             <button type="button" class="btn green" [disabled]=""
@@ -248,6 +252,9 @@
                                         </h5>
                                         <h6 class="view-banner banner-top" *ngIf="archived" style="background-color: #f76c1a !important" translate>
                                             Archived</h6>
+                                        <h6 class="view-banner banner-top" *ngIf="campaign.ended" style="background-color: #b6039e !important"
+                                            translate>
+                                            Ended</h6>
                                     </td>
                                     <td>
                                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
@@ -333,6 +340,14 @@
                                                 </strong>
                                             </span>
                                         </h5>
+                                        <h5 *ngIf="campaign.showEndDate">
+                                            <span>Ending On
+                                              <strong>
+                                                <app-timestamp [dateAndTime]="campaign.endDate">
+                                                </app-timestamp>
+                                              </strong>
+                                            </span>
+                                          </h5>
                                     </td>
 
                                     <ng-container
@@ -763,6 +778,11 @@
                                                                     <i class="fa fa-files-o" style="width: 30px;"></i>
                                                                     Copy Campaign
                                                                 </a>
+
+                                                                <a *ngIf="campaign.canEditEndDate" data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
+                                                                    <i class="fa fa-calendar-times-o" style="width: 30px;" aria-hidden="true"></i> Update End Date
+                                                                </a>
+
                                                                 <!---Add Workflows List View-->
                                                                 <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
                                                                         data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
@@ -996,6 +1016,10 @@
                                                                 <i class="fa fa-files-o" style="width: 30px;"></i> Copy
                                                                 Campaign
                                                             </a>
+
+                                                            <a *ngIf="campaign.canEditEndDate" data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
+                                                                <i class="fa fa-calendar-times-o" style="width: 30px;" aria-hidden="true"></i> Update End Date
+                                                              </a>
                                                             <!---Add Workflows List View-->
                                                             <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
                                                                     data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
@@ -1093,7 +1117,7 @@
                     style="padding: 0px 3px 0px 3px;">
                     <div class="col-md-3 col-sm-4 col-xs-12"
                         *ngFor="let campaign of pagination.pagedItems; let i= index">
-                        <div class="grid-box" style="height:240px">
+                        <div class="grid-box" style="height:270px">
                             <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                             <h4 class="ellipsis" title="{{campaign.campaignName}}">
                                 {{campaign.campaignName | slice:0:22}}
@@ -1119,6 +1143,8 @@
                                     style="position: relative;top: -3px;background-color: #d9534f;">Private</span>
                                 <span class="view-banner" *ngIf="archived" style="position: relative;top: -3px; background-color: #f76c1a !important"
                                     translate>Archived</span>
+                                <span class="view-banner" *ngIf="campaign.ended" style="position: relative;top: -3px; background-color: #b6039e !important"
+                                    translate>Ended</span>
                             </h4>
                             <h6 [title]="campaign.createdBy">By
                                 <strong>{{campaign.createdBy | slice:0:15}}<span
@@ -1178,6 +1204,13 @@
                                     </strong>
                                 </span>
                             </h6>
+                            <h6 *ngIf="campaign.showEndDate">
+                                <span translate>Ending On
+                                  <strong>
+                                    {{campaign.endDate |date:'mediumDate'}},{{campaign.endDate |date:'shortTime'}}
+                                  </strong>
+                                </span>
+                              </h6>
 
                             <div class="bookmark-ribbon">
                                 <span style="margin: 0px -7px; font-size: 17px; color: white;">
@@ -1187,7 +1220,7 @@
                                         aria-hidden="true"></i>
                                     <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe"
                                         aria-hidden="true"></i>
-                                    <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar"
+                                    <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar-check-o"
                                         aria-hidden="true"></i>
                                     <i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" class="fa fa-wpforms"
                                         aria-hidden="true"></i>
@@ -1315,6 +1348,10 @@
                                         <a *ngIf="archived && campaign.canArchive" (click)="unarchiveCampaign(campaign)"
                                             data-toggle="tooltip" data-placement="top" title="Unarchive">
                                             <i class="fa fa-archive mr5" aria-hidden="true"></i>
+                                        </a>
+                                        <a *ngIf="campaign.canEditEndDate" (click)="showEndDateModal(campaign)" data-toggle="tooltip" data-placement="top"
+                                            title="Update End Date">
+                                            <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
                                         </a>
                                     </span>
                                 </ng-container>
@@ -1624,3 +1661,41 @@
 <!-- -----------------Sending Public Event Email Pop Up------->
 <app-public-event-email-popup #publiEventEmailPopup></app-public-event-email-popup>
 <!-----------------Adding New Workflows Popup-->
+
+<!-----------------Edit End Date------------------------->
+<div class="modal right fade" id="endDateModalInUtil" role="dialog" aria-labelledby="endDateModalLabel"
+  aria-hidden="true" data-focus="false">
+  <div class="modal-dialog modal-copy" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title f-w-600" id="endDateModalLabel" translate>Edit End Date</h4>
+        <button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;" (click)="closeEndDateModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-modal-popup-loader *ngIf="endDateRequestLoader.isLoading && !endDateRequestLoader.isServerError">
+        </app-modal-popup-loader>
+        <app-response-message [customResponse]="endDateCustomResponse" *ngIf="endDateCustomResponse.isVisible">
+        </app-response-message>
+        <div class="form-group">
+          <label for="endDate" translate>End Date</label> 
+
+          <div class="input-group">
+            <input type="text" id="endDateInUtil" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="selectedEndDate"
+              name="endDate" [value]="selectedEndDate">
+            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
+              <button class="btn btn-default" type="button"><i class="fa fa-refresh" aria-hidden="true"
+                  (click)="clearEndDate()"></i></button>
+            </span>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" translate  (click)="closeEndDateModal()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateEndDate()" translate>Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -158,13 +158,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.enableVideoControl = this.saveVideoFile.enableVideoController;
       this.editVideoTitle = this.saveVideoFile.title;
 
-      if ( this.saveVideoFile.tags ) {
-          if ( this.saveVideoFile.tags[0] != null ) {
-              this.itemOfTags = this.saveVideoFile.tags;
-          }
+      if (  this.saveVideoFile.tags != null && this.saveVideoFile.tags.length>0 ) {
+        this.itemOfTags = this.saveVideoFile.tags;
   }
 
-     // this.itemOfTags = this.saveVideoFile.tags;
       this.publish = this.videoUtilService.publishUtil;
       this.validationMessages = this.videoUtilService.validationMessages;
       this.formErrors = this.videoUtilService.formErrors;
@@ -1204,7 +1201,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           'uploadedUserId': [this.saveVideoFile.uploadedUserId],
           'viewBy': [this.saveVideoFile.viewBy, Validators.required],
           'categoryId': [this.saveVideoFile.categoryId, Validators.required],
-          'tags': [this.saveVideoFile.tags],
+           'tags': [this.saveVideoFile.tags],
           'imageFile': [this.saveVideoFile.imageFile],
           'imagePath': [this.saveVideoFile.imagePath],
           'gifImagePath': [this.saveVideoFile.gifImagePath, Validators.required],
@@ -1256,10 +1253,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       }
   }
   checkTagsValidation(){
-    let isTagsValid;
-    if(this.videoFileService.actionValue==='Update'){ isTagsValid = this.itemOfTags.length>0 ? true:false}
-    if(this.videoFileService.actionValue==='Save'){ isTagsValid = this.itemOfTags!==null ? true:false}
-    return isTagsValid;
+   return true;
   }
   saveVideoObject() {
       try{
@@ -1361,7 +1355,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   validVideoTitle(videoTitle: string) {
     try{
       this.saveVideoFile.title = videoTitle;
-      console.log(videoTitle.length);
       if (videoTitle.replace(/\s/g, '').length) {
           this.emptyTitle = false;
       } else { this.emptyTitle = true; }

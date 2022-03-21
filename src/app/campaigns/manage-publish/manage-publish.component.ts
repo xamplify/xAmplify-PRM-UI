@@ -19,8 +19,9 @@ import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receiver
 import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public-event-email-popup.component';
 import { UserService } from '../../core/services/user.service';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { utc } from 'moment';
 
-declare var swal, $: any;
+declare var swal, $: any, flatpickr;
 
 @Component({
     selector: 'app-manage-publish',
@@ -72,6 +73,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     selectedSortedOption: any = this.sortByDropDown[0];
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
+    endDateRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     isError = false;
     saveAsCampaignId = 0;
     saveAsCampaignName = '';
@@ -111,6 +113,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     filterMode: boolean = false;
     archived: boolean = false;
     navigatingToRelatedComponent: boolean = false;
+    showEditEndDateForm: boolean;
+    endDate: any;
+    selectedEndDate: any;
+    endDateCustomResponse: CustomResponse = new CustomResponse();
+    endDatePickr: any;
 
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -239,6 +246,27 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if (this.pagination.pagedItems.length > 2 && (i === (this.pagination.pagedItems.length - 1) || i === this.pagination.pagedItems.length - 2)) { this.isLastElement = true; } else { this.isLastElement = false; }
     }
     
+    ngAfterViewInit() {        
+        let now:Date = new Date();
+        let defaultDate = now;
+        if (this.selectedEndDate != undefined && this.selectedEndDate != null) {
+            defaultDate = new Date(this.selectedEndDate);
+        }
+
+        this.endDatePickr = flatpickr('#campaignEndDate', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            time_24hr: true,
+            minDate: now,
+            defaultDate: defaultDate
+        }); 
+        
+        flatpickr('.dateFilterPickr', {
+            enableTime: false,
+            dateFormat: 'Y-m-d',
+            maxDate: new Date()
+        });
+    }
    
     
     ngOnInit() {
@@ -247,7 +275,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.archived = this.campaignService.archived;    
             if (this.archived) {
                 this.selectedSortedOption = this.sortByDropDownArchived[0];
-            }                       
+            }   
+   
             this.getCampaignTypes();
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
@@ -323,7 +352,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.campaignService.getCampaignById(obj)
                 .subscribe(
                 data => {
-                        this.campaignService.campaign = data;
+                        this.campaignService.campaign = data; 
+                        let endDate = this.campaignService.campaign.endDate;
+                        if (endDate != undefined && endDate != null) {
+                            this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+                        }                      
                         let isLaunched = this.campaignService.campaign.launched;
                         let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                         if (isLaunched) {
@@ -351,6 +384,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         this.router.navigate(["/home/campaigns/social"]);
                     } else {
                         this.campaignService.campaign = data;
+                        let endDate = this.campaignService.campaign.endDate;
+                        if (endDate != undefined && endDate != null) {
+                            this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+                        }
+                        
+                        
                         let isLaunched = this.campaignService.campaign.launched;
                         let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                         if (isLaunched) {
@@ -458,6 +497,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         $('#cancelEventModal').modal('hide');
         $('#public-event-url-modal').modal('hide');
         $('#public-event-url-modal').modal('hide');
+        $('#endDateModal').modal('hide');
         // if (!this.navigatingToRelatedComponent) {
         //     this.campaignService.archived = false;
         // }
@@ -851,7 +891,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'searchKey' : searchKey,
                  'fromDate' : this.pagination.fromDateFilterString,
                  'toDate' : this.pagination.toDateFilterString,
-                 'archived': this.pagination.archived
+                 'archived': this.pagination.archived,
+                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
              };
          } else {
              param = {
@@ -866,7 +907,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'searchKey' : searchKey,
                  'fromDate' : this.pagination.fromDateFilterString,
                  'toDate' : this.pagination.toDateFilterString,
-                 'archived': this.pagination.archived
+                 'archived': this.pagination.archived,
+                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
              };
          }
          let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
@@ -1032,6 +1074,84 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     navigatedToCategoryItems() {
         this.navigatingToRelatedComponent = true;
+    }
+
+    showEndDateModal(campaign: any) {
+        this.showEditEndDateForm = true;
+        $('#endDateModal').modal('show');
+        this.selectedCampaign = campaign;
+
+        if (campaign.endDate != undefined && campaign.endDate != null) {
+            this.selectedEndDate = utc(campaign.endDate).local().format("YYYY-MM-DD HH:mm");
+            let selectedDate = new Date(this.selectedEndDate);            
+            if (Array.isArray(this.endDatePickr)) {
+                $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+                    endDatePickrObj.setDate(selectedDate);                        
+                });
+            } else {
+                this.endDatePickr.setDate(selectedDate);
+            }
+        } else {
+            this.clearEndDate();
+        }
+
+        if (Array.isArray(this.endDatePickr)) {
+            $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+                endDatePickrObj.set("minDate", new Date());                        
+            });
+        } else {
+            this.endDatePickr.set("minDate", new Date());
+        }
+        
+    }
+
+    closeEndDateModal() {       
+        this.showEditEndDateForm = false;
+        this.selectedCampaign = undefined;        
+        this.endDateCustomResponse.isVisible = false;
+
+        //this.selectedEndDate = undefined;
+        //this.endDatePickr.clear();
+        this.clearEndDate();
+
+        $('#endDateModal').modal('hide');
+    }
+
+    updateEndDate() {
+        this.refService.loading(this.endDateRequestLoader, true);
+        let obj = {
+            'campaignId': this.selectedCampaign.campaignId, 'endDate': this.selectedEndDate,
+            'userId': this.loggedInUserId, 'clientTimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+        };
+        this.campaignService.updateEndDate(obj)
+            .subscribe(
+            data => {
+                if(data.statusCode == 200){
+                    this.closeEndDateModal();
+                    this.customResponse = new CustomResponse('SUCCESS','End Date updated successfully',true);
+                    this.listCampaign(this.pagination);               
+                } else {
+                    this.endDateCustomResponse = new CustomResponse('ERROR', data.message, true);
+                }
+                this.refService.loading(this.endDateRequestLoader, false);
+            },
+            error => { 
+                this.refService.loading(this.endDateRequestLoader, false);
+                this.endDateCustomResponse = new CustomResponse('ERROR','Failed to update end date',true);
+             },
+            () => console.log("End date updated Successfully")
+            );
+    }
+
+    clearEndDate() {        
+        if (Array.isArray(this.endDatePickr)) {
+            $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+                endDatePickrObj.clear();                        
+            });
+        } else {
+            this.endDatePickr.clear();
+        }       
+        this.selectedEndDate = undefined;
     }
 
 }
