@@ -195,6 +195,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isAnyAdminOrSupervisor = roleDisplayDto.anyAdminOrSuperVisor;
 		module.allBoundSamlSettings = data.allBoundSamlSettings;
 		module.notifyPartners = data.notifyPartners;
+		module.isMarketingTeamMember = roleDisplayDto.marketingTeamMember;
+		module.isMarektingAndPartner = roleDisplayDto.marketingAndPartner;
+    	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
 	}
 
 	setContentMenu(data: any, module: any) {

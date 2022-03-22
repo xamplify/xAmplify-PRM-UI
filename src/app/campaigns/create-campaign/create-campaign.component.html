@@ -77,7 +77,14 @@
                                     {{authenticationService?.partnerModule?.customName | translate}}
                                 </ng-container>
                                 <ng-container *ngIf="contactListTabName!='Partners'">
-                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                    <ng-container *ngIf="authenticationService?.module?.isMarketing || authenticationService?.module?.isMarketingAndTeamMember ||
+                                    authenticationService?.module?.isMarketingAndPartner || authenticationService?.module?.isMarketingAndPartnerTeamMember">
+                                        Recipients
+                                    </ng-container>
+                                    <ng-container *ngIf="!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingAndTeamMember
+                                     &&!authenticationService?.module?.isMarketingAndPartner && !authenticationService?.module?.isMarketingAndPartnerTeamMember">
+                                    {{authenticationService?.partnerModule?.customName}} & Recipients 
+                                    </ng-container>
                                 </ng-container>
                             </h5>
                         </div>
@@ -187,7 +194,7 @@
                                                 </div>
                                             </div>
                                            
-                                            <div class="form-group" *ngIf="!isOnlyPartner">
+                                            <div class="form-group" *ngIf="!isOnlyPartner &&  !authenticationService?.module?.isMarketing">
                                                  <!--Through Partner-->
                                                 <label class="control-label col-sm-4 mThroughLabel" data-toggle="tooltip" 
                                                 data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}">
@@ -235,6 +242,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <ng-container *ngIf="campaignType=='regular' && !campaign.channelCampaign && salesEnablement">
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4" translate>View In Browser</label>
@@ -264,7 +272,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                        </ng-container>
+                                            </ng-container>
                                             <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
                                                 <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
                                                 <div class="col-sm-8">
@@ -671,9 +679,6 @@
                                                                         <!-- --------------Thumbnail--------------------------- -->
                                                                         <td style="text-align: center;">
                                                                             <input class="radio-button-css" type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'my-videos')" name="videoFileId" [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-                                                                            <!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
-																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
-                                    </a> -->
                                                                             <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)">
                                                                             </app-video-thumbnail>
                                                                         </td>
@@ -773,7 +778,6 @@
                                                                         </select>
                                                                     </span>
                                                                 </th>
-                                                                <!-- <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos">Type</th> -->
                                                                 <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos" translate>Upload Date</th>
                                                                 <th style="width: 13%;" class="text-center" translate>Status</th>
                                                             </tr>
@@ -799,9 +803,6 @@
                                                                     <tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==savedVideoFile.id" id="selectedVideoRow" (click)="setClickedRow(savedVideoFile,'partner-videos')">
                                                                         <td class="text-center">
                                                                             <input class="radio-button-css" type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'partner-videos')" name="videoFileId" [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-                                                                            <!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
-																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
-                                    </a> -->
                                                                             <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)">
                                                                             </app-video-thumbnail>
                                                                         </td>
@@ -825,9 +826,6 @@
                                                                         <!-- --------------Thumbnail--------------------------- -->
                                                                         <td class="text-center" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
                                                                             <input class="radio-button-css" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}" [checked]="videoFile.id == selectedRow">
-                                                                            <!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
-                                    </a> -->
                                                                             <input *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId" class="radio-button-css" type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
                                                                             <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPreview($event)">
                                                                             </app-video-thumbnail>
@@ -835,9 +833,6 @@
                                                                         </td>
                                                                         <td class="text-center" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
                                                                             <input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
-                                                                            <!-- <a href="javascript:void(0)" class="not-active">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
-                                    </a> -->
                                                                             <app-video-thumbnail [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}" [videoFile]="videoFile" (notifyParent)="showPreview($event)">
                                                                             </app-video-thumbnail>
                                                                         </td>
