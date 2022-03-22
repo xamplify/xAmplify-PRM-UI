@@ -76,5 +76,9 @@ export class Module {
     loggedInThroughXamplifyUrl = false;
     adminOrSuperVisor = false;
 
+	isMarketingTeamMember = false;
+	isMarektingAndPartner = false;
+    isMarketingAndPartnerTeamMember = false;
+
    
 }

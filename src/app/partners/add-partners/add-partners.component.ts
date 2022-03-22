@@ -166,6 +166,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	loadingMarketo: boolean;
 	public getMarketoConatacts: any;
 
+public edited=false;
 
 	marketoImageBlur: boolean = false;
 	marketoImageNormal: boolean = false;
@@ -3932,5 +3933,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
       resetResponse() {
           this.customResponse = new CustomResponse();
 	  }
-
+saveTodos():void{
+	this.edited=true;
+}
 }

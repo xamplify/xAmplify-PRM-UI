@@ -319,7 +319,7 @@ export class ReferenceService {
 		try {
 			const roles = this.authenticationService.getRoles();
 			if (roles) {
-				if (roles && roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1) {
+				if (roles && roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.marketingRole) > -1 ) {
 					return true;
 				} else {
 					return false;
