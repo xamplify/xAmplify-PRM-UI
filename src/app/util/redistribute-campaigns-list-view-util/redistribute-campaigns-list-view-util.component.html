@@ -127,8 +127,8 @@
                       <i class="fa fa-eye mr5"></i>
                       </a>
                       <span>
-                        <ng-container *ngIf="campaign.allowRedistribution && !campaign.ended">
-                          <a *ngIf="campaign.campaignType != 'EVENT'"
+                        <ng-container *ngIf="campaign.allowRedistribution">
+                          <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended"
                           (click)="reDistributeCampaign(campaign)"
                           data-toggle="tooltip" data-placement="top"
                           title="Redistribute Campaign" data-rel="fancybox-button">

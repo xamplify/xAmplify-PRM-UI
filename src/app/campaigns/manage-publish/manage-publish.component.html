@@ -1540,7 +1540,10 @@
         <app-response-message [customResponse]="endDateCustomResponse" *ngIf="endDateCustomResponse.isVisible">
         </app-response-message>
         <div class="form-group">
-          <label for="endDate" translate>End Date</label> 
+          <label for="endDate" translate><b>Campaign End Date:</b></label>
+          <div class="mb10">A setting that specifies how long you want your campaign to run. When the campaign's end date
+            arrives, your partners will be unable to redistribute it further. Each campaign's default setting is to have no end
+            date, allowing partners to redistribute indefinitely.</div> 
           <div class="input-group">
             <input type="text" id="campaignEndDate" placeholder="YYYY-MM-DD" class="form-control flatpickr" [(ngModel)]="selectedEndDate"
               name="endDate" [value]="selectedEndDate">

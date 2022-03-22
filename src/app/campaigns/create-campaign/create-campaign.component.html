@@ -561,15 +561,22 @@
                                                     <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr"
                                                         [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
                                                 </div> -->
-                                                <div class="col-sm-8">
+                                                <div class="col-sm-8" style="display:flex">
                                                     <div class="input-group">
                                                         <input type="text" id="endDate1" placeholder="YYYY-MM-DD" class="form-control flatpickr"
                                                             [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
                                                         <span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
                                                             <button class="btn btn-default" type="button"><i class="fa fa-refresh npcfs" aria-hidden="true"
                                                                     (click)="clearEndDate()"></i></button>
-                                                        </span>                                                
-                                                    </div>                                                
+                                                        </span>
+                                                    </div>
+                                                    <div style="padding: 0; margin-left: 15px;margin-top: 6px">
+                                                        <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top"
+                                                            title="A setting that specifies how long you want your campaign to run. When the campaign's end date arrives, your partners will be unable to redistribute it further. Each campaign's default setting is to have no end date, allowing partners to redistribute indefinitely.">
+                                                            <i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
+                                                        </span>
+                                                    </div>
+                                                                                                                                                                                                     
                                                 </div>
                                             </div>
 
