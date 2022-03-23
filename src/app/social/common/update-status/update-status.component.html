@@ -112,11 +112,11 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-7 col-xs-12 margin-top-folder" *ngIf="!alias">
+                    <div class="col-sm-7 col-xs-12 margin-top-folder" *ngIf="!alias && !marketingCompany">
                         <h5 class="pr10 font-red-sunglo inline" [ngClass]="{'f-w-600': socialCampaign.channelCampaign}">Through {{authenticationService?.partnerModule?.customName}}</h5>
                                 <switch [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                     [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-                                    (statusChange)="socialCampaign.channelCampaign = !socialCampaign.channelCampaign">
+                                    (statusChange)="changeChannelCampaign($event)">
                                 </switch>
                                 <h5 class="pl10  font-red-sunglo inline" [ngClass]="{'f-w-600': !socialCampaign.channelCampaign}">To {{authenticationService?.partnerModule?.customName}}</h5>
                     </div>
@@ -451,7 +451,7 @@
 
                     <div class="row">
                         <div class="col-sm-8 col-xs-12">
-                            <h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Recipient Lists <span *ngIf="alias">(optional)</span></h6>
+                            <h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Lists<span *ngIf="alias">(optional)</span></h6>
                         </div>
                         <div class="col-sm-4 col-xs-12">
                             <div style="position: relative; padding-bottom: 5px;">
@@ -479,8 +479,6 @@
                                     <tr>
                                         <th scope="col" style="width: 5%">Select</th>
                                         <th scope="col">List Name</th>
-                                        <th scope="col">Created On</th>
-                                        <th scope="col">Type</th>
                                         <th scope="col">Preview</th>
                                     </tr>
                                 </thead>
@@ -495,14 +493,6 @@
                                                 <span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
                                                 <span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
                                             </h5>
-                                        </td>
-                                        <td>{{contactList.createdDate | date:'mediumDate'}}</td>
-                                        <td *ngIf="!nurtureCampaign">
-                                                <span *ngIf="contactList.partnerUserList">{{authenticationService?.partnerModule?.customName}}</span>
-                                                <span *ngIf="!contactList.partnerUserList">contact</span>
-                                        </td>
-                                        <td *ngIf="nurtureCampaign">
-                                            <span>{{contactList?.type}}</span>
                                         </td>
                                         <td class='m0'>
                                             <a class="actions-block pull-left">

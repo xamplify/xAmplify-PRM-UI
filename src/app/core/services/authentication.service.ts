@@ -872,6 +872,13 @@ showPartnersFilter(){
     .map(this.extractData)
     .catch(this.handleError);
 }
+
+isMarketingCompany(){
+  var url = this.REST_URL + "admin/isMarketingCompany/"+this.getUserId()+"?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
   
   
 }
