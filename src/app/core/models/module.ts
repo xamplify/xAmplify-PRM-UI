@@ -79,6 +79,7 @@ export class Module {
 	isMarketingTeamMember = false;
 	isMarektingAndPartner = false;
     isMarketingAndPartnerTeamMember = false;
+    isMarketingCompany = false;
 
    
 }
