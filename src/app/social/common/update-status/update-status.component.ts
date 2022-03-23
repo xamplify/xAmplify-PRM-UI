@@ -91,13 +91,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	removeOgTags: boolean = false;
 	@ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
 	folderCustomResponse: CustomResponse = new CustomResponse();
+	marketingCompany: boolean = false;
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
 		public authenticationService: AuthenticationService, private contactService: ContactService,
 		private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
 		private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
 		public referenceService: ReferenceService, public campaignService: CampaignService) {
-		this.socialCampaign.channelCampaign = true;
+		
 		this.socialCampaign.emailNotification = true;
 		this.location = this.router.url;
 		this.resetCustomResponse();
@@ -105,7 +106,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.countries = this.referenceService.getCountries();
 		this.countryId = this.countries[0].id;
 		this.onSelectCountry(this.countryId);
-		// this.initializeSocialStatus();
 	}
 	resetCustomResponse() {
 		this.customResponse.type = null;
@@ -113,14 +113,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.socialStatusResponse = [];
 		this.customResponse.statusArray = [];
 	}
-	changeChannelCampaign() {
-		this.socialCampaign.channelCampaign = !this.socialCampaign.channelCampaign;
+	changeChannelCampaign(event:any) {
+		this.socialCampaign.channelCampaign = event;
 		this.contactListsPagination.maxResults = 12;
-		if (!this.socialCampaign.channelCampaign) {
-			this.loadAllContactLists(this.contactListsPagination);
-		} else {
-			this.loadContactLists(this.contactListsPagination);
-		}
+		
+		this.loadContactLists(this.contactListsPagination);
 	}
 
 	setCustomResponse(type: ResponseType, statusText: string) {
@@ -393,8 +390,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					}
 				);
 		}
-
-		console.log(this.socialCampaign);
 	}
 
 	createSocialCampaign() {
@@ -688,36 +683,30 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	/*****************LOAD VIDEOS WITH PAGINATION END *****************/
 
 	/*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
-	loadAllContactLists(contactListsPagination: Pagination) {
-		contactListsPagination.isLoading = true;
-		this.paginationType = 'loadAllContacts';
-		contactListsPagination.filterKey = null;
-		contactListsPagination.filterValue = null;
-		this.contactService.loadAllContacts(this.userId, contactListsPagination).subscribe(data => {
-			contactListsPagination.totalRecords = data.totalRecords;
-			contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
-		},
-			error => {
-				console.log(error);
-			},
-			() => contactListsPagination.isLoading = false
-		);
-	}
-
 	loadContactLists(contactListsPagination: Pagination) {
 		if (this.alias != undefined) {
 			this.loadContactsLeadsAndPartners(contactListsPagination);
 		} else {
-			contactListsPagination.filterValue = (this.alias === undefined) ? true : false;
-			contactListsPagination.filterKey = "isPartnerUserList";
+			if(this.socialCampaign.channelCampaign){
+				contactListsPagination.filterValue = true;
+				contactListsPagination.filterKey = "isPartnerUserList";
+			}else{
+				contactListsPagination.filterValue = false;
+        		contactListsPagination.filterKey = null;
+			}
+			contactListsPagination.channelCampaign = this.socialCampaign.channelCampaign;
 			contactListsPagination.isLoading = true;
 			this.paginationType = 'updatestatuscontactlists';
 			if (this.authenticationService.isOnlyPartner()) { this.socialCampaign.isPartner = false; }
-			this.contactService.loadContactLists(contactListsPagination)
+			this.contactService.findContactsAndPartnersForCampaign(contactListsPagination)
 				.subscribe(
-					(data: any) => {
+					(response: any) => {
+						let data = response.data;
 						contactListsPagination.totalRecords = data.totalRecords;
-						contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+						contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.list);
+						$.each(data.list, function (_index: number, list: any) {
+							list.displayTime = new Date(list.createdTimeInString);
+						});
 					},
 					(error: any) => {
 						this.logger.error(error);
@@ -788,7 +777,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		}
 		else if (event.type === 'updatestatuscontactlists' && this.paginationType === 'loadAllContacts') {
 			this.contactListsPagination.pageIndex = event.page;
-			this.loadAllContactLists(this.contactListsPagination);
+			this.loadContactLists(this.contactListsPagination);
 		}
 		else if (event.type === 'updatestatusvideos') {
 			this.videosPagination.pageIndex = event.page;
@@ -799,7 +788,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		if (this.paginationType === 'updatestatuscontacts') { this.loadContacts(this.previewContactList, pagination); }
 		else if (this.paginationType === 'updatestatuscontactlists') { this.loadContactLists(pagination); }
 		else if (this.paginationType === 'updatestatusvideos') { this.listVideos(pagination); }
-		else if (this.paginationType === 'loadAllContacts') { this.loadAllContactLists(pagination) }
+		else if (this.paginationType === 'loadAllContacts') { this.loadContactLists(pagination) }
 	}
 	closeModal() {
 		this.paginationType = 'updatestatuscontactlists';
@@ -963,23 +952,34 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			dateFormat: 'm/d/Y h:i K',
 			time_24hr: false
 		});
-		this.listSocialConnections();
-		// this.listEvents();
-		this.constructCalendar();
-		// $('#schedule-later-div').hide();
-
-		if (this.isSocialCampaign) {
-			this.socialCampaign.isPartner = this.authenticationService.isOnlyPartner() ? false : true;
-			if (this.alias) {
-				this.nurtureCampaign = true;
-				this.getSocialCampaign(this.alias);
-			} else {
-				this.nurtureCampaign = false;
-				this.loadContactLists(this.contactListsPagination);
+		this.authenticationService.isMarketingCompany().subscribe(
+			response=>{
+				this.marketingCompany = response.data;
+			},error=>{
+				this.logger.errorPage(error);
+			},()=>{
+				this.listSocialConnections();
+				this.constructCalendar();
+				if (this.isSocialCampaign) {
+					this.socialCampaign.isPartner = this.authenticationService.isOnlyPartner() ? false : true;
+					if(this.marketingCompany){
+						this.socialCampaign.channelCampaign = false;
+					}else{
+						this.socialCampaign.channelCampaign = true;
+					}
+					if (this.alias) {
+						this.nurtureCampaign = true;
+						this.getSocialCampaign(this.alias);
+					} else {
+						this.nurtureCampaign = false;
+						this.loadContactLists(this.contactListsPagination);
+					}
+					this.loadCampaignNames(this.userId);
+					this.listCategories();
+				}
 			}
-			this.loadCampaignNames(this.userId);
-			this.listCategories();
-		}
+		);
+		
 
 		/*************Check Rss Feed Access*********** */
 		this.showRssFeedButton();

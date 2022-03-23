@@ -31,6 +31,7 @@ export class SelectLandingPageComponent implements OnInit, OnDestroy {
         public router: Router, public logger: XtremandLogger,
         private landingPageService: LandingPageService, public utilService: UtilService) {
         this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
+        this.pagination.userId = this.authenticationService.getUserId();
     }
 
     ngOnInit() {

@@ -30,16 +30,16 @@
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6">
                             <div>
-                                <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                                <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
                                     <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All</li>
                                     <ng-container *ngIf="!isPartnerLandingPage">
                                         <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex" translate>Regular (Public)
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex" translate>Regular (Private)
+                                        <li class="filter"  (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex" translate>Regular (Private)
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex" translate>Co-Branded (Public)
+                                        <li class="filter"  (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex" translate>Co-Branded (Public)
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex" translate>Co-Branded (Private)
+                                        <li class="filter"  (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex" translate>Co-Branded (Private)
                                         </li>
                                     </ng-container>
                                     <ng-container *ngIf="isPartnerLandingPage">

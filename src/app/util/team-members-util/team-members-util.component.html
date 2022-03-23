@@ -126,7 +126,7 @@
           <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}" class="list-team-member-class">
             <td>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
-              <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany" [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
+              <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany" [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
                  [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
                 <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'" (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
                 <strong>Total {{authenticationService?.partnerModule?.customName}} : {{teamMember?.partnersCount}}</strong>
@@ -244,7 +244,7 @@
                   <div class="form-group">
                     <label class="control-label col-sm-3">First Name</label>
                       <div class="col-sm-8">
-                        <input type="text"  id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
+                        <input type="text" autocomplete="off"  id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
                       </div>
                   </div>
                 </div>
@@ -254,7 +254,7 @@
                   <div class="form-group">
                     <label class="control-label col-sm-3">Last Name</label>
                       <div class="col-sm-8">
-                        <input type="text"  id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="team.lastName" [ngModelOptions]="{standalone: true}" name="lastName" maxlength="255">
+                        <input type="text" autocomplete="off"  id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="team.lastName" [ngModelOptions]="{standalone: true}" name="lastName" maxlength="255">
                       </div>
                   </div>
                 </div>
@@ -265,7 +265,7 @@
                     <label class="control-label col-sm-3">Email Id<span class="required">*</span></label>
                       <div class="{{emaillIdDivClass}}">
                         <ng-container *ngIf="showAddTeamMemberDiv">
-                          <input  type="email" class="form-control" (input)="validateAddTeamMemberForm('emailId')"  placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                          <input  type="email" autocomplete="off" class="form-control" (input)="validateAddTeamMemberForm('emailId')"  placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
                           <span class="required" *ngIf="team?.emailIdErrorMessage?.length>0">{{team?.emailIdErrorMessage}}</span>
                         </ng-container>
                         <ng-container *ngIf="editTeamMember">
@@ -293,7 +293,7 @@
                         {{teamMemberGroup.name}}
                       </option>
                       </select>
-                       <span *ngIf="team?.partnersCount==0 && !authenticationService?.module?.isOnlyPartnerCompany" class="info-text-color">
+                       <span *ngIf="team?.partnersCount==0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany" class="info-text-color">
                        <strong>
                          <span [className]="team?.teamMemberGroupPartnersCount>0 ? 'active-status' : 'inactive-status'">{{team?.teamMemberGroupPartnersCount}}</span> 
                           {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
@@ -397,7 +397,7 @@
              		{{teamMemberGroup?.name}}
             </option> 
             </select>
-             <span class="info-text-color float-left" *ngIf="teamMember?.teamMemberGroupPartnersCount>0 && !authenticationService?.module?.isOnlyPartnerCompany">
+             <span class="info-text-color float-left" *ngIf="teamMember?.teamMemberGroupPartnersCount>0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany">
               <strong>
                 <span class="active-status">{{teamMember?.teamMemberGroupPartnersCount}}</span> 
                  {{authenticationService?.partnerModule?.customName}} will be assigned to this team member

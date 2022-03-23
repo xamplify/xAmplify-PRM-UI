@@ -73,16 +73,16 @@
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs">
-                                <ng-container *ngIf="contactListTabName=='Partners'">
-                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                    <ng-container *ngIf="contactListTabName=='Partners'">
+                                        {{authenticationService?.partnerModule?.customName | translate}}
+                                    </ng-container>
+                                    <ng-container *ngIf="contactListTabName!='Partners'">
+                                        {{authenticationService?.partnerModule?.customName}} & Recipients 
+                                    </ng-container>
                                 </ng-container>
-                                <ng-container *ngIf="contactListTabName!='Partners'">
-                                    <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
-                                        Recipients
-                                    </ng-container>
-                                    <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
-                                    {{authenticationService?.partnerModule?.customName}} & Recipients 
-                                    </ng-container>
+                                <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
+                                    Recipients
                                 </ng-container>
                             </h5>
                         </div>
@@ -94,11 +94,16 @@
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs">
-                                <ng-container *ngIf="contactListTabName=='Partners'">
-                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                    <ng-container *ngIf="contactListTabName=='Partners'">
+                                        {{authenticationService?.partnerModule?.customName | translate}}
+                                    </ng-container>
+                                    <ng-container *ngIf="contactListTabName!='Partners'">
+                                        {{authenticationService?.partnerModule?.customName}} & Recipients 
+                                    </ng-container>
                                 </ng-container>
-                                <ng-container *ngIf="contactListTabName!='Partners'">
-                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
+                                    Recipients
                                 </ng-container>
                             </h5>
                         </div>
@@ -286,7 +291,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group" *ngIf="!isOnlyPartner && campaignType!='sms' && (campaign.channelCampaign || (campaignType=='landingPage'  && channelCampaignFieldName != 'To Recipient')) ">
+                                            <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && !isOnlyPartner && campaignType!='sms' && (campaign.channelCampaign || (campaignType=='landingPage'  && channelCampaignFieldName != 'To Recipient')) ">
                                                 <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -887,11 +892,16 @@
                                 <div [hidden]="campaignContact.httpRequestLoader.isLoading || campaignContact.httpRequestLoader.isServerError">
                                     <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
                                         <div class="note-vid pull-left">
-                                            <ng-container *ngIf="contactListTabName=='Partners'">
-                                                Select List of {{authenticationService?.partnerModule?.customName}} to be used in this campaign
+                                            <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                                <ng-container *ngIf="contactListTabName=='Partners'">
+                                                    Select List of {{authenticationService?.partnerModule?.customName}} to be used in this campaign
+                                                </ng-container>
+                                                <ng-container *ngIf="contactListTabName!='Partners'">
+                                                    Select {{authenticationService?.partnerModule?.customName}} / Recipients to be used in this campaign
+                                                </ng-container>
                                             </ng-container>
-                                            <ng-container *ngIf="contactListTabName!='Partners'">
-                                                Select {{authenticationService?.partnerModule?.customName}} / Recipients to be used in this campaign
+                                            <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
+                                                Select Recipients to be used in this campaign
                                             </ng-container>
                                         </div>
                                         <div class="inputs" style="float: right;">
@@ -1576,11 +1586,16 @@
                                                                 <div class="icon-border">
                                                                     <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
-                                                                <ng-container *ngIf="contactListTabName=='Partners'">
-                                                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                                                <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                                                    <ng-container *ngIf="contactListTabName=='Partners'">
+                                                                        {{authenticationService?.partnerModule?.customName | translate}}
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="contactListTabName!='Partners'">
+                                                                        {{authenticationService?.partnerModule?.customName}} & Recipients
+                                                                    </ng-container>
                                                                 </ng-container>
-                                                                <ng-container *ngIf="contactListTabName!='Partners'">
-                                                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                                                <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
+                                                                    Recipients
                                                                 </ng-container>
                                                             </td>
                                                             <td style="width: 55%;">

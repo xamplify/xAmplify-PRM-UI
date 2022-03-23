@@ -132,19 +132,23 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 self.name = landingPageName;
                                 var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                                     .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200" autocomplete="off"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
-                                let dropDown = '<div class="form-group">';
-                                dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
-                                dropDown += '<select class="form-control" id="pageType">';
-                                if (pageType == "PRIVATE") {
-                                    dropDown += '<option value="PRIVATE" selected>PRIVATE</option>';
-                                    dropDown += '<option value="PUBLIC">PUBLIC</option>';
-                                } else {
-                                    dropDown += '<option value="PUBLIC" selected>PUBLIC</option>';
-                                    dropDown += '<option value="PRIVATE">PRIVATE</option>';
+                                let dropDown = '';
+                                if(!self.authenticationService.module.isMarketingCompany){
+                                    /**********Public/Private************** */
+                                    dropDown += '<div class="form-group">';
+                                    dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
+                                    dropDown += '<select class="form-control" id="pageType">';
+                                    if (pageType == "PRIVATE") {
+                                        dropDown += '<option value="PRIVATE" selected>PRIVATE</option>';
+                                        dropDown += '<option value="PUBLIC">PUBLIC</option>';
+                                    } else {
+                                        dropDown += '<option value="PUBLIC" selected>PUBLIC</option>';
+                                        dropDown += '<option value="PRIVATE">PRIVATE</option>';
+                                    }
+                                    dropDown += '</select>';
+                                    dropDown += '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
+                                    dropDown += '</div><br>';
                                 }
-                                dropDown += '</select>';
-                                dropDown += '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
-                                dropDown += '</div><br>';
                                 /**********Folder List************** */
                                 dropDown += '<div class="form-group">';
                                 dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
@@ -166,12 +170,10 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                     self.saveLandingPage(false);
                                 })).append(self.createButton('Update', function () {
                                     let selectedPageType = $('#pageType option:selected').val();
-                                    if (self.landingPage.type == selectedPageType) {
+                                    if (self.landingPage.type == selectedPageType || selectedPageType==undefined) {
                                         $('#pageTypeSpanError').empty();
                                         self.ngxloading = true;
                                         self.clickedButtonName = "UPDATE";
-                                        // self.referenceService.startLoader( self.httpRequestLoader );
-                                        //swal.close();
                                         $("#bee-save-buton-loader").addClass("button-loader"); 
                                         self.updateLandingPage(false);
                                     } else {
@@ -188,16 +190,18 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                                     .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"  autocomplete="off">' +
                                         '<span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
-
                                 if (!self.loggedInAsSuperAdmin) {
-                                    let dropDown = '<div class="form-group">';
-                                    dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
-                                    dropDown += '<select class="form-control" id="pageType">';
-                                    dropDown += '<option value="PRIVATE">PRIVATE</option>';
-                                    dropDown += '<option value="PUBLIC">PUBLIC</option>';
-                                    dropDown += '</select>';
-                                    dropDown += '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
-                                    dropDown += '</div><br>';
+                                    let dropDown = '';
+                                    if(!self.authenticationService.module.isMarketingCompany){
+                                        dropDown += '<div class="form-group">';
+                                        dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
+                                        dropDown += '<select class="form-control" id="pageType">';
+                                        dropDown += '<option value="PRIVATE">PRIVATE</option>';
+                                        dropDown += '<option value="PUBLIC">PUBLIC</option>';
+                                        dropDown += '</select>';
+                                        dropDown += '<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
+                                        dropDown += '</div><br>';
+                                    }
                                     /**********Folder List************** */
                                     dropDown += '<div class="form-group">';
                                     dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
