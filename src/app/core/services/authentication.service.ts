@@ -572,6 +572,11 @@ export class AuthenticationService {
 	  this.isVendorAndPartnerTeamMember = false;
     this.isOrgAdminAndPartnerTeamMember = false;
     this.opportunitiesAccessAsPartner = false;
+    module.isMarketing = false;
+    module.isMarketingTeamMember = false;
+    module.isMarektingAndPartner = false;
+    module.isMarketingAndPartnerTeamMember = false;
+    module.isMarketingCompany = false;
     this.setUserLoggedIn(false);
   }
 
