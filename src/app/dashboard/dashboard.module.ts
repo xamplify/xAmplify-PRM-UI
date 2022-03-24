@@ -72,6 +72,7 @@ import { ManageTeamMemberGroupComponent } from './manage-team-member-group/manag
 import { NotifyPartnersComponent } from './notify-partners/notify-partners.component';
 import { ShowPrmContentComponent } from './dashboard-analytics-components/show-prm-content/show-prm-content.component';
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
+import { FunnelChartAnalyticsComponent } from './dashboard-analytics-components/funnel-chart-analytics/funnel-chart-analytics.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -119,7 +120,8 @@ import { EditModuleNameComponent } from './edit-module-name/edit-module-name.com
         ManageTeamMemberGroupComponent,
         NotifyPartnersComponent,
         ShowPrmContentComponent,
-        EditModuleNameComponent
+        EditModuleNameComponent,
+        FunnelChartAnalyticsComponent
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

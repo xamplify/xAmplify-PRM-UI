@@ -1399,9 +1399,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
    }
    
    addVendorRole(){
-       $('#module-access-button').prop('disabled', false);
-       this.removeModuleBlur();
-       this.refService.goToDiv("module-access-blur-content-div");
+       this.refService.showSweetAlertInfoMessage();
+     //  $('#module-access-button').prop('disabled', false);
+      // this.removeModuleBlur();
+     //  this.refService.goToDiv("module-access-blur-content-div");
    }
    updateAccess(){
        this.refService.goToTop();
