@@ -92,7 +92,11 @@
 						</thead>
 						<tbody>
 							<tr>
-								<th scope="row">Select Role</th>
+								<th scope="row">Select Role<br>
+									<div class="alert alert-danger">
+										<strong>Changing role will not work as expected.So please do not change for customers</strong>
+									</div>
+								</th>
 								<td>
 									<select class="form-control" id="roleId" [(ngModel)]="roleId" (change)="setModulesByRole()">
 										<option value="13" [selected]="roleId ==13">Vendor</option>
