@@ -34,6 +34,9 @@ export class FunnelChartAnalyticsComponent implements OnInit {
   loadChart(){
       let self = this;
       Highcharts.chart('funnel-chart-container', {
+        credits: {
+            enabled: false
+        },
         chart: {
             type: 'funnel3d',
             options3d: {
