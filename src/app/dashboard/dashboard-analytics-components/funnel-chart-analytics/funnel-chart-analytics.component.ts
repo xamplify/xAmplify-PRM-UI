@@ -21,9 +21,9 @@ export class FunnelChartAnalyticsComponent implements OnInit {
 
   ngOnInit() {
       this.loader = true;
-      let leads = ['Leads',15654];
-      let deals = ['Deals',4064];
-      let contacts = ['Contacts',976];
+      let leads = ['Leads',1000];
+      let deals = ['Deals',500];
+      let contacts = ['Contacts',200];
       this.funnelChartData.push(leads);
       this.funnelChartData.push(deals);
       this.funnelChartData.push(contacts);
@@ -33,7 +33,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
 
   loadChart(){
       let self = this;
-    Highcharts.chart('container', {
+    Highcharts.chart('funnel-chart-container', {
         credits: {
             enabled: false
         },
