@@ -33,56 +33,38 @@ export class FunnelChartAnalyticsComponent implements OnInit {
 
   loadChart(){
       let self = this;
-    Highcharts.chart('funnel-chart-container', {
-        credits: {
-            enabled: false
+      Highcharts.chart('funnel-chart-container', {
+        chart: {
+            type: 'funnel3d',
+            options3d: {
+                enabled: true,
+                alpha: 10,
+                depth: 50,
+                viewDistance: 50
+            }
         },
-      chart: {
-          type: 'funnel'
-      },
-      title: {
-          text: 'Funnel Chart'
-      },
-      plotOptions: {
-          series: {
-              dataLabels: {
-                  enabled: true,
-                  format: '<b>{point.name}</b> ({point.y})',
-                  softConnector: true
-              },
-              center: ['40%', '50%'],
-              neckWidth: '30%',
-              neckHeight: '25%',
-              width: '80%'
-          }
-      },
-      legend: {
-          enabled: false
-      },
-      series: [{
-          name: 'Series Name',
-          data: self.funnelChartData
-      }],
-  
-      responsive: {
-          rules: [{
-              condition: {
-                  maxWidth: 500
-              },
-              chartOptions: {
-                  plotOptions: {
-                      series: {
-                          dataLabels: {
-                              inside: true
-                          },
-                          center: ['50%', '50%'],
-                          width: '100%'
-                      }
-                  }
-              }
-          }]
-      }
-  });
+        title: {
+            text: 'Highcharts Funnel3D Chart'
+        },
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b> ({point.y})',
+                    allowOverlap: true,
+                    y: 10
+                },
+                neckWidth: '30%',
+                neckHeight: '25%',
+                width: '80%',
+                height: '80%'
+            }
+        },
+        series: [{
+            data:self.funnelChartData
+        }]
+    });
+   
   }
 
 }
