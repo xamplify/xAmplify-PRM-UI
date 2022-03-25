@@ -150,7 +150,7 @@
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>                          
         
-                      <a *ngIf="isPartnerVersion || isOrgAdmin" (click)="addLead()" style="padding-left: 11px;">
+                      <a *ngIf="isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany" (click)="addLead()" style="padding-left: 11px;">
                         <button class="btn btn-primary" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Lead
                         </button>
