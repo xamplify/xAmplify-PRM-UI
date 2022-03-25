@@ -92,7 +92,7 @@
 									class="fa fa-check"></i></b></font>
                     </div>
                     <br>
-                    <div>
+                    <div *ngIf="!authenticationService?.module?.isMarketingCompany">
                         <label for="info">
 							<font class="error">Copy the below image tag link to enable co-branding.</font>
 						</label>
