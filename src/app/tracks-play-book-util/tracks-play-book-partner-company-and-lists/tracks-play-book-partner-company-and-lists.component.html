@@ -14,7 +14,7 @@
   <div class="panel-body">
     <div class="tab-content">
       <div class="tab-pane fade in active" id="partners">
-        <app-team-member-filter-option *ngIf="showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+        <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
         <ng-container>
           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
             <div class="row">

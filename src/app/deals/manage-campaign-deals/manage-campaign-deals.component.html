@@ -2,7 +2,7 @@
   <app-response-message class="pg8" [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible">
   </app-response-message>
   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && showTeamMemberFilter">
-    <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+    <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
   </div>
   <div class="page-toolbar col-xs-10 col-sm-6 col-lg-6 mSearchAlign">
     <div class="btn-group pull-right">
