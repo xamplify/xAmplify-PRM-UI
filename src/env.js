@@ -47,8 +47,8 @@
 
 
     /******Auto Reload Deployment Configurations */
-    window.__env.reloadAfterDeployment = false;
-    window.__env.reloadIntervalInMilliSeconds = 1000 * 60 * 1;//1 Minute
+    window.__env.reloadAfterDeployment = true;
+    window.__env.reloadIntervalInMilliSeconds = 1000 * 60 * 15;//1 Minute
     window.__env.logoutAndReloadAfterDeployment = false;
     window.__env.versionFilePath = '../assets/config-files/version.json';
     window.__env.updatedVersionMessage = 'New Update Is Available';

@@ -58,7 +58,7 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
     type:string = "";
     categoryNames: any;
   constructor( public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
-          private emailTemplate: EmailTemplate, private logger: XtremandLogger, private authenticationService: AuthenticationService, public refService: ReferenceService,
+          private emailTemplate: EmailTemplate, private logger: XtremandLogger, public authenticationService: AuthenticationService, public refService: ReferenceService,
           public callActionSwitch: CallActionSwitch,private route: ActivatedRoute,private hubSpotService: HubSpotService) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.type = this.route.snapshot.params['type'];
