@@ -1290,8 +1290,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   
   showSelectedListType(){
       const roles = this.authenticationService.getRoles();
+      let marketing = this.authenticationService.module.isMarketingCompany;
       let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 || roles.indexOf(this.roleName.prmRole)>-1 ;
-      let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
+      let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor && !marketing);
       if(isOrgAdmin){
           this.channelCampaignFieldName = "To Recipient";
       }else{
@@ -1304,7 +1305,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.showContactType = false;
           }else{
               if(this.campaign.nurtureCampaign){
-                  this.contactType = " Recipients";
+                  this.contactType = " Recipient(s)";
                   this.tableHeader = "Recipients Details";
               }else{
                   this.contactType = this.authenticationService.partnerModule.customName+" / Recipients";
@@ -1314,8 +1315,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.showContactType = true;
           }
 
-      }else if(isVendor|| this.authenticationService.isAddedByVendor){
-
+      }else if(this.authenticationService.module.isMarketingCompany){
+        this.contactType = " Recipient(s)";
+        this.tableHeader = "Recipients Details";
+      } else if(isVendor|| this.authenticationService.isAddedByVendor){
         if(this.campaign.nurtureCampaign){
           this.contactType = " Recipient(s)";
           this.tableHeader = "Recipients Details";
