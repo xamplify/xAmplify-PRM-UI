@@ -36,6 +36,7 @@ export class VersionCheckService {
 			.first()
 			.subscribe(
 				(response: any) => {
+					console.log("Method Called On:-"+new Date());
 					console.log(response);
 					if (response != null &&response != undefined) {
 						const hash = response.hash;
