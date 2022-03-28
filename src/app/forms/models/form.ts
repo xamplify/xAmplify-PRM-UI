@@ -52,4 +52,7 @@ export class Form {
     isSurvey = false;
     disableEmail = false;
     emailId:string = "";
+    selectedTeamMemberIds:any[] = [];
+    selectedGroupIds:any[] = [];
+
 }

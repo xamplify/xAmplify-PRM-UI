@@ -1,0 +1,159 @@
+<div class="panel with-nav-tabs panel-default">
+  <div class="panel-body">
+    <div class="tab-content">
+      <div class="tab-pane fade in active" id="groups">
+        <ng-container>
+          <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
+            <div class="row">
+              <div>
+                <div class="col-xs-12">
+                  <div class="page-toolbar">
+                    <div class="left-float">
+                      <button class="btn btn-danger" *ngIf="selectedTeamMemberIds?.length>0"
+                        (click)="clearAll()">Clear All</button>
+                    </div>
+                    <div class="btn-group pull-right">
+                      <div class="inputs float-right" style="display: inline-flex;">
+                        <div class="portlet-input input-inline" id="search-div">
+                          <div class="input-icon right" id="icon">
+                            <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                              [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                              (keypress)="searchGroupsOnKeyPress($event.keyCode)">
+                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                              (click)="sortOption.searchKey='';searchGroups();"></button>
+                            <button type="submit" class="search-box-item-click" (click)="searchGroups()">
+                              <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <ng-container *ngIf="!httpRequestLoader.isLoading">
+            <div class="table-responsive">
+              <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0"
+                id="team-member-group">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>                    
+                    <th scope="col" class="text-center">Group Name</th>
+                    <th scope="col">Created Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let group of pagination.pagedItems ;let i =index">
+                    <tr [class.group-selected]="selectedGroupIds != undefined && selectedGroupIds.indexOf(group.id)>-1">
+                      <td class="cw">
+                        <div class="actions-block left-float">
+                          <a (click)="viewTeamMembers(group)" title="View/Hide Team Members">
+                            <i class="fa"
+                              [ngClass]="{'fa-angle-right': !group.expand, 'fa-angle-down': group.expand}"
+                              aria-hidden="true"></i>
+                          </a>
+                        </div>
+                      </td>
+                      <td title="{{group?.name}}" class="text-center text-wrap">
+                        {{group?.name}}
+                      </td>
+                      <td>
+                        <app-timestamp [dateAndTime]="group?.displayTime">
+                        </app-timestamp>
+                      </td>
+                    </tr>
+                    <tr *ngIf="group?.expand">
+                      <td colspan="4">
+                        <div class="table-responsive x-hidden">
+                          <div class="portlet-input input-inline float-right mb10p" id="search-div">
+                            <div class="input-icon right" id="icon">
+                              <input type="text" id="sort-text" class="form-control"
+                                [(ngModel)]="teamMembersPagination.searchKey" [ngModelOptions]="{standalone: true}"
+                                placeholder="search..." (keypress)="teamMembersKeySearch($event.keyCode)">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                *ngIf="teamMembersPagination?.searchKey"
+                                (click)="teamMembersPagination.searchKey='';searchTeamMembers();"></button>
+                              <button type="submit" class="search-box-item-click"
+                                (click)="searchTeamMembers()">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                              </button>
+                            </div>
+                          </div>
+                          <ng-container
+                            *ngIf="!teamMembersLoader.isLoading && teamMembersErrorMessage.isVisible">
+                            <div class="custom-response-padding">
+                              <app-response-message [customResponse]="teamMembersErrorMessage">
+                              </app-response-message>
+                            </div>
+                          </ng-container>
+                          <div *ngIf="!teamMembersErrorMessage.isVisible">
+                            <app-auto-response-loader *ngIf="teamMembersLoader.isLoading">
+                            </app-auto-response-loader>
+                            <ng-container *ngIf="!teamMembersLoader.isLoading">
+                              <table class="table tgrid table-condensed table-bordered child-table-xamp"
+                                aria-describedby="team-members-info"
+                                id="team-member-group-id-{{group?.id}}">
+                                <thead>
+                                  <tr>
+                                    <th scope="row" class="text-center">
+                                      <input *ngIf="teamMembersPagination.totalRecords!=0" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
+                                        (change)="selectAllTeamMembersOfTheCurrentPage($event, group.id)">
+                                    </th>
+                                    <th scope="row">Entity Info</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let teamMember of teamMembersPagination.pagedItems;let i = index;"
+                                    id="team-member-id-{{teamMember.id}}"
+                                    [class.row-selected]="selectedTeamMemberIds != undefined && selectedTeamMemberIds.indexOf(teamMember.id)>-1"
+                                    (click)="highlightSelectedTeamMemberRowOnRowClick(teamMember.id,group.id,$event)">
+                                    <td class="text-center">
+                                      <input type="checkbox" id="{{teamMember.id}}"
+                                        [checked]="selectedTeamMemberIds != undefined && selectedTeamMemberIds.indexOf(teamMember.id)>-1"
+                                        name="teamMemberCheckBox[]" value="{{teamMember.id}}"
+                                        (click)="highlightTeamMemberRowOnCheckBoxClick(teamMember.id,group.id,$event)">
+                                    </td>
+                                    <td>
+                                      <app-user-info [isPartnerEntityInfo]="false" [userInfo]="teamMember">
+                                      </app-user-info>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </ng-container>
+                            <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading"
+                              class="alert alert-info">
+                              <strong>No Data Found.</strong>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="teamMembersPagination.pagedItems.length !== 0" class="pg8" [hidden]="teamMembersLoader.isLoading">
+                          <app-pagination [pagination]="teamMembersPagination" (notifyParent)="naviagtePages($event)"
+                            (notifyParentDropDown)="getTeamMembers($event)">
+                          </app-pagination>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <!-- End of 24 -->
+            <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+              <strong>No Data Found.</strong>
+            </div>
+          </ng-container>
+        </ng-container>
+        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+          <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)"
+            (notifyParentDropDown)="findGroups($event)">
+          </app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
