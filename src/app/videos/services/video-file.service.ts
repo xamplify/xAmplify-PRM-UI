@@ -37,6 +37,7 @@ export class VideoFileService {
     videoFileSweetAlertMessage: boolean;
     contentRedirect = false;
     URL: string = this.authenticationService.REST_URL + 'videos/';
+    campaignReport : boolean = false;
     constructor(public envService: EnvService, private http: Http, private authenticationService: AuthenticationService,public httpClient: HttpClient) {
         console.log('VideoFileService constructor');
     }

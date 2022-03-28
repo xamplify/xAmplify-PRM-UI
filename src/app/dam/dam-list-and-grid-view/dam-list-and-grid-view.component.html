@@ -157,7 +157,7 @@
 										<a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)">
 											 <i	class="fa fa-eye" aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
+										<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT'" title="Publish" (click)="openPublishPopup(asset.id)">
 											 <i	class="fa fa-share" aria-hidden="true"></i>
 										</a>
 										</div> 

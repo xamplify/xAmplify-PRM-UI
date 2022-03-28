@@ -78,6 +78,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.callInitMethods();
+		this.videoFileService.campaignReport = false;
 	}
 
 	callInitMethods() {
@@ -354,14 +355,51 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 
 
-	viewAnalytics(asset: any) {
-		this.loading = true;
-		if (this.isPartnerView) {
-			this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
-		} else {
-			this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
-		}
-	}
+    viewAnalytics(asset: any) {
+        this.loading = true;
+        let isVideo = this.isVideo(asset.assetType);
+        if (isVideo) {
+        	   if (this.isPartnerView) {
+                this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+            } else {
+                try {
+                    this.videoFileService.getVideo(asset.alias, 'DRAFT')
+                        .subscribe((editVideoFile: SaveVideoFile) => {
+                            if (editVideoFile.access) {
+                                this.xtremandLogger.log('enter the show edit vidoe method');
+                                if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                                    editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+                                }
+                                editVideoFile.damId = asset.id;
+                                this.videoFileService.saveVideoFile = editVideoFile;
+                                this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+                                this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+                                this.videoFileService.campaignReport = true;
+                                //this.showVideosPage(false, false, false, true);
+                                this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+
+                            } else {
+                                this.authenticationService.forceToLogout();
+                            }
+                        },
+                        (error: any) => {
+                            this.xtremandLogger.error('Error In: show edit videos ():' + error);
+                            this.xtremandLogger.errorPage(error);
+                        }
+                        );
+                } catch (error) {
+                    this.xtremandLogger.error('error' + error);
+                }
+            }
+        } else {
+            if (this.isPartnerView) {
+                this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+
+            } else {
+                this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+            }
+        }
+    }
 
     editDetails(id: number, assetType: string, alias:string) {
         if (this.isVideo(assetType)) {
