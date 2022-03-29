@@ -283,12 +283,14 @@
                             src="assets/images/survey.png" alt="Survey Campaign">
                         </ng-container>
                         <br>
-                        <h6 class="view-banner banner-top" *ngIf="campaign.launched && campaign.channelCampaign"
+                        <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                          <h6 class="view-banner banner-top" *ngIf="campaign.launched && campaign.channelCampaign"
                           translate>
                           Through Campaign</h6>
                         <h6 class="view-banner banner-top"
                           *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" translate>
                           To Campaign</h6>
+                        </ng-container>
                         <h6 class="view-banner"
                           *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign"
                           style="position: relative;top: 0px;background-color: #5cb85c;margin-top: 5px;" translate>
