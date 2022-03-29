@@ -46,7 +46,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
               this.funnelChartsAnalyticsData=data;
               let leads = ['Leads',this.funnelChartsAnalyticsData.leadsCount];
               let deals = ['Deals',this.funnelChartsAnalyticsData.dealsCounts];
-              let contacts = ['Contacts',this.funnelChartsAnalyticsData.contactsCount];
+              let contacts = ['Recipients',this.funnelChartsAnalyticsData.contactsCount];
               this.funnelChartData.push(leads);
               this.funnelChartData.push(deals);
               this.funnelChartData.push(contacts);
@@ -82,9 +82,11 @@ export class FunnelChartAnalyticsComponent implements OnInit {
             }
         },
         title: {
-            text: 'Highcharts Funnel3D Chart'
+            text: ''
         },
         plotOptions: {
+            colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
+        '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             series: {
                 cursor: 'pointer',
                 point: {
@@ -117,7 +119,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
             }
         },
         series: [{
-            name: 'Unique users',
+            name: 'Count',
             data:self.funnelChartData
 
         }]

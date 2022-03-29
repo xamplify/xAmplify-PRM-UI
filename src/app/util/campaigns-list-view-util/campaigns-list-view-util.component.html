@@ -1125,12 +1125,13 @@
                                 {{campaign.campaignName | slice:0:22}}
                                 <span *ngIf="campaign.campaignName?.length>22">...</span>
                                 <br><br>
-
-                                <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign"
+                                <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                    <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign"
                                     style="position: relative;top: -3px;">Through Campaign</span>
-                                <span class="view-banner"
-                                    *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
-                                    style="position: relative;top: -3px;">To Campaign</span>
+                                    <span class="view-banner"
+                                        *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
+                                        style="position: relative;top: -3px;">To Campaign</span>
+                                </ng-container>
                                 <span class="view-banner"
                                     *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
                                     style="position: relative;top: -3px; background-color: #f76c1a !important">Draft</span>
