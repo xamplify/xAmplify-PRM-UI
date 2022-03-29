@@ -633,6 +633,8 @@ export class DashboardService {
     getFunnelChartsAnalyticsData(applyFilter:boolean) {
         const url = this.authenticationService.REST_URL + 'dashboard/views/funnelChartsAnalyticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
         return this.getUrl(url);
+        
+      
     }
 
 
