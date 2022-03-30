@@ -56,7 +56,7 @@
                 </form>
                 <div class="col-xs-12 col-md-6">
                     <br>
-                    <div>
+                    <div *ngIf="!authenticationService?.module?.isMarketingCompany">
                         <label for="info"><font style="color: red;">Copy the below image tag link to enable co-branding.</font></label>
                         <button type="button" class="btn-xs btn-success" (click)="copyLink(coBrandingTag,'co-branding-copy')">Copy Link</button>
                         <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="1" #coBrandingTag>{{refService.coBrandingTag}}</textarea>
@@ -69,13 +69,13 @@
                         <font class="success" id="video-tag-copy" style="display:none"><b>Copied successfully<i class="fa fa-check"></i></b></font>
                     </div>
                     <br>
-                    <div class="form-group" *ngIf="mycontent?.length>0">
+                    <div class="form-group" *ngIf="mycontent?.length>0 && !authenticationService?.module?.isMarketingCompany">
                         <label class="control-label col-sm-5">Enable Co-Branding Logo</label>
                         <switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setCoBrandingLogo($event)">
                         </switch>
                     </div>
                     <!-- <div>
-					 		<br><label for="info"><font style="color: red;">**Be sure to use these merge tags if you’re doing a mail merge.</font></label>
+					 		<br><label for="info"><font style="color: red;">**Be sure to use these merge tags if youï¿½re doing a mail merge.</font></label>
 						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{refService.emailMergeTags}}</textarea>
 					</div> -->
 

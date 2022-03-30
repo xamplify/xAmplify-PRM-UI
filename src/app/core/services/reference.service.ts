@@ -2268,7 +2268,9 @@ export class ReferenceService {
 		mergeTags = this.addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags);
 		if (isCampaign == undefined || !isCampaign) {
 			mergeTags = this.addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags);
-			mergeTags.push({ name: 'Partner About Us', value: this.senderMergeTag.aboutUs });
+			if(!this.authenticationService.module.isMarketingCompany){
+				mergeTags.push({ name: 'Partner About Us', value: this.senderMergeTag.aboutUs });
+			}
 			mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
 		}
 		if (isEvent) {

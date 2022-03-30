@@ -81,5 +81,7 @@ export class Module {
     isMarketingAndPartnerTeamMember = false;
     isMarketingCompany = false;
 
+    isPrmCompany = false;
+   
    
 }
