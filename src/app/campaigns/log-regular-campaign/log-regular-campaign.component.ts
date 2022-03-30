@@ -67,6 +67,7 @@ export class LogRegularCampaignComponent implements OnInit {
               this.templatehtml = updatedBody;
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
               this.processor.remove(this.processor);
+              $("body"). css("background-color","#fff")
         }, (error: any) => {
             this.processor.remove(this.processor);
             this.xtremandLogger.error('log regular campaign component: regular campaign():' + error);
