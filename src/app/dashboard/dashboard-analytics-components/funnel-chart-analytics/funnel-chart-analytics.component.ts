@@ -26,15 +26,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
 
 
   ngOnInit() {
-    //   this.loader = true;
-    //   let leads = ['Leads',10000];
-    //   let deals = ['Deals',5000];
-    //   let contacts = ['Contacts',2000];
-    //   this.funnelChartData.push(leads);
-    //   this.funnelChartData.push(deals);
-    //   this.funnelChartData.push(contacts);
-    //   this.loader = false;
-    //   this.loadChart();
+    
   
     this.loadFunnelChart();
   }
@@ -43,13 +35,14 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       this.loader = true;
       this.dashboardService.getFunnelChartsAnalyticsData(this.applyFilter).subscribe(
           data =>{
-              this.funnelChartsAnalyticsData=data;
+              this.funnelChartsAnalyticsData=data.data;
+              let contacts = ['Recipients',this.funnelChartsAnalyticsData.contactsCount];
               let leads = ['Leads',this.funnelChartsAnalyticsData.leadsCount];
               let deals = ['Deals',this.funnelChartsAnalyticsData.dealsCounts];
-              let contacts = ['Recipients',this.funnelChartsAnalyticsData.contactsCount];
+              this.funnelChartData.push(contacts);
               this.funnelChartData.push(leads);
               this.funnelChartData.push(deals);
-              this.funnelChartData.push(contacts);
+              
               this.loader = false;
               this.loadChart();
           },
@@ -60,12 +53,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
         }
       );
   }
-//   navigateContacts(){
-//    this.router.navigate(["/home/contacts/manage"]);
-// }
-// navigateContacts(){
-//     this.router.navigate(["/leads/manage-leads"])
-// }
+
   loadChart(){
       let self = this;
       Highcharts.chart('funnel-chart-container', {
@@ -92,13 +80,13 @@ export class FunnelChartAnalyticsComponent implements OnInit {
                 point: {
                     events: {
                         click: function () {
-                            if(this.category===2){
+                            if(this.category===0){
                                 self.router.navigate(["/home/contacts/manage"]);
                             }
-                            else if(this.category===0){
+                            else if(this.category===1){
                                 self.router.navigate(["/home/leads/manage"]);
                             }
-                            else if(this.category===1)
+                            else if(this.category===2)
                             {
                                 self.router.navigate(["/home/deal/manage"]);
 
