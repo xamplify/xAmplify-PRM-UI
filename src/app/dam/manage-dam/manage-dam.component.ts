@@ -16,7 +16,6 @@ export class ManageDamComponent implements OnInit {
 	uploadAsset = false;
 	isPartnerView = false;
 	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
-		
 	}
 
 	ngOnInit() {
@@ -45,7 +44,6 @@ export class ManageDamComponent implements OnInit {
 		}else{
 			this.referenceService.goToRouter("/home/dam/manage");
 		}
-		
 	}
 	
     setManageDam(result: any) {

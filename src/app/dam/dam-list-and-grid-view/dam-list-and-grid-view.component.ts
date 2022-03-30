@@ -366,7 +366,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                     this.videoFileService.getVideo(asset.alias, 'DRAFT')
                         .subscribe((editVideoFile: SaveVideoFile) => {
                             if (editVideoFile.access) {
-                                this.xtremandLogger.log('enter the show edit vidoe method');
                                 if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
                                     editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
                                 }
@@ -375,9 +374,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                                 this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
                                 this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
                                 this.videoFileService.campaignReport = true;
-                                //this.showVideosPage(false, false, false, true);
                                 this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
-
                             } else {
                                 this.authenticationService.forceToLogout();
                             }
@@ -512,14 +509,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
     showEditVideo(alias:string, id: number) {
         if(this.referenceService.defaultPlayerSettings!=undefined && this.referenceService.defaultPlayerSettings.playerColor===undefined){ this.getDefaultVideoSettings(); }
         try{
-       // this.referenceService.loading(this.httpRequestLoader, true);
-        //this.xtremandLogger.log('show edit video method in mange assets ' + JSON.stringify(video));
-        //this.videoFileService.videoViewBy = 'DRAFT';
         this.videoFileService.getVideo(alias, 'DRAFT')
             .subscribe((editVideoFile: SaveVideoFile) => {
                 if(editVideoFile.access){
                 this.xtremandLogger.log('enter the show edit vidoe method');
-                //this.referenceService.loading(this.httpRequestLoader, false);
                 if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
                     editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
                 }
@@ -530,7 +523,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.log('show edit vidoe object :');
                 this.xtremandLogger.log(this.videoFileService.saveVideoFile);
                 this.videoFileService.actionValue = 'Update';
-                this.showVideosPage(false, true, false, false);
+                this.newItemEvent.emit(false);
+                //this.showVideosPage(false, true, false, false);
                 }else{
                     this.authenticationService.forceToLogout();
                 }
