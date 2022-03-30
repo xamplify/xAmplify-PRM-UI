@@ -43,7 +43,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     routerLink = "/home/emailtemplates/manage";
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
-            private authenticationService:AuthenticationService,public refService:ReferenceService,
+            public authenticationService:AuthenticationService,public refService:ReferenceService,
             public callActionSwitch: CallActionSwitch,private route:ActivatedRoute) {
         logger.debug("updateTemplateComponent() Loaded");
         CKEDITOR.config.allowedContent = true;
