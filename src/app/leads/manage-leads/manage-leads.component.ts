@@ -337,6 +337,7 @@ export class ManageLeadsComponent implements OnInit {
     pagination.userId = this.loggedInUserId;
     if (this.isVendorVersion) {
       this.stageNamesForVendor();
+      this.fromDateFilter;
       this.listLeadsForVendor(pagination);
     } else if (this.isPartnerVersion) {
       this.listLeadsForPartner(pagination);
@@ -411,6 +412,8 @@ export class ManageLeadsComponent implements OnInit {
         response => {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.stageNamesForFilterDropDown = response;
+
+      //    this.fromDateFilter;
         },
         error => {
           this.httpRequestLoader.isServerError = true;
@@ -932,26 +935,28 @@ export class ManageLeadsComponent implements OnInit {
     this.listLeads(this.leadsPagination);
     }
 
-    // if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-    //   var fromDate = Date.parse(this.fromDateFilter);
-    //   if (this.toDateFilter != undefined && this.toDateFilter != "") {
-    //     var toDate = Date.parse(this.toDateFilter);
-    //     // if(this.statusFilter != undefined && this.statusFilter != ""){
-    //     //   var statusFilter = Date.parse(this.statusFilter);
-    //     if (fromDate <= toDate) {
+    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+      var fromDate = Date.parse(this.fromDateFilter);
+     
+      if (this.toDateFilter != undefined && this.toDateFilter != "") {
+        var toDate = Date.parse(this.toDateFilter);
+       
+        // if(this.statusFilter != undefined && this.statusFilter != ""){
+        //   var statusFilter = Date.parse(this.statusFilter);
+        if (fromDate <= toDate) {
          
-    //       this.leadsPagination.fromDateFilterString = this.fromDateFilter;
-    //       this.leadsPagination.toDateFilterString = this.toDateFilter;
+          this.leadsPagination.fromDateFilterString = this.fromDateFilter;
+          this.leadsPagination.toDateFilterString = this.toDateFilter;
          
-    //     } else {
-    //       this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-    //     }
-    //   } else {
-    //     this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-    //   }
-    // } else {
-    //   this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    // }    
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }
+      } else {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      }
+    } else {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    }    
 
     
   }
@@ -1003,4 +1008,7 @@ export class ManageLeadsComponent implements OnInit {
         () => { }
       );
   }
+ 
+
+  
 }
