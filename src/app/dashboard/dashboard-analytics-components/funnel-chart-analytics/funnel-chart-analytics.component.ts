@@ -39,9 +39,11 @@ export class FunnelChartAnalyticsComponent implements OnInit {
               let contacts = ['Recipients',this.funnelChartsAnalyticsData.contactsCount];
               let leads = ['Leads',this.funnelChartsAnalyticsData.leadsCount];
               let deals = ['Deals',this.funnelChartsAnalyticsData.dealsCounts];
+              let dealsWon = ['DealsWon',this.funnelChartsAnalyticsData.dealsWon]
               this.funnelChartData.push(contacts);
               this.funnelChartData.push(leads);
               this.funnelChartData.push(deals);
+              this.funnelChartData.push(dealsWon);
               
               this.loader = false;
               this.loadChart();
@@ -91,21 +93,28 @@ export class FunnelChartAnalyticsComponent implements OnInit {
                                 self.router.navigate(["/home/deal/manage"]);
 
                             }
+                            else if(this.category===3){
+                                self.router.navigate(["/home/deal/manage"]);
+                            }
                         }
                     }
                 },
+                
                 dataLabels: {
                     enabled: true,
                     format: '<b>{point.name}</b> ({point.y})',
-                    allowOverlap: true,
+                    allowOverlap: false,
                     y: 10
                 },
+                center: ['40%', '40%'],
                 neckWidth: '30%',
                 neckHeight: '25%',
                 width: '80%',
                 height: '80%'
             }
         },
+        colors: [' #e95e5e', '#8b76a8', ' #a49c9e', '#2889b9', '#1aadce',
+        '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
         series: [{
             name: 'Count',
             data:self.funnelChartData
