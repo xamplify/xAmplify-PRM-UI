@@ -500,7 +500,7 @@ export class AuthenticationService {
     localStorage.clear();
     this.utilService.topnavBareLoading = false;
     this.isCompanyAdded = false;
-    const module = this.module;
+    let module = this.module;
     module.isOrgAdmin = false;
     this.isShowContact = false;
     module.isContact = false;
@@ -577,6 +577,8 @@ export class AuthenticationService {
     module.isMarektingAndPartner = false;
     module.isMarketingAndPartnerTeamMember = false;
     module.isMarketingCompany = false;
+    module.isPrmCompany = false;
+    module = new Module();
     this.setUserLoggedIn(false);
   }
 
