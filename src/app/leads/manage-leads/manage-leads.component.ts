@@ -71,9 +71,13 @@ export class ManageLeadsComponent implements OnInit {
   showFilterOption: boolean = false;
   fromDateFilter: any = "";
   toDateFilter: any = "";
+ // statusFilter: any = "";
   filterResponse: CustomResponse = new CustomResponse(); 
   filterMode: boolean = false;
   selectedFilterIndex: number = 1;
+ lead:any;
+  stageNamesForFilterDropDown: any;
+  statusFilter: any;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -332,6 +336,7 @@ export class ManageLeadsComponent implements OnInit {
   listLeads(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
     if (this.isVendorVersion) {
+      this.stageNamesForVendor();
       this.listLeadsForVendor(pagination);
     } else if (this.isPartnerVersion) {
       this.listLeadsForPartner(pagination);
@@ -390,6 +395,22 @@ export class ManageLeadsComponent implements OnInit {
           pagination.totalRecords = response.totalRecords;
           this.leadsSortOption.totalRecords = response.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, response.data);
+          this.lead = response.data;
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  stageNamesForVendor() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getStageNamesForVendor(this.loggedInUserId)
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.stageNamesForFilterDropDown = response;
         },
         error => {
           this.httpRequestLoader.isServerError = true;
@@ -902,27 +923,39 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   validateDateFilters() {
-    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-      var fromDate = Date.parse(this.fromDateFilter);
-      if (this.toDateFilter != undefined && this.toDateFilter != "") {
-        var toDate = Date.parse(this.toDateFilter);
-        if (fromDate <= toDate) {
-          this.leadsPagination.pageIndex = 1;
-          this.leadsPagination.fromDateFilterString = this.fromDateFilter;
-          this.leadsPagination.toDateFilterString = this.toDateFilter;
-          this.filterMode = true;
-          this.filterResponse.isVisible = false;
-          this.listLeads(this.leadsPagination);
-        } else {
-          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-        }
-      } else {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-      }
-    } else {
-      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    }    
+
+    if (this.statusFilter != undefined && this.statusFilter != "" ) {
+      this.leadsPagination.stageFilter = this.statusFilter;
+      this.leadsPagination.pageIndex = 1;
+    this.filterMode = true;
+    this.filterResponse.isVisible = false;
+    this.listLeads(this.leadsPagination);
+    }
+
+    // if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+    //   var fromDate = Date.parse(this.fromDateFilter);
+    //   if (this.toDateFilter != undefined && this.toDateFilter != "") {
+    //     var toDate = Date.parse(this.toDateFilter);
+    //     // if(this.statusFilter != undefined && this.statusFilter != ""){
+    //     //   var statusFilter = Date.parse(this.statusFilter);
+    //     if (fromDate <= toDate) {
+         
+    //       this.leadsPagination.fromDateFilterString = this.fromDateFilter;
+    //       this.leadsPagination.toDateFilterString = this.toDateFilter;
+         
+    //     } else {
+    //       this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+    //     }
+    //   } else {
+    //     this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+    //   }
+    // } else {
+    //   this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    // }    
+
+    
   }
+  
 
   setListView() {
     this.listView = true;
@@ -944,4 +977,30 @@ export class ManageLeadsComponent implements OnInit {
     
   }
 
+  
+  setLeadStatus(lead: Lead) {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    let request: Lead = new Lead();
+    request.id = lead.id;
+    request.pipelineStageId = lead.pipelineStageId;
+    request.userId = this.loggedInUserId;
+    this.leadsService.changeLeadStatus(request)
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.lead = response.data;
+          if (response.statusCode == 200) {
+            this.leadsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
+           // this.getCounts();
+            this.showLeads();
+          } else if (response.statusCode == 500) {
+            this.leadsResponse = new CustomResponse('ERROR', response.message, true);
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
 }
