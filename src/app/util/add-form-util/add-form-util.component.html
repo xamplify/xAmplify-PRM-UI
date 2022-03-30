@@ -455,9 +455,7 @@
                     <label>Survey</label>
                 </div>
                 <!-- XNFR-108 -->
-                <div class="form-group"
-                    *ngIf="authenticationService.user.hasCompany && (authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || 
-                                authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )">
+                <div class="form-group">
                     <label>Team Member Group</label>
                     <app-form-team-member-group [formId]="form.id" [selectedTeamMemberIds]="form.selectedTeamMemberIds"
                         [selectedGroupIds]="form.selectedGroupIds" (notifyParentComponent)="UpdateFormTeamMemberGroupData($event)">
