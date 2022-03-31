@@ -98,7 +98,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
                     enabled: true,
                     format: '<b style="text-color:blue;">{point.name}</b> ({point.y})',
                     allowOverlap: false,
-                    y: 10
+                    y: 20
                 },
                 center: ['40%', '40%'],
                 neckWidth: '30%',
@@ -112,10 +112,10 @@ export class FunnelChartAnalyticsComponent implements OnInit {
         series: [{
             name: 'Count',
             data:[
-             ['Recipients',self.funnelChartData[0].contactsCount],
-             ['Leads',this.funnelChartData[0].leadsCount],
-             ['Deals',this.funnelChartData[0].dealsCounts],
-             ['DealsWon',this.funnelChartData[0].dealsWon]
+             ['Recipients ',self.funnelChartData[0].contactsCount],
+             ['Leads ',self.funnelChartData[0].leadsCount],
+             ['Deals ',self.funnelChartData[0].dealsCounts],
+             ['Deals Won ',self.funnelChartData[0].dealsWon]
             ]
 
         }]
