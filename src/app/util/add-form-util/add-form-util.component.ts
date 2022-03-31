@@ -1728,4 +1728,9 @@ addOrUpdate(){
 	this.validateForm();
 }
 
+UpdateFormTeamMemberGroupData(form: Form){
+    this.form.selectedTeamMemberIds = form.selectedTeamMemberIds;
+    this.form.selectedGroupIds = form.selectedGroupIds;
+}
+
 }
