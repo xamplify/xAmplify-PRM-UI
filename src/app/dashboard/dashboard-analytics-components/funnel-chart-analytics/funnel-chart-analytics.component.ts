@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FunnelChartsAnalyticsDto } from 'app/dashboard/models/funnel-charts-analytics-dto';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { blue } from '@angular-devkit/core/src/terminal';
 declare var Highcharts: any;
 
 @Component({
@@ -35,18 +36,10 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       this.loader = true;
       this.dashboardService.getFunnelChartsAnalyticsData(this.applyFilter).subscribe(
           data =>{
-              this.funnelChartsAnalyticsData=data.data;
-              let contacts = ['Recipients',this.funnelChartsAnalyticsData.contactsCount];
-              let leads = ['Leads',this.funnelChartsAnalyticsData.leadsCount];
-              let deals = ['Deals',this.funnelChartsAnalyticsData.dealsCounts];
-              let dealsWon = ['DealsWon',this.funnelChartsAnalyticsData.dealsWon]
-              this.funnelChartData.push(contacts);
-              this.funnelChartData.push(leads);
-              this.funnelChartData.push(deals);
-              this.funnelChartData.push(dealsWon);
+              this.funnelChartData=data.data;
               
               this.loader = false;
-              this.loadChart();
+              this.loadChart(this.funnelChartData);
           },
            error => {
             this.xtremandLogger.error(error);
@@ -56,7 +49,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       );
   }
 
-  loadChart(){
+  loadChart(funnelChartData:any){
       let self = this;
       Highcharts.chart('funnel-chart-container', {
         credits: {
@@ -74,6 +67,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
         title: {
             text: ''
         },
+        
         plotOptions: {
             colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
         '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
@@ -102,7 +96,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
                 
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b> ({point.y})',
+                    format: '<b style="text-color:blue;">{point.name}</b> ({point.y})',
                     allowOverlap: false,
                     y: 10
                 },
@@ -113,11 +107,16 @@ export class FunnelChartAnalyticsComponent implements OnInit {
                 height: '80%'
             }
         },
-        colors: [' #e95e5e', '#8b76a8', ' #a49c9e', '#2889b9', '#1aadce',
+        colors: ['#5C9BD1', '#8b76a8', ' #a49c9e', '#3faba4', '#1aadce',
         '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
         series: [{
             name: 'Count',
-            data:self.funnelChartData
+            data:[
+             ['Recipients',self.funnelChartData[0].contactsCount],
+             ['Leads',this.funnelChartData[0].leadsCount],
+             ['Deals',this.funnelChartData[0].dealsCounts],
+             ['DealsWon',this.funnelChartData[0].dealsWon]
+            ]
 
         }]
     });
