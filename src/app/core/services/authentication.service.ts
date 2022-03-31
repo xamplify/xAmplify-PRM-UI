@@ -48,6 +48,9 @@ export class AuthenticationService {
   isAddedByVendor = false;
   isPartnerTeamMember = false;
   isVendorAndPartnerTeamMember = false;
+  isVendorTeamMember = false;
+  isVendorSuperVisor = false;
+  isOrgAdminSuperVisor = false;
   isOrgAdminAndPartnerTeamMember = false;
   isOrgAdminTeamMember = false ;
   superiorRole = '';

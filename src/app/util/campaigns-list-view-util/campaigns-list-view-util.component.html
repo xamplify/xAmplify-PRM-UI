@@ -866,9 +866,10 @@
                                                             </li>
                                                         </section>
                                                         <section
-                                                            *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted">
+                                                            *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
                                                             <li
-                                                                *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
+                                                                *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
+                                    || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isVendorSuperVisor || authenticationService.isOrgAdminSuperVisor || authenticationService?.module?.isMarketingCompany) && !campaign.nurtureCampaign">
                                                                 <a title="Update Event" data-rel="fancybox-button"
                                                                     (click)="updateEvent(campaign)">
                                                                     <i class="fa fa-pencil" style="width: 30px;"></i>
@@ -1092,9 +1093,10 @@
                                                         </li>
                                                     </section>
                                                     <section
-                                                        *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton">
+                                                        *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
                                                         <li
-                                                            *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign">
+                                                            *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
+                                    || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isVendorSuperVisor || authenticationService.isOrgAdminSuperVisor || authenticationService?.module?.isMarketingCompany) && !campaign.nurtureCampaign">
                                                             <a title="Update Event" data-rel="fancybox-button"
                                                                 (click)="updateEvent(campaign)">
                                                                 <i class="fa fa-pencil" style="width: 30px;"></i> Update
@@ -1381,8 +1383,9 @@
                                         <i class="fa fa-ban"></i>
                                     </a></span>
                                 <span
-                                    *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted">
-                                    <a *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()) && !campaign.nurtureCampaign"
+                                    *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
+                                    <a *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
+                                    || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isVendorSuperVisor || authenticationService.isOrgAdminSuperVisor || authenticationService?.module?.isMarketingCompany) && !campaign.nurtureCampaign"
                                         data-toggle="tooltip" data-placement="top" title="Update event"
                                         data-rel="fancybox-button" (click)="updateEvent(campaign)">
                                         <i class="fa fa-pencil"></i>
