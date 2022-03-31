@@ -177,7 +177,7 @@
                                                     <span style="color: red">*</span>
                                                 </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"/>
+                                                    <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200" autocomplete="off"/>
                                                     <span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red" translate>Already Exists</span>
                                                 </div>
                                             </div>
@@ -311,7 +311,7 @@
                                                     </span>
                                                 </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" />
+                                                    <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" autocomplete="off" />
                                                 </div>
                                             </div>
                                             <div class="form-group" [attr.class]="subjectLineDivClass" *ngIf="campaignType!='sms'">
@@ -322,7 +322,7 @@
                                                 </label>
                                                 <div class="col-sm-8 col-xs-12">
                                                     <div class="input-group merge-tag-input-border">
-                                                        <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" />
+                                                        <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" autocomplete="off" />
                                                         <span class="input-group-btn">
                                                             <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
                                                                 <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
@@ -350,7 +350,7 @@
                                                 <label class="control-label col-sm-4" translate>Pre Header<span
                                                         style="color: red"><strong>*</strong></span></label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" />
+                                                    <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" autocomplete="off" />
                                                 </div>
                                             </div>
 
@@ -1490,66 +1490,6 @@
                             <fieldset>
                                 <legend translate>Preview Before Publishing</legend>
                                 <div class="row">
-                                    <!-- 	<div class="col-xs-12">
-						<div *ngIf="socialStatusProviders?.length > 0">
-						  <div class="portlet light clearfix">
-							<button type="button" class="btn btn-primary pull-right" (click)="isSocialEnable = !isSocialEnable" style="margin: 5px 15px;">
-								<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
-							</button>
-							<div class="clearfix"></div>
-							<div [hidden]="!isSocialEnable">
-							<div class="col-xs-12 col-sm-6">
-							<ul class="list-group social-account">
-								<li class="list-group-item profile-box" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
-									<div class="profile-selected" (click)="toggleSelectAll()" style="float: initial;margin: 0 0 0 10px;">
-										<i class="fa fa-square-o" *ngIf="!isAllSelected"></i>
-										<i class="fa fa-check-square" *ngIf="isAllSelected"></i>
-										<span class="ml10">Select All <b *ngIf="selectedAccounts > 0">({{selectedAccounts}})</b></span>
-									</div>
-								</li>
-								<li *ngFor="let socialStatusProvider of socialStatusProviders; let i = index" (click)="toggleSocialStatusProvider(socialStatusProvider)"
-									class="list-group-item profile-box" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}">
-									<div class="profile-selected">
-										<i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected"></i>
-										<i class="fa fa-check-square" *ngIf="socialStatusProvider.selected"></i>
-									</div>
-									<div class="profile-image-box">
-										<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-										<img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
-									</div>
-									<div class="profile-name">
-											<h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
-												class="heading-primary">
-												<b>{{socialStatusProvider.socialConnection.profileName}}</b>
-											</h5>
-											<h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
-												class="heading-primary">
-												<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
-											</h5>
-											<h6 class="m0">
-												{{socialStatusProvider.socialConnection.source | titlecase}}
-												<span *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-													<span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
-													<span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
-												</span>
-											</h6>
-									</div>
-									<div class="clearfix"></div>
-								</li>
-							</ul>
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div style="border: 1px solid #ccc; padding: 10px;">
-										<h6 class="pull-left f-w-600 mt0">Social share preview</h6>
-										<textarea placeholder="Status message" rows="4" class="form-control" [(ngModel)]="statusMessage"  [ngModelOptions]="{standalone: true}"></textarea>
-										<p class="pull-left">A link to your campaign will be included at the end of this post.</p>
-										<div class="clearfix"></div>
-								</div>
-							</div>
-							</div>
-						</div>
-					</div>
-				</div> -->
                                     <div class="portlet-body clearfix">
                                         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
                                             <div class="portlet light clearfix" style="padding:0px">
