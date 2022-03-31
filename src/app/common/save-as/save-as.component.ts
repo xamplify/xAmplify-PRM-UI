@@ -26,6 +26,7 @@ export class SaveAsComponent implements OnInit {
   @Input() saveAsListName:any;
   @Input() isPartner: boolean;
   @Input() showGDPR:boolean;
+  @Input() isFormList;
   @Output() notifyParentSaveAs: EventEmitter<any>;
   public model: any = {};
   saveAsError = '';
