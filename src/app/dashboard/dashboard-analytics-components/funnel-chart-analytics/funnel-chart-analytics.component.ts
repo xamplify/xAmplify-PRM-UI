@@ -35,11 +35,17 @@ export class FunnelChartAnalyticsComponent implements OnInit {
   loadFunnelChart(){
       this.loader = true;
       this.dashboardService.getFunnelChartsAnalyticsData(this.applyFilter).subscribe(
-          data =>{
-              this.funnelChartData=data.data;
-              
+          (data) =>{
+              this.funnelChartData=data.data[0];
+              console.log(this.funnelChartData)
+            
+              if(this.funnelChartData[0]===0){
+                      this.funnelChartData.length=0;
+                      this.loader = false;
+              }else{
               this.loader = false;
               this.loadChart(this.funnelChartData);
+              }
           },
            error => {
             this.xtremandLogger.error(error);
@@ -49,7 +55,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       );
   }
 
-  loadChart(funnelChartData:any){
+  loadChart(funnelChartData){
       let self = this;
       Highcharts.chart('funnel-chart-container', {
         credits: {
@@ -69,8 +75,8 @@ export class FunnelChartAnalyticsComponent implements OnInit {
         },
         
         plotOptions: {
-            colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
-        '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+        //     colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
+        // '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             series: {
                 cursor: 'pointer',
                 point: {
@@ -98,9 +104,9 @@ export class FunnelChartAnalyticsComponent implements OnInit {
                     enabled: true,
                     format: '<b style="text-color:blue;">{point.name}</b> ({point.y})',
                     allowOverlap: false,
-                    y: 20
+                    y: 20,
+                    top:true
                 },
-                center: ['40%', '40%'],
                 neckWidth: '30%',
                 neckHeight: '25%',
                 width: '80%',
@@ -111,12 +117,13 @@ export class FunnelChartAnalyticsComponent implements OnInit {
         '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
         series: [{
             name: 'Count',
-            data:[
-             ['Recipients ',self.funnelChartData[0].contactsCount],
-             ['Leads ',self.funnelChartData[0].leadsCount],
-             ['Deals ',self.funnelChartData[0].dealsCounts],
-             ['Deals Won ',self.funnelChartData[0].dealsWon]
-            ]
+            data:
+             [
+              ['Recipients ',self.funnelChartData[0]],
+              ['Leads ',self.funnelChartData[1]],
+              ['Deals ',self.funnelChartData[2]],
+              ['Deals Won ',self.funnelChartData[3]]
+             ]
 
         }]
     });
