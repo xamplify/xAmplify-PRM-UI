@@ -934,7 +934,7 @@
                                   </a>
                                 </li>
                               </ng-container>
-                              <li>
+                              <li *ngIf="!campaign.vendorCampaignDeleted">
                                 <a (click)="showCampaignPreview(campaign)" translate>
                                   <i class="fa fa-eye" style="width: 30px;" aria-hidden="true"></i> Preview Campaign
                                 </a>
@@ -1236,9 +1236,8 @@
                                     </a>
                           </ng-container>
 
-                          <span [class.disablednew]="!campaign.hasAccess"
-                            *ngIf="!campaign.showCancelButton || campaign.vendorCampaignDeleted ">
-                            <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top"
+                          <span [class.disablednew]="!campaign.hasAccess" >
+                            <a *ngIf="!campaign.vendorCampaignDeleted" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top"
                               title="Preview">
                               <i class="fa fa-eye mr5" aria-hidden="true"></i>
                             </a>
