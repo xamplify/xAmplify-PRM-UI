@@ -72,6 +72,8 @@ export class ManageDealsComponent implements OnInit {
   filterResponse: CustomResponse = new CustomResponse();
   filterMode: any = false;
   selectedFilterIndex: number = 1;
+  stageNamesForFilterDropDown: any;
+  statusFilter: any;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -313,6 +315,8 @@ export class ManageDealsComponent implements OnInit {
   listDeals(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
     if (this.isVendorVersion) {
+      this.stageNamesForVendor();
+      this.fromDateFilter;
       this.listDealsForVendor(pagination);
     } else if (this.isPartnerVersion) {
       this.listDealsForPartner(pagination);
@@ -805,6 +809,34 @@ export class ManageDealsComponent implements OnInit {
   }
 
   validateDateFilters() {
+    if(this.statusFilter != undefined && this.statusFilter != ""){
+      if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+        var fromDate = Date.parse(this.fromDateFilter);
+        if (this.toDateFilter != undefined && this.toDateFilter != "") {
+          var toDate = Date.parse(this.toDateFilter);
+
+          if (fromDate <= toDate) {
+            this.dealsPagination.fromDateFilterString = this.fromDateFilter;
+            this.dealsPagination.toDateFilterString = this.toDateFilter;
+            this.stageNamesForVendor();
+            this.listDeals(this.dealsPagination)
+          }else{
+            this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          }
+        }else {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+        }
+    }
+    this.dealsPagination.stageFilter = this.statusFilter;
+     this.dealsPagination.pageIndex = 1;
+    this.filterMode = true;
+    this.filterResponse.isVisible = false;
+    this.listDeals(this.dealsPagination);
+    }
+    else {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    }
+
     if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
       var fromDate = Date.parse(this.fromDateFilter);
       if (this.toDateFilter != undefined && this.toDateFilter != "") {
@@ -855,6 +887,22 @@ export class ManageDealsComponent implements OnInit {
     this.listDealsForVendor(this.dealsPagination);
     this.listCampaignsForVendor(this.campaignPagination);
     
+  }
+
+  stageNamesForVendor(){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getStageNamesForVendor(this.loggedInUserId)
+    .subscribe(
+      response =>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.stageNamesForFilterDropDown = response;
+
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    ); 
   }
 
 }

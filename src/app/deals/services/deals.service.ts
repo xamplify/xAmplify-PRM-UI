@@ -148,4 +148,9 @@ getConversation(dealId:number, userId:number) {
       error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
     return Observable.throw(error);
   }
+  getStageNamesForVendor(userId:number){
+    return this.http.get(this.URL + `/list/v/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
 }
