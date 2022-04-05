@@ -177,6 +177,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isVendorTierTeamMember = roleDisplayDto.vendorTierTeamMember;
 		module.isVendorTierAndPartner = roleDisplayDto.vendorTierAndPartner;
 		module.isVendorTierAndPartnerTeamMember = roleDisplayDto.vendorTierAndPartnerTeamMember;
+		module.isPrmSuperVisor = roleDisplayDto.prmSuperVisor;
+		module.isMarketingSuperVisor = roleDisplayDto.marketingSuperVisor;
 		this.authenticationService.isVendorAndPartnerTeamMember = roleDisplayDto.vendorAndPartnerTeamMember;
 		this.authenticationService.isVendorTeamMember = roleDisplayDto.vendorTeamMember;
 		this.authenticationService.isVendorSuperVisor = roleDisplayDto.vendorSuperVisor;
