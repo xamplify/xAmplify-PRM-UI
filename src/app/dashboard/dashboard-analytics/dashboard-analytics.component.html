@@ -212,7 +212,19 @@
                         </div>
                     </div>
                 </ng-container>
+                <div class="col-xs-12 col-sm-12 col-lg-12">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-lg-6 p0">
                 <app-funnel-chart-analytics [applyFilter]="applyFilter"></app-funnel-chart-analytics>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-lg-6 p0" style="height: 515px;">
+                    <app-pie-chart-analytics></app-pie-chart-analytics>
+                </div>
+                </div>
+                <!-- <div>
+                    <app-pie-chart-analytics></app-pie-chart-analytics>
+                </div> -->
+                </div>
             </div>
             <!--End of page bar-->
         </div>
