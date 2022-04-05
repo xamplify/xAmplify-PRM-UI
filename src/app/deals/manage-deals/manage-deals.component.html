@@ -193,11 +193,11 @@
                                 <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
                                   translate>Filter</button>
                               </div>
-                              <div class="form-group col-sm-12" >
-                              <label class="control-label">Status</label>
+                              <div class="form-group col-sm-12" style="margin-top: 13px;">
+                              <label class="control-label" style="padding-right: 5px;">Status &nbsp;:</label>
                               <select class="form-control" style="width: 135px" [(ngModel)]="statusFilter"
-                              [ngModelOptions]="{standalone: true}" placeholder="Select Status ">
-                                 <!-- <option [value]="" >Select Status</option>  -->
+                              [ngModelOptions]="{standalone: true}" >
+                                  <option [value]="default" >Select Status</option>  
                                 <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
                                 </option>
                               </select>

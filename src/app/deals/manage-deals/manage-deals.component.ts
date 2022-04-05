@@ -757,6 +757,13 @@ export class ManageDealsComponent implements OnInit {
     mapInput.setAttribute("value", this.dealsPagination.toDateFilterString);
     mapForm.appendChild(mapInput);
 
+    //stageName
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "stageName";
+    mapInput.setAttribute("value", this.dealsPagination.stageFilter);
+    mapForm.appendChild(mapInput);
+    
     // partnerTeamMemberGroupFilter
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
@@ -818,8 +825,8 @@ export class ManageDealsComponent implements OnInit {
           if (fromDate <= toDate) {
             this.dealsPagination.fromDateFilterString = this.fromDateFilter;
             this.dealsPagination.toDateFilterString = this.toDateFilter;
-            this.stageNamesForVendor();
-            this.listDeals(this.dealsPagination)
+             this.stageNamesForVendor();
+             this.listDeals(this.dealsPagination)
           }else{
             this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
           }

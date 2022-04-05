@@ -873,6 +873,13 @@ export class ManageLeadsComponent implements OnInit {
     mapInput.setAttribute("value", this.leadsPagination.toDateFilterString);
     mapForm.appendChild(mapInput);
 
+    //stageFilter 
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "stageName";
+    mapInput.setAttribute("value", this.leadsPagination.stageFilter);
+    mapForm.appendChild(mapInput);
+
     // partnerTeamMemberGroupFilter
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
