@@ -34,18 +34,25 @@ export class FunnelChartAnalyticsComponent implements OnInit {
 
   loadFunnelChart(){
       this.loader = true;
+      console.log("okkkkkk")
       this.dashboardService.getFunnelChartsAnalyticsData(this.applyFilter).subscribe(
           (data) =>{
-              this.funnelChartData=data.data[0];
+              this.funnelChartData=data.data;
+              alert(data.data);
               console.log(this.funnelChartData)
+              console.log(this.funnelChartData[0][0].contactsCount)
+              console.log(this.funnelChartData[0][1].leadsCount)
+              console.log(this.funnelChartData[0][2].dealsCounts)
+              console.log(this.funnelChartData[0][3].dealsWon)
+              console.log("okkkkkk")
             
-              if(this.funnelChartData[0]===0){
-                      this.funnelChartData.length=0;
-                      this.loader = false;
-              }else{
+            //   if(this.funnelChartData[0]===0){
+            //           this.funnelChartData.length=0;
+            //           this.loader = false;
+            //   }else{
               this.loader = false;
               this.loadChart(this.funnelChartData);
-              }
+             // }
           },
            error => {
             this.xtremandLogger.error(error);
@@ -67,7 +74,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
                 enabled: true,
                 alpha: 10,
                 depth: 50,
-                viewDistance: 50
+                viewDistance: 20
             }
         },
         title: {
@@ -104,9 +111,10 @@ export class FunnelChartAnalyticsComponent implements OnInit {
                     enabled: true,
                     format: '<b style="text-color:blue;">{point.name}</b> ({point.y})',
                     allowOverlap: false,
-                    y: 20,
-                    top:true
+                    y: 10
+                    
                 },
+                center:['50%','50%'],
                 neckWidth: '30%',
                 neckHeight: '25%',
                 width: '80%',
@@ -119,10 +127,10 @@ export class FunnelChartAnalyticsComponent implements OnInit {
             name: 'Count',
             data:
              [
-              ['Recipients ',self.funnelChartData[0]],
-              ['Leads ',self.funnelChartData[1]],
-              ['Deals ',self.funnelChartData[2]],
-              ['Deals Won ',self.funnelChartData[3]]
+              ['Recipients ',self.funnelChartData[0][0].contactsCount],
+              ['Leads ',self.funnelChartData[0][1].leadsCount],
+              ['Deals ',self.funnelChartData[0][2].dealsCounts],
+              ['Deals Won ',self.funnelChartData[0][3].dealsWon]
              ]
 
         }]
