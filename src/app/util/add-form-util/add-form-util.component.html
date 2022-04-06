@@ -423,8 +423,8 @@
 <!-- -End Of page-content -->
 
 <!--Modal Popup For Form Details------------>
-<div class="modal right fade" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-lg">
+<div class="modal right" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog full-width-modal-popup">
         <div class="modal-content mPad">
             <div class="modal-header">
                 <button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
@@ -454,6 +454,14 @@
                     <input type="checkbox" [(ngModel)]="form.isSurvey">
                     <label>Survey</label>
                 </div>
+                <!-- XNFR-108 -->
+                <div class="form-group">
+                    <label>Team Member Group</label>
+                    <app-form-team-member-group [formId]="form.id" [selectedTeamMemberIds]="form.selectedTeamMemberIds"
+                        [selectedGroupIds]="form.selectedGroupIds" (notifyParentComponent)="UpdateFormTeamMemberGroupData($event)">
+                    </app-form-team-member-group>
+                </div>
+                <!-- XNFR-108 ENDS -->
             </div>
             <div class="modal-footer">
                 <button type="submit" [disabled]="!form.isValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>

@@ -8,6 +8,9 @@
 
     <!-- BEGIN HEADER INNER -->
     <div class="page-header-inner">
+        <div *ngIf="refService?.newVersionDeployed" class="alert alert-info">
+            <strong>New Update Is Available.Please refresh your browser to see new changes</strong>
+        </div>
         <!-- BEGIN LOGO -->
         <div class="page-logo pttpx">
              <div [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
@@ -46,6 +49,7 @@
             <!-- END HEADER SEARCH BOX -->
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
+               
                 <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
                     <li *ngIf="isLoggedInFromAdminSection" style="margin-top: 17px;margin-right: 5px;">

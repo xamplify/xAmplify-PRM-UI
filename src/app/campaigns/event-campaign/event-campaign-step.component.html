@@ -189,7 +189,7 @@
 								</div>
 							</div>
 							<div class="form-group"
-								*ngIf="!authenticationService.isOnlyPartner()">
+								*ngIf="!authenticationService.isOnlyPartner() &&  !authenticationService?.module?.isMarketingCompany">
 								<span for="Throughpartner" class="col-sm-3 col-xs-5 mThroughLabel labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }" translate>Through {{authenticationService?.partnerModule?.customName}}
 									</span>
 								<div class="col-sm-2 mSwitch">

@@ -61,6 +61,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     hubspotUploadUrl = this.uploadBaseUrl+"hubspot";
     campaignAccess: CampaignAccess = new CampaignAccess();
     loggedInAsSuperAdmin = false;
+    isMarketingCompany = false;
     constructor(private emailTemplateService: EmailTemplateService,
         private router: Router, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, public refService: ReferenceService, private hubSpotService: HubSpotService,private utilService:UtilService) {
@@ -84,6 +85,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                     let emailTemplates = response.data.emailTemplates;
                     this.allEmailTemplates = emailTemplates ;
                     this.campaignAccess = response.data.campaignAccess;
+                    this.isMarketingCompany = response.data.isMarketingCompany;
                     this.allEmailTemplates = emailTemplates;
                     this.filteredEmailTemplates = emailTemplates;
                     this.refService.loading(this.httpRequestLoader, false);

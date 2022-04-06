@@ -10,6 +10,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { MenuItem } from '../models/menu-item';
 import { Roles } from '../../core/models/roles';
+import { Module } from '../models/module';
 
 declare var window,$: any;
 
@@ -158,7 +159,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			);
 	}
 
-	setAuthenticationServiceVariables(module: any, data: any) {
+	setAuthenticationServiceVariables(module: Module, data: any) {
 		module.isContact = data.contacts;
 		module.showCampaignsAnalyticsDivInDashboard = data.showCampaignsAnalyticsDivInDashboard;
 		this.authenticationService.contactsCount = data.contactsCount;
@@ -176,7 +177,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isVendorTierTeamMember = roleDisplayDto.vendorTierTeamMember;
 		module.isVendorTierAndPartner = roleDisplayDto.vendorTierAndPartner;
 		module.isVendorTierAndPartnerTeamMember = roleDisplayDto.vendorTierAndPartnerTeamMember;
+		module.isPrmSuperVisor = roleDisplayDto.prmSuperVisor;
+		module.isMarketingSuperVisor = roleDisplayDto.marketingSuperVisor;
 		this.authenticationService.isVendorAndPartnerTeamMember = roleDisplayDto.vendorAndPartnerTeamMember;
+		this.authenticationService.isVendorTeamMember = roleDisplayDto.vendorTeamMember;
+		this.authenticationService.isVendorSuperVisor = roleDisplayDto.vendorSuperVisor;
+		this.authenticationService.isOrgAdminSuperVisor = roleDisplayDto.orgAdminSuperVisor;
 		this.authenticationService.isOrgAdminAndPartnerTeamMember = roleDisplayDto.orgAdminAndPartnerTeamMember;
 		this.authenticationService.isOrgAdminTeamMember = roleDisplayDto.orgAdminTeamMember;
 		this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = data.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
@@ -195,6 +201,11 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isAnyAdminOrSupervisor = roleDisplayDto.anyAdminOrSuperVisor;
 		module.allBoundSamlSettings = data.allBoundSamlSettings;
 		module.notifyPartners = data.notifyPartners;
+		module.isMarketingTeamMember = roleDisplayDto.marketingTeamMember;
+		module.isMarektingAndPartner = roleDisplayDto.marketingAndPartner;
+    	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
+		module.isMarketingCompany = module.isMarketing || module.isMarketingTeamMember || module.isMarektingAndPartner || module.isMarketingAndPartnerTeamMember;
+		module.isPrmCompany = module.isPrm || module.isPrmTeamMember || module.isPrmAndPartner || module.isPrmAndPartnerTeamMember;
 	}
 
 	setContentMenu(data: any, module: any) {

@@ -1,7 +1,8 @@
-<div [ngClass]="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember ? 'col-xs-12 col-sm-12':'col-xs-12 col-sm-6'" style="padding: 0">
+<div [ngClass]="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || 
+authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isMarketingCompany ? 'col-xs-12 col-sm-12':'col-xs-12 col-sm-6'" style="padding: 0">
     <div class="col-sm-12">
       <div class="portlet light">
-          <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
+          <div class="portlet-title mb0mh0">
               <div class="caption">
                   <span class="caption-subject" translate>MDF Balance Statistics</span>
               </div>

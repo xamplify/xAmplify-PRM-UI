@@ -67,6 +67,7 @@ export class LogRegularCampaignComponent implements OnInit {
               this.templatehtml = updatedBody;
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
               this.processor.remove(this.processor);
+              this.updateBackGroundColor();
         }, (error: any) => {
             this.processor.remove(this.processor);
             this.xtremandLogger.error('log regular campaign component: regular campaign():' + error);
@@ -74,6 +75,7 @@ export class LogRegularCampaignComponent implements OnInit {
             this.customCampaignError = JSON.parse(error._body).message;
             this.errorMessage();
             document.getElementById('regular-campaign').innerHTML = this.errorHtml;
+            this.updateBackGroundColor();
         },
         () => console.log('getRegularTemplateHtml method completed:')
         );
@@ -81,6 +83,11 @@ export class LogRegularCampaignComponent implements OnInit {
       this.xtremandLogger.error('error in showCampaign method :' + error);
       document.getElementById('regular-campaign').innerHTML = this.errorHtml;
       this.processor.remove(this.processor);
+      this.updateBackGroundColor();
     }
+  }
+
+  updateBackGroundColor(){
+    $("body"). css("background-color","#fff");
   }
 }

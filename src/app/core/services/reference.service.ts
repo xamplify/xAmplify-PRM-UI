@@ -132,7 +132,7 @@ export class ReferenceService {
 	startWidth: any;
 	regularExpressions = new RegularExpressions();
 	loaderFromAdmin = false;
-
+	newVersionDeployed = false;
 	constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
 		private router: Router, public deviceService: Ng2DeviceService, private route: ActivatedRoute) {
 		console.log('reference service constructor');
@@ -319,7 +319,7 @@ export class ReferenceService {
 		try {
 			const roles = this.authenticationService.getRoles();
 			if (roles) {
-				if (roles && roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1) {
+				if (roles && roles.indexOf(this.roles.allRole) > -1 || roles.indexOf(this.roles.orgAdminRole) > -1 || roles.indexOf(this.roles.marketingRole) > -1 ) {
 					return true;
 				} else {
 					return false;
@@ -2268,7 +2268,9 @@ export class ReferenceService {
 		mergeTags = this.addSenderCompanyAndSenderCompanyUrlMergeTags(mergeTags);
 		if (isCampaign == undefined || !isCampaign) {
 			mergeTags = this.addSenderAboutUsAndCompanyContactAndPrivacyPolicyMergeTags(mergeTags);
-			mergeTags.push({ name: 'Partner About Us', value: this.senderMergeTag.aboutUs });
+			if(!this.authenticationService.module.isMarketingCompany){
+				mergeTags.push({ name: 'Partner About Us', value: this.senderMergeTag.aboutUs });
+			}
 			mergeTags.push({ name: 'Unsubscribe Link', value: this.senderMergeTag.unsubscribeLink });
 		}
 		if (isEvent) {

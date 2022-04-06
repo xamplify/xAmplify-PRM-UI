@@ -104,7 +104,7 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     
     
     ngOnInit() {
-        //this.versionCheckService.initVersionCheck();
+        this.versionCheckService.initVersionCheck();
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
         };

@@ -2,7 +2,8 @@
   <ng-container
     *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
     !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember && !authenticationService?.module?.isVendorTier && 
-    !authenticationService?.module?.isVendorTierTeamMember && !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember">
+    !authenticationService?.module?.isVendorTierTeamMember && !authenticationService?.module?.isVendorTierAndPartner && 
+    !authenticationService?.module?.isVendorTierAndPartnerTeamMember && !authenticationService?.module?.isMarketingCompany">
     <app-partners-statistics [applyFilter]="applyFilter"></app-partners-statistics>
     <app-partner-contacts-statistics [applyFilter]="applyFilter"></app-partner-contacts-statistics>
   </ng-container>
@@ -10,6 +11,7 @@
 </div>
 <div class="clearfix" *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
     !authenticationService?.module?.isPrmAndPartner && !authenticationService?.module?.isPrmAndPartnerTeamMember && !authenticationService?.module?.isVendorTier && 
-    !authenticationService?.module?.isVendorTierTeamMember && !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember">
+    !authenticationService?.module?.isVendorTierTeamMember && !authenticationService?.module?.isVendorTierAndPartner && 
+    !authenticationService?.module?.isVendorTierAndPartnerTeamMember && !authenticationService?.module?.isMarketingCompany">
   <app-redistributed-campaigns-wordcloud-map [applyFilter]="applyFilter"></app-redistributed-campaigns-wordcloud-map>
 </div>

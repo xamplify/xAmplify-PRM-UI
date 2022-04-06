@@ -73,11 +73,16 @@
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs">
-                                <ng-container *ngIf="contactListTabName=='Partners'">
-                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                    <ng-container *ngIf="contactListTabName=='Partners'">
+                                        {{authenticationService?.partnerModule?.customName | translate}}
+                                    </ng-container>
+                                    <ng-container *ngIf="contactListTabName!='Partners'">
+                                        {{authenticationService?.partnerModule?.customName}} & Recipients 
+                                    </ng-container>
                                 </ng-container>
-                                <ng-container *ngIf="contactListTabName!='Partners'">
-                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
+                                    Recipients
                                 </ng-container>
                             </h5>
                         </div>
@@ -89,11 +94,16 @@
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs">
-                                <ng-container *ngIf="contactListTabName=='Partners'">
-                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                    <ng-container *ngIf="contactListTabName=='Partners'">
+                                        {{authenticationService?.partnerModule?.customName | translate}}
+                                    </ng-container>
+                                    <ng-container *ngIf="contactListTabName!='Partners'">
+                                        {{authenticationService?.partnerModule?.customName}} & Recipients 
+                                    </ng-container>
                                 </ng-container>
-                                <ng-container *ngIf="contactListTabName!='Partners'">
-                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
+                                    Recipients
                                 </ng-container>
                             </h5>
                         </div>
@@ -167,7 +177,7 @@
                                                     <span style="color: red">*</span>
                                                 </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"/>
+                                                    <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200" autocomplete="off"/>
                                                     <span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red" translate>Already Exists</span>
                                                 </div>
                                             </div>
@@ -187,7 +197,7 @@
                                                 </div>
                                             </div>
                                            
-                                            <div class="form-group" *ngIf="!isOnlyPartner">
+                                            <div class="form-group" *ngIf="!isOnlyPartner &&  !authenticationService?.module?.isMarketingCompany">
                                                  <!--Through Partner-->
                                                 <label class="control-label col-sm-4 mThroughLabel" data-toggle="tooltip" 
                                                 data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}">
@@ -235,6 +245,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <ng-container *ngIf="campaignType=='regular' && !campaign.channelCampaign && salesEnablement">
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4" translate>View In Browser</label>
@@ -264,7 +275,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                        </ng-container>
+                                            </ng-container>
                                             <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
                                                 <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
                                                 <div class="col-sm-8">
@@ -280,7 +291,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group" *ngIf="!isOnlyPartner && campaignType!='sms' && (campaign.channelCampaign || (campaignType=='landingPage'  && channelCampaignFieldName != 'To Recipient')) ">
+                                            <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && !isOnlyPartner && campaignType!='sms' && (campaign.channelCampaign || (campaignType=='landingPage'  && channelCampaignFieldName != 'To Recipient')) ">
                                                 <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -300,7 +311,7 @@
                                                     </span>
                                                 </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" />
+                                                    <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" autocomplete="off" />
                                                 </div>
                                             </div>
                                             <div class="form-group" [attr.class]="subjectLineDivClass" *ngIf="campaignType!='sms'">
@@ -311,7 +322,7 @@
                                                 </label>
                                                 <div class="col-sm-8 col-xs-12">
                                                     <div class="input-group merge-tag-input-border">
-                                                        <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" />
+                                                        <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" autocomplete="off" />
                                                         <span class="input-group-btn">
                                                             <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
                                                                 <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
@@ -339,7 +350,7 @@
                                                 <label class="control-label col-sm-4" translate>Pre Header<span
                                                         style="color: red"><strong>*</strong></span></label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" />
+                                                    <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" autocomplete="off" />
                                                 </div>
                                             </div>
 
@@ -553,15 +564,22 @@
                                                     <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr"
                                                         [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
                                                 </div> -->
-                                                <div class="col-sm-8">
+                                                <div class="col-sm-8" style="display:flex">
                                                     <div class="input-group">
                                                         <input type="text" id="endDate1" placeholder="YYYY-MM-DD" class="form-control flatpickr"
                                                             [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
                                                         <span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
                                                             <button class="btn btn-default" type="button"><i class="fa fa-refresh npcfs" aria-hidden="true"
                                                                     (click)="clearEndDate()"></i></button>
-                                                        </span>                                                
-                                                    </div>                                                
+                                                        </span>
+                                                    </div>
+                                                    <div style="padding: 0; margin-left: 15px;margin-top: 6px">
+                                                        <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top"
+                                                            title="A setting that specifies how long you want your campaign to run. When the campaign's end date arrives, your partners will be unable to redistribute it further. Each campaign's default setting is to have no end date, allowing partners to redistribute indefinitely.">
+                                                            <i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
+                                                        </span>
+                                                    </div>
+                                                                                                                                                                                                     
                                                 </div>
                                             </div>
 
@@ -671,9 +689,6 @@
                                                                         <!-- --------------Thumbnail--------------------------- -->
                                                                         <td style="text-align: center;">
                                                                             <input class="radio-button-css" type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'my-videos')" name="videoFileId" [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-                                                                            <!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
-																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
-                                    </a> -->
                                                                             <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)">
                                                                             </app-video-thumbnail>
                                                                         </td>
@@ -773,7 +788,6 @@
                                                                         </select>
                                                                     </span>
                                                                 </th>
-                                                                <!-- <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos">Type</th> -->
                                                                 <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos" translate>Upload Date</th>
                                                                 <th style="width: 13%;" class="text-center" translate>Status</th>
                                                             </tr>
@@ -799,9 +813,6 @@
                                                                     <tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==savedVideoFile.id" id="selectedVideoRow" (click)="setClickedRow(savedVideoFile,'partner-videos')">
                                                                         <td class="text-center">
                                                                             <input class="radio-button-css" type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'partner-videos')" name="videoFileId" [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-                                                                            <!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(savedVideoFile)">
-																			<img src="{{savedVideoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
-                                    </a> -->
                                                                             <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)">
                                                                             </app-video-thumbnail>
                                                                         </td>
@@ -825,9 +836,6 @@
                                                                         <!-- --------------Thumbnail--------------------------- -->
                                                                         <td class="text-center" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
                                                                             <input class="radio-button-css" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}" [checked]="videoFile.id == selectedRow">
-                                                                            <!-- <a href="javascript:void(0)" (click)="$event.stopPropagation();showPreview(videoFile)" lang="{{videoFile.id}}">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px"  (error)="videoUtilService.errorVideoHandler($event)">
-                                    </a> -->
                                                                             <input *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId" class="radio-button-css" type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
                                                                             <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPreview($event)">
                                                                             </app-video-thumbnail>
@@ -835,9 +843,6 @@
                                                                         </td>
                                                                         <td class="text-center" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
                                                                             <input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
-                                                                            <!-- <a href="javascript:void(0)" class="not-active">
-																			<img src="{{videoFile.imagePath}}" width="100px" height="50px" (error)="videoUtilService.errorVideoHandler($event)">
-                                    </a> -->
                                                                             <app-video-thumbnail [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}" [videoFile]="videoFile" (notifyParent)="showPreview($event)">
                                                                             </app-video-thumbnail>
                                                                         </td>
@@ -887,11 +892,16 @@
                                 <div [hidden]="campaignContact.httpRequestLoader.isLoading || campaignContact.httpRequestLoader.isServerError">
                                     <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
                                         <div class="note-vid pull-left">
-                                            <ng-container *ngIf="contactListTabName=='Partners'">
-                                                Select List of {{authenticationService?.partnerModule?.customName}} to be used in this campaign
+                                            <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                                <ng-container *ngIf="contactListTabName=='Partners'">
+                                                    Select List of {{authenticationService?.partnerModule?.customName}} to be used in this campaign
+                                                </ng-container>
+                                                <ng-container *ngIf="contactListTabName!='Partners'">
+                                                    Select {{authenticationService?.partnerModule?.customName}} / Recipients to be used in this campaign
+                                                </ng-container>
                                             </ng-container>
-                                            <ng-container *ngIf="contactListTabName!='Partners'">
-                                                Select {{authenticationService?.partnerModule?.customName}} / Recipients to be used in this campaign
+                                            <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
+                                                Select Recipients to be used in this campaign
                                             </ng-container>
                                         </div>
                                         <div class="inputs" style="float: right;">
@@ -1480,66 +1490,6 @@
                             <fieldset>
                                 <legend translate>Preview Before Publishing</legend>
                                 <div class="row">
-                                    <!-- 	<div class="col-xs-12">
-						<div *ngIf="socialStatusProviders?.length > 0">
-						  <div class="portlet light clearfix">
-							<button type="button" class="btn btn-primary pull-right" (click)="isSocialEnable = !isSocialEnable" style="margin: 5px 15px;">
-								<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
-							</button>
-							<div class="clearfix"></div>
-							<div [hidden]="!isSocialEnable">
-							<div class="col-xs-12 col-sm-6">
-							<ul class="list-group social-account">
-								<li class="list-group-item profile-box" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
-									<div class="profile-selected" (click)="toggleSelectAll()" style="float: initial;margin: 0 0 0 10px;">
-										<i class="fa fa-square-o" *ngIf="!isAllSelected"></i>
-										<i class="fa fa-check-square" *ngIf="isAllSelected"></i>
-										<span class="ml10">Select All <b *ngIf="selectedAccounts > 0">({{selectedAccounts}})</b></span>
-									</div>
-								</li>
-								<li *ngFor="let socialStatusProvider of socialStatusProviders; let i = index" (click)="toggleSocialStatusProvider(socialStatusProvider)"
-									class="list-group-item profile-box" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}">
-									<div class="profile-selected">
-										<i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected"></i>
-										<i class="fa fa-check-square" *ngIf="socialStatusProvider.selected"></i>
-									</div>
-									<div class="profile-image-box">
-										<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-										<img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
-									</div>
-									<div class="profile-name">
-											<h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
-												class="heading-primary">
-												<b>{{socialStatusProvider.socialConnection.profileName}}</b>
-											</h5>
-											<h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
-												class="heading-primary">
-												<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
-											</h5>
-											<h6 class="m0">
-												{{socialStatusProvider.socialConnection.source | titlecase}}
-												<span *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-													<span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
-													<span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
-												</span>
-											</h6>
-									</div>
-									<div class="clearfix"></div>
-								</li>
-							</ul>
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div style="border: 1px solid #ccc; padding: 10px;">
-										<h6 class="pull-left f-w-600 mt0">Social share preview</h6>
-										<textarea placeholder="Status message" rows="4" class="form-control" [(ngModel)]="statusMessage"  [ngModelOptions]="{standalone: true}"></textarea>
-										<p class="pull-left">A link to your campaign will be included at the end of this post.</p>
-										<div class="clearfix"></div>
-								</div>
-							</div>
-							</div>
-						</div>
-					</div>
-				</div> -->
                                     <div class="portlet-body clearfix">
                                         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
                                             <div class="portlet light clearfix" style="padding:0px">
@@ -1576,11 +1526,16 @@
                                                                 <div class="icon-border">
                                                                     <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
-                                                                <ng-container *ngIf="contactListTabName=='Partners'">
-                                                                    {{authenticationService?.partnerModule?.customName | translate}}
+                                                                <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                                                    <ng-container *ngIf="contactListTabName=='Partners'">
+                                                                        {{authenticationService?.partnerModule?.customName | translate}}
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="contactListTabName!='Partners'">
+                                                                        {{authenticationService?.partnerModule?.customName}} & Recipients
+                                                                    </ng-container>
                                                                 </ng-container>
-                                                                <ng-container *ngIf="contactListTabName!='Partners'">
-                                                                    {{authenticationService?.partnerModule?.customName}} & Recipients
+                                                                <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
+                                                                    Recipients
                                                                 </ng-container>
                                                             </td>
                                                             <td style="width: 55%;">

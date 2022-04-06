@@ -18,11 +18,11 @@
                                     [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
                                 
                                 <li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',false,7)"
-                                    [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign">Email
+                                    [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign && !authenticationService?.module?.isMarketingCompany">Email
                                     Co-Branding
                                 </li>
                                 <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',false,8)"
-                                    [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video
+                                    [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign && !authenticationService?.module?.isMarketingCompany">Video
                                     Co-Branding
                                 </li>
                                 <li class="filter" (click)="filterTemplates('UPLOADED',false,5)"
@@ -32,14 +32,14 @@
                                     *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign">Event
                                 </li>
                                 <li class="filter" (click)="filterTemplates('EVENT_CO_BRANDING',false,10)"
-                                    *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign"
+                                    *ngIf="(refService.eventCampaignTabAccess || campaignAccess.eventCampaign) && !authenticationService?.module?.isMarketingCompany"
                                     [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex">Event Co-Branding
                                 </li>
                                 <li class="filter" (click)="filterTemplates('SURVEY',false,11)"
                                     [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" *ngIf="campaignAccess.formBuilder" translate>
                                     Survey
                                 </li>
-                                <li class="filter" (click)="filterTemplates('SURVEY_CO_BRANDING',false,12)" *ngIf="campaignAccess.formBuilder"
+                                <li class="filter" (click)="filterTemplates('SURVEY_CO_BRANDING',false,12)" *ngIf="campaignAccess.formBuilder && !authenticationService?.module?.isMarketingCompany"
                                     [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex" translate>Survey Co-Branding
                                 </li>
                                 <li class="filter" style="display: none;">Own Template</li>
@@ -156,13 +156,17 @@
                                               <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
                                                   <i class="fa fa-inbox" aria-hidden="true"></i>
                                               </a>
-                                              <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER'">
+                                              <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
+                                              *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor  ||
+                                                 authenticationService.module.isPrm  || authenticationService.module.isVendorTier  || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER'">
                                                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                               </a>
                                               <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> 
                                                   <i class="fa fa-eye" aria-hidden="true"></i>
                                               </a>
-                                              <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER' ">
+                                              <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
+                                              *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor  ||
+                                               authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
                                                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                                               </a>
                                           </div>
@@ -246,13 +250,17 @@
                               <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
                                   <i class="fa fa-inbox" aria-hidden="true"></i>
                               </a>
-                              <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER'">
+                              <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
+                                *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor  || 
+                                authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER'">
                                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                               </a>
                               <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}">
                                    <i class="fa fa-eye" aria-hidden="true"></i>
                               </a>
-                              <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && emailTemplate.type!='PARTNER' ">
+                              <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
+                              *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor   || 
+                              authenticationService.module.isPrm || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
                                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                               </a>
                           </div>
