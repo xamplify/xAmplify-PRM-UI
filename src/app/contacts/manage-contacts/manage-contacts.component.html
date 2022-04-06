@@ -865,7 +865,9 @@
                             <th *ngIf="contactsByType.selectedCategory == 'non-active'" scope="row"></th>
                             <th *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads" scope="row">Actions</th>
                             <th *ngIf="contactsByType.selectedCategory == 'invalid'" scope="row"></th>
-                            <th *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all'" scope="row">Actions
+                            <th *ngIf="(checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all') && (hasAllAccess || authenticationService.isVendorPartner() || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
+                            || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmSuperVisor || authenticationService.module.isMarketing || authenticationService.module.isMarektingAndPartner ||authenticationService.module.isMarketingSuperVisor
+                            || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)" scope="row">Actions
                             </th>
                           </tr>
                         </thead>
@@ -1028,21 +1030,14 @@
                                     </a>
                                   </div>
                                 </td>
-                                <td *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all'"
-                                  class="text-center">
-                                  <div class="actions-block no-float">
-                                    <a title="Delete" (click)="confirmDeleteContact(contact)">
-                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                    </a>
-                                  </div>
-                                </td>
                               </ng-container>
-                              <td *ngIf="checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all' && (authenticationService.isPartnerTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember
-                              || authenticationService.isOrgAdminTeamMember) && !authenticationService.module.isCampaign"
+                              <td *ngIf="(checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all') && (hasAllAccess || authenticationService.isVendorPartner() || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
+                            || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmSuperVisor || authenticationService.module.isMarketing || authenticationService.module.isMarektingAndPartner ||authenticationService.module.isMarketingSuperVisor
+                            || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)"
                                   class="text-center">
                                   <div class="actions-block no-float">
                                     <a title="Delete" (click)="confirmDeleteContact(contact)">
-                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </a>
                                   </div>
                                 </td>
