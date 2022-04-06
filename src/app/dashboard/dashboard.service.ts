@@ -627,13 +627,20 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
+/*********funnel chart****** */
     getFunnelChartsAnalyticsData(vanityLoginDto:VanityLoginDto) {
         const url = this.authenticationService.REST_URL + 'dashboard/views/getFunnelChartsAnalyticsData?access_token=' + this.authenticationService.access_token;
         return this.http.post(url,vanityLoginDto)
         .map(this.extractData)
         .catch(this.handleError);
     }
+   /************Pie chart ********* */
 
+   getPieChartAnalyticsData(applyFilter:boolean){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsAnalyticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
 }

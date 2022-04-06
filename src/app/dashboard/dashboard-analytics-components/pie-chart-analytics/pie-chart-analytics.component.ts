@@ -23,15 +23,23 @@ export class PieChartAnalyticsComponent implements OnInit {
     this.loadPieChart();
   }
  loadPieChart(){
- let wonLeads=['won Leads',20]
- let lostLeads=['last Leads',10]
- let convertedLeads=['convertedLeads',10]
- this.pieChartData.push(wonLeads)
- this.pieChartData.push(lostLeads)
- this.pieChartData.push(convertedLeads)
- this.loadChart();
+
+this.loader = true;
+this.dashboardService.getPieChartAnalyticsData(true).subscribe(
+  (response)=>{
+    this.pieChartData=response.data;
+  
+  this.loader = false;
+  this.loadChart(this.pieChartData);
+},
+(error) => {
+  this.xtremandLogger.error(error);
+  this.loader = false;
+  this.statusCode = 0;
 }
-  loadChart(){
+);
+}
+  loadChart(pieChartData:any){
     let self=this;
     Highcharts.chart('container', {
       chart: {
@@ -43,15 +51,15 @@ export class PieChartAnalyticsComponent implements OnInit {
           }
       },
       title: {
-          text: 'Browser market shares at a specific website, 2014'
+          text: ''
       },
       accessibility: {
           point: {
-              valueSuffix: '%'
+      
           }
       },
       tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          pointFormat: '{series.name}:<b></b> ({point.y})'
       },
       plotOptions: {
           pie: {
@@ -66,9 +74,9 @@ export class PieChartAnalyticsComponent implements OnInit {
       },
       series: [{
           type: 'pie',
-          name: 'Browser share',
-          data: self.pieChartData
-      }]
+          name: 'count',
+          data: this.pieChartData,
+      },],
   });
   }
 }
