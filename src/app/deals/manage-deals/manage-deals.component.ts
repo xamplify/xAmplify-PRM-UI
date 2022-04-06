@@ -787,9 +787,11 @@ export class ManageDealsComponent implements OnInit {
     this.showFilterOption = !this.showFilterOption;    
     this.fromDateFilter = "";
     this.toDateFilter = "";
+    this.statusFilter = "";
     if (!this.showFilterOption) {
       this.dealsPagination.fromDateFilterString = "";
       this.dealsPagination.toDateFilterString = "";
+      this.dealsPagination.stageFilter = "";
       this.filterResponse.isVisible = false;
       if (this.filterMode) {
         this.dealsPagination.pageIndex = 1;
@@ -805,8 +807,10 @@ export class ManageDealsComponent implements OnInit {
     this.showFilterOption = false;
     this.fromDateFilter = "";
     this.toDateFilter = ""; 
+    this.statusFilter = "";
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
+    this.dealsPagination.stageFilter = "";
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
@@ -825,8 +829,8 @@ export class ManageDealsComponent implements OnInit {
           if (fromDate <= toDate) {
             this.dealsPagination.fromDateFilterString = this.fromDateFilter;
             this.dealsPagination.toDateFilterString = this.toDateFilter;
-             this.stageNamesForVendor();
-             this.listDeals(this.dealsPagination)
+            //  this.stageNamesForVendor();
+            //  this.listDeals(this.dealsPagination)
           }else{
             this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
           }

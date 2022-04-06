@@ -904,9 +904,11 @@ export class ManageLeadsComponent implements OnInit {
     this.showFilterOption = !this.showFilterOption;    
     this.fromDateFilter = "";
     this.toDateFilter = "";
+    this.statusFilter = "";
     if (!this.showFilterOption) {
       this.leadsPagination.fromDateFilterString = "";
       this.leadsPagination.toDateFilterString = "";
+      this.leadsPagination.stageFilter = "";
       this.filterResponse.isVisible = false;
       if (this.filterMode) {
         this.leadsPagination.pageIndex = 1;
@@ -922,8 +924,10 @@ export class ManageLeadsComponent implements OnInit {
     this.showFilterOption = false;
     this.fromDateFilter = "";
     this.toDateFilter = ""; 
+    this.statusFilter = "";
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
+    this.leadsPagination.stageFilter = "";
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.leadsPagination.pageIndex = 1;

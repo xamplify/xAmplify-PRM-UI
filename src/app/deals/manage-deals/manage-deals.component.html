@@ -197,7 +197,7 @@
                               <label class="control-label" style="padding-right: 5px;">Status &nbsp;:</label>
                               <select class="form-control" style="width: 135px" [(ngModel)]="statusFilter"
                               [ngModelOptions]="{standalone: true}" >
-                                  <option [value]="default" >Select Status</option>  
+                                  <option  disabled >Select Status</option>  
                                 <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
                                 </option>
                               </select>
