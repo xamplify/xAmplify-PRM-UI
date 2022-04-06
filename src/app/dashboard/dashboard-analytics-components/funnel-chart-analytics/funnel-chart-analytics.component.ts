@@ -82,20 +82,19 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       },
 
       plotOptions: {
-        //     colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
-        // '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
         series: {
           cursor: "pointer",
           point: {
             events: {
-              click: function () {
-                if (this.category === 0) {
+              click: function (event:any) {
+               let name = event['point']['name'];
+                if ("Recipients"==name) {
                   self.router.navigate(["/home/contacts/manage"]);
-                } else if (this.category === 1) {
-                  self.router.navigate(["/home/leads/manage"]);
-                } else if (this.category === 2) {
+                } else if ("Leads"==name) {
+                 self.router.navigate(["/home/leads/manage"]);
+                } else if ("Deals"==name) {
                   self.router.navigate(["/home/deal/manage"]);
-                } else if (this.category === 3) {
+                } else if ("Won Deals"==name) {
                   self.router.navigate(["/home/deal/manage"]);
                 }
               },
@@ -130,7 +129,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       series: [
         {
           name: "Count",
-          data: this.funnelChartData,
+          data: funnelChartData,
         },
       ],
     });
