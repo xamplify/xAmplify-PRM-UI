@@ -30,7 +30,6 @@ declare var $, swal: any;
 	providers: [HttpRequestLoader, SortOption, Properties]
 })
 export class DamListAndGridViewComponent implements OnInit, OnDestroy {
-	//@Output() newItemEvent : EventEmitter<boolean>;	
 	loading = false;
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
@@ -442,10 +441,44 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.callInitMethods();
 	}
 	/*****Preview Asset******* */
-	preview(asset: any) {
-		this.isPreview = true;
-		this.asset = asset;
+    preview(asset: any) {
+        if (this.isVideo(asset.assetType)) {
+            this.showPlayVideo(asset.id, asset.alias);
+        } else {
+            this.isPreview = true;
+            this.asset = asset;
+        }
 	}
+    
+    showPlayVideo(id: number, alias: string) {
+        try {
+            this.videoFileService.getVideo(alias, 'DRAFT')
+                .subscribe((editVideoFile: SaveVideoFile) => {
+                    if (editVideoFile.access) {
+                        if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                            editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+                        }
+                        editVideoFile.damId = id;
+                        this.videoFileService.saveVideoFile = editVideoFile;
+                        this.videoFileService.videoType ='myVideos';
+                        this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+                        this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+                        this.xtremandLogger.log(this.videoFileService.saveVideoFile);
+                        this.videoFileService.actionValue = 'Update';
+                        this.newItemEvent.emit(null);
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: any) => {
+                    this.xtremandLogger.error('Error In: showPlayVideo():' + error);
+                    this.xtremandLogger.errorPage(error);
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error('error' + error);
+        }
+    }
 
 	previewAssetPopupEmitter() {
 		this.isPreview = false;

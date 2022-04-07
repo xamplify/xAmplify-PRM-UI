@@ -19,13 +19,14 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { EditVideoComponent } from '../videos/manage-video/edit-video/edit-video.component';
 import { VideoBasedReportsComponent } from '../videos/manage-video/video-based-reports/video-based-reports.component';
 import { VideoBaseReportService } from '../videos/services/video-base-report.service';
+import { PlayVideoComponent } from '../videos/manage-video/play-video/play-video.component';
 
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule, CKEditorModule
   ],
   declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent,
-                 EditVideoComponent, VideoBasedReportsComponent],
+                 EditVideoComponent, VideoBasedReportsComponent, PlayVideoComponent],
   providers: [DamService, VideoBaseReportService]
 })
 export class DamModule { }

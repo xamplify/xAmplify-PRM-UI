@@ -12,6 +12,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 export class ManageDamComponent implements OnInit {
 	manageDam : boolean = true;
     editVideo : boolean = false;
+    playVideo : boolean = false;
 	loading = false;
 	uploadAsset = false;
 	isPartnerView = false;
@@ -47,8 +48,14 @@ export class ManageDamComponent implements OnInit {
 	}
 	
     setManageDam(result: any) {
-    	this.manageDam = result;
-    	this.editVideo = !result;
+        if (result != null) {
+            this.manageDam = result;
+            this.editVideo = !result;
+        } else {
+            this.playVideo = true;
+            this.manageDam = false;
+            this.editVideo = false;
+        }
     }
     
     update(videoFile: any) {
@@ -57,4 +64,6 @@ export class ManageDamComponent implements OnInit {
         }
         this.referenceService.goToRouter("home/dam/manage");
     }
+    
+    
 }
