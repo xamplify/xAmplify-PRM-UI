@@ -12,6 +12,7 @@ declare var Highcharts: any;
 })
 export class PieChartAnalyticsComponent implements OnInit {
   pieChartData: Array<any> = new Array<any>();
+ 
   loader = false;
   statusCode = 200;
   @Input()applyFilter:boolean;
@@ -20,12 +21,18 @@ export class PieChartAnalyticsComponent implements OnInit {
     public router: Router) { }
 
   ngOnInit() {
-    this.loadPieChart();
+    this.loadLeadPieChart();
   }
- loadPieChart(){
-
+  click(){
+    this.loadDealPieChart();
+  }
+  leads(){
+    this.loadLeadPieChart();
+  }
+  
+ loadLeadPieChart(){
 this.loader = true;
-this.dashboardService.getPieChartAnalyticsData(true).subscribe(
+this.dashboardService.getPieChartLeadsAnalyticsData(true).subscribe(
   (response)=>{
     this.pieChartData=response.data;
   
@@ -38,6 +45,22 @@ this.dashboardService.getPieChartAnalyticsData(true).subscribe(
   this.statusCode = 0;
 }
 );
+}
+loadDealPieChart(){
+  this.loader = true;
+  this.dashboardService.getPieChartDealsAnalyticsData(true).subscribe(
+    (response)=>{
+      this.pieChartData=response.data;
+    
+    this.loader = false;
+    this.loadChart(this.pieChartData);
+  },
+  (error) => {
+    this.xtremandLogger.error(error);
+    this.loader = false;
+    this.statusCode = 0;
+  }
+  );
 }
   loadChart(pieChartData:any){
     let self=this;
@@ -59,7 +82,7 @@ this.dashboardService.getPieChartAnalyticsData(true).subscribe(
           }
       },
       tooltip: {
-          pointFormat: '{series.name}:<b></b> ({point.y})'
+          pointFormat: '<b>{series.name}</b>:<b></b> ({point.y})'
       },
       plotOptions: {
           pie: {

@@ -636,8 +636,15 @@ export class DashboardService {
     }
    /************Pie chart ********* */
 
-   getPieChartAnalyticsData(applyFilter:boolean){
-    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsAnalyticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
+   getPieChartLeadsAnalyticsData(applyFilter:boolean){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsLeadsAnalyticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   getPieChartDealsAnalyticsData(applyFilter:boolean){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsDealsAnalyticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
     return this.http.get(url)
     .map(this.extractData)
     .catch(this.handleError);
