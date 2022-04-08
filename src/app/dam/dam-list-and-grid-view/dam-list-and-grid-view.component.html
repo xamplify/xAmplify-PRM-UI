@@ -57,8 +57,22 @@
 						</div>
 					</div>
 				</div>
+							<!-- // -->
+			       <div class="col-xs-12" style="margin: 2px -18px;"  >
+                   <ul class="mix-filter">
+                      <li class="filter" (click)="getVideoTypes('myVideos')" [class.selectedtype]="videoFileService.videoType === 'myVideos'">
+                          My Videos
+                      </li>
+                      <li class="filter" (click)="getVideoTypes('partnerVideos')" [class.selectedtype]="videoFileService.videoType === 'partnerVideos'">
+                        Partner Videos
+                    </li>
+                    </ul>
+                  </div>
+			<!-- // -->
+				
+				
 			</div>
-
+			
 			<app-list-loader
 				*ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
 			<app-grid-loader

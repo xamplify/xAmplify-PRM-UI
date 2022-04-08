@@ -72,7 +72,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.vanityLoginDto.userId = this.loggedInUserId;
 			this.vanityLoginDto.vanityUrlFilter = true;
 		}
-		
+		this.videoFileService.videoType ='myVideos'
 	}
 
 	ngOnInit() {
@@ -608,6 +608,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                 return true;
         }
         return false;
+    }
+    
+    getVideoTypes(videoType : string){
+    	
     }
 
 

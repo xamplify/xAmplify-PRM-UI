@@ -247,3 +247,13 @@ cursor: default;
     border: 1px solid;
 }
 }
+
+
+.mix-filter {
+	margin: 5px;
+}
+
+.mix-filter li {
+	font-size: 12px;
+	text-transform: uppercase;
+}
