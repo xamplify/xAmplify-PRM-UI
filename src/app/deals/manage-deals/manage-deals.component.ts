@@ -136,24 +136,26 @@ export class ManageDealsComponent implements OnInit {
         if (
           roles.indexOf(this.roleName.orgAdminRole) > -1 ||
           roles.indexOf(this.roleName.allRole) > -1 ||
-          roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1) {
+          roles.indexOf(this.roleName.vendorRole) > -1 || 
+          roles.indexOf(this.roleName.vendorTierRole) > -1 ||
+          roles.indexOf(this.roleName.marketingRole) > -1) {
           this.isVendor = true;
         }
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
           this.isOrgAdmin = true;
         }
-        if (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember) {
+        if (roles.indexOf(this.roleName.companyPartnerRole) > -1 || this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember) {
           this.isCompanyPartner = true;
         }
       } else {
         if (!this.authenticationService.superiorRole.includes("Vendor") && !this.authenticationService.superiorRole.includes("OrgAdmin")
-          && this.authenticationService.superiorRole.includes("Partner")) {
+        && !this.authenticationService.superiorRole.includes("Marketing") && this.authenticationService.superiorRole.includes("Partner")) {
           this.isOnlyPartner = true;
         }
         if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
           this.isOrgAdmin = true;
         }
-        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")) {
+        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin") || this.authenticationService.superiorRole.includes("Marketing")) {
           this.isVendor = true;
         }
         if (this.authenticationService.superiorRole.includes("Partner")) {
