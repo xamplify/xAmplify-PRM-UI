@@ -17,11 +17,12 @@ export class PieChartAnalyticsComponent implements OnInit {
   statusCode = 200;
   @Input()applyFilter:boolean;
   funnelChartsAnalyticsData:any;
+  name:any;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) { }
 
   ngOnInit() {
-    this.loadLeadPieChart();
+    this.loadDealPieChart();
   }
   click(){
     this.loadDealPieChart();
@@ -31,6 +32,7 @@ export class PieChartAnalyticsComponent implements OnInit {
   }
   
  loadLeadPieChart(){
+   this.name="Opportunity Based Lead Stats";
 this.loader = true;
 this.dashboardService.getPieChartLeadsAnalyticsData(true).subscribe(
   (response)=>{
@@ -47,6 +49,7 @@ this.dashboardService.getPieChartLeadsAnalyticsData(true).subscribe(
 );
 }
 loadDealPieChart(){
+  this.name="Opportunity Based Deal Stats"; 
   this.loader = true;
   this.dashboardService.getPieChartDealsAnalyticsData(true).subscribe(
     (response)=>{
