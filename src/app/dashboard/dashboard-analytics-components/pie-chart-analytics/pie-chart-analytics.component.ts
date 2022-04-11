@@ -12,6 +12,7 @@ declare var Highcharts: any;
 })
 export class PieChartAnalyticsComponent implements OnInit {
   pieChartData: Array<any> = new Array<any>();
+  pieChartStatisticsData:Array<any> =new Array<any>();
  
   loader = false;
   statusCode = 200;
@@ -30,6 +31,15 @@ export class PieChartAnalyticsComponent implements OnInit {
   leads(){
     this.loadLeadPieChart();
   }
+  loadStatisticsLeadData(){
+    this.loader = true;
+this.dashboardService.getPieChartStatisticsLeadAnalyticsData(true).subscribe(
+  (response) =>{
+    this.pieChartStatisticsData=response.data;
+    this.loader =false;
+  }
+)
+  }
   
  loadLeadPieChart(){
    this.name="Opportunity Based Lead Stats";
@@ -40,6 +50,7 @@ this.dashboardService.getPieChartLeadsAnalyticsData(true).subscribe(
   
   this.loader = false;
   this.loadChart(this.pieChartData);
+  this.loadStatisticsLeadData();
 },
 (error) => {
   this.xtremandLogger.error(error);

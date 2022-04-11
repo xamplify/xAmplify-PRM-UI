@@ -21,10 +21,23 @@
                 </div>
                 <button (click)="click()">Deals</button>
                 <button (click)="leads()">Leads</button>
-<figure class="highcharts-figure">
+<div class="highcharts-figure">
     <div id="container"></div>
-    <p class="highcharts-description">
-       
-    </p>
-</figure>
+   
+</div>
+<div class="row" style="display: flex">
+    <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 0px;">
+    <div *ngFor="let item of pieChartStatisticsData[0]" id="item{{0}}" style="width: max-content;">{{item}}</div>
+    </div>
+    <div class="col-xs-12 col-md-4 col-lg-4" style="padding-right: 8px;padding-left: 8px;">
+    <div *ngFor="let item of pieChartStatisticsData[1]" id="item{{1}}" style="width: max-content;">{{item}}</div>
+    </div>
+    <div class="col-xs-12 col-md-4 col-lg-4" style="padding-left: 0px;">
+    <div *ngFor="let item of pieChartStatisticsData[2]" id="item{{2}}" style="width: max-content;">{{item}}</div>
+    </div>
 
+</div>
+</div>
+</div>
+</div>
+</div>
