@@ -985,11 +985,18 @@ export class ManageLeadsComponent implements OnInit {
         } else {
           this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
         }
-       
   }
   else {
     this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-  } }
+  } 
+  if (this.statusFilter != undefined && this.statusFilter != "" ) {
+    this.leadsPagination.stageFilter = this.statusFilter;
+    this.leadsPagination.pageIndex = 1;
+  this.filterMode = true;
+  this.filterResponse.isVisible = false;
+  this.listLeads(this.leadsPagination);
+  }
+}
   
 
   setListView() {
