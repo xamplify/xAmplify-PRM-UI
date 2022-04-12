@@ -26,6 +26,7 @@ export class Deal {
     properties: DealDynamicProperties[];
     answers: DealAnswer[];
     associatedContact: User;
+    createdByCompanyId: number;
 
     // Sf Custom Form Fields
    description: string;
