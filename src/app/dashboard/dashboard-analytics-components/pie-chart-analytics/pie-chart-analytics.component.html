@@ -27,13 +27,19 @@
 </div>
 <div class="row" style="display: flex">
     <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 0px;">
+        <div class="portlet light">
     <div *ngFor="let item of pieChartStatisticsData[0]" id="item{{0}}" style="width: max-content;">{{item}}</div>
     </div>
-    <div class="col-xs-12 col-md-4 col-lg-4" style="padding-right: 8px;padding-left: 8px;">
+    </div>
+    <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 8px;">
+        <div class="portlet light">
     <div *ngFor="let item of pieChartStatisticsData[1]" id="item{{1}}" style="width: max-content;">{{item}}</div>
     </div>
-    <div class="col-xs-12 col-md-4 col-lg-4" style="padding-left: 0px;">
+    </div>
+    <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-left: 8px;">
+        <div class="portlet light">
     <div *ngFor="let item of pieChartStatisticsData[2]" id="item{{2}}" style="width: max-content;">{{item}}</div>
+    </div>
     </div>
 
 </div>

@@ -31,14 +31,34 @@ export class PieChartAnalyticsComponent implements OnInit {
   leads(){
     this.loadLeadPieChart();
   }
+  
+  loadStatisticsDealData(){
+    this.loader = true;
+this.dashboardService.getPieChartStatisticsDealData(true).subscribe(
+  (response) =>{
+    this.pieChartStatisticsData=response.data;
+    this.loader =false;
+  },
+  (error) => {
+    this.xtremandLogger.error(error);
+    this.loader = false;
+    this.statusCode = 0;
+  }
+)
+  }
   loadStatisticsLeadData(){
     this.loader = true;
 this.dashboardService.getPieChartStatisticsLeadAnalyticsData(true).subscribe(
   (response) =>{
     this.pieChartStatisticsData=response.data;
     this.loader =false;
+  },
+  (error) => {
+    this.xtremandLogger.error(error);
+    this.loader = false;
+    this.statusCode = 0;
   }
-)
+);
   }
   
  loadLeadPieChart(){
@@ -68,6 +88,7 @@ loadDealPieChart(){
     
     this.loader = false;
     this.loadChart(this.pieChartData);
+    this.loadStatisticsDealData();
   },
   (error) => {
     this.xtremandLogger.error(error);
