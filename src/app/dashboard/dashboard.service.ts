@@ -656,4 +656,12 @@ export class DashboardService {
     .map(this.extractData)
     .catch(this.handleError);
    }
+
+   getPieChartStatisticsDealData(applyFilter:boolean){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
 }
