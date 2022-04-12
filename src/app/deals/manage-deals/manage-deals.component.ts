@@ -821,36 +821,31 @@ export class ManageDealsComponent implements OnInit {
   }
 
   validateDateFilters() {
-    if(this.statusFilter != undefined && this.statusFilter != ""){
-      if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-        var fromDate = Date.parse(this.fromDateFilter);
-        if (this.toDateFilter != undefined && this.toDateFilter != "") {
-          var toDate = Date.parse(this.toDateFilter);
-           alert(toDate)
-          if (fromDate <= toDate) {
-            this.dealsPagination.fromDateFilterString = this.fromDateFilter;
-            this.dealsPagination.toDateFilterString = this.toDateFilter;
-            //  this.stageNamesForVendor();
-            //  this.listDeals(this.dealsPagination)
-            this.dealsPagination.stageFilter = this.statusFilter;
-            this.dealsPagination.pageIndex = 1;
-           this.filterMode = true;
-           this.filterResponse.isVisible = false;
-           this.listDeals(this.dealsPagination);
-          }else{
-            this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-          }
-        }else {
-          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-        }
+    if((this.statusFilter != undefined && this.statusFilter != "") &&
+    (this.fromDateFilter != undefined && this.fromDateFilter != "") && 
+    (this.toDateFilter != undefined && this.toDateFilter != "")){
+      var fromDate = Date.parse(this.fromDateFilter);
+      var toDate = Date.parse(this.toDateFilter);
+      if (fromDate <= toDate) {
+        this.dealsPagination.fromDateFilterString = this.fromDateFilter;
+        this.dealsPagination.toDateFilterString = this.toDateFilter;
+        this.dealsPagination.stageFilter = this.statusFilter;
+        this.dealsPagination.pageIndex = 1;
+       this.filterMode = true;
+       this.filterResponse.isVisible = false;
+       this.listDeals(this.dealsPagination);
+      }
+      else{
+        this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+      }
+
+   }
+      else {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
     }
-    else{
-      this.filterResponse = new CustomResponse('ERROR', "Please pick  from date", true);
-    }
-    }
-    else{
-             this.filterResponse = new CustomResponse('ERROR', "Please pick status", true);
-    }
+    // else{
+    //          this.filterResponse = new CustomResponse('ERROR', "Please pick status", true);
+    // }
     
 
     if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
@@ -872,33 +867,54 @@ export class ManageDealsComponent implements OnInit {
       }
     } else {
       this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    }   
-    
-    if( (this.statusFilter != undefined && this.statusFilter != "") && 
+    }  
+     if((this.statusFilter != undefined && this.statusFilter != "") && 
     (this.fromDateFilter != undefined && this.fromDateFilter != "")){
         this.dealsPagination.stageFilter = this.statusFilter;
        this.dealsPagination.pageIndex = 1;
      this.filterMode = true;
      this.filterResponse.isVisible = false;
+     alert(this.statusFilter)
+   
       this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick to date", true);
     }
-    else if((this.statusFilter != undefined && this.statusFilter != "") && 
+   else if((this.statusFilter != undefined && this.statusFilter != "") && 
     (this.toDateFilter != undefined && this.toDateFilter != "")){
-      this.dealsPagination.stageFilter = this.statusFilter;
-      this.dealsPagination.pageIndex = 1;
-    this.filterMode = true;
-    this.filterResponse.isVisible = false;
-     this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick from date", true);
+    //     this.dealsPagination.stageFilter = this.statusFilter;
+    //    this.dealsPagination.pageIndex = 1;
+    //  this.filterMode = true;
+    //  this.filterResponse.isVisible = false;
+      this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick from date", true);
     }
     else if (this.statusFilter != undefined && this.statusFilter != "" ) {
-
       this.dealsPagination.stageFilter = this.statusFilter;
       this.dealsPagination.pageIndex = 1;
     this.filterMode = true;
     this.filterResponse.isVisible = false;
    this.listDeals(this.dealsPagination);
    }
-    
+   else if(this.statusFilter===""){
+    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+      var fromDate = Date.parse(this.fromDateFilter);
+      if (this.toDateFilter != undefined && this.toDateFilter != "") {
+        var toDate = Date.parse(this.toDateFilter);
+        if (fromDate <= toDate) {
+          this.dealsPagination.pageIndex = 1;
+          this.dealsPagination.fromDateFilterString = this.fromDateFilter;
+          this.dealsPagination.toDateFilterString = this.toDateFilter;
+          this.filterMode = true;
+          this.filterResponse.isVisible = false;
+          this.listDeals(this.dealsPagination);
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }
+      } else {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      }
+    } 
+   }
+
+   
     // if(this.statusFilter != undefined && this.statusFilter != ""){
     //   if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
     //     var fromDate = Date.parse(this.fromDateFilter);
@@ -973,4 +989,5 @@ export class ManageDealsComponent implements OnInit {
       ()=> { }
     ); 
   }
+  
 }
