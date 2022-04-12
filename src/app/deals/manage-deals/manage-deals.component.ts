@@ -874,15 +874,7 @@ export class ManageDealsComponent implements OnInit {
       this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
     }   
     
-    if (this.statusFilter != undefined && this.statusFilter != "" ) {
-
-       this.dealsPagination.stageFilter = this.statusFilter;
-       this.dealsPagination.pageIndex = 1;
-     this.filterMode = true;
-     this.filterResponse.isVisible = false;
-    this.listDeals(this.dealsPagination);
-    }
-    else if((this.statusFilter != undefined && this.statusFilter != "") && 
+    if( (this.statusFilter != undefined && this.statusFilter != "") && 
     (this.fromDateFilter != undefined && this.fromDateFilter != "")){
         this.dealsPagination.stageFilter = this.statusFilter;
        this.dealsPagination.pageIndex = 1;
@@ -890,6 +882,23 @@ export class ManageDealsComponent implements OnInit {
      this.filterResponse.isVisible = false;
       this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick to date", true);
     }
+    else if((this.statusFilter != undefined && this.statusFilter != "") && 
+    (this.toDateFilter != undefined && this.toDateFilter != "")){
+      this.dealsPagination.stageFilter = this.statusFilter;
+      this.dealsPagination.pageIndex = 1;
+    this.filterMode = true;
+    this.filterResponse.isVisible = false;
+     this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick from date", true);
+    }
+    else if (this.statusFilter != undefined && this.statusFilter != "" ) {
+
+      this.dealsPagination.stageFilter = this.statusFilter;
+      this.dealsPagination.pageIndex = 1;
+    this.filterMode = true;
+    this.filterResponse.isVisible = false;
+   this.listDeals(this.dealsPagination);
+   }
+    
     // if(this.statusFilter != undefined && this.statusFilter != ""){
     //   if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
     //     var fromDate = Date.parse(this.fromDateFilter);
