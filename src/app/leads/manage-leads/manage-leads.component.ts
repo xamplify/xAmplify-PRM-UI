@@ -937,78 +937,47 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   validateDateFilters() {
-    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-      var fromDate = Date.parse(this.fromDateFilter);
-      if (this.toDateFilter != undefined && this.toDateFilter != "") {
+    if ((this.statusFilter == undefined || this.statusFilter == "") && 
+      (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
+        (this.toDateFilter == undefined || this.toDateFilter == "")) {
+          this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else { 
+      let validDates = false;   
+      if ((this.fromDateFilter == undefined || this.fromDateFilter == "") 
+        && (this.toDateFilter == undefined || this.toDateFilter == "")) {
+          validDates = true;
+      } else if (this.fromDateFilter != undefined && this.fromDateFilter != "" && 
+        (this.toDateFilter == undefined || this.toDateFilter == "")) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      } else if (this.toDateFilter != undefined && this.toDateFilter != "" && 
+        (this.fromDateFilter == undefined || this.fromDateFilter == "")) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      } else {
         var toDate = Date.parse(this.toDateFilter);
+        var fromDate = Date.parse(this.fromDateFilter);
         if (fromDate <= toDate) {
-          this.leadsPagination.pageIndex = 1;
+          validDates = true;
           this.leadsPagination.fromDateFilterString = this.fromDateFilter;
           this.leadsPagination.toDateFilterString = this.toDateFilter;
-          this.filterMode = true;
-          this.filterResponse.isVisible = false;
-          this.listLeads(this.leadsPagination);
         } else {
           this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }        
+      }
+
+      if (validDates) {
+        if (this.statusFilter != undefined && this.statusFilter != "") {
+          this.leadsPagination.stageFilter = this.statusFilter;
         }
-      } else {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-      }
-    } 
-    else if (this.statusFilter != undefined && this.statusFilter != "" ) {
-      this.leadsPagination.stageFilter = this.statusFilter;
-      this.leadsPagination.pageIndex = 1;
-    this.filterMode = true;
-    this.filterResponse.isVisible = false;
-   this.listLeads(this.leadsPagination);
-   }
-   if((this.statusFilter != undefined && this.statusFilter != "") &&
-    (this.fromDateFilter != undefined && this.fromDateFilter != "") && 
-    (this.toDateFilter != undefined && this.toDateFilter != "")){
-      var fromDate = Date.parse(this.fromDateFilter);
-      var toDate = Date.parse(this.toDateFilter);
-      if (fromDate <= toDate) {
-        this.leadsPagination.fromDateFilterString = this.fromDateFilter;
-        this.leadsPagination.toDateFilterString = this.toDateFilter;
-        this.leadsPagination.stageFilter = this.statusFilter;
+        else {
+          this.leadsPagination.stageFilter = "";
+        }
         this.leadsPagination.pageIndex = 1;
-       this.filterMode = true;
-       this.filterResponse.isVisible = false;
-       this.listLeads(this.leadsPagination);
+        this.filterMode = true;
+          this.filterResponse.isVisible = false;
+          this.listLeads(this.leadsPagination);
       }
-      else{
-        this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-      }
-
-   }
-      else {
-      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      
     }
-
-    if((this.statusFilter != undefined && this.statusFilter != "") && 
-    (this.fromDateFilter != undefined && this.fromDateFilter != "")){
-        this.leadsPagination.stageFilter = this.statusFilter;
-       this.leadsPagination.pageIndex = 1;
-     this.filterMode = true;
-     this.filterResponse.isVisible = false;
-     alert(this.statusFilter)
-   
-      this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick to date", true);
-    }
-    else if (this.statusFilter != undefined && this.statusFilter != "" ) {
-      this.leadsPagination.stageFilter = this.statusFilter;
-      this.leadsPagination.pageIndex = 1;
-    this.filterMode = true;
-    this.filterResponse.isVisible = false;
-   this.listLeads(this.leadsPagination);
-   }
-    if((this.statusFilter != undefined && this.statusFilter != "") && 
-   (this.toDateFilter != undefined && this.toDateFilter != "")){
-       this.leadsPagination.stageFilter = this.statusFilter;
-      this.leadsPagination.pageIndex = 1;
-    this.filterMode = true;
-    this.filterResponse.isVisible = false;
-  }
 }
   
 

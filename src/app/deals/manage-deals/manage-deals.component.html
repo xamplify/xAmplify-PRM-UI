@@ -162,7 +162,7 @@
                 </div>
                 <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                   <div class="col-xs-12 col-sm-12">
-                    <div class="portlet light m10"style="height: 215px;">
+                    <div class="portlet light m10">
                       <div class="portlet-title">
                         <div class="caption" translate>Apply Filter</div>
                         <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
@@ -193,14 +193,13 @@
                                 <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
                                   translate>Filter</button>
                               </div> -->
-                              </div>
-                              </div>
+                              
                               <div class="row">
                               <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
                               <label class="control-label" style="padding-right: 5px;">Status &nbsp;</label>
                               <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="statusFilter"
                               [ngModelOptions]="{standalone: true}" >
-                                  <option  disabled>-----Select Status----</option>  
+                                  <option   value="">---Select Status---</option>  
                                 <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
                                 </option>
                               </select>
@@ -208,16 +207,22 @@
                               </div>
                              
                               </div>
-                              <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                              <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
                                 <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                              </div>
+                              </div> -->
 
                             
                           
-                        </form>
+                      
+                        <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                        </div> 
+                      </div>
+                    </div>
+                    </form>
                       </div>
                     </div>                                    
-                  </div>                
+                  </div>               
                 </div>
                 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 </app-list-loader>

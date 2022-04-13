@@ -821,111 +821,47 @@ export class ManageDealsComponent implements OnInit {
   }
 
   validateDateFilters() {
-    if((this.statusFilter != undefined && this.statusFilter != "") &&
-    (this.fromDateFilter != undefined && this.fromDateFilter != "") && 
-    (this.toDateFilter != undefined && this.toDateFilter != "")){
-      var fromDate = Date.parse(this.fromDateFilter);
+    if ((this.statusFilter == undefined || this.statusFilter == "") && 
+    (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
+      (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+  } else { 
+    let validDates = false;   
+    if ((this.fromDateFilter == undefined || this.fromDateFilter == "") 
+      && (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        validDates = true;
+    } else if (this.fromDateFilter != undefined && this.fromDateFilter != "" && 
+      (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+    } else if (this.toDateFilter != undefined && this.toDateFilter != "" && 
+      (this.fromDateFilter == undefined || this.fromDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    } else {
       var toDate = Date.parse(this.toDateFilter);
+      var fromDate = Date.parse(this.fromDateFilter);
       if (fromDate <= toDate) {
+        validDates = true;
         this.dealsPagination.fromDateFilterString = this.fromDateFilter;
         this.dealsPagination.toDateFilterString = this.toDateFilter;
-        this.dealsPagination.stageFilter = this.statusFilter;
-        this.dealsPagination.pageIndex = 1;
-       this.filterMode = true;
-       this.filterResponse.isVisible = false;
-       this.listDeals(this.dealsPagination);
-      }
-      else{
+      } else {
         this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-      }
-
-   }
-      else {
-      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      }        
     }
-    // else{
-    //          this.filterResponse = new CustomResponse('ERROR', "Please pick status", true);
-    // }
-    
 
-    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-      var fromDate = Date.parse(this.fromDateFilter);
-      if (this.toDateFilter != undefined && this.toDateFilter != "") {
-        var toDate = Date.parse(this.toDateFilter);
-        if (fromDate <= toDate) {
-          this.dealsPagination.pageIndex = 1;
-          this.dealsPagination.fromDateFilterString = this.fromDateFilter;
-          this.dealsPagination.toDateFilterString = this.toDateFilter;
-          this.filterMode = true;
-          this.filterResponse.isVisible = false;
-          this.listDeals(this.dealsPagination);
-        } else {
-          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-        }
-      } else {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-      }
-    } else {
-      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    }  
-     if((this.statusFilter != undefined && this.statusFilter != "") && 
-    (this.fromDateFilter != undefined && this.fromDateFilter != "")){
+    if (validDates) {
+      if (this.statusFilter != undefined && this.statusFilter != "") {
         this.dealsPagination.stageFilter = this.statusFilter;
-       this.dealsPagination.pageIndex = 1;
-     this.filterMode = true;
-     this.filterResponse.isVisible = false;
-     alert(this.statusFilter)
-   
-      this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick to date", true);
-    }
-   else if((this.statusFilter != undefined && this.statusFilter != "") && 
-    (this.toDateFilter != undefined && this.toDateFilter != "")){
-    //     this.dealsPagination.stageFilter = this.statusFilter;
-    //    this.dealsPagination.pageIndex = 1;
-    //  this.filterMode = true;
-    //  this.filterResponse.isVisible = false;
-      this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick from date", true);
-    }
-    else if (this.statusFilter != undefined && this.statusFilter != "" ) {
-      this.dealsPagination.stageFilter = this.statusFilter;
-      this.dealsPagination.pageIndex = 1;
-    this.filterMode = true;
-    this.filterResponse.isVisible = false;
-   this.listDeals(this.dealsPagination);
-   }
-   else if(this.statusFilter===""){
-    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-      var fromDate = Date.parse(this.fromDateFilter);
-      if (this.toDateFilter != undefined && this.toDateFilter != "") {
-        var toDate = Date.parse(this.toDateFilter);
-        if (fromDate <= toDate) {
-          this.dealsPagination.pageIndex = 1;
-          this.dealsPagination.fromDateFilterString = this.fromDateFilter;
-          this.dealsPagination.toDateFilterString = this.toDateFilter;
-          this.filterMode = true;
-          this.filterResponse.isVisible = false;
-          this.listDeals(this.dealsPagination);
-        } else {
-          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-        }
-      } else {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
       }
-    } 
-   }
-
-   
-    // if(this.statusFilter != undefined && this.statusFilter != ""){
-    //   if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-    //     var fromDate = Date.parse(this.fromDateFilter);
-        
-    //   }else{
-    //       this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick to date", true);
-    //     }
-    // }
-    // else{
-    //   this.filterResponse = new CustomResponse('ERROR', "Cannot be filtered or Please pick status", true);
-    // }
+      else {
+        this.dealsPagination.stageFilter = "";
+      }
+      this.dealsPagination.pageIndex = 1;
+      this.filterMode = true;
+        this.filterResponse.isVisible = false;
+        this.listDeals(this.dealsPagination);
+    }
+    
+  }
   }
   
   setListView() {
