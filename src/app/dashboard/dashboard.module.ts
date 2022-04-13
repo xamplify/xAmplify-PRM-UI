@@ -74,6 +74,7 @@ import { ShowPrmContentComponent } from './dashboard-analytics-components/show-p
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
 import { FunnelChartAnalyticsComponent } from './dashboard-analytics-components/funnel-chart-analytics/funnel-chart-analytics.component';
 import { PieChartAnalyticsComponent } from './dashboard-analytics-components/pie-chart-analytics/pie-chart-analytics.component';
+import { PieChartStatisticsBarGraphComponent } from './dashboard-analytics-components/pie-chart-statistics-bar-graph/pie-chart-statistics-bar-graph.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -123,7 +124,9 @@ import { PieChartAnalyticsComponent } from './dashboard-analytics-components/pie
         ShowPrmContentComponent,
         EditModuleNameComponent,
         FunnelChartAnalyticsComponent,
-        PieChartAnalyticsComponent
+        PieChartAnalyticsComponent,
+        PieChartStatisticsBarGraphComponent
+       
 
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

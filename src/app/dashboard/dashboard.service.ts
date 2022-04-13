@@ -664,4 +664,11 @@ export class DashboardService {
     .catch(this.handleError);
    }
 
+   getPieChartDealStatisticsWithStageNames(applyFilter:boolean){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsWithStageNames' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
 }

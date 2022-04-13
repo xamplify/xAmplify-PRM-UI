@@ -62,7 +62,7 @@ this.dashboardService.getPieChartStatisticsLeadAnalyticsData(true).subscribe(
   }
   
  loadLeadPieChart(){
-   this.name="Opportunity Based Lead Stats";
+   this.name=" Lead Stats";
 this.loader = true;
 this.dashboardService.getPieChartLeadsAnalyticsData(true).subscribe(
   (response)=>{
@@ -80,7 +80,7 @@ this.dashboardService.getPieChartLeadsAnalyticsData(true).subscribe(
 );
 }
 loadDealPieChart(){
-  this.name="Opportunity Based Deal Stats"; 
+  this.name=" Deal Stats"; 
   this.loader = true;
   this.dashboardService.getPieChartDealsAnalyticsData(true).subscribe(
     (response)=>{
