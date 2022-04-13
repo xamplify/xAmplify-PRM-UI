@@ -176,29 +176,53 @@
                           <div class="form-group">
                             <div class="form-inline col-sm-12 ">
                               <div class="form-group col-sm-4">
-                                <label class="control-label">From Date
-                                  <span class="required">*</span>
+                                <label class="control-label">From Date &nbsp;
+                                  <!-- <span class="required">*</span> -->
                                 </label>
                                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
                               <div class="form-group col-sm-4">
-                                <label class="control-label">To Date
-                                  <span class="required">*</span>
+                                <label class="control-label">To Date &nbsp;
+                                  <!-- <span class="required">*</span> -->
                                 </label>
                                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
-                              <div class="form-group col-sm-4">
+                              <!-- <div class="form-group col-sm-4">
                                 <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
                                   translate>Filter</button>
+                              </div> -->
+                              
+                              <div class="row">
+                              <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                              <label class="control-label" style="padding-right: 5px;">Status &nbsp;</label>
+                              <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="statusFilter"
+                              [ngModelOptions]="{standalone: true}" >
+                                  <option   value="">---Select Status---</option>  
+                                <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
+                                </option>
+                              </select>
+        
                               </div>
-                            </div>
-                          </div>
-                        </form>
+                             
+                              </div>
+                              <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                                <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                              </div> -->
+
+                            
+                          
+                      
+                        <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                        </div> 
+                      </div>
+                    </div>
+                    </form>
                       </div>
                     </div>                                    
-                  </div>                
+                  </div>               
                 </div>
                 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 </app-list-loader>
