@@ -177,6 +177,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	listAssets(pagination: Pagination) {
 		this.referenceService.goToTop();
 		this.startLoaders();
+		this.pagination.type = this.videoFileService.videoType;
 		this.damService.list(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;

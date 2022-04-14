@@ -149,7 +149,7 @@
 								<td class="text-center">{{asset?.assetType}}</td>
 								<td class="text-center"><app-timestamp
 										[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
-								<td class="mAlignView">
+								<td class="mAlignView" *ngIf="videoFileService.videoType!='partnerVideos'">
 									<div
 										[className]="asset?.history ? 'actions-block override-actions mActionWidth ActionAlign':'actions-block override-actions custom-width-icon mActionWidth ActionAlign'" >
 										<ng-container *ngIf="asset?.status=='COMPLETED'">
@@ -244,7 +244,7 @@
 													<td class="text-center">{{asset?.assetType}}</td>
 													<td class="text-center"><app-timestamp
 															[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
-													<td id="actions-row">
+													<td id="actions-row" *ngIf="videoFileService.videoType!='partnerVideos'">
 														<div class="actions-block override-actions custom-width-icon">
 															<a class="mMobileDisable" title="Design" (click)="addOrEdit(asset.id)"> <i
 																class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
