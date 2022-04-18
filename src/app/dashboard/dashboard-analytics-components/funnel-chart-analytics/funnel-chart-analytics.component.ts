@@ -107,7 +107,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
             allowOverlap: false,
             y: 10,
           },
-          center: ["50%", "50%"],
+          center: ["40%", "40%"],
           neckWidth: "30%",
           neckHeight: "25%",
           width: "80%",

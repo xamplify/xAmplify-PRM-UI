@@ -1,6 +1,6 @@
 
 <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="col-xs-12 col-sm-12"  style="padding: 0">
+<!--<div class="col-xs-12 col-sm-12"  style="padding: 0">
     <div class="col-xs-12">
         <div class="portlet light">
             <div class="portlet-title" style="min-height: 0px;">
@@ -20,10 +20,39 @@
                          <strong>No Data Found</strong>
                      </div>
                 </div>
-<div class="highcharts-figure1">
+            </div>
+      <div style="display: inline;">         
+    <span style="margin-left:84px">Status</span>
+    <span style="margin-left:170px">{{statusName}}</span>
+    </div>
+<figure class="highcharts-figure1">
     <div id="container1"></div>
+</figure>
+<button (click)="click()">Deals</button>
+<button (click)="leads()">Leads</button> -->
+
+
+
+
+<div class="portlet-body">
+    <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
+    <ng-container *ngIf="!loader && statusCode!=200">
+        <div class="alert alert-danger">
+          <strong>{{properties?.serverErrorMessage}}</strong>
+        </div>
+      </ng-container>
+      <div [hidden]="loader" *ngIf="funnelChartData?.length==0" style="max-width: 100%;text-align: center;">
+        <div class="alert alert-info">
+             <strong>No Data Found</strong>
+         </div>
+    </div>
 </div>
-</div>
-</div>
-</div>
-</div>
+ <div style="display: inline;">         
+    <span style="margin-left:84px">Status</span>
+    <span style="margin-left:170px">{{statusName}}</span>
+    </div>
+<figure class="highcharts-figure1">
+    <div id="container1"></div>
+</figure>
+<button (click)="click()">Deals</button>
+<button (click)="leads()">Leads</button>

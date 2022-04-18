@@ -636,23 +636,23 @@ export class DashboardService {
     }
    /************Pie chart ********* */
 
-   getPieChartLeadsAnalyticsData(applyFilter:boolean){
-    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsLeadsAnalyticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
-    return this.http.get(url)
+   getPieChartLeadsAnalyticsData(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsLeadsAnalyticsData?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
    }
 
-   getPieChartDealsAnalyticsData(applyFilter:boolean){
-    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsDealsAnalyticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
-    return this.http.get(url)
+   getPieChartDealsAnalyticsData(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsDealsAnalyticsData?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
    }
 
-   getPieChartStatisticsLeadAnalyticsData(applyFilter:boolean){
-    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartStatisticsLeadAnalyticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
-    return this.http.get(url)
+   getPieChartStatisticsLeadAnalyticsData(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartStatisticsLeadAnalyticsData?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
    }
@@ -664,9 +664,16 @@ export class DashboardService {
     .catch(this.handleError);
    }
 
-   getPieChartDealStatisticsWithStageNames(applyFilter:boolean){
-    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsWithStageNames' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
-    return this.http.get(url)
+   getPieChartDealStatisticsWithStageNames(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsWithStageNames?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   getPieChartLeadsStatisticsWithStageNames(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartLeadsStatisticsWithStageNames?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
    }

@@ -4,6 +4,7 @@ import { Properties } from 'app/common/models/properties';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 declare var Highcharts: any;
 @Component({
   selector: 'app-pie-chart-analytics',
@@ -16,13 +17,25 @@ export class PieChartAnalyticsComponent implements OnInit {
  
   loader = false;
   statusCode = 200;
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  loggedInUserId: number = 0;
+  vanityLogin = false;
   @Input()applyFilter:boolean;
-  funnelChartsAnalyticsData:any;
   name:any;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
-    public router: Router) { }
-
+    public router: Router) {
+      this.loggedInUserId = this.authenticationService.getUserId();
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      let companyProfileName = this.authenticationService.companyProfileName;
+      if (companyProfileName !== undefined && companyProfileName !== "") {
+        this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+        this.vanityLoginDto.vanityUrlFilter = true;
+        this.vanityLogin = true;
+      }
+    }
+ 
   ngOnInit() {
+    this.vanityLoginDto.applyFilter = this.applyFilter;
     this.loadDealPieChart();
   }
   click(){
@@ -38,6 +51,7 @@ this.dashboardService.getPieChartStatisticsDealData(true).subscribe(
   (response) =>{
     this.pieChartStatisticsData=response.data;
     this.loader =false;
+  
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -48,7 +62,7 @@ this.dashboardService.getPieChartStatisticsDealData(true).subscribe(
   }
   loadStatisticsLeadData(){
     this.loader = true;
-this.dashboardService.getPieChartStatisticsLeadAnalyticsData(true).subscribe(
+this.dashboardService.getPieChartStatisticsLeadAnalyticsData(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartStatisticsData=response.data;
     this.loader =false;
@@ -64,13 +78,14 @@ this.dashboardService.getPieChartStatisticsLeadAnalyticsData(true).subscribe(
  loadLeadPieChart(){
    this.name=" Lead Stats";
 this.loader = true;
-this.dashboardService.getPieChartLeadsAnalyticsData(true).subscribe(
+this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscribe(
   (response)=>{
     this.pieChartData=response.data;
   
   this.loader = false;
   this.loadChart(this.pieChartData);
   this.loadStatisticsLeadData();
+
 },
 (error) => {
   this.xtremandLogger.error(error);
@@ -82,7 +97,7 @@ this.dashboardService.getPieChartLeadsAnalyticsData(true).subscribe(
 loadDealPieChart(){
   this.name=" Deal Stats"; 
   this.loader = true;
-  this.dashboardService.getPieChartDealsAnalyticsData(true).subscribe(
+  this.dashboardService.getPieChartDealsAnalyticsData(this.vanityLoginDto).subscribe(
     (response)=>{
       this.pieChartData=response.data;
     

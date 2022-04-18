@@ -14,7 +14,7 @@
                       <strong>{{properties?.serverErrorMessage}}</strong>
                     </div>
                   </ng-container>
-                  <div [hidden]="loader" *ngIf="funnelChartData?.length==0" style="max-width: 100%;text-align: center;">
+                  <div [hidden]="loader" *ngIf="pieChartData?.length==0" style="max-width: 100%;text-align: center;">
                     <div class="alert alert-info">
                          <strong>No Data Found</strong>
                      </div>
@@ -28,27 +28,25 @@
 <div class="row" style="display: flex">
     <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 0px;">
         <div class="portlet light">
-    <div *ngFor="let item of pieChartStatisticsData[0]" id="item{{0}}" style="width: max-content;">{{item}}</div>
+    <div *ngFor="let item of pieChartStatisticsData[0]" id="item{{0}}" style="font-weight: bold;width: max-content;">{{item}}</div>
     </div>
     </div>
     <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 8px;">
         <div class="portlet light">
-    <div *ngFor="let item of pieChartStatisticsData[1]" id="item{{1}}" style="width: max-content;">{{item}}</div>
+    <div *ngFor="let item of pieChartStatisticsData[1]" id="item{{1}}" style="font-weight: bold;width: max-content;">{{item}}</div>
     </div>
     </div>
     <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-left: 8px;">
         <div class="portlet light">
-    <div *ngFor="let item of pieChartStatisticsData[2]" id="item{{2}}" style="width: max-content;">{{item}}</div>
+    <div *ngFor="let item of pieChartStatisticsData[2]" id="item{{2}}" style="font-weight: bold;width: max-content;">{{item}}</div>
     </div>
     </div>
 
 </div>
+<app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph>
 </div>
 
 </div>
 </div>
-<div>
-                   
-    <app-pie-chart-statistics-bar-graph></app-pie-chart-statistics-bar-graph>
-</div>
+
 </div>
