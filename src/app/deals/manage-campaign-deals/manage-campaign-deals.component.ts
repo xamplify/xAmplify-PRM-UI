@@ -44,6 +44,8 @@ export class ManageCampaignDealsComponent implements OnInit {
   filterResponse: CustomResponse = new CustomResponse(); 
   filterMode: boolean = false;
   selectedFilterIndex: number = 1;
+  stageNamesForFilterDropDown :any;
+  statusFilter: any = "";
 
   constructor(public authenticationService: AuthenticationService,
     private dealsService: DealsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -82,6 +84,7 @@ export class ManageCampaignDealsComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
             this.dealsSortOption.totalRecords = response.data.totalRecords;
+            this.getStageNames();
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
         },
         error => {
@@ -247,6 +250,13 @@ export class ManageCampaignDealsComponent implements OnInit {
   mapInput.setAttribute("value", this.dealsPagination.toDateFilterString);
   mapForm.appendChild(mapInput);
 
+  //stageFilter 
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "stageName";
+  mapInput.setAttribute("value", this.dealsPagination.stageFilter);
+  mapForm.appendChild(mapInput);
+
   // campaignId
   var mapInput = document.createElement("input");
   mapInput.type = "hidden";
@@ -290,9 +300,11 @@ toggleFilterOption() {
   this.showFilterOption = !this.showFilterOption;    
   this.fromDateFilter = "";
   this.toDateFilter = "";
+  this.statusFilter = "";
   if (!this.showFilterOption) {
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
+    this.dealsPagination.stageFilter = "";
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
@@ -308,8 +320,10 @@ closeFilterOption() {
   this.showFilterOption = false;
   this.fromDateFilter = "";
   this.toDateFilter = ""; 
+  this.statusFilter = "";
   this.dealsPagination.fromDateFilterString = "";
   this.dealsPagination.toDateFilterString = "";
+  this.dealsPagination.stageFilter = "";
   this.filterResponse.isVisible = false;
   if (this.filterMode) {
     this.dealsPagination.pageIndex = 1;
@@ -319,26 +333,51 @@ closeFilterOption() {
 }
 
 validateDateFilters() {
-  if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-    var fromDate = Date.parse(this.fromDateFilter);
-    if (this.toDateFilter != undefined && this.toDateFilter != "") {
+  if ((this.statusFilter == undefined || this.statusFilter == "") && 
+    (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
+      (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+  } else { 
+    let validDates = false;   
+    if ((this.fromDateFilter == undefined || this.fromDateFilter == "") 
+      && (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        validDates = true;
+    } else if (this.fromDateFilter != undefined && this.fromDateFilter != "" && 
+      (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+    } else if (this.toDateFilter != undefined && this.toDateFilter != "" && 
+      (this.fromDateFilter == undefined || this.fromDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    } else {
       var toDate = Date.parse(this.toDateFilter);
+      var fromDate = Date.parse(this.fromDateFilter);
+
       if (fromDate <= toDate) {
-        this.dealsPagination.pageIndex = 1;
+        validDates = true;
         this.dealsPagination.fromDateFilterString = this.fromDateFilter;
         this.dealsPagination.toDateFilterString = this.toDateFilter;
-        this.filterMode = true;
-        this.filterResponse.isVisible = false;
-        this.listCampaignDeals(this.dealsPagination);
+        // this.listCampaignLeads(this.leadsPagination);
+       
       } else {
         this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-      }
-    } else {
-      this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      }        
     }
-  } else {
-    this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-  }    
+
+    if (validDates) {
+      if (this.statusFilter != undefined && this.statusFilter != "") {
+        this.dealsPagination.stageFilter = this.statusFilter;
+        // this.listCampaignLeads(this.leadsPagination);
+      }
+      else {
+        this.dealsPagination.stageFilter = "";
+      }
+      this.dealsPagination.pageIndex = 1;
+      this.filterMode = true;
+        this.filterResponse.isVisible = false;
+        this.listCampaignDeals(this.dealsPagination);
+    }
+    
+  }
 }
 
 clearSearch() {
@@ -376,5 +415,19 @@ setDealStatus(deal: Deal) {
       () => { }
     );
 }
-
+getStageNames(){
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.dealsService.getStageNamesForPartner(this.loggedInUserId)
+  .subscribe(
+    response =>{
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.stageNamesForFilterDropDown = response;
+     // alert(this.stageNamesForFilterDropDown)
+    },
+    error=>{
+      this.httpRequestLoader.isServerError = true;
+    },
+    ()=> { }
+  );
+}
 }
