@@ -67,7 +67,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-    this.showSandboxText = ("https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled);
+    this.showSandboxText = (("https://xamplify.co/"==envService.CLIENT_URL||"http://localhost:4200/"==envService.CLIENT_URL) && !this.authenticationService.vanityURLEnabled);
     
 }
 

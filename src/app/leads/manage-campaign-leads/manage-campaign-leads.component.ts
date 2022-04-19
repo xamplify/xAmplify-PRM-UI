@@ -67,7 +67,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
         } else {
           this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
         }  
-        alert("ok");      
+        // alert("ok");      
         this.listCampaignLeads(this.leadsPagination);        
     }
 
@@ -95,6 +95,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
             pagination.totalRecords = response.data.totalRecords;
             this.leadsSortOption.totalRecords = response.data.totalRecords;
             this.getStageNames();
+            this.getStageNamesForPartner();
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
         },
         error => {
@@ -407,6 +408,21 @@ getSelectedIndex(index:number){
 getStageNames(){
   this.referenceService.loading(this.httpRequestLoader, true);
   this.leadsService.getStageNamesForVendor(this.loggedInUserId)
+  .subscribe(
+    response =>{
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.stageNamesForFilterDropDown = response;
+     // alert(this.stageNamesForFilterDropDown)
+    },
+    error=>{
+      this.httpRequestLoader.isServerError = true;
+    },
+    ()=> { }
+  );
+}
+getStageNamesForPartner(){
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.leadsService.getStageNamesForPartner(this.loggedInUserId)
   .subscribe(
     response =>{
       this.referenceService.loading(this.httpRequestLoader, false);

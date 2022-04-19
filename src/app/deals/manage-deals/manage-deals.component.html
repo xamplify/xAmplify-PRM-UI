@@ -131,7 +131,7 @@
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
                       </ng-container>
-                      <a *ngIf="isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany" (click)="addDeal()" style="padding-left: 11px;">
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addDeal()" style="padding-left: 11px;">
                         <button class="btn btn-primary" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
                         </button>
@@ -295,25 +295,25 @@
                             </td>
                             <td style="width: 30%;">
                               <div class="actions-block override-actions">
-                                <ng-container>
                                   <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
                                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
                                     <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default"
                                       style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                   </a>
-                                  <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
-                                    id="deal">
-                                    <i class="fa fa-edit mr5" aria-hidden="true"></i>
-                                  </a>
-                                  <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
-                                    title="Delete Deal" id="deal">
-                                    <i class="fa fa-trash mr5" aria-hidden="true"></i>
-                                  </a>
-                                  <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
-                                    <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
-                                    <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
-                                      style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
-                                  </a>
+                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
+                                      id="deal">
+                                      <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                                    </a>
+                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
+                                      title="Delete Deal" id="deal">
+                                      <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                    </a>
+                                    <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
+                                      <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
+                                      <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
+                                        style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
+                                    </a>
                                 </ng-container>
                               </div>
                               <!-- <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"
