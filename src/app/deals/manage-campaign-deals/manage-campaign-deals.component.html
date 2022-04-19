@@ -158,10 +158,10 @@
             </td>
             <td style="width: 30%;">
               <div class="actions-block override-actions">
-                <ng-container>
                   <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
                   </a>
+                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                   <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
                     id="deal">
                     <i class="fa fa-edit mr5" aria-hidden="true"></i>
