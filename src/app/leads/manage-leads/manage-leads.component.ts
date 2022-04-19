@@ -341,6 +341,7 @@ export class ManageLeadsComponent implements OnInit {
       this.fromDateFilter;
       this.listLeadsForVendor(pagination);
     } else if (this.isPartnerVersion) {
+      this.stageNamesForPartner();
       this.listLeadsForPartner(pagination);
     }
   }
@@ -1028,7 +1029,22 @@ export class ManageLeadsComponent implements OnInit {
         () => { }
       );
   }
- 
+  stageNamesForPartner(){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getStageNamesForPartner(this.loggedInUserId)
+    .subscribe(
+      response =>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.stageNamesForFilterDropDown = response;
+
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    ); 
+  }
+  
 
   
 }
