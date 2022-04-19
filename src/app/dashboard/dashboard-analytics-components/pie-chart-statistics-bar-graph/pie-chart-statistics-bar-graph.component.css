@@ -5,28 +5,27 @@
 }
 
 #container1 {
-    height: 180px;
+    height: 170px;
 }
 
 .highcharts-data-table table {
     font-family: Verdana, sans-serif;
     border-collapse: collapse;
     border: 1px solid #ebebeb;
-    margin: 10px auto;
     text-align: center;
     width: 100%;
     max-width: 500px;
 }
 
 .highcharts-data-table caption {
-    padding: 1em 0;
+    /* padding: 1em 0; */
     font-size: 1.2em;
     color: #555;
 }
 
 .highcharts-data-table th {
     font-weight: 600;
-    padding: 0.5em;
+    /* padding: 0.5em; */
 }
 
 .highcharts-data-table td,

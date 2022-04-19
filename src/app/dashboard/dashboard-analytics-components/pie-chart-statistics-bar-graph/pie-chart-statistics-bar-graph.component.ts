@@ -49,9 +49,16 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
 this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartGraphData=response.data;
+    if(this.pieChartGraphData.length === 0){
+      this.pieChartGraphData.length = 0;
+      this.loader =false;
+    }
+    else{
+    this.statusCode=200;
 console.log(this.pieChartGraphData)
     this.loader =false;
     this.loadGraph(this.pieChartGraphData)
+    }
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -68,9 +75,16 @@ console.log(this.pieChartGraphData)
 this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartGraphData=response.data;
+    if(this.pieChartGraphData.length === 0){
+      this.pieChartGraphData.length = 0;
+      this.loader =false;
+    }
+    else{
+    this.statusCode=200;
 console.log(this.pieChartGraphData)
     this.loader =false;
     this.loadGraph(this.pieChartGraphData)
+    }
   },
   (error) => {
     this.xtremandLogger.error(error);

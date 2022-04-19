@@ -657,9 +657,9 @@ export class DashboardService {
     .catch(this.handleError);
    }
 
-   getPieChartStatisticsDealData(applyFilter:boolean){
-    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
-    return this.http.get(url)
+   getPieChartStatisticsDealData(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsData?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
    }

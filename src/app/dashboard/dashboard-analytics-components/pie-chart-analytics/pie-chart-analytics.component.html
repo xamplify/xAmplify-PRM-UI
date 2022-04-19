@@ -1,7 +1,7 @@
 <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="col-xs-12 col-sm-12"  style="padding: 0">
     <div class="col-xs-12">
-        <div class="portlet light">
+        <div class="portlet light" style="height: 600px;">
             <div class="portlet-title" style="min-height: 0px;">
                 <div class="caption">
                     <span class="caption-subject" translate>{{name}}</span>
@@ -14,39 +14,59 @@
                       <strong>{{properties?.serverErrorMessage}}</strong>
                     </div>
                   </ng-container>
-                  <div [hidden]="loader" *ngIf="pieChartData?.length==0" style="max-width: 100%;text-align: center;">
+                  <div [hidden]="loader" *ngIf="pieChartData?.length < 1" style="max-width: 100%;text-align: center;">
                     <div class="alert alert-info">
                          <strong>No Data Found</strong>
                      </div>
                 </div>
                 <button (click)="click()">Deals</button>
                 <button (click)="leads()">Leads</button>
-<div class="highcharts-figure">
-    <div id="container"></div>
-   
+                <div [hidden]="loader" class="highcharts-figure-pie">
+                    <div  id="container">
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="col-xs-4 col-sm-4">
+                                <div class="details">
+                                    <div class="number" style="color: #f36360; margin-top: 5px;">
+                                     <b> <span class="email-action-desscription">{{app[0]}}</span></b>
+                                            <br>
+                                            {{al[0]}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="row" style="display: flex">
+                        <div  class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 0px;">
+                            <div class="portlet light">
+                        <div  style="width: max-content;">
+                                           <b>{{opp[0]}}</b>
+                                <br>
+                                <span>{{al[0]}}</span>
+                        </div>
+                        </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 8px;">
+                            <div class="portlet light">
+                        <div  style="width: max-content;"> <b>{{opp[1]}}</b>
+                            <br>
+                            <span>{{al[1]}}</span></div>
+                        </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-left: 8px;">
+                            <div class="portlet light">
+                        <!-- <div style="font-weight: bold;">Latest Deal Time</div> -->
+                        <div style="width: max-content;"> <b>{{opp[2]}}</b>
+                            <br>
+                            <span>{{al[2]}}</span></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="row" style="display: flex">
-    <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 0px;">
-        <div class="portlet light">
-    <div *ngFor="let item of pieChartStatisticsData[0]" id="item{{0}}" style="font-weight: bold;width: max-content;">{{item}}</div>
-    </div>
-    </div>
-    <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 8px;">
-        <div class="portlet light">
-    <div *ngFor="let item of pieChartStatisticsData[1]" id="item{{1}}" style="font-weight: bold;width: max-content;">{{item}}</div>
-    </div>
-    </div>
-    <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-left: 8px;">
-        <div class="portlet light">
-    <div *ngFor="let item of pieChartStatisticsData[2]" id="item{{2}}" style="font-weight: bold;width: max-content;">{{item}}</div>
-    </div>
-    </div>
 
-</div>
-<app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph>
-</div>
-
-</div>
-</div>
-
-</div>

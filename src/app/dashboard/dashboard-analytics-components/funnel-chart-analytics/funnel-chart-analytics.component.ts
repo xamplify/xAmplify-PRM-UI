@@ -51,8 +51,14 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.funnelChartData = response.data;
+          if(this.funnelChartData.length === 0){
+            this.funnelChartData.length =0;
+            this.loader = false;
+          }else{
+          this.statusCode=200;
           this.loader = false;
           this.loadChart(this.funnelChartData);
+          }
         },
         (error) => {
           this.xtremandLogger.error(error);

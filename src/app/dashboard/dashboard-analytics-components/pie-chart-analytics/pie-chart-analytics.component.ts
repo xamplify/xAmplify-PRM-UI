@@ -22,6 +22,8 @@ export class PieChartAnalyticsComponent implements OnInit {
   vanityLogin = false;
   @Input()applyFilter:boolean;
   name:any;
+  opp:any=[];
+  al:any=[]
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -47,9 +49,14 @@ export class PieChartAnalyticsComponent implements OnInit {
   
   loadStatisticsDealData(){
     this.loader = true;
-this.dashboardService.getPieChartStatisticsDealData(true).subscribe(
+this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartStatisticsData=response.data;
+    
+    this.statusCode=200;
+    this.opp=this.pieChartStatisticsData.map(i=>i[0])
+    this.al=this.pieChartStatisticsData.map(i=>i[1])
+   
     this.loader =false;
   
   },
@@ -65,6 +72,9 @@ this.dashboardService.getPieChartStatisticsDealData(true).subscribe(
 this.dashboardService.getPieChartStatisticsLeadAnalyticsData(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartStatisticsData=response.data;
+    this.opp=this.pieChartStatisticsData.map(i=>i[0])
+    this.al=this.pieChartStatisticsData.map(i=>i[1])
+   
     this.loader =false;
   },
   (error) => {
@@ -81,10 +91,16 @@ this.loader = true;
 this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscribe(
   (response)=>{
     this.pieChartData=response.data;
-  
+    if(this.pieChartData.length === 0){
+      this.pieChartData.length=0;
+      this.loader = false;
+    }
+    else{
+  this.statusCode=200;
   this.loader = false;
   this.loadChart(this.pieChartData);
   this.loadStatisticsLeadData();
+    }
 
 },
 (error) => {
@@ -100,10 +116,16 @@ loadDealPieChart(){
   this.dashboardService.getPieChartDealsAnalyticsData(this.vanityLoginDto).subscribe(
     (response)=>{
       this.pieChartData=response.data;
-    
+      if(this.pieChartData.length === 0){
+        this.pieChartData.length=0;
+        this.loader = false;
+      }
+      else{
+    this.statusCode=200;
     this.loader = false;
     this.loadChart(this.pieChartData);
     this.loadStatisticsDealData();
+      }
   },
   (error) => {
     this.xtremandLogger.error(error);
