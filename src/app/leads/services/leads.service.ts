@@ -161,6 +161,11 @@ export class LeadsService {
     .catch(this.handleError);
   }
 
+  getStageNamesForPartner(userId:number){
+    return this.http.get(this.URL + `/list/p/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
   private extractData(res: Response) {
     let body = res.json();
     return body || {};

@@ -67,7 +67,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
         } else {
           this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
         }  
-        alert("ok");      
+        // alert("ok");      
         this.listCampaignLeads(this.leadsPagination);        
     }
 
