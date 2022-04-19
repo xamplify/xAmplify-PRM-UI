@@ -134,7 +134,7 @@
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
                 <div class="page-bar m10">
-                  <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion">
+                  <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany">
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
                       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>
@@ -157,7 +157,7 @@
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
 
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin) && !authenticationService?.module?.deletedPartner" (click)="addLead()" style="padding-left: 11px;">
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addLead()" style="padding-left: 11px;">
                         <button class="btn btn-primary" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Lead
                         </button>
