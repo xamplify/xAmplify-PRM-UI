@@ -60,10 +60,10 @@
 							<!-- // -->
 			       <div class="col-xs-12" style="margin: 2px -18px;"  >
                    <ul class="mix-filter">
-                      <li class="filter" (click)="getVideoTypes('myVideos')" [class.selectedtype]="videoFileService.videoType === 'myVideos'">
+                      <li class="filter" (click)="listAssetsByType('myVideos')" [class.selectedtype]="videoFileService.videoType === 'myVideos'">
                           My Videos
                       </li>
-                      <li class="filter" (click)="getVideoTypes('partnerVideos')" [class.selectedtype]="videoFileService.videoType === 'partnerVideos'">
+                      <li class="filter" (click)="listAssetsByType('partnerVideos')" [class.selectedtype]="videoFileService.videoType === 'partnerVideos'">
                         Partner Videos
                     </li>
                     </ul>
@@ -93,7 +93,8 @@
 									*ngIf="isPartnerView">Published On</th>
 								<th class="text-center" style="width: 10%" scope="row" translate
 									*ngIf="!isPartnerView">Created On</th>
-								<th class="text-center" id="min-width" style="width: 30%;" translate>Actions</th>
+								<th *ngIf="videoFileService.videoType!='partnerVideos'" class="text-center" id="min-width" style="width: 30%;" translate>Actions</th>
+								<th *ngIf="videoFileService.videoType=='partnerVideos'" class="text-center" id="min-width" style="width: 30%;" translate></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -196,6 +197,7 @@
 									 </ng-container>
 									</div>
 								</td>
+								<td class="mAlignView" *ngIf="videoFileService.videoType=='partnerVideos'"></td>
 							</tr>
 							<tr [ngClass]="{'hidden': !asset?.expand}">
 								<td [attr.colspan]="colspanValue">

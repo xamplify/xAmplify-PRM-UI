@@ -72,7 +72,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.vanityLoginDto.userId = this.loggedInUserId;
 			this.vanityLoginDto.vanityUrlFilter = true;
 		}
-		this.videoFileService.videoType ='myVideos'
+		this.videoFileService.videoType ='myVideos';
 	}
 
 	ngOnInit() {
@@ -151,6 +151,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.pagination.userId = this.loggedInUserId;
+							this.pagination.type = this.videoFileService.videoType;
 							this.listAssets(this.pagination);
 						}
 					}
@@ -177,7 +178,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	listAssets(pagination: Pagination) {
 		this.referenceService.goToTop();
 		this.startLoaders();
-		this.pagination.type = this.videoFileService.videoType;
 		this.damService.list(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
@@ -278,6 +278,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listPublishedAssets(this.pagination);
 		} else {
 			this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
+			this.pagination.type = this.videoFileService.videoType;
 			this.listAssets(this.pagination);
 		}
 
@@ -611,8 +612,15 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
         return false;
     }
     
-    getVideoTypes(videoType : string){
-    	
+    listAssetsByType(videoType: string) {
+        this.pagination.pageIndex = 1;
+        this.pagination.maxResults = 12;
+        this.pagination.type = videoType;
+        this.videoFileService.videoType =videoType;
+        this.pagination.userId = this.loggedInUserId;
+        this.sortOption.searchKey = null;
+        this.pagination.searchKey = this.sortOption.searchKey;
+        this.listAssets(this.pagination);
     }
 
 
