@@ -214,7 +214,7 @@
                 </ng-container>
     
                     <!------Regional Statistics, Video Statistics & Email Stats--------------->
-                    <div class="portlet light" style="margin-left: 13px;width: 1067px;height: 619px;">
+                    <!-- <div class="portlet light" style="margin-left: 13px;width: 1067px;height: 619px;">
                         <div class="portlet-title">
                             <div class="caption">
                                 <i class="fa fa-bar-chart" aria-hidden="true"></i>
@@ -224,13 +224,13 @@
         
                     <div class="clearfix">
                         <app-funnel-chart-analytics [applyFilter]="applyFilter"></app-funnel-chart-analytics>
-                        <!----Video Statistics--------->
+                    
                         <div style="float:right">
                             <app-pie-chart-analytics [applyFilter]="applyFilter"></app-pie-chart-analytics>
-                            <!-- <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> -->
+                            <!-- <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> --
                         </div>
                     </div>
-                </div>
+                </div> -->
         
                 <!------------funnel and pie-->
                  <!-- <div class="col-xs-12 col-sm-12 col-lg-12">
@@ -314,8 +314,25 @@
             </div>
         </div>
         <app-social-accounts-analytics></app-social-accounts-analytics>
-
+   
     </ng-container>
+    <div class="portlet light" style="margin-left: 13px;width: 1067px;height: 619px;">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                <span class="caption-subject" translate>Opportunity Stats</span>
+            </div>
+        </div>
+
+    <div class="clearfix">
+        <app-funnel-chart-analytics [applyFilter]="applyFilter"></app-funnel-chart-analytics>
+        <!----Video Statistics--------->
+        <div style="float:right">
+            <app-pie-chart-analytics [applyFilter]="applyFilter"></app-pie-chart-analytics>
+            <!-- <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> -->
+        </div>
+    </div>
+</div>
 </div>
 
 <!-- Deal Form-->
