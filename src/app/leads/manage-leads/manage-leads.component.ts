@@ -1045,6 +1045,4 @@ export class ManageLeadsComponent implements OnInit {
     ); 
   }
   
-
-  
 }

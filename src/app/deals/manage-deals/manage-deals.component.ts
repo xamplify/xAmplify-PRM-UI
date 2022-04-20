@@ -927,5 +927,19 @@ export class ManageDealsComponent implements OnInit {
       ()=> { }
     ); 
   }
-  
+  stageNamesOfVendor(){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getStageNamesOfVendor(this.loggedInUserId)
+    .subscribe(
+      response =>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.stageNamesForFilterDropDown = response;
+
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    ); 
+  }
 }

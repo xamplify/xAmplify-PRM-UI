@@ -158,4 +158,19 @@ getConversation(dealId:number, userId:number) {
     .map(this.extractData)
     .catch(this.handleError);
   }
+  getStageNamesOfVendor(userId:number) {
+    return this.http.get(this.URL + `/list/vendor/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+  getStageNamesForVendorInCampaign(userId: number){
+    return this.http.get(this.URL + `campaign/deal/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+  getStageNamesForPartnerInCampaign(userId: number){
+    return this.http.get(this.URL + `campaign/deal/list/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
 }
