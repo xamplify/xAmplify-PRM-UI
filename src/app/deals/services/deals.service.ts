@@ -164,7 +164,7 @@ getConversation(dealId:number, userId:number) {
     .catch(this.handleError);
   }
   getStageNamesForVendorInCampaign(userId: number){
-    return this.http.get(this.URL + `campaign/deal/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    return this.http.get(this.URL + `/list/partner/stages/${userId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
   }
