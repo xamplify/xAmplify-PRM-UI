@@ -23,6 +23,7 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
   vanityLogin = false;
+  show:boolean = false;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {this.loggedInUserId = this.authenticationService.getUserId();
       this.vanityLoginDto.userId = this.loggedInUserId;
@@ -49,21 +50,17 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
 this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartGraphData=response.data;
-    if(this.pieChartGraphData.length === 0){
-      this.pieChartGraphData.length = 0;
-      this.loader =false;
-    }
-    else{
+  
     this.statusCode=200;
 console.log(this.pieChartGraphData)
     this.loader =false;
     this.loadGraph(this.pieChartGraphData)
-    }
   },
   (error) => {
     this.xtremandLogger.error(error);
     this.loader = false;
     this.statusCode = 0;
+    this.show=true;
   }
 )
   }
@@ -75,20 +72,17 @@ console.log(this.pieChartGraphData)
 this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartGraphData=response.data;
-    if(this.pieChartGraphData.length === 0){
-      this.pieChartGraphData.length = 0;
-      this.loader =false;
-    }
-    else{
+   
     this.statusCode=200;
 console.log(this.pieChartGraphData)
     this.loader =false;
     this.loadGraph(this.pieChartGraphData)
-    }
+
   },
   (error) => {
     this.xtremandLogger.error(error);
     this.loader = false;
+    this.show=true;
     this.statusCode = 0;
   }
 )

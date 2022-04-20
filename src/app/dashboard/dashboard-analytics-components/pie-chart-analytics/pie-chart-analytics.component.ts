@@ -22,8 +22,9 @@ export class PieChartAnalyticsComponent implements OnInit {
   vanityLogin = false;
   @Input()applyFilter:boolean;
   name:any;
-  opp:any=[];
-  al:any=[]
+  opportunityName:any=[];
+  opportunityValue:any=[]
+  show:boolean=false;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -52,17 +53,16 @@ export class PieChartAnalyticsComponent implements OnInit {
 this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartStatisticsData=response.data;
-    
-    this.statusCode=200;
-    this.opp=this.pieChartStatisticsData.map(i=>i[0])
-    this.al=this.pieChartStatisticsData.map(i=>i[1])
-   
-    this.loader =false;
   
+    this.statusCode=200;
+    this.opportunityName=this.pieChartStatisticsData.map(i=>i[0])
+    this.opportunityValue=this.pieChartStatisticsData.map(i=>i[1])
+    this.loader =false;
   },
   (error) => {
     this.xtremandLogger.error(error);
     this.loader = false;
+    this.show=true;
     this.statusCode = 0;
   }
 )
@@ -72,15 +72,15 @@ this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscri
 this.dashboardService.getPieChartStatisticsLeadAnalyticsData(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartStatisticsData=response.data;
-    this.opp=this.pieChartStatisticsData.map(i=>i[0])
-    this.al=this.pieChartStatisticsData.map(i=>i[1])
-   
+    this.opportunityName=this.pieChartStatisticsData.map(i=>i[0])
+    this.opportunityValue=this.pieChartStatisticsData.map(i=>i[1])
     this.loader =false;
   },
   (error) => {
     this.xtremandLogger.error(error);
     this.loader = false;
     this.statusCode = 0;
+    this.show=true;
   }
 );
   }
@@ -91,22 +91,18 @@ this.loader = true;
 this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscribe(
   (response)=>{
     this.pieChartData=response.data;
-    if(this.pieChartData.length === 0){
-      this.pieChartData.length=0;
-      this.loader = false;
-    }
-    else{
+   
   this.statusCode=200;
   this.loader = false;
   this.loadChart(this.pieChartData);
   this.loadStatisticsLeadData();
-    }
 
 },
 (error) => {
   this.xtremandLogger.error(error);
   this.loader = false;
   this.statusCode = 0;
+  this.show=true;
 }
 );
 }
@@ -116,21 +112,17 @@ loadDealPieChart(){
   this.dashboardService.getPieChartDealsAnalyticsData(this.vanityLoginDto).subscribe(
     (response)=>{
       this.pieChartData=response.data;
-      if(this.pieChartData.length === 0){
-        this.pieChartData.length=0;
-        this.loader = false;
-      }
-      else{
+     
     this.statusCode=200;
     this.loader = false;
     this.loadChart(this.pieChartData);
     this.loadStatisticsDealData();
-      }
   },
   (error) => {
     this.xtremandLogger.error(error);
     this.loader = false;
     this.statusCode = 0;
+    this.show=true;
   }
   );
 }
