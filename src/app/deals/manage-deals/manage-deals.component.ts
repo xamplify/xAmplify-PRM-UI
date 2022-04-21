@@ -552,29 +552,34 @@ export class ManageDealsComponent implements OnInit {
 //   }
 // }
 
-  setDealStatus(deal: Deal) {
-    this.referenceService.loading(this.httpRequestLoader, true);
-    let request: Deal = new Deal();
-    request.id = deal.id;
-    request.pipelineStageId = deal.pipelineStageId;
-    request.userId = this.loggedInUserId;
-    this.dealsService.changeDealStatus(request)
-      .subscribe(
-        response => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          if (response.statusCode == 200) {
-            this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
-           // this.getCounts();
-            this.showDeals();
-          } else if (response.statusCode == 500) {
-            this.dealsResponse = new CustomResponse('ERROR', response.message, true);
-          }
-        },
-        error => {
-          this.httpRequestLoader.isServerError = true;
-        },
-        () => { }
-      );
+  setDealStatus(deal: Deal,deletedPartner:boolean) {
+    if(!deletedPartner){
+      this.referenceService.loading(this.httpRequestLoader, true);
+      let request: Deal = new Deal();
+      request.id = deal.id;
+      request.pipelineStageId = deal.pipelineStageId;
+      request.userId = this.loggedInUserId;
+      this.dealsService.changeDealStatus(request)
+        .subscribe(
+          response => {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            if (response.statusCode == 200) {
+              this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
+             // this.getCounts();
+              this.showDeals();
+            } else if (response.statusCode == 500) {
+              this.dealsResponse = new CustomResponse('ERROR', response.message, true);
+            }
+          },
+          error => {
+            this.httpRequestLoader.isServerError = true;
+          },
+          () => { }
+        );
+    }else{
+      this.referenceService.showSweetAlert("This Option Is Not Available","","info");
+    }
+    
   }
 
   showPartners(campaign: any) {
@@ -592,6 +597,7 @@ export class ManageDealsComponent implements OnInit {
           this.partnerPagination = new Pagination;
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
           this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+          this.partnerSortOption.searchKey = "";
           this.listPartnersForCampaign(this.partnerPagination);
         }
       } else {

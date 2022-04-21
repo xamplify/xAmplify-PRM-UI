@@ -112,11 +112,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         try{
         const roles = this.authenticationService.user.roles.map(function(a) {return a.roleName;});
         if(url.indexOf(this.emailTemplateBaseUrl)>-1){
-            console.log("In email templats");
             return this.authorizeUrl(roles, url, this.emailTemplateBaseUrl);
         }
         if(url.indexOf("/home/contacts/")>-1){
-            return this.authorizeUrl(roles, url, this.contactBaseUrl);
+            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && url.indexOf("home/contacts/manage")>-1){
+                return true;
+            }else{
+                return this.authorizeUrl(roles, url, this.contactBaseUrl);
+            }
         }
         if(url.indexOf("/home/partners/")>-1){
             return this.authorizeUrl(roles, url, this.partnerBaseUrl);
@@ -128,10 +131,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.authorizeUrl(roles, url, this.videoBaseUrl);
         }
         if(url.indexOf(this.campaignBaseUrl)>-1){
-            return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && (url.indexOf("home/campaigns/manage")>-1 || url.indexOf("home/campaigns/calendar")>-1)){
+                return true;
+            }else{
+                return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+            }
         }
         if(url.indexOf(this.teamBaseUrl)>-1){
-            return this.authorizeUrl(roles, url, this.teamBaseUrl);
+            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1){
+                return true;
+            }else{
+                return this.authorizeUrl(roles, url, this.teamBaseUrl);
+            }
+            
         }
         if(url.indexOf(this.socialBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.socialBaseUrl);

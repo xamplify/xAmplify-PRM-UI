@@ -169,7 +169,7 @@
 								{{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
-                            <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
+                            <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
                                 <a (click)="goToRouter('/home/dashboard/myprofile')" translate>
                                      <i class="icon-user"></i> 
                                     My Profile
@@ -188,7 +188,7 @@
 										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
                                 <a (click)="goToRouter('/home/social/manage/all')"  translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                             </li>
-                            <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany">
+                            <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                                 <ng-container *ngFor="let dashboardType of dashboardTypes">
                                     <li (click)="navigateToDashboardType(dashboardType)">
                                         <a>

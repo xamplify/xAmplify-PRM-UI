@@ -293,10 +293,10 @@
                         {{teamMemberGroup.name}}
                       </option>
                       </select>
-                       <span *ngIf="team?.partnersCount==0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany" class="info-text-color">
+                       <span *ngIf="team?.partnersCount==0 && team.teamMemberGroupId!=0 && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany" class="info-text-color">
                        <strong>
                          <span [className]="team?.teamMemberGroupPartnersCount>0 ? 'active-status' : 'inactive-status'">{{team?.teamMemberGroupPartnersCount}}</span> 
-                          {{authenticationService?.partnerModule?.customName}} will be assigned to this team member
+                          {{authenticationService?.partnerModule?.customName}} will be assigned to this team member 
                         </strong>
                       </span> 
                       <span *ngIf="team?.partnersCount>0" class="info-text-color">
