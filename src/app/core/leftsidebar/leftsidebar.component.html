@@ -241,7 +241,7 @@
           </li>
 
           <!-------Configuration-------->
-          <li *ngIf="authenticationService.user.hasCompany || authenticationService?.module?.deletedPartner"  [ngClass]="{'active': location.path().includes('myprofile')}">
+          <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner"  [ngClass]="{'active': location.path().includes('myprofile')}">
             <a (click)="startLoader()"  [routerLink]="['/home/dashboard/myprofile']" >
                 <i class="fa fa-cog" aria-hidden="true"></i>
                 <span class="title" translate>Configuration</span>
