@@ -287,11 +287,10 @@
                               </h5>
                             </td>
                             <td style="width: 10%;">
-                              <select class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal)"
+                              <select [disabled]="authenticationService?.module?.deletedPartner" class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
                                 style="width: 135px">
-                                <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
+                                  <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
                               </select>
-                
                             </td>
                             <td style="width: 30%;">
                               <div class="actions-block override-actions">
@@ -309,48 +308,17 @@
                                       title="Delete Deal" id="deal">
                                       <i class="fa fa-trash mr5" aria-hidden="true"></i>
                                     </a>
+                                  </ng-container>
                                     <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
                                       <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
                                       <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
                                         style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                                     </a>
-                                </ng-container>
                               </div>
-                              <!-- <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"
-                                              id="deal">
-                                              <span class="circled-number" style="height: 40px;width:40px">
-                                                <i class="fa fa-eye mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                              </span>
-                                            </a>
-                                            <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" style="margin-top: 10px"
-                                              id="deal">
-                                              <span class="circled-number" style="height: 40px;width:40px">
-                                                <i class="fa fa-edit mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                              </span>
-                                            </a>   -->
-                              <!-- <a *ngIf="lead.campaignId" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
-                                              <span class="circled-number"  style="height: 40px;width:40px">
-                                                <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                              </span>
-                                            </a> 
-                                            <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                                              <span class="circled-number" style="height: 40px;width:40px">
-                                                <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
-                                                  style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
-                                              </span>
-                                            </a> -->
-                              <!-- <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)" title="Delete Deal" style="margin-top: 10px"
-                                              id="deal">
-                                              <span class="circled-number" style="height: 40px;width:40px">
-                                                <i class="fa fa-trash mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                              </span> 
-                                            </a> -->
                             </td>
                           </tr>
-                
                         </ng-container>
                       </tbody>
-                
                     </table>
                   </div>
                 

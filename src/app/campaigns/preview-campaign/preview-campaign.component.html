@@ -554,7 +554,7 @@
  </div>
  <div class="modal-footer p0" *ngIf="!deleteCampaignAlert">
     <div class="actions-block text-center m10" *ngIf="campaign">
-       <a (click)="changeTheFolder()"   data-toggle="tooltip" data-placement="top" title="Change the folder">
+       <a *ngIf="!authenticationService?.module?.deletedPartner" (click)="changeTheFolder()"   data-toggle="tooltip" data-placement="top" title="Change the folder">
        <i class="fa fa-folder-open-o" aria-hidden="true"></i>
        </a>
        <ng-container *ngIf="campaign.launched">
