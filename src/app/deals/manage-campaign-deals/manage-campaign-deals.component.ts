@@ -85,6 +85,8 @@ export class ManageCampaignDealsComponent implements OnInit {
             pagination.totalRecords = response.data.totalRecords;
             this.dealsSortOption.totalRecords = response.data.totalRecords;
             this.getStageNames();
+            this.getStageNamesForVendor();
+            this.getStageNamesForVendorInCampaign();
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
         },
         error => {
@@ -418,6 +420,51 @@ setDealStatus(deal: Deal) {
 getStageNames(){
   this.referenceService.loading(this.httpRequestLoader, true);
   this.dealsService.getStageNamesForPartner(this.loggedInUserId)
+  .subscribe(
+    response =>{
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.stageNamesForFilterDropDown = response;
+     // alert(this.stageNamesForFilterDropDown)
+    },
+    error=>{
+      this.httpRequestLoader.isServerError = true;
+    },
+    ()=> { }
+  );
+}
+getStageNamesForVendor(){
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.dealsService.getStageNamesForVendor(this.loggedInUserId)
+  .subscribe(
+    response =>{
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.stageNamesForFilterDropDown = response;
+     // alert(this.stageNamesForFilterDropDown)
+    },
+    error=>{
+      this.httpRequestLoader.isServerError = true;
+    },
+    ()=> { }
+  );
+}
+getStageNamesForVendorInCampaign(){
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.dealsService.getStageNamesForVendorInCampaign(this.loggedInUserId)
+  .subscribe(
+    response =>{
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.stageNamesForFilterDropDown = response;
+     // alert(this.stageNamesForFilterDropDown)
+    },
+    error=>{
+      this.httpRequestLoader.isServerError = true;
+    },
+    ()=> { }
+  );
+}
+getStageNamesForPartnerInCampaign(){
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.dealsService.getStageNamesForPartnerInCampaign(this.loggedInUserId)
   .subscribe(
     response =>{
       this.referenceService.loading(this.httpRequestLoader, false);

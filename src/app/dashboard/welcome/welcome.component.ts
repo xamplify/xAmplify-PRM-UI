@@ -238,5 +238,13 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       self.applyFilter = event['selectedOptionIndex'] == 1;
       }, 500);
     }
+
+    navigateToModule(deletedPartner:boolean,url:string){
+      if(deletedPartner){
+        this.referenceService.showSweetAlert("Please Upgrade Your Account","","info");
+      }else{
+        this.referenceService.goToRouter(url);
+      }
+    }
   
 }

@@ -120,7 +120,7 @@
               <h1 style="color: #00B3B3;text-align: left;" translate>contacts</h1>
               <p style="position: relative;right: 19px;">{{welcome_text.contacts}}</p>
               <div style="text-align: left;">
-                <button class="btn btn-xs color2" [routerLink]="['/home/contacts/add']" translate>Add contacts</button>
+                <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')" translate>Add contacts</button>
                 <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addContactsUrl,'Contacts')" translate>Tell me how</button>
               </div>
             </div>
@@ -130,7 +130,7 @@
           </div>
         </div>
         <div class="divider"></div>
-        </ng-container>
+         </ng-container>
         <!----Templates----->
         <ng-container *ngIf="welcomePageItems?.showTemplates">
         <div class="flex">
@@ -142,7 +142,7 @@
               <h1 class="text-left" style="color: #FBB23E" translate>Templates</h1>
               <p class="left-side">{{welcome_text.templates}}</p>
               <div class="text-left">
-                <button  class="btn btn-xs color4" [routerLink]="['/home/emailtemplates/select']" translate>Create templates</button>
+                <button  class="btn btn-xs color4" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')" translate>Create templates</button>
                 <button type="button" class="btn btn-xs color4-invert" data-toggle="modal" (click)="showHowToVideo(createEmailTemplateUrl,'Templates')" translate>Tell me how</button>
               </div>
             </div>
@@ -152,28 +152,28 @@
          </div>
         </div>
         <div class="divider"></div>
-     </ng-container>
-     <!----Campaigns----->
-     <ng-container *ngIf="welcomePageItems?.showCampaigns">
-        <div class="flex">
-         <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='left'">
-           <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
-         </div>
-          <div class="col-sm-6 col-xs-12 block" style="right: -52px; position: relative;">
-            <div class="text-block">
-              <h1 class="text-left" style="color: #827596" translate>Campaigns</h1>
-              <p class="left-side">{{welcome_text.campaigns}}</p>
-              <div class="text-left">
-                <button  class="btn btn-xs color3" [routerLink]="['/home/campaigns/select']" translate>Create campaigns</button>
-                <button type="button" class="btn btn-xs color3-invert" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
+        </ng-container>
+        <!----Campaigns----->
+        <ng-container *ngIf="welcomePageItems?.showCampaigns">
+            <div class="flex">
+            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='left'">
+              <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
+            </div>
+              <div class="col-sm-6 col-xs-12 block" style="right: -52px; position: relative;">
+                <div class="text-block">
+                  <h1 class="text-left" style="color: #827596" translate>Campaigns</h1>
+                  <p class="left-side">{{welcome_text.campaigns}}</p>
+                  <div class="text-left">
+                    <button  class="btn btn-xs color3" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')" translate>Create campaigns</button>
+                    <button type="button" class="btn btn-xs color3-invert" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='right'">
+                <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
               </div>
             </div>
-          </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='right'">
-            <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
-          </div>
-        </div>
-        <div class="divider"></div>
+            <div class="divider"></div>
         </ng-container>
         <!--Team Members------>
         <ng-container *ngIf="welcomePageItems?.showTeamMembers">
@@ -186,19 +186,19 @@
                     <h1 class="text-left" style="color: #00B3B3" translate>Team members</h1>
                     <p class="left-side">Add team members to make content and campaign management a group effort</p>
                     <div class="text-left">
-                      <button class="btn btn-xs color2" [routerLink]="['/home/team/add-team']" translate>Add team member</button>
+                      <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')" translate>Add team member</button>
                       <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addTeamMemberUrl,'Team members')" translate>Tell me how</button>
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.teamMembersImagePosition=='right'">
-                 <img src="../../../assets/images/welcome/img-members.png" alt="" style="max-width: 100%;height: 202px;margin-top: -10px;">
-               </div>
+                  <img src="../../../assets/images/welcome/img-members.png" alt="" style="max-width: 100%;height: 202px;margin-top: -10px;">
+                </div>
           </div>
-         <div class="divider"></div>
-       </ng-container>
-         <!---Social Accounts-->
-         <ng-container *ngIf="welcomePageItems?.showSocialAccounts">
+          <div class="divider"></div>
+        </ng-container>
+          <!---Social Accounts-->
+          <ng-container *ngIf="welcomePageItems?.showSocialAccounts">
         <div class="flex">
           <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.socialAccountsImagePosition=='left'">
             <img class="" style="float: left !important; " alt="" src="../../../assets/images/welcome/img-social.png">
@@ -208,7 +208,7 @@
               <h1 class="text-left" style="color: #76C9FF" translate>Social Accounts</h1>
               <p class="left-side">{{welcome_text.socialMedia}}</p>
               <div class="text-left">
-                <button class="btn btn-xs color1" [routerLink]="['/home/social/manage/all']" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Connect</button>
+                <button class="btn btn-xs color1" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Connect</button>
                 <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
               </div>
             </div>
@@ -218,29 +218,29 @@
           </div>
         </div>
         <div class="divider"></div>
-       </ng-container>
-     <!---Analytics---->
-       <ng-container *ngIf="welcomePageItems?.showAnalytics">
-        <div class="flex">
-        <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='left'">
-            <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
-          </div>
-          <div class="col-sm-6 col-xs-12 block">
-            <div class="text-block">
-              <h1 style="color: #00B3B3" class="text-left" translate>Analytics</h1>
-              <p class="left-side">{{welcome_text.analytics}}</p>
-              <div  class="text-left">
-                <button class="btn btn-xs color2" [routerLink]="['/home/dashboard']" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Analytics</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
+        </ng-container>
+        <!---Analytics---->
+        <ng-container *ngIf="welcomePageItems?.showAnalytics">
+            <div class="flex">
+            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='left'">
+                <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
+              </div>
+              <div class="col-sm-6 col-xs-12 block">
+                <div class="text-block">
+                  <h1 style="color: #00B3B3" class="text-left" translate>Analytics</h1>
+                  <p class="left-side">{{welcome_text.analytics}}</p>
+                  <div  class="text-left">
+                    <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"  [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Analytics</button>
+                    <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='right'">
+                <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
               </div>
             </div>
-          </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='right'">
-            <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
-          </div>
-        </div>
-        <div class="divider"></div>
-       </ng-container>
+            <div class="divider"></div>
+        </ng-container>
       </div>
     </div>
     <app-scroll-top></app-scroll-top>
