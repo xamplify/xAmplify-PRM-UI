@@ -51,15 +51,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.funnelChartData = response.data;
-        let num=response.data.map(t=>t[1]);
-      alert(num.forEach(x=>x.num > 0))
-        // for (var val of num){
-        //   if(val === 0){
-        //     this.funnelChartData.length = 0;
-        //     this.loader = false;
-
-        //   }
-        // }
+       
           this.statusCode=200;
           this.loader = false;
           this.loadChart(this.funnelChartData);
@@ -85,7 +77,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
           enabled: true,
           alpha: 10,
           depth: 50,
-          viewDistance: 20,
+          viewDistance: 50,
         },
       },
       title: {

@@ -159,6 +159,18 @@ loadDealPieChart(){
               }
           }
       },
+      colors: [
+        "#5C9BD1",
+        "#8b76a8",
+        " #a49c9e",
+        "#3faba4",
+        "#1aadce",
+        "#492970",
+        "#f28f43",
+        "#77a1e5",
+        "#c42525",
+        "#a6c96a",
+      ],
       series: [{
           type: 'pie',
           name: 'count',
