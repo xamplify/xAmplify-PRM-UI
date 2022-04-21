@@ -592,6 +592,7 @@ export class ManageDealsComponent implements OnInit {
           this.partnerPagination = new Pagination;
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
           this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+          this.partnerSortOption.searchKey = "";
           this.listPartnersForCampaign(this.partnerPagination);
         }
       } else {
