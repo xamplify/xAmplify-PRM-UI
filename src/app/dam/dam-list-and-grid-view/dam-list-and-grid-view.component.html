@@ -93,8 +93,7 @@
 									*ngIf="isPartnerView">Published On</th>
 								<th class="text-center" style="width: 10%" scope="row" translate
 									*ngIf="!isPartnerView">Created On</th>
-								<th *ngIf="videoFileService.videoType!='partnerVideos'" class="text-center" id="min-width" style="width: 30%;" translate>Actions</th>
-								<th *ngIf="videoFileService.videoType=='partnerVideos'" class="text-center" id="min-width" style="width: 30%;" translate></th>
+								<th  class="text-center" id="min-width" style="width: 30%;" translate>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -150,7 +149,7 @@
 								<td class="text-center">{{asset?.assetType}}</td>
 								<td class="text-center"><app-timestamp
 										[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
-								<td class="mAlignView" *ngIf="videoFileService.videoType!='partnerVideos'">
+								<td class="mAlignView" >
 									<div
 										[className]="asset?.history ? 'actions-block override-actions mActionWidth ActionAlign':'actions-block override-actions custom-width-icon mActionWidth ActionAlign'" >
 										<ng-container *ngIf="asset?.status=='COMPLETED'">
@@ -164,7 +163,7 @@
 										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a> 
-										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias)">
+										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit && videoFileService.videoType!='partnerVideos'" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias)">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a>
 										</div>
@@ -172,15 +171,15 @@
 										<a *ngIf="!isPartnerView "	title="Preview" (click)="preview(asset)">
 											 <i	class="fa fa-eye" aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT'" title="Publish" (click)="openPublishPopup(asset.id)">
+										<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && videoFileService.videoType!='partnerVideos'" title="Publish" (click)="openPublishPopup(asset.id)">
 											 <i	class="fa fa-share" aria-hidden="true"></i>
 										</a>
 										</div> 
 										<div class="mActionAlign">
-										<a *ngIf="!isPartnerView" title="Download"	(click)="openPopup(asset)">
+										<a *ngIf="!isPartnerView && videoFileService.videoType!='partnerVideos'" title="Download"	(click)="openPopup(asset)">
 											 <i class="fa fa-download"	aria-hidden="true"></i>
 										</a> 
-										<a title="View Analytics" (click)="viewAnalytics(asset)">
+										<a *ngIf="videoFileService.videoType!='partnerVideos'" title="View Analytics" (click)="viewAnalytics(asset)">
 											<i class="fa fa-line-chart" aria-hidden="true"></i>
 										</a> 
 										<a *ngIf="isPartnerView" title="View Details"
@@ -189,7 +188,7 @@
 										</a>
 										</div>
 										<div class="mActionAlign2">
-										<a *ngIf="!isPartnerView && asset?.delete " title="Delete"
+										<a *ngIf="!isPartnerView && asset?.delete && videoFileService.videoType!='partnerVideos'" title="Delete"
 											(click)="confirmDelete(asset)"> 
 											<i class="fa fa-trash-o" aria-hidden="true"></i>
 										</a>
@@ -197,7 +196,6 @@
 									 </ng-container>
 									</div>
 								</td>
-								<td class="mAlignView" *ngIf="videoFileService.videoType=='partnerVideos'"></td>
 							</tr>
 							<tr [ngClass]="{'hidden': !asset?.expand}">
 								<td [attr.colspan]="colspanValue">
