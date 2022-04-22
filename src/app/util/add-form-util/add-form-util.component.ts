@@ -322,6 +322,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             this.pageBackgroundColor = this.form.pageBackgroundColor;
             this.formBackgroundImage = "";
         }
+        if (this.form.showTitleHeader === undefined || this.form.showTitleHeader === null) {
+            this.form.showTitleHeader = true;
+        }
         this.form.isValid = true;
         this.form.isFormButtonValueValid = true;
         this.form.isValidFormSubmissionUrl = true;
@@ -1408,6 +1411,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     this.form.showCaptcha = !this.form.showCaptcha;
   }
 
+  showTitleHeaderChange() {
+    this.form.showTitleHeader = !this.form.showTitleHeader;
+  }
   errorHandler(event) { event.target.src = 'assets/images/your-logo.png'; }
 
   uploadFile(file: File, type: string) {

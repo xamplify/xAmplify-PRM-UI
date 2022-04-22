@@ -39,7 +39,8 @@ export class Form {
     pageBackgroundColor="";
     showBackgroundImage=false;
     showCaptcha=false;
-
+    showTitleHeader = true;
+    
     openLinkInNewTab = false;
     formSubmissionUrl = "";
     isValidFormSubmissionUrl = true;
