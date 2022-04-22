@@ -117,6 +117,7 @@ loadDealPieChart(){
     this.loader = false;
     this.loadChart(this.pieChartData);
     this.loadStatisticsDealData();
+            
   },
   (error) => {
     this.xtremandLogger.error(error);

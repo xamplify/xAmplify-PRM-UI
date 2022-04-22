@@ -45,7 +45,7 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
     this.loadStatisticsLeadsDataWithStageNames();
   }
   loadStatisticsDealDataWithStageNames(){
-    this.statusName="Deals"
+    this.statusName="Deal Status"
     this.loader = true;
 this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDto).subscribe(
   (response) =>{
@@ -54,7 +54,7 @@ this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDt
     this.statusCode=200;
 console.log(this.pieChartGraphData)
     this.loader =false;
-    this.loadGraph(this.pieChartGraphData)
+    this.loadGraph(this.pieChartGraphData,this.statusName)
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -67,7 +67,7 @@ console.log(this.pieChartGraphData)
   /****************Leads*************** */
   loadStatisticsLeadsDataWithStageNames(){
   
-    this.statusName="Leads"
+    this.statusName="Lead Status"
     this.loader = true;
 this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto).subscribe(
   (response) =>{
@@ -76,7 +76,7 @@ this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginD
     this.statusCode=200;
 console.log(this.pieChartGraphData)
     this.loader =false;
-    this.loadGraph(this.pieChartGraphData)
+    this.loadGraph(this.pieChartGraphData,this.statusName)
 
   },
   (error) => {
@@ -87,8 +87,8 @@ console.log(this.pieChartGraphData)
   }
 )
   }
-   loadGraph(pieChartGraphData:any){
-   
+   loadGraph(pieChartGraphData:any,statusName:any){
+    let self =this;
     Highcharts.chart('container1', {
       chart: {
           type: 'bar'
@@ -96,19 +96,16 @@ console.log(this.pieChartGraphData)
       title: {
           text: ''
       },
+      subtitle: {
+        text: self.statusName
+    },
       
       xAxis: {
           categories: this.pieChartGraphData.map(t=>t.name),
-          title: {
-              text: null
-          }
+          
       },
       yAxis: {
-          min: 0,
-          title: {
-             // text: 'Population (millions)',
-              align: 'high'
-          },
+         
           
       },
      

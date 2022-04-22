@@ -21,6 +21,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
   @Input() applyFilter: boolean;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
+  val:any=[];
   vanityLogin = false;
   constructor(
     public authenticationService: AuthenticationService,
@@ -51,10 +52,21 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.funnelChartData = response.data;
-       
+          this.val=this.funnelChartData.map(t=>t[1]);
+
+            let sum = this.val.reduce(function (a, b) {
+            return a + b;
+            }, 0);
+            //alert(sum)
+            if(sum === 0){
+              this.funnelChartData.length = 0;
+              this.loader =false;
+            }
+            else{
           this.statusCode=200;
           this.loader = false;
           this.loadChart(this.funnelChartData);
+            }
     
         },
         (error) => {

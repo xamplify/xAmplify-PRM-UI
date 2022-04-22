@@ -213,50 +213,10 @@
                     </div>
                 </ng-container>
     
-                    <!------Regional Statistics, Video Statistics & Email Stats--------------->
-                    <!-- <div class="portlet light" style="margin-left: 13px;width: 1067px;height: 619px;">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                                <span class="caption-subject" translate>Opportunity Stats</span>
-                            </div>
-                        </div>
-        
-                    <div class="clearfix">
-                        <app-funnel-chart-analytics [applyFilter]="applyFilter"></app-funnel-chart-analytics>
-                    
-                        <div style="float:right">
-                            <app-pie-chart-analytics [applyFilter]="applyFilter"></app-pie-chart-analytics>
-                            <!-- <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> --
-                        </div>
-                    </div>
-                </div> -->
-        
-                <!------------funnel and pie-->
-                 <!-- <div class="col-xs-12 col-sm-12 col-lg-12">
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-lg-6 p0">
-                <app-funnel-chart-analytics [applyFilter]="applyFilter"></app-funnel-chart-analytics>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-lg-6 p0">
-                    <div class="col-sm-12 p0">
-                        <div class="col-xs-6 col-sm-6 col-lg-6 p0">
-                    <app-pie-chart-analytics [applyFilter]="applyFilter"></app-pie-chart-analytics>
-                       </div>
-                       <div class="col-xs-6 col-sm-6 col-lg-6 p0">
-                        <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph>
-                    </div>
-                    </div>
-                   
-                </div>
-                
-               
+                  
+              
             </div>
-                </div>  -->
-               
-               <!--------funnel and pie------------>
-            </div>
-            <!--End of page bar-->
+            
         </div>
         <!--End of row-->
 
@@ -328,7 +288,7 @@
     <div class="clearfix">
         <app-funnel-chart-analytics [applyFilter]="applyFilter"></app-funnel-chart-analytics>
         <!----Video Statistics--------->
-        <div style="float:right">
+        <div class=" col-xs-12 col-sm-6" style="float:right;margin-top: 10px;">
             <app-pie-chart-analytics [applyFilter]="applyFilter"></app-pie-chart-analytics>
             <!-- <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> -->
         </div>

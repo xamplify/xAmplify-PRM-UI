@@ -45,18 +45,15 @@
                      <strong>No Data Found</strong>
                  </div>
             </div>
-            <div [hidden]="loader" class="highcharts-figure1">
-                <div style="display: inline;">         
-                    <span style="margin-left:84px">Status</span>
-                    <span style="margin-left:170px">{{statusName}}</span>
-                    </div>
+            <figure [hidden]="loader" class="highcharts-figure1">
+                
                 <div  id="container1">
                 </div>
                 <div style="display: inline;">
                     <button (click)="click()">Deals</button>
                     <button (click)="leads()">Leads</button>
                     </div>
-            </div>
+                </figure>
            
         </div>
     
