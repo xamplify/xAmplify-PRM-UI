@@ -44,6 +44,7 @@ export class Module {
 	isPrmTeamMember = false;
 	isPrmAndPartner = false;
     isPrmAndPartnerTeamMember = false;
+    isPrmSuperVisor = false;
 
     isVendorTier = false;
     isVendorTierTeamMember = false;
@@ -79,7 +80,10 @@ export class Module {
 	isMarketingTeamMember = false;
 	isMarektingAndPartner = false;
     isMarketingAndPartnerTeamMember = false;
+    isMarketingSuperVisor = false;
     isMarketingCompany = false;
 
+    isPrmCompany = false;
+    deletedPartner = false;
    
 }

@@ -1,4 +1,4 @@
-<div class="page-content" *ngIf="isOnlyUser && !showDealForm">
+<div class="page-content" *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
@@ -17,7 +17,7 @@
         </div>
     </div>
 </div>
-<div class="page-content" *ngIf="!isOnlyUser && !showDealForm">
+<div class="page-content" *ngIf="!showDealForm || authenticationService?.module?.deletedPartner">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
@@ -212,11 +212,7 @@
                         </div>
                     </div>
                 </ng-container>
-    
-                  
-              
-            </div>
-            
+          </div>
         </div>
         <!--End of row-->
 

@@ -55,23 +55,33 @@
           <div class="form-group">                         
             <div class="form-inline col-sm-12">
               <div class="form-group col-sm-4">
-                <label class="control-label">From Date
-                  <span class="required">*</span>
+                <label class="control-label">From Date  &nbsp;
+                  <!-- <span class="required">*</span> -->
                 </label>
                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
               </div>
               <div class="form-group col-sm-4">
-                <label class="control-label">To Date
-                  <span class="required">*</span>
+                <label class="control-label">To Date  &nbsp;
+                  <!-- <span class="required">*</span> -->
                 </label>
                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
               </div>
-              <div class="form-group col-sm-4">
-                <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
-                  translate>Filter</button>
-              </div>
+              <div class="row">
+                <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                  <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
+                  <select class="form-control" style="width:  196px;height: 32px;" [(ngModel)]="statusFilter"
+                  [ngModelOptions]="{standalone: true}">
+                      <option value="">---Select Status---</option>  
+                    <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
+                    </option>
+                  </select>
+                </div>
+                </div>
+                <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                  <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                </div>
             </div>
           </div>
         </form>
@@ -140,7 +150,7 @@
               </h5>
             </td>
             <td style="width: 10%;">
-              <select class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal)"
+              <select [disabled]="authenticationService?.module?.deletedPartner" class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
                 style="width: 135px">
                 <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
               </select>
@@ -148,56 +158,25 @@
             </td>
             <td style="width: 30%;">
               <div class="actions-block override-actions">
-                <ng-container>
                   <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
                   </a>
-                  <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
-                    id="deal">
-                    <i class="fa fa-edit mr5" aria-hidden="true"></i>
-                  </a>
-                  <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
-                    title="Delete Deal" id="deal">
-                    <i class="fa fa-trash mr5" aria-hidden="true"></i>
-                  </a>
-                  <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
-                    <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
-                        style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">0</span>
-                  </a>
+                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" id="deal">
+                      <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                    </a>
+                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
+                      title="Delete Deal" id="deal">
+                      <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                    </a>
                 </ng-container>
+                <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
+                  <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"></i>
+                  <span class="badge badge-default" style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">0</span>
+                </a>
               </div>
-              <!-- <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"
-                            id="deal">
-                            <span class="circled-number" style="height: 40px;width:40px">
-                              <i class="fa fa-eye mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                            </span>
-                          </a>
-                          <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" style="margin-top: 10px"
-                            id="deal">
-                            <span class="circled-number" style="height: 40px;width:40px">
-                              <i class="fa fa-edit mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                            </span>
-                          </a>   -->
-              <!-- <a *ngIf="lead.campaignId" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
-                            <span class="circled-number"  style="height: 40px;width:40px">
-                              <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                            </span>
-                          </a> 
-                          <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                            <span class="circled-number" style="height: 40px;width:40px">
-                              <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
-                                style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
-                            </span>
-                          </a> -->
-              <!-- <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)" title="Delete Deal" style="margin-top: 10px"
-                            id="deal">
-                            <span class="circled-number" style="height: 40px;width:40px">
-                              <i class="fa fa-trash mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                            </span> 
-                          </a> -->
             </td>
           </tr>
-
         </ng-container>
       </tbody>
 

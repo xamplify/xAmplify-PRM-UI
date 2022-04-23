@@ -47,6 +47,10 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+    if (!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView) {
+      this.setViewType("List");
+    }
     if (this.router.url.indexOf('/manage') > -1) {
       this.showFolderView = true;
       this.isPartnerView = false;

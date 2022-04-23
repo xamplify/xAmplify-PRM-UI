@@ -92,4 +92,5 @@ export class Pagination {
 
 	archived = false;
 	timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  	stageFilter:string = "";
 }

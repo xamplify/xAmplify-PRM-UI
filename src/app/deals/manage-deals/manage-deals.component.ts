@@ -72,6 +72,8 @@ export class ManageDealsComponent implements OnInit {
   filterResponse: CustomResponse = new CustomResponse();
   filterMode: any = false;
   selectedFilterIndex: number = 1;
+  stageNamesForFilterDropDown: any;
+  statusFilter: any;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -136,24 +138,26 @@ export class ManageDealsComponent implements OnInit {
         if (
           roles.indexOf(this.roleName.orgAdminRole) > -1 ||
           roles.indexOf(this.roleName.allRole) > -1 ||
-          roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1) {
+          roles.indexOf(this.roleName.vendorRole) > -1 || 
+          roles.indexOf(this.roleName.vendorTierRole) > -1 ||
+          roles.indexOf(this.roleName.marketingRole) > -1) {
           this.isVendor = true;
         }
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
           this.isOrgAdmin = true;
         }
-        if (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember) {
+        if (roles.indexOf(this.roleName.companyPartnerRole) > -1 || this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember) {
           this.isCompanyPartner = true;
         }
       } else {
         if (!this.authenticationService.superiorRole.includes("Vendor") && !this.authenticationService.superiorRole.includes("OrgAdmin")
-          && this.authenticationService.superiorRole.includes("Partner")) {
+        && !this.authenticationService.superiorRole.includes("Marketing") && this.authenticationService.superiorRole.includes("Partner")) {
           this.isOnlyPartner = true;
         }
         if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
           this.isOrgAdmin = true;
         }
-        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")) {
+        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin") || this.authenticationService.superiorRole.includes("Marketing")) {
           this.isVendor = true;
         }
         if (this.authenticationService.superiorRole.includes("Partner")) {
@@ -313,8 +317,11 @@ export class ManageDealsComponent implements OnInit {
   listDeals(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
     if (this.isVendorVersion) {
+      this.stageNamesForVendor();
+      this.fromDateFilter;
       this.listDealsForVendor(pagination);
     } else if (this.isPartnerVersion) {
+      this.stageNamesForPartner();
       this.listDealsForPartner(pagination);
     }
   }  
@@ -545,29 +552,34 @@ export class ManageDealsComponent implements OnInit {
 //   }
 // }
 
-  setDealStatus(deal: Deal) {
-    this.referenceService.loading(this.httpRequestLoader, true);
-    let request: Deal = new Deal();
-    request.id = deal.id;
-    request.pipelineStageId = deal.pipelineStageId;
-    request.userId = this.loggedInUserId;
-    this.dealsService.changeDealStatus(request)
-      .subscribe(
-        response => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          if (response.statusCode == 200) {
-            this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
-           // this.getCounts();
-            this.showDeals();
-          } else if (response.statusCode == 500) {
-            this.dealsResponse = new CustomResponse('ERROR', response.message, true);
-          }
-        },
-        error => {
-          this.httpRequestLoader.isServerError = true;
-        },
-        () => { }
-      );
+  setDealStatus(deal: Deal,deletedPartner:boolean) {
+    if(!deletedPartner){
+      this.referenceService.loading(this.httpRequestLoader, true);
+      let request: Deal = new Deal();
+      request.id = deal.id;
+      request.pipelineStageId = deal.pipelineStageId;
+      request.userId = this.loggedInUserId;
+      this.dealsService.changeDealStatus(request)
+        .subscribe(
+          response => {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            if (response.statusCode == 200) {
+              this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
+             // this.getCounts();
+              this.showDeals();
+            } else if (response.statusCode == 500) {
+              this.dealsResponse = new CustomResponse('ERROR', response.message, true);
+            }
+          },
+          error => {
+            this.httpRequestLoader.isServerError = true;
+          },
+          () => { }
+        );
+    }else{
+      this.referenceService.showSweetAlert("This Option Is Not Available","","info");
+    }
+    
   }
 
   showPartners(campaign: any) {
@@ -585,6 +597,7 @@ export class ManageDealsComponent implements OnInit {
           this.partnerPagination = new Pagination;
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
           this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+          this.partnerSortOption.searchKey = "";
           this.listPartnersForCampaign(this.partnerPagination);
         }
       } else {
@@ -753,6 +766,13 @@ export class ManageDealsComponent implements OnInit {
     mapInput.setAttribute("value", this.dealsPagination.toDateFilterString);
     mapForm.appendChild(mapInput);
 
+    //stageName
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "stageName";
+    mapInput.setAttribute("value", this.dealsPagination.stageFilter);
+    mapForm.appendChild(mapInput);
+    
     // partnerTeamMemberGroupFilter
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
@@ -776,9 +796,11 @@ export class ManageDealsComponent implements OnInit {
     this.showFilterOption = !this.showFilterOption;    
     this.fromDateFilter = "";
     this.toDateFilter = "";
+    this.statusFilter = "";
     if (!this.showFilterOption) {
       this.dealsPagination.fromDateFilterString = "";
       this.dealsPagination.toDateFilterString = "";
+      this.dealsPagination.stageFilter = "";
       this.filterResponse.isVisible = false;
       if (this.filterMode) {
         this.dealsPagination.pageIndex = 1;
@@ -794,8 +816,10 @@ export class ManageDealsComponent implements OnInit {
     this.showFilterOption = false;
     this.fromDateFilter = "";
     this.toDateFilter = ""; 
+    this.statusFilter = "";
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
+    this.dealsPagination.stageFilter = "";
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
@@ -805,28 +829,49 @@ export class ManageDealsComponent implements OnInit {
   }
 
   validateDateFilters() {
-    if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-      var fromDate = Date.parse(this.fromDateFilter);
-      if (this.toDateFilter != undefined && this.toDateFilter != "") {
-        var toDate = Date.parse(this.toDateFilter);
-        if (fromDate <= toDate) {
-          this.dealsPagination.pageIndex = 1;
-          this.dealsPagination.fromDateFilterString = this.fromDateFilter;
-          this.dealsPagination.toDateFilterString = this.toDateFilter;
-          this.filterMode = true;
-          this.filterResponse.isVisible = false;
-          this.listDeals(this.dealsPagination);
-        } else {
-          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-        }
-      } else {
+    if ((this.statusFilter == undefined || this.statusFilter == "") && 
+    (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
+      (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+  } else { 
+    let validDates = false;   
+    if ((this.fromDateFilter == undefined || this.fromDateFilter == "") 
+      && (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        validDates = true;
+    } else if (this.fromDateFilter != undefined && this.fromDateFilter != "" && 
+      (this.toDateFilter == undefined || this.toDateFilter == "")) {
         this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-      }
+    } else if (this.toDateFilter != undefined && this.toDateFilter != "" && 
+      (this.fromDateFilter == undefined || this.fromDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
     } else {
-      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    }    
-  }
+      var toDate = Date.parse(this.toDateFilter);
+      var fromDate = Date.parse(this.fromDateFilter);
+      if (fromDate <= toDate) {
+        validDates = true;
+        this.dealsPagination.fromDateFilterString = this.fromDateFilter;
+        this.dealsPagination.toDateFilterString = this.toDateFilter;
+      } else {
+        this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+      }        
+    }
 
+    if (validDates) {
+      if (this.statusFilter != undefined && this.statusFilter != "") {
+        this.dealsPagination.stageFilter = this.statusFilter;
+      }
+      else {
+        this.dealsPagination.stageFilter = "";
+      }
+      this.dealsPagination.pageIndex = 1;
+      this.filterMode = true;
+        this.filterResponse.isVisible = false;
+        this.listDeals(this.dealsPagination);
+    }
+    
+  }
+  }
+  
   setListView() {
     this.listView = true;
     this.closeFilterOption();
@@ -857,4 +902,50 @@ export class ManageDealsComponent implements OnInit {
     
   }
 
+  stageNamesForVendor(){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getStageNamesForVendor(this.loggedInUserId)
+    .subscribe(
+      response =>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.stageNamesForFilterDropDown = response;
+
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    ); 
+  }
+
+  stageNamesForPartner(){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getStageNamesForPartner(this.loggedInUserId)
+    .subscribe(
+      response =>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.stageNamesForFilterDropDown = response;
+
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    ); 
+  }
+  stageNamesOfVendor(){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getStageNamesOfVendor(this.loggedInUserId)
+    .subscribe(
+      response =>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.stageNamesForFilterDropDown = response;
+
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    ); 
+  }
 }

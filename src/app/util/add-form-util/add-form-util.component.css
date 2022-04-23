@@ -1567,3 +1567,7 @@ div.switch5>input.switch:focus~label:before {
 .icon-margin {
     margin: 2% 0% 0% 0%;
 }
+
+.full-width-modal-popup {
+    width: 100%!important;
+}
