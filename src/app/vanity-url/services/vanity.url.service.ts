@@ -99,10 +99,11 @@ export class VanityURLService {
     //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
     //let url = "analytify.xamplify.com";
-    //let url = "tga.xamplify.com";
+   //let url = "tga.xamplify.com";
    // let url = "vendor.xamplify.com";
     let url =window.location.hostname;
-
+    //let url="JAVG.xamplify.com";
+    //let url = "stratapp.xamplify.com";
     if (!url.includes("release") && !url.includes("192.168")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {

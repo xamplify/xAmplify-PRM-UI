@@ -1,4 +1,3 @@
-
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -12,6 +11,7 @@ import { SocialConnection } from '../social/models/social-connection';
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 import { Pipeline } from './models/pipeline';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
+import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 
 @Injectable()
 export class DashboardService {
@@ -627,15 +627,55 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
-    /*****funnel chart  data *******/
-
-    getFunnelChartsAnalyticsData(applyFilter:boolean) {
-        const url = this.authenticationService.REST_URL + 'dashboard/views/funnelChartsAnalyticsData' + '/' + this.authenticationService.getUserId() + '/'+applyFilter+ '?access_token=' + this.authenticationService.access_token;
-        return this.getUrl(url);
-        
-      
+/*********funnel chart****** */
+    getFunnelChartsAnalyticsData(vanityLoginDto:VanityLoginDto) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/getFunnelChartsAnalyticsData?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,vanityLoginDto)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
+   /************Pie chart ********* */
 
+   getPieChartLeadsAnalyticsData(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsLeadsAnalyticsData?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   getPieChartDealsAnalyticsData(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsDealsAnalyticsData?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   getPieChartStatisticsLeadAnalyticsData(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartStatisticsLeadAnalyticsData?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   getPieChartStatisticsDealData(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsData?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   getPieChartDealStatisticsWithStageNames(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsWithStageNames?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   getPieChartLeadsStatisticsWithStageNames(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartLeadsStatisticsWithStageNames?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
 }
