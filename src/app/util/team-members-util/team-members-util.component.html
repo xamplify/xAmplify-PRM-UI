@@ -135,14 +135,17 @@
             </td>
             <!---Assigned Group-->
             <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" id="group-min-td">
-              <div class="btn-group">
-                <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
-                  <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
-                  <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
-                </button>
-                <button class="tm-group-preview-css" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
-                <i class="fa fa-eye" aria-hidden="true"></i>
-                </button>
+              <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null">
+                  <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
+                    <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
+                    <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
+                  </button>
+                  <button class="tm-group-preview-css" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
+                  <i class="fa fa-eye" aria-hidden="true"></i>
+                  </button>
+            </div>
+            <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null">
+              <span><strong>No Group Selected</strong></span>
             </div>
             </td>
             <!---Second Admin---->
