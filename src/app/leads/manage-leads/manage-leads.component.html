@@ -140,7 +140,7 @@
                   </div>
                   <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
                     <div class="btn-group pull-right" style="width: max-content;">
-                      <ng-container class='m10'>
+                      <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
                           data-toggle="tooltip" [class.disabled]="listView" title="List View">
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>

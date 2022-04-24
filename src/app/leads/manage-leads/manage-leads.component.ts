@@ -78,6 +78,7 @@ export class ManageLeadsComponent implements OnInit {
  lead:any;
   stageNamesForFilterDropDown: any;
   statusFilter: any;
+  prm: boolean;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -138,6 +139,9 @@ export class ManageLeadsComponent implements OnInit {
           roles.indexOf(this.roleName.prmRole) > -1) {
           this.isVendor = true;
         }
+        if (roles.indexOf(this.roleName.prmRole) > -1) {
+          this.prm = true;
+        }
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
           this.isOrgAdmin = true;
         }
@@ -151,6 +155,9 @@ export class ManageLeadsComponent implements OnInit {
         }
         if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
           this.isOrgAdmin = true;
+        }
+        if (this.authenticationService.superiorRole.includes("Prm")) {
+          this.prm = true;
         }
         if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")|| this.authenticationService.superiorRole.includes("Marketing")) {
           this.isVendor = true;
