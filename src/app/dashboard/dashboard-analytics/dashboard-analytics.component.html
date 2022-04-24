@@ -44,7 +44,7 @@
                 <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
             </div>
             <div class="col-xs-12 col-sm-6"
-                [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
+                [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
                 <div style="display: flex;float: right;">
                     <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
                     <div style="margin: 3px 0 3px 20px;">
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
-                 && !authenticationService?.module?.isMarketingCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+                 && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
         </div>
     </div>
     <ng-container
@@ -270,9 +270,10 @@
             </div>
         </div>
         <app-social-accounts-analytics></app-social-accounts-analytics>
-   
     </ng-container>
-    <div class="clearfix">
+    <!--Opportunity Stats-->
+    <div *ngIf="!authenticationService?.module?.deletedPartner 
+    &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.enableLeads)" class="clearfix">
     <div class="portlet light">
         <div class="portlet-title">
             <div class="caption">
@@ -280,19 +281,17 @@
                 <span class="caption-subject" translate>Opportunity Stats</span>
             </div>
         </div>
-
     <div class="clearfix">
         <app-funnel-chart-analytics [applyFilter]="applyFilter"></app-funnel-chart-analytics>
-        <!----Video Statistics--------->
+        <!----Opportunity Stats--------->
         <div class=" col-xs-12 col-sm-6" style="float:right;margin-top: 10px;">
             <app-pie-chart-analytics [applyFilter]="applyFilter"></app-pie-chart-analytics>
-            <!-- <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> -->
         </div>
     </div>
 </div>
-</div>
-</div>
+    </div>
 
+</div>
 <!-- Deal Form-->
 <section *ngIf="showDealForm">
     <div class="page-content">

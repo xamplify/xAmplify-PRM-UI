@@ -49,11 +49,10 @@ export class PieChartAnalyticsComponent implements OnInit {
   }
   
   loadStatisticsDealData(){
-    this.loader = true;
-this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
+  this.loader = true;
+  this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartStatisticsData=response.data;
-  
     this.statusCode=200;
     this.opportunityName=this.pieChartStatisticsData.map(i=>i[0])
     this.opportunityValue=this.pieChartStatisticsData.map(i=>i[1])

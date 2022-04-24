@@ -1,12 +1,7 @@
 <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="col-xs-12 col-sm-12"  style="padding: 0">
     <div class="col-xs-12">
-        <div  style="margin-top: -610px;margin-right: -2px;width: 520px;">
-            <!-- <div class="portlet-title" style="min-height: 0px;">
-                <div class="caption">
-                    <span class="caption-subject" translate>{{name}}</span>
-                </div>
-            </div> -->
+        <div  style="margin-top: -610px;margin-right: -2px;">
             <div class="portlet-body">
                 <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
                 <ng-container *ngIf="!loader && statusCode!=200">
@@ -51,34 +46,7 @@
                                             {{opportunityValue[2]}}
                                         </div>
                                     </div>
-                           
                         </div>
-                    <!-- <div class="row" style="display: flex">
-                        <div  class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 0px;">
-                            <div class="portlet light">
-                        <div  style="width: max-content;">
-                                           <b>{{opportunityName[0]}}</b>
-                                <br>
-                                <span>{{opportunityValue[0]}}</span>
-                        </div>
-                        </div>
-                        </div>
-                        <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-right: 8px;">
-                            <div class="portlet light">
-                        <div  style="width: max-content;"> <b>{{opportunityName[1]}}</b>
-                            <br>
-                            <span>{{opportunityValue[1]}}</span></div>
-                        </div>
-                        </div>
-                        <div class="col-xs-12 col-md-4 col-lg-4" style="width: auto;padding-left: 8px;">
-                            <div class="portlet light">
-                        <!-- <div style="font-weight: bold;">Latest Deal Time</div> --
-                        <div style="width: max-content;"> <b>{{opportunityName[2]}}</b>
-                            <br>
-                            <span>{{opportunityValue[2]}}</span></div>
-                        </div>
-                        </div>
-                    </div> -->
                 </figure>
                  <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph>
             </div>
