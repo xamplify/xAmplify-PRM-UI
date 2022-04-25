@@ -808,7 +808,7 @@
           <div class="vertical-center">
             <div class="panel panel-info mFormWidth " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor"
               [style.borderColor]="form.borderColor">
-              <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor"
+              <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor"
                 [style.borderColor]="form.borderColor">
                 <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
               </div>
