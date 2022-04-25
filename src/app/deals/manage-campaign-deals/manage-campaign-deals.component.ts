@@ -84,9 +84,11 @@ export class ManageCampaignDealsComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
             this.dealsSortOption.totalRecords = response.data.totalRecords;
-            this.getStageNames();
-            this.getStageNamesForVendor();
-            this.getStageNamesForVendorInCampaign();
+            if(this.authenticationService.showRoles()  === 'Orgadmin & Partner'){
+              this.stageNamesOfV();
+               } else {
+              this.getStageNamesOfCampaign();
+               }
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
         },
         error => {
@@ -421,64 +423,34 @@ setDealStatus(deal: Deal,deletedPartner:boolean) {
     this.referenceService.showSweetAlert("This Option Is Not Available","","info");
   }
 }
-getStageNames(){
+stageNamesOfV(){
   this.referenceService.loading(this.httpRequestLoader, true);
-  this.dealsService.getStageNamesForPartner(this.loggedInUserId)
+  this.dealsService.getStageNamesOfV(this.loggedInUserId)
   .subscribe(
     response =>{
       this.referenceService.loading(this.httpRequestLoader, false);
       this.stageNamesForFilterDropDown = response;
-     // alert(this.stageNamesForFilterDropDown)
+
     },
     error=>{
       this.httpRequestLoader.isServerError = true;
     },
     ()=> { }
-  );
+  ); 
 }
-getStageNamesForVendor(){
+getStageNamesOfCampaign(){
   this.referenceService.loading(this.httpRequestLoader, true);
-  this.dealsService.getStageNamesForVendor(this.loggedInUserId)
+  this.dealsService.getStageNamesOfCampaign(this.loggedInUserId)
   .subscribe(
     response =>{
       this.referenceService.loading(this.httpRequestLoader, false);
       this.stageNamesForFilterDropDown = response;
-     // alert(this.stageNamesForFilterDropDown)
+
     },
     error=>{
       this.httpRequestLoader.isServerError = true;
     },
     ()=> { }
-  );
-}
-getStageNamesForVendorInCampaign(){
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.dealsService.getStageNamesForVendorInCampaign(this.loggedInUserId)
-  .subscribe(
-    response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.stageNamesForFilterDropDown = response;
-     // alert(this.stageNamesForFilterDropDown)
-    },
-    error=>{
-      this.httpRequestLoader.isServerError = true;
-    },
-    ()=> { }
-  );
-}
-getStageNamesForPartnerInCampaign(){
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.dealsService.getStageNamesForPartnerInCampaign(this.loggedInUserId)
-  .subscribe(
-    response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.stageNamesForFilterDropDown = response;
-     // alert(this.stageNamesForFilterDropDown)
-    },
-    error=>{
-      this.httpRequestLoader.isServerError = true;
-    },
-    ()=> { }
-  );
+  ); 
 }
 }
