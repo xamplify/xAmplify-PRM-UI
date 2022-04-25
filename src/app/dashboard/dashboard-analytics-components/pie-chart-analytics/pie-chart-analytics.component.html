@@ -1,0 +1,56 @@
+<ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="col-xs-12 col-sm-12"  style="padding: 0">
+    <div class="col-xs-12">
+        <div  style="margin-top: -610px;margin-right: -2px;">
+            <div class="portlet-body">
+                <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
+                <ng-container *ngIf="!loader && statusCode!=200">
+                    <div class="alert alert-danger">
+                      <strong>{{properties?.serverErrorMessage}}</strong>
+                    </div>
+                  </ng-container>
+                  <div [hidden]="loader" *ngIf="pieChartData?.length < 1" style="max-width: 100%;text-align: center;">
+                    <div class="alert alert-info">
+                         <strong>No Data Found</strong>
+                     </div>
+                </div>
+               
+                <figure [hidden]="loader" class="highcharts-figure-pie">
+                    <div style="display: inline;">
+                        <button (click)="click()">Deals</button>
+                        <button (click)="leads()">Leads</button>
+                        </div>
+                    <div  id="container">
+                          
+                    </div>
+                        <div class="row" style="display: flex">
+                            <div class="col-xs-12 col-sm-4 col-md-4 p10">
+                                        <div class="portlet light" style="margin-top: -9px;">
+                                            <strong>  {{opportunityName[0]}} </strong>
+                                            <br>
+                                            {{opportunityValue[0]}}
+                                        </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 pl0">
+                                <div class="portlet light">
+                                               <strong> {{opportunityName[1]}} </strong>
+                                            <br>
+                                        {{opportunityValue[1]}}
+                                        </div>
+                                </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 pl0">
+                                <div class="portlet light">
+                                    
+                                    <strong> {{opportunityName[2]}} </strong>
+                                                <br>
+                                            {{opportunityValue[2]}}
+                                        </div>
+                                    </div>
+                        </div>
+                </figure>
+                 <app-pie-chart-statistics-bar-graph [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph>
+            </div>
+        </div>
+    </div>
+</div>
+

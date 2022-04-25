@@ -52,7 +52,7 @@
   <!---Header-->
   <div class="clearfix" *ngIf="isTeamMemberModule">
     <section class="clearfix">
-      <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier ">
+      <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
         <div class="col-xs-6 col-sm-2 hidden-xs">
           <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;">
               <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>
@@ -107,7 +107,7 @@
                 Team Member
             </h4>
             </th>
-            <th *ngIf="isTeamMemberModule" scope="" translate>
+            <th *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" scope="" translate>
               <i class="fa fa-object-group" aria-hidden="true"></i><br>Group
             </th>
             <th id="second-admin-td" *ngIf="isOrgAdmin && isTeamMemberModule"  scope="" translate>
@@ -134,15 +134,18 @@
               </span>
             </td>
             <!---Assigned Group-->
-            <td *ngIf="isTeamMemberModule" id="group-min-td">
-              <div class="btn-group">
-                <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
-                  <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
-                  <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
-                </button>
-                <button class="tm-group-preview-css" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
-                <i class="fa fa-eye" aria-hidden="true"></i>
-                </button>
+            <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" id="group-min-td">
+              <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null">
+                  <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
+                    <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
+                    <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
+                  </button>
+                  <button class="tm-group-preview-css" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
+                  <i class="fa fa-eye" aria-hidden="true"></i>
+                  </button>
+            </div>
+            <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null">
+              <span><strong>No Group Selected</strong></span>
             </div>
             </td>
             <!---Second Admin---->
@@ -180,7 +183,7 @@
                   </a>
                 </ng-container>
                 <!--Edit--->
-                <a *ngIf="isTeamMemberModule" title="Edit" (click)="edit(teamMember.teamMemberId)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
+                <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" title="Edit" (click)="edit(teamMember.teamMemberId)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </a>
                 <!---Analytics--->
@@ -188,12 +191,14 @@
                   <i class="fa fa-line-chart" aria-hidden="true"></i>
                 </a>
                 <!--Resend Invitation-->
-                <a *ngIf="teamMember.status=='UNAPPROVED'" title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="resendEmailInvitation(teamMember.emailId)">
-                  <i class="fa fa-envelope" aria-hidden="true"></i>
-                </a>
-                <a  *ngIf="teamMember.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="inactive">
-                  <i class="fa fa-envelope gray" aria-hidden="true"></i>
-                </a>
+                <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                  <a *ngIf="teamMember.status=='UNAPPROVED'" title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="resendEmailInvitation(teamMember.emailId)">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                  </a>
+                  <a  *ngIf="teamMember.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="inactive">
+                    <i class="fa fa-envelope gray" aria-hidden="true"></i>
+                  </a>
+                </ng-container>
                 <!---Delete-->
                 <a title="Delete" *ngIf="isTeamMemberModule" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="showPopup(teamMember)">
                   <i class="fa fa-trash red" aria-hidden="true"></i>

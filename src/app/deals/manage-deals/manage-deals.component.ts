@@ -74,6 +74,7 @@ export class ManageDealsComponent implements OnInit {
   selectedFilterIndex: number = 1;
   stageNamesForFilterDropDown: any;
   statusFilter: any;
+  prm: boolean;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -140,8 +141,13 @@ export class ManageDealsComponent implements OnInit {
           roles.indexOf(this.roleName.allRole) > -1 ||
           roles.indexOf(this.roleName.vendorRole) > -1 || 
           roles.indexOf(this.roleName.vendorTierRole) > -1 ||
-          roles.indexOf(this.roleName.marketingRole) > -1) {
+          roles.indexOf(this.roleName.marketingRole) > -1 ||
+          roles.indexOf(this.roleName.prmRole) > -1) {
           this.isVendor = true;
+        }
+
+        if (roles.indexOf(this.roleName.prmRole) > -1) {
+          this.prm = true;
         }
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
           this.isOrgAdmin = true;
@@ -162,6 +168,9 @@ export class ManageDealsComponent implements OnInit {
         }
         if (this.authenticationService.superiorRole.includes("Partner")) {
           this.isCompanyPartner = true;
+        }
+        if (this.authenticationService.superiorRole.includes("Prm")) {
+          this.prm = true;
         }
       }
     }

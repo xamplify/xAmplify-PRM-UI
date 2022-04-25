@@ -131,7 +131,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.authorizeUrl(roles, url, this.videoBaseUrl);
         }
         if(url.indexOf(this.campaignBaseUrl)>-1){
-            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && (url.indexOf("home/campaigns/manage")>-1 || url.indexOf("home/campaigns/calendar")>-1)){
+            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && (url.indexOf("home/campaigns/manage")>-1 
+            || url.indexOf("home/campaigns/calendar")>-1 || url.indexOf("/details")>-1)){
                 return true;
             }else{
                 return this.authorizeUrl(roles, url, this.campaignBaseUrl);

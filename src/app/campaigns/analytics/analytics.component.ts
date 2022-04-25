@@ -1077,7 +1077,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   getCampaignById(campaignId: number) {
     try {
       this.loading = true;
-      const obj = { 'campaignId': campaignId }
+      const obj = { 'campaignId': campaignId, 'userId': this.loggedInUserId }
       this.campaignService.getCampaignById(obj)
         .subscribe(
           data => {
