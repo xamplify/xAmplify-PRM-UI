@@ -56,6 +56,9 @@
                         <div class="profile-usertitle-job">
                             {{roleNames}}
                         </div>
+                        <div *ngIf="authenticationService?.module?.upgradeToMarketing" class="profile-usertitle-job">
+                            <button class="btn btn-info">Upgrade</button>
+                        </div>
                     </div>
                     <div class="profile-usermenu">
                         <!--------------Account Details----------------------->

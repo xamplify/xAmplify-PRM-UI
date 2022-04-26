@@ -48,6 +48,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   selectedFilterIndex: number = 1;
   stageNamesForFilterDropDown :any;
   statusFilter: any;
+  // lead: any;
 
   constructor(public authenticationService: AuthenticationService,
     private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -94,9 +95,11 @@ export class ManageCampaignLeadsComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
             this.leadsSortOption.totalRecords = response.data.totalRecords;
-            this.getStageNames();
-            this.getStageNamesForPartner();
+            // this.getStageNames();
+            //  this.getStageNamesForPartner();
+            this.getStageNamesForPartnerInCampaign();
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
+            // this.lead = response.data;
         },
         error => {
             this.httpRequestLoader.isServerError = true;
@@ -405,9 +408,10 @@ getSelectedIndex(index:number){
   this.listCampaignLeads(this.leadsPagination);
   
 }
-getStageNames(){
+
+getStageNamesForPartnerInCampaign(){
   this.referenceService.loading(this.httpRequestLoader, true);
-  this.leadsService.getStageNamesForVendor(this.loggedInUserId)
+  this.leadsService.getStageNamesForPartnerInCampaign(this.loggedInUserId)
   .subscribe(
     response =>{
       this.referenceService.loading(this.httpRequestLoader, false);
@@ -420,19 +424,34 @@ getStageNames(){
     ()=> { }
   );
 }
-getStageNamesForPartner(){
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.leadsService.getStageNamesForPartner(this.loggedInUserId)
-  .subscribe(
-    response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.stageNamesForFilterDropDown = response;
-     // alert(this.stageNamesForFilterDropDown)
-    },
-    error=>{
-      this.httpRequestLoader.isServerError = true;
-    },
-    ()=> { }
-  );
-}
+// getStageNames(){
+//   this.referenceService.loading(this.httpRequestLoader, true);
+//   this.leadsService.getStageNamesForVendor(this.loggedInUserId)
+//   .subscribe(
+//     response =>{
+//       this.referenceService.loading(this.httpRequestLoader, false);
+//       this.stageNamesForFilterDropDown = response;
+//      // alert(this.stageNamesForFilterDropDown)
+//     },
+//     error=>{
+//       this.httpRequestLoader.isServerError = true;
+//     },
+//     ()=> { }
+//   );
+// }
+// getStageNamesForPartner(){
+//   this.referenceService.loading(this.httpRequestLoader, true);
+//   this.leadsService.getStageNamesForPartner(this.loggedInUserId)
+//   .subscribe(
+//     response =>{
+//       this.referenceService.loading(this.httpRequestLoader, false);
+//       this.stageNamesForFilterDropDown = response;
+//      // alert(this.stageNamesForFilterDropDown)
+//     },
+//     error=>{
+//       this.httpRequestLoader.isServerError = true;
+//     },
+//     ()=> { }
+//   );
+// }
 }

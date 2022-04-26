@@ -326,10 +326,14 @@ export class ManageDealsComponent implements OnInit {
   listDeals(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
     if (this.isVendorVersion) {
-      this.stageNamesForVendor();
+      this.  stageNamesOfV();
       this.fromDateFilter;
       this.listDealsForVendor(pagination);
     } else if (this.isPartnerVersion) {
+      this.stageNamesForPartner();
+      this.listDealsForPartner(pagination);
+    }
+    else if(this.authenticationService.showRoles() === 'Orgadmin'){
       this.stageNamesForPartner();
       this.listDealsForPartner(pagination);
     }
@@ -910,10 +914,9 @@ export class ManageDealsComponent implements OnInit {
     this.listCampaignsForVendor(this.campaignPagination);
     
   }
-
-  stageNamesForVendor(){
+  stageNamesOfV(){
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.dealsService.getStageNamesForVendor(this.loggedInUserId)
+    this.dealsService.getStageNamesOfV(this.loggedInUserId)
     .subscribe(
       response =>{
         this.referenceService.loading(this.httpRequestLoader, false);
@@ -926,25 +929,9 @@ export class ManageDealsComponent implements OnInit {
       ()=> { }
     ); 
   }
-
   stageNamesForPartner(){
     this.referenceService.loading(this.httpRequestLoader, true);
     this.dealsService.getStageNamesForPartner(this.loggedInUserId)
-    .subscribe(
-      response =>{
-        this.referenceService.loading(this.httpRequestLoader, false);
-        this.stageNamesForFilterDropDown = response;
-
-      },
-      error=>{
-        this.httpRequestLoader.isServerError = true;
-      },
-      ()=> { }
-    ); 
-  }
-  stageNamesOfVendor(){
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.dealsService.getStageNamesOfVendor(this.loggedInUserId)
     .subscribe(
       response =>{
         this.referenceService.loading(this.httpRequestLoader, false);

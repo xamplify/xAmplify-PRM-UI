@@ -85,5 +85,6 @@ export class Module {
 
     isPrmCompany = false;
     deletedPartner = false;
+    upgradeToMarketing = false;
    
 }

@@ -148,28 +148,18 @@ getConversation(dealId:number, userId:number) {
       error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
     return Observable.throw(error);
   }
+  getStageNamesOfV(userId:number) {
+    return this.http.get(this.URL + `campaign/deal/list/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+  getStageNamesOfCampaign(userId:number) {
+    return this.http.get(this.URL + `campaign/deal/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
   getStageNamesForPartner(userId:number){
     return this.http.get(this.URL + `/list/partner/stages/${userId}?access_token=${this.authenticationService.access_token}`)
-    .map(this.extractData)
-    .catch(this.handleError);
-  }
-  getStageNamesForVendor(userId:number) {
-    return this.http.get(this.URL + `/list/v/stages/${userId}?access_token=${this.authenticationService.access_token}`)
-    .map(this.extractData)
-    .catch(this.handleError);
-  }
-  getStageNamesOfVendor(userId:number) {
-    return this.http.get(this.URL + `/list/vendor/stages/${userId}?access_token=${this.authenticationService.access_token}`)
-    .map(this.extractData)
-    .catch(this.handleError);
-  }
-  getStageNamesForVendorInCampaign(userId: number){
-    return this.http.get(this.URL + `/list/partner/stages/${userId}?access_token=${this.authenticationService.access_token}`)
-    .map(this.extractData)
-    .catch(this.handleError);
-  }
-  getStageNamesForPartnerInCampaign(userId: number){
-    return this.http.get(this.URL + `campaign/deal/list/stages/${userId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
   }
