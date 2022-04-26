@@ -70,6 +70,7 @@ export class CampaignService {
     }
 
     getCampaignById(data: any) {
+        data['userId'] = this.authenticationService.getUserId();
         return this.http.post(this.URL + "admin/getCampaignById?access_token=" + this.authenticationService.access_token,data)
             .map(this.extractData)
             .catch(this.handleError);
@@ -90,6 +91,7 @@ export class CampaignService {
         .map(this.extractData)
         .catch(this.handleError);
       } else {
+        data['userId'] = this.authenticationService.getUserId();
         return this.http.post(this.URL + "admin/getCampaignById?access_token=" + this.authenticationService.access_token, data)
         .map(this.extractData)
         .catch(this.handleError);
