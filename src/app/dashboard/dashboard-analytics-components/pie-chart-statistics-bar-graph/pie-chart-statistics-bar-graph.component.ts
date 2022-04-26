@@ -23,7 +23,8 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
   vanityLogin = false;
-  show:boolean = false;
+  selectedTemplateTypeIndex =0;
+
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {this.loggedInUserId = this.authenticationService.getUserId();
       this.vanityLoginDto.userId = this.loggedInUserId;
@@ -38,10 +39,12 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
     this.vanityLoginDto.applyFilter = this.applyFilter;
     this.loadStatisticsDealDataWithStageNames();
   }
-  click(){
+  click(index :number){
+    this.selectedTemplateTypeIndex =index;
     this.loadStatisticsDealDataWithStageNames()
   }
-  leads(){
+  leads(index : number){
+    this.selectedTemplateTypeIndex = index;
     this.loadStatisticsLeadsDataWithStageNames();
   }
   loadStatisticsDealDataWithStageNames(){
@@ -50,9 +53,8 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
 this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartGraphData=response.data;
-  
     this.statusCode=200;
-console.log(this.pieChartGraphData)
+    console.log(this.pieChartGraphData)
     this.loader =false;
     this.loadGraph(this.pieChartGraphData,this.statusName)
   },
@@ -60,7 +62,7 @@ console.log(this.pieChartGraphData)
     this.xtremandLogger.error(error);
     this.loader = false;
     this.statusCode = 0;
-    this.show=true;
+  
   }
 )
   }
@@ -72,7 +74,7 @@ console.log(this.pieChartGraphData)
 this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartGraphData=response.data;
-   
+   console.log(this.pieChartGraphData);
     this.statusCode=200;
 console.log(this.pieChartGraphData)
     this.loader =false;
@@ -82,7 +84,6 @@ console.log(this.pieChartGraphData)
   (error) => {
     this.xtremandLogger.error(error);
     this.loader = false;
-    this.show=true;
     this.statusCode = 0;
   }
 )
@@ -101,7 +102,7 @@ console.log(this.pieChartGraphData)
     },
       
       xAxis: {
-          categories: this.pieChartGraphData.map(t=>t.name),
+          categories: this.pieChartGraphData.map(t3=>t3.name),
           
       },
       yAxis: {
@@ -124,7 +125,7 @@ console.log(this.pieChartGraphData)
       },
       series: [{
           name: 'Count',
-          data: this.pieChartGraphData.map(t=>t.value),
+          data: this.pieChartGraphData.map(c3=>c3.value),
       }]
   });
    }
