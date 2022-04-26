@@ -20,6 +20,7 @@ export class DashboardService {
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
     dashboardAnalytics = this.authenticationService.REST_URL + "dashboard/views/";
     moduleUrl = this.authenticationService.REST_URL + "module/";
+    upgradeRoleUrl = this.authenticationService.REST_URL + "upgradeRole/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
@@ -677,5 +678,20 @@ export class DashboardService {
     .map(this.extractData)
     .catch(this.handleError);
    }
+
+   saveUpgradeRequest(){
+    const url = this.upgradeRoleUrl+"saveRequest/" +this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   isRequestExists(){
+    const url = this.upgradeRoleUrl+"isRequestExists/" +this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
 
 }
