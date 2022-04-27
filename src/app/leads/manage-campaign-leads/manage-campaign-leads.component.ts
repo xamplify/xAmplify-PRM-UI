@@ -94,12 +94,10 @@ export class ManageCampaignLeadsComponent implements OnInit {
         response => {            
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
-            this.leadsSortOption.totalRecords = response.data.totalRecords;
-            // this.getStageNames();
-            //  this.getStageNamesForPartner();
-            this.getStageNamesForPartnerInCampaign();
+            this.leadsSortOption.totalRecords = response.data.totalRecords;            
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
-            // this.lead = response.data;
+            this.getStageNamesForCampaign();
+            
         },
         error => {
             this.httpRequestLoader.isServerError = true;
@@ -409,9 +407,9 @@ getSelectedIndex(index:number){
   
 }
 
-getStageNamesForPartnerInCampaign(){
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.leadsService.getStageNamesForPartnerInCampaign(this.loggedInUserId)
+getStageNamesForCampaign(){
+  this.referenceService.loading(this.httpRequestLoader, true);  
+  this.leadsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId)
   .subscribe(
     response =>{
       this.referenceService.loading(this.httpRequestLoader, false);
@@ -422,36 +420,7 @@ getStageNamesForPartnerInCampaign(){
       this.httpRequestLoader.isServerError = true;
     },
     ()=> { }
-  );
+  );  
 }
-// getStageNames(){
-//   this.referenceService.loading(this.httpRequestLoader, true);
-//   this.leadsService.getStageNamesForVendor(this.loggedInUserId)
-//   .subscribe(
-//     response =>{
-//       this.referenceService.loading(this.httpRequestLoader, false);
-//       this.stageNamesForFilterDropDown = response;
-//      // alert(this.stageNamesForFilterDropDown)
-//     },
-//     error=>{
-//       this.httpRequestLoader.isServerError = true;
-//     },
-//     ()=> { }
-//   );
-// }
-// getStageNamesForPartner(){
-//   this.referenceService.loading(this.httpRequestLoader, true);
-//   this.leadsService.getStageNamesForPartner(this.loggedInUserId)
-//   .subscribe(
-//     response =>{
-//       this.referenceService.loading(this.httpRequestLoader, false);
-//       this.stageNamesForFilterDropDown = response;
-//      // alert(this.stageNamesForFilterDropDown)
-//     },
-//     error=>{
-//       this.httpRequestLoader.isServerError = true;
-//     },
-//     ()=> { }
-//   );
-// }
+
 }

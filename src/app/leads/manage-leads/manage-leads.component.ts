@@ -344,12 +344,9 @@ export class ManageLeadsComponent implements OnInit {
 
   listLeads(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
-    if (this.isVendorVersion) {
-      this.stageNamesForVendor();
-      this.fromDateFilter;
+    if (this.isVendorVersion) {      
       this.listLeadsForVendor(pagination);
-    } else if (this.isPartnerVersion) {
-      this.stageNamesForPartner();
+    } else if (this.isPartnerVersion) {      
       this.listLeadsForPartner(pagination);
     }
   }
@@ -407,6 +404,7 @@ export class ManageLeadsComponent implements OnInit {
           this.leadsSortOption.totalRecords = response.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, response.data);
           this.lead = response.data;
+          this.stageNamesForVendor();
         },
         error => {
           this.httpRequestLoader.isServerError = true;
@@ -441,6 +439,7 @@ export class ManageLeadsComponent implements OnInit {
           this.leadsSortOption.totalRecords = response.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, response.data);
           this.referenceService.loading(this.httpRequestLoader, false);
+          this.stageNamesForPartner();
         },
         error => {
           this.httpRequestLoader.isServerError = true;
