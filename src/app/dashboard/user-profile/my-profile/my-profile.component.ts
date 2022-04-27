@@ -3409,7 +3409,6 @@ configSalesforce() {
 		subscribe(
 			response=>{
 				this.isUpgradedRequestSubmitted = response.data;
-				alert(this.isUpgradedRequestSubmitted);
 			},error=>{
 				this.ngxloading = false;
 				this.isUpgradedRequestSubmitted = false;
