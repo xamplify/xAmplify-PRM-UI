@@ -161,13 +161,17 @@ export class LeadsService {
     .catch(this.handleError);
   }
 
-  getStageNamesForPartner(userId:number){
+  getStageNamesForPartner1(userId:number){
     return this.http.get(this.URL + `/list/p/stages/${userId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
   }
 
-  
+  getStageNamesForPartner(vanityLoginDto:VanityLoginDto) {
+    return this.http.post(this.URL +`/list/p/stages?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
 
   getStageNamesForPartnerInCampaign(userId:number){
     return this.http.get(this.URL + `campaign/lead/stages/${userId}?access_token=${this.authenticationService.access_token}`)

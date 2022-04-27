@@ -1039,7 +1039,7 @@ export class ManageLeadsComponent implements OnInit {
   }
   stageNamesForPartner(){
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.leadsService.getStageNamesForPartner(this.loggedInUserId)
+    this.leadsService.getStageNamesForPartner(this.vanityLoginDto)
     .subscribe(
       response =>{
         this.referenceService.loading(this.httpRequestLoader, false);
