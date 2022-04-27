@@ -14,7 +14,6 @@ declare var Highcharts: any;
 export class PieChartAnalyticsComponent implements OnInit {
   pieChartData: Array<any> = new Array<any>();
   pieChartStatisticsData:Array<any> =new Array<any>();
- 
   loader = false;
   statusCode = 200;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -24,8 +23,8 @@ export class PieChartAnalyticsComponent implements OnInit {
   name:any;
   opportunityName:any=[];
   opportunityValue:any=[]
-  show:boolean=false;
   selectedTemplateTypeIndex =0;
+  showIndex=0;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -64,7 +63,6 @@ export class PieChartAnalyticsComponent implements OnInit {
   (error) => {
     this.xtremandLogger.error(error);
     this.loader = false;
-    this.show=true;
     this.statusCode = 0;
   }
 )
@@ -82,51 +80,69 @@ this.dashboardService.getPieChartStatisticsLeadAnalyticsData(this.vanityLoginDto
     this.xtremandLogger.error(error);
     this.loader = false;
     this.statusCode = 0;
-    this.show=true;
   }
 );
   }
   
  loadLeadPieChart(){
-   this.name=" Lead Stats";
 this.loader = true;
 this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscribe(
   (response)=>{
     this.pieChartData=response.data;
-   
+    let val=this.pieChartData.map(map=>map[1])
+    let sum = val.reduce(function (a, b) {
+     return a + b;
+     }, 0);
+     if(sum === 0){
+       this.pieChartData.length = 0;
+       this.loader =false;
+       this.showIndex=1;
+     }
+     else{
   this.statusCode=200;
   this.loader = false;
   this.loadChart(this.pieChartData);
   this.loadStatisticsLeadData();
+  this.showIndex=0;
+     }
 
 },
 (error) => {
   this.xtremandLogger.error(error);
   this.loader = false;
   this.statusCode = 0;
-  this.show=true;
+  
 }
 );
 }
+
 loadDealPieChart(){
-  this.name=" Deal Stats"; 
-  let selectedTemplateTypeIndex = 0;
   this.loader = true;
   this.dashboardService.getPieChartDealsAnalyticsData(this.vanityLoginDto).subscribe(
     (response)=>{
       this.pieChartData=response.data;
-     
+     let val=this.pieChartData.map(map=>map[1])
+     let sum = val.reduce(function (a, b) {
+      return a + b;
+      }, 0);
+      if(sum === 0){
+        this.pieChartData.length = 0;
+        this.loader =false;
+        this.showIndex=1
+      }
+      else{
     this.statusCode=200;
     this.loader = false;
     this.loadChart(this.pieChartData);
     this.loadStatisticsDealData();
+    this.showIndex =0;
+      }
             
   },
   (error) => {
     this.xtremandLogger.error(error);
     this.loader = false;
     this.statusCode = 0;
-    this.show=true;
   }
   );
 }
@@ -178,7 +194,7 @@ loadDealPieChart(){
       series: [{
           type: 'pie',
           name: 'count',
-          data: this.pieChartData,
+          data: self.pieChartData,
       },],
   });
   }
