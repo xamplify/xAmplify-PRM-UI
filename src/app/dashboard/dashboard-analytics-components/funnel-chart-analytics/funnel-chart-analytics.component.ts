@@ -97,6 +97,15 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       },
 
       plotOptions: {
+        funnel3d: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          depth: 35,
+          dataLabels: {
+              enabled: true,
+              format: '{point.name}'
+          }
+      },
         series: {
           cursor: "pointer",
           point: {

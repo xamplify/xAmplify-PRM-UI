@@ -1,4 +1,5 @@
-import { Component, OnInit,Output,EventEmitter } from '@angular/core';
+import { SweetAlertParameterDto } from './../../common/models/sweet-alert-parameter-dto';
+import { Component, OnInit,Output,EventEmitter,Input } from '@angular/core';
 declare var swal:any;
 
 @Component({
@@ -9,10 +10,13 @@ declare var swal:any;
 export class ConfirmSweetAlertUtilComponent implements OnInit {
 
   @Output() notifyComponent = new EventEmitter();
-
+  @Input() parameterDto:SweetAlertParameterDto;
   constructor() { }
 
   ngOnInit() {
+    if(this.parameterDto==undefined){
+      this.parameterDto = new SweetAlertParameterDto();
+    }
     this.showSweetAlertConfirmation();
   }
 
@@ -22,12 +26,12 @@ export class ConfirmSweetAlertUtilComponent implements OnInit {
     let self = this;
 			swal({
 				title: 'Are you sure?',
-				text: "You won't be able to undo this action!",
+				text: self.parameterDto.text,
 				type: 'warning',
 				showCancelButton: true,
 				swalConfirmButtonColor: '#54a7e9',
 				swalCancelButtonColor: '#999',
-				confirmButtonText: 'Yes, delete it!'
+				confirmButtonText: self.parameterDto.confirmButtonText
 			}).then(function () {
         clicked = true;
         self.notifyComponent.emit(clicked);

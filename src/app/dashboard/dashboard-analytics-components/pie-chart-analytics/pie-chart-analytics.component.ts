@@ -25,6 +25,7 @@ export class PieChartAnalyticsComponent implements OnInit {
   opportunityName:any=[];
   opportunityValue:any=[]
   show:boolean=false;
+  selectedTemplateTypeIndex =0;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -41,10 +42,12 @@ export class PieChartAnalyticsComponent implements OnInit {
     this.vanityLoginDto.applyFilter = this.applyFilter;
     this.loadDealPieChart();
   }
-  click(){
+  click(index :number ){
+    this.selectedTemplateTypeIndex =index
     this.loadDealPieChart();
   }
-  leads(){
+  leads(index :number){
+    this.selectedTemplateTypeIndex =index
     this.loadLeadPieChart();
   }
   
@@ -107,6 +110,7 @@ this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscri
 }
 loadDealPieChart(){
   this.name=" Deal Stats"; 
+  let selectedTemplateTypeIndex = 0;
   this.loader = true;
   this.dashboardService.getPieChartDealsAnalyticsData(this.vanityLoginDto).subscribe(
     (response)=>{
