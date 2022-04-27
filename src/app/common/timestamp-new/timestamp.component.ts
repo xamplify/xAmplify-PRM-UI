@@ -18,7 +18,6 @@ export class TimestampNewComponent implements OnInit {
     try{
       if(this.referenceService.isSafariBrowser()){
       if((this.dateAndTime.includes(' '))) {
-        console.log(this.dateAndTime);
         this.isSpacethere = true;
         // this.dateAndTime = this.dateAndTime.replace(/ /g,"T");
         // this.dateAndTime = Date.parse(this.dateAndTime);
