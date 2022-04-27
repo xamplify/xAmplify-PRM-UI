@@ -29,7 +29,7 @@
      </div>
      </div>
        <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-     <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
+     <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
        <div>
          <div class="table-responsive">
            <table class='table tgrid' aria-describedby="">
@@ -78,7 +78,7 @@
          </div>
        </div>
      </div>
-     <ng-container *ngIf="!hasError">
+     <ng-container *ngIf="!apiError">
         <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
         <app-pagination [pagination]="pagination"
           (notifyParent)="setPage($event)"
@@ -86,11 +86,11 @@
           [hidden]="httpRequestLoader.isLoading">
         </app-pagination>
       </div>
-        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
           <strong>No Data Found.</strong>
         </div>
      </ng-container>
-     <div *ngIf="hasError" class="alert alert-danger">
+     <div *ngIf="apiError" class="alert alert-danger">
    <strong>Oops!Something went wrong.Please try again after sometime</strong>
  </div>
    </div>

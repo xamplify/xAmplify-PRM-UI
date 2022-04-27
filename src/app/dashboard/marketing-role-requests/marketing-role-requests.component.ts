@@ -49,9 +49,9 @@ export class MarketingRoleRequestsComponent implements OnInit {
         const data = response.data;
         pagination.totalRecords = data.totalRecords;
         $.each(data.list, function (_index: number, report: any) {
-					report.displayTime = new Date(report.createdTimeInString);
-				});
-				pagination = this.pagerService.getPagedItems(pagination, data.list);
+		report.displayTime = new Date(report.createdTimeInString);
+		});
+		pagination = this.pagerService.getPagedItems(pagination, data.list);
         this.stopLoaders();
       },error=>{
         this.stopLoaders();
@@ -92,6 +92,10 @@ export class MarketingRoleRequestsComponent implements OnInit {
 		this.pagination.filterKey = type;
 		this.pagination.pageIndex = 1;
 		this.findRequests(this.pagination);
+	}
+
+	upgrade(request:any){
+		
 	}
 
 }
