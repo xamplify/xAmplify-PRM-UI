@@ -80,10 +80,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     const currentUser = localStorage.getItem( 'currentUser' );
     if(currentUser!=undefined){
       this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
-      this.getDashboardType();
-    }else{
-        this.hasAccess = false;
-      }
+    }
     if(!this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner){
         this.loggedInUserId = this.authenticationService.getUserId();
         this.getDefaultPage(this.loggedInUserId);
@@ -96,21 +93,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
   ngOnDestroy(){
     $('#customizeCampaignModal').modal('hide');
   }
-  getDashboardType(){
-    this.userService.getDashboardType().
-    subscribe(
-      data=>{
-        this.hasAccess = (data!=undefined && data.indexOf('Dashboard')>-1);
-        if(!this.hasAccess){
-          this.referenceService.goToPageNotFound();
-        }
-        this.ngxLoading = false;
-      },error=>{
-        this.ngxLoading = false;
-        this.xtremandLogger.error(error);
-      }
-    );
-  }
+  
   getDefaultPage(userId: number) {
     this.ngxLoading = true;
     this.userService.getUserDefaultPage(userId)
