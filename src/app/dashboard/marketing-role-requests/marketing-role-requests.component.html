@@ -67,13 +67,13 @@
                       : request.status == 'APPROVED' ?  'green-banner' :'' ">{{request?.status}}</span>
                   </td>
                   <td class="text-center">
-                    <app-timestamp	[dateAndTime]="request?.createdTime"> </app-timestamp>
+                    <app-display-date-and-time	[dateAndTimeUTCString]="request?.createdTimeInString"> </app-display-date-and-time>
                   </td>
                   <td class="text-center" *ngIf="selectedFilterIndex==0">
                     <button class="btn btn-info" (click)="upgrade(request.id)">Upgrade</button>
                   </td>
                   <td class="text-center" *ngIf="selectedFilterIndex==1">
-                    <app-timestamp	[dateAndTime]="request?.createdTime"> </app-timestamp>
+                    <app-display-date-and-time	[dateAndTimeUTCString]="request?.updatedTimeInString"> </app-display-date-and-time>
                   </td>
                  </tr>
                </ng-container>

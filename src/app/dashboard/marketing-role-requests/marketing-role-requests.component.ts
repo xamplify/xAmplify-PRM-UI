@@ -51,9 +51,6 @@ export class MarketingRoleRequestsComponent implements OnInit {
       response=>{
         const data = response.data;
         pagination.totalRecords = data.totalRecords;
-        $.each(data.list, function (_index: number, report: any) {
-		report.displayTime = new Date(report.createdTimeInString);
-		});
 		pagination = this.pagerService.getPagedItems(pagination, data.list);
         this.stopLoaders();
       },error=>{
