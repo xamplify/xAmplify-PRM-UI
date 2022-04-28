@@ -4,31 +4,31 @@
    <div class="portlet light">
      <div class="portlet-title">
        <div class="caption">Marketing Requests</div>
-   <div class="inputs">
-   <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-     <i class="fa fa-refresh margin" aria-hidden="true"></i>
-   </a>
-   <div  [ngClass]="{'search-css left-float': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-   <ul class="mix-filter">
-    <li class="mix-filter" [class.li-selected]="0 == selectedFilterIndex" (click)="filterRequests(0,'requested')">Requested</li>
-    <li class="mix-filter" [class.li-selected]="1 == selectedFilterIndex" (click)="filterRequests(1,'rejected')">Rejected</li>
-    <li class="mix-filter" [class.li-selected]="2 == selectedFilterIndex" (click)="filterRequests(2,'approved')">Approved</li>
-   </ul>
-</div>
-  <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-   <div class="input-icon right" id="icon-right">
-     <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
-       [ngModelOptions]="{standalone: true}" placeholder="search..."
-       (keypress)="eventHandler($event.keyCode)">
-     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
-       (click)="pagination.searchKey='';search()"></button>
-     <button type="submit" class="search-box-item-click" (click)="search()">
-       <i class="fa fa-search" aria-hidden="true"></i></button>
-   </div>
- </div> 
+        <div class="inputs">
+          <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+            <i class="fa fa-refresh margin" aria-hidden="true"></i>
+          </a>
+          <div  [ngClass]="{'search-css left-float': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+          <ul class="mix-filter">
+            <li class="mix-filter" [class.li-selected]="0 == selectedFilterIndex" (click)="filterRequests(0,'requested')">Requested</li>
+            <li class="mix-filter" [class.li-selected]="1 == selectedFilterIndex" (click)="filterRequests(1,'approved')">Approved</li>
+          </ul>
+        </div>
+          <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+          <div class="input-icon right" id="icon-right">
+            <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
+              [ngModelOptions]="{standalone: true}" placeholder="search..."
+              (keypress)="eventHandler($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
+              (click)="pagination.searchKey='';search()"></button>
+            <button type="submit" class="search-box-item-click" (click)="search()">
+              <i class="fa fa-search" aria-hidden="true"></i></button>
+          </div>
+        </div> 
+        </div>
      </div>
-     </div>
-       <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+    <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
      <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
        <div>
          <div class="table-responsive">
@@ -40,7 +40,8 @@
                 </th>
                 <th class="text-center" scope="row" translate>Status</th>
                 <th class="text-center" scope="row" translate>Requested On</th>
-                <th class="text-center" scope="row" *ngIf="selectedFilterIndex==0 || selectedFilterIndex==1">Upgrade</th>
+                <th class="text-center" scope="row" *ngIf="selectedFilterIndex==0">Upgrade</th>
+                <th class="text-center" scope="row" *ngIf="selectedFilterIndex==1">Upgraded On</th>
                </tr>
              </thead>
              <tbody>
@@ -63,13 +64,16 @@
                   <td class="text-center">
                     <span [ngClass]="request.status == 'REQUESTED' ? 'xamplify-folder-banner' 
                       : request.status == 'REJECTED' ?  'red-banner' 
-                      : request.status == 'APPROVED' ?  'red-banner' :'' ">{{request?.status}}</span>
+                      : request.status == 'APPROVED' ?  'green-banner' :'' ">{{request?.status}}</span>
                   </td>
                   <td class="text-center">
                     <app-timestamp	[dateAndTime]="request?.createdTime"> </app-timestamp>
                   </td>
-                  <td class="text-center" *ngIf="selectedFilterIndex==0 || selectedFilterIndex==1">
-                    <button class="btn btn-info" (click)="upgrade(request)">Upgrade</button>
+                  <td class="text-center" *ngIf="selectedFilterIndex==0">
+                    <button class="btn btn-info" (click)="upgrade(request.id)">Upgrade</button>
+                  </td>
+                  <td class="text-center" *ngIf="selectedFilterIndex==1">
+                    <app-timestamp	[dateAndTime]="request?.createdTime"> </app-timestamp>
                   </td>
                  </tr>
                </ng-container>
