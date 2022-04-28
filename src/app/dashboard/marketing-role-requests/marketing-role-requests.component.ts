@@ -11,6 +11,7 @@ import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from '../../common/models/custom-response';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 declare var $:any, swal: any;
 @Component({
@@ -26,6 +27,9 @@ export class MarketingRoleRequestsComponent implements OnInit {
   apiError: boolean;
   selectedFilterIndex = 0;
   customResponse:CustomResponse = new CustomResponse();
+  sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  upgradeButtonClicked = false;
+  selectedRequestId = 0;
   constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -43,6 +47,7 @@ export class MarketingRoleRequestsComponent implements OnInit {
 
 
   findRequests(pagination:Pagination){
+	this.upgradeButtonClicked = false;
 	this.customResponse = new CustomResponse();
     this.apiError = false;
     this.referenceService.loading(this.httpRequestLoader, true);
@@ -95,20 +100,30 @@ export class MarketingRoleRequestsComponent implements OnInit {
 	}
 
 	upgrade(requestId:number){
-		this.loading = true;
-		this.customResponse = new CustomResponse();
-		this.dashboardService.upgradeToMarketing(requestId).
-		subscribe(
-			response=>{
-				this.loading = false;
-				this.customResponse = new CustomResponse('SUCCESS',response.message,true);
-				this.filterRequests(1,'approved');
-			},error=>{
-				this.loading = false;
-				let errorMessage = this.referenceService.getApiErrorMessage(error);
-				this.customResponse = new CustomResponse('ERROR',errorMessage,true);
-			}
-		);
+		this.selectedRequestId = requestId;
+		this.upgradeButtonClicked = true;
+		this.sweetAlertParameterDto.text="This account will be upgraded to Marketing";
+		this.sweetAlertParameterDto.confirmButtonText = "Yes";
+	}
+	receiveEvent(event:any){
+		if(event){
+			this.loading = true;
+			this.customResponse = new CustomResponse();
+			this.dashboardService.upgradeToMarketing(this.selectedRequestId).
+			subscribe(
+				response=>{
+					this.loading = false;
+					this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+					this.filterRequests(1,'approved');
+				},error=>{
+					this.loading = false;
+					let errorMessage = this.referenceService.getApiErrorMessage(error);
+					this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+				}
+			);
+		}else{
+			this.upgradeButtonClicked = false;
+		}
 	}
 
 }
