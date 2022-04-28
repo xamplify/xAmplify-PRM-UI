@@ -270,7 +270,7 @@
 
         <!--Opportunity Stats-->
         <div *ngIf="!authenticationService?.module?.deletedPartner 
-        &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.enableLeads)" class="clearfix">
+        &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.enableLeads) && hasAccess" class="clearfix">
             <div class="portlet light">
                 <div class="portlet-title">
                     <div class="caption">
@@ -279,10 +279,10 @@
                     </div>
                 </div>
             <div class="clearfix">
-                <app-funnel-chart-analytics></app-funnel-chart-analytics>
+                <app-funnel-chart-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-funnel-chart-analytics>
                 <!----Opportunity Stats--------->
                 <div class=" col-xs-12 col-sm-6" style="float:right;margin-top: 10px;">
-                    <app-pie-chart-analytics></app-pie-chart-analytics>
+                    <app-pie-chart-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-pie-chart-analytics>
                 </div>
             </div>
         </div>

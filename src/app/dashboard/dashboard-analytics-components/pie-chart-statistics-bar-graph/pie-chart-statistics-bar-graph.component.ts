@@ -24,7 +24,7 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
   loggedInUserId: number = 0;
   vanityLogin = false;
   selectedTemplateTypeIndex =0;
-
+  show:boolean=true;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {this.loggedInUserId = this.authenticationService.getUserId();
       this.vanityLoginDto.userId = this.loggedInUserId;

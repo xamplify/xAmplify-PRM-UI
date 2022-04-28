@@ -693,5 +693,12 @@ export class DashboardService {
     .catch(this.handleError);
    }
 
+   findRequests(pagination:Pagination){
+    const url = this.superAdminUrl + 'findAllMarketingRequests?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,pagination)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
 
 }

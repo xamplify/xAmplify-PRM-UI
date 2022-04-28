@@ -53,11 +53,9 @@ export class FunnelChartAnalyticsComponent implements OnInit {
         (response) => {
           this.funnelChartData = response.data;
           this.val=this.funnelChartData.map(t=>t[1]);
-
             let sum = this.val.reduce(function (a, b) {
             return a + b;
             }, 0);
-            //alert(sum)
             if(sum === 0){
               this.funnelChartData.length = 0;
               this.loader =false;
@@ -131,7 +129,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
             allowOverlap: false,
             y: 10,
           },
-          center: ["40%", "40%"],
+          center: ["50%", "40%"],
           neckWidth: "30%",
           neckHeight: "25%",
           width: "80%",
