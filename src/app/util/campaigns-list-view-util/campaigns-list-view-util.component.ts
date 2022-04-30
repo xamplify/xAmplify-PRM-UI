@@ -120,7 +120,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     endDateCustomResponse: CustomResponse = new CustomResponse();
     endDatePickrInUtil: any;
     endDateRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-
+    clicked = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService, private route: ActivatedRoute, public renderer: Renderer,
@@ -465,18 +465,19 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         campaignData.userId = this.authenticationService.getUserId();
         this.campaignService.saveAsCampaign(campaignData)
             .subscribe(data => {
+                this.clicked = false; 
                 if (data.access) {
                     this.refService.loading(this.httpRequestLoader, false);
                     this.campaignSuccessMessage = "Campaign copied successfully";
                     $('#lanchSuccess').show(600);
                     this.showMessageOnTop();
                     this.listCampaign(this.pagination);
-                    console.log("saveAsCampaign Successfully");
                 } else {
                     this.authenticationService.forceToLogout();
                 }
             },
                 error => {
+                    this.clicked = false; 
                     $('#saveAsModal').modal('hide'); this.logger.errorPage(error)
                     this.customResponse = new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
                 },
