@@ -119,6 +119,7 @@ export class MarketingRoleRequestsComponent implements OnInit {
 					this.loading = false;
 					let errorMessage = this.referenceService.getApiErrorMessage(error);
 					this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+					this.upgradeButtonClicked = false;
 				}
 			);
 		}else{
