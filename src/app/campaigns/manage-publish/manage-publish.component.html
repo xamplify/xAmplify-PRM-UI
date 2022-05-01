@@ -1326,7 +1326,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" translate>Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveAsCampaign()" translate>Save changes</button>
+        <button type="button" [disabled]="clicked" class="btn btn-primary" (click)="saveAsCampaign(); clicked = true"  translate>Save changes</button>
       </div>
     </div>
   </div>
