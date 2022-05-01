@@ -290,7 +290,7 @@
           </div>
           <div class="footer">
           <button class="btn btn-default" id="right" style="margin-right: 7px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
-          <button  id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadOrUpdate()" translate>{{submitButtonText}}</button>
+          <button [disabled]="!isValidForm" id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="uploadOrUpdate()" translate>{{submitButtonText}}</button>
           </div>
         </div>
       </div>

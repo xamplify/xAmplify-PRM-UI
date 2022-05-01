@@ -345,7 +345,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	validateAllFields() {
 		if(this.isAdd){
 			let uploadedAssetValue = $('#uploadedAsset').val();
-			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0);
+			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription &&((uploadedAssetValue!=undefined && uploadedAssetValue.length > 0) || $.trim(this.uploadedAssetName).length>0 || $.trim(this.uploadedCloudAssetName).length>0 );
 		}else{
 			this.isValidForm = this.damUploadPostDto.validName && this.damUploadPostDto.validDescription;
 		}
@@ -650,7 +650,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.uploadedCloudAssetName = "";
         this.formData.delete("uploadedFile");
         this.customResponse = new CustomResponse();
-        //
         this.uploadedCloudAssetName = uploadedCloudAssetName;
         this.damUploadPostDto.downloadLink = downloadLink;
         this.damUploadPostDto.oauthToken = this.tempr;
