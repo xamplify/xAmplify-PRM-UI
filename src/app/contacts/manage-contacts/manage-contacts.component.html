@@ -460,13 +460,16 @@
                                     data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_edit}}">
                                      <i  class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                  </a> <a
+                                  </a> 
+                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                                  <a
                                     *ngIf="!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier ||
                                                     contactList.synchronisedList || ((sharedLeads)  || (assignLeads && contactList.assignedToPartner))"
                                     (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                                     data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_info}}"> <i class="fa fa-info" aria-hidden="true"></i>
                                   </a> 
+                                  </ng-container>
                                   <a [class.disabled]="contactList.noOfContacts == 0 " data-toggle="tooltip"  data-placement="top"
                                     *ngIf="(assignLeads || !sharedLeads) && !authenticationService?.module?.deletedPartner"
                                     title="{{actionsDescription.contact_list_saveAs}}"
@@ -480,7 +483,7 @@
                                     <i class="fa fa-download" aria-hidden="true"></i>
                                   </a> 
                                   <span
-                                    *ngIf="(contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
+                                    *ngIf="((contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true) && !authenticationService?.module?.deletedPartner">
                                     <a data-toggle="tooltip" data-placement="top"
                                       title="{{actionsDescription.contact_list_synchronize}}" 
 									                    [class.disabled]= "(!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"                      
@@ -619,14 +622,16 @@
                             data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_edit}}"
                             data-rel="fancybox-button"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           </a> 
+                          <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                           <a [class.disabled]="!contactList.emailValidationInd" style="width:11%;"
-
                             *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) || contactList.synchronisedList
                                                 || ((sharedLeads)  || (assignLeads && contactList.assignedToPartner))"
                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                             data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_list_info}}"
-                            data-rel="fancybox-button"> <i class="fa fa-info" style="color: white;" aria-hidden="true"></i>
+                            data-rel="fancybox-button"> 
+                            <i class="fa fa-info" style="color: white;" aria-hidden="true"></i>
                           </a> 
+                        </ng-container>
                           <a data-toggle="tooltip" data-placement="top"
                             *ngIf="(assignLeads || !sharedLeads) && !authenticationService?.module?.deletedPartner"
                             title="{{actionsDescription.contact_list_saveAs}}"
@@ -644,7 +649,7 @@
                              <i class="fa fa-download" aria-hidden="true"></i>
                           </a>
                           <ng-container
-                            *ngIf="(contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true">
+                            *ngIf="((contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true) && !authenticationService?.module?.deletedPartner">
                             <a data-toggle="tooltip" data-placement="top" 
                               title="{{actionsDescription.contact_list_synchronize}}"
                               [class.disabled]= "(!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"
