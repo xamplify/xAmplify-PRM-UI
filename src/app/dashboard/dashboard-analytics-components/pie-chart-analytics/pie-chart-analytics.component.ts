@@ -24,7 +24,8 @@ export class PieChartAnalyticsComponent implements OnInit {
   opportunityName:any=[];
   opportunityValue:any=[]
   selectedTemplateTypeIndex =0;
-  showIndex=0;
+  sum:any;
+  show:boolean=true;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -36,28 +37,80 @@ export class PieChartAnalyticsComponent implements OnInit {
         this.vanityLogin = true;
       }
     }
- 
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
-    this.loadDealPieChart();
+   this.click();
   }
-  click(index :number ){
-    this.selectedTemplateTypeIndex =index
-    this.loadDealPieChart();
+  click(){
+    this.clickRepeate();
   }
-  leads(index :number){
-    this.selectedTemplateTypeIndex =index
+  clickRepeate(){
+    this.selectedTemplateTypeIndex =0;
+    this.loadDealPieChart();
+    this.loadStatisticsDealData();
+    this.show=true;
+
+  }
+  leads(){
     this.loadLeadPieChart();
+    this.selectedTemplateTypeIndex =1;
+    this.loadStatisticsLeadData();
+    this.show=true;
+    
+  }
+  
+  loadLeadPieChart(){
+    this.loader = true;
+    this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscribe(
+      (response)=>{
+        this.pieChartData=response.data;
+        this.loader=false;
+        this.statusCode=200;
+        this.sumMethode(this.pieChartData);
+    },
+    (error) => {
+      this.xtremandLogger.error(error);
+      this.loader = false;
+      this.statusCode = 0;
+    }
+    );
+    }
+    loadStatisticsLeadData(){
+    this.loader = true;
+    let self =this;
+     this.dashboardService.getPieChartStatisticsLeadAnalyticsData(this.vanityLoginDto)
+     .subscribe(
+  (response) =>{
+    self.pieChartStatisticsData=response.data;
+    self.opportunityName=self.pieChartStatisticsData.map(i=>i[0])
+    self.opportunityValue=self.pieChartStatisticsData.map(i=>i[1]) 
+    if(this.opportunityValue[2] === null){
+      self.pieChartStatisticsData.length = 0
+      this.loader =false;
+    }else{
+      self.pieChartData.length != 0;
+    self.pieChartStatisticsData.length != 0
+    this.loader =false;
+    }
+  },
+  (error) => {
+    this.xtremandLogger.error(error);
+    this.loader = false;
+    this.statusCode = 0;
+  }
+);
   }
   
   loadStatisticsDealData(){
   this.loader = true;
+  let self =this;
   this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
   (response) =>{
-    this.pieChartStatisticsData=response.data;
+    self.pieChartStatisticsData=response.data;
     this.statusCode=200;
-    this.opportunityName=this.pieChartStatisticsData.map(i=>i[0])
-    this.opportunityValue=this.pieChartStatisticsData.map(i=>i[1])
+    self.opportunityName=self.pieChartStatisticsData.map(i=>i[0])
+    self.opportunityValue=self.pieChartStatisticsData.map(i=>i[1])
+    self.pieChartData.length != 0;
     this.loader =false;
   },
   (error) => {
@@ -67,88 +120,52 @@ export class PieChartAnalyticsComponent implements OnInit {
   }
 )
   }
-  loadStatisticsLeadData(){
-    this.loader = true;
-this.dashboardService.getPieChartStatisticsLeadAnalyticsData(this.vanityLoginDto).subscribe(
-  (response) =>{
-    this.pieChartStatisticsData=response.data;
-    this.opportunityName=this.pieChartStatisticsData.map(i=>i[0])
-    this.opportunityValue=this.pieChartStatisticsData.map(i=>i[1])
-    this.loader =false;
-  },
-  (error) => {
-    this.xtremandLogger.error(error);
-    this.loader = false;
-    this.statusCode = 0;
-  }
-);
-  }
-  
- loadLeadPieChart(){
-this.loader = true;
-this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscribe(
-  (response)=>{
-    this.pieChartData=response.data;
-    let val=this.pieChartData.map(map=>map[1])
-    let sum = val.reduce(function (a, b) {
-     return a + b;
-     }, 0);
-     if(sum === 0){
-       this.pieChartData.length = 0;
-       this.loader =false;
-       this.showIndex=1;
-     }
-     else{
-  this.statusCode=200;
-  this.loader = false;
-  this.loadChart(this.pieChartData);
-  this.loadStatisticsLeadData();
-  this.showIndex=0;
-     }
 
-},
-(error) => {
-  this.xtremandLogger.error(error);
-  this.loader = false;
-  this.statusCode = 0;
-  
-}
-);
-}
+
 
 loadDealPieChart(){
-  this.loader = true;
-  this.dashboardService.getPieChartDealsAnalyticsData(this.vanityLoginDto).subscribe(
-    (response)=>{
-      this.pieChartData=response.data;
-     let val=this.pieChartData.map(map=>map[1])
-     let sum = val.reduce(function (a, b) {
-      return a + b;
-      }, 0);
-      if(sum === 0){
-        this.pieChartData.length = 0;
-        this.loader =false;
-        this.showIndex=1
+  this.loader=true;
+    this.dashboardService.getPieChartDealsAnalyticsData(this.vanityLoginDto).subscribe(
+         (response: any)=>{
+           this.pieChartData=response.data;
+           this.loader=false;
+          },
+          (error: any) => { 
+      this.xtremandLogger.error(error);
+      
+    },
+          () =>{this.loadChart(this.pieChartData),
+            this.show=true;
+            this.sumMethode(this.pieChartData)
+          }
+
+        );
       }
-      else{
-    this.statusCode=200;
-    this.loader = false;
-    this.loadChart(this.pieChartData);
-    this.loadStatisticsDealData();
-    this.showIndex =0;
-      }
-            
-  },
-  (error) => {
-    this.xtremandLogger.error(error);
-    this.loader = false;
-    this.statusCode = 0;
+  sumMethode(pieChartData: any){
+    let val=this.pieChartData.map(map=>map[1])
+        this.sum = val.reduce(function (a, b) {
+         return a + b;
+         }, 0);
+         if(this.sum === 0){
+           this.pieChartData.length = this.sum;
+           this.loader =false;
+           this.show=false;
+         }
+         else{
+      this.statusCode=200;
+      this.loader = false;
+      this.show=true;
+      this.pieChartData.length = this.sum;
+      this.loadChart(this.pieChartData);
   }
-  );
 }
   loadChart(pieChartData:any){
     let self=this;
+    this.loader =false;
     Highcharts.chart('container', {
+      credits: {
+        enabled: false,
+      },
       chart: {
           type: 'pie',
           options3d: {

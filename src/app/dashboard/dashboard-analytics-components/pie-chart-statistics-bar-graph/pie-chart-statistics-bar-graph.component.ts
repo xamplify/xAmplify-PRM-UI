@@ -54,9 +54,7 @@ this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDt
   (response) =>{
     this.pieChartGraphData=response.data;
     this.statusCode=200;
-    console.log(this.pieChartGraphData)
-    this.loader =false;
-    this.loadGraph(this.pieChartGraphData,this.statusName)
+    this.sumMethode(this.pieChartGraphData);
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -74,12 +72,8 @@ this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDt
 this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto).subscribe(
   (response) =>{
     this.pieChartGraphData=response.data;
-   console.log(this.pieChartGraphData);
-    this.statusCode=200;
-console.log(this.pieChartGraphData)
-    this.loader =false;
-    this.loadGraph(this.pieChartGraphData,this.statusName)
-
+    this.sumMethode(this.dashboardService);
+    this.statusCode =200;
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -87,6 +81,23 @@ console.log(this.pieChartGraphData)
     this.statusCode = 0;
   }
 )
+  }
+  sumMethode(pieChartGraphData:any){
+    var val= this.pieChartGraphData.map(c3=>c3.value)
+    let sum = val.reduce(function (a, b) {
+      return a + b;
+      }, 0); 
+      if(sum === 0){
+        this.pieChartGraphData.length =sum;
+        this.loader =false;
+        this.show=false;
+      }else{
+      console.log(this.pieChartGraphData)
+      this.loader =false;
+      this.show=true;
+      this.pieChartGraphData.length = sum;
+      this.loadGraph(this.pieChartGraphData,this.statusName)
+      }
   }
    loadGraph(pieChartGraphData:any,statusName:any){
     let self =this;

@@ -127,7 +127,8 @@ import { MarketingRoleRequestsComponent } from './marketing-role-requests/market
         FunnelChartAnalyticsComponent,
         PieChartAnalyticsComponent,
         PieChartStatisticsBarGraphComponent,
-        MarketingRoleRequestsComponent
+        MarketingRoleRequestsComponent,
+        
        
 
     ],
