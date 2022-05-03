@@ -9,9 +9,15 @@ import { ReferenceService } from "app/core/services/reference.service";
 export class DisplayDateAndTimeComponent implements OnInit {
   @Input() dateAndTimeUTCString: any;
   displayTime = new Date();
+  invalidInput = false;
   constructor(public referenceService: ReferenceService) {}
 
   ngOnInit() {
-    this.displayTime = new Date(this.dateAndTimeUTCString);
+    if(this.dateAndTimeUTCString!=null && this.dateAndTimeUTCString!=undefined && this.dateAndTimeUTCString!=""){
+      this.displayTime = new Date(this.dateAndTimeUTCString);
+      this.invalidInput = "Invalid Date"==this.displayTime.toString();
+    }else{
+      this.invalidInput = true;
+    }
   }
 }
