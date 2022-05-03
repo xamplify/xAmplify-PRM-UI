@@ -111,13 +111,13 @@ export class FunnelChartAnalyticsComponent implements OnInit {
               click: function (event:any) {
                let name = event['point']['name'];
                 if ("Recipients"==name) {
-                  self.router.navigate(["/home/contacts/manage"]);
+                  //self.router.navigate(["/home/contacts/manage"]);
                 } else if ("Leads"==name) {
-                 self.router.navigate(["/home/leads/manage"]);
+                // self.router.navigate(["/home/leads/manage"]);
                 } else if ("Deals"==name) {
-                  self.router.navigate(["/home/deal/manage"]);
+                 // self.router.navigate(["/home/deal/manage"]);
                 } else if ("Won Deals"==name) {
-                  self.router.navigate(["/home/deal/manage"]);
+                 // self.router.navigate(["/home/deal/manage"]);
                 }
               },
             },
