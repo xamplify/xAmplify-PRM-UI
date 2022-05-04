@@ -40,16 +40,16 @@
                   <strong>{{properties?.serverErrorMessage}}</strong>
                 </div>
               </ng-container>
-              <div [hidden]="loader" *ngIf="pieChartGraphData?.length < 1" style="max-width: 100%;text-align: center;">
-                <div class="alert alert-info">
+              <div [hidden]="loader" *ngIf="pieChartGraphData?.length < 1" style="max-width: 100%;text-align: center; margin-top: 246px;">
+                <div class="alert alert-info" >
                      <strong>No Data Found</strong>
                  </div>
             </div>
-            <figure [hidden]="loader" class="highcharts-figure1">
+            <div [hidden]="loader" class="highcharts-figure1" *ngIf="show">
                 
                 <div  id="container1">
                 </div>
-                <div >
+                <div *ngIf="show">
                     <ul class="mix-filter">
                       <li class="filter" (click)="click(0)"
                       [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" translate>Deals</li>
@@ -58,7 +58,7 @@
                       <li class="filter" style="display: none;" translate>Own Template</li>
                   </ul>
                   </div>
-                </figure>
+                </div>
            
         </div>
     

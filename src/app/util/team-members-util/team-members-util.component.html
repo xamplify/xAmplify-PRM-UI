@@ -200,7 +200,7 @@
                   </a>
                 </ng-container>
                 <!---Delete-->
-                <a title="Delete" *ngIf="isTeamMemberModule" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="showPopup(teamMember)">
+                <a title="Delete" *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="showPopup(teamMember)">
                   <i class="fa fa-trash red" aria-hidden="true"></i>
                 </a>
               </div>

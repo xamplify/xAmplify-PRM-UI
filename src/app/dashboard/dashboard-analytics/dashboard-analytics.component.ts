@@ -80,7 +80,8 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     const currentUser = localStorage.getItem( 'currentUser' );
     if(currentUser!=undefined){
       this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
-    }
+      
+      }
     if(!this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner){
         this.loggedInUserId = this.authenticationService.getUserId();
         this.getDefaultPage(this.loggedInUserId);
@@ -93,7 +94,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
   ngOnDestroy(){
     $('#customizeCampaignModal').modal('hide');
   }
-  
+
   getDefaultPage(userId: number) {
     this.ngxLoading = true;
     this.userService.getUserDefaultPage(userId)

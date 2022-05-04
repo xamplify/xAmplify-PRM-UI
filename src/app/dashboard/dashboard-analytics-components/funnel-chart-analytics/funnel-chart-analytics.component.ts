@@ -111,13 +111,13 @@ export class FunnelChartAnalyticsComponent implements OnInit {
               click: function (event:any) {
                let name = event['point']['name'];
                 if ("Recipients"==name) {
-                  self.router.navigate(["/home/contacts/manage"]);
+                  //self.router.navigate(["/home/contacts/manage"]);
                 } else if ("Leads"==name) {
-                 self.router.navigate(["/home/leads/manage"]);
+                // self.router.navigate(["/home/leads/manage"]);
                 } else if ("Deals"==name) {
-                  self.router.navigate(["/home/deal/manage"]);
+                 // self.router.navigate(["/home/deal/manage"]);
                 } else if ("Won Deals"==name) {
-                  self.router.navigate(["/home/deal/manage"]);
+                 // self.router.navigate(["/home/deal/manage"]);
                 }
               },
             },
@@ -129,7 +129,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
             allowOverlap: false,
             y: 10,
           },
-          center: ["50%", "40%"],
+          center: ["50%", "50%"],
           neckWidth: "30%",
           neckHeight: "25%",
           width: "80%",
