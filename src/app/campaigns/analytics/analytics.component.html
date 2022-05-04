@@ -261,9 +261,7 @@
           </div>
 
           <!-- ****************Email template not found info**************** -->
-          <div [hidden]="campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'" class="pl10 pr10 col-xs-12 blur"
-            [ngClass]="{'col-sm-4': campaignType === 'VIDEO' || authenticationService?.module?.deletedPartner, 
-              'col-sm-4': campaignType === 'REGULAR' && !authenticationService?.module?.deletedPartner || campaignType === 'SURVEY' && !authenticationService?.module?.deletedPartner }"
+          <div [hidden]="campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'" class="pl10 pr10 col-xs-12  col-sm-4 blur"
             *ngIf="campaign.selectedEmailTemplateId == 0">
             <a class="dashboard-stat dashboard-stat-lighter blue-soft" style="cursor: default; display: flex">
               <div class="visual">
