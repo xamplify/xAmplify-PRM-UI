@@ -116,7 +116,7 @@
             <th  scope="" translate>
               <i class="fa fa-lock" aria-hidden="true"></i><br>Status
             </th>
-            <th  scope="" translate>
+            <th *ngIf="(authenticationService?.module?.deletedPartner &&  loginAsEnabled) || !authenticationService?.module?.deletedPartner"  scope="" translate>
               <i class="fa fa-tasks" aria-hidden="true"></i><br>Actions
             </th>
           </tr>
@@ -126,7 +126,7 @@
           <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}" class="list-team-member-class">
             <td>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
-              <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany" [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
+              <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner" [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
                  [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
                 <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'" (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
                 <strong>Total {{authenticationService?.partnerModule?.customName}} : {{teamMember?.partnersCount}}</strong>
