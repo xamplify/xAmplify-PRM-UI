@@ -19,7 +19,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { DealsService } from 'app/deals/services/deals.service';
 import { EnvService } from 'app/env.service';
 
-declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
+declare var $:any, Highcharts: any;
 @Component({
   selector: 'app-dashboard-analytics',
   templateUrl: './dashboard-analytics.component.html',
@@ -87,7 +87,6 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
         this.getDefaultPage(this.loggedInUserId);
         this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.getUserCampaignReport();
-        this.xtremandLogger.log(this.authenticationService.getRoles());
     }
   }
 
