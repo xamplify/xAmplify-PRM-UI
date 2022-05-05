@@ -163,4 +163,9 @@ getConversation(dealId:number, userId:number) {
     .map(this.extractData)
     .catch(this.handleError);
   }
+  getStagenamesForPartnerCompanyId(companyId:number){
+    return this.http.get(this.URL + `/partner/company/stages/${companyId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
 }

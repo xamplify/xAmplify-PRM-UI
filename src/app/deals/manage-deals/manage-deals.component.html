@@ -197,10 +197,10 @@
                               <div class="row">
                               <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
                               <label class="control-label" style="padding-right: 5px;">Status &nbsp;</label>
-                              <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="statusFilter"
+                              <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="statusFilter" (ngModelChange)="stageNamesForPartnerCompanyId($event);"
                               [ngModelOptions]="{standalone: true}" >
-                                  <option   value="">---Select Status---</option>  
-                                <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
+                                  <option   value="">---Select Company---</option>  
+                                <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}
                                 </option>
                               </select>
         
@@ -210,7 +210,19 @@
                               <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
                                 <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
                               </div> -->
-
+                              <div class="row">
+                                <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                                <label class="control-label" style="padding-right: 5px;">Status &nbsp;</label>
+                                <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="selectedVendorCompany" 
+                                [ngModelOptions]="{standalone: true}" >
+                                    <option   value="">---Select Status---</option>  
+                                  <option *ngFor="let stage of stageList" [value]="stage">{{stage}}
+                                  </option>
+                                </select>
+          
+                                </div>
+                               
+                                </div>
                             
                           
                       

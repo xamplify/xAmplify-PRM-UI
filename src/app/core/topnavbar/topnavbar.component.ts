@@ -439,5 +439,14 @@ delayAndNavigate(url:string){
       self.refService.goToRouter(url);
 		}, 500);
   }
+
+  
+navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
+  if(companyProfileCreated){
+    this.refService.goToRouter(url);
+  }else{
+    this.refService.goToRouter("/home/dashboard/add-company-profile");
+  }
+}
   
 }

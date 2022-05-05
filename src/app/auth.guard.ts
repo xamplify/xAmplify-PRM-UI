@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     dealsUrl = 'deal';
     lmsUrl = 'tracks';
     playbookUrl = 'playbook';
-
+    addCompanyProfileUrl = "/home/dashboard/add-company-profile";
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -52,12 +52,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.getUserByUserName(userName);
             if(url.includes('home/error')){ 
                 this.router.navigateByUrl('/home/dashboard') 
-              }
+            }
             else if(!this.authenticationService.user.hasCompany) {
-              if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile")){
+              if(url.includes(this.addCompanyProfileUrl)){
                 return true;
               } else { 
-                this.goToAccessDenied(url);  
+                this.referenceService.goToRouter(this.addCompanyProfileUrl)
              }
             }else if(url.includes("/home/design/add")){
                 return true;

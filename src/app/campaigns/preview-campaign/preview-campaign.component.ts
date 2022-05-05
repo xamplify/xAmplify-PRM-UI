@@ -155,6 +155,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     campaignPartnersOrContactsPagination:Pagination = new Pagination();
     campaignPartnersOrContactsPreviewError = false;
     socialAccountsLoader = false;
+    buttonClicked = false;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -354,14 +355,18 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         }else{
         	this.authenticationService.forceToLogout();
         }
+        this.buttonClicked = false;
           },
-          error => { $('#saveAsModalcalendar').modal('hide'); $('#myModal').modal('hide');
-          this.customResponse =  new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
-          this.closeNotifyParent.emit('something went wrong');
+          error => { 
+            $('#saveAsModalcalendar').modal('hide'); 
+            $('#myModal').modal('hide');
+            this.customResponse =  new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
+            this.closeNotifyParent.emit('something went wrong');
+            this.buttonClicked = false;
         },
           () => {
           $('#saveAsModalcalendar').modal('hide');
-          // this.getCampaignCalendarView();
+          this.buttonClicked = false;
           }
         );
     }

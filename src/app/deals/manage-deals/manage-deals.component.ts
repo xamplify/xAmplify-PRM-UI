@@ -74,13 +74,18 @@ export class ManageDealsComponent implements OnInit {
   selectedFilterIndex: number = 1;
   stageNamesForFilterDropDown: any;
   statusFilter: any;
+  selectedVendorCompanyId: any;
   prm: boolean;
+  vendorList = new Array();
+  selectedVendorCompany: any;
+  stageList = new Array();
+ 
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService, private userService: UserService,
-    private dealRegistrationService: DealRegistrationService, private dealsService: DealsService, ) {
+    private dealRegistrationService: DealRegistrationService, private dealsService: DealsService,public leadsService:LeadsService ) {
       this.loggedInUserId = this.authenticationService.getUserId();
       if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
         this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -116,6 +121,7 @@ export class ManageDealsComponent implements OnInit {
 
   ngOnInit() {
     this.countsLoader = true;
+    // this.stageNamesForPartner();
     this.referenceService.loading(this.httpRequestLoader, true);
   }
   
@@ -330,13 +336,15 @@ export class ManageDealsComponent implements OnInit {
       this.fromDateFilter;
       this.listDealsForVendor(pagination);
     } else if (this.isPartnerVersion) {
-      this.stageNamesForPartner();
+      // alert(this.loggedInUserId);
+       this.stageNamesForPartner();
+      //  this.stageNamesForPartnerCompanyId(event);
       this.listDealsForPartner(pagination);
     }
-    else if(this.authenticationService.showRoles() === 'Orgadmin'){
-      this.stageNamesForPartner();
-      this.listDealsForPartner(pagination);
-    }
+    // else if(this.authenticationService.showRoles() === 'Orgadmin'){
+    //   this.stageNamesForPartner();
+    //   this.listDealsForPartner(pagination);
+    // }
   }  
 
   listDealsForVendor(pagination: Pagination) {
@@ -931,12 +939,29 @@ export class ManageDealsComponent implements OnInit {
   }
   stageNamesForPartner(){
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.dealsService.getStageNamesForPartner(this.loggedInUserId)
+    this.leadsService.getVendorList(this.loggedInUserId)
     .subscribe(
       response =>{
         this.referenceService.loading(this.httpRequestLoader, false);
-        this.stageNamesForFilterDropDown = response;
-
+        this.vendorList = response.data;
+        // alert(this.vendorList);
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    ); 
+  }
+  stageNamesForPartnerCompanyId(event : any){
+    // console.log(event);
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getStagenamesForPartnerCompanyId(event)
+    .subscribe(
+      response =>{
+        // alert(this.companyId);
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.stageList = response;
+        // console.log(this.stageList);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;
