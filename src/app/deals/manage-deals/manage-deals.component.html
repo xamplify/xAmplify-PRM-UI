@@ -197,7 +197,7 @@
                               <div class="row">
                               <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
                               <label class="control-label" style="padding-right: 5px;">Status &nbsp;</label>
-                              <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="statusFilter" (ngModelChange)="stageNamesForPartnerCompanyId($event);"
+                              <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="selectedVendorCompany" (ngModelChange)="stageNamesForPartnerCompanyId($event);"
                               [ngModelOptions]="{standalone: true}" >
                                   <option   value="">---Select Company---</option>  
                                 <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}
@@ -213,7 +213,7 @@
                               <div class="row">
                                 <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
                                 <label class="control-label" style="padding-right: 5px;">Status &nbsp;</label>
-                                <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="selectedVendorCompany" 
+                                <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="statusFilter" 
                                 [ngModelOptions]="{standalone: true}" >
                                     <option   value="">---Select Status---</option>  
                                   <option *ngFor="let stage of stageList" [value]="stage">{{stage}}

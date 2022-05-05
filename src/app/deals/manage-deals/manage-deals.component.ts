@@ -818,10 +818,13 @@ export class ManageDealsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.statusFilter = "";
+    this.stageList = new Array();
+    this.selectedVendorCompany = "";
     if (!this.showFilterOption) {
       this.dealsPagination.fromDateFilterString = "";
       this.dealsPagination.toDateFilterString = "";
       this.dealsPagination.stageFilter = "";
+      this.dealsPagination.companyNameFilter = "";
       this.filterResponse.isVisible = false;
       if (this.filterMode) {
         this.dealsPagination.pageIndex = 1;
@@ -838,9 +841,12 @@ export class ManageDealsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = ""; 
     this.statusFilter = "";
+    this.stageList = new Array();
+    this.selectedVendorCompany = "";
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
     this.dealsPagination.stageFilter = "";
+    this.dealsPagination.companyNameFilter = "";
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
@@ -881,8 +887,12 @@ export class ManageDealsComponent implements OnInit {
       if (this.statusFilter != undefined && this.statusFilter != "") {
         this.dealsPagination.stageFilter = this.statusFilter;
       }
+      else if(this.selectedVendorCompany != undefined && this.selectedVendorCompany != ""){
+        this.dealsPagination.companyNameFilter = this.selectedVendorCompany;
+      }
       else {
         this.dealsPagination.stageFilter = "";
+        this.dealsPagination.companyNameFilter = "";
       }
       this.dealsPagination.pageIndex = 1;
       this.filterMode = true;
