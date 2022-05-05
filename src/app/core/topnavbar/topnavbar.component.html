@@ -176,7 +176,7 @@
                                 </a>
                             </li>
                             <li *ngIf="(!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin() && authenticationService.superiorRole != 'Partner') || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
-                                <a  (click)="goToRouter('/home/dashboard/edit-company-profile')"  translate> <i class="fa fa-building-o"></i> Company Profile
+                                <a (click)="navigateToCompanyProfile('/home/dashboard/edit-company-profile',authenticationService?.module?.companyProfileCreated)"  translate> <i class="fa fa-building-o"></i> Company Profile
                                 </a>
                             </li>
                             <li *ngIf="(refService.hasAllAccess()

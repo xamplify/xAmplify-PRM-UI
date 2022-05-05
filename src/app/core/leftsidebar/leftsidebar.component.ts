@@ -75,6 +75,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			.subscribe(
 				data => {
 					this.menuItem.companyProfileCreated = data.companyProfileCreated;
+					module.companyProfileCreated = data.companyProfileCreated;
 					this.menuItem.accountDashboard = data.accountDashboard;
 					this.menuItem.partners = data.partners;
 					module.isPartner = data.partners;
