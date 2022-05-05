@@ -126,11 +126,12 @@
                           title="Campaign View" [class.disabled]="!listView" (click)="setCampaignView()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
-                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                        title="Download" [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
+                       
+                      </ng-container>
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Download"
+                        [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
-                      </ng-container>
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addDeal()" style="padding-left: 11px;">
                         <button class="btn btn-primary" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
@@ -189,42 +190,29 @@
                                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
-                              <!-- <div class="form-group col-sm-4">
-                                <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
-                                  translate>Filter</button>
-                              </div> -->
-                              
-                              <div class="row">
-                              <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
-                              <label class="control-label" style="padding-right: 5px;">Status &nbsp;</label>
-                              <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="selectedVendorCompany" (ngModelChange)="stageNamesForPartnerCompanyId($event);"
-                              [ngModelOptions]="{standalone: true}" >
-                                  <option   value="">---Select Company---</option>  
-                                <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}
-                                </option>
-                              </select>
-        
+                              <div class="row" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
+                                <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                                  <label class="control-label" style="padding-right: 5px;">Added For &nbsp;</label>
+                                  <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="vendorCompanyIdFilter"
+                                    (ngModelChange)="onChangeVendorCompany()" [ngModelOptions]="{standalone: true}">
+                                    <option value="">---Select Company---</option>
+                                    <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}
+                                    </option>
+                                  </select>
+                                </div>
                               </div>
-                             
-                              </div>
-                              <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
-                                <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                              </div> -->
+
                               <div class="row">
                                 <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
-                                <label class="control-label" style="padding-right: 5px;">Status &nbsp;</label>
-                                <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="statusFilter" 
-                                [ngModelOptions]="{standalone: true}" >
-                                    <option   value="">---Select Status---</option>  
-                                  <option *ngFor="let stage of stageList" [value]="stage">{{stage}}
-                                  </option>
-                                </select>
-          
+                                  <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
+                                  <select class="form-control" style="width:  196px;height: 32px;" [(ngModel)]="statusFilter"
+                                  [ngModelOptions]="{standalone: true}">
+                                      <option value="">---Select Status---</option>  
+                                    <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
+                                    </option>
+                                  </select>
                                 </div>
-                               
-                                </div>
-                            
-                          
+                              </div>
                       
                         <div class="form-group col-sm-12" style="text-align: -webkit-right;">
                           <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>

@@ -138,6 +138,26 @@ getConversation(dealId:number, userId:number) {
   .map(this.extractData)
   .catch(this.handleError);
 }
+
+
+getStageNamesForVendor(userId:number) {
+  return this.http.get(this.URL + `/list/v/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getStageNamesForPartnerByVendorCompanyId(userId:number, vendorCompanyId:number) {
+  return this.http.get(this.URL + `/list/p/stages/${userId}/${vendorCompanyId}?access_token=${this.authenticationService.access_token}`)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getStageNamesForCampaign(campaignId:number, userId:number){
+  return this.http.get(this.URL + `campaign/stages/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 	private extractData(res: Response) {
     let body = res.json();
     return body || {};
@@ -148,6 +168,8 @@ getConversation(dealId:number, userId:number) {
       error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
     return Observable.throw(error);
   }
+
+
   getStageNamesOfV(userId:number) {
     return this.http.get(this.URL + `campaign/deal/list/stages/${userId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
@@ -158,7 +180,7 @@ getConversation(dealId:number, userId:number) {
     .map(this.extractData)
     .catch(this.handleError);
   }
-  getStageNamesForPartner(userId:number){
+  getStageNamesForPartner1(userId:number){
     return this.http.get(this.URL + `/list/partner/stages/${userId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
@@ -168,4 +190,8 @@ getConversation(dealId:number, userId:number) {
     .map(this.extractData)
     .catch(this.handleError);
   }
+
+  
+
+
 }
