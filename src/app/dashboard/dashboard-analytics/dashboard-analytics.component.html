@@ -1,3 +1,4 @@
+
 <div class="page-content" *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
@@ -13,6 +14,7 @@
             <div class="alert alert-danger alert-dismissible" style="padding: 12px">
                 <a class="close" data-dismiss="alert" aria-label="close"></a>
                 You have only limit access please upgrade.
+
             </div>
         </div>
     </div>
@@ -41,7 +43,7 @@
         </div>
 
         <div class="page-bar p0" [hidden]="ngxLoading">
-            <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+            <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
               <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
                 <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
               </div>
