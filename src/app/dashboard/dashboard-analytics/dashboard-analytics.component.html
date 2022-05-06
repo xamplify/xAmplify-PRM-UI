@@ -33,29 +33,31 @@
                 </button>
                 <h4 class="flex">
                     <i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
-           'fa-exclamation': userDefaultPage.responseType == 'ERROR'}" aria-hidden="true"
+                        'fa-exclamation': userDefaultPage.responseType == 'ERROR'}" aria-hidden="true"
                         style="padding-right: 7px;"></i>
                     <span>{{userDefaultPage.responseMessage}}</span>
                 </h4>
             </div>
         </div>
-        <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
-            <div class="col-xs-12 col-sm-6 p0">
-                <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
-            </div>
-            <div class="col-xs-12 col-sm-6"
-                [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
-                <div style="display: flex;float: right;">
-                    <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
-                    <div style="margin: 3px 0 3px 20px;">
-                        <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
-                            size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
-                    </div>
+
+        <div class="page-bar p0" [hidden]="ngxLoading">
+            <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+              <div class="col-md-5 col-xs-5 col-sm-5">
+                <h4 class="welcome-header">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+              </div>
+              <div class="col-md-6 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
+                <div style="display: flex;">
+                  <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
+                  <div>
+                    <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
+                      size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
+                  </div>
                 </div>
+              </div>
+              <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
+              && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
             </div>
-            <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
-                 && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
-        </div>
+          </div>
     </div>
     <ng-container
         *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
