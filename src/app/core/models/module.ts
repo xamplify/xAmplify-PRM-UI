@@ -87,6 +87,7 @@ export class Module {
     deletedPartner = false;
     upgradeToMarketing = false;
     companyProfileCreated = false;
+    loginAs = false;
 
    
 }

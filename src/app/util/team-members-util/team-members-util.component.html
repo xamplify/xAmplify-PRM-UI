@@ -116,7 +116,7 @@
             <th  scope="" translate>
               <i class="fa fa-lock" aria-hidden="true"></i><br>Status
             </th>
-            <th *ngIf="(authenticationService?.module?.deletedPartner &&  loginAsEnabled) || !authenticationService?.module?.deletedPartner"  scope="" translate>
+            <th [hidden]="!authenticationService?.module?.loginAs && authenticationService?.module?.deletedPartner"  scope="" translate>
               <i class="fa fa-tasks" aria-hidden="true"></i><br>Actions
             </th>
           </tr>
@@ -171,7 +171,7 @@
               </div>
               </td>
             <!---Actions-->
-            <td  class="actions-row">
+            <td  class="actions-row" [hidden]="!authenticationService?.module?.loginAs && authenticationService?.module?.deletedPartner">
               <div class="actions-block override-actions custom-width-icon">
                 <!--Login As-->
                 <ng-container *ngIf="teamMember?.loginAs">

@@ -26,17 +26,17 @@
                 aria-hidden="true" style="padding-right: 7px;"></i>
                 <span>{{userDefaultPage.responseMessage}}</span>
              </h4>
-          </div>
+      </div>
     </div>
-    <div [hidden]="ngxLoading">
-      <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
-        <div class="col-xs-12 col-sm-6">
-          <h4 style="margin: 0.3em 0;color: #00a6e8;font-weight: 400;">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+    <div class="page-bar p0" [hidden]="ngxLoading">
+      <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+        <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
+          <h4 class="welcome-header">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
         </div>
-        <div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier ">
-          <div style="display: flex;float: right;">
+        <div class="col-md-6 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
+          <div style="display: flex;">
             <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
-            <div style="margin: 3px 0 3px 20px;">
+            <div>
               <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
                 size="small" (change)="setWelcomeAsDefaultPage($event)"></ui-switch>
             </div>
@@ -45,11 +45,11 @@
         <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
       </div>
     </div>
-      <div class="page-bar page-bar-shadow">
-        <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
-        <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
-        <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>
-      </div>
+    <div class="page-bar page-bar-shadow">
+      <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
+      <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
+      <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>
+    </div>
       <!------------Dashbaord Button Carusel---------------------->    
       <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
       <app-vendor-activity-analytics></app-vendor-activity-analytics>
