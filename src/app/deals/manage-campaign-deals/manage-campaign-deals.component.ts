@@ -83,13 +83,9 @@ export class ManageCampaignDealsComponent implements OnInit {
         response => {            
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
-            this.dealsSortOption.totalRecords = response.data.totalRecords;
-            if(this.authenticationService.showRoles()  === 'Orgadmin & Partner'){
-              this.stageNamesOfV();
-               } else {
-              this.getStageNamesOfCampaign();
-               }
+            this.dealsSortOption.totalRecords = response.data.totalRecords;            
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
+            this.getStageNamesForCampaign();
         },
         error => {
             this.httpRequestLoader.isServerError = true;
@@ -453,4 +449,21 @@ getStageNamesOfCampaign(){
     ()=> { }
   ); 
 }
+
+getStageNamesForCampaign(){
+  this.referenceService.loading(this.httpRequestLoader, true);  
+  this.dealsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId)
+  .subscribe(
+    response =>{
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.stageNamesForFilterDropDown = response;
+     // alert(this.stageNamesForFilterDropDown)
+    },
+    error=>{
+      this.httpRequestLoader.isServerError = true;
+    },
+    ()=> { }
+  );  
+}
+
 }

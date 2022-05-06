@@ -443,6 +443,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.listAssets(this.pagination);
 	}
 
+	deleteAssetFailEmitter(message: any) {
+		this.customResponse = new CustomResponse('ERROR', message, true);
+		this.deleteAsset = false;
+		this.referenceService.loading(this.listLoader, false);
+		this.asset = {};		
+	}
+
 	deleteAssetLoaderEmitter() {
 		this.referenceService.loading(this.listLoader, true);
 	}

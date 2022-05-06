@@ -2929,10 +2929,10 @@ checkParentAndRedistributedCampaignAccess(){
 
     if(this.campaignType=="REGULAR"){
       headers = ['Campaign Name', 'Campaign Type', 'No of List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
-                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','HardBounce', 'SoftBounce','Unsubscribe'];
+                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','HardBounce', 'SoftBounce','Unsubscribe','Leads', 'Deals'];
     }else{
       headers = ['Campaign Name', 'Campaign Type', 'No of List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
-                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','Views','HardBounce', 'SoftBounce','Unsubscribe'];
+                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','Views','HardBounce', 'SoftBounce','Unsubscribe','Leads', 'Deals'];
     }
 
     var data = [
@@ -2950,7 +2950,9 @@ checkParentAndRedistributedCampaignAccess(){
         clickthroughRate :this.campaignReport.clickthroughRate,
         hardBounce : this.campaignReport.hardBounce,
         softBounce : this.campaignReport.softBounce,
-        unsubscribed : this.campaignReport.unsubscribed
+        unsubscribed : this.campaignReport.unsubscribed,
+        leads:this.campaignReport.leadCount,
+        deals:this.campaignReport.dealCount
       }
     ];
 
@@ -2969,7 +2971,9 @@ checkParentAndRedistributedCampaignAccess(){
         viewsCount:this.campaignReport.usersWatchCount,
         hardBounce : this.campaignReport.hardBounce,
         softBounce : this.campaignReport.softBounce,
-        unsubscribed : this.campaignReport.unsubscribed
+        unsubscribed : this.campaignReport.unsubscribed,
+        leads:this.campaignReport.leadCount,
+        deals:this.campaignReport.dealCount
     }
       
 
