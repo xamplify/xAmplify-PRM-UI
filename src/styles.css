@@ -1539,3 +1539,9 @@ strong {
   color: #00a6e8;
   font-weight: 400;
 }
+
+.text-overflow{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
