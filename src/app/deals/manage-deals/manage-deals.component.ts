@@ -75,12 +75,18 @@ export class ManageDealsComponent implements OnInit {
   stageNamesForFilterDropDown: any;
   statusFilter: any;
   prm: boolean;
+  vendorList = new Array();
+  vendorCompanyIdFilter: any;
+  stageList = new Array();
+  selectedVendorCompany: any;
+  selectedVendorCompanyId: any;
+ 
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService, private userService: UserService,
-    private dealRegistrationService: DealRegistrationService, private dealsService: DealsService, ) {
+    private dealRegistrationService: DealRegistrationService, private dealsService: DealsService,public leadsService:LeadsService ) {
       this.loggedInUserId = this.authenticationService.getUserId();
       if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
         this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -325,18 +331,12 @@ export class ManageDealsComponent implements OnInit {
 
   listDeals(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
-    if (this.isVendorVersion) {
-      this.  stageNamesOfV();
-      this.fromDateFilter;
+    if (this.isVendorVersion) {      
       this.listDealsForVendor(pagination);
     } else if (this.isPartnerVersion) {
-      this.stageNamesForPartner();
       this.listDealsForPartner(pagination);
     }
-    else if(this.authenticationService.showRoles() === 'Orgadmin'){
-      this.stageNamesForPartner();
-      this.listDealsForPartner(pagination);
-    }
+    
   }  
 
   listDealsForVendor(pagination: Pagination) {
@@ -348,12 +348,30 @@ export class ManageDealsComponent implements OnInit {
             pagination.totalRecords = response.totalRecords;
             this.dealsSortOption.totalRecords = response.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data);
+            this.stageNamesForVendor();
         },
         error => {
             this.httpRequestLoader.isServerError = true;
             },
         () => { }
     );
+  }
+
+  stageNamesForVendor() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getStageNamesForVendor(this.loggedInUserId)
+      .subscribe(
+        response => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.stageNamesForFilterDropDown = response;
+
+          this.fromDateFilter;
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
   }
 
   listDealsForPartner(pagination: Pagination) {
@@ -365,12 +383,68 @@ export class ManageDealsComponent implements OnInit {
             pagination.totalRecords = response.totalRecords;
             this.dealsSortOption.totalRecords = response.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data);
+            if (!this.vanityLoginDto.vanityUrlFilter) {
+              this.getVendorCompanies();
+            } else {
+              this.getVendorCompanyAndGetStages();
+            }
         },
         error => {
             this.httpRequestLoader.isServerError = true;
             },
         () => { }
     );
+  }
+
+  getVendorCompanies(){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getVendorList(this.loggedInUserId)
+    .subscribe(
+      response =>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.vendorList = response.data;
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    ); 
+  }
+
+  getVendorCompanyAndGetStages() {
+    this.leadsService.getCompanyIdByCompanyProfileName(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (data.statusCode == 200) {
+            this.getStageNamesForPartnerByVendorCompanyId(data.data);
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  onChangeVendorCompany() {
+    this.statusFilter = "";
+    if (this.vendorCompanyIdFilter !== undefined && this.vendorCompanyIdFilter !== "") {
+      this.getStageNamesForPartnerByVendorCompanyId(this.vendorCompanyIdFilter);
+    }
+  }
+
+  getStageNamesForPartnerByVendorCompanyId(vendorCompanyId: any) {
+    this.dealsService.getStageNamesForPartnerByVendorCompanyId(this.loggedInUserId, vendorCompanyId)
+      .subscribe(
+        response => {
+          this.stageNamesForFilterDropDown = response;
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
   }
 
   listCampaigns(pagination: Pagination) {
@@ -810,10 +884,12 @@ export class ManageDealsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.statusFilter = "";
+    this.vendorCompanyIdFilter = "";
     if (!this.showFilterOption) {
       this.dealsPagination.fromDateFilterString = "";
       this.dealsPagination.toDateFilterString = "";
       this.dealsPagination.stageFilter = "";
+      this.dealsPagination.vendorCompanyId = undefined;
       this.filterResponse.isVisible = false;
       if (this.filterMode) {
         this.dealsPagination.pageIndex = 1;
@@ -830,9 +906,11 @@ export class ManageDealsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = ""; 
     this.statusFilter = "";
+    this.vendorCompanyIdFilter = "";
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
     this.dealsPagination.stageFilter = "";
+    this.dealsPagination.vendorCompanyId = undefined;
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
@@ -844,7 +922,8 @@ export class ManageDealsComponent implements OnInit {
   validateDateFilters() {
     if ((this.statusFilter == undefined || this.statusFilter == "") && 
     (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
-      (this.toDateFilter == undefined || this.toDateFilter == "")) {
+      (this.toDateFilter == undefined || this.toDateFilter == "") && 
+      (this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == "")) {
         this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
   } else { 
     let validDates = false;   
@@ -870,6 +949,10 @@ export class ManageDealsComponent implements OnInit {
     }
 
     if (validDates) {
+      if (this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter != "") {
+        this.dealsPagination.vendorCompanyId = this.vendorCompanyIdFilter;
+      }
+
       if (this.statusFilter != undefined && this.statusFilter != "") {
         this.dealsPagination.stageFilter = this.statusFilter;
       }
@@ -931,12 +1014,29 @@ export class ManageDealsComponent implements OnInit {
   }
   stageNamesForPartner(){
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.dealsService.getStageNamesForPartner(this.loggedInUserId)
+    this.leadsService.getVendorList(this.loggedInUserId)
     .subscribe(
       response =>{
         this.referenceService.loading(this.httpRequestLoader, false);
-        this.stageNamesForFilterDropDown = response;
-
+        this.vendorList = response.data;
+        // alert(this.vendorList);
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    ); 
+  }
+  stageNamesForPartnerCompanyId(event : any){
+    // console.log(event);
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dealsService.getStagenamesForPartnerCompanyId(event)
+    .subscribe(
+      response =>{
+        // alert(this.companyId);
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.stageList = response;
+        // console.log(this.stageList);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;

@@ -80,6 +80,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   moveToTop: boolean;
   showPartnersPopup:boolean;
   selectedTeamMemberId:number;
+  loginAsEnabled = false;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -124,6 +125,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           this.teamMembers = data.list;
           pagination.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, this.teamMembers);
+          this.loginAsEnabled = this.referenceService.filterSelectedColumnsFromArrayList(this.teamMembers,'loginAs');
           this.referenceService.loading(this.httpRequestLoader, false);
         },
         error => {
