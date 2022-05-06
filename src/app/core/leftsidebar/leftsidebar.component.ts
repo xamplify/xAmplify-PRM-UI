@@ -142,6 +142,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.adminOrSuperVisor = data.adminOrSuperVisor;
 					this.authenticationService.module.deletedPartner = data.deletedPartner;
 					this.authenticationService.module.upgradeToMarketing = data.upgradeToMarketing;
+					this.authenticationService.module.loginAs = data.loginAs;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);

@@ -885,6 +885,10 @@ export class ManageDealsComponent implements OnInit {
     this.toDateFilter = "";
     this.statusFilter = "";
     this.vendorCompanyIdFilter = "";
+    if (this.isPartnerVersion) {
+      this.stageNamesForFilterDropDown = "";
+    }
+    
     if (!this.showFilterOption) {
       this.dealsPagination.fromDateFilterString = "";
       this.dealsPagination.toDateFilterString = "";
@@ -907,6 +911,10 @@ export class ManageDealsComponent implements OnInit {
     this.toDateFilter = ""; 
     this.statusFilter = "";
     this.vendorCompanyIdFilter = "";
+    if (this.isPartnerVersion) {
+      this.stageNamesForFilterDropDown = "";
+    }
+
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
     this.dealsPagination.stageFilter = "";
