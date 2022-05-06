@@ -665,14 +665,12 @@
                                 (click)="checkLastElement(i)"></span><span [class.disablednew]="!campaign.hasAccess"
                                 class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
                               <ul class="dropdown-menu pull-right" [ngClass]="{'mobile-css': isLastElement}">
-                                <li *ngIf="!campaign.launched">
-                                  <ng-container *ngIf="!campaign.launched">
+                                <li>
                                     <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
                                                                   || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'"
                                       (click)="editCampaign(campaign)" translate>
                                       <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
                                     </a>
-                                  </ng-container>
                                 </li>
                                 <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
                                   <li *ngIf="campaign.launched ">
@@ -877,14 +875,12 @@
                                   Campaigns
                                 </a>
                               </li>
-                              <li *ngIf="!campaign.launched">
-                                <ng-container *ngIf="!campaign.launched">
+                              <li>
                                   <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
                                     || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'"
                                     (click)="editCampaign(campaign)" translate>
                                     <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
                                   </a>
-                                </ng-container>
                               </li>
                               <ng-container *ngIf="campaign.launched">
                                 <li *ngIf="campaign.launched">
@@ -1135,7 +1131,6 @@
                         </div>
                         <div class="bar auto-height">
                           <!--Buttons Start Here-->
-                          <ng-container *ngIf="!campaign.launched">
                             <a [class.disablednew]="!campaign.hasAccess"
                               *ngIf="(hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
                               || (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember) && campaign.campaignType!='SOCIAL'"
@@ -1143,7 +1138,6 @@
                               title="Edit Campaign">
                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
-                          </ng-container>
                           <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
                             <ng-container
                               *ngIf="campaign.formsCount>0 && !campaign.defaultForm && campaign.campaignType.indexOf('EVENT') <0">

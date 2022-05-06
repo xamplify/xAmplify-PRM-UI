@@ -39,6 +39,7 @@ import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util
 
 import { LeadsService } from '../leads/services/leads.service';
 import { SpfModalPopupComponent } from './spf-modal-popup/spf-modal-popup.component';
+import { EditCampaignDetailsModalPopupComponent } from './edit-campaign-details-modal-popup/edit-campaign-details-modal-popup.component';
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import { SpfModalPopupComponent } from './spf-modal-popup/spf-modal-popup.compon
     ClickedUrlsVendorAnalyticsComponent,
     UserLevelTimelineComponent,
     UserCampaignsListUtilComponent,
-    SpfModalPopupComponent
+    SpfModalPopupComponent,
+    EditCampaignDetailsModalPopupComponent
   ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],
