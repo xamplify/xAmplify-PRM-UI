@@ -1544,4 +1544,5 @@ strong {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-height: 25px;
 }
