@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Properties } from 'app/common/models/properties';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { StatisticsDetailsOfPieChart } from 'app/core/models/statistics-details-of-pie-chart';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
@@ -13,7 +15,7 @@ declare var Highcharts: any;
 })
 export class PieChartAnalyticsComponent implements OnInit {
   pieChartData: Array<any> = new Array<any>();
-  pieChartStatisticsData:Array<any> =new Array<any>();
+  stastisticsOfPieChart :Array<any>=new Array<StatisticsDetailsOfPieChart>();
   loader = false;
   statusCode = 200;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -21,13 +23,12 @@ export class PieChartAnalyticsComponent implements OnInit {
   vanityLogin = false;
   @Input()applyFilter:boolean;
   name:any;
-  opportunityName:any=[];
-  opportunityValue:any=[]
   selectedTemplateTypeIndex =0;
   sum:any;
+  displayTime :any;
   show:boolean=true;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
-    public router: Router) {
+    public router: Router,public httpRequestLoader: HttpRequestLoader) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.vanityLoginDto.userId = this.loggedInUserId;
       let companyProfileName = this.authenticationService.companyProfileName;
@@ -39,13 +40,21 @@ export class PieChartAnalyticsComponent implements OnInit {
     }
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
+    if(this.selectedTemplateTypeIndex === 0){
    this.click();
+   this.loader =false;
+    }
+    else{
+      this.leads();
+    }
+   
   }
   click(){
-    this.clickRepeate();
+    let index =0
+    this.clickRepeate(index);
   }
-  clickRepeate(){
-    this.selectedTemplateTypeIndex =0;
+  clickRepeate(index :number){
+    this.selectedTemplateTypeIndex =index;
     this.loadDealPieChart();
     this.loadStatisticsDealData();
     this.show=true;
@@ -67,6 +76,7 @@ export class PieChartAnalyticsComponent implements OnInit {
         this.loader=false;
         this.statusCode=200;
         this.sumMethode(this.pieChartData);
+        this.selectedTemplateTypeIndex =1;
     },
     (error) => {
       this.xtremandLogger.error(error);
@@ -81,17 +91,10 @@ export class PieChartAnalyticsComponent implements OnInit {
      this.dashboardService.getPieChartStatisticsLeadAnalyticsData(this.vanityLoginDto)
      .subscribe(
   (response) =>{
-    self.pieChartStatisticsData=response.data;
-    self.opportunityName=self.pieChartStatisticsData.map(i=>i[0])
-    self.opportunityValue=self.pieChartStatisticsData.map(i=>i[1]) 
-    if(this.opportunityValue[2] === null){
-      self.pieChartStatisticsData.length = 0
-      this.loader =false;
-    }else{
-      self.pieChartData.length != 0;
-    self.pieChartStatisticsData.length != 0
+    this.stastisticsOfPieChart=response.data;
+    console.log(this.stastisticsOfPieChart)
+    self.pieChartData.length != 0;
     this.loader =false;
-    }
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -100,17 +103,21 @@ export class PieChartAnalyticsComponent implements OnInit {
   }
 );
   }
-  
+  // nameAndValues(pieChartDataStatistics:any){
+  //   this.stastisticsOfPieChart= pieChartDataStatistics;
+  //   this.opportunityName=this.stastisticsOfPieChart.map(i=>i.nameOfPie);
+  //   this.opportunityValue=this.stastisticsOfPieChart.map(w=>w.weightOfPie);
+  //       this.loader =false;
+  //   alert(this.opportunityName)
+  //   alert(this.opportunityValue)
+  // }
   loadStatisticsDealData(){
   this.loader = true;
-  let self =this;
   this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
   (response) =>{
-    self.pieChartStatisticsData=response.data;
+    this.stastisticsOfPieChart=response.data;
     this.statusCode=200;
-    self.opportunityName=self.pieChartStatisticsData.map(i=>i[0])
-    self.opportunityValue=self.pieChartStatisticsData.map(i=>i[1])
-    self.pieChartData.length != 0;
+    this.pieChartData.length != 0;
     this.loader =false;
   },
   (error) => {
@@ -132,11 +139,13 @@ loadDealPieChart(){
           },
           (error: any) => { 
       this.xtremandLogger.error(error);
-      
+      this.loader =false;
     },
           () =>{this.loadChart(this.pieChartData),
             this.show=true;
             this.sumMethode(this.pieChartData)
+            this.loader =false;
+            this.selectedTemplateTypeIndex =0
           }
 
         );
