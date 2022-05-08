@@ -104,6 +104,7 @@ export class VanityURLService {
     let url =window.location.hostname;
     //let url="JAVG.xamplify.com";
     //let url = "stratapp.xamplify.com";
+     // let url ="orgadmin.xamplify.com";
     if (!url.includes("release") && !url.includes("192.168")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {

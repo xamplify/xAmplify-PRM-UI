@@ -164,7 +164,7 @@ loadDealPieChart(){
       this.statusCode=200;
       this.loader = false;
       this.show=true;
-      this.pieChartData.length = this.sum;
+      this.pieChartData.length > this.sum;
       this.loadChart(this.pieChartData);
   }
 }
