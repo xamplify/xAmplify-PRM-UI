@@ -69,6 +69,7 @@
                                                     <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                                                 </div>
                                                 <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='columnInfos'>
+                                                    <h5 [style.color]="form.descriptionColor">{{form.description}}</h5>
                                                     <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
                                                         <div id="form-div" (click)="highLightSelectedColumn(columnInfo)">
                                                             <div id="{{columnInfo.divId}}">
@@ -587,6 +588,26 @@
                                         <button class=" btn green-haze" type="button" style="border-radius: 4px!important;" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
                                     </div>
 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12 pl0 pr0">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Description Color</label>
+                                        <input class="form-control" [value]="descriptionColor" [(ngModel)]="descriptionColor"
+                                            style="padding-left: 40px;" (input)="checkValidColorCode(descriptionColor,'descriptionColor')"
+                                            maxlength="7" />
+                                        <span class="input-group-addon color-pick-1" [(colorPicker)]="form.descriptionColor"
+                                            [style.background]="form.descriptionColor" [cpWidth]="'200px'" [cpHeight]="'265px'"
+                                            (colorPickerChange)="changeControllerColor($event,form,'descriptionColor')" [cpPosition]="'bottom'"
+                                            readonly></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-12" style="padding-bottom: 5px;">
+                                    <span *ngIf="!isValidDescriptionColor" class="required"
+                                        style="padding-left: 40px;">{{colorCodeErrorMessage}}</span>
                                 </div>
                             </div>
                         </div>
