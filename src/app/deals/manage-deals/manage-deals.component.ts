@@ -885,7 +885,7 @@ export class ManageDealsComponent implements OnInit {
     this.toDateFilter = "";
     this.statusFilter = "";
     this.vendorCompanyIdFilter = "";
-    if (this.isPartnerVersion) {
+    if (this.isPartnerVersion && !this.vanityLoginDto.vanityUrlFilter) {
       this.stageNamesForFilterDropDown = "";
     }
     
@@ -911,7 +911,7 @@ export class ManageDealsComponent implements OnInit {
     this.toDateFilter = ""; 
     this.statusFilter = "";
     this.vendorCompanyIdFilter = "";
-    if (this.isPartnerVersion) {
+    if (this.isPartnerVersion && !this.vanityLoginDto.vanityUrlFilter) {
       this.stageNamesForFilterDropDown = "";
     }
 
