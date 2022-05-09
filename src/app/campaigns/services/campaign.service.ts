@@ -13,7 +13,7 @@ import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
-declare var swal, $, Promise: any;
+declare var swal:any, $:any, Promise: any;
 @Injectable()
 export class CampaignService {    
    
@@ -1152,6 +1152,15 @@ export class CampaignService {
         return this.http.post(this.URL + `campaign/enddate/edit?access_token=${this.authenticationService.access_token}`, request)
         .map(this.extractData)
         .catch(this.handleError);
+    }
+
+    /********XNFR-118***********/
+    getCampaignDetailsById(campaignId:number){
+        let userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/getCampaignDetailsById/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     private extractData(res: Response) {

@@ -119,7 +119,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     endDateCustomResponse: CustomResponse = new CustomResponse();
     endDatePickr: any;
     clicked = false;
-    editClicked = false;
+    editButtonClicked = false;
+    selectedCampaignId = 0;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
@@ -348,7 +349,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.isloading = true;
         this.customResponse = new CustomResponse();
         if(campaign.launched){
-            
+            this.editButtonClicked = true;
+            this.selectedCampaignId = campaign.campaignId;
+            this.isloading = false;
         }else{
             this.editCampaignsWhichAreNotLaunched(campaign);
         }
@@ -1160,5 +1163,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }       
         this.selectedEndDate = undefined;
     }
+
+    /*****XNFR-118********/
+    resetValues(){
+        this.selectedCampaignId = 0;
+        this.editButtonClicked = false;
+        this.isloading = false;
+    }
+
 
 }

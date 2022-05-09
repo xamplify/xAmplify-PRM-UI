@@ -666,8 +666,8 @@
                                 class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
                               <ul class="dropdown-menu pull-right" [ngClass]="{'mobile-css': isLastElement}">
                                 <li>
-                                    <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-                                                                  || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'"
+                                    <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
+                                         || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)"
                                       (click)="editCampaign(campaign)" translate>
                                       <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
                                     </a>
@@ -876,8 +876,8 @@
                                 </a>
                               </li>
                               <li>
-                                  <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-                                    || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'"
+                                  <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
+                                    || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)"
                                     (click)="editCampaign(campaign)" translate>
                                     <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
                                   </a>
@@ -1132,8 +1132,8 @@
                         <div class="bar auto-height">
                           <!--Buttons Start Here-->
                             <a [class.disablednew]="!campaign.hasAccess"
-                              *ngIf="(hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
-                              || (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember) && campaign.campaignType!='SOCIAL'"
+                              *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
+                              || isOnlyPartner|| authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember)"
                               (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top"
                               title="Edit Campaign">
                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -1568,3 +1568,6 @@
     </div>
   </div>
 </div>
+<!---XNFR-118---->
+<app-edit-campaign-details-modal-popup *ngIf="editButtonClicked" [campaignId]="selectedCampaignId" (resetEmitter)="resetValues()"></app-edit-campaign-details-modal-popup>
+
