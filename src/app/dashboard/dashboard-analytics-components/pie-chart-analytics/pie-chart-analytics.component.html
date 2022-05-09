@@ -10,67 +10,46 @@
                     </div>
                   </ng-container>
                   <div class="mix-filter" >
-                    <button class="filter" *ngIf="show" (click)="click()"  [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals</button>
-                    <button class="filter" *ngIf="show" (click)="leads()" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads</button>
+                    <button class="filter"  (click)="click();one.click(0)"   [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals</button>
+                    <button class="filter"  (click)="leads();one.leads(1)" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads</button>
 
                   </div>
+                  
                   <div  *ngIf="pieChartData?.length < 1  " style="max-width: 100%;text-align: center;">
                     <div class="alert alert-info" >
                          <strong>No Data Found</strong>
                      </div>
                 </div>
                <div >
-                <!-- <div >
-                    <ul class="mix-filter">
-                      <li class="filter" (click)="click(0)" 
-                      [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>
-                      <button (click)="click(0)"></button>Deal
-                    </li>
-                      <li class="filter" (click)="leads(1)"  
-                      [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>
-                      <button (click)="leads(1)"></button>
-                      Leads</li>
-                      <li class="filter" style="display: none;" translate>Own Template</li>
-                  </ul>
-                  </div> -->
-                  <!-- <div class="mix-filter">
-                    <button class="filter" (click)="click()"  [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals</button>
-                    <button class="filter" (click)="leads()" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads</button>
-
-                  </div> -->
+             
+                
                 <div [hidden]="loader">
                    
                   <figure class="highcharts-figure-pie" *ngIf="show">
                     <div  id="container" >   
                     </div>
-                    <div class="row" style="display: flex" *ngIf="pieChartStatisticsData?.length > 1">
-                        <div class="col-xs-12 col-sm-4 col-md-4 p10">
-                                    <div class="portlet light" style="margin-top: -9px;width: 158px;">
-                                        <b>  {{opportunityName[0]}} </b>
-                                        <br>
-                                        <span style="margin-left: 37px;">  {{opportunityValue[0]}}</span>
-                                    </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-4 col-md-4 pl0">
-                            <div class="portlet light" style="margin-left:10px">
-                                           <b> {{opportunityName[1]}} </b>
-                                        <br>
-                                   <span style="margin-left: 37px;"> {{opportunityValue[1]}}</span>
-                                    </div>
-                            </div>
-                        <div class="col-xs-12 col-sm-4 col-md-4 pl0">
-                            <div class="portlet light" style="width: 179px;">
-                                
-                                <strong> {{opportunityName[2]}} </strong>
-                                            <br>
-                                        {{opportunityValue[2]}}
-                                    </div>
-                                </div>
+                    
+                  <div class="row" style="display: flex">
+                    <div class="col-xs-12 col-sm-4 col-md-4 p10" *ngFor="let request of stastisticsOfPieChart; let  i = index">
+                  <div class="portlet light" style="width: 161px;" *ngIf=" i != 2">
+                            <b>{{request.nameOfPie}}</b>
+                            <br>
+                            {{request.weightOfPie}}
                     </div>
+                        <div class="portlet light"  style="width: 161px;" *ngIf="i === 2">
+                            <strong>{{request.nameOfPie}}</strong>
+                            <br>
+                        <app-display-date-and-time [dateAndTimeUTCString]="request.weightOfPie"></app-display-date-and-time>
+                        </div>
+        
+                    </div>
+
+                  </div>
                 </figure>
 
                
             </div>
+            
                 <!-- <div class="row" style="display: flex" *ngIf="pieChartStatisticsData?.length > 0">
                     <div class="col-xs-12 col-sm-4 col-md-4 p10">
                                 <div class="portlet light" style="margin-top: -9px;width: 158px;">
@@ -96,7 +75,7 @@
                             </div>
                 </div> -->
                 </div>
-                 <app-pie-chart-statistics-bar-graph  [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> 
+                 <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> 
             </div>
         </div>
     </div>

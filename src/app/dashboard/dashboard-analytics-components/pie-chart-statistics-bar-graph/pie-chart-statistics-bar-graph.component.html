@@ -1,36 +1,4 @@
-<!-- <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="col-xs-12 col-sm-12"  style="padding: 0">
-    <div class="col-xs-12">
-        <div class="portlet light">
-            <!-- <div class="portlet-title" style="min-height: 0px;">
-                <div class="caption">
-                    <span class="caption-subject" translate>Opportunity Stats</span>
-                </div>
-            </div> --
-            <div class="portlet-body">
-                <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
-                <ng-container *ngIf="!loader && statusCode!=200">
-                    <div class="alert alert-danger">
-                      <strong>{{properties?.serverErrorMessage}}</strong>
-                    </div>
-                  </ng-container>
-                  <div [hidden]="loader" *ngIf="pieChartGraphData?.length < 1" style="max-width: 100%;text-align: center;">
-                    <div class="alert alert-info">
-                         <strong>No Data Found</strong>
-                     </div>
-                </div>
-                <div [hidden]="loader" class="highcharts-figure1">
-                    <div  id="container1">
-                    </div>
-                </div>
-                <button (click)="click()">Deals</button>
-                <button (click)="leads()">Leads</button>
 
-            </div>
-        </div>
-    </div>
-</div>
- -->
  <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
  
         <div class="portlet-body">
@@ -49,7 +17,9 @@
                 
                 <div  id="container1">
                 </div>
-                <div *ngIf="show">
+                
+                </div>
+                <!-- <div>
                     <ul class="mix-filter">
                       <li class="filter" (click)="click(0)"
                       [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" translate>Deals</li>
@@ -57,9 +27,7 @@
                       [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex" translate>Leads</li>
                       <li class="filter" style="display: none;" translate>Own Template</li>
                   </ul>
-                  </div>
-                </div>
-           
+                  </div> -->
         </div>
     
 
