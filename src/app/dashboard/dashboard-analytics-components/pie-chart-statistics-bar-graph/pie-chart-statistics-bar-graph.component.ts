@@ -41,11 +41,19 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
   }
   click(index :number){
     this.selectedTemplateTypeIndex =index;
+    this.clickAgain()
+  }
+  clickAgain(){
     this.loadStatisticsDealDataWithStageNames()
+
   }
   leads(index : number){
     this.selectedTemplateTypeIndex = index;
+    this.leadAgain();
+  }
+  leadAgain(){
     this.loadStatisticsLeadsDataWithStageNames();
+
   }
   loadStatisticsDealDataWithStageNames(){
     this.statusName="Deal Status"

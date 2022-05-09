@@ -10,7 +10,7 @@
                       <strong>{{properties?.serverErrorMessage}}</strong>
                     </div>
                   </ng-container>
-                  <div [hidden]="loader" *ngIf="funnelChartData?.length < 1" style="max-width: 100%;text-align: center;">
+                  <div [hidden]="loader" *ngIf="funnelChartData?.length === 0" style="max-width: 100%;text-align: center;">
                     <div class="alert alert-info">
                          <strong>No Data Found</strong>
                      </div>
