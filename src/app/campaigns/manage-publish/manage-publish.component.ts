@@ -353,7 +353,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.selectedCampaignId = campaign.campaignId;
             this.isloading = false;
         }else{
-            this.editCampaignsWhichAreNotLaunched(campaign);
+            if(campaign.campaignType.indexOf('SOCIAL') > -1){
+                this.isloading = false;
+                this.customResponse = new CustomResponse();
+                this.refService.showSweetAlertErrorMessage('Please try after sometime to edit this campaign');
+            }else{
+                this.editCampaignsWhichAreNotLaunched(campaign);
+            }
         }
     }
 

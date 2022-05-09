@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <div class="email-options-checkbox clearfix">
+                                <div *ngIf="campaignDetailsDto.campaignType!='SOCIAL'" class="email-options-checkbox clearfix">
                                     <div class="col-sm-4 ui-switch-custom-div">
                                         <switch [status]="campaignDetailsDto.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
                                             (statusChange)="setOptionByType($event,2)">
