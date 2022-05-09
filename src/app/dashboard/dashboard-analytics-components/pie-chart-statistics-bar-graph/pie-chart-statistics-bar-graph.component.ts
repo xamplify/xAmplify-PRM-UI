@@ -25,6 +25,8 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
   vanityLogin = false;
   selectedTemplateTypeIndex =0;
   show:boolean=true;
+  leadsCount :any;
+  dealsCount :any;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {this.loggedInUserId = this.authenticationService.getUserId();
       this.vanityLoginDto.userId = this.loggedInUserId;
@@ -61,6 +63,11 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
     this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDto).subscribe(
       (response) =>{
         this.pieChartGraphData=response.data;
+        var valDeals= this.pieChartGraphData.map(c3=>c3.value)
+        let sumDeal = valDeals.reduce(function (a, b) {
+          return a + b;
+          }, 0); 
+          this.dealsCount =sumDeal;
         this.statusCode=200;
         this.sumMethode(this.pieChartGraphData);
       },
@@ -77,6 +84,11 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
     this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto).subscribe(
       (response) =>{
         this.pieChartGraphData=response.data;
+        var valLeads= this.pieChartGraphData.map(c3=>c3.value)
+    let sumLeads = valLeads.reduce(function (a, b) {
+      return a + b;
+      }, 0); 
+      this.leadsCount =sumLeads;
         this.sumMethode(this.dashboardService);
         this.statusCode =200;
       },

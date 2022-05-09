@@ -10,8 +10,8 @@
                     </div>
                   </ng-container>
                   <div class="mix-filter" >
-                    <button class="filter"  (click)="click();one.click(0)"   [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals</button>
-                    <button class="filter"  (click)="leads();one.leads(1)" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads</button>
+                    <button class="filter"  (click)="click();one.click(0)"   [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals #{{one.dealsCount}}</button>
+                    <button class="filter"  (click)="leads();one.leads(1)" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads #{{one.leadsCount}}</button>
 
                   </div>
                   
