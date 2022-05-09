@@ -41,39 +41,10 @@
                             <br>
                         <app-display-date-and-time [dateAndTimeUTCString]="request.weightOfPie"></app-display-date-and-time>
                         </div>
-        
                     </div>
-
                   </div>
                 </figure>
-
-               
             </div>
-            
-                <!-- <div class="row" style="display: flex" *ngIf="pieChartStatisticsData?.length > 0">
-                    <div class="col-xs-12 col-sm-4 col-md-4 p10">
-                                <div class="portlet light" style="margin-top: -9px;width: 158px;">
-                                    <b>  {{opportunityName[0]}} </b>
-                                    <br>
-                                    <span style="margin-left: 37px;">  {{opportunityValue[0]}}</span>
-                                </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-4 col-md-4 pl0">
-                        <div class="portlet light" style="margin-left:10px">
-                                       <b> {{opportunityName[1]}} </b>
-                                    <br>
-                               <span style="margin-left: 37px;"> {{opportunityValue[1]}}</span>
-                                </div>
-                        </div>
-                    <div class="col-xs-12 col-sm-4 col-md-4 pl0">
-                        <div class="portlet light" style="width: 179px;">
-                            
-                            <strong> {{opportunityName[2]}} </strong>
-                                        <br>
-                                    {{opportunityValue[2]}}
-                                </div>
-                            </div>
-                </div> -->
                 </div>
                  <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> 
             </div>
