@@ -813,7 +813,7 @@
                 <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
               </div>
               <div class="panel-body" *ngIf="!formError">
-                <h5>{{form.description}}</h5>
+                <h5 class="form-name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                   <div class="form-group">
                     <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}

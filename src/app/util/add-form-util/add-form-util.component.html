@@ -69,7 +69,7 @@
                                                     <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                                                 </div>
                                                 <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='columnInfos'>
-                                                    <h5 [style.color]="form.descriptionColor">{{form.description}}</h5>
+                                                    <h5 class="form-name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
                                                     <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
                                                         <div id="form-div" (click)="highLightSelectedColumn(columnInfo)">
                                                             <div id="{{columnInfo.divId}}">
