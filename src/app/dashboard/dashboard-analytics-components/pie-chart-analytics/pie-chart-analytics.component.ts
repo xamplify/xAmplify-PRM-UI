@@ -27,6 +27,7 @@ export class PieChartAnalyticsComponent implements OnInit {
   sum:any;
   displayTime :any;
   show:boolean=true;
+  staticShow :boolean =true;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router,public httpRequestLoader: HttpRequestLoader) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -94,7 +95,9 @@ export class PieChartAnalyticsComponent implements OnInit {
     this.stastisticsOfPieChart=response.data;
     console.log(this.stastisticsOfPieChart)
     self.pieChartData.length != 0;
+
     this.loader =false;
+    this.staticShow =false;
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -119,6 +122,7 @@ export class PieChartAnalyticsComponent implements OnInit {
     this.statusCode=200;
     this.pieChartData.length != 0;
     this.loader =false;
+    this.staticShow=false;
   },
   (error) => {
     this.xtremandLogger.error(error);
