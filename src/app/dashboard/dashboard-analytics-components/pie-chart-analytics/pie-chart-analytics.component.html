@@ -29,21 +29,27 @@
                     <div  id="container" >   
                     </div>
                     
-                  <div class="row" style="display: flex">
-                    <div class="col-xs-12 col-sm-4 col-md-4 p10" *ngFor="let request of stastisticsOfPieChart; let  i = index">
-                  <div class="portlet light" style="width: 161px;" *ngIf=" i != 2">
-                            <b>{{request.nameOfPie}}</b>
-                            <br>
-                            {{request.weightOfPie}}
-                    </div>
-                        <div class="portlet light"  style="width: 161px;" *ngIf="i === 2">
-                            <strong>{{request.nameOfPie}}</strong>
-                            <br>
-                        <app-display-date-and-time [dateAndTimeUTCString]="request.weightOfPie"></app-display-date-and-time>
-                        </div>
-                    </div>
-                  </div>
+                 
                 </figure>
+            </div>
+            <div class="row" style="display: flex">
+              <div class="col-xs-12 col-sm-4 col-md-4 p10" *ngFor="let request of stastisticsOfPieChart; let  i = index">
+            <div class="portlet light" style="width: 161px;" *ngIf=" i != 2">
+                      <b>{{request.nameOfPie}}</b>
+                      <br>
+                      {{request.weightOfPie}}
+              </div>
+                  <div class="portlet light"  style="width: 161px;" *ngIf="i === 2">
+                      <strong>{{request.nameOfPie}}</strong>
+                      <br>
+                      <div *ngIf="request.weightOfPie != '-'"> 
+                  <app-display-date-and-time [dateAndTimeUTCString]="request.weightOfPie"></app-display-date-and-time>
+                  </div>
+                  <div *ngIf="request.weightOfPie === '-'">
+                               {{request.weightOfPie}}
+                  </div>
+                  </div>
+              </div>
             </div>
                 </div>
                  <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> 
