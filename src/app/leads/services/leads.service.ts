@@ -155,6 +155,36 @@ export class LeadsService {
       .catch(this.handleError);
   }
 
+  getStageNamesForVendor(userId:number) {
+    return this.http.get(this.URL + `/list/v/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getStageNamesForPartner1(userId:number){
+    return this.http.get(this.URL + `/list/p/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getStageNamesForPartner(vanityLoginDto:VanityLoginDto) {
+    return this.http.post(this.URL +`/list/p/stages?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getStageNamesForPartnerInCampaign(userId:number){
+    return this.http.get(this.URL + `campaign/lead/stages/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getStageNamesForCampaign(campaignId:number, userId:number){
+    return this.http.get(this.URL + `campaign/lead/stages/${campaignId}/${userId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body || {};
@@ -166,4 +196,10 @@ export class LeadsService {
     return Observable.throw(error);
   }
 
+  changeLeadStatus(lead: Lead) {
+    return this.http.post(this.URL + `/status/change?access_token=${this.authenticationService.access_token}`, lead)
+   .map(this.extractData)
+   .catch(this.handleError);
+  }
+  
 }

@@ -56,6 +56,10 @@
                         <div class="profile-usertitle-job">
                             {{roleNames}}
                         </div>
+                        <div *ngIf="authenticationService?.module?.upgradeToMarketing" class="profile-usertitle-job" >
+                            <button class="btn btn-info" *ngIf="!isUpgradedRequestSubmitted" (click)="upgrade()">Request To Upgrade Your Account</button>
+                            <button disabled class="btn btn-primary" *ngIf="isUpgradedRequestSubmitted">Upgrade Request Submitted</button>
+                        </div>
                     </div>
                     <div class="profile-usermenu">
                         <!--------------Account Details----------------------->
@@ -1831,6 +1835,8 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
   </div>
 </div>
 </div>
+
+<app-confirm-sweet-alert-util *ngIf="isUpgrading" [parameterDto]="sweetAlertParameterDto" (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
 
 
 

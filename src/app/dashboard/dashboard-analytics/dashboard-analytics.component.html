@@ -1,4 +1,5 @@
-<div class="page-content" *ngIf="isOnlyUser && !showDealForm">
+
+<div class="page-content" *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
@@ -13,11 +14,12 @@
             <div class="alert alert-danger alert-dismissible" style="padding: 12px">
                 <a class="close" data-dismiss="alert" aria-label="close"></a>
                 You have only limit access please upgrade.
+
             </div>
         </div>
     </div>
 </div>
-<div class="page-content" *ngIf="!isOnlyUser && !showDealForm">
+<div class="page-content" *ngIf="!showDealForm || authenticationService?.module?.deletedPartner">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
@@ -33,29 +35,31 @@
                 </button>
                 <h4 class="flex">
                     <i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
-           'fa-exclamation': userDefaultPage.responseType == 'ERROR'}" aria-hidden="true"
+                        'fa-exclamation': userDefaultPage.responseType == 'ERROR'}" aria-hidden="true"
                         style="padding-right: 7px;"></i>
                     <span>{{userDefaultPage.responseMessage}}</span>
                 </h4>
             </div>
         </div>
-        <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
-            <div class="col-xs-12 col-sm-6 p0">
-                <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
-            </div>
-            <div class="col-xs-12 col-sm-6"
-                [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
-                <div style="display: flex;float: right;">
-                    <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
-                    <div style="margin: 3px 0 3px 20px;">
-                        <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
-                            size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
-                    </div>
+
+        <div class="page-bar p0" [hidden]="ngxLoading">
+            <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
+              <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
+                <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+              </div>
+              <div class="col-md-6 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
+                <div style="display: flex;">
+                  <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
+                  <div>
+                    <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
+                      size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
+                  </div>
                 </div>
+              </div>
+              <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
+              && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
             </div>
-            <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
-                 && !authenticationService?.module?.isMarketingCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
-        </div>
+          </div>
     </div>
     <ng-container
         *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
@@ -213,10 +217,8 @@
                     </div>
                 </ng-container>
             </div>
-            <!--End of page bar-->
         </div>
         <!--End of row-->
-
 
         <!----Show Anlaytics For PRM-->
         <div *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
@@ -259,7 +261,6 @@
                 *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
         </ng-container>
 
-
         <div class="clearfix" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
             && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
             (authenticationService?.leadsAndDeals)">
@@ -270,11 +271,30 @@
                 </div>
             </div>
         </div>
-        <app-social-accounts-analytics></app-social-accounts-analytics>
 
+        <!--Opportunity Stats-->
+        <div *ngIf="!authenticationService?.module?.deletedPartner 
+        &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.enableLeads)" class="clearfix">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                        <span class="caption-subject" translate>Opportunity Stats</span>
+                    </div>
+                </div>
+            <div class="clearfix">
+                <app-funnel-chart-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-funnel-chart-analytics>
+                <!----Opportunity Stats--------->
+                <div class=" col-xs-12 col-sm-6" style="float:right;margin-top: 10px;">
+                    <app-pie-chart-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-pie-chart-analytics>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!---Social Accounts-->
+        <app-social-accounts-analytics></app-social-accounts-analytics>
     </ng-container>
 </div>
-
 <!-- Deal Form-->
 <section *ngIf="showDealForm">
     <div class="page-content">

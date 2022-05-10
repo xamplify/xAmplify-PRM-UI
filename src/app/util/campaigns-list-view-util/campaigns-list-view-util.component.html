@@ -20,19 +20,19 @@
                                     [class.campaign-type-selected]="0 == selectedCampaignTypeIndex">All</li>
                                 <li class="filter" (click)="filterCampaigns('REGULAR',1)"
                                     [class.campaign-type-selected]="1 == selectedCampaignTypeIndex"
-                                    *ngIf="campaignAccess.emailCampaign">
+                                    *ngIf="campaignAccess.emailCampaign  || authenticationService?.module?.deletedPartner">
                                     Email</li>
                                 <li class="filter" (click)="filterCampaigns('VIDEO',2)"
                                     [class.campaign-type-selected]="2 == selectedCampaignTypeIndex"
-                                    *ngIf="campaignAccess.videoCampaign">
+                                    *ngIf="campaignAccess.videoCampaign  || authenticationService?.module?.deletedPartner">
                                     Video</li>
                                 <li class="filter" (click)="filterCampaigns('SOCIAL',3)"
                                     [class.campaign-type-selected]="3 == selectedCampaignTypeIndex"
-                                    *ngIf="campaignAccess.socialCampaign">
+                                    *ngIf="campaignAccess.socialCampaign  || authenticationService?.module?.deletedPartner">
                                     Social</li>
                                 <li class="filter" (click)="filterCampaigns('EVENT',4)"
                                     [class.campaign-type-selected]="4 == selectedCampaignTypeIndex"
-                                    *ngIf="campaignAccess.eventCampaign">Event
+                                    *ngIf="campaignAccess.eventCampaign  || authenticationService?.module?.deletedPartner">Event
                                 </li>
                                 <li class="filter" (click)="filterCampaigns('SMS',5)"
                                     [class.campaign-type-selected]="5 == selectedCampaignTypeIndex"
@@ -44,7 +44,7 @@
                                     Page</li>
                                 <li class="filter" (click)="filterCampaigns('SURVEY',7)"
                                     [class.campaign-type-selected]="7 == selectedCampaignTypeIndex"
-                                    *ngIf="campaignAccess.survey">Survey</li>
+                                    *ngIf="campaignAccess.survey  || authenticationService?.module?.deletedPartner">Survey</li>
                                 <li class="filter" style="display: none;">Own Template</li>
                             </ul>
                         </div>
@@ -739,13 +739,14 @@
                                                         </a>
                                                     </ng-container>
                                                 </ng-container>
-                                                <a [class.disablednew]="!campaign.hasAccess"
-                                                    *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier || isOnlyPartner"
+                                                <a [class.disablednew]="!campaign.hasAccess && !authenticationService?.module?.deletedPartner"
+                                                    *ngIf="authenticationService?.module?.deletedPartner ||  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier || isOnlyPartner"
                                                     data-rel="fancybox-button" (click)="campaginRouter(campaign)"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="{{actionsDescription.campaign_report}}">
-                                                    <span><i [class.disablednew]="!campaign.hasAccess"
-                                                            class="fa fa-line-chart"></i></span>
+                                                    <span>
+                                                        <i [class.disablednew]="!campaign.hasAccess && !authenticationService?.module?.deletedPartner" class="fa fa-line-chart"></i>
+                                                    </span>
                                                 </a>
                                             </ng-container>
                                             <ng-container class="pull-right">
@@ -823,19 +824,19 @@
                                                                 </a>
                                                             </li>
                                                         </ng-container>
-                                                        <li *ngIf="!campaign.vendorCampaignDeleted">
+                                                        <li *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner">
                                                             <a (click)="showCampaignPreview(campaign)">
                                                                 <i class="fa fa-eye mr5" style="width: 30px;"></i>
                                                                 Preview Campaign
                                                             </a>
                                                         </li>
-                                                        <li *ngIf="!archived && campaign.canArchive">
+                                                        <li *ngIf="!archived && campaign.canArchive && !authenticationService?.module?.deletedPartner">
                                                             <a (click)="archiveCampaign(campaign)" translate>
                                                                 <i class="fa fa-archive mr5" style="width: 30px;"
                                                                     aria-hidden="true"></i> Archive Campaign
                                                             </a>
                                                         </li>
-                                                        <li *ngIf="archived && campaign.canArchive">
+                                                        <li *ngIf="archived && campaign.canArchive && !authenticationService?.module?.deletedPartner">
                                                             <a (click)="unarchiveCampaign(campaign)" translate>
                                                                 <i class="fa fa-archive mr5" style="width: 30px;"
                                                                     aria-hidden="true"></i> Unarchive Campaign
@@ -1062,7 +1063,7 @@
                                                             </a>
                                                         </li>
                                                     </ng-container>
-                                                    <li *ngIf="!campaign.vendorCampaignDeleted">
+                                                    <li *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner">
                                                         <a (click)="showCampaignPreview(campaign)">
                                                             <i class="fa fa-eye" style="width: 30px;"></i> Preview
                                                             Campaign
@@ -1296,8 +1297,8 @@
                                         <b style="color: white">{{campaign.redistributedCount}}</b>
                                     </a>
 
-                                    <a [class.disablednew]="!campaign.hasAccess"
-                                        *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || isOnlyPartner"
+                                    <a [class.disablednew]="!campaign.hasAccess && !authenticationService?.module?.deletedPartner"
+                                        *ngIf="authenticationService?.module?.deletedPartner ||  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || isOnlyPartner"
                                         (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="right"
                                         title="{{actionsDescription.campaign_report}}">
                                         <i class="fa fa-line-chart"></i>
@@ -1351,11 +1352,11 @@
                                       title="Send Preview Email" translate>
                                       <i class="fa fa-envelope" aria-hidden="true"></i>
                                     </a>
-                                        <a *ngIf="!archived && campaign.canArchive" (click)="archiveCampaign(campaign)"
+                                        <a *ngIf="!archived && campaign.canArchive && !authenticationService?.module?.deletedPartner" (click)="archiveCampaign(campaign)"
                                             data-toggle="tooltip" data-placement="top" title="Archive">
                                             <i class="fa fa-archive mr5" aria-hidden="true"></i>
                                         </a>
-                                        <a *ngIf="archived && campaign.canArchive" (click)="unarchiveCampaign(campaign)"
+                                        <a *ngIf="archived && campaign.canArchive && !authenticationService?.module?.deletedPartner" (click)="unarchiveCampaign(campaign)"
                                             data-toggle="tooltip" data-placement="top" title="Unarchive">
                                             <i class="fa fa-archive mr5" aria-hidden="true"></i>
                                         </a>
@@ -1367,7 +1368,7 @@
                                 </ng-container>
 
                                 <span [class.disablednew]="!campaign.hasAccess">
-                                    <a *ngIf="!campaign.vendorCampaignDeleted" (click)="showCampaignPreview(campaign)" data-toggle="tooltip"
+                                    <a *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner" (click)="showCampaignPreview(campaign)" data-toggle="tooltip"
                                         data-placement="top" title="Preview">
                                         <i class="fa fa-eye mr5" aria-hidden="true"></i>
                                     </a>
@@ -1443,7 +1444,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="saveAsCampaign()">Save changes</button>
+                <button type="button" [disabled]="clicked" class="btn btn-primary" (click)="saveAsCampaign();clicked = true">Save changes</button>
             </div>
         </div>
     </div>

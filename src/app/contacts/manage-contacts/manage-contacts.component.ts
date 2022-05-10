@@ -568,7 +568,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     hasDownLoadAccess(contactListId: number, contactListName: any) {
-        if (this.assignLeads) {
+        if (this.assignLeads || this.authenticationService.module.deletedPartner) {
             this.downloadContactList(contactListId, contactListName);
         } else {
             try {

@@ -54,7 +54,7 @@
           </li> 
 
           <!--Contacts-->
-          <li *ngIf="menuItem?.contacts"  [ngClass]="{'active': location.path().includes('contacts')}">
+          <li *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner"  [ngClass]="{'active': location.path().includes('contacts')}">
           <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
               <i class="fa fa-id-card" aria-hidden="true"></i>
               <span class="title" translate>Contacts</span>
@@ -75,6 +75,15 @@
                   </a>
               </li>
           </ul>
+          </li>
+
+          <!--------Contacts For Deleted Partner------ -->
+          <li *ngIf="menuItem?.contacts && authenticationService.module.deletedPartner"  [ngClass]="{'active': location.path().includes('contacts')}">
+            <a (click)="startLoader()"  [routerLink]="['./contacts/manage']"  >
+                <i class="fa fa-id-card" aria-hidden="true"></i>
+                <span class="title" translate>Contacts</span>
+                <span class="selected"></span>
+            </a>
           </li>
 
           <!--Share Leads-->
@@ -131,7 +140,7 @@
           </li>
 
           <!---Campaigns---->
-          <li *ngIf="menuItem?.campaign || menuItem?.campaignAccessAsPartner" [ngClass]="{'active':(location.path().includes('campaigns') || 
+          <li *ngIf="(menuItem?.campaign || menuItem?.campaignAccessAsPartner) && !authenticationService.module.deletedPartner" [ngClass]="{'active':(location.path().includes('campaigns') || 
                     location.path().includes('campaign') || location.path().includes('clpf') || location.path().includes('/analytics/cfa'))}">
             <a href="javascript:;" (click)="openOrCloseTabs('campaigns')">
                 <i class="fa fa-bullhorn" aria-hidden="true"></i>
@@ -164,6 +173,15 @@
                     </a>
                 </li>
             </ul>
+          </li>
+
+           <!--------Campaigns For Deleted Partner------ -->
+           <li *ngIf="(menuItem?.campaign || menuItem?.campaignAccessAsPartner) && authenticationService.module.deletedPartner"  [ngClass]="{'active': location.path().includes('campaigns')}">
+            <a (click)="startLoader()"  [routerLink]="['./campaigns/manage']"  >
+                <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                <span class="title" translate>Campaigns</span>
+                <span class="selected"></span>
+            </a>
           </li>
 
 
@@ -223,7 +241,7 @@
           </li>
 
           <!-------Configuration-------->
-          <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()"  [ngClass]="{'active': location.path().includes('myprofile')}">
+          <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner"  [ngClass]="{'active': location.path().includes('myprofile')}">
             <a (click)="startLoader()"  [routerLink]="['/home/dashboard/myprofile']" >
                 <i class="fa fa-cog" aria-hidden="true"></i>
                 <span class="title" translate>Configuration</span>

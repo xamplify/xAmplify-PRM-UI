@@ -1,0 +1,60 @@
+<ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="col-xs-12 col-sm-12"  style="padding: 0">
+    <div class="col-xs-12">
+        <div  style="margin-top: -610px;margin-right: -2px;">
+            <div class="portlet-body">
+                <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
+                <ng-container *ngIf="!loader && statusCode!=200">
+                    <div class="alert alert-danger">
+                      <strong>{{properties?.serverErrorMessage}}</strong>
+                    </div>
+                  </ng-container>
+                  <div class="mix-filter" >
+                    <button class="filter"  (click)="click();one.click(0)"   [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals #{{one.dealsCount}}</button>
+                    <button class="filter"  (click)="leads();one.leads(1)" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads #{{one.leadsCount}}</button>
+
+                  </div>
+                  
+                  <div  *ngIf="pieChartData?.length < 1  " style="max-width: 100%;text-align: center;">
+                    <div class="alert alert-info" >
+                         <strong>No Data Found</strong>
+                     </div>
+                </div>
+               <div >
+             
+                
+                <div [hidden]="loader">
+                   
+                  <figure class="highcharts-figure-pie" *ngIf="show">
+                    <div  id="container" >   
+                    </div>
+                    
+                 
+                </figure>
+            </div>
+            <div class="row" style="display: flex">
+              <div class="col-xs-12 col-sm-4 col-md-4 p10" *ngFor="let request of stastisticsOfPieChart; let  i = index">
+            <div class="portlet light" style="width: 161px;" *ngIf=" i != 2">
+                      <b>{{request.nameOfPie}}</b>
+                      <br>
+                      {{request.weightOfPie}}
+              </div>
+                  <div class="portlet light"  style="width: 161px;" *ngIf="i === 2">
+                      <strong>{{request.nameOfPie}}</strong>
+                      <br>
+                      <div *ngIf="request.weightOfPie != '-'"> 
+                  <app-display-date-and-time [dateAndTimeUTCString]="request.weightOfPie"></app-display-date-and-time>
+                  </div>
+                  <div *ngIf="request.weightOfPie === '-'">
+                               {{request.weightOfPie}}
+                  </div>
+                  </div>
+              </div>
+            </div>
+                </div>
+                 <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> 
+            </div>
+        </div>
+    </div>
+</div>
+    

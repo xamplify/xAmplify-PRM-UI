@@ -2323,6 +2323,15 @@ export class ReferenceService {
 		return mobileView;
 	};
 
-
-
+	getApiErrorMessage(error:any){
+		let statusCode = JSON.parse(error['status']);
+		let message = "";
+		if (statusCode == 409 || statusCode==400) {
+			let errorResponse = JSON.parse(error['_body']);
+			message = errorResponse['message'];
+		}else{
+			message = this.properties.serverErrorMessage;
+		}
+		return message;
+	}
 }

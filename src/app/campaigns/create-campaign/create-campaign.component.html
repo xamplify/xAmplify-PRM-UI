@@ -1053,7 +1053,7 @@
                                 </div>
                             </div>
                             <button *ngIf="campaignType=='video'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
-                            <button *ngIf="campaignType=='regular'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
+                            <button *ngIf="campaignType!='video'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
                             <button type="submit" style="float: right;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
                         </div>
                     </div>

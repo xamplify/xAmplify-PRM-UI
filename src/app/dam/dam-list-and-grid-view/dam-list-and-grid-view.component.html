@@ -448,6 +448,7 @@
 <ng-container *ngIf="deleteAsset">
 	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
 	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter()" 
-	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()">
+	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"
+	 (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
 </ng-container>

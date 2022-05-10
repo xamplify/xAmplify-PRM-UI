@@ -46,6 +46,9 @@ export class ManageCampaignLeadsComponent implements OnInit {
   filterResponse: CustomResponse = new CustomResponse(); 
   filterMode: boolean = false;
   selectedFilterIndex: number = 1;
+  stageNamesForFilterDropDown :any;
+  statusFilter: any;
+  // lead: any;
 
   constructor(public authenticationService: AuthenticationService,
     private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -58,13 +61,14 @@ export class ManageCampaignLeadsComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.campaignId != undefined && this.campaignId > 0) {
+    if (this.campaignId != undefined && this.campaignId > 0 ) {
         this.leadsPagination = new Pagination();
         if (this.fromAnalytics && !this.showTeamMemberFilter) {
           this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==0;
         } else {
           this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
-        }        
+        }  
+        // alert("ok");      
         this.listCampaignLeads(this.leadsPagination);        
     }
 
@@ -90,8 +94,10 @@ export class ManageCampaignLeadsComponent implements OnInit {
         response => {            
             this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.data.totalRecords;
-            this.leadsSortOption.totalRecords = response.data.totalRecords;
+            this.leadsSortOption.totalRecords = response.data.totalRecords;            
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
+            this.getStageNamesForCampaign();
+            
         },
         error => {
             this.httpRequestLoader.isServerError = true;
@@ -259,6 +265,12 @@ export class ManageCampaignLeadsComponent implements OnInit {
   mapInput.setAttribute("value", this.leadsPagination.toDateFilterString);
   mapForm.appendChild(mapInput);
 
+  //stageFilter 
+  var mapInput = document.createElement("input");
+  mapInput.type = "hidden";
+  mapInput.name = "stageName";
+  mapInput.setAttribute("value", this.leadsPagination.stageFilter);
+  mapForm.appendChild(mapInput);
   // campaignId
   var mapInput = document.createElement("input");
   mapInput.type = "hidden";
@@ -302,13 +314,16 @@ toggleFilterOption() {
   this.showFilterOption = !this.showFilterOption;    
   this.fromDateFilter = "";
   this.toDateFilter = "";
+  this.statusFilter = "";
   if (!this.showFilterOption) {
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
+    this.leadsPagination.stageFilter = "";
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.leadsPagination.pageIndex = 1;
       this.listCampaignLeads(this.leadsPagination);
+    //  this.getStageNames();
       this.filterMode = false;
     }      
   } else {
@@ -320,8 +335,10 @@ closeFilterOption() {
   this.showFilterOption = false;
   this.fromDateFilter = "";
   this.toDateFilter = ""; 
+  this.statusFilter = "";
   this.leadsPagination.fromDateFilterString = "";
   this.leadsPagination.toDateFilterString = "";
+  this.leadsPagination.stageFilter = "";
   this.filterResponse.isVisible = false;
   if (this.filterMode) {
     this.leadsPagination.pageIndex = 1;
@@ -331,26 +348,51 @@ closeFilterOption() {
 }
 
 validateDateFilters() {
-  if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
-    var fromDate = Date.parse(this.fromDateFilter);
-    if (this.toDateFilter != undefined && this.toDateFilter != "") {
+  if ((this.statusFilter == undefined || this.statusFilter == "") && 
+    (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
+      (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+  } else { 
+    let validDates = false;   
+    if ((this.fromDateFilter == undefined || this.fromDateFilter == "") 
+      && (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        validDates = true;
+    } else if (this.fromDateFilter != undefined && this.fromDateFilter != "" && 
+      (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+    } else if (this.toDateFilter != undefined && this.toDateFilter != "" && 
+      (this.fromDateFilter == undefined || this.fromDateFilter == "")) {
+        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+    } else {
       var toDate = Date.parse(this.toDateFilter);
+      var fromDate = Date.parse(this.fromDateFilter);
+
       if (fromDate <= toDate) {
-        this.leadsPagination.pageIndex = 1;
+        validDates = true;
         this.leadsPagination.fromDateFilterString = this.fromDateFilter;
         this.leadsPagination.toDateFilterString = this.toDateFilter;
-        this.filterMode = true;
-        this.filterResponse.isVisible = false;
-        this.listCampaignLeads(this.leadsPagination);
+        // this.listCampaignLeads(this.leadsPagination);
+       
       } else {
         this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-      }
-    } else {
-      this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      }        
     }
-  } else {
-    this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-  }    
+
+    if (validDates) {
+      if (this.statusFilter != undefined && this.statusFilter != "") {
+        this.leadsPagination.stageFilter = this.statusFilter;
+        // this.listCampaignLeads(this.leadsPagination);
+      }
+      else {
+        this.leadsPagination.stageFilter = "";
+      }
+      this.leadsPagination.pageIndex = 1;
+      this.filterMode = true;
+        this.filterResponse.isVisible = false;
+        this.listCampaignLeads(this.leadsPagination);
+    }
+    
+  }
 }
 
 clearSearch() {
@@ -363,6 +405,22 @@ getSelectedIndex(index:number){
   this.referenceService.setTeamMemberFilterForPagination(this.leadsPagination,index);
   this.listCampaignLeads(this.leadsPagination);
   
+}
+
+getStageNamesForCampaign(){
+  this.referenceService.loading(this.httpRequestLoader, true);  
+  this.leadsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId)
+  .subscribe(
+    response =>{
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.stageNamesForFilterDropDown = response;
+     // alert(this.stageNamesForFilterDropDown)
+    },
+    error=>{
+      this.httpRequestLoader.isServerError = true;
+    },
+    ()=> { }
+  );  
 }
 
 }
