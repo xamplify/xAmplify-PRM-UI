@@ -761,15 +761,12 @@
 
                                                     <ul class="dropdown-menu pull-right"
                                                         [ngClass]="{'mobile-css': isLastElement}">
-                                                        <li *ngIf="!campaign.launched">
-                                                            <ng-container *ngIf="!campaign.launched">
-                                                                <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-                                                                            || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor   || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'"
-                                                                    (click)="editCampaign(campaign)">
-                                                                    <i class="fa fa-pencil-square-o"
-                                                                        style="width: 30px;"></i> Edit
-                                                                </a>
-                                                            </ng-container>
+                                                        <li>
+                                                            <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
+                                                                 || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)"
+                                                              (click)="editCampaign(campaign)" translate>
+                                                              <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
+                                                            </a>
                                                         </li>
                                                         <ng-container
                                                             *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
@@ -992,19 +989,15 @@
                                                             Campaigns
                                                         </a>
                                                     </li>
-                                                    <li *ngIf="!campaign.launched">
-                                                        <ng-container *ngIf="!campaign.launched">
-                                                            <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-                                                                    || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor   || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'"
-                                                                (click)="editCampaign(campaign)">
-                                                                <i class="fa fa-pencil-square-o"
-                                                                    style="width: 30px;"></i> Edit
-                                                            </a>
-                                                        </ng-container>
-                                                    </li>
-                                                    <ng-container *ngIf="campaign.launched">
+                                                     <li>
+                                                        <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
+                                                            || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)"
+                                                        (click)="editCampaign(campaign)" translate>
+                                                        <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
+                                                        </a>
+                                                     </li>
+                                                    <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
                                                         <li *ngIf="campaign.launched">
-
                                                             <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier || isOnlyPartner"
                                                                 data-rel="fancybox-button"
                                                                 (click)="campaginRouter(campaign)"
@@ -1257,15 +1250,13 @@
                             </div>
                             <div class="bar auto-height">
                                 <!--Buttons Start Here-->
-                                <ng-container *ngIf="!campaign.launched">
-                                    <a [class.disablednew]="!campaign.hasAccess"
-                                        *ngIf="(hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
-                                        || (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor  || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'"
-                                        (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top"
-                                        title="Edit Campaign">
-                                        <i class="fa fa-pencil-square-o"></i>
-                                    </a>
-                                </ng-container>
+                                <a [class.disablednew]="!campaign.hasAccess"
+                                    *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
+                                    || isOnlyPartner|| authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember)"
+                                    (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top"
+                                    title="Edit Campaign">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a>
                                 <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
                                     <ng-container
                                         *ngIf="campaign.formsCount>0 && !campaign.defaultForm && campaign.campaignType.indexOf('EVENT') <0">
@@ -1712,3 +1703,6 @@
     </div>
   </div>
 </div>
+<!---XNFR-118---->
+<app-edit-campaign-details-modal-popup *ngIf="editButtonClicked" [campaignId]="selectedCampaignId" (resetEmitter)="resetValues()"></app-edit-campaign-details-modal-popup>
+

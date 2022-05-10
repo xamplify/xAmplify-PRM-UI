@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from "@angular/core";
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { CampaignDetailsDto } from './../models/campaign-details-dto';
+import { CampaignDetailsDto } from 'app/campaigns/models/campaign-details-dto';
 import { CallActionSwitch } from './../../videos/models/call-action-switch';
-
 declare var $:any;
 @Component({
   selector: "app-edit-campaign-details-modal-popup",
@@ -81,3 +80,4 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
 
   
 }
+
