@@ -554,9 +554,6 @@
  </div>
  <div class="modal-footer p0" *ngIf="!deleteCampaignAlert">
     <div class="actions-block text-center m10" *ngIf="campaign">
-       <a *ngIf="!authenticationService?.module?.deletedPartner" (click)="changeTheFolder()"   data-toggle="tooltip" data-placement="top" title="Change the folder">
-       <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-       </a>
        <ng-container *ngIf="campaign.launched">
           <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier ) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="navigateRedistributedCampaigns(campaign)"
           data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
@@ -588,13 +585,10 @@
           <i class="fa fa-files-o"></i>
           </a>
        </ng-container>
-       <ng-container *ngIf="!campaign.launched && campaign.campaignScheduleType !== 'NOW'">
-          <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId && previewCampaignType!='SOCIAL') || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
+          <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId  || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
           title="Edit">
           <i class="fa fa-pencil-square-o"></i>
           </a>
-       </ng-container>
-       <!-- <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="auto" title="Preview Campaign"><i class="fa fa-eye mr5"></i></a> -->
        <a *ngIf=" ( (campaign.campaignType!=='EVENT')  && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) )"
        (click)="confirmDeleteCampaign(campaign)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto"
        title="Delete">
@@ -904,41 +898,7 @@
     </div>
  </div>
  <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
- <!-----------------Change The Folder---------------->
- <div class="modal right fade" id="show-campaign-popup" tabindex="-1" role="dialog" aria-labelledby="show-campaign-popup" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-css" role="document">
-       <div class="modal-content">
-          <div class="modal-header">
-             <button  type="button" class="close-circle"  data-dismiss="modal">
-             <i class="fa fa-times" aria-hidden="true"></i>
-             </button>
-             <h4 class="modal-title text-center">Change Folder</h4>
-          </div>
-          <div style="position: relative; top:-10px;">
-            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-         </div>
-          <div class="modal-body">
-             <app-modal-popup-loader *ngIf="folderPreviewLoader"></app-modal-popup-loader>
-             <ng-container *ngIf="!folderPreviewLoader">
-                <div class="form-group">
-                   <label>Campaign Name</label>
-                   <input *ngIf="campaignType!='EVENT'" disabled="disabled" type="text" class="form-control"  value="{{campaign.campaignName}}">
-                   <input *ngIf="campaignType=='EVENT'" disabled="disabled" type="text" class="form-control"  value="{{campaign.campaign}}">
-                </div>
-                <div class="form-group">
-                   <label>Select a folder <font class="required">*</font></label>
-                   <select class="form-control" [(ngModel)]="campaign.categoryId" [ngModelOptions]="{standalone: true}">
-                   <option *ngFor="let category of categoryNames" [value]="category.id">
-                   {{category.name}}
-                   </option>
-                   </select>
-                </div>
-             </ng-container>
-          </div>
-          <div class="modal-footer" *ngIf="!folderPreviewLoader">
-             <button type="submit"  class="btn green-haze" (click)="updateFolder()" id="full-screen">Update</button>
-             <button type="button"  class="btn btn-default" data-dismiss="modal">Cancel</button>
-          </div>
-       </div>
-    </div>
- </div>
+<!---XNFR-118---->
+<app-edit-campaign-details-modal-popup *ngIf="editButtonClicked" [campaignId]="selectedCampaignId" (resetEmitter)="resetValues()"></app-edit-campaign-details-modal-popup>
+
+

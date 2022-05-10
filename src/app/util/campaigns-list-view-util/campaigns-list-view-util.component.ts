@@ -975,5 +975,11 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         this.selectedEndDate = undefined;
     }
 
+    resetValues(){
+        this.selectedCampaignId = 0;
+        this.editButtonClicked = false;
+        this.isloading = false;
+    }
+
 
 }
