@@ -19,7 +19,7 @@
         </div>
     </div>
 </div>
-<div class="page-content" *ngIf="!showDealForm || authenticationService?.module?.deletedPartner">
+<div class="page-content" *ngIf="(!showDealForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
