@@ -41,6 +41,7 @@ export class PieChartAnalyticsComponent implements OnInit {
     }
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
+    this.loadStatisticsLeadData();
     if(this.selectedTemplateTypeIndex === 0){
    this.click();
    this.loader =false;

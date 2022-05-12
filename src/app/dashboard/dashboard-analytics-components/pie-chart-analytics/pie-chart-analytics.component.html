@@ -1,7 +1,7 @@
 <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="col-xs-12 col-sm-12"  style="padding: 0">
+<div class="col-xs-12 col-sm-12 col-lg-12"  style="padding: 0">
     <div class="col-xs-12">
-        <div  style="margin-top: -610px;margin-right: -2px;">
+        <div  style="margin-right: -2px;">
             <div class="portlet-body">
                 <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
                 <ng-container *ngIf="!loader && statusCode!=200">
@@ -34,12 +34,12 @@
             </div>
             <div class="row" style="display: flex">
               <div class="col-xs-12 col-sm-4 col-md-4 p10" *ngFor="let request of stastisticsOfPieChart; let  i = index">
-            <div class="portlet light" style="width: 161px;" *ngIf=" i != 2">
+            <div class="portlet light" *ngIf=" i != 2">
                       <b>{{request.nameOfPie}}</b>
                       <br>
                       {{request.weightOfPie}}
               </div>
-                  <div class="portlet light"  style="width: 161px;" *ngIf="i === 2">
+                  <div class="portlet light"   *ngIf="i === 2">
                       <strong>{{request.nameOfPie}}</strong>
                       <br>
                       <div *ngIf="request.weightOfPie != '-'"> 
