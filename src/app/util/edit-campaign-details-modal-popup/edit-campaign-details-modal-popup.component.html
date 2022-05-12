@@ -7,6 +7,8 @@
               <h4 class="modal-title" id="myModalLabel" translate><strong>Edit Campaign Details</strong></h4>
           </div>
           <div class="modal-body">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message>
             <div id="modal-content">
                 <app-modal-popup-loader *ngIf="loader"></app-modal-popup-loader>
                 <form class="form-horizontal" *ngIf="!loader">
@@ -101,7 +103,7 @@
             </div>
             <div class="modal-footer" *ngIf="!loader">
                 <button type="button" class="btn btn-default" (click)="closePopup()" translate>Cancel</button>
-                <button type="button" class="btn btn-primary"  (click)="update()" translate>Update</button>
+                <button [disabled]="buttonClicked" type="button" class="btn btn-primary"  (click)="update();buttonClicked=true" translate>Update</button>
             </div>
         </div>
   </div>

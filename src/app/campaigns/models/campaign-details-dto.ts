@@ -8,4 +8,6 @@ export class CampaignDetailsDto {
     categoryId = 0;
     rsvpReceived = false;
     emailNotification = false;
+    userId = 0;
+    id = 0;
 }

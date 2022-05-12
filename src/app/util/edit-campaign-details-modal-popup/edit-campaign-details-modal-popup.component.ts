@@ -3,12 +3,16 @@ import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { CampaignDetailsDto } from 'app/campaigns/models/campaign-details-dto';
 import { CallActionSwitch } from './../../videos/models/call-action-switch';
+import { CustomResponse } from './../../common/models/custom-response';
+import { TabHeadingDirective } from "ngx-bootstrap";
+import { Properties } from './../../common/models/properties';
+
 declare var $:any;
 @Component({
   selector: "app-edit-campaign-details-modal-popup",
   templateUrl: "./edit-campaign-details-modal-popup.component.html",
   styleUrls: ["./edit-campaign-details-modal-popup.component.css"],
-  providers:[CallActionSwitch]
+  providers:[CallActionSwitch,Properties]
 })
 export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy {
   @Input() campaignId: number = 0;
@@ -17,6 +21,9 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
   campaignDetailsDto:CampaignDetailsDto = new CampaignDetailsDto();
   teamMemberEmailIds:Array<any> = new Array<any>();
   categories:Array<any> = new Array<any>();
+  buttonClicked = false;
+  customResponse:CustomResponse = new CustomResponse();
+  properties:Properties = new Properties();
   constructor(public campaignService:CampaignService,public authenticationService:AuthenticationService,public callActionSwitch:CallActionSwitch) {}
   
 
@@ -32,7 +39,6 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
           this.campaignDetailsDto = map['campaignDetailsDto'];
           this.teamMemberEmailIds = map['adminAndTeamMembers'];
           this.categories = map['categories'];
-          console.log(this.categories);
           this.loader = false;
         }else{
           this.closePopup();
@@ -75,6 +81,19 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
 
   update(){
     console.log(this.campaignDetailsDto);
+    this.loader = true;
+    this.customResponse = new CustomResponse();
+    this.campaignService.updateCampaignDetails(this.campaignDetailsDto)
+    .subscribe(
+      response=>{
+        this.buttonClicked = false;
+        this.loader = false;
+        this.customResponse  = new CustomResponse('SUCCESS',response.message,true);
+      },error=>{
+        this.loader = false;
+        this.buttonClicked = false;
+        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+      });
   }
 
 

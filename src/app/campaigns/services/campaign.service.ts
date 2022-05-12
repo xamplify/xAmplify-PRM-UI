@@ -1,3 +1,4 @@
+import { CampaignDetailsDto } from 'app/campaigns/models/campaign-details-dto';
 import { Injectable } from '@angular/core';
 import { Http,Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -1159,6 +1160,16 @@ export class CampaignService {
         let userId = this.authenticationService.getUserId();
         let url = this.URL + "campaign/getCampaignDetailsById/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /********XNFR-118***********/
+    updateCampaignDetails(campaignDetailsDto:CampaignDetailsDto){
+        let userId = this.authenticationService.getUserId();
+        campaignDetailsDto.userId = userId;
+        let url = this.URL + "campaign/updateCampaignDetails?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url,campaignDetailsDto)
             .map(this.extractData)
             .catch(this.handleError);
     }
