@@ -10,9 +10,8 @@
                     </div>
                   </ng-container>
                   <div class="mix-filter" >
-                    <button class="filter"  (click)="click();one.click(0)"   [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals #{{one.dealsCount}}</button>
-                    <button class="filter"  (click)="leads();one.leads(1)" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads #{{one.leadsCount}}</button>
-
+                    <button class="filter"  (click)="click();one.click(0)"   [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals #{{count.dealCount}}</button>
+                    <button class="filter"  (click)="leads();one.leads(1)" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads #{{count.leadCount}}</button>
                   </div>
                   
                   <div  *ngIf="pieChartData?.length < 1  " style="max-width: 100%;text-align: center;">
@@ -54,6 +53,7 @@
                 </div>
                  <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> 
             </div>
+            <app-funnel-chart-analytics [hidden]="!show"  #count ></app-funnel-chart-analytics> 
         </div>
     </div>
 </div>

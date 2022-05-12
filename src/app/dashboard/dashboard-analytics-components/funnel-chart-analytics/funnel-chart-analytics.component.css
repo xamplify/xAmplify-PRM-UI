@@ -1,11 +1,12 @@
 
 #funnel-chart-container {
-    height: 550px; 
+    height: 600px; 
+    width: 500px;
 }
 
  .highcharts-figure, .highcharts-data-table table {
     min-width: 360px;
-    max-width: 600px;
+    max-width: 1000px;
     margin: 1em auto;
 } 
 
