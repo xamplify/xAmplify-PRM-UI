@@ -19,6 +19,8 @@ export class FunnelChartAnalyticsComponent implements OnInit {
   loader = false;
   statusCode = 200;
   @Input() applyFilter: boolean;
+  leadCount:any;
+  dealCount: any;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
   val:any=[];
@@ -56,6 +58,8 @@ export class FunnelChartAnalyticsComponent implements OnInit {
             let sum = this.val.reduce(function (a, b) {
             return a + b;
             }, 0);
+            this.leadCount = this.val[1];
+          this.dealCount = this.val[2];
             if(sum === 0){
               this.funnelChartData.length = 0;
               this.loader =false;
