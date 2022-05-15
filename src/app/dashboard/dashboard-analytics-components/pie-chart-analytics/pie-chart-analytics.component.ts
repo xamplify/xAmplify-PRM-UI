@@ -16,6 +16,7 @@ declare var Highcharts: any;
 export class PieChartAnalyticsComponent implements OnInit {
   pieChartData: Array<any> = new Array<any>();
   stastisticsOfPieChart :Array<any>=new Array<StatisticsDetailsOfPieChart>();
+  funnelChartData: Array<any> = new Array<any>();
   loader = false;
   statusCode = 200;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -27,8 +28,11 @@ export class PieChartAnalyticsComponent implements OnInit {
   sum:any;
   displayTime :any;
   show:boolean=true;
+  val:any;
   staticShow :boolean =true;
   notShow:boolean =false;
+  leadCount:number =0;
+  dealCount:number =0;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router,public httpRequestLoader: HttpRequestLoader) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -42,6 +46,7 @@ export class PieChartAnalyticsComponent implements OnInit {
     }
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
+    this.loadLeadOrDealData();
     if(this.selectedTemplateTypeIndex === 0){
    this.click();
    this.loader =false;
@@ -69,7 +74,33 @@ export class PieChartAnalyticsComponent implements OnInit {
     this.show=true;
     
   }
-  
+  loadLeadOrDealData(){
+    this.loader = true;
+    this.dashboardService
+      .getFunnelChartsAnalyticsData(this.vanityLoginDto)
+      .subscribe(
+        (response) => {
+          this.pieChartData = response.data;
+          this.val=this.pieChartData.map(t=>t[1]);
+          this.sum = this.val.reduce(function (a, b) {
+            return a + b;
+            }, 0);
+            if(this.sum === 0){
+              this.leadCount =this.sum;
+              this.dealCount =this.sum;
+              this.loader =false;
+            }
+            this.leadCount = this.val[1];
+          this.dealCount = this.val[2];
+        },
+        (error) => {
+          this.xtremandLogger.error(error);
+          this.loader = false;
+          this.statusCode = 0;
+        }
+      );
+
+  }
   loadLeadPieChart(){
     this.loader = true;
     this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscribe(
