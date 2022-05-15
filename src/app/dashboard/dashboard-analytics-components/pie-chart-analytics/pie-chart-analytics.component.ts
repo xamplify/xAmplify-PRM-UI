@@ -42,7 +42,6 @@ export class PieChartAnalyticsComponent implements OnInit {
     }
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
-   // this.loadStatisticsLeadData();
     if(this.selectedTemplateTypeIndex === 0){
    this.click();
    this.loader =false;
@@ -96,9 +95,7 @@ export class PieChartAnalyticsComponent implements OnInit {
      .subscribe(
   (response) =>{
     this.stastisticsOfPieChart=response.data;
-    console.log(this.stastisticsOfPieChart)
     self.pieChartData.length != 0;
-
     this.loader =false;
     this.staticShow =false;
     this.notShow =false;
@@ -111,14 +108,7 @@ export class PieChartAnalyticsComponent implements OnInit {
   }
 );
   }
-  // nameAndValues(pieChartDataStatistics:any){
-  //   this.stastisticsOfPieChart= pieChartDataStatistics;
-  //   this.opportunityName=this.stastisticsOfPieChart.map(i=>i.nameOfPie);
-  //   this.opportunityValue=this.stastisticsOfPieChart.map(w=>w.weightOfPie);
-  //       this.loader =false;
-  //   alert(this.opportunityName)
-  //   alert(this.opportunityValue)
-  // }
+  
   loadStatisticsDealData(){
   this.loader = true;
   this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
