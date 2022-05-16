@@ -149,7 +149,6 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     showMessageOnTop() {
         $(window).scrollTop(0);
         this.customResponse = new CustomResponse('SUCCESS', 'Copy campaign saved successfully', true);
-        // setTimeout(function() { $("#lanchSuccess").slideUp(500); }, 5000);
     }
 
     listCampaign(pagination: Pagination) {
@@ -975,10 +974,13 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         this.selectedEndDate = undefined;
     }
 
-    resetValues(){
+    /*****XNFR-118********/
+    resetValues(event:any){
+        if("updated"==event){
+          this.listCampaign(this.pagination);
+        }
         this.selectedCampaignId = 0;
         this.editButtonClicked = false;
-        this.isloading = false;
     }
 
 

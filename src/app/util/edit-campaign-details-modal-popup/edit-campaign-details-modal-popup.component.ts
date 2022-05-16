@@ -6,6 +6,7 @@ import { CallActionSwitch } from './../../videos/models/call-action-switch';
 import { CustomResponse } from './../../common/models/custom-response';
 import { TabHeadingDirective } from "ngx-bootstrap";
 import { Properties } from './../../common/models/properties';
+import { emit } from "process";
 
 declare var $:any;
 @Component({
@@ -17,6 +18,7 @@ declare var $:any;
 export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy {
   @Input() campaignId: number = 0;
   @Output() resetEmitter = new EventEmitter();
+  @Input() navigatedFrom:string = "";
   loader = false;
   campaignDetailsDto:CampaignDetailsDto = new CampaignDetailsDto();
   teamMemberEmailIds:Array<any> = new Array<any>();
@@ -24,6 +26,7 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
   buttonClicked = false;
   customResponse:CustomResponse = new CustomResponse();
   properties:Properties = new Properties();
+  dataUpdated = false;
   constructor(public campaignService:CampaignService,public authenticationService:AuthenticationService,public callActionSwitch:CallActionSwitch) {}
   
 
@@ -76,11 +79,15 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
   closePopup(){
     $('#edit-campaign-details-popup').modal('hide');
     this.loader = false;
-    this.resetEmitter.emit();
+    if(this.dataUpdated){
+      this.resetEmitter.emit('updated');
+    }else{
+      this.resetEmitter.emit('closed');
+    }
+
   }
 
   update(){
-    console.log(this.campaignDetailsDto);
     this.loader = true;
     this.customResponse = new CustomResponse();
     this.campaignService.updateCampaignDetails(this.campaignDetailsDto)
@@ -88,7 +95,7 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
       response=>{
         this.buttonClicked = false;
         this.loader = false;
-        this.customResponse  = new CustomResponse('SUCCESS',response.message,true);
+        this.dataUpdated = true;
       },error=>{
         this.loader = false;
         this.buttonClicked = false;

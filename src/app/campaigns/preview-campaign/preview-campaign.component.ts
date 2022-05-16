@@ -210,9 +210,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.campaignType = 'REGULAR';
             } 
             this.getEmailSentCount(this.previewCampaignId);
-            //this.getEmailLogCountByCampaign(this.previewCampaignId);
             this.getCampaignWatchedUsersCount(this.previewCampaignId);
             this.referenceService.loadingPreview = false;
+            this.ngxloading = false;
             $('#myModal').modal('show');
           });
         }else{
@@ -222,10 +222,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }
     setCampaignData(result){
         this.campaign = result;
-        console.log(this.campaign);
         this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
-        // this.contactListPagination.campaignUserListIds = this.campaign.userListIds;
-        // if(this.campaign.userListIds.length>0){ this.loadContactList(this.contactListPagination);}
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
         this.selectedUserlistIds = this.campaign.userListIds;
         this.isChannelCampaign = this.campaign.channelCampaign;
@@ -258,7 +255,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setEventCampaignData(result:EventCampaign){
       this.campaign = result;
       this.isCampaignLaunched = this.campaign.launched;
-      console.log(this.campaign);
       this.campaign.emailTemplate = result.emailTemplateDTO;
       this.campaign.launchTimeInString = new Date(result.launchTimeInString);
       if(!this.campaign.emailTemplate) { this.campaign.emailTemplate = new EmailTemplate(); }
@@ -1571,10 +1567,15 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
   }
 
   /*****XNFR-118********/
-  resetValues(){
+  resetValues(event:any){
+    this.ngxloading = true;
+    if("updated"==event){
+      this.getCampaignById();
+    }else{
+      this.ngxloading = false;
+    }
     this.selectedCampaignId = 0;
     this.editButtonClicked = false;
-    this.ngxloading = false;
 }
 
 

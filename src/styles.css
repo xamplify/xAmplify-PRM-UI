@@ -1546,3 +1546,14 @@ strong {
   text-overflow: ellipsis;
   min-height: 25px;
 }
+/***16 May*****/
+/*--thank you pop starts here--*/
+
+.success-message-text-icon-xamp {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  color:green;
+}
+
+

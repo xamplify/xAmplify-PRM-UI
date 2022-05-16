@@ -1569,5 +1569,5 @@
   </div>
 </div>
 <!---XNFR-118---->
-<app-edit-campaign-details-modal-popup *ngIf="editButtonClicked" [campaignId]="selectedCampaignId" (resetEmitter)="resetValues()"></app-edit-campaign-details-modal-popup>
+<app-edit-campaign-details-modal-popup *ngIf="editButtonClicked" [campaignId]="selectedCampaignId" (resetEmitter)="resetValues($event)"></app-edit-campaign-details-modal-popup>
 

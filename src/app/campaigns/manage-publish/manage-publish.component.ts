@@ -1171,10 +1171,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     /*****XNFR-118********/
-    resetValues(){
-        this.selectedCampaignId = 0;
-        this.editButtonClicked = false;
-        this.isloading = false;
+    resetValues(event:any){
+    if("updated"==event){
+      this.listCampaign(this.pagination);
+    }
+    this.selectedCampaignId = 0;
+    this.editButtonClicked = false;
     }
 
 
