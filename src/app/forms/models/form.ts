@@ -40,6 +40,7 @@ export class Form {
     showBackgroundImage=false;
     showCaptcha=false;
     showTitleHeader = true;
+    descriptionColor="";
     
     openLinkInNewTab = false;
     formSubmissionUrl = "";

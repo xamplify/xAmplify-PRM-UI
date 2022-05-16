@@ -58,8 +58,6 @@ export class FunnelChartAnalyticsComponent implements OnInit {
             let sum = this.val.reduce(function (a, b) {
             return a + b;
             }, 0);
-            this.leadCount = this.val[1];
-          this.dealCount = this.val[2];
             if(sum === 0){
               this.funnelChartData.length = 0;
               this.loader =false;
