@@ -264,13 +264,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
    
     
     ngOnInit() {
-        this.refService.loading(this.httpRequestLoader, true);
-        const timeZoneOffset = new Date().getTimezoneOffset();
         try {             
             this.archived = this.campaignService.archived;    
             if (this.archived) {
                 this.selectedSortedOption = this.sortByDropDownArchived[0];
             }   
+            this.refService.loading(this.httpRequestLoader, true);
             this.authenticationService.isPartnershipOnlyWithPrm().subscribe(
                 response=>{
                     if(response.data){
