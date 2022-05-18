@@ -315,6 +315,9 @@ toggleFilterOption() {
   this.fromDateFilter = "";
   this.toDateFilter = "";
   this.statusFilter = "";
+  this.leadsPagination.fromDateFilterString = "";
+  this.leadsPagination.toDateFilterString = "";
+  this.leadsPagination.stageFilter = "";
   if (!this.showFilterOption) {
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
@@ -369,6 +372,8 @@ validateDateFilters() {
 
       if (fromDate <= toDate) {
         validDates = true;
+        this.leadsPagination.pageIndex = 1;
+        this.leadsPagination.maxResults = 12;
         this.leadsPagination.fromDateFilterString = this.fromDateFilter;
         this.leadsPagination.toDateFilterString = this.toDateFilter;
         // this.listCampaignLeads(this.leadsPagination);

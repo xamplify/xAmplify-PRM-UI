@@ -301,6 +301,9 @@ toggleFilterOption() {
   this.fromDateFilter = "";
   this.toDateFilter = "";
   this.statusFilter = "";
+  this.dealsPagination.fromDateFilterString = "";
+  this.dealsPagination.toDateFilterString = "";
+  this.dealsPagination.stageFilter = "";
   if (!this.showFilterOption) {
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
@@ -354,6 +357,8 @@ validateDateFilters() {
 
       if (fromDate <= toDate) {
         validDates = true;
+        this.dealsPagination.pageIndex = 1;
+        this.dealsPagination.maxResults = 12;
         this.dealsPagination.fromDateFilterString = this.fromDateFilter;
         this.dealsPagination.toDateFilterString = this.toDateFilter;
         // this.listCampaignLeads(this.leadsPagination);
