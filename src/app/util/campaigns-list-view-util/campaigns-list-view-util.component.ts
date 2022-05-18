@@ -447,7 +447,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                         this.pagination.pagedItems.splice(position, 1);
                         this.pagination.pageIndex = 1;
                         this.listCampaign(this.pagination);
-                         this.listNotifications();
+                        this.listNotifications();
                         this.exportObject['categoryId'] = this.categoryId;
                         this.exportObject['itemsCount'] = this.pagination.totalRecords;
                         this.updatedItemsCount.emit(this.exportObject);
@@ -683,7 +683,6 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             this.userService.listNotifications(this.authenticationService.getUserId())
                 .subscribe(
                     data => {
-                        console.log("list Notifications in manage publish page " + data);
                         this.getUnreadNotificationsCount();
                     },
                     error => console.log(error),
@@ -978,6 +977,11 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     resetValues(event:any){
         if("updated"==event){
           this.listCampaign(this.pagination);
+          this.listNotifications();
+          this.exportObject['categoryId'] = this.categoryId;
+          this.exportObject['itemsCount'] = this.pagination.totalRecords;
+          this.exportObject['updated'] = true;
+          this.updatedItemsCount.emit(this.exportObject);
         }
         this.selectedCampaignId = 0;
         this.editButtonClicked = false;
