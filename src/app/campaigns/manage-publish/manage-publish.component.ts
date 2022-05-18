@@ -177,9 +177,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
             this.pagination.vanityUrlFilter = true;
         }
-        
         this.pagination.archived = this.archived;
-        let self = this;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
@@ -198,15 +196,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 }else{
                     this.authenticationService.forceToLogout();
                 }
-                
-                
             },
             error => {
                 this.isloading = false;
                 this.logger.errorPage(error);
-            },
-            () => this.logger.info("Finished listCampaign()", this.campaigns)
-            );
+            });
     }
 
     setPage(event) {
@@ -270,14 +264,26 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
    
     
     ngOnInit() {
+        this.refService.loading(this.httpRequestLoader, true);
         const timeZoneOffset = new Date().getTimezoneOffset();
         try {             
             this.archived = this.campaignService.archived;    
             if (this.archived) {
                 this.selectedSortedOption = this.sortByDropDownArchived[0];
             }   
-   
-            this.getCampaignTypes();
+            this.authenticationService.isPartnershipOnlyWithPrm().subscribe(
+                response=>{
+                    if(response.data){
+                        this.refService.goToAccessDeniedPage();
+                    }else{
+                        this.refService.loading(this.httpRequestLoader, false);
+                        this.getCampaignTypes();
+                    }
+                },error=>{
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                });
+            
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }
