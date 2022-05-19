@@ -25,6 +25,8 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
   vanityLogin = false;
   selectedTemplateTypeIndex =0;
   show:boolean=true;
+  leadsCount :any;
+  dealsCount :any;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router) {this.loggedInUserId = this.authenticationService.getUserId();
       this.vanityLoginDto.userId = this.loggedInUserId;
@@ -41,46 +43,61 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
   }
   click(index :number){
     this.selectedTemplateTypeIndex =index;
+    this.clickAgain();
+    
+  }
+  clickAgain(){
     this.loadStatisticsDealDataWithStageNames()
+
   }
   leads(index : number){
     this.selectedTemplateTypeIndex = index;
+    this.leadAgain();
+  }
+  leadAgain(){
     this.loadStatisticsLeadsDataWithStageNames();
+
   }
   loadStatisticsDealDataWithStageNames(){
     this.statusName="Deal Status"
     this.loader = true;
-this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDto).subscribe(
-  (response) =>{
-    this.pieChartGraphData=response.data;
-    this.statusCode=200;
-    this.sumMethode(this.pieChartGraphData);
-  },
-  (error) => {
-    this.xtremandLogger.error(error);
-    this.loader = false;
-    this.statusCode = 0;
-  
-  }
-)
+    this.dashboardService.getPieChartDealStatisticsWithStageNames(this.vanityLoginDto).subscribe(
+      (response) =>{
+        this.pieChartGraphData=response.data;
+        var valDeals= this.pieChartGraphData.map(c3=>c3.value)
+        let sumDeal = valDeals.reduce(function (a, b) {
+          return a + b;
+          }, 0); 
+          this.dealsCount =sumDeal;
+        this.statusCode=200;
+        this.sumMethode(this.pieChartGraphData);
+      },
+      (error) => {
+        this.xtremandLogger.error(error);
+        this.loader = false;
+        this.statusCode = 0;
+      });
   }
   /****************Leads*************** */
   loadStatisticsLeadsDataWithStageNames(){
-  
     this.statusName="Lead Status"
     this.loader = true;
-this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto).subscribe(
-  (response) =>{
-    this.pieChartGraphData=response.data;
-    this.sumMethode(this.dashboardService);
-    this.statusCode =200;
-  },
-  (error) => {
-    this.xtremandLogger.error(error);
-    this.loader = false;
-    this.statusCode = 0;
-  }
-)
+    this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto).subscribe(
+      (response) =>{
+        this.pieChartGraphData=response.data;
+        var valLeads= this.pieChartGraphData.map(c3=>c3.value)
+    let sumLeads = valLeads.reduce(function (a, b) {
+      return a + b;
+      }, 0); 
+      this.leadsCount =sumLeads;
+        this.sumMethode(this.dashboardService);
+        this.statusCode =200;
+      },
+      (error) => {
+        this.xtremandLogger.error(error);
+        this.loader = false;
+        this.statusCode = 0;
+      });
   }
   sumMethode(pieChartGraphData:any){
     var val= this.pieChartGraphData.map(c3=>c3.value)
@@ -92,7 +109,6 @@ this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginD
         this.loader =false;
         this.show=false;
       }else{
-      console.log(this.pieChartGraphData)
       this.loader =false;
       this.show=true;
       this.pieChartGraphData.length = sum;
@@ -101,7 +117,7 @@ this.dashboardService.getPieChartLeadsStatisticsWithStageNames(this.vanityLoginD
   }
    loadGraph(pieChartGraphData:any,statusName:any){
     let self =this;
-    Highcharts.chart('container1', {
+    Highcharts.chart('leads-deals-bar-graph', {
       chart: {
           type: 'bar'
       },

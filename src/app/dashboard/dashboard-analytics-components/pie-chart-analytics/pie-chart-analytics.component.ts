@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Properties } from 'app/common/models/properties';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { StatisticsDetailsOfPieChart } from 'app/core/models/statistics-details-of-pie-chart';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
@@ -13,7 +15,8 @@ declare var Highcharts: any;
 })
 export class PieChartAnalyticsComponent implements OnInit {
   pieChartData: Array<any> = new Array<any>();
-  pieChartStatisticsData:Array<any> =new Array<any>();
+  stastisticsOfPieChart :Array<any>=new Array<StatisticsDetailsOfPieChart>();
+  funnelChartData: Array<any> = new Array<any>();
   loader = false;
   statusCode = 200;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -21,13 +24,17 @@ export class PieChartAnalyticsComponent implements OnInit {
   vanityLogin = false;
   @Input()applyFilter:boolean;
   name:any;
-  opportunityName:any=[];
-  opportunityValue:any=[]
   selectedTemplateTypeIndex =0;
   sum:any;
+  displayTime :any;
   show:boolean=true;
+  val:any;
+  staticShow :boolean =true;
+  notShow:boolean =false;
+  leadCount:number =0;
+  dealCount:number =0;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
-    public router: Router) {
+    public router: Router,public httpRequestLoader: HttpRequestLoader) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.vanityLoginDto.userId = this.loggedInUserId;
       let companyProfileName = this.authenticationService.companyProfileName;
@@ -39,13 +46,22 @@ export class PieChartAnalyticsComponent implements OnInit {
     }
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
+    this.loadLeadOrDealData();
+    if(this.selectedTemplateTypeIndex === 0){
    this.click();
+   this.loader =false;
+    }
+    else{
+      this.leads();
+    }
+   
   }
   click(){
-    this.clickRepeate();
+    let index =0
+    this.clickRepeate(index);
   }
-  clickRepeate(){
-    this.selectedTemplateTypeIndex =0;
+  clickRepeate(index :number){
+    this.selectedTemplateTypeIndex =index;
     this.loadDealPieChart();
     this.loadStatisticsDealData();
     this.show=true;
@@ -58,7 +74,33 @@ export class PieChartAnalyticsComponent implements OnInit {
     this.show=true;
     
   }
-  
+  loadLeadOrDealData(){
+    this.loader = true;
+    this.dashboardService
+      .getFunnelChartsAnalyticsData(this.vanityLoginDto)
+      .subscribe(
+        (response) => {
+          this.pieChartData = response.data;
+          this.val=this.pieChartData.map(t=>t[1]);
+          this.sum = this.val.reduce(function (a, b) {
+            return a + b;
+            }, 0);
+            if(this.sum === 0){
+              this.leadCount =this.sum;
+              this.dealCount =this.sum;
+              this.loader =false;
+            }
+            this.leadCount = this.val[1];
+          this.dealCount = this.val[2];
+        },
+        (error) => {
+          this.xtremandLogger.error(error);
+          this.loader = false;
+          this.statusCode = 0;
+        }
+      );
+
+  }
   loadLeadPieChart(){
     this.loader = true;
     this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscribe(
@@ -66,7 +108,9 @@ export class PieChartAnalyticsComponent implements OnInit {
         this.pieChartData=response.data;
         this.loader=false;
         this.statusCode=200;
+        this.notShow =false;
         this.sumMethode(this.pieChartData);
+        this.selectedTemplateTypeIndex =1;
     },
     (error) => {
       this.xtremandLogger.error(error);
@@ -81,17 +125,12 @@ export class PieChartAnalyticsComponent implements OnInit {
      this.dashboardService.getPieChartStatisticsLeadAnalyticsData(this.vanityLoginDto)
      .subscribe(
   (response) =>{
-    self.pieChartStatisticsData=response.data;
-    self.opportunityName=self.pieChartStatisticsData.map(i=>i[0])
-    self.opportunityValue=self.pieChartStatisticsData.map(i=>i[1]) 
-    if(this.opportunityValue[2] === null){
-      self.pieChartStatisticsData.length = 0
-      this.loader =false;
-    }else{
-      self.pieChartData.length != 0;
-    self.pieChartStatisticsData.length != 0
+    this.stastisticsOfPieChart=response.data;
+    self.pieChartData.length != 0;
     this.loader =false;
-    }
+    this.staticShow =false;
+    this.notShow =false;
+
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -103,15 +142,13 @@ export class PieChartAnalyticsComponent implements OnInit {
   
   loadStatisticsDealData(){
   this.loader = true;
-  let self =this;
   this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
   (response) =>{
-    self.pieChartStatisticsData=response.data;
+    this.stastisticsOfPieChart=response.data;
     this.statusCode=200;
-    self.opportunityName=self.pieChartStatisticsData.map(i=>i[0])
-    self.opportunityValue=self.pieChartStatisticsData.map(i=>i[1])
-    self.pieChartData.length != 0;
+    this.pieChartData.length != 0;
     this.loader =false;
+    this.staticShow=false;
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -132,11 +169,14 @@ loadDealPieChart(){
           },
           (error: any) => { 
       this.xtremandLogger.error(error);
-      
+      this.loader =false;
     },
           () =>{this.loadChart(this.pieChartData),
             this.show=true;
+            this.notShow =false;
             this.sumMethode(this.pieChartData)
+            this.loader =false;
+            this.selectedTemplateTypeIndex =0
           }
 
         );
@@ -155,7 +195,8 @@ loadDealPieChart(){
       this.statusCode=200;
       this.loader = false;
       this.show=true;
-      this.pieChartData.length = this.sum;
+      this.notShow =false;
+      this.pieChartData.length > this.sum;
       this.loadChart(this.pieChartData);
   }
 }

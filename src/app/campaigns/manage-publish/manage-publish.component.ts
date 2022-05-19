@@ -179,7 +179,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
             this.pagination.vanityUrlFilter = true;
         }
-        
         this.pagination.archived = this.archived;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
@@ -267,14 +266,25 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
    
     
     ngOnInit() {
-        const timeZoneOffset = new Date().getTimezoneOffset();
         try {             
             this.archived = this.campaignService.archived;    
             if (this.archived) {
                 this.selectedSortedOption = this.sortByDropDownArchived[0];
             }   
-   
-            this.getCampaignTypes();
+            this.refService.loading(this.httpRequestLoader, true);
+            this.authenticationService.isPartnershipOnlyWithPrm().subscribe(
+                response=>{
+                    if(response.data){
+                        this.refService.goToAccessDeniedPage();
+                    }else{
+                        this.refService.loading(this.httpRequestLoader, false);
+                        this.getCampaignTypes();
+                    }
+                },error=>{
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                });
+            
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }

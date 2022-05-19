@@ -967,6 +967,8 @@ export class ManageLeadsComponent implements OnInit {
         var fromDate = Date.parse(this.fromDateFilter);
         if (fromDate <= toDate) {
           validDates = true;
+          this.leadsPagination.pageIndex = 1;
+          this.leadsPagination.maxResults = 12;
           this.leadsPagination.fromDateFilterString = this.fromDateFilter;
           this.leadsPagination.toDateFilterString = this.toDateFilter;
         } else {
@@ -982,6 +984,7 @@ export class ManageLeadsComponent implements OnInit {
           this.leadsPagination.stageFilter = "";
         }
         this.leadsPagination.pageIndex = 1;
+        this.leadsPagination.maxResults = 12;
         this.filterMode = true;
           this.filterResponse.isVisible = false;
           this.listLeads(this.leadsPagination);

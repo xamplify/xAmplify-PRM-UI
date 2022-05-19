@@ -131,11 +131,23 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.authorizeUrl(roles, url, this.videoBaseUrl);
         }
         if(url.indexOf(this.campaignBaseUrl)>-1){
-            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && (url.indexOf("home/campaigns/manage")>-1 
-            || url.indexOf("home/campaigns/calendar")>-1 || url.indexOf("/details")>-1)){
-                return true;
+            if(roles.indexOf('ROLE_USER')>-1 && roles.indexOf('ROLE_PRM')>-1){
+                if(roles.length==2){
+                    this.goToAccessDenied(this.campaignBaseUrl);
+                }else if(roles.indexOf('ROLE_COMPANY_PARTNER')>-1){
+                    if(url.indexOf("home/campaigns/select")>-1 || url.indexOf("home/campaigns/create")>-1){
+                        this.goToAccessDenied(this.campaignBaseUrl);
+                    }else{
+                        return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+                    }
+                }
             }else{
-                return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+                if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && (url.indexOf("home/campaigns/manage")>-1 
+                || url.indexOf("home/campaigns/calendar")>-1 || url.indexOf("/details")>-1)){
+                    return true;
+                }else{
+                    return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+                }
             }
         }
         if(url.indexOf(this.teamBaseUrl)>-1){

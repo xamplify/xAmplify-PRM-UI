@@ -19,6 +19,8 @@ export class FunnelChartAnalyticsComponent implements OnInit {
   loader = false;
   statusCode = 200;
   @Input() applyFilter: boolean;
+  leadCount:any;
+  dealCount: any;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
   val:any=[];
