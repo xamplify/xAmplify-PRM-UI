@@ -119,6 +119,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     endDateCustomResponse: CustomResponse = new CustomResponse();
     endDatePickr: any;
     clicked = false;
+    editButtonClicked = false;
+    selectedCampaignId = 0;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
@@ -352,6 +354,22 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     editCampaign(campaign: any) {
         this.isloading = true;
         this.customResponse = new CustomResponse();
+        if(campaign.launched){
+            this.editButtonClicked = true;
+            this.selectedCampaignId = campaign.campaignId;
+            this.isloading = false;
+        }else{
+            if(campaign.campaignType.indexOf('SOCIAL') > -1){
+                this.isloading = false;
+                this.customResponse = new CustomResponse();
+                this.refService.showSweetAlertErrorMessage('Please try after sometime to edit this campaign');
+            }else{
+                this.editCampaignsWhichAreNotLaunched(campaign);
+            }
+        }
+    }
+
+    editCampaignsWhichAreNotLaunched(campaign:any){
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             let obj = { 'campaignId': campaign.campaignId }
             this.campaignService.getCampaignById(obj)
@@ -363,7 +381,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
                         }                      
                         let isLaunched = this.campaignService.campaign.launched;
-                        let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                         if (isLaunched) {
                         	this.isScheduledCampaignLaunched = true;
                             this.isloading = false;
@@ -393,8 +410,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         if (endDate != undefined && endDate != null) {
                             this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
                         }
-                        
-                        
                         let isLaunched = this.campaignService.campaign.launched;
                         let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                         if (isLaunched) {
@@ -413,8 +428,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error => { this.logger.errorPage(error) },
-                () => console.log())
+                error => {
+                     this.logger.errorPage(error) 
+                });
             this.isScheduledCampaignLaunched = false;
         }
     }
@@ -677,6 +693,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
         if (event === 'something went wrong') {
             this.customResponse = new CustomResponse('ERROR', 'something went wrong, please try again', true);
+        }
+        if(event['updated']){
+            this.resetValues('updated');
         }
     }
     
@@ -1159,5 +1178,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }       
         this.selectedEndDate = undefined;
     }
+
+    /*****XNFR-118********/
+    resetValues(event:any){
+    if("updated"==event){
+      this.listCampaign(this.pagination);
+    }
+    this.selectedCampaignId = 0;
+    this.editButtonClicked = false;
+    }
+
 
 }
