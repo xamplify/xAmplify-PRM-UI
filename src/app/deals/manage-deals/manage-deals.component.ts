@@ -884,6 +884,9 @@ export class ManageDealsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.statusFilter = "";
+    // this.dealsPagination.fromDateFilterString = "";
+    // this.dealsPagination.toDateFilterString = "";
+    // this.dealsPagination.stageFilter = "";
     this.vendorCompanyIdFilter = "";
     if (this.isPartnerVersion && !this.vanityLoginDto.vanityUrlFilter) {
       this.stageNamesForFilterDropDown = "";
@@ -949,6 +952,8 @@ export class ManageDealsComponent implements OnInit {
       var fromDate = Date.parse(this.fromDateFilter);
       if (fromDate <= toDate) {
         validDates = true;
+        this.dealsPagination.pageIndex = 1;
+        this.dealsPagination.maxResults = 12;
         this.dealsPagination.fromDateFilterString = this.fromDateFilter;
         this.dealsPagination.toDateFilterString = this.toDateFilter;
       } else {
