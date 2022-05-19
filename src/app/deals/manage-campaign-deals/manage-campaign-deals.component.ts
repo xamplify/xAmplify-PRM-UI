@@ -301,9 +301,9 @@ toggleFilterOption() {
   this.fromDateFilter = "";
   this.toDateFilter = "";
   this.statusFilter = "";
-  this.dealsPagination.fromDateFilterString = "";
-  this.dealsPagination.toDateFilterString = "";
-  this.dealsPagination.stageFilter = "";
+  // this.dealsPagination.fromDateFilterString = "";
+  // this.dealsPagination.toDateFilterString = "";
+  // this.dealsPagination.stageFilter = "";
   if (!this.showFilterOption) {
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
@@ -377,6 +377,7 @@ validateDateFilters() {
         this.dealsPagination.stageFilter = "";
       }
       this.dealsPagination.pageIndex = 1;
+      this.dealsPagination.maxResults = 12;
       this.filterMode = true;
         this.filterResponse.isVisible = false;
         this.listCampaignDeals(this.dealsPagination);

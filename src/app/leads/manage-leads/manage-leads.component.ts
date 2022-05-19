@@ -984,6 +984,7 @@ export class ManageLeadsComponent implements OnInit {
           this.leadsPagination.stageFilter = "";
         }
         this.leadsPagination.pageIndex = 1;
+        this.leadsPagination.maxResults = 12;
         this.filterMode = true;
           this.filterResponse.isVisible = false;
           this.listLeads(this.leadsPagination);
