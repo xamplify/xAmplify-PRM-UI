@@ -973,6 +973,7 @@ export class ManageDealsComponent implements OnInit {
         this.dealsPagination.stageFilter = "";
       }
       this.dealsPagination.pageIndex = 1;
+      this.dealsPagination.maxResults = 12;
       this.filterMode = true;
         this.filterResponse.isVisible = false;
         this.listDeals(this.dealsPagination);

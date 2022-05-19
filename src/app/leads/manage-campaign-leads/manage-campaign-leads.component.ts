@@ -315,9 +315,9 @@ toggleFilterOption() {
   this.fromDateFilter = "";
   this.toDateFilter = "";
   this.statusFilter = "";
-  this.leadsPagination.fromDateFilterString = "";
-  this.leadsPagination.toDateFilterString = "";
-  this.leadsPagination.stageFilter = "";
+  // this.leadsPagination.fromDateFilterString = "";
+  // this.leadsPagination.toDateFilterString = "";
+  // this.leadsPagination.stageFilter = "";
   if (!this.showFilterOption) {
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
@@ -392,6 +392,7 @@ validateDateFilters() {
         this.leadsPagination.stageFilter = "";
       }
       this.leadsPagination.pageIndex = 1;
+      this.leadsPagination.maxResults = 12;
       this.filterMode = true;
         this.filterResponse.isVisible = false;
         this.listCampaignLeads(this.leadsPagination);
