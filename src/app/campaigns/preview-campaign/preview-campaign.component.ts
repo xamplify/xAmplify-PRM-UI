@@ -32,11 +32,8 @@ import { EventCampaign } from '../models/event-campaign';
 import { Router } from '@angular/router';
 import { EmailLog } from '../models/email-log';
 import { CountryNames } from 'app/common/models/country-names';
-
-import { LandingPage } from '../../landing-pages/models/landing-page';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
-import { CampaignType } from '../models/campaign-type';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { utc } from 'moment';
 
@@ -161,6 +158,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     selectedCampaignId = 0;
     /***XNFR-118****/
     @Input() viewType:string;
+    @Input() categoryId:number;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -1573,7 +1571,7 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
     this.ngxloading = true;
     if("updated"==event){
       this.getCampaignById();
-      if("folderList"==this.viewType){
+      if("folderList"==this.viewType || this.categoryId!=undefined && this.categoryId>0){
         this.closeNotifyParent.emit({'updated':true});
       }
     }else{

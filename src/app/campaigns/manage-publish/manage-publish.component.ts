@@ -199,15 +199,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 }else{
                     this.authenticationService.forceToLogout();
                 }
-                
-                
             },
             error => {
                 this.isloading = false;
                 this.logger.errorPage(error);
-            },
-            () => this.logger.info("Finished listCampaign()", this.campaigns)
-            );
+            });
     }
 
     setPage(event) {
@@ -687,6 +683,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
         if (event === 'something went wrong') {
             this.customResponse = new CustomResponse('ERROR', 'something went wrong, please try again', true);
+        }
+        if(event['updated']){
+            this.resetValues('updated');
         }
     }
     
