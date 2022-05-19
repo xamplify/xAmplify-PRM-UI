@@ -850,8 +850,7 @@
                                                                 </a>
                                                             </li>
                                                         </section>
-											<section
-												*ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted ">
+											<section *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted ">
 												<li
 													*ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier">
 													<a
@@ -864,10 +863,9 @@
 												</li>
 											</section>
 											<section
-                                                            *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
-                                                            <li
-                                                                *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
-                                    || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isVendorSuperVisor || authenticationService.isOrgAdminSuperVisor || authenticationService?.module?.isMarketingCompany) && !campaign.nurtureCampaign">
+                                                *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
+                                                <li  *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
+                                                    || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isVendorSuperVisor || authenticationService.isOrgAdminSuperVisor || authenticationService?.module?.isMarketingCompany) && !campaign.nurtureCampaign">
                                                                 <a title="Update Event" data-rel="fancybox-button"
                                                                     (click)="updateEvent(campaign)">
                                                                     <i class="fa fa-pencil" style="width: 30px;"></i>
@@ -876,7 +874,6 @@
                                                             </li>
                                                         </section>
                                                     </ul>
-                                                    <!-- </div> -->
                                                 </div>
                                             </ng-container>
                                         </div>
@@ -1657,7 +1654,7 @@
         </div>
     </div>
 </div>
-<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [previewCampaignType]="campaignType"
+<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [viewType]="'folderList'" [previewCampaignType]="campaignType"
     (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
 <app-add-more-receivers #addMoreReceivers></app-add-more-receivers>
 <!-- -----------------Sending Public Event Email Pop Up------->

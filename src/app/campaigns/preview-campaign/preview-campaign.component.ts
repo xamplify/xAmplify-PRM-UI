@@ -159,6 +159,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     buttonClicked = false;
     editButtonClicked = false;
     selectedCampaignId = 0;
+    /***XNFR-118****/
+    @Input() viewType:string;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -1571,6 +1573,9 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
     this.ngxloading = true;
     if("updated"==event){
       this.getCampaignById();
+      if("folderList"==this.viewType){
+        this.closeNotifyParent.emit({'updated':true});
+      }
     }else{
       this.ngxloading = false;
     }

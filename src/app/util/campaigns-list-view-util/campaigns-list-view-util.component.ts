@@ -639,6 +639,9 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         if (event === 'something went wrong') {
             this.customResponse = new CustomResponse('ERROR', 'something went wrong, please try again', true);
         }
+        if(event['updated']){
+            this.resetValues('updated');
+        }
     }
 
     goToFormAnalytics(id: number) {
