@@ -16,7 +16,7 @@ declare var Highcharts: any;
 export class PieChartAnalyticsComponent implements OnInit {
   pieChartData: Array<any> = new Array<any>();
   stastisticsOfPieChart :Array<any>=new Array<StatisticsDetailsOfPieChart>();
-  funnelChartData: Array<any> = new Array<any>();
+  funnelChartData:any =[];
   loader = false;
   statusCode = 200;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -47,6 +47,7 @@ export class PieChartAnalyticsComponent implements OnInit {
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
     this.loadLeadOrDealData();
+    this.loadLeadCountData();
     if(this.selectedTemplateTypeIndex === 0){
    this.click();
    this.loader =false;
@@ -77,21 +78,44 @@ export class PieChartAnalyticsComponent implements OnInit {
   loadLeadOrDealData(){
     this.loader = true;
     this.dashboardService
-      .getFunnelChartsAnalyticsData(this.vanityLoginDto)
+      .getPieChartDealStatisticsWithStageNames(this.vanityLoginDto)
       .subscribe(
         (response) => {
-          this.pieChartData = response.data;
-          this.val=this.pieChartData.map(t=>t[1]);
+          this.funnelChartData = response.data;
+          this.val=this.funnelChartData.map(c3=>c3.value)
+          this.sum = this.val.reduce(function (a, b) {
+            return a + b;
+            }, 0);
+            if(this.sum === 0){
+              this.dealCount =this.sum;
+              this.loader =false;
+            }
+          this.dealCount = this.sum;
+        },
+        (error) => {
+          this.xtremandLogger.error(error);
+          this.loader = false;
+          this.statusCode = 0;
+        }
+      );
+
+  }
+  loadLeadCountData(){
+    this.loader = true;
+    this.dashboardService
+      .getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto)
+      .subscribe(
+        (response) => {
+          this.funnelChartData = response.data;
+          this.val=this.funnelChartData.map(c3=>c3.value)
           this.sum = this.val.reduce(function (a, b) {
             return a + b;
             }, 0);
             if(this.sum === 0){
               this.leadCount =this.sum;
-              this.dealCount =this.sum;
               this.loader =false;
             }
-            this.leadCount = this.val[1];
-          this.dealCount = this.val[2];
+          this.leadCount= this.sum;
         },
         (error) => {
           this.xtremandLogger.error(error);
