@@ -1048,6 +1048,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     setChannelCampaign(event: any) {
         this.campaign.channelCampaign = event;
         this.contactsPagination.pageIndex = 1;
+        this.contactsPagination.maxResults = 12;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
@@ -1059,6 +1060,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             }
             this.loadContacts();
         } else {
+            this.campaign.oneClickLaunch = false;
             this.loadContacts();
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
@@ -1086,6 +1088,18 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     setUnsubscribeLink(event: any) {
         this.campaign.unsubscribeLink = event;
     }
+    /***XNFR-125****/
+    setOneClickLaunch(event:any){
+        this.campaign.oneClickLaunch = event;
+        this.contactsPagination.pageIndex = 1;
+        this.contactsPagination.maxResults = 12;
+        this.clearSelectedContactList();
+        if(event){
+
+        }else{
+            this.loadContacts();
+        }
+    }
 
     clearSelectedContactList() {
         const roles = this.authenticationService.getRoles();
@@ -1110,13 +1124,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.campaign.enableCoBrandingLogo = event;
         this.removeTemplateAndAutoResponse();
         if (this.campaignType != 'landingPage') {
-            let isRegularCoBranding = this.campaign.emailTemplate != undefined && this.campaign.emailTemplate.regularCoBrandingTemplate;
-            let isVideoCoBranding = this.campaign.emailTemplate != undefined && this.campaign.emailTemplate.videoCoBrandingTemplate;
-            /*if(!this.campaign.enableCoBrandingLogo || isRegularCoBranding || isVideoCoBranding){
-                this.hideCoBrandedEmailTemplate = true;
-            }else{
-                this.hideCoBrandedEmailTemplate = false;
-            }*/
             this.filterCoBrandedTemplates(event);
         } else {
             this.filterCoBrandedLandingPages(event);
@@ -3629,5 +3636,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.endDatePickr.clear();
         this.campaign.endDate = undefined;
     }
+
+    
 }
 

@@ -96,4 +96,5 @@ export class Campaign {
     endDate: string;
     endDateInUtcString: string;
     clientTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    oneClickLaunch = false;
 }

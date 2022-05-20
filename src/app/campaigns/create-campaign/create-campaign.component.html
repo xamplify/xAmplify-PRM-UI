@@ -171,6 +171,7 @@
                                     <div class="portlet-body form">
                                         <!-- BEGIN FORM-->
                                         <div class="form-body col-sm-6 col-sm-offset-3">
+                                            <!---Campaign Name-->
                                             <div class="form-group" [attr.class]="campaignNameDivClass">
                                                 <label class="control-label col-sm-4 mName" translate>Campaign name
                                                     <br><small class="mNameSave" translate>(Save as)</small>
@@ -181,7 +182,7 @@
                                                     <span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red" translate>Already Exists</span>
                                                 </div>
                                             </div>
-
+                                            <!--Folder-->    
                                             <div class="form-group" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>Folder
                                                     <span style="color: red"><strong>*</strong>
@@ -196,7 +197,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                           
+                                            
+                                            <!--Through Partner / To Partner / To Recipients-->
                                             <div class="form-group" *ngIf="!isOnlyPartner &&  !authenticationService?.module?.isMarketingCompany">
                                                  <!--Through Partner-->
                                                 <label class="control-label col-sm-4 mThroughLabel" data-toggle="tooltip" 
@@ -209,7 +211,7 @@
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
                                                             <div class="col-sm-1 col-xs-6 ui-switch-custom-div mSwitch">
-                                                                <switch [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
+                                                                <switch  [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="setChannelCampaign($event)">
                                                                 </switch>
                                                             </div>
@@ -234,18 +236,19 @@
                                                                      </ng-container>
                                                                 </label>
                                                                 <!--To Partner-->
-                                                                <span style="cursor: pointer;color: #54a7e9;">
-                                                                    <i class="fa fa-question-circle" data-html="true"
+                                                                <span class="info-color-xampc">
+                                                                    <i class="fa fa-question-circle toggle-info-xampc" data-html="true"
                                                                         data-toggle="tooltip" data-placement="bottom"
                                                                         title="{{TO_PARTNER_MESSAGE}} <br> {{THROUGH_PARTNER_MESSAGE}}"
-                                                                        style="font-size: 20px;float: left;margin: -18px 0 0 15px;" aria-hidden="true"></i>
+                                                                         aria-hidden="true"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            
+                                            <!--View In Browser-->
                                             <ng-container *ngIf="campaignType=='regular' && !campaign.channelCampaign && salesEnablement">
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4" translate>View In Browser</label>
@@ -253,11 +256,10 @@
                                                     <switch class="pull-left" [status]="campaign?.viewInBrowserTag" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                         (statusChange)="setViewInBrowser($event)">
                                                     </switch>
-                                                    <span style="cursor: pointer;color: #54a7e9;">
-                                                        <i class="fa fa-question-circle" data-toggle="tooltip"
+                                                    <span class="info-color-xampc">
+                                                        <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
                                                             data-placement="top" aria-hidden="true"
-                                                            title="Show / Hide View In Browser Tag"
-                                                            style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+                                                            title="Show / Hide View In Browser Tag"></i>
                                                     </span>
                                                 </div>
                                             </div>
@@ -276,6 +278,23 @@
                                                 </div>
                                             </div>
                                             </ng-container>
+
+                                            <!--One Click Launch-->
+                                            <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
+                                                <label class="control-label col-sm-4" translate>One-Click Launch</label>
+                                                <div class="col-sm-8">
+                                                    <switch class="pull-left" [status]="campaign?.oneClickLaunch" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                        (statusChange)="setOneClickLaunch($event)">
+                                                    </switch>
+                                                    <span class="info-color-xampc">
+                                                        <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                                            data-placement="top" aria-hidden="true"
+                                                            title="One-click Launch"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!--Co Branding Logo-->
                                             <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
                                                 <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
                                                 <div class="col-sm-8">
@@ -291,6 +310,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--Notify Partners-->
                                             <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && !isOnlyPartner && campaignType!='sms' && (campaign.channelCampaign || (campaignType=='landingPage'  && channelCampaignFieldName != 'To Recipient')) ">
                                                 <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
                                                 <div class="col-sm-8">
@@ -304,6 +324,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--From Name-->
                                             <div class="form-group" [attr.class]="fromNameDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>From Name
                                                     <span style="color: red">
@@ -314,6 +335,8 @@
                                                     <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" autocomplete="off" />
                                                 </div>
                                             </div>
+
+                                            <!--Subject Line-->
                                             <div class="form-group" [attr.class]="subjectLineDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>Subject Line
                                                     <span style="color: red">
@@ -331,6 +354,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <!--From Email-->
                                             <div class="form-group" [attr.class]="fromEmaiDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>From Email
                                                     <span style="color: red">
@@ -346,6 +371,8 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <!--Pre Header-->
                                             <div class="form-group" [attr.class]="preHeaderDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>Pre Header<span
                                                         style="color: red"><strong>*</strong></span></label>
@@ -354,6 +381,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--Notify Me When-->
                                             <div class="form-group" *ngIf="campaign.emailNotification">
                                                 <label class="control-label col-sm-4" translate>Notify Me When</label>
                                                 <div class="col-sm-8">
@@ -416,6 +444,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--Push To Marketing Automation-->
                                             <div class="form-group" *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
                                                 <label class="control-label col-sm-4" translate>Push To Marketing Automation
                                                     </label>
@@ -476,6 +505,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--Configure Pipelines-->
                                             <div class="form-group" *ngIf="showConfigurePipelines && ((!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption))">
                                                 <label class="control-label col-sm-4" translate>Configure Pipelines
                                                     </label>
@@ -498,6 +528,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--Lead Pipeline-->
                                             <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
                                             *ngIf="isConfigurePipelines">
                                                 <label class="control-label col-sm-4">Lead Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
@@ -510,7 +541,8 @@
                                                 </div>
                                                 
                                             </div>
-                                              
+
+                                            <!--Deal Pipeline-->  
                                             <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px"
                                             *ngIf="isConfigurePipelines">
                                                 <label class="control-label col-sm-4">Deal Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
@@ -523,6 +555,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--SMS-->  
                                             <div class="form-group" *ngIf="!isOnlyPartner && refService.smsCampaign && enableSMS  && campaignType!='sms'">
                                                 <label class="control-label col-sm-4" translate>SMS service</label>
                                                 <div class="col-sm-8">
@@ -546,6 +579,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <!--SMS-->  
                                             <div class="form-group" [attr.class]="smsTextDivClass" *ngIf="enableSmsText || campaignType=='sms'">
                                                 <label class="control-label col-sm-4" translate>Sms Text
                                                     <font style="color: red">
@@ -556,7 +591,7 @@
                                                     <textarea id="smsText" placeholder="Sms Text" class="form-control" [(ngModel)]="smsText" name="smsText" (input)="validateForm();validateField('smsText');" maxlength="200"></textarea>
                                                 </div>
                                             </div>
-
+                                            
                                             <!-- End Date -->
                                             <div class="form-group" [attr.class]="endDateDivClass" [hidden]="!campaign.channelCampaign || campaignType == 'landingPage' || campaignType=='sms'">
                                                 <label class="control-label col-sm-4" translate>End Date</label>
@@ -588,9 +623,7 @@
                                     </div>
                                 </div>
                                 <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
-
                                 <button *ngIf="campaignType=='regular' || campaignType=='landingPage' || campaignType=='survey'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
-
                                 <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                             </div>
                         </form>
