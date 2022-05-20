@@ -102,16 +102,24 @@
                                 <i class="fa fa-users" aria-hidden="true"></i>
                             </span>
                             <h5 class="hidden-xs">
-                                <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
-                                    <ng-container *ngIf="contactListTabName=='Partners'">
-                                        {{authenticationService?.partnerModule?.customName | translate}}
-                                    </ng-container>
-                                    <ng-container *ngIf="contactListTabName!='Partners'">
-                                        {{authenticationService?.partnerModule?.customName}} & Recipients 
-                                    </ng-container>
+                                <!--XNFR-125-->
+                                <!--Partners & Share Leads-->
+                                <ng-container *ngIf="campaign.oneClickLaunch">
+                                    {{authenticationService?.partnerModule?.customName}} & Share Leads
                                 </ng-container>
-                                <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
-                                    Recipients
+                                <!--Partners & Recipients-->
+                                <ng-container *ngIf="!campaign.oneClickLaunch">
+                                    <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                        <ng-container *ngIf="contactListTabName=='Partners'">
+                                            {{authenticationService?.partnerModule?.customName | translate}}
+                                        </ng-container>
+                                        <ng-container *ngIf="contactListTabName!='Partners'">
+                                            {{authenticationService?.partnerModule?.customName}} & Recipients 
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="authenticationService?.module?.isMarketingCompany">
+                                        Recipients
+                                    </ng-container>
                                 </ng-container>
                             </h5>
                         </div>

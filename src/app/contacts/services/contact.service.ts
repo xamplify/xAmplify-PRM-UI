@@ -54,7 +54,6 @@ export class ContactService {
     hubSpotContactUrl = this.authenticationService.REST_URL + 'hubSpot';
     oauthCallbackMessage: string = "";
     constructor(private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
-        console.log(logger);
     }
 
 
@@ -666,7 +665,6 @@ export class ContactService {
 
     extractData(res: Response) {
         let body = res.json();
-        console.log(body);
         return body || {};
     }
 
