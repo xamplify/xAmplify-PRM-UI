@@ -75,11 +75,11 @@
                             <h5 class="hidden-xs">
                                 <!--XNFR-125-->
                                 <!--Partners & Share Leads-->
-                                <ng-container *ngIf="campaign?.oneClickLaunch">
+                                <ng-container *ngIf="campaign.oneClickLaunch">
                                     {{authenticationService?.partnerModule?.customName}} & Share Leads
                                 </ng-container>
                                 <!--Partners & Recipients-->
-                                <ng-container *ngIf="!campaign?.oneClickLaunch">
+                                <ng-container *ngIf="!campaign.oneClickLaunch">
                                     <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                                         <ng-container *ngIf="contactListTabName=='Partners'">
                                             {{authenticationService?.partnerModule?.customName | translate}}
@@ -1096,7 +1096,7 @@
 
                             <!--Partner Companies & Unshared Share Lists-->
                             <div class="row pb10" id="one-click-launch-list-selection" *ngIf="campaign.oneClickLaunch">
-                                       <h4>This is new Tab</h4> 
+                                <app-select-partners-and-share-leads (selectPartnersAndShareLeadsEmitter)="getSelectedPartnerCompanyIdAndShareLeads($event)"></app-select-partners-and-share-leads>
                              </div>   
                             <button *ngIf="campaignType=='video'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
                             <button *ngIf="campaignType!='video'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>

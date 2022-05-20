@@ -3637,6 +3637,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.campaign.endDate = undefined;
     }
 
+    /***XNFR-125*****/
+    getSelectedPartnerCompanyIdAndShareLeads(event:any){
+
+    }
+
     
 }
 
