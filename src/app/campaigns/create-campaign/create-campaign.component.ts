@@ -346,16 +346,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 });
             })
 
-        this.logger.info("create-campaign-component constructor loaded");
         $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
-        /*  CKEDITOR.config.width = 500;
-        CKEDITOR.config.width = '75%';*/
-        /* CKEDITOR.config.height = 500;        // 500 pixels high.
-         CKEDITOR.config.height = '25em'; */
         CKEDITOR.config.height = '100';
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
         this.countries = this.refService.getCountries();
-        // this.contactsPagination.filterKey = "isPartnerUserList";
         this.campaign = new Campaign();
         this.savedVideoFile = new SaveVideoFile();
         this.launchVideoPreview = new SaveVideoFile();
@@ -1278,7 +1272,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     this.logger.error(this.refService.errorPrepender + " loadCampaignVideos():" + error);
                     this.refService.showServerError(this.campaignVideo.httpRequestLoader);
                 },
-                () => this.logger.info("Finished loadCampaignVideos()", this.videosPagination)
+                () => this.logger.info("Finished loadCampaignVideos()")
             )
     }
 
@@ -1298,7 +1292,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 (error: string) => {
                     this.logger.errorPage(error)
                 },
-                () => this.logger.info("Finished loadChannelVideos()", this.channelVideosPagination)
+                () => this.logger.info("Finished loadChannelVideos()")
             )
     }
     /********************Filter Category Videos********************************/
@@ -1559,7 +1553,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 (error: string) => {
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadCampaignContacts()", this.contactsPagination)
+                () => this.logger.info("Finished loadCampaignContacts()")
             )
     }
 
@@ -1717,7 +1711,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 (error: string) => {
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
+                () => this.logger.info("Finished loadEmailTemplates()")
             )
     }
 
@@ -1748,7 +1742,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 (error: string) => {
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
+                () => this.logger.info("Finished loadEmailTemplates()")
             )
     }
 
@@ -1775,7 +1769,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     reply.loader = false;
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadEmailTemplatesForAddReply()", reply.emailTemplatesPagination)
+                () => this.logger.info("Finished loadEmailTemplatesForAddReply()")
             )
     }
 
@@ -1801,7 +1795,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     url.loader = false;
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadEmailTemplatesForAddOnClick()", url.emailTemplatesPagination)
+                () => this.logger.info("Finished loadEmailTemplatesForAddOnClick()")
             )
     }
 

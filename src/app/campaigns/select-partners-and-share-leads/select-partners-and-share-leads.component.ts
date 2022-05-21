@@ -8,12 +8,14 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ParterService } from 'app/partners/services/parter.service';
+import { SortOption } from 'app/core/models/sort-option';
 declare var $:any;
+
 @Component({
   selector: 'app-select-partners-and-share-leads',
   templateUrl: './select-partners-and-share-leads.component.html',
   styleUrls: ['./select-partners-and-share-leads.component.css'],
-  providers:[Properties,HttpRequestLoader]
+  providers:[Properties,HttpRequestLoader,SortOption]
 })
 export class SelectPartnersAndShareLeadsComponent implements OnInit {
 
@@ -22,6 +24,9 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   properties:Properties = new Properties();
   pagination:Pagination = new Pagination();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  partnerCompaniesSortOption: SortOption = new SortOption();
+  selectedContactListIds = [];
+  emptyContactListMessage = "";
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
     public pagerService:PagerService,public partnerService:ParterService) { }
 
