@@ -321,7 +321,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     showEditTemplateMessageDiv = false;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     endDatePickr: any;
-
+    oneClickLaunch = false;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -341,8 +341,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 refService.getOrgCampaignTypes(response).subscribe(data => {
                     this.enableLeads = data.enableLeads;
                     this.salesEnablement = data.salesEnablement;
+                    this.oneClickLaunch = data.oneClickLaunch;
                     this.isSalesforceIntegrated();
-                    //this.listCampaignPipelines();
                 });
             })
 

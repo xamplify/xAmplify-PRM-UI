@@ -296,7 +296,7 @@
                                             </ng-container>
 
                                             <!--One Click Launch-->
-                                            <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
+                                            <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign && oneClickLaunch">
                                                 <label class="control-label col-sm-4" translate>One-Click Launch</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign?.oneClickLaunch" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
