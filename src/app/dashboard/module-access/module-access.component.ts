@@ -195,7 +195,14 @@ export class ModuleAccessComponent implements OnInit {
     if(!isDamChecked){
       this.campaignAccess.lms = false;
       this.campaignAccess.playbooks = false;
+    }
   }
+
+  updateOneClickLaunchOption(){
+    let shareLeadsChecked = $('#share-leads-e').is(':checked');
+    if(!shareLeadsChecked){
+      this.campaignAccess.oneClickLaunch = false;
+    }
   }
   
 }
