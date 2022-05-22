@@ -6,20 +6,14 @@
         Select One {{authenticationService?.partnerModule?.customName}} Company
     </div>
     <div class="inputs pull-right">
-        <div class="pull-left">
-                <select class="form-control cc mTopSort" [(ngModel)]="partnerCompaniesSortOption.selectedCampaignRecipientsDropDownOption"
-                (ngModelChange)="sortRecipientsList($event)">                                                    
-                <option  *ngFor="let option of partnerCompaniesSortOption.campaignRecipientsDropDownOptions"
-                    [ngValue]="option">{{option.name}}</option>
-            </select> 
-        </div>
-        <div class="portlet-input input-inline mAlign">
-            <div class="input-icon right">
-                <input type="text" [(ngModel)]="partnerCompaniesSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
-                <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="partnerCompaniesSortOption.searchKey" (click)="partnerCompaniesSortOption.searchKey='';searchContactList()"></button>
-                <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()">
-                    <i class="fa fa-search"  aria-hidden="true"></i></button>
-            </div>
+        <div class="input-icon right" id="icon-right">
+            <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
+              [ngModelOptions]="{standalone: true}" placeholder="search..."
+              (keypress)="eventHandler($event.keyCode)" autocomplete="off">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
+              (click)="pagination.searchKey='';searchPartnerCompanies()"></button>
+            <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()">
+              <i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
@@ -37,7 +31,7 @@
                     <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
                         <tr>
                             <td class="cw">
-                                <input class="form-control" type="radio">
+                                <input class="form-control" type="radio" name="partner-company-radio">
                             </td>
                             <td style="width: 10%;" title="{{partner?.companyName}}">
                                 <div class="thumbnail-wrapper">
@@ -55,8 +49,17 @@
                     </ng-container>
                  </tbody>
             </table>
+            <!--Pagination-->
+            <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading" class="pg8">
+                <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">
+                </app-pagination>
+            </div>
+            <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
+                <strong>No Data Found</strong>
+              </div>
         </div>
     </div>
+    <!---Pagination--->
 </div>
 </div>
 

@@ -44,11 +44,26 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 			this.referenceService.stopLoader(this.httpRequestLoader);
 		}, error => {
       this.xtremandLogger.error(error);
-			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-      this.referenceService.stopLoader(this.httpRequestLoader);
+      this.xtremandLogger.errorPage(error);
 		}, () => {
 
 		});
 	}
 
+  /*************************Search********************** */
+	searchPartnerCompanies() {
+		this.getAllFilteredResults();
+	}
+
+	/************Page************** */
+	navigateToNextPage(event: any) {
+		this.pagination.pageIndex = event.page;
+		this.findPartnerCompanies(this.pagination);
+	}
+
+	getAllFilteredResults() {
+		this.pagination.pageIndex = 1;
+		this.findPartnerCompanies(this.pagination);
+	}
+	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartnerCompanies(); } }
 }
