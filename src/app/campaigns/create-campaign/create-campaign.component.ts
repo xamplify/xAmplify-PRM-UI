@@ -3636,6 +3636,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
     }
 
+    findShareLeadsByPartnerCompanyId(partnerCompanyId){
+
+    }
+
     
 }
 

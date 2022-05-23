@@ -1547,8 +1547,6 @@ strong {
   min-height: 25px;
 }
 /***16 May*****/
-/*--thank you pop starts here--*/
-
 .success-message-text-icon-xamp {
   width: 100%;
   padding: 20px;
@@ -1561,4 +1559,8 @@ strong {
   padding-top: 5px !important;
 }
 
+/***23 May*****/
+.float-none{
+  float: none !important;
+}
 
