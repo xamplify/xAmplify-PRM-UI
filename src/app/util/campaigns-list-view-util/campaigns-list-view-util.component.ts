@@ -256,7 +256,20 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             if (this.archived) {
                 this.selectedSortedOption = this.sortByDropDownArchived[0];
             }
-            this.getCampaignTypes();
+            this.refService.loading(this.httpRequestLoader, true);
+            this.authenticationService.isPartnershipOnlyWithPrm().subscribe(
+                response=>{
+                    if(response.data){
+                        this.refService.goToAccessDeniedPage();
+                    }else{
+                        this.refService.loading(this.httpRequestLoader, false);
+                        this.getCampaignTypes();
+                    }
+                },error=>{
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                });
+            
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }

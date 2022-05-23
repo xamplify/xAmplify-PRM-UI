@@ -6,6 +6,8 @@ import { ReferenceService } from "app/core/services/reference.service";
 import { Properties } from 'app/common/models/properties';
 import  {ParterService} from '../services/parter.service';
 import {KpiDto} from 'app/common/models/kpi-dto';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { DashboardService } from 'app/dashboard/dashboard.service';
 @Component({
   selector: 'app-kpi',
   templateUrl: './kpi.component.html',
@@ -30,9 +32,18 @@ export class KpiComponent implements OnInit {
   headerText = "";
   loader = false;
   @Input() applyTeamMemberFilter:boolean;
-  constructor(public mdfService:MdfService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public partnerService:ParterService
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  vanityLogin: boolean;
+
+  constructor(public dashboardService:DashboardService,public mdfService:MdfService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public partnerService:ParterService
     ) { 
       this.loggedInUserId = this.authenticationService.getUserId();
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      let companyProfileName = this.authenticationService.companyProfileName;
+      if (companyProfileName !== undefined && companyProfileName !== "") {
+        this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+        this.vanityLoginDto.vanityUrlFilter = true;
+      }
     }
 
   ngOnInit() {
@@ -69,8 +80,7 @@ export class KpiComponent implements OnInit {
       () => {
        this.setHeaderText();
         if(this.hasLeadsAndDealsAccess){
-          this.findLeadsToDealsConversionPercentage();
-          this.findLeadsOpportunityAmount();
+          this.findOpportunityAmountAndLeadToDealConversionPercentage();
         }
         if(this.mdfAccess){
           this.getMdfKpis();
@@ -82,6 +92,32 @@ export class KpiComponent implements OnInit {
         if(!this.mdfAccess){
           this.mdfDto.loader = false;
         }
+      }
+    );
+  }
+
+  findOpportunityAmountAndLeadToDealConversionPercentage(){
+    this.vanityLoginDto.applyFilter = this.applyTeamMemberFilter;
+    this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
+      (response) =>{
+        let statisticsData = response.data;
+        if(statisticsData.length!=null && statisticsData.length>0){
+          this.opportunityAmount = statisticsData[0]['weightOfPie'];
+          this.leadsToDealsConversionInPercentage  = statisticsData[1]['weightOfPie'];
+        }else{
+          this.opportunityAmount = "-";
+          this.leadsToDealsConversionInPercentage  = "-";
+        }
+       
+        this.leadsToDealsConversionDto.loader = false;
+        this.opportunityAmountDto.loader = false;
+      },
+      (error) => {
+        this.xtremandLogger.log(error);
+        this.leadsToDealsConversionDto.loader = false;
+        this.leadsToDealsConversionInPercentage = 'Error';
+        this.opportunityAmountDto.loader = false;
+        this.opportunityAmount = "-";
       }
     );
   }
@@ -103,34 +139,6 @@ export class KpiComponent implements OnInit {
     this.companyIdError = true;
     this.loader = false;
   }
-
-
-  findLeadsToDealsConversionPercentage(){
-    this.partnerService.findLeadsToDealsConversionPercentage(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe(
-      response=>{
-        this.leadsToDealsConversionInPercentage = response.data;
-        this.leadsToDealsConversionDto.loader = false;
-      },error=>{
-        this.xtremandLogger.log(error);
-        this.leadsToDealsConversionDto.loader = false;
-        this.leadsToDealsConversionInPercentage = 'Error';
-      }
-    );
-  }
-
-  findLeadsOpportunityAmount(){
-    this.partnerService.findLeadsOpportunityAmount(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe(
-      response=>{
-        this.opportunityAmount = response.data;
-        this.opportunityAmountDto.loader = false;
-      },error=>{
-        this.xtremandLogger.log(error);
-        this.opportunityAmountDto.loader = false;
-        this.opportunityAmount = "-";
-      }
-    );
-  }
-
   getMdfKpis() {
     this.mdfDto.loader = true;
     this.mdfService.getVendorMdfAmountTilesInfo(this.loggedInUserCompanyId,this.applyTeamMemberFilter).subscribe((result: any) => {

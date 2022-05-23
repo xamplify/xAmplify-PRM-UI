@@ -16,6 +16,7 @@ declare var Highcharts: any;
 export class PieChartAnalyticsComponent implements OnInit {
   pieChartData: Array<any> = new Array<any>();
   stastisticsOfPieChart :Array<any>=new Array<StatisticsDetailsOfPieChart>();
+  funnelChartData:any =[];
   loader = false;
   statusCode = 200;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -27,7 +28,11 @@ export class PieChartAnalyticsComponent implements OnInit {
   sum:any;
   displayTime :any;
   show:boolean=true;
+  val:any;
   staticShow :boolean =true;
+  notShow:boolean =false;
+  leadCount:number =0;
+  dealCount:number =0;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router,public httpRequestLoader: HttpRequestLoader) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -41,6 +46,8 @@ export class PieChartAnalyticsComponent implements OnInit {
     }
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
+    this.loadLeadOrDealData();
+    this.loadLeadCountData();
     if(this.selectedTemplateTypeIndex === 0){
    this.click();
    this.loader =false;
@@ -68,7 +75,56 @@ export class PieChartAnalyticsComponent implements OnInit {
     this.show=true;
     
   }
-  
+  loadLeadOrDealData(){
+    this.loader = true;
+    this.dashboardService
+      .getPieChartDealStatisticsWithStageNames(this.vanityLoginDto)
+      .subscribe(
+        (response) => {
+          this.funnelChartData = response.data;
+          this.val=this.funnelChartData.map(c3=>c3.value)
+          this.sum = this.val.reduce(function (a, b) {
+            return a + b;
+            }, 0);
+            if(this.sum === 0){
+              this.dealCount =this.sum;
+              this.loader =false;
+            }
+          this.dealCount = this.sum;
+        },
+        (error) => {
+          this.xtremandLogger.error(error);
+          this.loader = false;
+          this.statusCode = 0;
+        }
+      );
+
+  }
+  loadLeadCountData(){
+    this.loader = true;
+    this.dashboardService
+      .getPieChartLeadsStatisticsWithStageNames(this.vanityLoginDto)
+      .subscribe(
+        (response) => {
+          this.funnelChartData = response.data;
+          this.val=this.funnelChartData.map(c3=>c3.value)
+          this.sum = this.val.reduce(function (a, b) {
+            return a + b;
+            }, 0);
+            if(this.sum === 0){
+              this.leadCount =this.sum;
+              this.loader =false;
+            }
+          this.leadCount= this.sum;
+        },
+        (error) => {
+          this.xtremandLogger.error(error);
+          this.loader = false;
+          this.statusCode = 0;
+        }
+      );
+
+  }
   loadLeadPieChart(){
     this.loader = true;
     this.dashboardService.getPieChartLeadsAnalyticsData(this.vanityLoginDto).subscribe(
@@ -76,6 +132,7 @@ export class PieChartAnalyticsComponent implements OnInit {
         this.pieChartData=response.data;
         this.loader=false;
         this.statusCode=200;
+        this.notShow =false;
         this.sumMethode(this.pieChartData);
         this.selectedTemplateTypeIndex =1;
     },
@@ -93,11 +150,11 @@ export class PieChartAnalyticsComponent implements OnInit {
      .subscribe(
   (response) =>{
     this.stastisticsOfPieChart=response.data;
-    console.log(this.stastisticsOfPieChart)
     self.pieChartData.length != 0;
-
     this.loader =false;
     this.staticShow =false;
+    this.notShow =false;
+
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -106,14 +163,7 @@ export class PieChartAnalyticsComponent implements OnInit {
   }
 );
   }
-  // nameAndValues(pieChartDataStatistics:any){
-  //   this.stastisticsOfPieChart= pieChartDataStatistics;
-  //   this.opportunityName=this.stastisticsOfPieChart.map(i=>i.nameOfPie);
-  //   this.opportunityValue=this.stastisticsOfPieChart.map(w=>w.weightOfPie);
-  //       this.loader =false;
-  //   alert(this.opportunityName)
-  //   alert(this.opportunityValue)
-  // }
+  
   loadStatisticsDealData(){
   this.loader = true;
   this.dashboardService.getPieChartStatisticsDealData(this.vanityLoginDto).subscribe(
@@ -147,6 +197,7 @@ loadDealPieChart(){
     },
           () =>{this.loadChart(this.pieChartData),
             this.show=true;
+            this.notShow =false;
             this.sumMethode(this.pieChartData)
             this.loader =false;
             this.selectedTemplateTypeIndex =0
@@ -168,6 +219,7 @@ loadDealPieChart(){
       this.statusCode=200;
       this.loader = false;
       this.show=true;
+      this.notShow =false;
       this.pieChartData.length > this.sum;
       this.loadChart(this.pieChartData);
   }

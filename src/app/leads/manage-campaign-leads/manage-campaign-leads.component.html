@@ -207,7 +207,7 @@
   </div>
 
   <!-- --------------------Pagination0-------------------- -->
-<div *ngIf="!httpRequestLoader.isLoading && leadsPagination.pagedItems.length !== 0" class="pg8">
+<div [hidden]="httpRequestLoader.isLoading && leadsPagination.pagedItems.length !== 0" class="pg8">
   <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
     (notifyParentDropDown)="listCampaignLeads($event)"></app-pagination>
 </div>
