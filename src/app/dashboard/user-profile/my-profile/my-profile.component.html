@@ -1698,13 +1698,13 @@
                 <ng-container *ngIf="!addPipelineLoader.isLoading" >
                     <div class="form-group" id="pipelineNameDiv">
                         <label>Name of the Pipeline<font class="required">*</font></label>
-                        <input type="text" [disabled]="pipelinePreview" [(ngModel)]="pipeline.name" class="form-control" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validatePipelineName(pipeline.name)" (keydown)="pipelineSumbitOnEnter($event)"> 
+                        <input type="text" [disabled]="pipelinePreview || pipeline.salesforcePipeline" [(ngModel)]="pipeline.name" class="form-control" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validatePipelineName(pipeline.name)" (keydown)="pipelineSumbitOnEnter($event)"> 
                         <span *ngIf="!pipeline.isValidName" class="required">{{pipelineNameErrorMessage}}</span>
                         <!-- <input type="text" class="form-control" [(ngModel)]="pipeline.name" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validateCategoryNames(category.name)" >
                         <span *ngIf="!pipeline.isValid" class="required">{{PipelineNameErrorMessage}}</span> -->
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
+                        <input type="checkbox" [disabled]="pipelinePreview || pipeline.salesforcePipeline" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
                         data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
                     </div>
                     <div class="form-group" id="pipelineStageDiv">
@@ -1714,9 +1714,9 @@
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
                                     <span class="fa fa-ellipsis-v"></span>
-                                    <input type="text" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name" style="width: 260px;
+                                    <input type="text" [disabled]="pipelinePreview || pipeline.salesforcePipeline" [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name" style="width: 260px;
                                     margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)" (keydown)="pipelineSumbitOnEnter($event)">
-                                    <input type="radio" [disabled]="pipelinePreview" [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
+                                    <input type="radio" [disabled]="pipelinePreview || pipeline.salesforcePipeline" [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
                                     <span style="margin-right: 5px;">Default</span> 
                                     <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview" >
                                         <option value="markAs">Mark as</option>
@@ -1724,13 +1724,13 @@
                                         <option value="lost">Lost</option>
                                         <option value="none">None</option>
                                     </select>
-                  			          <button type="button" *ngIf="x != 0 && !pipelinePreview"  class="btn-danger button-blue" (click)="deleteStage(x)"
+                  			          <button type="button" *ngIf="x != 0 && !pipelinePreview && !pipeline.salesforcePipeline"  class="btn-danger button-blue" (click)="deleteStage(x)"
                                     style="float: right;" [disabled]="!pipelineStage.canDelete"><span class="glyphicon glyphicon-trash"></span></button>
                                 </li>
                             </ng-container>                            
                           </ul>
                     </div>
-                    <div class="form-group" *ngIf="!pipelinePreview">
+                    <div class="form-group" *ngIf="!pipelinePreview && !pipeline.salesforcePipeline">
                         <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px;width: 90px;" (click)="addStage()" >
                             <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Stage
                         </a>

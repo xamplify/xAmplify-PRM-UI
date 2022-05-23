@@ -2625,8 +2625,10 @@ configSalesforce() {
 			if (stage.stageName !== undefined && $.trim(stage.stageName).length > 0) {
 				if (stage.markAs === "won") {
 					stage.won = true;
+					stage.lost = false;
 				} else if (stage.markAs === "lost") {
 					stage.lost = true;
+					stage.won = false;
 				} else {
 					stage.won = false;
 					stage.lost = false;
