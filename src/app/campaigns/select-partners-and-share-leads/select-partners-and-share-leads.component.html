@@ -32,9 +32,9 @@
                  </thead>
                  <tbody>
                     <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
-                        <tr>
+                        <tr [class.row-selected]="selectedPartnershipId==partner.partnershipId">
                             <td class="cw">
-                                <input class="form-control" type="radio" name="partner-company-radio">
+                                <input class="form-control" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" (click)="expandShareLeadsDiv(partner)">
                             </td>
                             <td style="width: 10%;" title="{{partner?.companyName}}">
                                 <div class="thumbnail-wrapper">
@@ -68,104 +68,110 @@
                                <div class="table-responsive x-hidden">
                                   <div class="portlet-input input-inline float-right mb10p" id="search-div">
                                      <div class="input-icon right" id="icon">
-                                        <input type="text" id="sort-text" class="form-control" [(ngModel)]="shareLeadsPagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="shareLeadsKeySearch($event.keyCode)">
-                                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="shareLeadsPagination?.searchKey" (click)="shareLeadsPagination.searchKey='';searchAdminsAndTeamMembers();"></button>
-                                        <button type="submit" class="search-box-item-click" (click)="searchAdminsAndTeamMembers()">
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                        </button>
+                                        <input type="text" id="sort-text" class="form-control" [(ngModel)]="shareLeadsPagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="shareLeadsEventHandler($event.keyCode)">
+                                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="shareLeadsPagination?.searchKey" (click)="shareLeadsPagination.searchKey='';searchShareLeadsList();"></button>
+                                        <button type="submit" class="search-box-item-click" (click)="searchShareLeadsList()"> <i class="fa fa-search" aria-hidden="true"></i></button>
                                      </div>
                                   </div>
                                   <ng-container *ngIf="!shareLeadsLoader.isLoading && shareLeadsErrorMessage.isVisible">
-                                     <div class="custom-response-padding">
+                                     <div class="custom-response-padding text-center">
                                         <app-response-message [customResponse]="shareLeadsErrorMessage"></app-response-message>
                                   </div>
                                   </ng-container>
-                                  <div *ngIf="!shareLeadsErrorMessage.isVisible">
-                                  <app-auto-response-loader *ngIf="shareLeadsLoader.isLoading"></app-auto-response-loader>
-                                  <ng-container *ngIf="!shareLeadsLoader.isLoading">
-                                  <table  class="table tgrid table-condensed child-table-xamp" aria-describedby="" id="share-leads-{{partner?.partnershipId}}">
-                                     <thead>
-                                           <tr>
-                                           <th scope="row" class="text-center">
-                                              <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllShareLeadsOfTheCurrentPage($event,partner.partnershipId)">
-                                           </th>
-                                           <th scope="row" colspan="2">List Name</th>
-                                           <th class="text-center" translate>Total Leads</th>
-                                           <th class="text-center" translate>Created Time</th>
-                                           <th class="text-center" translate>Preview</th>
-                                           </tr>
-                                        </thead>
-                                        <tbody>
-                                           <tr *ngFor="let shareLead of shareLeadsPagination.pagedItems;let i = index;" id="selectShareLeads-{{shareLead.id}}" [class.row-selected]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1" (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(shareLead.id,partner.partnershipId,$event)" >
-                                                <td class="text-center">
-                                                    <input type="checkbox" id="{{shareLead.id}}"  [checked]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{shareLead.id}}" (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(shareLead.id,partner.partnershipId,$event)">
-                                                </td>
+                                  <div *ngIf="shareLeadsErrorMessage.responseType!='ERROR'">
+                                    <app-auto-response-loader *ngIf="shareLeadsLoader.isLoading"></app-auto-response-loader>
+                                    <ng-container *ngIf="!shareLeadsLoader.isLoading">
+                                    <table  class="table tgrid table-condensed child-table-xamp" aria-describedby="" id="share-leads-{{partner?.partnershipId}}">
+                                        <thead>
+                                            <tr>
+                                            <th scope="row" class="text-center" [hidden]="shareLeadsPagination.totalRecords==0">
+                                                <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllShareLeadsOfTheCurrentPage($event,partner.partnershipId)">
+                                            </th>
+                                            <th scope="row" colspan="2">List Name</th>
+                                            <th class="text-center" translate>Total Leads</th>
+                                            <th class="text-center" translate>Created Time</th>
+                                            <th class="text-center" translate>Preview</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr *ngFor="let shareLead of shareLeadsPagination.pagedItems;let i = index;" id="selectShareLeads-{{shareLead.id}}" [class.row-selected]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1" (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(shareLead.id,partner.partnershipId,$event)" >
+                                                    <td class="text-center">
+                                                        <input type="checkbox" id="{{shareLead.id}}"  [checked]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{shareLead.id}}" (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(shareLead.id,partner.partnershipId,$event)">
+                                                    </td>
 
-                                                <td style="width: 10%;" class="hidden-xs">
-                                                    <img *ngIf="shareLead.socialNetwork=='ZOHO' && shareLead.synchronisedList" src="{{properties?.zohoImage}}"
-                                                    alt="zoho" style="height: 70px;">
-                                                    <img *ngIf="shareLead.socialNetwork=='GOOGLE' && shareLead.synchronisedList" src="{{properties?.googleImage}}"
-                                                    alt="google" style="height: 70px;">
-                                                    <img *ngIf="shareLead.socialNetwork=='SALESFORCE' && shareLead.synchronisedList"
-                                                    src="{{properties?.salesforceImage}}" alt="salesforce" style="height: 70px;"> <img
-                                                    *ngIf="shareLead.socialNetwork=='MANUAL' || !shareLead.synchronisedList" src="{{properties?.manualImage}}"
-                                                    alt="manual" style="height: 70px;">
-                                                    <img *ngIf="shareLead.socialNetwork=='HUBSPOT' && shareLead.synchronisedList" src="{{properties?.hubspotImage}}"
-                                                    alt="manual" style="height: 70px;">
-                                                    <img *ngIf="shareLead.socialNetwork=='MARKETO' && shareLead.synchronisedList" src="{{properties?.marketoImage}}"
-                                                    alt="manual" style="height: 70px;">
-                                                    <img
-                                                    *ngIf="(!shareLead.marketoMasterList && !shareLead.emailValidationInd) || (shareLead.marketoMasterList && (!shareLead.marketoSyncComplete || !shareLead.emailValidationInd))"
-                                                    src="assets/images/Spinner.gif"
-                                                    style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
-                                                </td>
+                                                    <td style="width: 10%;" class="hidden-xs">
+                                                        <img *ngIf="shareLead.socialNetwork=='ZOHO' && shareLead.synchronisedList" src="{{properties?.zohoImage}}"
+                                                        alt="zoho" style="height: 70px;">
+                                                        <img *ngIf="shareLead.socialNetwork=='GOOGLE' && shareLead.synchronisedList" src="{{properties?.googleImage}}"
+                                                        alt="google" style="height: 70px;">
+                                                        <img *ngIf="shareLead.socialNetwork=='SALESFORCE' && shareLead.synchronisedList"
+                                                        src="{{properties?.salesforceImage}}" alt="salesforce" style="height: 70px;"> <img
+                                                        *ngIf="shareLead.socialNetwork=='MANUAL' || !shareLead.synchronisedList" src="{{properties?.manualImage}}"
+                                                        alt="manual" style="height: 70px;">
+                                                        <img *ngIf="shareLead.socialNetwork=='HUBSPOT' && shareLead.synchronisedList" src="{{properties?.hubspotImage}}"
+                                                        alt="manual" style="height: 70px;">
+                                                        <img *ngIf="shareLead.socialNetwork=='MARKETO' && shareLead.synchronisedList" src="{{properties?.marketoImage}}"
+                                                        alt="manual" style="height: 70px;">
+                                                        <img
+                                                        *ngIf="(!shareLead.marketoMasterList && !shareLead.emailValidationInd) || (shareLead.marketoMasterList && (!shareLead.marketoSyncComplete || !shareLead.emailValidationInd))"
+                                                        src="assets/images/Spinner.gif"
+                                                        style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
+                                                    </td>
 
-                                                <td>
-                                                    <h4 class="moreipsis" title="{{shareLead.name}}">
-                                                    <span> {{shareLead.name}}</span>
-                                                    </h4>
-                                                    <h5 class='m0 ellipsis' title="{{shareLead.uploadedBy}}" translate>
-                                                    By <span class='f-w-400'>{{shareLead.uploadedBy
-                                                        | slice:0:50}} <span *ngIf="shareLead.uploadedBy?.length>50">...</span>
-                                                    </span>
-                                                    </h5>
-                                                    <h5 class="mb0 ellipsis" title="{{shareLead.companyName}}">
-                                                    <strong>{{shareLead.companyName | slice:0:50}}</strong> <span
-                                                        *ngIf="shareLead.companyName?.length>50">...</span>
-                                                    <h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
-                                                        <span class="mb0"
-                                                        *ngIf="(!shareLead.marketoMasterList && shareLead.emailValidationInd) || (shareLead.marketoMasterList && shareLead.marketoSyncComplete && shareLead.emailValidationInd)"
-                                                        translate>
-                                                        Total <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
-                                                        <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span>  
-                                                        {{shareLead.noOfContacts}}</span>
-                                                        <span
-                                                        *ngIf="(!shareLead.marketoMasterList && !shareLead.emailValidationInd) || (shareLead.marketoMasterList && (!shareLead.marketoSyncComplete || !shareLead.emailValidationInd))">
-                                                        <strong>-</strong></span>
-                                                        <br> <span class="mb0" translate> Created
-                                                        On:<app-timestamp [isOnlyDate]="true" [dateAndTime]="shareLead.createdDate">
-                                                        </app-timestamp>
+                                                    <td>
+                                                        <h4 class="moreipsis" title="{{shareLead.name}}">
+                                                        <span> {{shareLead.name}}</span>
+                                                        </h4>
+                                                        <h5 class='m0 ellipsis' title="{{shareLead.uploadedBy}}" translate>
+                                                        By <span class='f-w-400'>{{shareLead.uploadedBy
+                                                            | slice:0:50}} <span *ngIf="shareLead.uploadedBy?.length>50">...</span>
                                                         </span>
-                                                    </h5>
-                                                    </h5>
-                                                </td>
-                                                <td class="text-center">
-                                                    100
-                                                </td>
-                                                <td class="text-center">
-                                                    Kumar
-                                                </td>
-                                                <td class="text-center">
-                                                    Preview
-                                                </td>
-                                           </tr>
-                                        </tbody>
-                                     </table>
-                                     </ng-container>
-                                     <!---Pagination-->
-                                     <div *ngIf="shareLeadsPagination.totalRecords==0 && !shareLeadsLoader.isLoading" class="alert alert-info">
-                                        <strong>No Data Found.</strong>
-                                     </div>
+                                                        </h5>
+                                                        <h5 class="mb0 ellipsis" title="{{shareLead.companyName}}">
+                                                        <strong>{{shareLead.companyName | slice:0:50}}</strong> <span
+                                                            *ngIf="shareLead.companyName?.length>50">...</span>
+                                                        <h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
+                                                            <span class="mb0"
+                                                            *ngIf="(!shareLead.marketoMasterList && shareLead.emailValidationInd) || (shareLead.marketoMasterList && shareLead.marketoSyncComplete && shareLead.emailValidationInd)"
+                                                            translate>
+                                                            Total <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
+                                                            <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span>  
+                                                            {{shareLead.noOfContacts}}</span>
+                                                            <span
+                                                            *ngIf="(!shareLead.marketoMasterList && !shareLead.emailValidationInd) || (shareLead.marketoMasterList && (!shareLead.marketoSyncComplete || !shareLead.emailValidationInd))">
+                                                            <strong>-</strong></span>
+                                                            <br> <span class="mb0" translate> Created
+                                                            On:<app-timestamp [isOnlyDate]="true" [dateAndTime]="shareLead.createdDate">
+                                                            </app-timestamp>
+                                                            </span>
+                                                        </h5>
+                                                        </h5>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{shareLead?.noOfContacts}}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <app-display-date-and-time [dateAndTimeUTCString]="shareLead?.createdDate"></app-display-date-and-time>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="actions-block float-none">
+                                                            <a  title="Preview">
+                                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                             </a>
+                                                        </div>
+                                                    </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        </ng-container>
+                                        <!---Pagination-->
+                                        <div [hidden]="shareLeadsLoader.isLoading || shareLeadsPagination.totalRecords==0" class="pg8">
+                                            <app-pagination [pagination]="shareLeadsPagination" (notifyParent)="navigateToShareLeadsListNextPage($event)" (notifyParentDropDown)="findShareLeads($event)">
+                                            </app-pagination>
+                                        </div>
+                                        <div *ngIf="shareLeadsPagination.totalRecords==0 && !shareLeadsLoader.isLoading" class="alert alert-info text-center">
+                                            <strong>No Data Found</strong>
+                                        </div>
                                   </div>
                                </div>
                             </td>

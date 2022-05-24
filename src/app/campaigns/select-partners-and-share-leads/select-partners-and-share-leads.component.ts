@@ -33,6 +33,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   isHeaderCheckBoxChecked = false;
   shareLeadsErrorMessage:CustomResponse = new CustomResponse();
   selectedShareLeadsListIds =  [];
+  selectedPartnershipId = 0;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
@@ -73,6 +74,15 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartnerCompanies(); } }
 
+	expandShareLeadsDiv(partner:any){
+		this.selectedPartnershipId = partner.partnershipId;
+		$("input:radio[name=one-launch-campaign-partner-company]").attr("disabled",false);
+		$('#one-launch-campaign-radio-'+partner.partnershipId).attr("disabled",true);
+		if(!partner.expand){
+			this.viewShareLeads(partner);
+		}
+	}
+
 	viewShareLeads(partner:any){
 		this.shareLeadsPagination = new Pagination();
 		this.isHeaderCheckBoxChecked = false;
@@ -94,12 +104,12 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 	}
 
 	findShareLeads(pagination:Pagination){
+		this.referenceService.loading(this.shareLeadsLoader, true);
 		pagination.channelCampaign = true;
 		this.contactService.loadAssignedLeadsLists(pagination).
 		subscribe(
 			(data:any)=>{
 				pagination.totalRecords = data.totalRecords;
-				pagination.maxResults = pagination.totalRecords;
 				pagination = this.pagerService.getPagedItems(pagination, data.listOfUserLists);
 				/*******Header checkbox will be chcked when navigating through page numbers*****/
 				let shareLeadsListIds = pagination.pagedItems.map(function (a) { return a.id; });
@@ -119,4 +129,20 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 			}
 		);
 	}
+
+	searchShareLeadsList() {
+		this.getAllFilteredShareLeadsResults();
+	}
+
+	/************Page************** */
+	navigateToShareLeadsListNextPage(event: any) {
+		this.shareLeadsPagination.pageIndex = event.page;
+		this.findShareLeads(this.shareLeadsPagination);
+	}
+
+	getAllFilteredShareLeadsResults() {
+		this.shareLeadsPagination.pageIndex = 1;
+		this.findShareLeads(this.shareLeadsPagination);
+	}
+	shareLeadsEventHandler(keyCode: any) { if (keyCode === 13) { this.searchShareLeadsList(); } }
 }
