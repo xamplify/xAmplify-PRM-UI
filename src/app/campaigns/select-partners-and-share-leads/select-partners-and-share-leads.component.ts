@@ -9,6 +9,7 @@ import { PagerService } from '../../core/services/pager.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ParterService } from 'app/partners/services/parter.service';
 import { SortOption } from 'app/core/models/sort-option';
+import { ContactService } from 'app/contacts/services/contact.service';
 declare var $:any;
 
 @Component({
@@ -27,8 +28,13 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   partnerCompaniesSortOption: SortOption = new SortOption();
   selectedContactListIds = [];
   emptyContactListMessage = "";
+  shareLeadsPagination: Pagination = new Pagination();
+  shareLeadsLoader:HttpRequestLoader = new HttpRequestLoader();
+  isHeaderCheckBoxChecked = false;
+  shareLeadsErrorMessage:CustomResponse = new CustomResponse();
+  selectedShareLeadsListIds =  [];
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
-    public pagerService:PagerService,public partnerService:ParterService) { }
+    public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
   ngOnInit() {
     this.findPartnerCompanies(this.pagination);
@@ -66,4 +72,51 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		this.findPartnerCompanies(this.pagination);
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartnerCompanies(); } }
+
+	viewShareLeads(partner:any){
+		this.shareLeadsPagination = new Pagination();
+		this.isHeaderCheckBoxChecked = false;
+		this.shareLeadsErrorMessage = new CustomResponse();
+		this.pagination.pagedItems.forEach((element) => {
+			let partnerCompanyId = element.partnerCompanyId;
+			let clickedCompanyId = partner.partnerCompanyId;
+			if (clickedCompanyId != partnerCompanyId) {
+				element.expand = false;
+			}
+		});
+		partner.expand = !partner.expand;
+		if (partner.expand) {
+			this.referenceService.loading(this.shareLeadsLoader, true);
+			this.shareLeadsPagination.partnerCompanyId = partner.partnerCompanyId;
+			this.shareLeadsPagination.partnershipId = partner.partnershipId;
+			this.findShareLeads(this.shareLeadsPagination);
+		}
+	}
+
+	findShareLeads(pagination:Pagination){
+		pagination.channelCampaign = true;
+		this.contactService.loadAssignedLeadsLists(pagination).
+		subscribe(
+			(data:any)=>{
+				pagination.totalRecords = data.totalRecords;
+				pagination.maxResults = pagination.totalRecords;
+				pagination = this.pagerService.getPagedItems(pagination, data.listOfUserLists);
+				/*******Header checkbox will be chcked when navigating through page numbers*****/
+				let shareLeadsListIds = pagination.pagedItems.map(function (a) { return a.id; });
+				let items = $.grep(this.selectedShareLeadsListIds, function (element: any) {
+					return $.inArray(element, shareLeadsListIds) !== -1;
+				});
+				if (items.length == shareLeadsListIds.length && shareLeadsListIds.length > 0) {
+					this.isHeaderCheckBoxChecked = true;
+				} else {
+					this.isHeaderCheckBoxChecked = false;
+				}
+				this.referenceService.loading(this.shareLeadsLoader, false);
+			},error=>{
+				this.xtremandLogger.error(error);
+				this.referenceService.loading(this.shareLeadsLoader, false);
+				this.shareLeadsErrorMessage = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			}
+		);
+	}
 }
