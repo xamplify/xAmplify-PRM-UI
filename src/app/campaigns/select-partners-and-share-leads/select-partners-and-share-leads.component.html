@@ -32,7 +32,7 @@
                  </thead>
                  <tbody>
                     <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
-                        <tr [class.row-selected]="selectedPartnershipId==partner.partnershipId">
+                        <tr [class.xamp-tr-selected]="selectedPartnershipId==partner.partnershipId">
                             <td class="cw">
                                 <input class="form-control" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" (click)="expandShareLeadsDiv(partner)">
                             </td>
@@ -47,7 +47,7 @@
                                 <h5>
                                     <strong>
                                         Company Name By Vendor : 
-                                        <span title="{{partner?.companyNameAddedByVendor}}" class="info-text-color">{{partner?.companyNameAddedByVendor | slice:0:50}}</span>
+                                        <span title="{{partner?.companyNameAddedByVendor}}">{{partner?.companyNameAddedByVendor | slice:0:50}}</span>
                                         <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
                                     </strong>
                                 </h5>
@@ -56,7 +56,7 @@
                                 <app-display-date-and-time	[dateAndTimeUTCString]="partner?.createdTimeInString"> </app-display-date-and-time>
                             </td>
                             <td class="text-center">
-                                <div class="actions-block float-none">
+                                <div [ngClass]="{'actions-block float-none': selectedPartnershipId!=partner.partnershipId, 'actions-block-selected': selectedPartnershipId==partner.partnershipId}">
                                     <a  (click)="viewShareLeads(partner)" title="Select Share Leads">
                                         <i class="fa" [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
                                      </a>
@@ -64,7 +64,7 @@
                             </td>
                         </tr>
                         <tr *ngIf="partner?.expand">
-                            <td colspan="5">
+                            <td colspan="5" class="bgc-lg">
                                <div class="table-responsive x-hidden">
                                   <div class="portlet-input input-inline float-right mb10p" id="search-div">
                                      <div class="input-icon right" id="icon">
@@ -81,20 +81,20 @@
                                   <div *ngIf="shareLeadsErrorMessage.responseType!='ERROR'">
                                     <app-auto-response-loader *ngIf="shareLeadsLoader.isLoading"></app-auto-response-loader>
                                     <ng-container *ngIf="!shareLeadsLoader.isLoading">
-                                    <table  class="table tgrid table-condensed child-table-xamp" aria-describedby="" id="share-leads-{{partner?.partnershipId}}">
-                                        <thead>
-                                            <tr>
-                                            <th scope="row" class="text-center" [hidden]="shareLeadsPagination.totalRecords==0">
-                                                <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllShareLeadsOfTheCurrentPage($event,partner.partnershipId)">
-                                            </th>
-                                            <th scope="row" colspan="2">List Name</th>
-                                            <th class="text-center" translate>Total Leads</th>
-                                            <th class="text-center" translate>Created Time</th>
-                                            <th class="text-center" translate>Preview</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr *ngFor="let shareLead of shareLeadsPagination.pagedItems;let i = index;" id="selectShareLeads-{{shareLead.id}}" [class.row-selected]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1" (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(shareLead.id,partner.partnershipId,$event)" >
+                                        <table  class="table tgrid table-condensed child-table-xamp bgc-lg" aria-describedby="" id="share-leads-{{partner?.partnershipId}}">
+                                            <thead>
+                                                <tr>
+                                                <th scope="row" class="text-center" [hidden]="shareLeadsPagination.totalRecords==0">
+                                                    <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllShareLeadsOfTheCurrentPage($event,partner.partnershipId)">
+                                                </th>
+                                                <th scope="row" colspan="2">List Name</th>
+                                                <th class="text-center" translate>Total Leads</th>
+                                                <th class="text-center" translate>Created Time</th>
+                                                <th class="text-center" translate>Preview</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr *ngFor="let shareLead of shareLeadsPagination.pagedItems;let i = index;" id="selectShareLeads-{{shareLead.id}}" [class.row-selected]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1" (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(shareLead.id,partner.partnershipId,$event)" >
                                                     <td class="text-center">
                                                         <input type="checkbox" id="{{shareLead.id}}"  [checked]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{shareLead.id}}" (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(shareLead.id,partner.partnershipId,$event)">
                                                     </td>
@@ -155,13 +155,13 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <div class="actions-block float-none">
-                                                            <a  title="Preview">
+                                                            <a title="Preview" (click)="previewLeads(shareLead)">
                                                                 <i class="fa fa-eye" aria-hidden="true"></i>
-                                                             </a>
+                                                            </a>
                                                         </div>
                                                     </td>
-                                            </tr>
-                                            </tbody>
+                                                </tr>
+                                                </tbody>
                                         </table>
                                         </ng-container>
                                         <!---Pagination-->
@@ -192,3 +192,6 @@
 </div>
 </div>
 
+<ng-container *ngIf="showLeadsPreview">
+    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+</ng-container>

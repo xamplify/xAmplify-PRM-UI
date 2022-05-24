@@ -1569,3 +1569,26 @@ strong {
   margin-bottom: 10px;
 }
 
+.table tr.xamp-tr-selected td {
+  background-color: #00a6e8 !important;
+  color: white;
+}
+
+.actions-block-selected i, .circled-number-selected {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 32px !important;
+  vertical-align: middle;
+  margin-right: 7px;
+  font-size: 13px !important;
+  float:none !important;
+
+}
+
+.bgc-lg{
+  background-color: #f5f5f5 !important;
+}

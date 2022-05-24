@@ -34,6 +34,9 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   shareLeadsErrorMessage:CustomResponse = new CustomResponse();
   selectedShareLeadsListIds =  [];
   selectedPartnershipId = 0;
+  showLeadsPreview = false;
+  selectedListName = "";
+  selectedListId = 0;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
@@ -145,4 +148,16 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		this.findShareLeads(this.shareLeadsPagination);
 	}
 	shareLeadsEventHandler(keyCode: any) { if (keyCode === 13) { this.searchShareLeadsList(); } }
+
+	previewLeads(shareLead:any){
+		this.selectedListId = shareLead.id;
+		this.selectedListName = shareLead.name;
+		this.showLeadsPreview = true;
+
+	}
+	resetValues(){
+		this.selectedListId = 0;
+		this.selectedListName = "";
+		this.showLeadsPreview = false;
+	}
 }
