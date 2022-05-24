@@ -169,7 +169,7 @@ export class ManageDealsComponent implements OnInit {
         if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
           this.isOrgAdmin = true;
         }
-        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin") || this.authenticationService.superiorRole.includes("Marketing")) {
+        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin") || this.authenticationService.superiorRole.includes("Marketing")|| this.authenticationService.superiorRole.includes("Prm")) {
           this.isVendor = true;
         }
         if (this.authenticationService.superiorRole.includes("Partner")) {

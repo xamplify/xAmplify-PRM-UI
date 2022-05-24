@@ -26,11 +26,8 @@ export class PieChartAnalyticsComponent implements OnInit {
   name:any;
   selectedTemplateTypeIndex =0;
   sum:any;
-  displayTime :any;
   show:boolean=true;
   val:any;
-  staticShow :boolean =true;
-  notShow:boolean =false;
   leadCount:number =0;
   dealCount:number =0;
   constructor(public authenticationService: AuthenticationService, public properties: Properties, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
@@ -132,7 +129,6 @@ export class PieChartAnalyticsComponent implements OnInit {
         this.pieChartData=response.data;
         this.loader=false;
         this.statusCode=200;
-        this.notShow =false;
         this.sumMethode(this.pieChartData);
         this.selectedTemplateTypeIndex =1;
     },
@@ -152,9 +148,6 @@ export class PieChartAnalyticsComponent implements OnInit {
     this.stastisticsOfPieChart=response.data;
     self.pieChartData.length != 0;
     this.loader =false;
-    this.staticShow =false;
-    this.notShow =false;
-
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -172,7 +165,6 @@ export class PieChartAnalyticsComponent implements OnInit {
     this.statusCode=200;
     this.pieChartData.length != 0;
     this.loader =false;
-    this.staticShow=false;
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -197,7 +189,6 @@ loadDealPieChart(){
     },
           () =>{this.loadChart(this.pieChartData),
             this.show=true;
-            this.notShow =false;
             this.sumMethode(this.pieChartData)
             this.loader =false;
             this.selectedTemplateTypeIndex =0
@@ -219,7 +210,6 @@ loadDealPieChart(){
       this.statusCode=200;
       this.loader = false;
       this.show=true;
-      this.notShow =false;
       this.pieChartData.length > this.sum;
       this.loadChart(this.pieChartData);
   }
