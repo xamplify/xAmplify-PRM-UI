@@ -1,3 +1,4 @@
+import { CampaignDetailsDto } from 'app/campaigns/models/campaign-details-dto';
 import { Injectable } from '@angular/core';
 import { Http,Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -13,7 +14,7 @@ import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
-declare var swal, $, Promise: any;
+declare var swal:any, $:any, Promise: any;
 @Injectable()
 export class CampaignService {    
    
@@ -1154,6 +1155,24 @@ export class CampaignService {
         .catch(this.handleError);
     }
 
+    /********XNFR-118***********/
+    getCampaignDetailsById(campaignId:number){
+        let userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/getCampaignDetailsById/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /********XNFR-118***********/
+    updateCampaignDetails(campaignDetailsDto:CampaignDetailsDto){
+        let userId = this.authenticationService.getUserId();
+        campaignDetailsDto.userId = userId;
+        let url = this.URL + "campaign/updateCampaignDetails?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url,campaignDetailsDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();
