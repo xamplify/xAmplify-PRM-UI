@@ -15,3 +15,23 @@
     !authenticationService?.module?.isVendorTierAndPartnerTeamMember && !authenticationService?.module?.isMarketingCompany">
   <app-redistributed-campaigns-wordcloud-map [applyFilter]="applyFilter"></app-redistributed-campaigns-wordcloud-map>
 </div>
+
+<div class="portlet light">
+  <div class="portlet-title">
+      <div class="caption">
+          <i class="fa fa-bar-chart" aria-hidden="true"></i>
+          <span class="caption-subject" translate>High Level Anlaytics</span>
+      </div>
+  </div>
+<div class="portlet-body clearfix">
+  <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <app-donut-charts></app-donut-charts>     
+      </div>
+  <!----Opportunity Stats--------->
+  <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6" style="float:right;margin-top: 10px;">
+    <app-horizontal-bat-chart></app-horizontal-bat-chart>
+  </div>
+  </div>
+</div>
+</div>
