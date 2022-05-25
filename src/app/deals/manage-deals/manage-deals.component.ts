@@ -280,6 +280,7 @@ export class ManageDealsComponent implements OnInit {
   }
 
   resetDealsPagination() {
+    this.dealsPagination.maxResults = 12;
     this.dealsPagination = new Pagination;
     this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showFilterOption = false;
