@@ -159,7 +159,7 @@ export class ManageLeadsComponent implements OnInit {
         if (this.authenticationService.superiorRole.includes("Prm")) {
           this.prm = true;
         }
-        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")|| this.authenticationService.superiorRole.includes("Marketing")) {
+        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")|| this.authenticationService.superiorRole.includes("Marketing")|| this.authenticationService.superiorRole.includes("Prm")) {
           this.isVendor = true;
         }
         if (this.authenticationService.superiorRole.includes("Partner")) {
@@ -279,6 +279,7 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   resetLeadsPagination() {
+    this.leadsPagination.maxResults = 12;
     this.leadsPagination = new Pagination;
     this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showFilterOption = false;
@@ -303,9 +304,9 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   showWonLeads() {
-    this.referenceService.loading(this.httpRequestLoader, true);
+   // this.referenceService.loading(this.httpRequestLoader, true);
     this.selectedTabIndex = 2;
-    this.resetLeadsPagination();
+     this.resetLeadsPagination();
     this.leadsPagination.filterKey = "won";
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "won";
@@ -968,7 +969,7 @@ export class ManageLeadsComponent implements OnInit {
         if (fromDate <= toDate) {
           validDates = true;
           this.leadsPagination.pageIndex = 1;
-          this.leadsPagination.maxResults = 12;
+         this.leadsPagination.maxResults = 12;
           this.leadsPagination.fromDateFilterString = this.fromDateFilter;
           this.leadsPagination.toDateFilterString = this.toDateFilter;
         } else {
@@ -983,8 +984,8 @@ export class ManageLeadsComponent implements OnInit {
         else {
           this.leadsPagination.stageFilter = "";
         }
-        this.leadsPagination.pageIndex = 1;
-        this.leadsPagination.maxResults = 12;
+       this.leadsPagination.pageIndex = 1;
+       this.leadsPagination.maxResults = 12;
         this.filterMode = true;
           this.filterResponse.isVisible = false;
           this.listLeads(this.leadsPagination);

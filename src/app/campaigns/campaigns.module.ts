@@ -75,8 +75,7 @@ import { SpfModalPopupComponent } from './spf-modal-popup/spf-modal-popup.compon
     ClickedUrlsVendorAnalyticsComponent,
     UserLevelTimelineComponent,
     UserCampaignsListUtilComponent,
-    SpfModalPopupComponent
-  ],
+    SpfModalPopupComponent  ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService, LeadsService]

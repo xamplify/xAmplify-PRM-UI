@@ -68,8 +68,9 @@
                                                 <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                                     <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                                                 </div>
-                                                <div class="panel-body tab-content" [dragula]='"form-options"' [dragulaModel]='columnInfos'>
+                                                <div class="panel-body tab-content">
                                                     <h5 class="form-name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
+                                                    <div [dragula]='"form-options"' [dragulaModel]='columnInfos'>
                                                     <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
                                                         <div id="form-div" (click)="highLightSelectedColumn(columnInfo)">
                                                             <div id="{{columnInfo.divId}}">
@@ -204,6 +205,7 @@
                                                         <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right" [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
                                                     </ng-template>
                                                 </div>
+                                            </div>
                                                 <!-- End of tab pane active -->
                                             </div>
                                         </div>

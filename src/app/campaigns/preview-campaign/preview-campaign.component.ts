@@ -32,12 +32,10 @@ import { EventCampaign } from '../models/event-campaign';
 import { Router } from '@angular/router';
 import { EmailLog } from '../models/email-log';
 import { CountryNames } from 'app/common/models/country-names';
-
-import { LandingPage } from '../../landing-pages/models/landing-page';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
-import { CampaignType } from '../models/campaign-type';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { utc } from 'moment';
 
 
 
@@ -156,6 +154,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     campaignPartnersOrContactsPreviewError = false;
     socialAccountsLoader = false;
     buttonClicked = false;
+    editButtonClicked = false;
+    selectedCampaignId = 0;
+    /***XNFR-118****/
+    @Input() viewType:string;
+    @Input() categoryId:number;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -207,9 +210,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.campaignType = 'REGULAR';
             } 
             this.getEmailSentCount(this.previewCampaignId);
-            //this.getEmailLogCountByCampaign(this.previewCampaignId);
             this.getCampaignWatchedUsersCount(this.previewCampaignId);
             this.referenceService.loadingPreview = false;
+            this.ngxloading = false;
             $('#myModal').modal('show');
           });
         }else{
@@ -219,10 +222,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }
     setCampaignData(result){
         this.campaign = result;
-        console.log(this.campaign);
         this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
-        // this.contactListPagination.campaignUserListIds = this.campaign.userListIds;
-        // if(this.campaign.userListIds.length>0){ this.loadContactList(this.contactListPagination);}
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
         this.selectedUserlistIds = this.campaign.userListIds;
         this.isChannelCampaign = this.campaign.channelCampaign;
@@ -255,7 +255,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setEventCampaignData(result:EventCampaign){
       this.campaign = result;
       this.isCampaignLaunched = this.campaign.launched;
-      console.log(this.campaign);
       this.campaign.emailTemplate = result.emailTemplateDTO;
       this.campaign.launchTimeInString = new Date(result.launchTimeInString);
       if(!this.campaign.emailTemplate) { this.campaign.emailTemplate = new EmailTemplate(); }
@@ -813,6 +812,22 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     editCampaign(campaign: any) {
       this.ngxloading = true;
       this.campaignErrorResponse = new CustomResponse();
+      if(campaign.launched){
+        this.editButtonClicked = true;
+        this.selectedCampaignId = this.previewCampaignId;
+        this.ngxloading = false;
+    }else{
+        if(campaign.campaignType.indexOf('SOCIAL') > -1){
+            this.ngxloading = false;
+            this.customResponse = new CustomResponse();
+            this.referenceService.showSweetAlertErrorMessage('Please try after sometime to edit this campaign');
+        }else{
+            this.editCampaignsToLaunch(campaign);
+        }
+    }
+    }
+
+    editCampaignsToLaunch(campaign:any){
       if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
         this.editCampaignPagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         this.editCampaignPagination.vanityUrlFilter = true;
@@ -845,6 +860,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           .subscribe(
           data => {
             this.campaignService.campaign = data;
+            let endDate = this.campaignService.campaign.endDate;
+            if (endDate != undefined && endDate != null) {
+                this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+            }
             const isLaunched = this.campaignService.campaign.launched;
             const isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
             if (isLaunched) {
@@ -862,12 +881,14 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               }
             }
           },
-          error => {this.ngxloading = false; console.error(error) },
-          () => console.log()
-          )
+          error => {
+            this.ngxloading = false; 
+           });
         this.isScheduledCampaignLaunched = false;
       }
     }
+
+
     isPartnerGroupSelected(campaignId:number,eventCamaign:boolean){
       this.editCampaignPagination.campaignId = campaignId;
       this.editCampaignPagination.userId = this.loggedInUserId;
@@ -1544,4 +1565,22 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
       this.referenceService.goToRouter(prefixUrl + "/p/" + suffixUrl);
     }
   }
+
+  /*****XNFR-118********/
+  resetValues(event:any){
+    this.ngxloading = true;
+    if("updated"==event){
+      this.getCampaignById();
+      if("folderList"==this.viewType || this.categoryId!=undefined && this.categoryId>0){
+        this.closeNotifyParent.emit({'updated':true});
+      }
+    }else{
+      this.ngxloading = false;
+    }
+    this.selectedCampaignId = 0;
+    this.editButtonClicked = false;
+}
+
+
+
 }

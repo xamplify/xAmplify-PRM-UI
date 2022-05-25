@@ -16,4 +16,5 @@ export class Pipeline {
     isValidName = false;
     isValidStage = false;
     default = false;
+    salesforcePipeline = false;
 }
