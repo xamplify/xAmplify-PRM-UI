@@ -3,7 +3,7 @@
 <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="col-xs-12 col-sm-12"  style="padding: 0">
     <div class="col-xs-12">
-  
+    
             <div class="portlet-body">
                 <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
                 <ng-container *ngIf="!loader && statusCode!=200">
@@ -22,5 +22,6 @@
                   </div>
                 
             </div>
+  
        </div>
 </div> 
