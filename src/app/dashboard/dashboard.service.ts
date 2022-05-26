@@ -709,14 +709,14 @@ export class DashboardService {
 
    /********High Level analytics******* */
    findActivePartnersAndInActivePartnersForDonutChart(vanityLoginDto:VanityLoginDto){
-    const url = this.authenticationService.REST_URL + 'dashboard/views/getActiveAndInActivePartnersForDonut?access_token=' + this.authenticationService.access_token;
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/getActiveAndInActivePartnersForDonut?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
    }
 
    findLaunchedAndRedistributedCampiagnsForBarChart(vanityLoginDto:VanityLoginDto){
-    const url = this.authenticationService.REST_URL + 'dashboard/views/getLaunchedAndRedistributedCampaignsForBarChart?access_token=' + this.authenticationService.access_token;
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/getLaunchedAndRedistributedCampaignsForBarChart?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);

@@ -15,7 +15,9 @@
     !authenticationService?.module?.isVendorTierAndPartnerTeamMember && !authenticationService?.module?.isMarketingCompany">
   <app-redistributed-campaigns-wordcloud-map [applyFilter]="applyFilter"></app-redistributed-campaigns-wordcloud-map>
 </div>
+
 <div class="clearfix">
+<div class="portlet light">
   <div class="portlet-title" style="min-height: 0px;">
       <div class="caption">
           <span class="caption-subject" translate>High Level Anlaytics</span>
@@ -24,8 +26,8 @@
 <div class="portlet-body clearfix">
   <div class="row">
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <app-donut-charts [applyFilter]="applyFilter"></app-donut-charts>   
-        <app-horizontal-bat-chart [applyFilter]="applyFilter"></app-horizontal-bat-chart>  
+        <app-donut-charts  [applyFilter]="applyFilter"></app-donut-charts> 
+        <app-horizontal-bat-chart [applyFilter]="applyFilter"></app-horizontal-bat-chart> 
       </div>
   <!----Opportunity Stats--------->
   <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6" style="float:right;">
@@ -35,3 +37,4 @@
   </div>
 </div>
 </div>
+</div> 

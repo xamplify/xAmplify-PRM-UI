@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Properties } from 'app/common/models/properties';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
@@ -9,7 +10,8 @@ declare var Highcharts: any;
 @Component({
   selector: 'app-donut-charts',
   templateUrl: './donut-chart.component.html',
-  styleUrls: ['./donut-chart.component.css']
+  styleUrls: ['./donut-chart.component.css'],
+  providers: [ Properties,HttpRequestLoader]
 })
 export class DonutChartComponent implements OnInit {
   loader = false;
@@ -68,7 +70,6 @@ loadDonutChart(donutData :any){
         type: 'pie',
         options3d: {
             enabled: false,
-            alpha: 45
         }
     },
     title: {
@@ -77,14 +78,22 @@ loadDonutChart(donutData :any){
     subtitle: {
         text: ''
     },
+    legend: {
+      reversed: true
+  },
     plotOptions: {
         pie: {
-            innerSize: 100,
-            depth: 45
+            innerSize: 70,
+            depth: 10
         }
-    },credits: {
+    },
+    credits: {
                 enabled: false
             },
+    colors: [
+              "#E87E04",
+              "#8a8282c4"
+            ],
     series: [{
         name: 'Count',
         data: this.donutData

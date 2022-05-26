@@ -4,26 +4,27 @@ import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
+import { FunnelChartsAnalyticsDto } from 'app/dashboard/models/funnel-charts-analytics-dto';
+import { HighLevelCampaignsDto } from 'app/dashboard/models/high-level-campaigns-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
  declare var Highcharts :any;
 @Component({
   selector: 'app-horizontal-bat-chart',
   templateUrl: './horizontal-bat-chart.component.html',
-  styleUrls: ['./horizontal-bat-chart.component.css']
+  styleUrls: ['./horizontal-bat-chart.component.css'],
+  providers: [Properties,HttpRequestLoader]
 })
 export class HorizontalBatChartComponent implements OnInit {
   loader =false;
   statusCode =200;
-  horizontalBarData =[];
-  ///name:string;
-  //count:number;
+  horizontalBarData:any;
   campaign='Campaigns';
-  //empList: Array<{name: string, count: number}> = [];
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
   vanityLogin = false;
   @Input()applyFilter:boolean;
+
   constructor(public authenticationService: AuthenticationService, public properties: Properties,
      public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
     public router: Router,public httpRequestLoader: HttpRequestLoader) {
@@ -43,7 +44,7 @@ export class HorizontalBatChartComponent implements OnInit {
   }
 
   findHorizontalBarChart(){
-    this.loader =false;
+    this.loader =true;
     this.dashboardService.findLaunchedAndRedistributedCampiagnsForBarChart(this.vanityLoginDto)
     .subscribe(
       (response) =>{
@@ -89,13 +90,20 @@ export class HorizontalBatChartComponent implements OnInit {
     credits: {
                 enabled: false
             },
-    series: [{
-      name: 'Lunched',
-      data: [5]
-  }, {
-      name: 'Redistributed',
-      data: [2]
-    },]
+    colors: [
+              "#8877a9",
+              "#3faba4"
+            ],
+    series: [
+      {
+        name: 'Redistributed',
+        data: [this.horizontalBarData.redistributedCampaignsCount]
+      },
+      {
+      name: 'Launched',
+      data: [this.horizontalBarData.launchedCampaignsCount]
+    }
+   ]
 });
  }
 }
