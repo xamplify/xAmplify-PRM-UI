@@ -79,6 +79,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 
 	expandShareLeadsDiv(partner:any){
 		this.selectedPartnershipId = partner.partnershipId;
+		this.selectedShareLeadsListIds = [];
 		$("input:radio[name=one-launch-campaign-partner-company]").attr("disabled",false);
 		$('#one-launch-campaign-radio-'+partner.partnershipId).attr("disabled",true);
 		if(!partner.expand){
@@ -148,6 +149,27 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		this.findShareLeads(this.shareLeadsPagination);
 	}
 	shareLeadsEventHandler(keyCode: any) { if (keyCode === 13) { this.searchShareLeadsList(); } }
+
+	/*****CheckBox Code******/
+	selectOrUnselectAllRowsOfTheCurrentPage(event:any,partnershipId:number){
+		if (event.target.checked) {
+			$('[name="oneClickShareLeadsCheckBox[]"]').prop('checked', true);
+			let self = this;
+			$('[name="oneClickShareLeadsCheckBox[]"]:checked').each(function (_index: number) {
+				var id = $(this).val();
+				self.selectedShareLeadsListIds.push(parseInt(id));
+				$('#one-click-share-leads-tr-' + id).addClass('xamp-tr-selected');
+			});
+			this.selectedShareLeadsListIds = this.referenceService.removeDuplicates(this.selectedShareLeadsListIds);
+			this.selectedPartnershipId = partnershipId;
+		} else {
+			$('[name="oneClickShareLeadsCheckBox[]"]').prop('checked', false);
+			this.selectedShareLeadsListIds = this.referenceService.removeDuplicates(this.selectedShareLeadsListIds);
+			let currentPageSelectedIds = this.shareLeadsPagination.pagedItems.map(function (a) { return a.id; });
+			this.selectedShareLeadsListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedShareLeadsListIds, currentPageSelectedIds);
+		}
+		event.stopPropagation();
+	}
 
 	previewLeads(shareLead:any){
 		this.selectedListId = shareLead.id;
