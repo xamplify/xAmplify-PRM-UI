@@ -1,22 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Properties } from 'app/common/models/properties';
-import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
-declare var Highcharts: any;
+
 @Component({
-  selector: 'app-donut-charts',
-  templateUrl: './donut-chart.component.html',
-  styleUrls: ['./donut-chart.component.css'],
-  providers: [ Properties,HttpRequestLoader]
+  selector: 'app-highlevel-analytics-detail-reports',
+  templateUrl: './highlevel-analytics-detail-reports.component.html',
+  styleUrls: ['./highlevel-analytics-detail-reports.component.css']
 })
-export class DonutChartComponent implements OnInit {
+export class HighlevelAnalyticsDetailReportsComponent implements OnInit {
+
   loader = false;
   statusCode = 200;
-  donutData:Array<any>=[]
+  detailReports:any;
   @Input() applyFilter: boolean;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
@@ -39,19 +38,17 @@ export class DonutChartComponent implements OnInit {
   }
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
-    this.findDonutChart();
+    this.findHighLevelDetailReports();
   }
 
-  findDonutChart(){
+  findHighLevelDetailReports(){
     this.loader = true;
-    this.dashboardService.findActivePartnersAndInActivePartnersForDonutChart(this.vanityLoginDto)
+    this.dashboardService.findHighLevelAnalyticsOfDetailReports(this.vanityLoginDto)
     .subscribe(
       (response) => {
-    this.donutData =response.data;
+    this.detailReports =response.data;
     this.loader =false;
     this.statusCode =200;
-    this.loadDonutChart(this.donutData);
-
   },
   (error) => {
     this.xtremandLogger.error(error);
@@ -62,43 +59,4 @@ export class DonutChartComponent implements OnInit {
 }
 
 
-loadDonutChart(donutData :any){
-  this.loader =false;
-  this.statusCode =200;
-
-  Highcharts.chart('donut-chart-container', {
-    chart: {
-        type: 'pie',
-        options3d: {
-            enabled: false,
-        }
-    },
-    title: {
-        text: ''
-    },
-    subtitle: {
-        text: ''
-    },
-    legend: {
-      reversed: true
-  },
-    plotOptions: {
-        pie: {
-            innerSize: 70,
-            depth: 10
-        }
-    },
-    credits: {
-                enabled: false
-            },
-    // colors: [
-    //           "#E87E04",
-    //           "#8a8282c4"
-    //         ],
-    series: [{
-        name: 'Count',
-        data: this.donutData
-    }]
-});
-}
 }

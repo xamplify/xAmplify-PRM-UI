@@ -90,10 +90,10 @@ export class HorizontalBatChartComponent implements OnInit {
     credits: {
                 enabled: false
             },
-    colors: [
-              "#8877a9",
-              "#3faba4"
-            ],
+    // colors: [
+    //           "#8877a9",
+    //           "#3faba4"
+    //         ],
     series: [
       {
         name: 'Redistributed',

@@ -78,6 +78,7 @@ import { PieChartStatisticsBarGraphComponent } from './dashboard-analytics-compo
 import { MarketingRoleRequestsComponent } from './marketing-role-requests/marketing-role-requests.component';
 import { DonutChartComponent } from './dashboard-analytics-components/donut-chart/donut-chart.component';
 import { HorizontalBatChartComponent } from './dashboard-analytics-components/horizontal-bat-chart/horizontal-bat-chart.component';
+import { HighlevelAnalyticsDetailReportsComponent } from './dashboard-analytics-components/highlevel-analytics-detail-reports/highlevel-analytics-detail-reports.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -132,6 +133,7 @@ import { HorizontalBatChartComponent } from './dashboard-analytics-components/ho
         MarketingRoleRequestsComponent,
         DonutChartComponent,
         HorizontalBatChartComponent,
+        HighlevelAnalyticsDetailReportsComponent,
         
        
 

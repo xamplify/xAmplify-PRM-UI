@@ -722,4 +722,13 @@ export class DashboardService {
     .catch(this.handleError);
    }
 
+
+   findHighLevelAnalyticsOfDetailReports(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+
 }
