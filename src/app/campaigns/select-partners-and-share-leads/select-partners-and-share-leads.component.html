@@ -34,7 +34,7 @@
                     <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
                         <tr [class.xamp-tr-selected]="selectedPartnershipId==partner.partnershipId">
                             <td class="cw">
-                                <input class="form-control" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" (click)="expandShareLeadsDiv(partner)">
+                                <input class="form-control" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" (click)="selectPartnerCompanyAndExpandShareLeadsList(partner)">
                             </td>
                             <td style="width: 10%;" title="{{partner?.companyName}}">
                                 <div class="thumbnail-wrapper">
@@ -100,9 +100,10 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr *ngFor="let shareLead of shareLeadsPagination.pagedItems;let i = index;" id="one-click-share-leads-tr-{{shareLead.id}}" [class.xamp-tr-selected]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" (click)="highlightSelectedShareLeadsListRowOnRowClick(shareLead.id,partner.partnershipId,$event)" >
+                                                <tr *ngFor="let shareLead of shareLeadsPagination.pagedItems;let i = index;" id="one-click-share-leads-tr-{{shareLead.id}}" [class.xamp-tr-selected]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" (click)="highlightSelectedShareListOnRowClick(shareLead.id,partner.partnershipId,$event)" >
                                                     <td class="text-center">
-                                                        <input type="checkbox" id="{{shareLead.id}}" [title]="selectedPartnershipId!=partner.partnershipId ? 'Please select company':''" [disabled]="selectedPartnershipId!=partner.partnershipId"  [checked]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" name="oneClickShareLeadsCheckBox[]"   value="{{shareLead.id}}" (click)="highlightSelectedShareLeadsListRowOnCheckBoxClick(shareLead.id,partner.partnershipId,$event)">
+                                                        <input type="checkbox" id="{{shareLead.id}}" [title]="selectedPartnershipId!=partner.partnershipId ? 'Please select company':''" [disabled]="selectedPartnershipId!=partner.partnershipId"  [checked]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" name="oneClickShareLeadsCheckBox[]"   
+                                                        value="{{shareLead.id}}" (click)="$event.stopPropagation();highlightShareListRowOnCheckBoxClick(shareLead.id,partner.partnershipId,$event)">
                                                     </td>
 
                                                     <td style="width: 10%;" class="hidden-xs">
@@ -145,8 +146,8 @@
                                                         <app-display-date-and-time [dateAndTimeUTCString]="shareLead?.createdDate"></app-display-date-and-time>
                                                     </td>
                                                     <td class="text-center">
-                                                        <div class="actions-block float-none">
-                                                            <a title="Preview" (click)="previewLeads(shareLead)">
+                                                        <div [className]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
+                                                            <a title="Preview" (click)="$event.stopPropagation();previewLeads(shareLead)">
                                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                                             </a>
                                                         </div>

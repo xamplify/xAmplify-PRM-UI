@@ -76,8 +76,8 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		this.findPartnerCompanies(this.pagination);
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartnerCompanies(); } }
-
-	expandShareLeadsDiv(partner:any){
+	/***Select The Radio Button And Expand The List*/
+	selectPartnerCompanyAndExpandShareLeadsList(partner:any){
 		this.selectedPartnershipId = partner.partnershipId;
 		this.selectedShareLeadsListIds = [];
 		$("input:radio[name=one-launch-campaign-partner-company]").attr("disabled",false);
@@ -85,6 +85,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		if(!partner.expand){
 			this.viewShareLeads(partner);
 		}
+		this.sendSelectedValuesToOtherComponent();
 	}
 
 	viewShareLeads(partner:any){
@@ -148,6 +149,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		this.shareLeadsPagination.pageIndex = 1;
 		this.findShareLeads(this.shareLeadsPagination);
 	}
+
 	shareLeadsEventHandler(keyCode: any) { if (keyCode === 13) { this.searchShareLeadsList(); } }
 
 	/*****CheckBox Code******/
@@ -169,8 +171,23 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 			this.selectedShareLeadsListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedShareLeadsListIds, currentPageSelectedIds);
 		}
 		event.stopPropagation();
+		this.sendSelectedValuesToOtherComponent();
 	}
 
+	highlightSelectedShareListOnRowClick(shareLeadsListId: any,partnershipId:number, event: any) {
+		let shareLeadsListTableId = "one-click-share-leads-"+partnershipId;
+		this.referenceService.highlightRowOnRowCick('one-click-share-leads-tr', shareLeadsListTableId, 'oneClickShareLeadsCheckBox', this.selectedShareLeadsListIds, 'one-click-share-leads-header-checkbox-id', shareLeadsListId, event);
+		this.sendSelectedValuesToOtherComponent();
+	}
+	
+	highlightShareListRowOnCheckBoxClick(shareLeadsListId: any,partnershipId:number, event: any) {
+		let shareLeadsListTableId = "one-click-share-leads-"+partnershipId;
+		this.referenceService.highlightRowByCheckBox('one-click-share-leads-tr', shareLeadsListTableId, 'oneClickShareLeadsCheckBox', this.selectedShareLeadsListIds, 'one-click-share-leads-header-checkbox-id', shareLeadsListId, event);
+		this.sendSelectedValuesToOtherComponent();
+	}
+	
+
+	
 	previewLeads(shareLead:any){
 		this.selectedListId = shareLead.id;
 		this.selectedListName = shareLead.name;
@@ -181,5 +198,12 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		this.selectedListId = 0;
 		this.selectedListName = "";
 		this.showLeadsPreview = false;
+	}
+
+	sendSelectedValuesToOtherComponent(){
+		let emitterObject = {};
+		emitterObject['selectedShareListIds'] = this.selectedShareLeadsListIds;
+		emitterObject['selectedPartnershipId'] = this.selectedPartnershipId;
+		this.selectPartnersAndShareLeadsEmitter.emit(emitterObject);
 	}
 }
