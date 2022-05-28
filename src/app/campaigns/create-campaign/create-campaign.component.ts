@@ -321,7 +321,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     showEditTemplateMessageDiv = false;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     endDatePickr: any;
+    /***XNFR-125****/
     oneClickLaunch = false;
+    selectedPartnershipId = 0;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -1087,10 +1089,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.campaign.oneClickLaunch = event;
         this.contactsPagination.pageIndex = 1;
         this.contactsPagination.maxResults = 12;
-        this.clearSelectedContactList();
-        if(event){
-
-        }else{
+        this.selectedContactListIds = [];
+        this.userListDTOObj = [];
+        this.isContactList = false;
+        this.selectedPartnershipId = 0;
+        if(!event){
             this.loadContacts();
         }
     }
@@ -2232,7 +2235,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             'viewInBrowserTag': this.campaign.viewInBrowserTag,
             'unsubscribeLink': this.campaign.unsubscribeLink,
             'endDate': this.campaign.endDate,
-            'clientTimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+            'clientTimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone,
+            /****XNFR-125****/
+            "oneClickLaunch":this.campaign.oneClickLaunch,
+            'partnershipId':this.selectedPartnershipId,
         };
         return data;
     }
@@ -3633,11 +3639,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
     /***XNFR-125*****/
     getSelectedPartnerCompanyIdAndShareLeads(event:any){
-		console.log(event);
-    }
-
-    findShareLeadsByPartnerCompanyId(partnerCompanyId){
-
+        this.selectedPartnershipId = event['selectedPartnershipId'];
+        this.selectedContactListIds = event['selectedShareListIds'];
+        this.isContactList = this.selectedPartnershipId>0 && this.selectedContactListIds.length>0;
     }
 
     
