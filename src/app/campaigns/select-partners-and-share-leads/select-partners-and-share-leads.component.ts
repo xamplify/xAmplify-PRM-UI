@@ -1,4 +1,4 @@
-import { Component, OnInit,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
@@ -32,8 +32,8 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   shareLeadsLoader:HttpRequestLoader = new HttpRequestLoader();
   isHeaderCheckBoxChecked = false;
   shareLeadsErrorMessage:CustomResponse = new CustomResponse();
-  selectedShareLeadsListIds =  [];
-  selectedPartnershipId = 0;
+  @Input()selectedShareLeadsListIds =  [];
+  @Input()selectedPartnershipId = 0;
   showLeadsPreview = false;
   selectedListName = "";
   selectedListId = 0;
@@ -42,6 +42,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 
   ngOnInit() {
     this.findPartnerCompanies(this.pagination);
+	this.disableThePartnerCompanyRadioButton();
   }
 
   findPartnerCompanies(pagination: Pagination) {
@@ -81,11 +82,18 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		this.selectedPartnershipId = partner.partnershipId;
 		this.selectedShareLeadsListIds = [];
 		$("input:radio[name=one-launch-campaign-partner-company]").attr("disabled",false);
-		$('#one-launch-campaign-radio-'+partner.partnershipId).attr("disabled",true);
+		this.disableThePartnerCompanyRadioButton();
 		if(!partner.expand){
 			this.viewShareLeads(partner);
 		}
 		this.sendSelectedValuesToOtherComponent();
+	}
+
+	disableThePartnerCompanyRadioButton(){
+		if(this.selectedPartnershipId!=undefined && this.selectedPartnershipId>0){
+			$('#one-launch-campaign-radio-'+this.selectedPartnershipId).attr("disabled",true);
+		}
+		
 	}
 
 	viewShareLeads(partner:any){

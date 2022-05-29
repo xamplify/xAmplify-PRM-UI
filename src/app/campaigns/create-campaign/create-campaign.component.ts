@@ -455,6 +455,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length - 1];
                 this.isCampaignDraftContactList = true;
             }
+            /****XNFR-125****/
+            this.selectedPartnershipId = this.campaign.partnershipId;
             /***********Select Email Template Tab*************************/
             var selectedTemplateId = this.campaignService.campaign.selectedEmailTemplateId;
             if (selectedTemplateId > 0) {

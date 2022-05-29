@@ -34,7 +34,7 @@
                     <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
                         <tr [class.xamp-tr-selected]="selectedPartnershipId==partner.partnershipId">
                             <td class="cw">
-                                <input class="form-control" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" (click)="selectPartnerCompanyAndExpandShareLeadsList(partner)">
+                                <input class="form-control" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" [disabled]="selectedPartnershipId==partner.partnershipId" (click)="selectPartnerCompanyAndExpandShareLeadsList(partner)">
                             </td>
                             <td style="width: 10%;" title="{{partner?.companyName}}">
                                 <div class="thumbnail-wrapper">

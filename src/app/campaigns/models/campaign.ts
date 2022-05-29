@@ -97,4 +97,5 @@ export class Campaign {
     endDateInUtcString: string;
     clientTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
     oneClickLaunch = false;
+    partnershipId = 0;
 }
