@@ -4,8 +4,6 @@ import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
-import { FunnelChartsAnalyticsDto } from 'app/dashboard/models/funnel-charts-analytics-dto';
-import { HighLevelCampaignsDto } from 'app/dashboard/models/high-level-campaigns-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
  declare var Highcharts :any;
