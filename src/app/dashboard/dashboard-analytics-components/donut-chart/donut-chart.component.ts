@@ -20,6 +20,7 @@ export class DonutChartComponent implements OnInit {
   @Input() applyFilter: boolean;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
+  val:any;
   vanityLogin = false;
   constructor(
     public authenticationService: AuthenticationService,
@@ -48,9 +49,19 @@ export class DonutChartComponent implements OnInit {
     .subscribe(
       (response) => {
     this.donutData =response.data;
+    this.val=this.donutData.map(t=>t[1]);
+    let sum = this.val.reduce(function (a, b) {
+    return a + b;
+    }, 0);
+    if(sum === 0){
+      this.donutData.length = 0;
+      this.loader =false;
+    }
+    else{
     this.loader =false;
     this.statusCode =200;
     this.loadDonutChart(this.donutData);
+    }
 
   },
   (error) => {

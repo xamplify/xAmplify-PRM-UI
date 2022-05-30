@@ -22,6 +22,7 @@ export class HorizontalBatChartComponent implements OnInit {
   campaign='Campaigns';
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
+  val: any;
   vanityLogin = false;
   @Input()applyFilter:boolean;
 
@@ -49,9 +50,16 @@ export class HorizontalBatChartComponent implements OnInit {
     .subscribe(
       (response) =>{
          this.horizontalBarData =response.data;
+         this.val=this.horizontalBarData.redistributedCampaignsCount+this.horizontalBarData.launchedCampaignsCount
+         if(this.val === 0){
+           this.horizontalBarData.length = 0;
+           this.loader =false;
+         }
+         else{
          this.loader =false;
          this.statusCode =200;
          this.loadHorizontalBarChart(this.horizontalBarData);
+         }
       },
       (error) => {
         this.xtremandLogger.error(error);
