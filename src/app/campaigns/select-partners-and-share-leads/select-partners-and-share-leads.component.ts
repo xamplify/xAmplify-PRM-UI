@@ -34,6 +34,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   shareLeadsErrorMessage:CustomResponse = new CustomResponse();
   @Input()selectedShareLeadsListIds =  [];
   @Input()selectedPartnershipId = 0;
+  @Input()campaignId = 0;
   showLeadsPreview = false;
   selectedListName = "";
   selectedListId = 0;
@@ -41,6 +42,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
   ngOnInit() {
+	
     this.findPartnerCompanies(this.pagination);
 	this.disableThePartnerCompanyRadioButton();
   }
@@ -48,7 +50,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   findPartnerCompanies(pagination: Pagination) {
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.partnerService.loadPartnerCompanies(pagination,this.authenticationService.getUserId()).
-    subscribe((result: any) => {
+    	subscribe((result: any) => {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
@@ -119,6 +121,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 	findShareLeads(pagination:Pagination){
 		this.referenceService.loading(this.shareLeadsLoader, true);
 		pagination.channelCampaign = true;
+		pagination.campaignId = this.campaignId;
 		this.contactService.loadAssignedLeadsLists(pagination).
 		subscribe(
 			(data:any)=>{
