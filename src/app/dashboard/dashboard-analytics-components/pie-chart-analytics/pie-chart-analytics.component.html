@@ -18,46 +18,41 @@
                          <strong>No Data Found</strong>
                      </div>
                 </div>
-               <div >
-             
-                
-                <div [hidden]="loader">
-                   
-                  <figure class="highcharts-figure-pie" *ngIf="show">
-                    <div  id="container" >   
-                    </div>
-                    
-                 
-                </figure>
-            </div>
-            <div class="row" style="display: flex">
-              <div class="col-xs-12 col-sm-4 col-md-4 p10" *ngFor="let request of stastisticsOfPieChart; let  i = index">
-            <div class="portlet light" *ngIf="request.nameOfPie === 'Contact to Lead Ratio' || request.nameOfPie === 'Opportunity Amount' ">
-                      <b>{{request.nameOfPie}}</b>
-                      <br>
-                      {{request.weightOfPie}}
-              </div>
-              <div class="portlet light" *ngIf="request.nameOfPie === 'Lead to Deal Ratio' ">
-                <b>{{request.nameOfPie}}</b>
-                <br>
-                {{request.weightOfPie}}
-        </div>
-                  <div class="portlet light"   *ngIf="request.nameOfPie === 'Updated Lead Time' || request.nameOfPie === 'Updated Deal Time' ">
-                      <strong>{{request.nameOfPie}}</strong>
-                      <br>
-                      <div *ngIf="request.weightOfPie != '-'"> 
-                  <app-display-date-and-time [dateAndTimeUTCString]="request.weightOfPie"></app-display-date-and-time>
+               <div>
+                  <div [hidden]="loader">
+                    <figure class="highcharts-figure-pie" *ngIf="show">
+                      <div  id="container">   
+                      </div>
+                  </figure>
                   </div>
-                  <div *ngIf="request.weightOfPie === '-'">
-                               {{request.weightOfPie}}
+                  <app-modal-popup-loader *ngIf="statisticsLoader" [height]="75"  ></app-modal-popup-loader>
+                  <div *ngIf="!statisticsLoader"  class="row" style="display: flex">
+                    <div  class="col-xs-12 col-sm-4 col-md-4 p10" *ngFor="let request of stastisticsOfPieChart; let  i = index">
+                      <div class="portlet light" *ngIf="request.nameOfPie === 'Contact to Lead Ratio' || request.nameOfPie === 'Opportunity Amount' ">
+                        <b>{{request.nameOfPie}}</b>
+                        <br>
+                        {{request.weightOfPie}}
+                      </div>
+                        <div class="portlet light" *ngIf="request.nameOfPie === 'Lead to Deal Ratio' ">
+                          <b>{{request.nameOfPie}}</b>
+                          <br>
+                          {{request.weightOfPie}}
+                        </div>
+                        <div class="portlet light"   *ngIf="request.nameOfPie === 'Updated Lead Time' || request.nameOfPie === 'Updated Deal Time' ">
+                            <strong>{{request.nameOfPie}}</strong>
+                            <br>
+                            <div *ngIf="request.weightOfPie != '-'"> 
+                        <app-display-date-and-time [dateAndTimeUTCString]="request.weightOfPie"></app-display-date-and-time>
+                        </div>
+                        <div *ngIf="request.weightOfPie === '-'">
+                                      {{request.weightOfPie}}
+                        </div>
+                        </div>
+                      </div>
                   </div>
-                  </div>
-              </div>
-            </div>
                 </div>
                  <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> 
             </div>
-            <!-- <app-funnel-chart-analytics [hidden]="!show"  #count ></app-funnel-chart-analytics>  -->
         </div>
     </div>
 </div>
