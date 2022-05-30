@@ -102,10 +102,10 @@ loadDonutChart(donutData :any){
     credits: {
                 enabled: false
             },
-    // colors: [
-    //           "#E87E04",
-    //           "#8a8282c4"
-    //         ],
+    colors: [
+              "#E87E04",
+              "#8a8282c4"
+            ],
     series: [{
         name: 'Count',
         data: this.donutData

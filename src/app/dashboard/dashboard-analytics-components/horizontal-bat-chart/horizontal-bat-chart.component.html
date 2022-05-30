@@ -1,6 +1,6 @@
 
 <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="col-xs-12 col-sm-12"  style="padding: 0">
+<div class="col-xs-12 col-sm-12"  style="padding: 0" *ngIf="!authenticationService?.module?.isPrm">
     <div class="col-xs-12">
     
             <div class="portlet-body">
