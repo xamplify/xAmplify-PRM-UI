@@ -706,7 +706,7 @@ export class DashboardService {
     .map(this.extractData)
     .catch(this.handleError);
    }
-
+    /********* XNFR-127 *************/
    /********High Level analytics******* */
    findActivePartnersAndInActivePartnersForDonutChart(vanityLoginDto:VanityLoginDto){
     const url = this.authenticationService.REST_URL + 'highlevel/analytics/getActiveAndInActivePartnersForDonut?access_token=' + this.authenticationService.access_token;
@@ -722,9 +722,28 @@ export class DashboardService {
     .catch(this.handleError);
    }
 
+   findHighLevelAnalyticsOfDetailReportsForTotalPartners(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/totalPartners?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+   findHighLevelAnalyticsOfDetailReportsForOnboardPartners(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/onboardPartners?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
-   findHighLevelAnalyticsOfDetailReports(vanityLoginDto:VanityLoginDto){
-    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports?access_token=' + this.authenticationService.access_token;
+   findHighLevelAnalyticsOfDetailReportsForActivePartners(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/activePartners?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   findHighLevelAnalyticsOfDetailReportsForInActivePartners(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/inActivePartners?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);

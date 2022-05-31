@@ -47,7 +47,8 @@ export class HorizontalBatChartComponent implements OnInit {
     .subscribe(
       (response) =>{
          this.horizontalBarData =response.data;
-         this.totalCount=this.horizontalBarData.redistributedCampaignsCount+this.horizontalBarData.launchedCampaignsCount
+         this.totalCount=this.horizontalBarData.redistributedCampaignsCount
+         +this.horizontalBarData.throughCampaignsCount+this.horizontalBarData.toCampaignsCount
          if(this.totalCount>0){
           this.loadHorizontalBarChart(this.horizontalBarData);
          }
@@ -73,7 +74,9 @@ export class HorizontalBatChartComponent implements OnInit {
         categories: [this.campaign]
     },
     yAxis: {
-        min: 0,
+        labels: {
+        enabled: false
+        },
         title: {
             text: ''
         }
@@ -89,14 +92,24 @@ export class HorizontalBatChartComponent implements OnInit {
     credits: {
                 enabled: false
             },
+            colors:[
+              "#8877a9",
+              "#3faba4",
+              "#008fd5"
+            ],
     series: [
       {
         name: 'Redistributed',
         data: [this.horizontalBarData.redistributedCampaignsCount]
       },
       {
-      name: 'Launched',
-      data: [this.horizontalBarData.launchedCampaignsCount]
+        name: 'ThroughCampaigns',
+        data: [this.horizontalBarData.throughCampaignsCount]
+
+      },
+      {
+      name: 'ToCampaigns',
+      data: [this.horizontalBarData.toCampaignsCount]
     }
    ]
 });

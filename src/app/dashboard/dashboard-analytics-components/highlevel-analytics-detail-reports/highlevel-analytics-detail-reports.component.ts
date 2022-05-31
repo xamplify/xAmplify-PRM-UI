@@ -9,13 +9,17 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 @Component({
   selector: 'app-highlevel-analytics-detail-reports',
   templateUrl: './highlevel-analytics-detail-reports.component.html',
-  styleUrls: ['./highlevel-analytics-detail-reports.component.css']
+  styleUrls: ['./highlevel-analytics-detail-reports.component.css'],
+  providers: [Properties]
 })
 export class HighlevelAnalyticsDetailReportsComponent implements OnInit {
 
   loader = false;
   statusCode = 200;
-  detailReports:any;
+  detailReportsForOnboardPartners:any;
+  detailReportsForActivePartners:any;
+  detailReportsForInActivePartners: any;
+  detailReportsForTotalPartners: any;
   @Input() applyFilter: boolean;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
@@ -38,15 +42,18 @@ export class HighlevelAnalyticsDetailReportsComponent implements OnInit {
   }
   ngOnInit() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
-    this.findHighLevelDetailReports();
+    this.findHighLevelDetailReportsForOnboardPartners()
+    this.findHighLevelDetailReportsForActivePartners();
+    this.findHighLevelDetailReportsForTotalPartners();
+    this.findHighLevelDetailReportsForInActivePartners();
   }
 
-  findHighLevelDetailReports(){
+  findHighLevelDetailReportsForOnboardPartners(){
     this.loader = true;
-    this.dashboardService.findHighLevelAnalyticsOfDetailReports(this.vanityLoginDto)
+    this.dashboardService.findHighLevelAnalyticsOfDetailReportsForOnboardPartners(this.vanityLoginDto)
     .subscribe(
       (response) => {
-    this.detailReports =response.data;
+    this.detailReportsForOnboardPartners =response.data;
     this.loader =false;
     this.statusCode =200;
   },
@@ -58,5 +65,49 @@ export class HighlevelAnalyticsDetailReportsComponent implements OnInit {
   );
 }
 
-
+//For Active Partners
+findHighLevelDetailReportsForActivePartners(){
+  this.loader = true;
+  this.dashboardService.findHighLevelAnalyticsOfDetailReportsForActivePartners(this.vanityLoginDto)
+  .subscribe(
+    (response) => {
+  this.detailReportsForActivePartners =response.data;
+  this.loader =false;
+  this.statusCode =200;
+},
+(error) => {
+  this.xtremandLogger.error(error);
+  this.loader = false;
+  this.statusCode = 0;
+});};
+/************ For InActive Partner ************/
+findHighLevelDetailReportsForInActivePartners(){
+  this.loader = true;
+  this.dashboardService.findHighLevelAnalyticsOfDetailReportsForInActivePartners(this.vanityLoginDto)
+  .subscribe(
+    (response) => {
+  this.detailReportsForInActivePartners =response.data;
+  this.loader =false;
+  this.statusCode =200;
+},
+(error) => {
+  this.xtremandLogger.error(error);
+  this.loader = false;
+  this.statusCode = 0;
+});};
+/******** For Total Partners **************/
+findHighLevelDetailReportsForTotalPartners(){
+  this.loader = true;
+  this.dashboardService.findHighLevelAnalyticsOfDetailReportsForTotalPartners(this.vanityLoginDto)
+  .subscribe(
+    (response) => {
+  this.detailReportsForTotalPartners =response.data;
+  this.loader =false;
+  this.statusCode =200;
+},
+(error) => {
+  this.xtremandLogger.error(error);
+  this.loader = false;
+  this.statusCode = 0;
+});};
 }
