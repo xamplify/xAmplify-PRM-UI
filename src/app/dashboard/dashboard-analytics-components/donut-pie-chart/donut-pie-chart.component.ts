@@ -7,13 +7,14 @@ import { DashboardService } from 'app/dashboard/dashboard.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 declare var Highcharts: any;
+
 @Component({
-  selector: 'app-donut-charts',
-  templateUrl: './donut-chart.component.html',
-  styleUrls: ['./donut-chart.component.css'],
+  selector: 'app-donut-pie-chart',
+  templateUrl: './donut-pie-chart.component.html',
+  styleUrls: ['./donut-pie-chart.component.css'],
   providers: [ Properties,HttpRequestLoader]
 })
-export class DonutChartComponent implements OnInit {
+export class DonutPieChartComponent implements OnInit {
   loader = false;
   statusCode = 200;
   donutData:Array<any>=[]
@@ -112,4 +113,5 @@ loadDonutChart(donutData :any){
     }]
 });
 }
+
 }
