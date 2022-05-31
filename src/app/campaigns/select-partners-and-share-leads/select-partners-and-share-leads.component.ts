@@ -38,6 +38,8 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   showLeadsPreview = false;
   selectedListName = "";
   selectedListId = 0;
+  showExpandButton = false;
+  expandedUserList: any;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
@@ -122,6 +124,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		this.referenceService.loading(this.shareLeadsLoader, true);
 		pagination.channelCampaign = true;
 		pagination.campaignId = this.campaignId;
+		this.showExpandButton = $.trim(pagination.searchKey).length>0;
 		this.contactService.loadAssignedLeadsLists(pagination).
 		subscribe(
 			(data:any)=>{
@@ -217,4 +220,15 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		emitterObject['selectedPartnershipId'] = this.selectedPartnershipId;
 		this.selectPartnersAndShareLeadsEmitter.emit(emitterObject);
 	}
+
+	viewMatchedContacts(userList: any) {
+		userList.expand = !userList.expand;		
+		if (userList.expand) {
+			if ((this.expandedUserList != undefined || this.expandedUserList != null)
+			 && userList != this.expandedUserList) {				
+				this.expandedUserList.expand = false;				
+			}			
+			this.expandedUserList = userList;		
+		}
+	} 
 }
