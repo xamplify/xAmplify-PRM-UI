@@ -748,6 +748,40 @@ export class DashboardService {
     .map(this.extractData)
     .catch(this.handleError);
    }
+   
+   findHighLevelAnalyticsOfDetailReportsForTotalContacts(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/totalContacts?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
+   findHighLevelAnalyticsOfDetailReportsForLaunchedCampiagnTile(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/launchedCampaigns?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   findHighLevelAnalyticsOfDetailReportsForRedistributedCampiagnTile(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/redistributedCampaigns?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   findHighLevelAnalyticsOfDetailReportsForShareLeadsTile(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/shareLeads?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+   findHighLevelAnalyticsOfDetailReportsForTotalUsersTile(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/totalUsers?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
 }

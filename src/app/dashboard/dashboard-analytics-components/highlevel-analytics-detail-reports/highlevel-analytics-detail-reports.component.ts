@@ -20,6 +20,11 @@ export class HighlevelAnalyticsDetailReportsComponent implements OnInit {
   detailReportsForActivePartners:any;
   detailReportsForInActivePartners: any;
   detailReportsForTotalPartners: any;
+  detailReportsForTotalContacts: any;
+  detailReportsForLaunchedCampaigns: any;
+  detailReportsForRedistributedCampaigns: any;
+  detailReportsForShareLeads: any;
+  detailReportsForTotalUsers: any;
   @Input() applyFilter: boolean;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number = 0;
@@ -46,6 +51,11 @@ export class HighlevelAnalyticsDetailReportsComponent implements OnInit {
     this.findHighLevelDetailReportsForActivePartners();
     this.findHighLevelDetailReportsForTotalPartners();
     this.findHighLevelDetailReportsForInActivePartners();
+    this.findHighLevelDetailReportsForTotalContacts();
+    this.findHighLevelDetailReportsForLaunchedCampaigns();
+    this.findHighLevelDetailReportsForRedistributedCampaigns();
+    this.findHighLevelDetailReportsForShareLeads();
+    this.findHighLevelDetailReportsForTotalUsers();
   }
 
   findHighLevelDetailReportsForOnboardPartners(){
@@ -102,6 +112,85 @@ findHighLevelDetailReportsForTotalPartners(){
   .subscribe(
     (response) => {
   this.detailReportsForTotalPartners =response.data;
+  this.loader =false;
+  this.statusCode =200;
+},
+(error) => {
+  this.xtremandLogger.error(error);
+  this.loader = false;
+  this.statusCode = 0;
+});};
+/**********  For Total Contacts ***********/
+findHighLevelDetailReportsForTotalContacts(){
+  this.loader = true;
+  this.dashboardService.findHighLevelAnalyticsOfDetailReportsForTotalContacts(this.vanityLoginDto)
+  .subscribe(
+    (response) => {
+  this.detailReportsForTotalContacts =response.data;
+  this.loader =false;
+  this.statusCode =200;
+},
+(error) => {
+  this.xtremandLogger.error(error);
+  this.loader = false;
+  this.statusCode = 0;
+});};
+
+/********* For Launched Campaign Tile **************/
+findHighLevelDetailReportsForLaunchedCampaigns(){
+  this.loader = true;
+  this.dashboardService.findHighLevelAnalyticsOfDetailReportsForLaunchedCampiagnTile(this.vanityLoginDto)
+  .subscribe(
+    (response) => {
+  this.detailReportsForLaunchedCampaigns =response.data;
+  this.loader =false;
+  this.statusCode =200;
+},
+(error) => {
+  this.xtremandLogger.error(error);
+  this.loader = false;
+  this.statusCode = 0;
+});};
+
+/******* For Redistributed Campaign Tile **********/
+findHighLevelDetailReportsForRedistributedCampaigns(){
+  this.loader = true;
+  this.dashboardService.findHighLevelAnalyticsOfDetailReportsForRedistributedCampiagnTile(this.vanityLoginDto)
+  .subscribe(
+    (response) => {
+  this.detailReportsForRedistributedCampaigns =response.data;
+  this.loader =false;
+  this.statusCode =200;
+},
+(error) => {
+  this.xtremandLogger.error(error);
+  this.loader = false;
+  this.statusCode = 0;
+});};
+
+/***************For Share Leads ***************/
+findHighLevelDetailReportsForShareLeads(){
+  this.loader = true;
+  this.dashboardService.findHighLevelAnalyticsOfDetailReportsForShareLeadsTile(this.vanityLoginDto)
+  .subscribe(
+    (response) => {
+  this.detailReportsForShareLeads =response.data;
+  this.loader =false;
+  this.statusCode =200;
+},
+(error) => {
+  this.xtremandLogger.error(error);
+  this.loader = false;
+  this.statusCode = 0;
+});};
+
+/****** For Total Users *******/
+findHighLevelDetailReportsForTotalUsers(){
+  this.loader = true;
+  this.dashboardService.findHighLevelAnalyticsOfDetailReportsForTotalUsersTile(this.vanityLoginDto)
+  .subscribe(
+    (response) => {
+  this.detailReportsForTotalUsers =response.data;
   this.loader =false;
   this.statusCode =200;
 },
