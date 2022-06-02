@@ -264,20 +264,11 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.campaign.parentCampaignId = this.campaign.campaignId;
             this.campaign.parentCampaignUserId = this.campaign.userId;
         }
-        /****If the loggedin User is Vendor& Partner then show drop down along with team members*****/
-       /****if(this.isOrgAdminAndPartner || this.isVendorAndPartner){
-            this.listAllTeamMemberEmailIds();
-        }else{
-            this.setLoggedInUserEmailId();
-        }***/
-
         this.listAllTeamMemberEmailIds();
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
-
         this.loadContactList(this.contactListPagination);
-        
-        if(this.campaign.nurtureCampaign){
+        if(this.campaign.nurtureCampaign || this.campaign.oneClickLaunch){
             this.selectedUserlistIds = this.campaign.userListIds;
             this.getValidUsersCount();
         }
@@ -1181,7 +1172,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.loadContactList(this.contactListPagination);
     }
     highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
-        if(isValid){
+        if(isValid && !this.campaign.oneClickLaunch){
             this.emptyContactsMessage = "";
             if(count>0){
                 let isChecked = $('#'+contactId).is(':checked');
@@ -1255,18 +1246,18 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         ev.stopPropagation();
     }
     
-      showContactsAlert(count:number){
-          this.emptyContactsMessage = "";
-          if(count==0){
-              this.emptyContactsMessage = "No Contacts Found For This Contact List";
-          }
-      }
+    showContactsAlert(count:number){
+        this.emptyContactsMessage = "";
+        if(count==0){
+            this.emptyContactsMessage = "No Contacts Found For This Contact List";
+        }
+    }
 
- contactSearchInputKey( keyCode: any ) { if ( keyCode === 13 ) { this.searchContactList(); } }
+    contactSearchInputKey( keyCode: any ) { if ( keyCode === 13 ) { this.searchContactList(); } }
   
 
   listCategories(){
-      this.loading = true;
+    this.loading = true;
     this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
         ( data: any ) => {
             this.categoryNames = data.data;

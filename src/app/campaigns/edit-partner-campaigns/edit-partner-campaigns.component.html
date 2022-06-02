@@ -225,16 +225,16 @@
             <div class="col-xs-12">
               <div class="table-responsive">
                 <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
-                  <legend class="scheduler-border">Selected contact list</legend>
+                  <legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ? 'Lead(s)':'Contact(s)'}} list</legend>
                   <div class="row m0">
                     <div class="col-xs-4 p0">
                       <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}" aria-hidden="true"></i>
                     </div>
                     <div class="col-xs-8 p0" style="margin-top: 16px;">
-                      <h4 class="pull-left" *ngIf="selectedUserlistIds.length==0">No contact list is selected</h4>
-                      <h4 class="pull-left" *ngIf="selectedUserlistIds.length==1">{{selectedUserlistIds.length}} contact list is selected
+                      <h4 class="pull-left" *ngIf="selectedUserlistIds.length==0">No list is selected</h4>
+                      <h4 class="pull-left" *ngIf="selectedUserlistIds.length==1">{{selectedUserlistIds.length}} list is selected
                       </h4>
-                      <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} contact lists are selected
+                      <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} lists are selected
                       </h4>
                       <a class="pull-right btn btn-primary btn-sm" style="margin-top: 6px" (click)="showContacts()">{{previewText}}</a>
                       <br>                      
@@ -263,8 +263,8 @@
                               <table class="table table-filter" *ngIf="contactListPagination.totalRecords==0">
                                 <tr>
                                   <td colspan="5">
-                                    <div class="alert alert-info">
-                                      <strong>No Contacts found</strong>
+                                    <div class="alert alert-info text-center">
+                                      <strong>No Data found</strong>
                                     </div>
                                   </td>
                                 </tr>
@@ -272,7 +272,7 @@
                               <table  class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactListPagination.totalRecords > 0">
                                 <thead>
                                   <tr>
-                                    <td align="center">
+                                    <td class="text-center" [hidden]="campaign?.oneClickLaunch">
                                       <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" [ngModelOptions]="{standalone: true}" />
                                     </td>
                                     <th *ngIf="showExpandButton"></th>
@@ -280,9 +280,11 @@
                                       <span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
                                       <span class="gridHeader">List Name</span>
                                     </th>
-                                    <th scope="row" class="text-center"> Type </th>
-                                    <th scope="row" class="text-center"> Date Uploaded </th>
-                                    <th scope="row" class="text-center"> Preview </th>
+                                    <ng-container *ngIf="!campaign?.oneClickLaunch">
+                                      <th scope="row" class="text-center">Type </th>
+                                      <th scope="row" class="text-center">Date Uploaded </th>
+                                    </ng-container>
+                                    <th scope="row" class="text-center">Preview</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -291,19 +293,18 @@
                                       (click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts,contacts.emailValidationInd)"
                                       (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage"
                                       [class.contact-list-selected]="(selectedUserlistIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)">
-                                      <td class="text-center">
+                                      <td class="text-center" [hidden]="campaign?.oneClickLaunch">
                                         <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
                                           <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}"
                                             [checked]="selectedUserlistIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}"
                                             (click)="highlightRow(contacts.id,$event)">
                                         </div>
-                                  
                                         <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
                                           <input type="checkbox" disabled="disabled" title="Contacts are in progress">
                                         </div>
                                       </td>
                                       <td class="cw" *ngIf="showExpandButton">
-                                        <div class="actions-block left-float">
+                                        <div [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block left-float'">
                                           <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" title="Matched Results">
                                             <i class="fa" [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
                                               aria-hidden="true"></i>
@@ -311,19 +312,22 @@
                                         </div>
                                       </td>
                                       <td class="text-center moreipsis" title="{{contacts.name}}">
-                                        <span> {{contacts.name}}</span>
+                                        <span>{{contacts.name}}</span>
                                       </td>
-                                      <td class="text-center moreipsis">
-                                        <span>{{contacts.type}}<ng-template [ngIf]="contacts?.formList">, Form Contact List</ng-template></span>
-                                        
-                                      </td>
-                                      <td class="text-center sorting_1">
-                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
-                                      </td>
+                                      <ng-container *ngIf="!campaign?.oneClickLaunch">
+                                        <td class="text-center moreipsis">
+                                          <span>{{contacts.type}}<ng-template [ngIf]="contacts?.formList">, Form Contact List</ng-template></span>
+                                        </td>
+                                        <td class="text-center sorting_1">
+                                          <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
+                                        </td>
+                                      </ng-container>
                                       <td class="text-center">
-                                        <a title="Preview" (click)="$event.stopPropagation();previewUsers(contacts)">
-                                          <i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" aria-hidden="true"></i>
-                                        </a>
+                                        <div [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block left-float'">
+                                          <a title="Preview" (click)="$event.stopPropagation();previewUsers(contacts)">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                          </a>
+                                        </div>
                                       </td>
                                     </tr>
                                     <tr role="row" *ngIf="contacts?.expand">
@@ -338,9 +342,9 @@
                             </div>
                           </div>
                         </ng-container>
-                        <div *ngIf="contactListPagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
+                        <div *ngIf="contactListPagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                           <div *ngIf="contactListPagination.pagedItems.length !== 0">
-                            <app-pagination [pagination]="contactListPagination" [type]="'contacts'" (notifyParent)="setContactPage($event)" (notifyParentDropDown)="loadContactList($event)" style="position: relative;top: -10px"></app-pagination>
+                            <app-pagination [pagination]="contactListPagination" [type]="'contacts'" (notifyParent)="setContactPage($event)" (notifyParentDropDown)="loadContactList($event)"></app-pagination>
                           </div>
                         </div>
                       </div>
