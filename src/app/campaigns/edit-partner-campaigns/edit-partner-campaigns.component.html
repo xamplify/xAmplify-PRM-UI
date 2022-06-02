@@ -323,7 +323,7 @@
                                         </td>
                                       </ng-container>
                                       <td class="text-center">
-                                        <div [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block left-float'">
+                                        <div [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
                                           <a title="Preview" (click)="$event.stopPropagation();previewUsers(contacts)">
                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                           </a>
