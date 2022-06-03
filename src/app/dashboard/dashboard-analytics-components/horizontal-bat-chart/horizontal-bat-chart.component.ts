@@ -47,8 +47,7 @@ export class HorizontalBatChartComponent implements OnInit {
     .subscribe(
       (response) =>{
          this.horizontalBarData =response.data;
-         this.totalCount=this.horizontalBarData.redistributedCampaignsCount
-         +this.horizontalBarData.throughCampaignsCount+this.horizontalBarData.toCampaignsCount
+         this.totalCount=this.horizontalBarData.totalCampaignsCount;
          if(this.totalCount>0){
           this.loadHorizontalBarChart(this.horizontalBarData);
          }
