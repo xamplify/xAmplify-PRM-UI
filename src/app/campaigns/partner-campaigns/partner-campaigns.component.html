@@ -130,7 +130,7 @@
                       <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && campaign.launched" src="assets/images/survey.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                       <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched" src="assets/images/survey.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
                       <br>
-                      <h6 class="green-banner ccss" *ngIf="campaign?.oneClickLaunch">One-Click Launch</h6>
+                      <h6 class="green-banner ccss" *ngIf="campaign?.oneClickLaunch">{{properties?.oneClickLaunch}}</h6>
                     </td>
                     <td>
                       <h4 class="moreipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">

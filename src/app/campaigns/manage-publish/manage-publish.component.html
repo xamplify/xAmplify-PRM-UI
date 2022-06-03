@@ -318,6 +318,8 @@
                         <h6 class="view-banner banner-top" *ngIf="campaign.ended" style="background-color: #b6039e !important"
                           translate>
                           Ended</h6>
+                          <!---XNFR-125-->
+                          <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.oneClickLaunch" translate>{{properties?.oneClickLaunch}}</h6>
                       </td>
                       <td>
                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">

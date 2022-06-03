@@ -1602,3 +1602,25 @@ strong {
 .wtpc{
   width: 10%;
 }
+/***03 Jun******/
+.view-banner {
+	background-color: #00a6e8;
+	color: white;
+	padding: 4px;
+	text-align: center;
+	width: 125px;
+	margin: 0 auto;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.ccss{
+	width: 100% !important;
+	margin-top: 5px !important;
+}
+
+.bgc-green{
+  background-color: green !important;
+}
+
+

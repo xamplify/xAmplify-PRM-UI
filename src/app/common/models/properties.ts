@@ -211,6 +211,6 @@ export class Properties {
 	inActiveMasterPartnerList= 'Inactive Master Partner List';
 
 	sandboxText = "The xAmplify Sandbox instance is ideal for safely designing, loading, updating, and testing all modules of the platform. The xAmplify Sandbox instance type can be used only for testing or user acceptance testing.";
-
+	oneClickLaunch = "One-Click Launch";
 }
 
