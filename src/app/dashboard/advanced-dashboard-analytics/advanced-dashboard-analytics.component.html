@@ -1,3 +1,4 @@
+
 <div class="clearfix">
   <ng-container
     *ngIf="!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && 
@@ -16,7 +17,7 @@
   <app-redistributed-campaigns-wordcloud-map [applyFilter]="applyFilter"></app-redistributed-campaigns-wordcloud-map>
 </div>
 
-<div class="clearfix"  >
+<div class="clearfix" >
 <div class="portlet light">
   <div class="portlet-title" style="min-height: 0px;">
       <div class="caption">
@@ -26,12 +27,13 @@
 <div class="portlet-body clearfix">
   <div class="row">
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <app-donut-pie-chart  [applyFilter]="applyFilter"></app-donut-pie-chart> 
+        <app-donut-pie-chart *ngIf="!authenticationService?.module?.isMarketingCompany" [applyFilter]="applyFilter"></app-donut-pie-chart> 
         <app-horizontal-bat-chart [applyFilter]="applyFilter"></app-horizontal-bat-chart> 
       </div>
-  <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6" style="float:right;">
-   <app-highlevel-analytics-detail-reports [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
+  <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6">
+   <app-highlevel-analytics-detail-reports  [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
   </div>
   </div>
 </div> 
+</div>
 </div>
