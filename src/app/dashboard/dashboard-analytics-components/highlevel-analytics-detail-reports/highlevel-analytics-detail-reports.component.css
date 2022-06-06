@@ -1,44 +1,44 @@
-.custom-name-font{
-    text-align: right;
-    letter-spacing: 0px;
-    color: white;
-    font-size:10px !important;
-    font-weight: 500 !important;
-  }
-  
-  .default-name-font{
-      
-    text-align: right;
-    letter-spacing: 0px;
-    color: white;
-    font-size:14px !important;
-   
-  }
-  .description-font{
-    color: white;
-    font-size:9px !important;
-  }
-  .more-custom{
-    clear: both;
-    display: block;
-    padding: 6px 10px 6px 10px;
-    position: relative;
-    color: white;
-    font-size:10px !important;
-    font-weight: 300 !important;
-    text-transform: uppercase;
-    opacity: 0.7;
-    filter: alpha(opacity=70);
-  }
+.img-dash {
+  width: 120px;
+  left: -20px;
+  position: relative;
+  bottom: 7px;
+}
 
-  .more-default{
-    clear: both;
-    display: block;
-    padding: 6px 10px 6px 10px;
-    position: relative;
-    color: white;
-    font-size:12px !important;
-    text-transform: uppercase;
-    opacity: 0.7;
-    filter: alpha(opacity=70);
-  }
+.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: not-allowed
+}
+
+.dashboard-access-denied {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.dbiconscss {
+  margin-left: 0px !important;
+  line-height: 100px !important;
+}
+
+.addLeadsDiv {
+  margin-bottom: 20px;
+  margin-top: 3px;
+}
+
+.custom-name-font{
+  font-size:11px !important;
+  font-weight: 500 !important;
+}
+
+.default-name-font{
+  font-size:14px !important;
+ 
+}
+.more-hl-stat{
+  text-transform:capitalize !important;
+}

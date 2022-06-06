@@ -1,48 +1,26 @@
-
-   <!-- <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
-    <!-- <div class="col-xs-12 col-sm-12"  style="padding: 0">
-   <div class="portlet-body">
-    <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
-    <ng-container *ngIf="!loader && statusCode!=200">
-        <div class="alert alert-danger">
-          <strong>{{properties?.serverErrorMessage}}</strong>
-        </div>
-      </ng-container>  -->
-      <!-- <div [hidden]="loader" *ngIf="!loader" style="max-width: 100%;text-align: center;">
-        <div class="alert alert-info">
-             <strong>No Data Found</strong>
-         </div>
-    </div> -->
-   <!---->
-   <!-- <app-box-loader [countLoader]=2 *ngIf="loader"></app-box-loader> -->
-
    <div class="portlet-body clearfix">
     <div class="row">
-      
       <app-box-loader [countLoader]=8 *ngIf="loader"></app-box-loader>
       <ng-container *ngIf="!loader">
-      <div  style="padding: 1em 1em 0 1em;" *ngFor="let dto of detailReportsForTotalUsers"
-      title="" 
-      class="col-sm-6 col-xs-12 col-lg-6 col-md-6">
-     <a  class="{{dto.color}}">
-       <div class="visual">
-         <i *ngIf="dto.moduleId!=3" class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
-         <img *ngIf="dto.moduleId==3"  class="img-dash" src="assets/images/white15.png" alt="No Image Found">
+        <div *ngFor="let dto of detailReportsForTotalUsers" style="padding: 1em 1em 0 1em;"
+        [title]="dto.hasAccess? 'Click to see details':'You do not have permission to see details'" 
+        [className]="dto.hasAccess? 'col-sm-6 col-xs-6 col-lg-6 col-md-6' : 'col-sm-6 col-xs-6 col-lg-6 col-md-6 dashboard-access-denied'" (click)="goToManage(dto)">
+       <a  class="{{dto.color}}">
+         <div class="visual">
+           <i class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
+         </div>
+         <div class="details">
+           <div class="number">{{dto.count}}</div>
+           <div title="{{dto?.moduleName}}" [className]="dto?.moduleName?.length>=25 ? 'desc custom-name-font':'desc default-name-font'">{{dto.moduleName | translate}}</div>
+         </div>
+         <span class="morePadding" title="{{dto.description}}">
+           <a [className]="dto.hasAccess? 'more more-hl-stat':'more more-hl-stat dashboard-access-denied'" translate>
+             {{dto.description | slice:0:33}}
+             <span *ngIf="dto?.description?.length>33">..</span>
+            </a>
+         </span>
+       </a>
        </div>
-       <div class="details">
-         <div class="number">{{dto.count}}</div>
-         <div title="{{dto?.moduleName}}" [className]="dto?.moduleName?.length>=21 ? 'custom-name-font':' default-name-font'">{{dto.moduleName | translate}}</div>
-       </div>
-       <span class="morePadding">
-         <a  [className]="dto?.description?.length>=57 ? 'more-custom':'more-default' " translate>{{dto.description}}
-           <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-          </a> 
-       </span>
-     </a>
-     </div>
     </ng-container>
     </div>
 </div>
-<!---->
-<!-- </div>
-</div> -->
