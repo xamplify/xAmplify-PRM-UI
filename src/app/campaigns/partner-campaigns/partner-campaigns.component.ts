@@ -630,9 +630,29 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 
   /**********XNFR-125*******/
   launchOneClickCampaign(campaign:any){
-      this.showSweetAlert = true;
-      this.sweetAlertParameterDto.text="Campaign will be launched";
-	  this.sweetAlertParameterDto.confirmButtonText = "Yes";
+    this.oneClickCampaignLaunched(campaign.campaignId);
+      
+  }
+
+  oneClickCampaignLaunched(campaignId:number){
+    this.ngxloading = true;
+    this.campaignService.isOneClickCampaignLaunched(campaignId).
+    subscribe(
+        response=>{
+            this.ngxloading = false;
+            this.openSweetAlert(response.data);
+        },error=>{
+            this.ngxloading = false;
+            this.referenceService.showSweetAlertServerErrorMessage();
+        }
+    )
+  }
+
+  openSweetAlert(campaignLaunched:boolean){
+    this.showSweetAlert = true;
+    let message = campaignLaunched ? "Campaign will be launched again to the same list":"Campaign will be launched"
+    this.sweetAlertParameterDto.text=message;
+    this.sweetAlertParameterDto.confirmButtonText = "Yes";
   }
 
   receiveEvent(event:any){
