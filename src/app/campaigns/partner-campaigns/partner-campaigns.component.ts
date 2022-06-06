@@ -20,6 +20,7 @@ import { CampaignTemplateDownloadHistoryComponent } from '../campaign-template-d
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {Properties} from 'app/common/models/properties';
 import { CampaignAccess } from '../models/campaign-access';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 declare var $,swal: any;
 
@@ -81,6 +82,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     socialCampaign: any;
     socialAccountsLoader: boolean;
     campaignAccess:CampaignAccess = new CampaignAccess();
+    showSweetAlert = false;
+    sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
@@ -624,5 +627,19 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
   viewDownloadedHistory(campaign:any){
     this.campaignTemplateDownloadHistoryComponent.viewHistoryForPartners(campaign);
   }
-    
+
+  /**********XNFR-125*******/
+  launchOneClickCampaign(campaign:any){
+      this.showSweetAlert = true;
+      this.sweetAlertParameterDto.text="Campaign will be launched";
+	  this.sweetAlertParameterDto.confirmButtonText = "Yes";
+  }
+
+  receiveEvent(event:any){
+      if(event){
+        this.showSweetAlert = false;
+      }else{
+        this.showSweetAlert = false;
+      }
+  }
 }
