@@ -308,8 +308,13 @@
                         <i class="fa fa-eye mr5" aria-hidden="true"></i>
                         </a>
                         <ng-container *ngIf="campaign.allowRedistribution">
+                          <!----XNFR-125---->
+                          <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" 
+                            data-placement="top" title="One Click Launch" data-rel="fancybox-button">
+                            <i class="fa fa-hand-pointer-o"></i>
+                          </a>
                           <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" (click)="reDistributeCampaign(campaign)" 
-                          data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
+                            data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
                           <i class="fa fa-clone"></i>
                           </a>
                           <a *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" 
@@ -324,8 +329,12 @@
                           </a>
                         </ng-container>
                         <ng-container *ngIf="!campaign.allowRedistribution">
+                          <!----XNFR-125---->
                           <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}" data-rel="fancybox-button">
-                          <i class="fa fa-clone cancelled-event"></i>
+                            <i class="fa fa-hand-pointer-o cancelled-event"></i>
+                          </a>
+                          <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}" data-rel="fancybox-button">
+                            <i class="fa fa-clone cancelled-event"></i>
                           </a>
                         </ng-container>
                         <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
