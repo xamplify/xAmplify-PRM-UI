@@ -725,7 +725,7 @@ export class DashboardService {
 
 
     findHighLevelAnalyticsOfDetailReportsForTotalUsersTile(vanityLoginDto:VanityLoginDto){
-         const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports/totalUsers?access_token=' + this.authenticationService.access_token;
+         const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports?access_token=' + this.authenticationService.access_token;
          return this.http.post(url,vanityLoginDto)
          .map(this.extractData)
          .catch(this.handleError);

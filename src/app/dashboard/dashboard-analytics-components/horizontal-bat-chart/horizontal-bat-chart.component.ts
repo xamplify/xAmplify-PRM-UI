@@ -102,12 +102,12 @@ export class HorizontalBatChartComponent implements OnInit {
         data: [this.horizontalBarData.redistributedCampaignsCount]
       },
       {
-        name: 'ThroughCampaigns',
+        name: 'Through Campaigns',
         data: [this.horizontalBarData.throughCampaignsCount]
 
       },
       {
-      name: 'ToCampaigns',
+      name: 'To Campaigns',
       data: [this.horizontalBarData.toCampaignsCount]
     }
    ]
