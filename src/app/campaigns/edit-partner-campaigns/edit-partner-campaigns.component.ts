@@ -316,6 +316,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaignService.findDataShareOption(this.campaign.parentCampaignId).subscribe(
             response=>{
                 this.dataShare = response.data;
+                this.campaign.dataShare = this.dataShare && this.campaign.oneClickLaunch;
+                this.campaign.detailedAnalyticsShared = this.campaign.dataShare;
                 this.ngxloading = false;
             },error=>{
                 this.dataShare = false;
