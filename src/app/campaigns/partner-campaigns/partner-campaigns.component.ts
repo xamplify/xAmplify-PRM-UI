@@ -650,7 +650,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 
   openSweetAlert(campaignLaunched:boolean){
     this.showSweetAlert = true;
-    let message = campaignLaunched ? "Campaign will be launched again to the same list":"Campaign will be launched"
+    let message = campaignLaunched ? "This campaign is already redistributed.Do you want to redistribute again?":"Campaign will be redistributed to the share leads with one click"
     this.sweetAlertParameterDto.text=message;
     this.sweetAlertParameterDto.confirmButtonText = "Yes";
   }

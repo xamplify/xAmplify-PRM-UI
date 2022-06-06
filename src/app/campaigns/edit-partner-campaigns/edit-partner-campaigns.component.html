@@ -105,11 +105,11 @@
                       <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" />
                     </div>      
                     <!--Data Share--->
-                    <ng-container *ngIf="dataShare">
+                    <ng-container *ngIf="dataShare && !campaign?.oneClickLaunch">
                     <div class="form-group" >
                       <label class="control-label col-sm-4 p0">Data Share</label>
                       <div class="col-sm-8">
-                        <switch [disabled]="campaign?.oneClickLaunch"  [status]="campaign?.dataShare" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                        <switch   [status]="campaign?.dataShare" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                             (statusChange)="setDataShare($event)">
                         </switch>
                       </div>
@@ -118,7 +118,7 @@
                     <div class="form-group" *ngIf="campaign?.dataShare">
                       <label class="control-label col-sm-4 p0">Detailed Analytics</label>
                       <div class="col-sm-8">
-                        <switch [disabled]="campaign?.oneClickLaunch"  [status]="campaign?.detailedAnalyticsShared" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                        <switch   [status]="campaign?.detailedAnalyticsShared" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                             (statusChange)="shareAnalytics($event)">
                         </switch>
                       </div>
